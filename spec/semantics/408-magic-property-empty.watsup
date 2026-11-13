@@ -529,7 +529,7 @@ def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if $property_empty_valid(S, ppropertyempty)
   -- if S.RESULT = KNOWN (POBJECT n_rv)
   -- if $(n_rv < |S.OBJECTS|) /\ (HOBJECT n_rv) <- S.ALLOCATIONS
-  -- if $property_empty_rv_kind(S, S.OBJECTS[n_rv])
+  -- if $property_empty_rv_kind(S, S.OBJECTS[n_rv]) \/ $enum_case_object(S, n_rv) =/= eps
   -- if ~$instance_storage_freeing(S, n_rv)
 def $property_empty_rv_ready(S, ppropertyempty) = true
   -- if S.COMPLETION = NORMAL /\ S.SOURCEPENDING = eps

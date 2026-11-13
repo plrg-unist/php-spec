@@ -113,7 +113,7 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PARRAY n)) =
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (POBJECT n)) = true
   -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z) \/ $property_magic_cv_coalesce_assign_source(S, porigin, z)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if $eager_property_class_valid(S, S.OBJECTS[n]) /\ ~$instance_storage_freeing(S, n)
+  -- if ($eager_property_class_valid(S, S.OBJECTS[n]) \/ $enum_case_object(S, n) =/= eps) /\ ~$instance_storage_freeing(S, n)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true

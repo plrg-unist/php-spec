@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "enum-cv-coalesce-cold-case-saved-receiver",
+      "source": "<?php\nenum QuietGetCase { case Ready; }\nclass QuietEnumCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return QuietGetCase::Ready; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietEnumCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$reader = new QuietEnumCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietEnumCoalesceRight();\necho $answer === QuietGetCase::Ready ? \"SAME;\" : \"BAD_CASE;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho \"DONE;\";\n",
+      "source_sha256": "08ad3b07f93241c277de0b79f773b005edfb3e0b97a835114e0fe18e56694116",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Q0FQVFVSRTtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "enum-cv-coalesce-assignment-warm-backed-case",
+      "source": "<?php\nenum QuietAssignGetCase: int { case Ready = 7; }\nclass QuietEnumAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(?string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietEnumAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = QuietAssignGetCase::Ready;\n$reader = new QuietEnumAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietEnumAssignRight();\necho $answer === QuietAssignGetCase::Ready ? \"SAME;\" : \"BAD_CASE;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CLEARED;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho \"AFTER_FIRST;\";\n$again = QuietAssignGetCase::Ready;\necho $again === QuietAssignGetCase::Ready ? \"SAME_AGAIN;\" : \"BAD_AGAIN;\";\necho \"DONE;\";\n",
+      "source_sha256": "1efa80c2b4648b5dd80f65d6f47669ebd53d4334f6dd68b3ef9c5a1403495934",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Q0xFQVJFRDtBRlRFUl9GSVJTVDtTQU1FX0FHQUlOO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}

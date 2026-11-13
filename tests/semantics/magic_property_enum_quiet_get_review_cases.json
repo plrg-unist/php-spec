@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "enum-cv-empty-cold-string-backed-case",
+      "source": "<?php\nenum QuietEmptyGetCase: string { case Ready = \"ready\"; }\nclass QuietEnumEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return QuietEmptyGetCase::Ready; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$reader = new QuietEnumEmptyGet;\n$selector = \"value\";\n$answer = empty($reader->$selector);\necho $answer === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\n$again = QuietEmptyGetCase::Ready;\necho $again === QuietEmptyGetCase::Ready ? \"SAME;\" : \"BAD_CASE;\";\nunset($again);\necho \"DONE;\";\n",
+      "source_sha256": "18122c6929ed395dc035bdc510b744fb08fdc489ed0384d3581ff77d05250f78",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0ZBTFNFO0NBUFRVUkU7U0FNRTtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "enum-literal-empty-warm-case-receiver-throw",
+      "source": "<?php\nenum QuietLiteralEmptyCase { case Ready; }\nclass QuietEnumLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $held, $reader; echo \"G;\"; $saved = $held; $held = null; $reader = null; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver\"); }\n}\n$held = QuietLiteralEmptyCase::Ready;\n$reader = new QuietEnumLiteralEmptyGet;\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null ? \"CLEARED;\" : \"BAD_CAPTURE;\";\n$again = QuietLiteralEmptyCase::Ready;\necho $again === QuietLiteralEmptyCase::Ready ? \"SAME;\" : \"BAD_CASE;\";\nunset($again);\necho \"DONE;\";\n",
+      "source_sha256": "558769828d7bee16e72a175b051dc6bf77adabf810f8573c060e723d785ef2ea",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO0NBVUdIVDtLRUVQO0NMRUFSRUQ7U0FNRTtET05FOw==",
+      "stderr_template_base64": ""
+    }
+  ]
+}
