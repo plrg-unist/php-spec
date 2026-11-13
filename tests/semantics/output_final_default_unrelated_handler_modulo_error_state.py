@@ -29,7 +29,8 @@ CAPTURE = shared.CAPTURE
 def bindings_for(name, fixture, path):
     bindings, checks = previous.lifecycle(name + '-string', fixture, path)
     stop = next(i for i, binding in enumerate(bindings) if binding.startswith('S_left = '))
-    initial = [re.sub(r'\bS\b', 'S_binary', binding) for binding in bindings[:stop]]
+    initial = [re.sub(r'\bS\b', 'S_binary', binding.replace('S_found', 'S_binary_found'))
+               for binding in bindings[:stop]]
     index = bindings.index('S_generated.COMPLETION = THROWING n_exception')
     return initial + [
         '$integer_operator_plan(S_binary) = (pintegeroperation)',
@@ -64,8 +65,9 @@ def original(name):
         f'$code_expression_at_source(S, porigin_operator, [PCFIELD 0]) = ({line})',
         f'$code_expression_at_source(S, porigin_operator, [PCFIELD 1]) = ({line})',
         '$string_long($ptascii("1x")) = STRINT i_left (LEADINGNUMBER :: eps)',
-        'pintegerconversion_left = {INPUT pvalue_left, VALUE i_left, NOTICES [(2, $ptascii("A non-numeric value encountered"))]}',
-        'pintegerconversion = {INPUT pvalue_right, VALUE 0, NOTICES eps}',
+        'pintegerconversion_left.INPUT = pvalue_left', 'pintegerconversion_left.VALUE = i_left',
+        'pintegerconversion_left.NOTICES = [(2, ($ptascii("A non-numeric value encountered")))]',
+        'pintegerconversion.INPUT = pvalue_right', 'pintegerconversion.VALUE = 0', 'pintegerconversion.NOTICES = eps',
         '$integer_conversion(pvalue_right) = (pintegerconversion)', '$ob_object_modulo_integer(pvalue_right) = (0)',
         '$ob_object_string_value(S, pvalue_left)', '$value_nodes(pvalue_left) = eps', '$value_nodes(pvalue_right) = eps',
         '~$error_handler_eligible(S, 2)', '$error_handler_eligible(S, 8192)',
