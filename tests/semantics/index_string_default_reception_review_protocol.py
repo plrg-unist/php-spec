@@ -9,12 +9,14 @@ import closure_call_protocol as protocol
 
 
 metadata_index = 0
+fixed_metadata = None
 
 
 def node(constructor, *children):
     global metadata_index
     metadata_index += 1
-    return constructor + ''.join(f' ({child})' for child in children) + f' metadata_peer_{metadata_index}'
+    metadata = fixed_metadata or f'metadata_peer_{metadata_index}'
+    return constructor + ''.join(f' ({child})' for child in children) + ' ' + metadata
 
 
 def integer(value):
@@ -52,7 +54,6 @@ def float_cast(child):
     return node('NExprCastDouble', child)
 
 
-unknown = constant('UnselectedReceive207')
 patterns = [
     node('NExprUnaryMinus', ternary(dimension(string('10'), integer(1)), constant('UnselectedReceive207'), integer(7))),
     cast(ternary(dimension(string(b'\0x'), node('NExprUnaryMinus', integer(0))), string('-11tail'), constant('UnselectedReceive207'))),
@@ -62,6 +63,10 @@ patterns = [
     ternary(float_cast(binary('Coalesce', constant('null'), dimension(string('-0'), integer(1)))),
             constant('UnselectedReceive207'), cast(string('-9223372036854775808tail'))),
     cast(ternary(constant('true'), binary('Concat', dimension(string('x9'), node('NExprUnaryPlus', integer(1))), string('9' * 23)), constant('UnselectedReceive207'))),
+]
+contrasts = [
+    ('floatnot', 'deferredFloatNotReceive207', cast(node('NExprBooleanNot', node('NScalarFloat', 'FLOAT "3fe0000000000000"'))), '(0)'),
+    ('negative', 'deferredNegativeIndexReceive207', cast(dimension(string('10'), node('NExprUnaryMinus', integer(1)))), 'eps'),
 ]
 
 CATALOGUE = Path(__file__).with_name('index_string_default_reception_cases.json')
@@ -127,10 +132,7 @@ checks.extend([
 ])
 
 # These are genuine compiler-deferred declarations in this same source unit.
-for suffix, function_name, expression, projection in [
-    ('floatnot', 'deferredFloatNotReceive207', cast(node('NExprBooleanNot', node('NScalarFloat', 'FLOAT "3fe0000000000000"'))), '(0)'),
-    ('negative', 'deferredNegativeIndexReceive207', cast(dimension(string('10'), node('NExprUnaryMinus', integer(1)))), 'eps'),
-]:
+for suffix, function_name, expression, projection in contrasts:
     checks.extend([
         f'$call_target(S, $ptascii("{function_name}"), eps) = (pfunction_{suffix})',
         f'pfunction_{suffix}.ORIGIN = PORIGIN n_unit pcpath_{suffix}_function',
@@ -149,6 +151,9 @@ for suffix, function_name, expression, projection in [
         f'pfunction_forged_{suffix} = pfunction_{suffix}[.DEFAULTS = [{{INDEX 0, ORIGIN porigin_{suffix}, KIND PDSTORED}}]]',
         f'~$lossy_optional_integer_tail(S, pfunction_forged_{suffix}, [psparam_forged_{suffix}], 0)',
     ])
+
+fixed_metadata = 'metadata_a'
+unknown = constant('UnselectedReceive207')
 
 # DIM returns exactly one byte: neither NUL nor either UTF-8 byte is empty.
 for index, byte, truth, integer_value in [
