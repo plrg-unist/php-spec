@@ -64,6 +64,19 @@ dec $property_merge(ppropertydesc*, ppropertydesc*) : ppropertydesc*
 def $property_merge(ppropertydesc_base*, eps) = ppropertydesc_base*
 def $property_merge(ppropertydesc_base*, ppropertydesc :: ppropertydesc_tail*) = $property_merge($property_replace(ppropertydesc_base*, ppropertydesc), ppropertydesc_tail*)
 
+;; Adding hooks to an ordinary parent uses the child's own live slot.
+dec $property_hook_child_own_slot(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_layout_parent(pstate, ppropertydesc*, ppropertydesc*) : ppropertydesc*
+def $property_layout_parent(S, eps, ppropertydesc_own*) = eps
+def $property_layout_parent(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = $property_layout_parent(S, ppropertydesc_tail*, ppropertydesc_own*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child)
+def $property_layout_parent(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = ppropertydesc_parent :: $property_layout_parent(S, ppropertydesc_tail*, ppropertydesc_own*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+def $property_layout_parent(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*) = ppropertydesc_parent :: $property_layout_parent(S, ppropertydesc_tail*, ppropertydesc_own*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if ~$property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child)
+
 dec $instance_declarations(ppropertydesc*) : ppropertydesc*
 def $instance_declarations(eps) = eps
 def $instance_declarations(ppropertydesc :: ppropertydesc_tail*) = $instance_declarations(ppropertydesc_tail*) -- if ppropertydesc.STATIC
@@ -78,10 +91,12 @@ def $property_layout(S, porigin, n) = $property_merge(eps, $instance_declaration
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
-def $property_layout(S, porigin, n) = $property_merge($property_layout(S, porigin_parent, $nabs($(n - 1))), $instance_declarations(pclassdesc.PROPERTIES))
+def $property_layout(S, porigin, n) = $property_merge($property_layout_parent(S, ppropertydesc_parent*, ppropertydesc_own*), ppropertydesc_own*)
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
+  -- if ppropertydesc_parent* = $property_layout(S, porigin_parent, $nabs($(n - 1)))
+  -- if ppropertydesc_own* = $instance_declarations(pclassdesc.PROPERTIES)
 def $property_layout(S, porigin, n) = $property_merge($throwable_layout(text_kind), $instance_declarations(pclassdesc.PROPERTIES))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
