@@ -313,6 +313,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_default_masked_fractional_modulo_warning_error_sources.py
 	python3 tests/semantics/output_final_default_masked_fractional_modulo_warning_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-masked-fractional-modulo-warning-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_default_masked_fractional_modulo_warning_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-masked-fractional-modulo-warning-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_default_right_modulo_conversion_error_sources.py
+	python3 tests/semantics/output_final_default_right_modulo_conversion_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-right-modulo-conversion-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_default_right_modulo_conversion_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-right-modulo-conversion-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
