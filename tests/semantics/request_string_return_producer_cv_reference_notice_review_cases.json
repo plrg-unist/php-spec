@@ -1,0 +1,10 @@
+[
+  {
+    "id": "named-request-string-return-retired-array-snapshot-and-prior-send-cow",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace { function make(array $input){echo 'G;';return $input;} }\nnamespace ReviewNotice40\\Primary {\nfunction h($n,$m,$file,$line){global $leaf,$source,$prefix;echo 'H:',(int)($leaf==='17'),';';$leaf[0]='X';$prefix[0]='Y';$source=23;return true;}\nfunction make(array $input):sTrInG {global $source;$source=17;echo 'M:',$input['leaf'],';';return $input['leaf'];}\nfunction &take($prefix,&$v){echo 'F:',(int)($v==='17'),':',(int)($prefix==='23'),';';$v[1]='Y';return $v;}\n$leaf=(string)17;$snapshot=$leaf;$prefix=(string)23;$source=['leaf'=>&$leaf];$sourceAlias=&$source;set_error_handler('ReviewNotice40\\\\Primary\\\\h',8);echo 'J;';\n$r=&take(prefix:$prefix,v:make($source));echo 'R:',$r,':',$source,':',$sourceAlias,':',$leaf,':',(int)($snapshot==='17'),':',$prefix,';';$r=31;echo 'P:',(int)($r===31),':',$sourceAlias,':',$leaf,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "0f79990983cb5e598c0acd2f76b270083492d76eaa093fab1ab798ed45c81340",
+    "native_stdout": "J;M:17;H:1;F:1:1;R:1Y:23:23:X7:1:Y3;P:1:23:X7:1;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
