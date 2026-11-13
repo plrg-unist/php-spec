@@ -3604,6 +3604,13 @@ existing type, source/default/layout and whole owner graph checks retain shared
 and inherited slots. Untyped hooks, wider modifiers and aliases remain partial.
 [Short SET review](coverage/semantics/deprecated-reference-object-short-set-review.json).
 
+Initialized public untyped backed GET fields also retain DIRECT storage through
+class selection and physical release. The absent type adds no payload authority:
+complete graph, source/default/layout and ownership checks still govern every
+slot. Selection and physical slot release themselves dispatch no GET hook.
+Untyped setters, wider modifiers and aliases remain partial.
+[Untyped GET review](coverage/semantics/deprecated-reference-object-untyped-hook-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
