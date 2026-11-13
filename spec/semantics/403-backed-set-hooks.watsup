@@ -318,7 +318,6 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 expression metadata
-  -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if $property_set_untyped_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
@@ -395,7 +394,6 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if $pphook_pair_nodes(P, pcpath, ppropertydesc, pchheader) = [phpType38_get, phpType38_set]
   -- if phpType38_set = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_set) metadata_name) phpType16 (SEQUENCE statement*) metadata
-  -- if $hook_pair_untyped_parameter_headers(phpType38_get, phpType38_set, ppropertydesc.NAME)
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if $property_set_untyped_signature(phpType16, $ppmethod_context(P, pchheader, $property_set_name(ppropertydesc.NAME), z)) = (pssignature)
