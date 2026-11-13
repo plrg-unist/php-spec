@@ -6052,6 +6052,16 @@ Preserved AL timeouts and the corrected NUL fixture compiler failure keep zero
 credit. Wider providers/callbacks, abrupt histories and held lanes remain partial.
 [Review](coverage/semantics/string-offset-request-release-prior-cv-review.json).
 
+The same closed release now admits live HCELLs with authenticated non-NUL REQUEST
+identities distinct from the selected header, including equal-byte bystanders.
+Only the cell classifier gains that identity parameter; every other provider,
+current-key, callback, pool and state-frontier guard remains literal. Source2 at
+`7fd3bc65f`/508 reuses native2 once; author SL217/119-derived at `11c7f6a60` and
+independent SL151/48-derived at `7fd3bc65f` retain separate source0 cuts. The first
+source timeout stays zero; one affected retry and the other source's first attempt
+pass at the original60/80 caps. Wider providers and held lanes remain partial.
+[Review](coverage/semantics/string-offset-request-release-distinct-cv-review.json).
+
 Public by-reference `offsetGet(): int` now enters the existing typed CV return
 verifier. Two exact production-SL originals cover integer CV/reference returns,
 weak numeric-string success and weak/strict TypeErrors. The returned alias has no

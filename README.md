@@ -1070,6 +1070,9 @@ finite prior stacks of absent or valid non-NUL INTERNED callbacks, independently
 of integer masks. Two original-source agreements and separate author/peer SL
 fixtures retain their private cuts; the current joined508 load adds zero source
 credit. Other providers, callbacks, abrupt histories and held lanes remain partial.
+Live cells may also hold [independent REQUEST headers](coverage/semantics/string-offset-request-release-distinct-cv-review.json),
+including equal-byte strings, without owning the selected header. The cell-only
+extension retains every other provider guard and separate source/state evidence.
 
 [Quiet string-offset queries](coverage/semantics/string-offset-quiet-carriers-review.json)
 accept ordinary valid non-NUL interned carriers and

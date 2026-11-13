@@ -633,6 +633,19 @@ callbacks, broader providers, abrupt control, NUL and wider lifetime histories
 remain partial; held lanes, String `KEY_NULL`, supplied-throw discard and generic
 owner/root APIs stay unchanged.
 
+Live HCELLs may now hold other authenticated non-NUL REQUEST identities without
+blocking this selected-header release. Two independent nonempty CV concatenations
+produce equal `abc` bytes in different headers; the surviving bystander owns only
+its own header. Only the cell classifier receives the selected identity. Pools,
+callbacks, tasks and the 21-field provider closure keep their prior guards.
+The [distinct-header review](../../coverage/semantics/string-offset-request-release-distinct-cv-review.json)
+separates two new source agreements, author SL217/119-derived and independent
+SL151/48-derived fixtures. The first source timeout retains zero credit; one
+affected retry and the other source's first comparison pass at the original caps,
+reusing native2 once. Exact selected owners, including marked cells with false
+ordinary-provider readiness, remain refused. Wider providers, callbacks, NUL,
+abrupt histories and held lanes remain partial.
+
 Ordinary valid non-NUL `INTERNED_STRING` and authenticated `REQUEST_STRING`
 carriers delegate to the existing byte rules for `??`, `isset`, and `empty`, as
 both containers and string keys. A REQUEST forward validates the registry index,
