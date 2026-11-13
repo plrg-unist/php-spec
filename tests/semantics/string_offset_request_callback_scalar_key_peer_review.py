@@ -108,7 +108,8 @@ S_unmarked = S[.REFCELLS = $literal_reference_delete(S.REFCELLS,n_current)]
 pvalue_ordinary? = $string_read_key_current(S_unmarked,pstringread)
 pvalue_ordinary? = (pvalue_current)
 S_string = S[.STORE[n_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))]
-$string_read_key_current(S_string,pstringread) = eps
+$string_read_key_current(S_string,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1x")))
+$string_read_resume(S_string,pstringread) = S_string[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([98]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_inf = S[.STORE[n_current] = DEFINED (PFLOAT 9218868437227405312)]
 ~$string_read_key_quiet(PFLOAT 9218868437227405312)
 $string_read_key_current(S_inf,pstringread) = eps
