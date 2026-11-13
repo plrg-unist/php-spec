@@ -88,7 +88,7 @@ LEGACY = ['S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.HELD = eps',
  '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,false,KNOWN (PINT 7))',
  '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN PNULL)',
  '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PFLOAT 0))',
- '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
+ '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
  '$property_empty_truth(S,PBOOL false) = (true)',
  '$task_nodes(PROPERTY_EMPTY_RESULT ppropertyempty true) = [HOBJECT n_receiver]',
  '$property_empty_guard(S,n_receiver,ppropertyempty.NAME) /\\ '

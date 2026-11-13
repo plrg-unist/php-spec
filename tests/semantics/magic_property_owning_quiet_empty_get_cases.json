@@ -1,0 +1,74 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "array-cv-empty-immutable-before-receiver",
+      "source": "<?php\nclass QuietEmptyArray {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(?string $incoming): array { global $reader, $selector; echo \"G;\"; $reader = null; $selector = \"changed\"; return []; }\n    public function __destruct() { echo \"R;\"; }\n}\n$reader = new QuietEmptyArray;\n$selector = \"empty\";\necho empty($reader->$selector) ? \"EMPTY;\" : \"BAD_EMPTY;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho \"DONE;\";\n",
+      "source_sha256": "4c2ae991a77c57f18ac2071fbc837cdb81437229373c64ab3b399bc68b8aa4f0",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1I7RU1QVFk7Q0FQVFVSRTtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "array-cv-empty-shared-payload-retires-later",
+      "source": "<?php\nclass QuietSharedPayload { public function __destruct() { echo \"PAYLOAD;\"; } }\nclass QuietSharedArray {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): array { global $reader, $items, $selector; echo \"G;\"; $saved = $items; $items = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"R;\"; }\n}\n$items = [new QuietSharedPayload];\n$held = $items;\n$reader = new QuietSharedArray;\n$selector = \"shared\";\necho empty($reader->$selector) ? \"BAD_EMPTY;\" : \"ARRAY;\";\necho $reader === null && $items === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($held);\necho \"DONE;\";\n",
+      "source_sha256": "9b5290c43c959e38effaf1b6156c07652ad00d0bd2d6923102fabf9ab262cbb9",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1I7QVJSQVk7Q0FQVFVSRTtQQVlMT0FEO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "object-cv-empty-std-storage-child-before-receiver",
+      "source": "<?php\nclass QuietStdPayload { public function __destruct() { echo \"CHILD;\"; } }\nclass QuietStdObject {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(mixed $incoming): object { global $reader; echo \"G;\"; $reader = null; $saved = new stdClass; $saved->child = new QuietStdPayload; return $saved; }\n    public function __destruct() { echo \"R;\"; }\n}\n$reader = new QuietStdObject;\n$selector = \"object\";\necho empty($reader->$selector) ? \"BAD_EMPTY;\" : \"OBJECT;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_READER;\";\necho \"DONE;\";\n",
+      "source_sha256": "b02671e966a21824ee68c3c485782fb0cba62246354dab6313dce5bbe80b5629",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO0NISUxEO1I7T0JKRUNUO0NMRUFSRUQ7RE9ORTs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "literal-object-coalesce-transfers-owning-return",
+      "source": "<?php\nclass QuietLiteralPayload { public function __destruct() { echo \"PAYLOAD;\"; } }\nclass QuietLiteralObject {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader; echo \"G;\"; $reader = null; return new QuietLiteralPayload; }\n    public function __destruct() { echo \"R;\"; }\n}\nfunction quietLiteralFallback() { echo \"BAD_RHS;\"; return null; }\n$reader = new QuietLiteralObject;\n$answer = $reader->object ?? quietLiteralFallback();\necho $answer instanceof QuietLiteralPayload && $reader === null ? \"OWNED;\" : \"BAD_RETURN;\";\nunset($answer);\necho \"DONE;\";\n",
+      "source_sha256": "90d2b1255e462dc463613294a0389c021cae95813cf2061cab0169d0a0102fb2",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1I7T1dORUQ7UEFZTE9BRDtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "object-cv-coalesce-remains-unsupported",
+      "source": "<?php\nclass QuietCvCoalesce {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { echo \"G;\"; return new stdClass; }\n}\n$reader = new QuietCvCoalesce;\n$selector = \"object\";\n$answer = $reader->$selector ?? null;\necho $answer instanceof stdClass ? \"OBJECT;\" : \"BAD_OBJECT;\";\necho \"DONE;\";\n",
+      "source_sha256": "7b2e41922ee9670a9f2eed9767f1e3ed4f2186a0ee9af3cb1d79480df9117005",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO09CSkVDVDtET05FOw==",
+      "stderr_template_base64": "",
+      "model_control": "Unsupported CV-name magic coalesce callback result; zero source credit"
+    },
+    {
+      "id": "array-cv-coalesce-type-error-before-result-fence",
+      "source": "<?php\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): array { global $reader; echo \"G;\"; $reader = null; return 7; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n};\n$selector = \"items\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? null; }\ncatch (TypeError $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getLine(); echo \";\"; echo $failure->getPrevious() === null ? \"ROOT;\" : \"BAD_ROOT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_READER;\";\necho \"DONE;\";\n",
+      "source_sha256": "868d10b99d8b818f97cfb52b4922ffcdbdd2c431e44ce7b9eceac6a78e863e2f",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBhcnJheSwgaW50IHJldHVybmVkOzQ7Uk9PVDtLRUVQO0NMRUFSRUQ7RE9ORTs=",
+      "stderr_template_base64": ""
+    }
+  ]
+}

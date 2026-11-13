@@ -2508,6 +2508,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_mixed_quiet_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_mixed_quiet_get_review_cases.json --model-timeout 280
 	python3 tests/semantics/magic_property_mixed_quiet_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_owning_quiet_empty_get_cases.json --case array-cv-empty-immutable-before-receiver --case array-cv-empty-shared-payload-retires-later --case object-cv-empty-std-storage-child-before-receiver --case literal-object-coalesce-transfers-owning-return --case array-cv-coalesce-type-error-before-result-fence --model-timeout 280
+	python3 tests/semantics/magic_property_owning_quiet_empty_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_owning_quiet_empty_get_review_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_owning_quiet_empty_get_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json

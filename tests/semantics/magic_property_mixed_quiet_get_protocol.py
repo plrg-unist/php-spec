@@ -54,7 +54,7 @@ CASES = {
             r'$property_magic_cv_source(S_caller,ppropertyempty.SITE,ppropertyempty.LINE)',
             r'$property_magic_cv_result_supported(S_caller,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN pvalue_exact)',
             r'~$property_magic_cv_result_supported(S_caller,ppropertyempty.SITE,ppropertyempty.LINE,false,KNOWN pvalue_exact)',
-            r'~$property_magic_cv_result_supported(S_caller,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
+            r'$property_magic_cv_result_supported(S_caller,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
             r'$lookup(S_caller.ENV,$ptascii("receiver")) = (n_receiver_cell)',
             r'$lookup(S_caller.ENV,$ptascii("selector")) = (n_selector)',
             r'$lookup(S_caller.ENV,$ptascii("written")) = (n_written)',

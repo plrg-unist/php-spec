@@ -95,7 +95,7 @@ NORMAL = ['S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.HELD = eps /\\ S.ORIGIN = (p
  '$property_magic_cv_source(S,ppropertyempty.SITE,ppropertyempty.LINE)',
  '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN PNULL)',
  '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,false,KNOWN PNULL)',
- '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT '
+ '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT '
  'n_receiver))',
  '~$property_magic_cv_source(S,ppropertyempty.SITE,$(ppropertyempty.LINE + 1))',
  '~$property_empty_valid(S[.SOURCES = eps],ppropertyempty)',

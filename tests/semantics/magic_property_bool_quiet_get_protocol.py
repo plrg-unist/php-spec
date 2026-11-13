@@ -114,7 +114,7 @@ CASES = {
             '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,false,KNOWN (PINT 7))',
             '$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN PNULL)',
             '$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PFLOAT 0))',
-            '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
+            '$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
             '$property_empty_guard(S_result,n_receiver,ppropertyempty.NAME)',
             '$heap_owners($heap_graph(S_result),HOBJECT n_receiver) = 2',
             'S_result.EVENTS = S.EVENTS /\\ S_result.STORE[n_selector] = DEFINED pvalue_selector',

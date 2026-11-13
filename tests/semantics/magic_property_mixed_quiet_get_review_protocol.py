@@ -350,25 +350,53 @@ OBJECT_CONTROL = ['S.CURRENT = eps /\\ S.FRAMES = eps /\\ S.HELD = eps',
  '$property_quiet_get_source(S,pmethoddesc) /\\ ~$property_empty_get_source(S,pmethoddesc)',
  '$property_empty_valid(S,ppropertyempty) /\\ '
  '$property_magic_cv_source(S,ppropertyempty.SITE,ppropertyempty.LINE)',
- '$property_empty_rv_kind(S,S.OBJECTS[n_receiver])',
- '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)',
- '~$property_empty_rv_ready(S,ppropertyempty)',
+ '$property_magic_cv_empty_source(S,ppropertyempty.SITE,ppropertyempty.LINE)',
+ '$property_empty_rv_kind(S,S.OBJECTS[n_receiver]) /\\ $eager_property_class_valid(S,S.OBJECTS[n_receiver])',
+ '$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)',
+ '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,false,S.RESULT)',
+ '~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT '
+ '(|S.OBJECTS|)))',
+ '~$property_magic_cv_result_supported(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT '
+ 'n_receiver)],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)',
+ '~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAP '
+ 'eps],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)',
+ '$property_empty_rv_ready(S,ppropertyempty) /\\ $property_empty_truth(S,POBJECT n_receiver) = eps',
+ '$property_empty_guard(S,n_receiver,ppropertyempty.NAME) /\\ '
+ '~$property_empty_get_active(S,n_receiver,ppropertyempty.NAME)',
  '$value_nodes(POBJECT n_receiver) = [HOBJECT n_receiver]',
  '$task_nodes(PROPERTY_EMPTY_RESULT ppropertyempty true) = [HOBJECT n_receiver]',
  '$heap_owners($heap_graph(S),HOBJECT n_receiver) = 3',
  '$lookup(S.ENV,$ptascii("reader")) = (n_reader)',
  'S.STORE[n_reader] = DEFINED (POBJECT n_receiver)',
  'S.EVENTS = [OUTPUT $ptascii("I;"),OUTPUT $ptascii("G;")]',
- 'PhpStep: S ~> S_raw',
- 'S_raw.COMPLETION = UNSUPPORTED "CV-name magic empty getter result"',
- 'S_raw.TODO = S.TODO /\\ S_raw.RESULT = S.RESULT /\\ S_raw.EVENTS = S.EVENTS /\\ S_raw.STORE = S.STORE',
- 'S_done = $drive_steps(S,64)',
- 'S_done.COMPLETION = UNSUPPORTED "CV-name magic empty getter result" /\\ S_done.TODO = eps',
- 'S_done.BASE = BASE_VALUE (KNOWN PNULL)',
- 'S_done.EVENTS = S.EVENTS /\\ S_done.STORE[n_reader] = DEFINED (POBJECT n_receiver)',
- '$heap_owners($heap_graph(S_done),HOBJECT n_receiver) = 1',
- '$call_descriptors_valid(S_done) /\\ $property_state_valid(S_done) /\\ '
- '$heap_valid($heap_graph(S_done))']
+ 'PhpStep: S ~> S_cached_raw',
+ 'S_cached_raw.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*',
+ 'ppropertyemptyrv.EMPTY = ppropertyempty /\\ ppropertyemptyrv.OWNER = 0 /\\ ppropertyemptyrv.CALLER = eps '
+ '/\\ ppropertyemptyrv.TAIL = ptask_tail*',
+ 'S_cached_raw.RESULT = KNOWN (PBOOL false) /\\ S_cached_raw.EVENTS = S.EVENTS',
+ '$task_nodes(PROPERTY_EMPTY_RV ppropertyemptyrv) = [HOBJECT n_receiver]',
+ '$heap_owners($heap_graph(S_cached_raw),HOBJECT n_receiver) = 2',
+ '$property_empty_rv_valid(S_cached_raw,ppropertyemptyrv) /\\ '
+ '$property_empty_guard(S_cached_raw,n_receiver,ppropertyempty.NAME)',
+ 'PhpStep: S_cached_raw ~> S_released_raw',
+ 'S_released_raw.TODO = ptask_tail* /\\ S_released_raw.RESULT = KNOWN (PBOOL false)',
+ 'S_released_raw.EVENTS = S.EVENTS /\\ S_released_raw.STORE = S.STORE',
+ '$heap_owners($heap_graph(S_released_raw),HOBJECT n_receiver) = 1',
+ '~$property_empty_guard(S_released_raw,n_receiver,ppropertyempty.NAME)',
+ 'S_zero = $drive_steps(S,0)',
+ 'S_zero = S[.COMPLETION = BUDGET]',
+ 'S_one = $drive_steps(S_zero[.COMPLETION = NORMAL],1)',
+ 'S_one.COMPLETION = BUDGET /\\ S_one[.COMPLETION = NORMAL] = $mixed_review_after(S,S_cached_raw)',
+ 'S_done = $drive_steps(S,1024)',
+ 'S_done.COMPLETION = NORMAL /\\ S_done.TODO = eps /\\ S_done.CURRENT = eps /\\ S_done.FRAMES = eps /\\ '
+ 'S_done.HELD = eps',
+ 'S_done.EVENTS = S.EVENTS ++ [OUTPUT $ptascii("OBJECT;"),OUTPUT $ptascii("DONE;")]',
+ 'S_done.STORE[n_reader] = DEFINED (POBJECT n_receiver)',
+ '$heap_owners($heap_graph(S_done),HOBJECT n_receiver) = 1 /\\ (HOBJECT n_receiver) <- S_done.ALLOCATIONS',
+ '~$destructor_operational(S_done) /\\ S_done.DESTRUCTION.PHASE = DESTRUCTION_PENDING',
+ '$call_descriptors_valid(S_done) /\\ $class_state_valid(S_done) /\\ $property_state_valid(S_done) /\\ '
+ '$heap_valid($heap_graph(S_done))',
+ '$drive_steps(S_one[.COMPLETION = NORMAL],1024) = S_done']
 
 CASES = {
     'strict-mixed-get-exact-int-and-request-snapshot': {
@@ -381,7 +409,7 @@ CASES = {
         'stage': 'S.CURRENT = (pcallcontext) -- if pcallcontext.TARGET = PROPERTY_COALESCE_TARGET ppropertycoalesce true -- if S.TODO = (TYPE_FALLTHROUGH porigin_method) :: ptask_return*',
         'checks': FALLTHROUGH,
     },
-    'mixed-get-live-object-cv-result-refusal': {
+    'mixed-get-live-object-cv-empty-rv': {
         'source': OBJECT_SOURCE,
         'stage': 'S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty true) :: ptask_tail* -- if S.RESULT = KNOWN (POBJECT n_receiver)',
         'checks': OBJECT_CONTROL,
