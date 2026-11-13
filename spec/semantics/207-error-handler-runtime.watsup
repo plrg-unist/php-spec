@@ -741,6 +741,16 @@ def $named_reference_notice_names(S, eps) = true
 def $named_reference_notice_names(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = ($named_reference_notice_operand(S, poperand) /\ $named_reference_notice_names(S, (preqbytes_tail, poperand_tail)*))
 def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_slots(S, pnamedargs.SLOTS) /\ $named_reference_notice_names(S, pnamedargs.NAMED))
 
+dec $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) : bool
+def $reference_notice_producer_multiple(eps, eps, eps) = true
+def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if psparam.BYREF = b_ref /\ psparam.TYPE = eps /\ ~psparam.VARIADIC
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
+def $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) = false -- otherwise
+
 dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool
 def $reference_notice_producer_arguments(SEQUENCE eps, phpType16, pssignature) = true
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
@@ -764,6 +774,9 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.BYREF = b_ref /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ ~psparam.VARIADIC
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
+def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
+  -- if $(|phpType7*| > 1) /\ pssignature.RETURNS = eps
+  -- if $reference_notice_producer_multiple(phpType7*, phpType17*, pssignature.PARAMETERS)
 def $reference_notice_producer_arguments(phpType6, phpType16, pssignature) = false -- otherwise
 
 ;; Typed returns reuse the argument proof after raw/normalized authentication.
@@ -802,6 +815,13 @@ def $reference_notice_producer_target(S, porigin) = eps -- otherwise
 
 def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX 0, PCFIELD 1]))], eps, expression)
   -- if phpType7* = [NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg]
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+def $reference_notice_producer_line(S, (PORIGIN n pcpath), NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata) = $runtime_line(S[.ORIGIN = (PORIGIN n (pcpath ++ [PCFIELD 1, PCINDEX n_last, PCFIELD 1]))], eps, expression)
+  -- if $(|phpType7*| > 1)
+  -- if n_last = $nabs($(|phpType7*| - 1))
+  -- if phpType7*[n_last] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
   -- if expression = NExprVariable (BYTES text_name) metadata_value
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
