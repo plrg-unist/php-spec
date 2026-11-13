@@ -1148,6 +1148,20 @@ preserve source/stage/count and are covered freshly. Actual MAIN `20b196ef1`/508
 loads in15.631246611s with source0. FLOAT-value projection for selected byte/Boolean/
 null casts, raw arithmetic coercion, wider defaults/lifetimes and formatting remain partial.
 
+[Selected scalar FLOAT-cast defaults](../../coverage/semantics/selected-scalar-float-cast-default-reception-review.json)
+recurse through an actual selected leaf when the CASTDOUBLE child lacks an existing
+Numeric certificate. Typed casts, including static NaN refusal, retain priority;
+raw selected byte/Boolean/null arithmetic remains outside this cast-only widening.
+Known null stays distinct from absence, and the inherited nonnull-left coalesce
+fit proof remains required. Five actual stored-PINT roots produce -7/-11/13/MIN/MAX;
+nineteen genuine deferred contrasts retain exact source and no-PINT authority.
+Three originals agree with native3 reused once. Author524 and independent696
+fixture-SL checks retain private508 cuts (1220 physical=1208body+12setup), with
+pre441 separate. All six campaigns pass first attempt under their original caps.
+Eleven old RHS promotions preserve source/stage/count/inputs and are covered freshly.
+Actual MAIN `722479554`/508 loads in16.084281732s with source0. Wider numeric
+producers, implicit arithmetic coercion, defaults/lifetimes and formatting remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
