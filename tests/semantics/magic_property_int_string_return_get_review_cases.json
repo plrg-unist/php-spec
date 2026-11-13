@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-int-string-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$reader = new class {\n    public function __get(int|string $incoming): int|string {\n        if ($incoming === \"bad\") {\n            echo \"BOOL;\";\n            return true;\n        }\n        if ($incoming === \"text\") {\n            $incoming = false;\n            return \"0012\";\n        }\n        return 7;\n    }\n};\n$reverse = new class {\n    public function __get(?string $incoming): string|int {\n        if ($incoming === \"nil\") {\n            echo \"NULL;\";\n            return null;\n        }\n        if ($incoming === \"text\") { return \"kept\"; }\n        return 9;\n    }\n};\n$selector = \"text\";\necho $reader->$selector === \"0012\" ? \"STRING;\" : \"BAD_STRING;\";\necho $reader->integer === 7 ? \"INT;\" : \"BAD_INT;\";\necho $reverse->text;\necho \";\";\n$reverse->number;\n$firstDestination = 42;\ntry {\n    $firstDestination = $reader->bad === 7;\n} catch (TypeError $firstFailure) {\n    echo $firstFailure->getMessage();\n    echo \";\";\n}\n$secondDestination = 24;\ntry {\n    $secondDestination = $reverse->nil === 9;\n} catch (TypeError $secondFailure) {\n    echo $secondFailure->getMessage();\n    echo \";\";\n}\necho $firstDestination === 42 ? \"KEEP1;\" : \"BAD_STORE1;\";\necho $secondDestination === 24 ? \"KEEP2;\" : \"BAD_STORE2;\";\necho $selector === \"text\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "6a818673ec3a485763f897f62f19188384b1d78101683515e6531d1f9a5d161b",
+      "stdout_template_base64": "U1RSSU5HO0lOVDtrZXB0O0JPT0w7Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlIHN0cmluZ3xpbnQsIHRydWUgcmV0dXJuZWQ7TlVMTDtjbGFzc0Bhbm9ueW1vdXM6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgc3RyaW5nfGludCwgbnVsbCByZXR1cm5lZDtLRUVQMTtLRUVQMjtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
