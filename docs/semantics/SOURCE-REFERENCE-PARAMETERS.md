@@ -295,9 +295,21 @@ retirement, while the separate private argument cell can later hold an integer.
 Three originals agree with native observations run once: two Notice cases and
 one caught return-TypeError control. Author AL149 and peer fixture-SL174 retain
 separate cuts; the unchanged peer AL174 timeout is inconclusive. Actual source
-composition and joined loading are separate/source0. Untyped formals with typed
-returns, other return types and wider headers/lifetimes remain partial. See the
+composition and joined loading are separate/source0. Other return types and
+wider headers/lifetimes remain partial. See the
 [array-return review](../../coverage/semantics/array-return-producer-cv-reference-notice-review.json).
+
+Required untyped one-CV formals now admit those same canonical `array` returns.
+A scalar argument can produce a fresh array: BYREF reception preserves the caller
+cell, while BYVAL reception preserves the captured scalar after caller mutation.
+Ordinary return verification precedes private-cell creation and Notice dispatch.
+Three originals agree using native observations once. Author fixture-SL177 and
+peer fixture-SL192 retain separate cuts; the actual return/header front and the
+affected prior header-only check have zero source credit. One wrong-table fixture
+premise and both Unsupported baselines retain zero credit. Nullable/other returns
+and wider headers/lifetimes remain partial. Actual joined SL508 at `484d489ce`
+passes separately with zero source credit. See the
+[untyped array-return review](../../coverage/semantics/untyped-array-return-producer-cv-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
