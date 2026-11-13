@@ -1271,3 +1271,17 @@ passes separately in16.131328344 s/cap60/source0. Masked diagnostics, eligible
 handlers, wider operands/lifetimes and OB31 remain partial.
 [Fractional CV-pair evidence](../../coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-author.json)
 and [review](../../coverage/semantics/output-final-default-fractional-cv-pair-modulo-warning-error-review.json).
+
+Fractional-prefix MOD capture now follows the current reporting mask. Removing
+only the visible-event count retains exact helper-projected events and both
+eligible-handler exclusions; original source/read/rank/root/retirement bounds
+remain. Warning-only, Deprecated-only and neither-visible originals each match
+their saved native bytes at their own private505 cuts. Author SL5, fresh old71
+SL2/old76 SL3 and independent SL3/2 keep separate source0 cuts. Missing, repeated,
+substituted or spuriously exposed diagnostics and eligible masked callbacks refuse.
+The two original source timeouts remain zero; only those affected cases repeat
+under unchanged caps, without native or passing-source replay or a cause claim.
+Actual combined MAIN508 loading at `031afeea3` passes separately in17.033246176 s/
+cap60/source0. Wider operands, handlers/lifetimes and OB31 remain partial.
+[Masked fractional MOD evidence](../../coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-author.json)
+and [review](../../coverage/semantics/output-final-default-masked-fractional-modulo-warning-error-review.json).

@@ -1,0 +1,194 @@
+{
+  "feature": "FINAL fractional-prefix MOD capture under reporting masks",
+  "decision": "accepted partial increment",
+  "target": "PHP8.5.10 CLI NTS64; baseline profile with original in-source error_reporting",
+  "source_only_revision": "2c6584834693f7fb8bcb3b67d0c2451d1a609be9",
+  "implementation_revision": "f7784f8ee4de58aa84cf58687895debb002f952d",
+  "later_tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+  "module_count": 505,
+  "files_at_implementation": {
+    "spec/semantics/456-output-object-returns.watsup": "cfbabb920404b547402d248a444045a0f7614bd35604514eb2ddcccafc2a0ae8",
+    "tests/semantics/output_final_default_masked_fractional_modulo_warning_error_sources.py": "ec075d15188c06197c2d02c3ca06faeaac3425485e1e4950190da376c8da7a8f",
+    "tests/semantics/output_final_default_masked_fractional_modulo_warning_error_state.py": "b28851ad1033c74eefffbdcedabf5d0ebac3c06b7e5f06f4ba24923c8acac2be",
+    "tests/semantics/output_final_default_masked_fractional_modulo_warning_error_review_state.py": "e48d6e64062d294556aa587cc590de2d908cb671e247e69e31ee588b24c27b53",
+    "tests/semantics/output_final_default_constant_modulo_warning_error_review_state.py": "a723466581936266f8d0d929d85c106ad468c732ed998eaf85f085266ddd9524",
+    "tests/semantics/output_final_default_fractional_modulo_warning_error_review_state.py": "41e6854ab6bf7012c8ec2e88ef66339eb70a7819566dff2e39585e6fb5acbc66"
+  },
+  "compatibility": "bc3 adds only accepted79 documentation/JSON to f778; all seven80 source/runtime/test/Make inputs are literal. Only old71 noisy mask and old76 profile labels/expectations are promoted; all other legacy checks remain literal and unreplayed.",
+  "contract": "Sole runtime delta deletes visible-event count from the precision branch. Exact long_string_notices EVENTS equality, no eligible Warning2/Deprecated8192, own source/read/rank/unique unmarked cells/valid rootless strings, quiet-zero RHS, actual raw54 converted PINT0/exact152/native/current/owner/retirement/C0 bounds remain literal. No kernel/helper/task/tag/field/root or lifetime change.",
+  "source_basis": "Pinned zendi_try_get_long/convert_op1_op2_long preserve Warning then incompatible float-string Deprecated and signed truncation before mod_function raises zero Error. zend_error_zstr_at selects eligible user callbacks independently of EG(error_reporting); php_error_cb gates default visibility. Existing report_event/long_string_notices already model that mask projection.",
+  "native_once": {
+    "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/native-summary-01.json",
+    "sha256": "8d89c9f591c94679344eb8825cfa4819df2ee0ac5f7731be8a4427b46b96507a",
+    "count": 3,
+    "source_credit": 0,
+    "result": "Original masks3/8193/1 each run once at source-only2c658, fatal bit retained: Warning-only positive1.5x, Deprecated-only negative-1.5x, neither-visible positive1.5x. Native10, original bytes/path/CWD/profile/C/UTC and exact P/selected diagnostics/fatal7/status255."
+  },
+  "runs": {
+    "baseline-source-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/baseline-source-01/report.json",
+      "sha256": "fe3f7b8b7807fbffa95e568835d3cc5fab30e561c7df01c989decb48be40694c",
+      "tested_revision": "2c6584834693f7fb8bcb3b67d0c2451d1a609be9",
+      "mode": "production SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        39.558,
+        40.239,
+        40.005
+      ]
+    },
+    "raw-checkpoint-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/raw-checkpoint-01/report.json",
+      "sha256": "aa78418a5e966dccf77c0da4a98bbd333846eb9f55b8d733027a7a4181eb69a2",
+      "tested_revision": "2c6584834693f7fb8bcb3b67d0c2451d1a609be9",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        42.076891490025446
+      ],
+      "groups": [
+        1
+      ],
+      "conjunction_conditions": 56
+    },
+    "author-state-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-state-01/report.json",
+      "sha256": "0488a97fc425e1e9348abb10d0fe9abd1ba4bb77fc78e87b44d4b0fba4e9a4dc",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        131.8756512439577
+      ],
+      "groups": [
+        5
+      ]
+    },
+    "affected-constant-noisy-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/affected-constant-noisy-01/report.json",
+      "sha256": "4fc352f31b0ac72118e5703ebd8580aef366397e2c6ed6f832ca0a83a146b2e4",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        129.71391342103016
+      ],
+      "groups": [
+        2
+      ]
+    },
+    "affected-fractional-profiles-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/affected-fractional-profiles-01/report.json",
+      "sha256": "328776aa5da9bf5cefc3761063683ca3755f1ae9fd20bb0bce700c4224ad2c5b",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        150.2013226490235
+      ],
+      "groups": [
+        3
+      ]
+    },
+    "peer-state-projection-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/peer-state-projection-01/report.json",
+      "sha256": "a054dc5ccfba7ab5c62f7cce4815a8c094c7a0c740f1baf2c34f3f293cd17aec",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        180.51625908596907
+      ],
+      "groups": [
+        3
+      ]
+    },
+    "peer-state-handlers-01": {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/peer-state-handlers-01/report.json",
+      "sha256": "21cd41715262b1b03ff90877e61c00dc6aac621ff35be6e82c272f47680c507c",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "mode": "fixture SL_mode/cache=false/det=true",
+      "module_count": 505,
+      "source_credit": 0,
+      "passed": true,
+      "seconds": [
+        76.86417833704036
+      ],
+      "groups": [
+        2
+      ]
+    }
+  },
+  "source_comparisons": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-source-01/report.json",
+      "sha256": "6310dc46de87cf74a689fdf44d18deb82db32b75e50a27434d10d85832524757",
+      "case": "warning-only",
+      "tested_revision": "f7784f8ee4de58aa84cf58687895debb002f952d",
+      "seconds": 82.918,
+      "source_credit": 1,
+      "result": "Only completed first row passed: tool0/php_error/Error7/status255 with exact saved native1 stdout/stderr and Warning7. Original stable aggregate remains passed=false/source_agreement_credit0 due the following timeout; neither raw credit nor failure is rewritten."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-source-deprecated-only-02/report.json",
+      "sha256": "c6910cbacb31b169b01a4f670e7fdbd85cda4da7e2d47ea8de27317d8115e693",
+      "case": "deprecated-only",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "seconds": 48.425,
+      "source_credit": 1,
+      "result": "Exactly the one selected original matches its saved native streams/status255, php_error/reasonNone/DivisionByZeroError/Modulo by zero/line7; tool0/quiet stderr/stable inputs and HEAD. Native reused without replay, source90/outer120/steps100000 unchanged."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-source-neither-02/report.json",
+      "sha256": "ff01f258dca690e50344d9c9b51f69eed66e3d9307b1479662e270a0dd5714c7",
+      "case": "neither",
+      "tested_revision": "bc3daa3d6108480d3b7b7cdb54ffd9ebec87224f",
+      "seconds": 44.921,
+      "source_credit": 1,
+      "result": "Exactly the one selected original matches its saved native streams/status255, php_error/reasonNone/DivisionByZeroError/Modulo by zero/line7; tool0/quiet stderr/stable inputs and HEAD. Native reused without replay, source90/outer120/steps100000 unchanged."
+    }
+  ],
+  "original_timeouts": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-source-01/deprecated-only/report.json",
+      "sha256": "3ac627e74fd6be2fa1760a054a7cf0ce35dea9446585330565113f61c648b0aa",
+      "case": "deprecated-only",
+      "seconds": 95.695,
+      "source_credit": 0,
+      "result": "Original status timeout/tool1/passedfalse remains bounded inconclusive evidence. Only this unaccepted affected source is later repeated with unchanged code/caps and saved native bytes; no causal attribution."
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-default-masked-fractional-modulo-warning-error-80/author-source-neither-01/neither/report.json",
+      "sha256": "8150eae61dbc47690466dfa74cb6230a4f8ae44918510b62c950154c8c50bbae",
+      "case": "neither",
+      "seconds": 95.65,
+      "source_credit": 0,
+      "result": "Original status timeout/tool1/passedfalse remains bounded inconclusive evidence. Only this unaccepted affected source is later repeated with unchanged code/caps and saved native bytes; no causal attribution."
+    }
+  ],
+  "validation": "Whole7 is independently READY/FULL CLEAR before documentation. Three distinct completed source rows retain their own cuts; authorSL5/affectedSL2,SL3/peerSL3,SL2 retain separate fixtureSL505 source0 cuts, without AL or a unique aggregate. Exact event tampering and masked eligible callbacks refuse with the original live Error. All workers/processes fully reaped; Python AST, preparation, Make3 dry-run and diff check pass.",
+  "limits": "Source evidence covers empty-CV CONST1x1 masks3/8193/1 only. Other admitted operand pairs retain their own original source/ownership evidence; no new source credit is renewed. Eligible handlers, wider operands/producers/rendering/lifetimes and standing holds remain partial; OB31 public performance, full core, portability, Rocq and BOLA remain unfinished. No engine divergence or host-performance cause claim. Native10/source90/outer120/steps100000/fixture300 stay fixed.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/unary-concat-distinct-header-masked-modulo-joined-508-v1/report.json",
+    "sha256": "03998c52f91a043ace13032eca89e6b57860f8ee95c46960c78e2254cb3f0c06",
+    "tested_revision": "031afeea3",
+    "module_count": 508,
+    "mode": "production SL_mode/cache=false/det=true",
+    "seconds": 17.033246176,
+    "timeout_seconds": 60,
+    "source_credit": 0,
+    "result": "Current composed MAIN interface load passes true LF/quiet stderr/exit0, argv511/watched512, stable inputs and HEAD, fully reaped. Exact seven-path packet and mutual33/425/141,383,408/207/519 seam review retain private source/state cuts without replay or renewed credit."
+  }
+}
