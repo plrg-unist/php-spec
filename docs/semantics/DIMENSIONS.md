@@ -270,6 +270,15 @@ loose-opcode controls distinguish the gates. The load-order failure and preparat
 fixture diagnostic retain zero credit. Owners, supplied throw and fixed bounds
 retain existing laws; mixed and wider comparison children remain follow-up work.
 
+Exact signed64 integer bitwise-NOT children use their own and actual child's
+PINT reads/ranges, recursive certificate and matching compiled precision. Early
+pure `long_not` supplies the exact complement and existing decimal bytes. The
+[integer bitwise-NOT review](../../coverage/semantics/string-offset-request-base-integer-bitnot-special-concat-leading-key-review.json)
+keeps source4, pre423 and peer1013/288-derived separate. MIN/MAX and nested
+complement, same-result float, string-byte distinction and combined range-fence
+controls preserve current owners, supplied throw and fixed bounds. Noninteger
+bitwise operations and wider children remain follow-up core work.
+
 Direct integer ConstFetch leaves now use their own compiler-proved PINT and the
 existing decimal formatter in those CONCAT trees. Source names retain compiler
 resolution; no runtime name lookup or spelling table is added. Four global,
