@@ -66,7 +66,7 @@ CHECKS = [
     '~$property_get_return_type_source(phpType18_return,[(PTBRANCH ([PTBUILTIN "int"]))],ptcontext,true)',
     'phpType18_union = NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return,NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable',
     '$ptype_normalize(phpType18_union,ptcontext) = PTOK pfunction.SIGNATURE.RETURNS eps',
-    '~$property_get_return_type_source(phpType18_union,pfunction.SIGNATURE.RETURNS,ptcontext,true)',
+    '$property_get_return_type_source(phpType18_union,pfunction.SIGNATURE.RETURNS,ptcontext,true)',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     '~$ppmethod_get_scalar_return([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "false"]))])',
     '~$ppmethod_get_declaration_signature(pfunction.SIGNATURE[.BYREF = true])',
