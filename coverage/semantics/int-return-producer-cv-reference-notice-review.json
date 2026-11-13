@@ -1,0 +1,266 @@
+{
+  "milestone": "REF38",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "2794e11795cc183eb9df86ed9f55522ae688dbe2e220990be5c69cdb87a6e0e2",
+    "revision": "627d8eafad688b60c05b9e52b6429ec2bcf48ef4",
+    "scope": "Existing completed required untyped/array one-CV BYVAL/BYREF producers with a canonical singleton int by-value return.",
+    "law": "The normalized singleton builtin binds the return name, the finite array/int whitelist checks it, and the casefolded raw Identifier must match before the existing argument proof receives RETURNS=eps. The actual descriptor retains its return type; ordinary return verification and formal/frame retirement precede Notice.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_return/zend_emit_return_type_check",
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE/ZEND_RETURN",
+      "Zend/zend_execute.c: zend_verify_scalar_type_hint/zend_check_type_slow",
+      "spec/semantics/95-typed-calls.watsup: typed_return_value/typed_return_task_valid",
+      "spec/semantics/32-compiled-pools.watsup: constants_nodes/pools_nodes"
+    ],
+    "unchanged": "Module95, generic ownership, state fields, nullable/union/zero-actual arms, formal/source/payload bounds and named paused contours."
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/int-return-producer-cv-reference-notice-38",
+  "source_test_manifest": {
+    "revision": "8697e21b615629af99d8a348f4f7141d2a0800c8",
+    "report": "author/source-test-manifest.json",
+    "sha256": "97954f764a36ca0ce9414635dd53af30756bb213fe3fe7f2d0b04885740ac216",
+    "paths": 9,
+    "make_recipe": "python3 -B tests/semantics/int_return_producer_cv_reference_notice_run.py"
+  },
+  "native_originals_once": 3,
+  "native_replays": 0,
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "d9e393ef092500eae0afc921e165ed8175015dca616c3d02b51c237ed65870e5",
+      "role": "two author originals once",
+      "revision": "69349e6167f1e80dac1060b55923226b62d3e429",
+      "passed": true
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "238e431ef0180d464a39a0ee4f5e02a86b8ba09130aef2a6a8a72ce6b002a7a9",
+      "role": "one independent original once",
+      "revision": "b5dde66edeb51ab85a1fb74ce21f3b1c99008666",
+      "source_agreements": 0,
+      "passed": true
+    }
+  ],
+  "sources": [
+    {
+      "report": "author/notice-source-v1/source-3b3p8z8n/report.json",
+      "sha256": "da3fb8799dbb93b4578c7e7cb26e6b27cde339461706d4d966e7deb67f4d7d58",
+      "role": "author: weak scalar conversion and strict caught return-TypeError priority",
+      "revision": "627d8eafad688b60c05b9e52b6429ec2bcf48ef4",
+      "normal_agreements": 2,
+      "passed": true
+    },
+    {
+      "report": "peer/notice-source-v1/report.json",
+      "sha256": "4bde14f6a213d03b16b5299b07a81e494b685008e1e279a3f40212ce420ece4e",
+      "role": "peer: named aliased-dimension int return",
+      "revision": "3d8b1919cbb18ceafebb5e09193a5752a8dec459",
+      "module_count": 505,
+      "source_agreements": 1,
+      "passed": true,
+      "elapsed_seconds": 22.211645126342773,
+      "cap_seconds": 195
+    }
+  ],
+  "state": {
+    "physical_conditions": 346,
+    "reached_conditions": 292,
+    "derived_conditions": 54,
+    "unique_aggregate_claimed": false,
+    "cuts": [
+      {
+        "report": "author/notice-state-v1/report.json",
+        "sha256": "cdbee3f14bdcb78be2ac6e6aa33b0ebc941f43b00052042733f10f7536838800",
+        "role": "author weak scalar return and private array",
+        "revision": "339e3142427d3339a6d63a551289c10567b8efa1",
+        "module_count": 507,
+        "conditions": 155,
+        "reached_conditions": 135,
+        "derived_conditions": 20,
+        "heap_bindings": 6,
+        "fixture_sha256": "89336b140efb8679b20953e3fd4a152bfbf369aa57c773201645c5721c9c462e",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 63.94671893119812,
+        "cap_seconds": 1200
+      },
+      {
+        "report": "peer/notice-state-v2/report.json",
+        "sha256": "7a246080614b4de9f6320cfdfaba5d783aae59c7484e7e1a9221d0fa9ad6a8ae",
+        "role": "peer aliased DIM/formal-array retirement and private string",
+        "revision": "50f0b214c5fd826e55420632379c44f6d6fa91dc",
+        "module_count": 505,
+        "conditions": 191,
+        "reached_conditions": 157,
+        "derived_conditions": 34,
+        "heap_bindings": 6,
+        "fixture_sha256": "1342711600fb3fe231d39903e30ef219a08c453203e74198f609f7f3dddc7b66",
+        "source_agreements": 0,
+        "passed": true,
+        "elapsed_seconds": 104.86315727233887,
+        "cap_seconds": 1200
+      }
+    ],
+    "source_state_bridges": [
+      {
+        "side": "author",
+        "matching_common_hashes": 515
+      },
+      {
+        "side": "peer",
+        "matching_common_hashes": 520
+      }
+    ],
+    "coverage": "Weak string-to-int return conversion preserves the source cell/store while result ownership becomes scalar; caller source owners fall3to2 after frame retirement. Named int5 is read from an actual ALIAS DIM while the old array is live; the by-value formal/table retire before Notice. The fresh untyped private cell survives handler mutation and admits string/array writes. The compiled private array has pool+cell owners2, then pool-only1 after overwrite. Header, continuation and budget controls remain derived."
+  },
+  "separate_zero_source_checks": [
+    {
+      "report": "author/notice-front-v3/report.json",
+      "sha256": "f24940d977e2cd0d9628ab5650def533a8cf0c26c556e361b4df55cdd460d02e",
+      "role": "old-fence actual weak int return/header front",
+      "revision": "ebf24150657d320c31032ac2413ff9306e56d682",
+      "module_count": 507,
+      "conditions": 91,
+      "reached_conditions": 82,
+      "derived_conditions": 9,
+      "heap_bindings": 2,
+      "fixture_sha256": "2acd7c8f23a081fb3475526b79286f083352159d97bb7f08adf45e8be527db66",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 19.933157920837402,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "fdd4745d7806cfe306d982ccef3536aa72aee8766da3b9fd24f05f415ec85ed9",
+      "role": "old-fence actual int/DIM/formal retirement front",
+      "revision": "945077a246fdaa3faf6f903112b3bda76653c56b",
+      "module_count": 505,
+      "conditions": 103,
+      "reached_conditions": 95,
+      "derived_conditions": 8,
+      "heap_bindings": 2,
+      "fixture_sha256": "8e0e0301ab08fbafe89d7fff3330ca23e0c1f3df57722ed606c9e96441066fce",
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 21.865975618362427,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-baseline-v1/report.json",
+      "sha256": "2ffd041999aee8cbe17adb9f2953392c0e9f40badc0d7ce002721161b042d1b4",
+      "role": "independent original Unsupported baseline",
+      "revision": "b5dde66edeb51ab85a1fb74ce21f3b1c99008666",
+      "module_count": 505,
+      "source_agreements": 0,
+      "passed": true,
+      "elapsed_seconds": 21.929483652114868,
+      "cap_seconds": 195
+    },
+    {
+      "report": "author/notice-baseline-corrected-v1/report.json",
+      "sha256": "a03843c19bc016858648727689fbc3629382ea214a9ed5aa70566d80eb9e6f91",
+      "role": "author Unsupported baseline: retained raw execution with corrected event expectation, no rerun",
+      "source_agreements": 0,
+      "passed": true
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "author/notice-baseline-cg3iv8ut/report.json",
+      "sha256": "224ef378acbcfc655870670c2b5f7955f6c4d840e671f77bf4110e872b7b323b",
+      "role": "temporary baseline classifier failure",
+      "revision": "69349e6167f1e80dac1060b55923226b62d3e429",
+      "normal_agreements": 0,
+      "passed": false,
+      "cause": "Expected events used kind/bytes; the public transport uses tag/args. Raw Unsupported prefix/reason/bytes were correct; correction reuses raw observations without source/native rerun."
+    },
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "f67d0896b4d8bf1e107805cd78c269fe0d880db0403e55fde339f81b38b69d5d",
+      "role": "fixture entrypoint failure",
+      "revision": "a00015df089a91ca63689fd2dc7ddfafa0c01943",
+      "module_count": 507,
+      "conditions": 85,
+      "reached_conditions": 79,
+      "derived_conditions": 6,
+      "heap_bindings": 2,
+      "fixture_sha256": "4f3fa8efa9788916279841edd8d1cd68ebba7478e7f82b7aed00de6a11b2be55",
+      "source_agreements": 0,
+      "passed": false,
+      "elapsed_seconds": 15.5330228805542,
+      "cap_seconds": 1200,
+      "cause": "Fixture declared test; the runner invokes main. Corrected before the affected front rerun."
+    },
+    {
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "b6248c119139f0b06ebfa3e6356357f37bd240394664c7f07e8f85574e6da6e8",
+      "role": "incorrect fallback store invariant",
+      "revision": "351871d4c68cb989658aa92b1f995d5b158b2bc2",
+      "module_count": 507,
+      "conditions": 88,
+      "reached_conditions": 82,
+      "derived_conditions": 6,
+      "heap_bindings": 2,
+      "fixture_sha256": "902cc23693e3f0996d6d7cf2b2f42f57990e27544ad1d078ed7acff1ed4a5934",
+      "source_agreements": 0,
+      "passed": false,
+      "elapsed_seconds": 19.7636399269104,
+      "cap_seconds": 1200,
+      "cause": "The generic reference-send fallback appends the private scalar cell before reporting Unsupported. Corrected front asserts that append and unchanged caller/events."
+    },
+    {
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "72c1f6b40a54311818718120b31ff20728ca670464b9655fd5b5c0261b457b0e",
+      "role": "fixture elaboration failure before execution",
+      "revision": "3d8b1919cbb18ceafebb5e09193a5752a8dec459",
+      "module_count": 505,
+      "conditions": 191,
+      "reached_conditions": 157,
+      "derived_conditions": 34,
+      "heap_bindings": 6,
+      "fixture_sha256": "24ee1efa355f9a2eb436b7f2ff9c8814770a9f8faf72726ed600f50c736bfb93",
+      "source_agreements": 0,
+      "passed": false,
+      "elapsed_seconds": 16.58682608604431,
+      "cap_seconds": 1200,
+      "cause": "Nullable/union negative children used the broader return domain. Explicit Identifier constructors fix their sorts; the corrected fixture also selects its intended post-DISCARD ownership stage."
+    }
+  ],
+  "validation": "Three exact original-source agreements and separate passing fixture-SL cuts retain original revisions, raw streams, fixed caps and stable/reaped processes. Failure packets and old fences have zero source credit. No older source/state or native original was replayed. Actual joined loading is a separate zero-source gate.",
+  "independent_review": {
+    "reviewer": "/root/restart_references_38_review",
+    "decision": "Whole exact9 source/test/soleMake READY and mutual CLEAR sent to MAIN25 before prose. All9 manifest paths match frozen8697; source/state semantic bridges and the local serial regression runner reviewed. No older header controls require changes or reruns."
+  },
+  "remaining": "Other return types, wider signatures/actuals/lifetimes and existing source/payload/callback/paused boundaries remain partial.",
+  "actual_joined_load": {
+    "revision": "b1e8a2876008f1fd2544f4b70b0753683abb2828",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/int-return-reference-numeric-string-selector-joined-508-v1/report.json",
+    "sha256": "96f503836648f4ec919884c09468eb10cb902aad9aa308e5d96b44aa443ad879",
+    "mode": "production_SL",
+    "module_count": 508,
+    "elapsed_seconds": 34.611321754,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  }
+}

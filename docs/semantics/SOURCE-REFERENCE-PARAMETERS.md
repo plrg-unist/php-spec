@@ -334,6 +334,20 @@ SL508 passes separately at `ab60fab36` with zero source credit. Other returns an
 wider headers/lifetimes remain partial. See the
 [ordered union return review](../../coverage/semantics/union-array-return-producer-cv-reference-notice-review.json).
 
+Canonical `int` returns also admit those existing one-CV producers. The raw
+identifier must match the exact normalized singleton type. Weak return coercion
+copies a numeric string without writing back through its source alias; strict
+return failure precedes the outer Notice. An integer read from an aliased array
+element survives retirement of its by-value formal and old table. The fresh
+Notice cell remains untyped and can later hold a string or array independently
+of the caller and former array element. Three originals agree using native
+observations once. Author fixture-SL155 and peer fixture-SL191 execute 346
+conditions (292 reached, 54 derived), retaining separate 507/505-module cuts.
+Old fronts91/103, Unsupported baselines and preserved fixture failures have zero
+source credit. Actual joined SL508 passes separately at `b1e8a2876` with zero
+source credit. Other returns and wider headers/lifetimes remain partial. See the
+[integer return review](../../coverage/semantics/int-return-producer-cv-reference-notice-review.json).
+
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads
 and the existing source qualifier select this correction; other contexts retain
