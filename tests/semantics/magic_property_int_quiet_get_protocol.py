@@ -132,11 +132,11 @@ CASES = {
             '$drive_steps(S,4096) = S_done',
         ],
     },
-    'float-quiet-get-remains-unsupported': {
-        'source': ('<?php class QuietFloatFence { '
+    'array-quiet-get-remains-unsupported': {
+        'source': ('<?php class QuietArrayFence { '
                    'public function __isset(string $name): bool { echo "ISSET;"; return true; } '
-                   'public function __get(string $name): float { echo "GET;"; return 1.0; } '
-                   '} $receiver = new QuietFloatFence; empty($receiver->probe);'),
+                   'public function __get(string $name): array { echo "GET;"; return [1]; } '
+                   '} $receiver = new QuietArrayFence; empty($receiver->probe);'),
         'stage': ('S.TODO = (ISSET_RESULT true z) :: ptask_tail* '
                   '-- if S.BASE = BASE_PROPERTY (POBJECT n_receiver) ptbytes'),
         'checks': [
@@ -146,7 +146,7 @@ CASES = {
             '$property_empty_method_source(S,pmethoddesc_isset,false)',
             '$property_empty_method(S,n_receiver,true) = (pmethoddesc_get)',
             'pfunction = pmethoddesc_get.FUNCTION',
-            'pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "float"]))]',
+            'pfunction.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]',
             '$property_get_method_source(S,pmethoddesc_get,true)',
             '~$property_empty_get_source(S,pmethoddesc_get) /\\ ~$property_quiet_get_source(S,pmethoddesc_get)',
             '~$property_empty_method_source(S,pmethoddesc_get,true) /\\ ~$property_coalesce_method_source(S,pmethoddesc_get,true)',

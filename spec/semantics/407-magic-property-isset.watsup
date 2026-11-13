@@ -1,6 +1,7 @@
 ;; Terminal isset retains the receiver while its one-name callback runs.
 dec $property_empty_pending(pstate) : bool
 def $property_empty_pending(S) = false -- otherwise
+dec $property_empty_nan_guard(pstate, nat, ptbytes) : bool
 dec $property_isset_empty(pstate, ppropertyisset) : bool
 def $property_isset_empty(S, ppropertyisset) = false -- otherwise
 dec $property_empty_isset_source(pstate, pmethoddesc) : bool
@@ -67,6 +68,9 @@ def $property_magic_cv_result_supported(S, porigin, z, false, KNOWN (PBOOL b)) =
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PINT i)) = true
   -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PBOOL b)) = true
+  -- if $property_magic_cv_source(S, porigin, z)
+def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PFLOAT n_float)) = true
+  -- if $(n_float < 18446744073709551616)
   -- if $property_magic_cv_source(S, porigin, z)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
@@ -383,7 +387,13 @@ rule PhpStep/property-isset-name-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPER
 rule PhpStep/property-isset-call: S ~> S_inputs[.TODO = [(CALL_ARGS (PROPERTY_ISSET_TARGET ppropertyisset) eps 1 ([KNOWN (PSTRING ppropertyisset.NAME)]) (ppropertyisset.SITE) ppropertyisset.LINE), PROPERTY_ISSET_RESULT ppropertyisset] ++ S_inputs.TODO][.HELD = S.HELD]
   -- if S.TODO = (ISSET_RESULT b z) :: ptask_tail*
   -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if b \/ ~$property_empty_nan_guard(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
   -- if S_inputs = $hold_task_inputs(S)
+;; NaN truth conversion keeps Empty's Isset guard while its handler runs.
+rule PhpStep/property-isset-nan-guarded: S ~> S[.TODO = ptask_tail*][.RESULT = KNOWN (PBOOL false)][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if S.TODO = (ISSET_RESULT false z) :: ptask_tail*
+  -- if $property_isset_plan(S) = (ppropertyisset)
+  -- if $property_empty_nan_guard(S, ppropertyisset.OBJECT, ppropertyisset.NAME)
 rule PhpStep/property-isset-unsupported: S ~> S[.COMPLETION = UNSUPPORTED "magic isset source, function, or recursive access"]
   -- if $property_isset_pending(S)
   -- if ~$property_empty_pending(S)

@@ -116,14 +116,14 @@ def $property_get_return_type_source(NUnionType (SEQUENCE phpType69*) metadata_u
 def $property_get_return_type_source(phpType18, ptbranch*, ptcontext, b) = false -- otherwise
 
 def $property_empty_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, false)
-;; Selected Empty/coalesce Get calls add canonical int and Boolean returns.
+;; Selected Empty/coalesce Get calls add canonical int, Boolean and float returns.
 ;; Read-modify-write keeps the separate absent-return proof.
 dec $property_quiet_get_source(pstate, pmethoddesc) : bool
 def $property_quiet_get_source(S, pmethoddesc) = $property_empty_get_source(S, pmethoddesc)
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = eps
 def $property_quiet_get_source(S, pmethoddesc) = $property_get_method_source(S, pmethoddesc, true)
   -- if pmethoddesc.FUNCTION.SIGNATURE.RETURNS = [(PTBRANCH ([PTBUILTIN text_return]))]
-  -- if text_return <- ["int", "bool", "true", "false"]
+  -- if text_return <- ["int", "bool", "true", "false", "float"]
 def $property_quiet_get_source(S, pmethoddesc) = false -- otherwise
 def $property_get_method_source(S, pmethoddesc, b_return) = true
   -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ ~pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
@@ -297,7 +297,6 @@ def $property_empty_get_active(S, n, ptbytes) = true
   -- if $property_empty_active(S, S.CURRENT, S.FRAMES, n, ptbytes, true)
 
 dec $property_empty_guard(pstate, nat, ptbytes) : bool
-dec $property_empty_nan_guard(pstate, nat, ptbytes) : bool
 dec $property_empty_rv_guard(pstate, nat, ptbytes) : bool
 def $property_empty_guard(S, n, ptbytes) = true
   -- if S.TODO = (PROPERTY_EMPTY_RESULT ppropertyempty b_get) :: ptask_tail*

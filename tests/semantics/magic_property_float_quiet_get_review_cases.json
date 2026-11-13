@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-float-nan-empty-warning-isset-guard-receiver-throw",
+      "source": "<?php\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(string $incoming): float { echo \"GET;\"; return NAN; }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-nan\"); }\n};\nset_error_handler(function (int $level, string $message, string $file, int $line) use (&$reader): bool {\n    echo $level === 2 ? \"WARN;\" : \"BAD_LEVEL;\";\n    echo $message, \";\";\n    echo isset($reader->value) ? \"BAD_GUARD;\" : \"GUARD;\";\n    $reader = null;\n    return true;\n});\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->$selector); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious() === null ? \"NO_PREVIOUS;\" : \"BAD_PREVIOUS;\"; }\nrestore_error_handler();\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"value\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "a1593a41a57d23f603107560a53ec347b25c6b4688d81b6cc819bcfff44b36aa",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1dBUk47dW5leHBlY3RlZCBOQU4gdmFsdWUgd2FzIGNvZXJjZWQgdG8gYm9vbDtHVUFSRDtSRUNFSVZFUjtyZWNlaXZlci1uYW47Tk9fUFJFVklPVVM7S0VFUDtDTEVBUkVEO05BTUVfS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "anonymous-strict-float-quiet-get-string-error-receiver-throw",
+      "source": "<?php\ndeclare(strict_types=1);\nfunction floatReviewBadRight() { echo \"BAD_RHS;\"; return 9; }\n$reader = new class {\n    public function __isset(string $incoming): bool { echo \"ISSET;\"; return true; }\n    public function __get(?string $incoming): float {\n        global $reader;\n        echo \"GET;\";\n        $reader = null;\n        return \"0.5\";\n    }\n    public function __destruct() { echo \"RECEIVER;\"; throw new Exception(\"receiver-float\"); }\n};\n$selector = \"gone\";\n$destination = 42;\ntry { $destination = $reader->$selector ?? floatReviewBadRight(); }\ncatch (Exception $failure) { echo $failure->getMessage(); echo \";\"; echo $failure->getPrevious()->getMessage(); echo \";\"; echo $failure->getPrevious()->getLine(); echo \";\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\necho $reader === null ? \"CLEARED;\" : \"BAD_RECEIVER;\";\necho $selector === \"gone\" ? \"NAME_KEEP;\" : \"BAD_NAME;\";\necho \"DONE;\";\n",
+      "source_sha256": "a399e6669a5a41781c05a47bacba2bacc28eda49d25f9ee9709a99d9c25a8e6d",
+      "stdout_template_base64": "SVNTRVQ7R0VUO1JFQ0VJVkVSO3JlY2VpdmVyLWZsb2F0O2NsYXNzQGFub255bW91czo6X19nZXQoKTogUmV0dXJuIHZhbHVlIG11c3QgYmUgb2YgdHlwZSBmbG9hdCwgc3RyaW5nIHJldHVybmVkOzEwO0tFRVA7Q0xFQVJFRDtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

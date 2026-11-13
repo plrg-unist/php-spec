@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "float-quiet-get-weak-string-cv-empty-coalesce",
+      "source": "<?php\nclass QuietFloatRead {\n    public function __isset(string $incoming): bool { echo \"I;\"; return $incoming !== \"skip\"; }\n    public function __get(string $incoming): float { echo \"G;\"; return \"0.0\"; }\n}\nfunction quietFloatRhs(): int { echo \"RHS;\"; return 9; }\n$receiver = new QuietFloatRead;\n$selector = \"zero\";\necho empty($receiver->$selector) ? \"EMPTY;\" : \"BAD;\";\necho ($receiver->$selector ?? quietFloatRhs()) === 0.0 ? \"ZERO;\" : \"BAD;\";\necho ($receiver->skip ?? quietFloatRhs()) === 9 ? \"FALL;\" : \"BAD;\";\necho $selector === \"zero\" ? \"NAME;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "b3db7392504519f2a3198d3d9b1ba127943fbd5e2bf40feb29b4f98b415a3023",
+      "stdout_template_base64": "STtHO0VNUFRZO0k7RztaRVJPO0k7UkhTO0ZBTEw7TkFNRTtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    },
+    {
+      "id": "float-quiet-get-strict-int-private-assignment",
+      "source": "<?php\ndeclare(strict_types=1);\nclass QuietFloatAssign {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): float { echo \"G;\"; return 0; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n}\nfunction quietFloatAssignRhs(): int { echo \"BAD_RHS;\"; return 9; }\n$receiver = new QuietFloatAssign;\necho ($receiver->value ??= quietFloatAssignRhs()) === 0.0 ? \"ZERO_KEEP;\" : \"BAD;\";\necho \"DONE;\";\n",
+      "source_sha256": "5ef38ffeb1340896350bd4c4eda89ed1823b7cc7b4f0b890a760b910139719f0",
+      "stdout_template_base64": "STtHO1pFUk9fS0VFUDtET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}

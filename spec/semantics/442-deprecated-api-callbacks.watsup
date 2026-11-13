@@ -195,6 +195,9 @@ def $api_cursor_warning_ref_valid(S, papiargcursor) = true
   -- if S_history = $api_callback_result_scope(S, API_BORROWED_TARGET papiargcursor.PRODUCER)
   -- if $call_parameter_reference(S_history, papiargcursor.TARGET, papiargcursor.INDEX)
 def $api_cursor_warning_ref_valid(S, papiargcursor) = false -- otherwise
+;; Argument copying retains the emitting continuation's source/guard witness.
+def $source_operand_marker(API_CALLBACK_SEND papiargcursor) = $source_operand_marker(perrorcall.RESUME)
+  -- if papiargcursor.CALL = API_ERROR perrorcall
 def $call_task_valid(S, API_CALLBACK_SEND papiargcursor) = $api_cursor_valid(S, papiargcursor)
 def $call_task_valid(S, API_CALLBACK_REF papiargcursor) = ($api_cursor_valid(S, papiargcursor) /\ $(papiargcursor.INDEX < |papiargcursor.VALUES|) /\ $call_parameter_reference(S, papiargcursor.TARGET, papiargcursor.INDEX))
 rule PhpStep/api-callback-send-expired: S ~> S[.COMPLETION = UNSUPPORTED "expired selected API callback before argument copy"]

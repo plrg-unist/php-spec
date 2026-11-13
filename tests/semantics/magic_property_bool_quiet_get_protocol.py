@@ -113,7 +113,7 @@ CASES = {
             '$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PINT 7))',
             '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,false,KNOWN (PINT 7))',
             '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN PNULL)',
-            '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PFLOAT 0))',
+            '$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PFLOAT 0))',
             '~$property_magic_cv_result_supported(S_result,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
             '$property_empty_guard(S_result,n_receiver,ppropertyempty.NAME)',
             '$heap_owners($heap_graph(S_result),HOBJECT n_receiver) = 2',
