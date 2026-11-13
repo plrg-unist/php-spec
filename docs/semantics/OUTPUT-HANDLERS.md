@@ -1339,3 +1339,17 @@ MAIN508 loading at `6a29da1e2` passes separately in 15.830746532 s/cap60/source0
 Other noisy pairings, eligible handlers, wider lifetimes and OB31 remain partial.
 [Noisy left-CV evidence](../../coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-author.json)
 and [review](../../coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-review.json).
+
+Both-noisy MOD capture also admits an original left CONST with an initialized
+own noisy RHS CV. The original left kind/carrier and exact right read remain
+authoritative; conversion preserves the right cell until its actual release
+before C0. The previous empty-CV CONST pair and left-CV/right-CONST alternatives
+remain pointwise. Three production-SL508 originals reuse native observations once;
+author SL4 and peer SL6/3/1/1/1 retain separate source0 cuts. Current REQUEST
+identity, source substitution, diagnostic order, masked handlers and unused-CV
+bounds are distinguished. At this cut a genuine noisy CV pair still refuses.
+Baseline3 and the precode frontier retain zero agreement. Actual MAIN508 loading
+at `89a828eec` passes separately in 16.081071375 s/cap60/source0. Wider pairings,
+handlers/lifetimes and OB31 remain partial.
+[Both-noisy RHS-CV evidence](../../coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-author.json)
+and [review](../../coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-review.json).
