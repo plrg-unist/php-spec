@@ -5,7 +5,7 @@
     "source_sha256": "274c5c3aa97dd869aca6b5f40ab79feab74d1ee19d5786b517f9e9c4055d8c51",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   },
   {
     "id": "deferred-inf-default-type-error-precision",
@@ -13,7 +13,7 @@
     "source_sha256": "7d41758090b3ae0db4bf77c6295250c638847af39859d1879d7576e9efc44dea",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   },
   {
     "id": "deferred-nonfit-float-default-type-errors",
@@ -21,7 +21,7 @@
     "source_sha256": "eac734ce7e222c7fc843d897da53f7bc95a9a47eda22eeade727ff8515c6646b",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   },
   {
     "id": "deferred-default-type-error-cache-order",
@@ -29,7 +29,7 @@
     "source_sha256": "0ec289a05f8018aa44fec60f2c428961ea177b383c4eee9af7afdd598598e268",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   },
   {
     "id": "deferred-float-default-type-error-boundaries",
@@ -37,14 +37,14 @@
     "source_sha256": "c6149e630d06b2b6307b381dcc1538e921a01d44c93a89371a4356e040a3e088",
     "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   },
   {
     "id": "fitting-float-default-boundary-control",
     "source": "<?php\nfunction fitWarning222($errno, $message, $file, $line) {\n    global $xFit222;\n    echo 'warning:', $message, '|';\n    $xFit222 = 3.5;\n}\nfunction fitDefault222(int $first, int $later = (INF ? -9223372036854775808.0 : 1.0)) { echo 'fit-body:', $first, ':', $later, '|'; }\nset_error_handler('fitWarning222');\n$xFit222 = 1.5;\nfitDefault222($xFit222);\necho 'fit:x=', $xFit222, '|';\n",
     "source_sha256": "db0c81605f50436c95c3ec1a07872de6d8f25e9f3138e2c746dd38f88c2a2e0a",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT remains an explicit Unsupported control; no NaN truth/cast, direct-PINT or private/Generator scope extension."
+    "purpose": "Quiet nonfitting deferred FLOAT defaults retain their later int-parameter TypeError after earlier supplied-CV precision callbacks. Actual INF/NAN, signed infinities and long-range boundaries preserve cold/warm cache, named-hole prefilling, supplied-default bypass, value/reference writeback and earlier handler-throw order. Full error messages retain original source-file/line identity through exact model/native byte comparison. Fitting MIN FLOAT was an Unsupported control at the ENUM222 cut and is promoted by ENUM223; no NaN truth/cast, direct-PINT or private/Generator scope extension."
   }
 ]

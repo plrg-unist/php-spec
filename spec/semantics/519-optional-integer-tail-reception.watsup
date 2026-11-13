@@ -443,6 +443,13 @@ def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
   -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $(n < 18446744073709551616)
   -- if $typed_weak(["int"], PFLOAT n) = TYPEREJECT
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
+  -- if $(n < 18446744073709551616)
+  -- if $typed_weak(["int"], PFLOAT n) = TYPEINTEGER (PFLOAT n)
+  -- if $float_long(n, true) = (i, eps)
+  -- if $long_range(i)
 def $lossy_optional_integer_deferred_value(plenv, expression) = eps -- otherwise
 
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool
