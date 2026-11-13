@@ -104,8 +104,11 @@ def conditions(program, path, index):
         state = 'S_mixed_number_' + label
         guards += [state + ' = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + number + ', (' + value + '))]',
                    '$compiled_read(' + state + ', ' + number + ') = (' + value + ')',
-                   '$compiled_order_number(' + value + ') = eps',
-                   '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+                   '$compiled_order_number(' + value + ') = eps']
+        if (label == 'bool' and index != 1) or (label == 'null' and index != 0):
+            guards += ['$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(('1', '-1', '', '1')[index]) + '))']
+        else:
+            guards += ['$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
     replacement = ('PINT 0', 'PINT 30', 'PFLOAT 4609434218613702656', 'PINT 40')[index]
     guards += ['S_mixed_number_value = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + number + ', (' + replacement + '))]',
                '$compiled_order_number(' + replacement + ') =/= eps',
@@ -134,8 +137,16 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_mixed_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name in ('boolean', 'null'):
+                answer = name == 'null'
+                text, value = numeric.text(answer), numeric.value(answer)
+                checks += ['$compiled_read(' + state + ', ' + binary + ') = (' + value + ')',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(' + json.dumps(text) + '))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii(' + json.dumps(text + 'x') + '))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii(' + json.dumps(text + 'x') + '))) = PSTRING_CARRIER INTERNED_STRING ($ptascii(' + json.dumps(text + 'x') + '))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             continue
         operation, number, data, reverse, order = ROWS[name]
         answer = strings.result(operation, order)
@@ -168,6 +179,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded mixed ordered-number/raw-PSTRING fixtures add typed own-result, missing reads, exact string payload versus same-order changed bytes/carriers, numeric type/range/nonNaN/valid64, outcome-changing numeric values, actual source and three precision controls. Compiled numeric values need not equal literal byte text; no result-insensitive numeric-value refusal is claimed. A coherent compile17 mutation flips the precision-sensitive comparison while changing only live precision leaves the compile14 key intact. Independent fixed-order compiler tables distinguish all seven operators and both orientations, FULLNUM versus leading text, integer overflow conversion versus both-string provenance, rounding above2**53, adjacent binary64, signed zeros, infinities and binary bytes. NaN, BOOL/NULL, arrays, variables and unary FLOAT NOT remain outside this mixed slice. Exact author recipe prefixes/native4-once are retained, all fixture/compiler conditions carry source0, and affected old controls retain separate cuts without old full/source/native/author replay or a cross-campaign unique sum.'
+    report['scope'] = 'Four authentic-source-seeded mixed ordered-number/raw-PSTRING fixtures add typed own-result, missing reads, exact string payload versus same-order changed bytes/carriers, numeric type/range/nonNaN/valid64, outcome-changing numeric values, actual source and three precision controls. Compiled numeric values need not equal literal byte text; no result-insensitive numeric-value refusal is claimed. A coherent compile17 mutation flips the precision-sensitive comparison while changing only live precision leaves the compile14 key intact. Independent fixed-order compiler tables distinguish all seven operators and both orientations, FULLNUM versus leading text, integer overflow conversion versus both-string provenance, rounding above2**53, adjacent binary64, signed zeros, infinities and binary bytes. NaN, arrays, variables and unary FLOAT NOT remain outside this mixed slice. Later BOOL/NULL compiler selectors and six same-result pool contexts check their separate priority comparison admission; the two outcome-changing BOOL/NULL pools still refuse. Exact author recipe prefixes/native4-once are retained, all fixture/compiler conditions carry source0, and affected old controls retain separate cuts without old full/source/native/author replay or a cross-campaign unique sum.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
