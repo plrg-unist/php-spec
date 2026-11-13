@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare backed hooked DIRECT DIRECT selector fields."""
+"""Compare backed hooked DIRECT selector fields."""
 from pathlib import Path
 import deprecated_global_constant_sources as sources
 
