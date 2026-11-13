@@ -1,0 +1,18 @@
+[
+  {
+    "id": "positional-array-byref-producer-entry-type-snapshot-and-shared-cv",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace ArrayByrefProducer33 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(array &$input){$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('ArrayByrefProducer33\\\\h',8);echo 'A;';\n$r=&take(make($source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\n}\n",
+    "source_sha256": "3fce0f5322aa484762f2f30a83b13209efff2f4e872756f99581afcee3d32043",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "array-byref-producer-wrong-entry-type-before-notice-control",
+    "source": "<?php\nnamespace ArrayByrefType33 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input){echo 'BAD-M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$bad=17;$hold=&$bad;$r='old';set_error_handler('ArrayByrefType33\\\\h',8);echo 'A;';\ntry{$r=&take(make($bad));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$bad,':',$hold,';';}$bad=19;echo 'Q:',$hold,';';\n}\n",
+    "source_sha256": "4d968add3bc9ca16813c7a31eca144814c6e524037c8c3927527b27a717aa47a",
+    "native_stdout": "A;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
