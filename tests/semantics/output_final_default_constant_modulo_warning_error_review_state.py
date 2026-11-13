@@ -68,7 +68,7 @@ def authority(name, fixture, path):
             'S_mask = S[.REPORTING = 2][.REPORTINGINI = $ptascii("2")][.REPORTINGMODIFIED = true]',
             'S_mask_raw = $dz_raw(S_mask)', 'S_mask_generated = $throwable_transition(S_mask, S_mask_raw)']
         return bindings, [
-            ('genuine fractional prefix retains both integer-conversion notices before refusing capture',
+            ('genuine fractional prefix retains both integer-conversion notices before actual capture',
              OWN.replace('"1x"', '"1.5x"') + r' /\ z = 6 /\ '
              r'$string_long($ptascii("1.5x")) = STRINT 1 (LEADINGNUMBER :: STRINGPRECISIONLOSS :: eps) /\ '
              r'S_raw.COMPLETION = THROWN "DivisionByZeroError" ($ptascii("Modulo by zero")) 6 /\ '
@@ -76,7 +76,7 @@ def authority(name, fixture, path):
              r'S_raw.EVENTS[0] = OUTPUT ([80]) /\ S_raw.EVENTS[1] = DIAGNOSTIC "Warning" ($ptascii("A non-numeric value encountered")) 6 /\ '
              r'S_raw.EVENTS[2] = DIAGNOSTIC "Deprecated" ' +
              prior.value(b'Implicit conversion from float-string "1.5x" to int loses precision') + r' 6 /\ ' +
-             LIVE + r' /\ $ob_object_division_error_capture(S, S_generated) = eps'),
+             LIVE + r' /\ $ob_object_division_error_capture(S, S_generated) = ((pobobjectreturn, pobreturnerror))'),
             ('hiding Deprecated preserves one Warning and real source authority without making conversion quiet',
              r'pfunction.CVS = eps /\ S_mask.CVS = eps /\ S_mask.ENV = eps /\ '
              r'$ob_object_final_native_method(S_mask) = (pobobjectreturn) /\ $call_current_valid(S_mask) /\ '

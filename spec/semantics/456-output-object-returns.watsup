@@ -973,7 +973,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
-;; Own MOD operands retain a sole Warning with a quiet-zero RHS.
+;; Own MOD operands retain ordered conversion notices with a quiet-zero RHS.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (BINARY_RIGHT MODULO poperand_left z) :: ptask_tail*
   -- if S.COMPLETION = NORMAL
@@ -982,7 +982,8 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $ob_object_error_operand_value(S, poperand_left, [PCFIELD 0], z) = (pvalue_left)
   -- if $ob_object_error_operand_value(S, S.RESULT, [PCFIELD 1], z) = (pvalue_right)
   -- if $string_bytes(pvalue_left) = (n_bytes_left*)
-  -- if $string_long(n_bytes_left*) = STRINT z_left (LEADINGNUMBER :: eps)
+  -- if $string_long(n_bytes_left*) = STRINT z_left strcastnotice*
+  -- if strcastnotice* = (LEADINGNUMBER :: eps) \/ strcastnotice* = (LEADINGNUMBER :: STRINGPRECISIONLOSS :: eps)
   -- if $value_nodes(pvalue_left) = eps /\ $ob_object_string_value(S, pvalue_left)
   -- if $ob_object_modulo_integer(pvalue_right) = (0)
   -- if $value_nodes(pvalue_right) = eps
@@ -1003,7 +1004,8 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
   -- PhpStep: S ~> S_raw
   -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
-  -- if S_raw.RESULT = KNOWN (PINT 0) /\ S_raw.EVENTS = $leading_warning(S, true, z).EVENTS
+  -- if strcastnotice* = (LEADINGNUMBER :: eps) \/ (n_rank_left = 1 /\ n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps /\ ~$error_handler_eligible(S, 8192) /\ |S_raw.EVENTS| = $(|S.EVENTS| + 2))
+  -- if S_raw.RESULT = KNOWN (PINT 0) /\ S_raw.EVENTS = $long_string_notices(S, strcastnotice*, n_bytes_left*, z).EVENTS
   -- if S_next = $throwable_transition(S, S_raw)
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
