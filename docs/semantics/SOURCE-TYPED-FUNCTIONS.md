@@ -1133,6 +1133,21 @@ preparation failure retains source0. Actual MAIN `6b8f94943`/508 loads in
 15.279918018s with source0. FLOAT-value projection for raw bytes/Boolean/null,
 wider numeric/default/lifetime scope and formatting remain partial.
 
+[Explicit scalar FLOAT-cast defaults](../../coverage/semantics/scalar-float-cast-default-reception-review.json)
+reuse byte parsing and FLOAT0/1 for special null/Booleans and quiet Boolean-shaped
+children. Typed numeric casts and the prior truth fallback retain their separate
+routes. String `NAN` parses as zero; direct FLOAT NaN remains refused by the static
+cast certificate. Five actual stored-PINT roots include CONCAT/CASTSTRING, byte
+bitwise NOT and actual false/null/true conversions. Eighteen genuine deferred
+contrasts keep their source and no-PINT authority. Three originals agree with
+native3 reused once. Author563 and independent647 fixture-SL checks retain
+private508 cuts (1210 physical=1198body+12setup), with pre409 separate. All six
+campaigns pass first attempt, including the unchanged eight-level interleaved
+FLOAT/Boolean author witness within its original300cap. All36 old RHS inputs
+preserve source/stage/count and are covered freshly. Actual MAIN `20b196ef1`/508
+loads in15.631246611s with source0. FLOAT-value projection for selected byte/Boolean/
+null casts, raw arithmetic coercion, wider defaults/lifetimes and formatting remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

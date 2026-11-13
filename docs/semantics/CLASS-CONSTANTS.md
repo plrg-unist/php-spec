@@ -708,6 +708,20 @@ preparation and header failures stay separate. The joined508 production SL load
 is source0. Untyped pairs, wider modifiers/imports and lifetime forms remain
 partial. [Implicit trait short SET](../../coverage/semantics/deprecated-reference-object-untyped-trait-implicit-short-set-review.json).
 
+Initialized public parentless class properties also preserve backed block GET
+plus implicit block SET in either source order. Real indexed roles and installed
+NAME/signature/BODY/DEFAULTS/EARLY plus known-absent header facts authenticate both
+origins without fabricated Params. Compilation still reaches the existing explicit
+set() arity diagnostic before its body. Four normal originals and one Fatal255/line7
+original reuse five native observations once; separate first strict SL107/304
+preserve real reception, transformed backing and shared/outside cleanup.
+The joined000ac371e/508 load passes15.280180847s with source0. At that cut,
+omitted defaults, trait/nonpublic/modifier/virtual/byref pairs and wider lifetimes
+remain partial. [Initialized untyped pairs](../../coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
+The later bounded class-pair route admits genuine ABSENT initializer/PROP_NULL
+default and initial DIRECT NULL, while later BOOL/INT writes retain the existing
+header, installed-function and cleanup guards.
+
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies
 layout/order/unique-slot authority; per-slot policy alone does not. For a local

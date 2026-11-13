@@ -104,9 +104,10 @@ prior-named and COW snapshots through throw cleanup. Existing DIRECT and ordinar
 ALIAS scalar-array leaves also authenticate those REQUEST strings while preserving
 child sharing, retargeting and cleanup. Quiet `stdClass` payloads also admit
 authenticated non-NUL REQUEST DIRECT fields and bounded ordinary scalar ALIAS
-fields through the existing Notice ownership proof. Finite object-free ALIAS
-array-field graphs also retain their cells, sharing and cleanup; DIRECT array
-fields, wider payloads and raw/NUL ingress remain partial.
+fields through the existing Notice ownership proof. Finite object-free DIRECT
+and ALIAS array fields preserve actual table edges, sharing, nested COW and cleanup.
+Fields owning objects, raw/NUL ingress and wider source/backing/history or lifetime
+forms remain partial.
 [Scalar-return review](coverage/semantics/scalar-return-producer-cv-reference-notice-review.json).
 [REQUEST-root review](coverage/semantics/request-string-return-producer-cv-reference-notice-review.json).
 [REQUEST-array review](coverage/semantics/request-string-array-leaf-reference-notice-review.json).
@@ -666,10 +667,12 @@ or an original left CONST with own initialized RHS CV. Ordered conversions,
 source/read/storage authority and private-cell retirement remain required.
 [Left-CV pair review](coverage/semantics/output-final-default-both-left-cv-modulo-conversion-error-review.json),
 [right-CV pair review](coverage/semantics/output-final-default-both-right-cv-modulo-conversion-error-review.json).
-FINAL preserves the left operand's single precision-loss Deprecated notice before
-its quiet-zero MOD Error, retaining original CONST/private-CV reads and real cell
-retirement. Wider operands, handler completion and lifetimes remain partial.
-[Left precision-loss review](coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json).
+FINAL preserves a left precision-loss Deprecated notice or a range Warning from
+a FLOAT before its quiet-zero MOD Error, retaining original CONST/private-CV
+reads and real cell retirement. Wider operands, handler completion and lifetimes
+remain partial.
+[Left precision-loss review](coverage/semantics/output-final-default-left-modulo-deprecation-error-review.json),
+[FLOAT-range review](coverage/semantics/output-final-default-left-modulo-range-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1124,6 +1127,9 @@ equality/spaceship. Logical AND/OR certificates
 validate evaluated non-float operands and leave a decisive branch's RHS
 unexecuted. [Current certificate bounds](docs/semantics/DIMENSIONS.md) preserve
 source, read, precision and ownership requirements.
+Raw PSTRING byte NOT/AND/OR/XOR children also retain exact own/child source,
+read and precision facts, recursive certificates and existing downstream key/base
+bounds. [String-byte review](coverage/semantics/string-offset-request-base-string-bitwise-special-concat-leading-key-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children also compose with these CONCAT keys. Actual
 child certificates and own compiler values must pass both quiet numeric
@@ -3761,6 +3767,11 @@ trait block/short routes. Checked header presence keeps explicit empty `set()`
 separate from an omitted list and its implicit `$value`.
 [Header repair](coverage/semantics/property-hook-parameter-list-review.json),
 [implicit trait block/short bounds](docs/semantics/CLASS-CONSTANTS.md).
+Initialized public parentless untyped backed GET/implicit block SET pairs work in
+either source order, retaining both checked header-presence facts and installed
+hook descriptors. [Initialized pair review](coverage/semantics/deprecated-reference-object-untyped-hook-pair-review.json).
+Omitted defaults use genuine ABSENT initializer/PROP_NULL default and initial
+DIRECT NULL authority; later values retain the existing source and cleanup guards.
 
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
@@ -4804,6 +4815,8 @@ lacks an existing integer certificate; float formatting remains deferred.
 [selected-cast review](coverage/semantics/selection-string-cast-default-reception-review.json).
 Guarded integer casts and truth also admit computed FLOAT trees, including
 certified selected FLOAT leaves and explicit FLOAT casts inside numeric trees.
+Certified byte-string, special Boolean/null and quiet Boolean-predicate leaves
+also retain actual declaration-ENV and stored-PINT guards on that cast route.
 NaN/fit/quiet-cast and real
 stored-PINT/default authority remain required; float formatting and wider
 producers remain partial. [Current default bounds](docs/semantics/SOURCE-TYPED-FUNCTIONS.md).
@@ -8189,7 +8202,8 @@ Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 `true` and `false` return declarations.
 [Object Get](coverage/semantics/magic-property-object-return-get-review.json),
 [quiet int Get](coverage/semantics/magic-property-int-quiet-get-review.json),
-[unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json).
+[unselected typed Get](coverage/semantics/magic-property-unselected-typed-get-review.json),
+[quiet Boolean Get](coverage/semantics/magic-property-bool-quiet-get-review.json).
 The existing private integer magic `+=` consumer also accepts CV names. It selects
 receiver and name after its integer RHS, then keeps that selection through GET,
 addition and SET despite later live-variable changes. The expression returns the
