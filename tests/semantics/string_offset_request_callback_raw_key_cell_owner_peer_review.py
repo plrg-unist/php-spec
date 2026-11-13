@@ -105,7 +105,7 @@ $retained_outputs(S_done.EVENTS) = $ptascii("2:String offset cast occurred;R:a;B
 S_without_keeper = $unset_name(S,$ptascii("keeper"))
 $heap_valid($heap_graph(S_without_keeper))
 S_without_keeper.STORE[n_keeper] = DEFINED pkeyread.BASE
-~((HCELL n_keeper) <- S_without_keeper.ALLOCATIONS)
+~((HCELL n_keeper) <- $heap_prune($heap_graph(S_without_keeper)).NODES)
 ~$string_read_provider_ready(S_without_keeper,pstringread)
 ~$string_read_cast_released(S_without_keeper,pstringread)
 $string_read_callback_raw_key(S_without_keeper,pstringread) = eps
