@@ -36,7 +36,7 @@ S_marked = S[.REFCELLS = n_key_current :: S.REFCELLS]
 $string_read_key_current(S_marked,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("2x")))
 $string_read_resume(S_marked,pstringread) = S_marked[.TODO = ptask_tail*][.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([99]))][.BASE = BASE_VALUE (KNOWN PNULL)]
 S_marked_numeric = S_marked[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))]
-$string_read_key_current(S_marked_numeric,pstringread) = eps
+$string_read_key_current(S_marked_numeric,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))
 S.CELL = 3 /\ S.LOCATION = ROOT 2
 ''')
     return text + ''.join('  -- if ' + check + '\n' for check in checks), count + len(checks), derived + len(checks)

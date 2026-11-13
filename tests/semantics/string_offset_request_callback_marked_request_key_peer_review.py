@@ -157,7 +157,7 @@ $string_read_provider_ready(S_keeper,pstringread)
 $string_read_key_current(S_keeper,pstringread) = eps
 S_interned = S[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))]
 $string_read_key_capture(S_interned,pkeyread.INPUT,pkeyread.BASE) = eps
-$string_read_key_current(S_interned,pstringread) = eps
+$string_read_key_current(S_interned,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
 pvalue_nul = PSTRING_CARRIER (REQUEST_STRING 1) ([50,0,120])
 S_nul = S[.STRINGDATA[1] = [50,0,120]][.STORE[n_key] = DEFINED pvalue_nul]
 $string_carrier_valid(S_nul,pvalue_nul)

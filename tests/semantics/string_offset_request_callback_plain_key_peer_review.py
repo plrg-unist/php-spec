@@ -115,7 +115,7 @@ S_marked = S[.REFCELLS = n_key_old :: S.REFCELLS]
 $string_read_key_current(S_marked,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("2x")))
 S_marked_numeric = S_numeric[.REFCELLS = n_key_old :: S.REFCELLS]
 $string_read_key_capture(S_marked_numeric,pkeyread.INPUT,pkeyread.BASE) = eps
-$string_read_key_current(S_marked_numeric,pstringread) = eps
+$string_read_key_current(S_marked_numeric,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))
 S_absent = $unset_name(S,$ptascii("key"))
 $lookup(S_absent.ENV,$ptascii("key")) = eps
 $heap_valid($heap_graph(S_absent))
