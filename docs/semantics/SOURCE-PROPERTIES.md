@@ -1484,6 +1484,19 @@ quiet/stable/reaped) are separate with source0. Raw unions, wider return forms,
 producers and lifetimes remain partial.
 [Nullable-return Get review](../../coverage/semantics/magic-property-nullable-return-get-review.json).
 
+Canonical `int|string` and `string|int` Get returns now use matching raw
+two-Identifier unions and defining-context normalized types under those same
+ordinary typed-name bounds. Exact numeric-looking strings retain their type;
+tested weak Boolean returns choose integers, while NULL/strict Boolean return
+errors preserve caller destinations. Existing95 verification runs before
+GetRESULT; its finite-float/deprecation routes were source-traced without new
+source credit. Two new private507 originals agree with native once reused;
+SL93/32 and independent SL82 retain separate source0 cuts, including actual
+STRING return/copy and receiver owners2→1 in the checked states. Actual019544
+and joined8d67820/508 (16.949847s, source0) remain separate. Raw int|null and
+wider return/value/consumer/root/lifetime bounds remain partial.
+[Int/string-union Get review](../../coverage/semantics/magic-property-int-string-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

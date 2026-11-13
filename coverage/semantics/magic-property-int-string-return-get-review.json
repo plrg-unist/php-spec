@@ -1,0 +1,107 @@
+{
+  "scope": "Canonical raw int|string and string|int return declarations on bounded ordinary typed-name magic Get.",
+  "status": "Independently reviewed source/semantics/tests/Make; the containing runtime obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; production SL, private507 source/state cuts and separate joined508 load.",
+  "implementation": {
+    "canonical_commits": [
+      "0bad39d593b4fcf4a146b04c463ed9121e399e11",
+      "abe7dfb5464963aa37a99f5116fdaac2f5b59285",
+      "740fdc2c57d4996840069622af4b6a1f632c06a3",
+      "f9f5e4ab4cde351f366d917c0f6f5d0841d2448f"
+    ],
+    "runtime_sha256": {
+      "141-method-compiler.watsup": "0ce2a31e8c29c75a813f41e7b6dbacaccb96437fcfdc8e100ded4cfc2cbc15c2",
+      "383-anonymous-classes.watsup": "c781686f2ac3aecadc427133c041e03e2d571b29d806740bad32cd2aa67dccca",
+      "408-magic-property-empty.watsup": "c3e4f0eeb210a8bca408bea984c1d31ea5cd9bf799c256289b857ea9296e9492"
+    },
+    "delta": "Ten additions/one deletion in141/383/408: distinct normalized int/string pairs in either order, matching raw two-Identifier union member admission and defining-context source proof. Ordinary b_return=true only;95/380/quiet wrappers and value/root/task machinery unchanged.",
+    "peer_tests": "099d4293fd3ae0d205d04a705a7d1d4c137c450c imported byte-exactly as740fdc2c57d4996840069622af4b6a1f632c06a3. Four Make registrations.",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "vendor_php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "engine_basis": "Pinned Zend/zend_API.c::zend_check_magic_method_implementation imposes no __get return restriction. Zend/zend_execute.c::zend_verify_scalar_type_hint and zend_verify_weak_scalar_type_hint retain exact-tag acceptance, defining strictness and int-before-string weak selection; Zend/zend_compile.c::zend_type_to_string_resolved prints string|int independently of raw order.",
+  "contracts": [
+    "Required typed string-compatible name parameter, own parentless named/source-validated anonymous BYVAL Get, class-free body, missing external non-This CV receiver and literal/plain-CV names retain the existing strict-identity-left/discard/singleton-Echo bounds.",
+    "Exactly two distinct canonical raw NIdentifier int/string branches agree with actual normalized RETURNS in defining PTRETURN context. Existing absent/singleton/nullable routes remain; quiet Isset/Empty/coalesce use the unchanged absent-return wrapper.",
+    "Existing95 verifies the actual result before GetRESULT, using defining CODE.STRICT. Numeric-looking INTERNED STRING keeps its identity; tested weak literal true/false conversions select INT1/0 without source-store writes. Wrong NULL and defining-strict BOOL returns raise canonical string|int TypeErrors before caller destination stores.",
+    "The independent actual STRING return preserves its carrier through verification/unwind/GetRESULT/COPY; receiver owners change2→1 in the checked states. Public0/1 and resumed/unsplit full-state equality retain guard/receiver cleanup.",
+    "In-range weak finite-float return behavior was source-traced through95→TYPEINTEGER→54/01 cast conversion→36 Deprecated→101 level8192 dispatcher, or explicit Unsupported for a handler without a producer continuation. Out-of-range weak string fallback and existing carrier/result fences remain. This trace adds no native/source credit; strict float rejection is unchanged.",
+    "Raw int|null Get refusal19 and all other unselected union/literal/nullable-return shapes retain their recorded bounds. No old query was invalidated or replayed. Existing result/consumer gates for REQUEST/plain PSTRING/NUL/nonfinite floats/owning/reference/update/factory/This/indirect/PREP/root/lifetime forms are unchanged."
+  ],
+  "source_validation": [
+    {
+      "case": "int-string-return-get-named-weak-orders",
+      "source_sha256": "038ae9e032ac9af6656ea476de7fcf344c0b1b559f9233e61700744a390bf8f9",
+      "revision": "0849d00d96f16f449c3b9851ee165a036c52933c",
+      "mode": "production SL;507 modules",
+      "seconds": 31.39916001202073,
+      "report": "../php-spec-evidence-archive/magic-property-int-string-return-get/author/source-v1/report.json",
+      "report_sha256": "db7244a5d840d80dd21f78f4ebe3d92c929db3a87246bf2fe07a7fae5539f83f",
+      "observation": "Named weak both raw orders: exact numeric strings, true→INT1/false→INT0, NULL TypeError and caller42 preservation.",
+      "native_reuse": "Exact original bytes/path/CWD/profile; native ran once for the unchanged-runtime baseline."
+    },
+    {
+      "case": "anonymous-strict-int-string-return-get",
+      "source_sha256": "6a818673ec3a485763f897f62f19188384b1d78101683515e6531d1f9a5d161b",
+      "revision": "90a5bf682aca843ca06721618389e0e4eebbd392",
+      "mode": "production SL;507 modules",
+      "seconds": 53.53157925605774,
+      "report": "../php-spec-evidence-archive/int-string-return-get-independent/source-v1/report.json",
+      "report_sha256": "a7ecb25022447d064767b5ec4b37731e5d987f8fc9cd4d3b1e62a09f2f53d2ee",
+      "observation": "Anonymous defining-strict both raw orders: exact STRING/INT, BOOL/NULL TypeErrors with canonical C-string messages, caller42/24 and selector preservation.",
+      "native_reuse": "Exact original bytes/path/CWD/profile; native ran once for the unchanged-runtime baseline."
+    }
+  ],
+  "fixture_validation": [
+    {
+      "role": "Authentic weak true/false RETURN_VALUE conversion, both raw headers/contexts/fences and public resume equality.",
+      "conditions": [
+        93,
+        32
+      ],
+      "report": "../php-spec-evidence-archive/magic-property-int-string-return-get/author/fixture-v1/raw/report.json",
+      "report_sha256": "d88edd3b193baf41008d4890947591248c60df82ce9e242d73c8319fd2cb344b",
+      "source_credit": 0,
+      "result": "First-pass stable/quiet true LF; no new fixture failure."
+    },
+    {
+      "role": "Reduced authentic strict numeric STRING exact return, verifier/unwind/GetRESULT/COPY checked ownership and public resume equality.",
+      "conditions": [
+        82
+      ],
+      "report": "../php-spec-evidence-archive/int-string-return-get-independent/fixture-v1/raw/report.json",
+      "report_sha256": "e94cdf558a6a5c1accb007dcc600f3b47a55594f176b12edd1d3136f703a261e",
+      "source_credit": 0,
+      "result": "First-pass stable/quiet true LF; no new fixture failure."
+    }
+  ],
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-int-string-return-get/author/baseline-v1/raw/report.json",
+      "report_sha256": "276aa35fd3c56bdce7e92b5a7849741524e65e5c780bd06d6bef3707acc08316",
+      "result": "Native once exact; unchanged-runtime model Unsupported before body/events[]; source_credit0."
+    },
+    {
+      "report": "../php-spec-evidence-archive/int-string-return-get-independent/baseline-v1/raw/report.json",
+      "report_sha256": "8af421cd33aed4c91ad3aee9101b401151c886aba4c5153513d5dc1f3c15e3c1",
+      "result": "Native once exact; unchanged-runtime model Unsupported before body/events[]; source_credit0."
+    }
+  ],
+  "cut_bridge": "Author source at0849+exact runtime3, peer source at90a5+exact runtime3; each source report records its own HEAD/input fingerprints. Author state at0bad and peer state at90a5 retain their original private507 cuts. Canonical commits and actual integration preserve the tested runtime/test blobs; no old source/native/state or aggregate renewal.",
+  "review": {
+    "independent_reviewer": "resume_missing_get_return_review",
+    "result": "Whole8 SOURCE/SEMANTICS/TEST/Make independently CLEAR; both peers directly accepted raw source/state cuts and actual/foreign seams. Metadata review is finite and requires no execution."
+  },
+  "joined_main": {
+    "actual_source_revision": "019544702b7464f629035ecbeb65f0c3a0c915ea",
+    "revision": "8d67820bf5745933f0a36a361c73a7309f314ed4",
+    "modules": 508,
+    "seconds": 16.94984705199022,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/union-get-array-return-joined-508-v1/report.json",
+    "report_sha256": "16b0b1c9edb5624ab5b0931ab6801ab59f02f7f88ae3fac7d65775491dd4662b",
+    "result": "true LF/quiet exit0/no timeout/reaped/stable512 inputs plus HEAD; source_credit0. Get8/Make4 and Output456/REF207/Compiler517/ENUM519/Dynamic425/String33 seams statically accepted; private cuts remain separate."
+  },
+  "recovery": "Keep original author .tools/class180-source-c_ce23ko and peer .tools/class180-source-c_qc3omz bytes/path/CWD/profile with their raw baselines. Large raw is external at the linked archives; reports bind native/model binaries and inputs. Each native original ran once; model-only reuse drivers retain original identities. Fixed maximum300s/3GiB, inner280/outer290 model source limits, one immutable heavy job per pair; no AL or cross-product/full-core claim.",
+  "remaining": "Only the selected int/string union group is added. Broader unions/return forms, generic untyped-CV primitive results, wider producers/consumers/receivers and lifetime/held contours remain partial. Quiet operations and shared type conversion are unchanged.",
+  "divergences": []
+}
