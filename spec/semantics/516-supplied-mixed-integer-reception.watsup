@@ -58,11 +58,12 @@ def $lossy_mixed_parameter_capture(S) = (LOSSY_MIXED_PARAMETER_RECEIVE porigin_f
   -- if S.TODO = [TYPE_RECEIVE porigin_function n]
   -- if S.COMPLETION = NORMAL
   -- if $function_at(S.FUNCTIONS, porigin_function) = (pfunction)
-  -- if z = $default_parameter_line(S, porigin_function, n)
-  -- if $lossy_mixed_parameter_metadata(S, porigin_function, n, z)
+  -- if $(n < |pfunction.SIGNATURE.PARAMETERS|)
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
   -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if z = $default_parameter_line(S, porigin_function, n)
+  -- if $lossy_mixed_parameter_metadata(S, porigin_function, n, z)
   -- if $typed_parameter_conversion(S, pfunction.SIGNATURE.PARAMETERS[n], PFLOAT n_bits) = TYPEINTEGER (PFLOAT n_bits)
   -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
 def $lossy_mixed_parameter_capture(S) = eps -- otherwise
