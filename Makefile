@@ -672,6 +672,10 @@ test-semantics: build
 		python3 tests/semantics/string_offset_request_base_float_special_concat_leading_key_sources.py --output "$$request_float_special_key_out/source" && \
 		python3 tests/semantics/string_offset_request_base_float_special_concat_leading_key_protocol.py --source-report "$$request_float_special_key_out/source/report.json" --output "$$request_float_special_key_out/author-state" && \
 		python3 tests/semantics/string_offset_request_base_float_special_concat_leading_key_review_state.py --source-report "$$request_float_special_key_out/source/report.json" --output "$$request_float_special_key_out/review-state"
+	@request_unary_numeric_special_key_out=$$(mktemp -d .tools/unary-numeric-special-concat-key-XXXXXX); \
+		python3 tests/semantics/string_offset_request_base_unary_numeric_special_concat_leading_key_sources.py --output "$$request_unary_numeric_special_key_out/source" && \
+		python3 tests/semantics/string_offset_request_base_unary_numeric_special_concat_leading_key_protocol.py --source-report "$$request_unary_numeric_special_key_out/source/report.json" --output "$$request_unary_numeric_special_key_out/author-state" && \
+		python3 tests/semantics/string_offset_request_base_unary_numeric_special_concat_leading_key_review_state.py --source-report "$$request_unary_numeric_special_key_out/source/report.json" --output "$$request_unary_numeric_special_key_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
