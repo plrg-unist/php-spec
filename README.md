@@ -8065,7 +8065,7 @@ preserve exact strings, weak integer conversion and TypeErrors before caller
 stores. Each group has two private507 source agreements with native once reused;
 union SL93/32+82 and literal SL142+107 retain separate source0 cuts. Separate
 joined508 checks establish loading, with no source/state renewal. Quiet Get,
-BYREF/untyped-name, broader return/producer/ownership/lifetime forms remain partial.
+BYREF names, broader return/producer/ownership/lifetime forms remain partial.
 [Int/string review](coverage/semantics/magic-property-int-string-return-get-review.json),
 [literal review](coverage/semantics/magic-property-literal-return-get-review.json).
 
