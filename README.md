@@ -693,6 +693,7 @@ With an eligible Warning or Deprecated handler, two quiet staged MOD conversions
 also preserve the zero-divisor Error through FINAL while the handler stays
 uncalled. Canonical original CONST/CV pointers, empty intrinsic notice vectors and
 real zero-/one-/two-cell retirement remain required.
+[Quiet staged MOD review](coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -8256,6 +8257,7 @@ Selected quiet consumers also admit Boolean Get results and canonical `bool`,
 `true` and `false` return declarations.
 Canonical `null` Get returns and PNULL results also cross these selected quiet
 consumers under the existing source and method guards.
+[Quiet null Get review](coverage/semantics/magic-property-null-quiet-get-review.json).
 Canonical `string` Get returns admit byte strings, valid INTERNED carriers
 including NUL, and authenticated non-NUL REQUEST carriers. Wider ownership and
 consumer forms remain partial.

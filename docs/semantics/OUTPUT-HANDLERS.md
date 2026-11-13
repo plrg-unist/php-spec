@@ -1450,6 +1450,19 @@ actual author SL4/4 and peer SL5/6/3/2/2/1/5 retain separate source0 cuts with r
 empty/two-cell retirement before C0. Baseline Unsupported8 and the quiet-class
 refusal keep their original zero-credit identities. Actual MAIN508 loading at
 `037c40ca9` passes separately in 15.940188253 s/cap60/source0. Wider handler completion,
-quiet or other staged classes, operands/lifetimes and OB31 remain partial.
+other staged classes, operands/lifetimes and OB31 remain partial.
 [Precision-only staged MOD evidence](../../coverage/semantics/output-final-default-unrelated-warning-handler-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-default-unrelated-warning-handler-modulo-error-review.json).
+
+Eligible Warning or Deprecated handlers also stay uncalled when both staged MOD
+conversions are quiet. Fresh left conversion must reproduce its saved integer
+with no intrinsic notices; the exact current right snapshot remains zero with an
+empty notice vector. Original CONST/CV pointers, source/read/rank authority, null
+scratch, native FINAL/live-Error guards and real zero-/one-/two-cell retirement
+before C0 remain required. Five originals reuse native5 once; author SL4/4/4,
+peer SL26 and the affected92 quiet component4 retain separate source0 cuts.
+Earlier Unsupported5 and the historical92 quiet refusal remain zero credit.
+Actual MAIN `a70ef6338`/508 loads separately in15.388790074s/cap60/source0.
+Wider handler execution, operands/lifetimes and OB31 remain partial.
+[Quiet staged MOD evidence](../../coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-review.json).

@@ -1,0 +1,115 @@
+{
+  "status": "Implemented, independently FULLCLEAR and integrated; containing PHP obligations remain partial.",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; C/UTC.",
+  "scope": "Canonical null selected quiet Get declarations and known NULL results at the true/Get CV-name gate, including lazy fallback and existing private coalesce assignment.",
+  "implementation": {
+    "canonical_commits": [
+      "b37791b55778b485d774036c3660d3b630c69152",
+      "297433cd40964dcdce3a52865a1bd6f1d426d532"
+    ],
+    "actual_commits": [
+      "05c8b04b4ca07c321db1abe3e375bbdf07a04070",
+      "86c06c8ea7e9f5ff0c3c2b442c5c6e02d27694ea"
+    ],
+    "runtime_sha256": {
+      "407-magic-property-isset.watsup": "f37b11c07f61e5e612ab34dab22699933e413917e4cfa67d089787715de86e46",
+      "408-magic-property-empty.watsup": "6caa191ecd2d69f85009c588f5727448a99f0b2bb80afbd694fffd45bb81a758"
+    },
+    "changes": "407 adds PNULL/CV-source admission;408 adds singletonnull/comment.185/95, absent helper, truth/RHS/ownership/lifecycle unchanged. Core7 plus16 query files form exact23/Make4."
+  },
+  "engine_basis": "zend_std_has_property/read_property produce the Get NULL before empty truth or COALESCE selection. ZEND_VERIFY_RETURN_TYPE accepts NULL and rejects other values for declared null in weak and strict modes. Receiver release precedes fallback; a throwing receiver replaces a pending return TypeError with that error as Previous.",
+  "contracts": [
+    "Raw null and normalized RETURNS use defining PTRETURN and the existing method-source proof. Known PNULL crosses true/Get at recognized CV source; false Isset remains Boolean-only. Literal-name behavior and scalar/string-carrier fences stay unchanged.",
+    "Three originals cover named canonical:null Empty, binary fallback, private??=NULL\u2192intRHS\u2192Set9 and false-Isset skip; anonymous ABSENT Get with empty CV name and last-owner receiver death before RHS; and null-declared wrong-int rejection with receiver Previous/caller42. Each native executes once.",
+    "Separate fixture SL105/94/116 cuts prove actual headers/values, source/line refusals, receiver2\u21921 and solemarker1\u21920\u2192publicjob1, nonpending NULL during destruction, nodefree private decision/base, RHS/Set delivery, TypeError/Previous/live catch and zero/one/full resumption. No unique aggregate or cross-product claim.",
+    "Only18 true/Get PNULL negative policy queries in16 Main-derived files lose their tilde. Fresh NULL reached proofs plus false-Isset refusal establish the shared one-rule change. All other bytes, including generated origin/line expressions, stay literal; no old campaign is replayed."
+  ],
+  "private_cut": "Recorded8f34 dirty input hashes/507 modules. Sources use production SL_mode; states use fixture SL_mode/source0. Reports retain runtime/compiler identity, commands/exits, profile, caps and stable before/after inputs.",
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-null-quiet-get/author/source-v1/null-quiet-get-empty-fallback-and-private-assignment/report.json",
+      "sha256": "a9bf5205adc5d29eae4f435fcbeb6948a12b668ebcfab36506976561a3337290",
+      "id": "null-quiet-get-empty-fallback-and-private-assignment",
+      "source_sha256": "0dbce99f9f3437de6b2a472fc9eff4ae1f3e14cce4471cdd4a7ca61fa54ecc5c",
+      "seconds": 37.254055086988956
+    },
+    {
+      "report": "../php-spec-evidence-archive/null-quiet-get-independent/source-v1/anonymous-absent-null-quiet-get-receiver-before-fallback/report.json",
+      "sha256": "637f773d4b9657daefc35cfcf198cb08a9df62966a2410d2bb5405c14b115099",
+      "id": "anonymous-absent-null-quiet-get-receiver-before-fallback",
+      "source_sha256": "e7edee5c7f1c1d32261bcd61f0914f3c1f9b0de1d52d9bab226b4ff2166845d1",
+      "seconds": 36.29142753710039
+    },
+    {
+      "report": "../php-spec-evidence-archive/null-quiet-get-independent/source-v1/anonymous-null-quiet-get-int-error-receiver-throw/report.json",
+      "sha256": "3afc90f7f361f6b431c5774aa3e499eb8e9a2fb369bdcad846dc770cf0a71a64",
+      "id": "anonymous-null-quiet-get-int-error-receiver-throw",
+      "source_sha256": "833f0f3fb6cdbd597dc4a6076d65d344d39068183af6db5dda6fc2f76b9d58de",
+      "seconds": 35.68795732804574
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-null-quiet-get/author/fixture-private-v1/launch.json",
+      "sha256": "5571842e87a7c65bb49ab6d154218610430d276c8956d8d85d5921e50c3325d8",
+      "conditions": 105,
+      "seconds": 70.58287412510253,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/null-quiet-get-independent/fixture-v1/absent-null-get-empty-and-receiver-before-fallback/launch.json",
+      "sha256": "7480bb210ccdd0867ab8a6270fec31785fd645a1ceb25258579b2c3c6c2a89c0",
+      "conditions": 94,
+      "seconds": 55.42634788504802,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/null-quiet-get-independent/fixture-v1/null-get-int-error-pending-cleanup/launch.json",
+      "sha256": "fbec3cee36acc2e04ac2cfb6ae41040635645c8b7f19d1d3f2943e0ed4433b2d",
+      "conditions": 116,
+      "seconds": 74.22475698590279,
+      "source_credit": 0
+    }
+  ],
+  "finite_query_bridge": {
+    "report": "../php-spec-evidence-archive/magic-property-null-quiet-get/author/finite-query-bridge.json",
+    "sha256": "7eec3767318769b8eab6baf30365acaec59457dcfdd40b6900e7b6e7b07696c8",
+    "files": 16,
+    "queries": 18,
+    "source_credit": 0,
+    "state_credit": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-null-quiet-get/author/baseline-v1/null-quiet-get-empty-fallback-and-private-assignment/report.json",
+      "sha256": "c3e81b8f5c3637ef69213d0e1b4d62fd92fb91aade19c59928f431ce2e767148",
+      "result": "Stable canonical:null quiet-header Unsupported17.369578960 before callbacks.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/null-quiet-get-independent/baseline-v1/anonymous-absent-null-quiet-get-receiver-before-fallback/report.json",
+      "sha256": "983274c908dac300ac33028092dbd8b0299cae653003bd7216d63fdfb2efc4fc",
+      "result": "Stable CV-name result Unsupported30.009868108 after I;G;.",
+      "source_credit": 0
+    }
+  ],
+  "review": "Independent FULL WHOLE CLEAR fulltree90a473f7e2836730a90939ae868314d4e257628c/core912a15d4c916abff3e4159d7ba4f72251d4b201c. Peer2 da1cfae378a2b3971b7440c91382df73aeff3a02 exact; author reciprocally reviewed peer protocols. Make4 once/exact parent recovery. Actual63f/a70 composition CLEAR without private renewal.",
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main32-null-plain-ref48-ob93-joined-508-v1/report.json",
+    "sha256": "81d0bea388ac41ca8a46ca749f1eb2aae7c300c919935b133848da316ea1d109",
+    "revision": "a70ef6338b91c802f3543dc08a6cfecc214a0f5a",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "command_arguments": 511,
+    "watched_inputs": 512,
+    "timeout_seconds": 60,
+    "seconds": 15.388790074037388,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "recovery": "External raw keeps original bytes/path/CWD, streams/status and inputs. Source280/process290/launcher297s; fixture297s;3GiB. Tests are self-contained; archives are evidence only. Real privateHEAD/index/Make/inherited drafts untouched.",
+  "remaining": "Nullable/scalar-union quiet headers are under source-first assessment. Mixed/void/never, owning headers, wider producers/receivers, Echo/RW and lifetimes stay partial. Named holds unchanged; no full-core/Rocq/interaction-tree/BOLA/equivalence claim.",
+  "divergences": []
+}
