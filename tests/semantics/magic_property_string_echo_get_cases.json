@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "string-echo-get-literal-and-cv",
+      "source": "<?php\nclass StringEchoGet {\n    public function __get(string $incoming) {\n        echo $incoming === (string) $incoming ? \"S;\" : \"BAD;\";\n        return 7;\n    }\n}\n$o = new StringEchoGet;\n$name = \"12\";\necho $o->$name;\necho \";\";\necho $o->literal;\necho \";DONE;\";\n",
+      "source_sha256": "5367c5abfdaa2279d9d210508118a63e2832aff52b9e6bdb31182471641dadcd",
+      "stdout_template_base64": "Uzs3O1M7NztET05FOw==",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
