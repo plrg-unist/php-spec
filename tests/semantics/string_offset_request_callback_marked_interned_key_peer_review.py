@@ -158,8 +158,11 @@ $string_carrier_valid(S_duplicate,pvalue_other)
 $string_read_current_offset(S_duplicate,pstringread,pvalue_other) = eps
 $string_read_key_current(S_duplicate,pstringread) = (pvalue_request)
 ''')
-    for name, value in (('raw','PSTRING ($ptascii("2"))'),
-                        ('nul','PSTRING_CARRIER INTERNED_STRING ([50,0,120])'),
+    checks += lines(r'''
+S_raw = S[.STORE[n_key] = DEFINED (PSTRING ($ptascii("2")))]
+$string_read_key_current(S_raw,pstringread) = (PSTRING ($ptascii("2")))
+''')
+    for name, value in (('nul','PSTRING_CARRIER INTERNED_STRING ([50,0,120])'),
                         ('invalid','PSTRING_CARRIER INTERNED_STRING ([256])'),
                         ('bounds','PSTRING_CARRIER INTERNED_STRING ($ptascii("99"))')):
         state = 'S_' + name

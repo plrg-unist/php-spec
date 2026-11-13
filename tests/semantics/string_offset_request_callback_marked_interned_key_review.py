@@ -110,7 +110,7 @@ $string_read_key_current(S_request,pstringread) = (PSTRING_CARRIER (REQUEST_STRI
 S_missing_registry = S_request[.STRINGDATA = S.STRINGDATA]
 $string_read_key_current(S_missing_registry,pstringread) = eps
 S_raw = S[.STORE[n_current] = DEFINED (PSTRING ($ptascii("word")))]
-$string_read_key_current(S_raw,pstringread) = eps
+$string_read_key_current(S_raw,pstringread) = (PSTRING ($ptascii("word")))
 pvalue_nul = PSTRING_CARRIER INTERNED_STRING ([49,0,120])
 S_nul = S[.STORE[n_current] = DEFINED pvalue_nul]
 ~$string_read_release_scalar(S_nul,pvalue_nul)

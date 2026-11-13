@@ -159,7 +159,7 @@ S_interned = S[.STORE[n_key_current] = DEFINED (PSTRING_CARRIER INTERNED_STRING 
 $string_read_key_capture(S_interned,pkeyread.INPUT,pkeyread.BASE) = eps
 $string_read_key_current(S_interned,pstringread) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("word")))
 S_raw = S[.STORE[n_key_current] = DEFINED (PSTRING ($ptascii("word")))]
-$string_read_key_current(S_raw,pstringread) = eps
+$string_read_key_current(S_raw,pstringread) = (PSTRING ($ptascii("word")))
 pvalue_nul = PSTRING_CARRIER (REQUEST_STRING 1) ([49,0,120])
 S_nul = S[.STRINGDATA[1] = [49,0,120]][.STORE[n_key_current] = DEFINED pvalue_nul]
 $string_carrier_valid(S_nul,pvalue_nul)
