@@ -1,0 +1,86 @@
+{
+  "feature": "string-offset-request-base-numeric-string-unary-special-concat-leading-key",
+  "scope": "Actual quiet fully numeric string-literal unary +/- leaves, including finite chains, in pool-authenticated CONCAT trees with resolved bool/null leaves on ordinary or marked non-NUL VARIABLE REQUEST bases. Every unary retains its own numeric result/precision; every CONCAT retains exact pool bytes. KEY_NULL, present BASECELL, absent KEYCELL and owner/phase bounds remain.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; ordinary profile, C/UTC, no preload or request provider",
+  "decision": "Independently accepted by resume_string_numeric_unary_review; no whole-core obligation closes.",
+  "implementation": {
+    "revision": "ddaadc24e5ab9772dbaea0b07d2e8de7932e3d84",
+    "file": "spec/semantics/33-runtime-compiler.watsup",
+    "law": "Nine additive lines require actual PFUNARY syntax with an immediate NScalarString child, original decoded bytes and explicit COERCED pnumber false. The node's own compiled result must equal existing unary_apply with only RESULT changed, then pass quiet formatting at its own precision. Existing nested certificates compose without widening their actual-child requirement. The explicit quiet guard remains necessary when an already Unsupported state makes a line-zero Warning observationally inert.",
+    "isolation": "Numeric-literal9/nested14, parser-literal classification, per-CONCAT pool checks, module425/272, source compilation, machine/schema, captures, provider/retainer/root and owner/lifetime laws remain unchanged. No native arithmetic or Zend evaluation supplies answers.",
+    "source_anchors": [
+      "Zend/zend_compile.c::zend_compile_unary_pm, zend_try_ct_eval_unary_pm and zend_binary_op_produces_error (recursive compilation, multiplication by +/-1 and full-numeric string guard with allow_errors0)",
+      "Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op and zend_insert_literal (quiet constant CONCAT and interned operand facts)",
+      "35-scalar-operations.watsup::coerce_string/coerce_number, leading_warning and unary_apply (FULLNUM versus LEADNUM, quietness, typing and existing pure arithmetic)",
+      "20-machine.watsup::parser_literal_text_at and 272-live-precision.watsup::compiled_precision (quiet output and occurrence precision)"
+    ]
+  },
+  "source_agreements": {
+    "revision": "ddaadc24e5ab9772dbaea0b07d2e8de7932e3d84",
+    "mode": "production SL",
+    "module_entries": 508,
+    "count": 4,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/author/post-source-v1/report.json",
+    "sha256": "4ccb47de82d61dc8c9c79e2ec49a5dee65cffb61e074e960b4fd5cd4f8980e07",
+    "result": "Four fresh actual string-leaf originals pass accepted/checked normal0, quiet/stable/reaped in19.486497641/19.221884489/25.162896395/23.263457775s under model90/process120. -(-'  +1 ') returns old b; +(-'1') returns old c; -(+(-'1.00000000000001')) preserves the marked supplied Exception, null Previous and destination99 after both base names retire; +(-(+ '4.00000000000001e0')) reaches genuine later-4 bounds and fixed empty after final-owner retirement. Compile14 survives live17. Native4 are reused once at exact original bytes/path/CWD."
+  },
+  "precode": {
+    "revision": "18233e06f5feb27734d583e2cdc40bf4be2f53e3",
+    "module_entries": 508,
+    "baseline_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/author/baseline-v1/report.json",
+    "baseline_sha256": "5cb5ca89de65098c13b8e2c61fec5833960c3dd6779dd903a4632362db32feaa",
+    "acquisition_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/author/acquisition-v1/report.json",
+    "acquisition_sha256": "a17100afa6356684c88fed628af508fc1025d04a69cfa2c8e5c6b99270ff0831",
+    "conditions": 432,
+    "source_credit": 0,
+    "result": "Native4 run once and unchanged production-SL Unsupported4 retain source0. Authentic AL101/101/117/113 pass true LF/quiet/stable/reaped in30.887875319/30.776613712/50.099477291/32.323981524s under180. Actual strings, decoded bytes, full-numeric typing/bits, every unary fact/precision, pure results, CONCAT pools and real header owners are checked while helpers at every unary depth still refuse."
+  },
+  "author_state": {
+    "revision": "ddaadc24e5ab9772dbaea0b07d2e8de7932e3d84",
+    "mode": "AL",
+    "conditions": 639,
+    "derived_conditions": 105,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/author/protocol-v1/report.json",
+    "sha256": "797f7b19e47278fc73104c77eef84f37c44a6b9d5d5da52c6c3aa31ae31db9d0",
+    "result": "AL145/25-derived,145/25,169/26 and180/29 pass true LF/quiet/stable/reaped in61.219739199/62.093532801/130.771452427/101.019407749s under180. Original string bytes and exact numeric typing/bits, every own unary result/precision, compile14/live17, fixed saved indices, current owners, supplied-throw cleanup, later bounds, budgets and refusals pass. No source/native/pre replay."
+  },
+  "independent_state": {
+    "reviewer": "resume_string_numeric_unary_review",
+    "revision": "5824e24aae2869ec65a1abe52fef469d2c0706be",
+    "mode": "AL",
+    "module_entries": 508,
+    "source_state_conditions": 909,
+    "derived_conditions": 438,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/review/state-v2/report.json",
+    "sha256": "136d381d19438a355134984fac5ab6cfcfd07e6bf8c8caf4b83865a00c28b5b9",
+    "result": "Only the first AL208/100-derived,208/100,245/119 and248/119 pass true LF/quiet/stable/reaped in60.550142765/61.609208345/127.655064344/98.434915304s under180. Actual string/FULLNUM/coercion/bits, intermediate own facts/precision, terminal-pool omission, owners, throw/bounds and budgets pass. A malformed actual leading-string unary preserves plausible own facts and demonstrates the line-zero state-equality trap; explicit quiet coercion rejects it. The report aggregate remains false because its compiler95 fails a fixture metadata equality, with zero compiler credit."
+  },
+  "affected_compiler": {
+    "revision": "da317d9e37826294bd82c742726f032233a43a0f",
+    "mode": "AL",
+    "conditions": 95,
+    "source_credit": 0,
+    "report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/review/compiler-v3/report.json",
+    "sha256": "0cc8b1c6917b8b8fa9bde72bcc8af6749780763ebf1f0dce23f43909e3403356",
+    "result": "Only corrected compiler95 passes true LF/quiet/stable/reaped in12.846972465s under180. Two metadata variable suffixes distinguish separate ConstFetch/Concat controls; original checked ASTs/source paths and runtime inputs remain unchanged. Quiet numeric-string unary is freshly promoted, while warningful strings, binary children, unary ConstFetch true and nonliteral numeric-string CONCAT remain refused. These are compiler-only facts, with no native/whole-program credit or aggregate with source-state909/author639."
+  },
+  "preserved_failures": {
+    "source_credit": 0,
+    "first_report": "../php-spec-evidence-archive/string-offset-request-base-numeric-string-unary-special-concat-leading-key/review/state-v1/report.json",
+    "first_sha256": "9ecbf001c3c2a8b920ff03c222b674c27b81daae0d260d74809467b3d49a0847",
+    "result": "At1a2b4d9b876fe6e80b68737f1d522b61a214a460, first208 exits1 at parsing in0.528901339s with no execution; remaining3 and compiler95 are unrun. Commit5824e24aae2869ec65a1abe52fef469d2c0706be corrects only generated OCCURRENCES grouping. Subsequent state-v2 retains its original compiler95 failure (13.097933292s, repeated metadata_child_fresh binding) and false aggregate; commitda317d9e37826294bd82c742726f032233a43a0f changes only those two variable suffixes before the affected compiler-only run. No successful state909, source/native or author cut is replayed."
+  },
+  "maintained_tests": "Canonical18233e06f5feb27734d583e2cdc40bf4be2f53e3 +ddaadc24e5ab9772dbaea0b07d2e8de7932e3d84 +9b26842444daa1aa083919a8325f5e6cd959d275 +c4b288312941f266007ef46038e5042c205f3136 +5824e24aae2869ec65a1abe52fef469d2c0706be +da317d9e37826294bd82c742726f032233a43a0f cover eleven paths: module33, Make and nine tests. Make's four additive lines share one source report. Five affected old current quiet-string controls become fresh warningful-string controls; historical nested833/374+41 and all earlier source/state/compiler cuts retain their identities. Whole source/test READY and mutual acceptance preceded metadata. Raw evidence is external, not a build input.",
+  "remaining": "Warningful strings, nonliteral string children, binary-expression children, numeric ConstFetch, other computed/owning keys, missing descendant CONCAT facts, constraints, NUL and wider base/key/provider/callback/lifetime histories remain partial. Normal/Throwable lost-owner completion stays Unsupported; genuine later bounds stays fixed and owner-free. All held lanes and caps remain. Actual MAIN composition/load is separate and adds source0.",
+  "actual_join": {
+    "tested_revision": "a2907470ccf70886d8212c1b6e15f656796a8c0f",
+    "module_entries": 508,
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/scalar-get-numeric-string-unary-joined-508-v1/report.json",
+    "sha256": "9db1e93a68f2ffc5486a96cf66120b57b98b4262d043baf97fe5c141c327b730",
+    "seconds": 15.388192947022617,
+    "source_credit": 0,
+    "result": "Both String pair members independently clear actual eleven paths/full33/Make and reciprocal scalar-Get/Dynamic composition. Nine tests and full33 match canonical code including both fixture corrections; four additive String Make lines preserve earlier String and foreign recipes. One combined production-SL508 load passes true LF/quiet/exit0/no timeout, stable512 inputs plus HEAD and fully reaped under60. Private source/state/compiler successes and false aggregates retain their cuts without replay or renewed source credit."
+  }
+}

@@ -206,9 +206,20 @@ the existing pure unary operation and quiet formatter; CONCAT pool checks and
 borrowed ownership are unchanged. The [nested-unary review](../../coverage/semantics/string-offset-request-base-nested-unary-numeric-special-concat-leading-key-review.json)
 keeps four fresh originals, initial420, corrected author627/105-derived and peer
 833/374-derived plus41 compiler-only checks separate. The original fixture binding
-failure and three unrun fixtures retain zero credit. Numeric-string unary,
+failure and three unrun fixtures retain zero credit. Warningful string unary,
 binary-expression children, float-valued ConstFetch, missing descendant facts and
 wider ownership histories remain partial.
+
+Unary chains also admit actual fully numeric string-literal leaves. Decoded bytes
+must coerce without a Warning, and the own compiled result must match the existing
+pure unary operation before quiet formatting at compiled precision. The explicit
+quiet-coercion guard also rejects warningful text in an already abrupt state.
+The [numeric-string unary review](../../coverage/semantics/string-offset-request-base-numeric-string-unary-special-concat-leading-key-review.json)
+keeps four fresh compile14/live17 originals, pre432, author639/105-derived, peer
+909/438-derived and affected compiler95 at their separate cuts. Two peer fixture
+failures retain zero credit; only the affected compiler checks are repeated after
+the second correction. Warningful strings, nonliteral string children, binary
+children, numeric ConstFetch and wider ownership remain partial.
 
 Once an out-of-range offset is selected, completion returns the fixed empty
 string even if the bounds callback unsets both operands. A cast-handler throw
