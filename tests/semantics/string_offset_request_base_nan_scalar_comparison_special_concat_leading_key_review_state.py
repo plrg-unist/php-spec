@@ -130,8 +130,14 @@ def compiler_conditions(checked, paths):
                    origin + ' = PORIGIN 0 pcpath_nan_scalar_control_' + str(index),
                    '$origin_child((' + origin + '), [PCFIELD 0, PCFIELD 0]) = (' + binary + ')']
         if name not in ROWS:
-            checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
-                       '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
+            if name in ('strict-identity', 'unsupported-bool-child'):
+                checks += ['$compiled_read(' + state + ', ' + binary + ') = (PBOOL false)',
+                           '$compiled_special_concat_bytes(' + state + ', ' + binary + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
+            else:
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + binary + ') = eps',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
             continue
         operation, partner, reverse = ROWS[name]
         p = PARTNERS[partner]
@@ -168,6 +174,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic-source-seeded NaN/scalar fixtures add own-result/type, missing reads, both precision directions, carriers, same-order string payload mismatches, valid signed/payload NaN admission with BYTE absent and invalid64 refusal. A finite literal replaces the NaN child in both the parent AST and actual occurrence while retaining its NaN read and quiet literal BYTE; VALUE provenance still refuses. Root/partner source omissions also refuse. Independent fixed-order tables distinguish true reverse order for all seven operations, both orientations and STRING/TRUE/FALSE/NULL partners; empty/NUL/high bytes and certified nested Boolean results retain the same rules. Arithmetic NaN, strict identity, uncertified Boolean children, owning values, variables and direct NaN NOT stay outside. Changed NaN values are not claimed to independently isolate result-insensitive reads. Exact author prefixes/native4-once remain; original failed pre-v1 and corrected pre-v2, affected selectors and joined cuts stay separate with fixture/compiler source0, no old full/source/native/author replay or NaN string/Boolean cast/ownership widening.'
+    report['scope'] = 'Four authentic-source-seeded NaN/scalar fixtures add own-result/type, missing reads, both precision directions, carriers, same-order string payload mismatches, valid signed/payload NaN admission with BYTE absent and invalid64 refusal. A finite literal replaces the NaN child in both the parent AST and actual occurrence while retaining its NaN read and quiet literal BYTE; VALUE provenance still refuses. Root/partner source omissions also refuse. Independent fixed-order tables distinguish true reverse order for all seven operations, both orientations and STRING/TRUE/FALSE/NULL partners; empty/NUL/high bytes and certified nested Boolean results retain the same rules. Arithmetic NaN, owning values, variables and direct NaN NOT stay outside. Genuine NaN strict identity and the dependent Boolean child now check their separately reviewed strict VALUE admission; wider uncertified children still refuse. Changed NaN values are not claimed to independently isolate result-insensitive reads. Exact author prefixes/native4-once remain; original failed pre-v1 and corrected pre-v2, affected selectors and joined cuts stay separate with fixture/compiler source0, no old full/source/native/author replay or NaN string/Boolean cast/ownership widening.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

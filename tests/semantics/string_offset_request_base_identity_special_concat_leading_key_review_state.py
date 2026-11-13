@@ -106,6 +106,10 @@ def compiler_conditions(checked, paths):
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + compare + ') = ($ptascii("1"))',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("1x"))',
                            '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("1x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1x"))']
+            elif name == 'nan-identical':
+                checks += ['$compiled_special_concat_bytes(' + state + ', ' + compare + ') = ($ptascii(""))',
+                           '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = ($ptascii("x"))',
+                           '$compiled_string_value(' + state + ', ' + origin + ', PSTRING ($ptascii("x"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("x"))']
             else:
                 checks += ['$compiled_special_concat_bytes(' + state + ', ' + compare + ') = eps',
                            '$compiled_special_concat_bytes(' + state + ', ' + origin + ') = eps']
@@ -133,6 +137,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four authentic strict scalar identity source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Malformed one-sided array pool values preserve literal byte certificates and the real false comparison, isolating each scalar fence without claiming array ownership. Fresh compiler controls distinguish strict types, equal formatted text with different float bits, byte-string identity and array/NaN refusals. The former exact-PINT loose-equality refusal now checks the reviewed integer comparison admission. Original source/native observations are reused once; borrowed-owner, supplied-throw, fixed-bounds and budget laws remain separate from these derived controls.'
+    report['scope'] = 'Four authentic strict scalar identity source-state fixtures add independent own-Boolean/type, outcome-changing child read, both child source and three precision refusals. Malformed one-sided array pool values preserve literal byte certificates and the real false comparison, isolating each scalar fence without claiming array ownership. Fresh compiler controls distinguish strict types, equal formatted text with different float bits, byte-string identity and array refusals. The genuine NaN ConstFetch identity selector now checks its separately reviewed VALUE-based strict admission, without changing prior scalar cuts. The former exact-PINT loose-equality refusal now checks the reviewed integer comparison admission. Original source/native observations are reused once; borrowed-owner, supplied-throw, fixed-bounds and budget laws remain separate from these derived controls.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
