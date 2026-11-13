@@ -66,7 +66,7 @@ COMMON = [
     r'~$property_magic_cv_result_supported(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HARRAY n_array)],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)',
     r'~$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (PARRAY (|S.ARRAYS|)))',
     r'$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT n_receiver))',
-    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAP eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT n_receiver))',
+    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAPENTRIES eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT n_receiver))',
     r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = REALCLOSURE pfunction.ORIGIN eps eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT n_receiver))',
     r'$lookup(S.ENV,$ptascii("reader")) = (n_reader)',
     r'$lookup(S.ENV,$ptascii("selector")) = (n_selector)',

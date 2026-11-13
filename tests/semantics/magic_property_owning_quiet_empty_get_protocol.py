@@ -40,7 +40,7 @@ EMPTY = [
     r'~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (PARRAY (|S.ARRAYS|)))',
     r'$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
     r'~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT (|S.OBJECTS|)))',
-    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAP eps],ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
+    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAPENTRIES eps],ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
     r'~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = REALCLOSURE pfunction.ORIGIN eps eps],ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT n_receiver))',
     r'$lookup(S.ENV,$ptascii("reader")) = (n_reader)',
     r'$lookup(S.ENV,$ptascii("selector")) = (n_selector)',

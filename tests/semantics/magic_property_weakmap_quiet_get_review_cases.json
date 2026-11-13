@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "weakmap-cv-empty-value-release-saved-name",
+      "source": "<?php\nclass QuietMapEmptyValue {\n    public function __destruct() { global $reader, $selector, $key, $weak; echo \"VALUE;\"; $reader = null; $selector = \"changed\"; $key = null; echo $weak->get() === null ? \"KEY_GONE;\" : \"BAD_KEY;\"; }\n}\nclass QuietMapEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $key; echo \"G;\"; $map = new WeakMap; $map[$key] = new QuietMapEmptyValue; return $map; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$key = new stdClass;\n$weak = WeakReference::create($key);\n$reader = new QuietMapEmptyGet;\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\n$weak = null;\necho \"DONE;\";\n",
+      "source_sha256": "72f379bc09d47fa37044aa3b02167587f2c71315c55b88221d390d90a4097f8d",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1ZBTFVFO0tFWV9HT05FO1JFQ0VJVkVSO0ZBTFNFO0NBUFRVUkU7RE9ORTs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "weakmap-cv-empty-value-throw-saved-receiver",
+      "source": "<?php\nclass QuietMapEmptyValue {\n    public function __destruct() { global $reader, $selector, $key, $weak; echo \"VALUE;\"; $reader = null; $selector = \"changed\"; $key = null; echo $weak->get() === null ? \"KEY_GONE;\" : \"BAD_KEY;\"; throw new Exception(\"map-value\"); }\n}\nclass QuietMapEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $key; echo \"G;\"; $map = new WeakMap; $map[$key] = new QuietMapEmptyValue; return $map; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$key = new stdClass;\n$weak = WeakReference::create($key);\n$reader = new QuietMapEmptyGet;\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->$selector); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\n$weak = null;\necho \"DONE;\";\n",
+      "source_sha256": "7cfe253175c58dadb129291889ec8093efd42a974d3b0b77ee857141ce0a4f95",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1ZBTFVFO0tFWV9HT05FO1JFQ0VJVkVSO0NBVUdIVDtLRUVQO0NBUFRVUkU7RE9ORTs=",
+      "stderr_template_base64": ""
+    }
+  ]
+}

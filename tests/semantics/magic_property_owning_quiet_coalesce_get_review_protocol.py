@@ -198,7 +198,7 @@ $eager_property_class_valid(S,S.OBJECTS[n_receiver]) /\ ~$instance_storage_freei
 $heap_owners($heap_graph(S),HOBJECT n_receiver) = 2
 ~$property_magic_cv_result_supported(S,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,KNOWN (POBJECT (|S.OBJECTS|)))
 ~$property_magic_cv_result_supported(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_receiver)],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)
-~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAP eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)
+~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAPENTRIES eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)
 $heap_owners($heap_graph(S_release_raw),HOBJECT n_receiver) = 1
 $task_nodes(DESTRUCTOR_OPERATION_EXIT pdestructionoperation) = [HOBJECT n_receiver]
 $heap_owners($heap_graph(S_one),HOBJECT n_receiver) = 2

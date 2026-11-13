@@ -197,7 +197,7 @@ $property_empty_truth(S,POBJECT n_receiver) = eps
 $heap_owners($heap_graph(S),HOBJECT n_receiver) = 2
 ~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,true,KNOWN (POBJECT (|S.OBJECTS|)))
 ~$property_magic_cv_result_supported(S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_receiver)],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
-~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAP eps],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
+~$property_magic_cv_result_supported(S[.OBJECTS[n_receiver] = WEAKMAPENTRIES eps],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
 PhpStep: S ~> S_cached_raw
 S_cached_raw.TODO = (PROPERTY_EMPTY_RV ppropertyemptyrv) :: ptask_tail*
 ppropertyemptyrv.EMPTY = ppropertyempty /\ ppropertyemptyrv.OWNER = 0 /\ ppropertyemptyrv.CALLER = eps /\ ppropertyemptyrv.TAIL = ptask_tail*

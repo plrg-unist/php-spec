@@ -47,7 +47,7 @@ COMMON = [
     r'S_duplicate = S[.OBJECTS = S.OBJECTS ++ [ENUMCASE porigin_case]][.ALLOCATIONS = S.ALLOCATIONS ++ [HOBJECT (|S.OBJECTS|)]]',
     r'$enum_case_object(S_duplicate,n_case) = eps',
     r'~$property_magic_cv_result_supported(S_duplicate,ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S_duplicate.RESULT)',
-    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_case] = WEAKMAP eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)',
+    r'~$property_magic_cv_result_supported(S[.OBJECTS[n_case] = WEAKMAPENTRIES eps],ppropertycoalesce.SITE,ppropertycoalesce.LINE,true,S.RESULT)',
     r'$lookup(S.ENV,$ptascii("reader")) = (n_reader)',
     r'$lookup(S.ENV,$ptascii("selector")) = (n_selector)',
     r'S.STORE[n_reader] = DEFINED PNULL',

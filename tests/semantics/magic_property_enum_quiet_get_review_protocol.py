@@ -106,7 +106,7 @@ $property_magic_cv_empty_source(S,ppropertyempty.SITE,ppropertyempty.LINE)
 ~$property_magic_cv_result_supported(S,ppropertyempty.SITE,ppropertyempty.LINE,false,S.RESULT)
 ~$property_magic_cv_result_supported(S_wrong,ppropertyempty.SITE,ppropertyempty.LINE,true,S_wrong.RESULT)
 ~$property_magic_cv_result_supported(S_duplicate,ppropertyempty.SITE,ppropertyempty.LINE,true,S_duplicate.RESULT)
-~$property_magic_cv_result_supported(S[.OBJECTS[n_case] = WEAKMAP eps],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
+~$property_magic_cv_result_supported(S[.OBJECTS[n_case] = WEAKMAPENTRIES eps],ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
 $lookup(S.ENV,$ptascii("selector")) = (n_selector)
 S.STORE[n_selector] = DEFINED pvalue_selector
 $string_bytes(pvalue_selector) = ($ptascii("changed"))
