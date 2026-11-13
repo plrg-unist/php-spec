@@ -1166,6 +1166,51 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+;; An unrelated Warning handler stages a sole precision Deprecated notice.
+;; Reconvert the original current left value before accepting its saved integer.
+def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
+  -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion 0) :: ptask_tail*
+  -- if S.COMPLETION = NORMAL
+  -- if S.RESULT = KNOWN PNULL
+  -- if S_next.COMPLETION = THROWING n_exception
+  -- if $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)
+  -- if pintegeroperation.OP = MODULO /\ ~pintegeroperation.SWAPPED
+  -- if $integer_warning_valid(S, pintegeroperation, INTEGER_RIGHT i_left, pintegerconversion, 0)
+  -- if $integer_pointer_select(S, pintegeroperation.LEFT) = (pintegeroperation.LEFTPOINTER)
+  -- if $integer_pointer_select(S, pintegeroperation.RIGHT) = (pintegeroperation.RIGHTPOINTER)
+  -- if z = pintegeroperation.LINE
+  -- if $ob_object_error_operand_value(S, pintegeroperation.LEFT, [PCFIELD 0], z) = (pvalue_left)
+  -- if $ob_object_error_operand_value(S, pintegeroperation.RIGHT, [PCFIELD 1], z) = (pvalue_right)
+  -- if $integer_pointer_value(S, pintegeroperation.LEFTPOINTER) = (pvalue_left)
+  -- if $integer_pointer_value(S, pintegeroperation.RIGHTPOINTER) = (pvalue_right)
+  -- if $integer_conversion(pvalue_left) = (pintegerconversion_left)
+  -- if pintegerconversion_left.VALUE = i_left
+  -- if (z_level, ptbytes_notice)* = pintegerconversion_left.NOTICES
+  -- if z_level* = [8192]
+  -- if $integer_conversion(pvalue_right) = (pintegerconversion)
+  -- if pintegerconversion.VALUE = 0 /\ pintegerconversion.NOTICES = eps
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_left) = eps \/ $ob_object_string_value(S, pvalue_left)
+  -- if $string_bytes(pvalue_right) = eps \/ $ob_object_string_value(S, pvalue_right)
+  -- if S.HELD = eps /\ $tasks_nodes(S.TODO) = eps /\ S.RETIREDOWNERS = eps
+  -- if $base_nodes(S.BASE) = eps
+  -- if $ob_object_final_native_method(S) = (pobobjectreturn)
+  -- if $call_current_valid(S)
+  -- if $integer_standard_object_handlers(S, POBJECT pobobjectreturn.OBJECT)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $function_at($all_functions(S), pcallcontext.FUNCTION) = (pfunction)
+  -- if S.ORIGIN = (porigin_operator)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 0], pintegeroperation.LEFT) = (n_rank_left)
+  -- if $integer_slot_rank(S, porigin_operator, [PCFIELD 1], pintegeroperation.RIGHT) = (n_rank)
+  -- if (n_rank_left = 1 /\ ((n_rank = 1 /\ pfunction.CVS = eps /\ S.CVS = eps /\ S.ENV = eps) \/ n_rank = 8)) \/ (n_rank_left = 8 /\ (n_rank = 1 \/ n_rank = 8))
+  -- if $ob_object_division_operator(S, porigin_operator) = (MODULO)
+  -- PhpStep: S ~> S_raw
+  -- if S_raw.COMPLETION = THROWN "DivisionByZeroError" preqbytes_message z
+  -- if S_raw.RESULT = KNOWN PNULL /\ S_raw.EVENTS = S.EVENTS /\ S_raw.STORE = S.STORE
+  -- if S_next = $throwable_transition(S, S_raw)
+  -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
+  -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
+  -- if $ob_object_return_error_live(S_next, pobreturnerror)
 def $ob_object_division_error_capture(S, S_next) = eps -- otherwise
 def $source_exception_transition(S, S_next) = $ob_object_final_capture(S_next, pobobjectreturn, $ob_object_cv_preserve(pobobjectreturn.SOURCE, (OBJECT_DIVISION_ERROR pobreturnerror)))
   -- if $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
