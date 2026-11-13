@@ -28,7 +28,7 @@ retires the private cell before catch. Reference returns retain their real cells
 The certificate binds the emitting origin, exact positional prefix/vector modes,
 fixed or variadic destination and emitted Notice line. Actual reference producers
 remain quiet, while TMP values still raise their argument Error before the
-handler. Wider producers, object-containing array fields, raw/NUL strings, wider owning values, typed root sources,
+handler. Wider producers, property sources beneath object fields, raw/NUL strings, wider owning values, typed root sources,
 unpack and callback lifetimes remain partial. See the
 [positional Notice review](../../coverage/semantics/positional-reference-send-notice-review.json).
 
@@ -101,7 +101,7 @@ native count units, immutable tables and every table reachable from a
 compiled-pool root. Existing root-array admission is unchanged.
 
 USER object payloads, INDIRECT/uninitialized entries,
-object-containing array fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
+property sources beneath object fields, raw/NUL strings and wider producer/callback lifetimes remain partial.
 The [array-cell review](../../coverage/semantics/alias-child-reference-notice-review.json)
 records source, physical-owner, COW, cleanup and budget cuts separately. Earlier
 [DIRECT-graph](../../coverage/semantics/direct-child-reference-notice-review.json),
@@ -491,9 +491,25 @@ array fields stay object-free. Three new Notice sources and one separate quiet
 control agree, with two Unsupported cycle controls and six native originals once.
 Separate fixture-SL399/350 retain 507-module cuts. One quiet expected-output
 correction reused unchanged source/native facts; its original failed expectation
-keeps zero credit. Existing source/backing/history/GC guards and Owned-NUL remain;
-mixed object/array fields and wider contexts stay partial. See the
+keeps zero credit. Existing source/backing/history/GC guards and Owned-NUL remain.
+At that cut, mixed object/array fields stayed partial. See the
 [ALIAS-object-field review](../../coverage/semantics/stdclass-alias-object-field-reference-notice-review.json).
+
+Finite mixed array/object paths now cross DIRECT and ordinary ALIAS fields.
+Separate array and object ancestor lists travel across both edge kinds, allowing
+shared siblings and equal numeric IDs while rejecting alternating cycles.
+Table COW adds physical entry edges; it preserves shared object identity and
+one current payload edge per cell. Exported aliases can outlive parent objects,
+and payload replacement can retire a table or object before its cell aliases.
+Repeated mixed-graph throw cleanup retires the last-owned cluster before catch.
+Three new Notice sources and a separate quiet control agree, using seven native
+originals once; two alternating cycles and a finite typed-source graph remain
+Unsupported. Separate fixture-SL462/434 retain 507-module cuts and the original
+fixture failures keep zero credit. Object fields still require ordinary cells:
+property-source validation below an object ancestor stays excluded, preserving
+the earlier root-array source route. Mutable nonpool field headers, existing
+cell/source/backing/history/GC bounds and Owned-NUL are unchanged. See the
+[mixed-field review](../../coverage/semantics/mixed-object-array-field-reference-notice-review.json).
 
 Default Notices without a selected handler use that same inner CV line on the
 bounded completed-producer route. Matching SEND tasks, current quiet payloads

@@ -1,0 +1,286 @@
+{
+  "milestone": "REF48",
+  "status": "independently reviewed bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": "removed"
+  },
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "dc2c65a032b59b1aa57522af8293debc66c159090a9d03306a1ee0afb2381949",
+    "revision": "9cd14c045",
+    "law": "Four internal walkers carry separate array and object ancestor vectors across DIRECT/ordinary ALIAS edges. Each node pushes only its own namespace and sibling tails keep parent paths. Existing graph/public arities remain wrappers. Two field object-free fences are replaced by finite contextual traversal; an early empty-object-path guard keeps typed-source validation in its existing root-array context.",
+    "unchanged": "Every field-root mutable/nonpool/header guard, scalar/authentication rule, ordinary CELL/source/backing/coercion/container/history/native predicate, quiet object/class/liveness/table/destruction/GC/WeakMap rule, source qualifier, generic ownership, signatures/schema and Owned-NUL hold.",
+    "source_symbols": [
+      "Zend/zend_object_handlers.c: zend_std_write_property",
+      "Zend/zend_execute.c: zend_assign_to_property_reference, zend_assign_to_variable_reference",
+      "Zend/zend_objects.c: zend_object_std_dtor, zend_object_dtor_dynamic_properties",
+      "spec/semantics/270-eager-destructors.watsup: property_release_nodes"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/stdclass-mixed-array-object-field-reference-notice-48",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "26915cab2814c81acfded90f047f2020ddc1e87c3285b34c42b7d6201bed5805",
+    "revision": "a88261d51a098eaa96fd6238eaf58a634feed362",
+    "paths": 9,
+    "make_recipe": "python3 -B tests/semantics/mixed_object_array_field_reference_notice_run.py",
+    "runner_executed": false,
+    "registration_validation": "Independent pointwise review, five Python compilation checks, two JSON catalogues and one serial Make recipe. No legacy test edits. Separate REF47 prose/metadata and later REF49 preparation are excluded; serial runner not executed."
+  },
+  "counts": {
+    "current_native_originals_once": 7,
+    "total_physical_native_observations": 7,
+    "superseded_native_preparations": 0,
+    "native_replays": 0,
+    "newly_admitted_notice_agreements": 3,
+    "separate_prelaw_quiet_control_agreements": 1,
+    "expected_unsupported_cycle_sources": 2,
+    "expected_unsupported_finite_typed_source_controls": 1,
+    "historical_ref47_renewed": false
+  },
+  "native_provenance": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "c25e14c74ad7b2353a867d0f1d35f8471e486b54f6c3ce31df1433c8567e5a70",
+      "revision": "ca0a433ffd8154227b282bafb2108104621d3571",
+      "originals": 3,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-normal-v1/report.json",
+      "sha256": "b6e047fe16b2612a5bc654ff30b563c9b7ffdfa690130ebd6470f77de9442c20",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "originals": 1,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-object-array-cycle-v1/report.json",
+      "sha256": "5ed328f1fd918c8a894ce1a925f6dfc4b12fada27fb46811fe4b45f55af622c3",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "originals": 1,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-array-object-cycle-v1/report.json",
+      "sha256": "48b9eae5554fedeca409eb8d615ed1aca637610db6a9304c5238c1dcc6e191aa",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "originals": 1,
+      "source_agreements": 0
+    },
+    {
+      "report": "peer/notice-native-typed-source-hold-v1/report.json",
+      "sha256": "debbd23611d3c55320df16eff56e7cadc591f7fd86d7b71d8499baaa4e1803a5",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "originals": 1,
+      "source_agreements": 0
+    }
+  ],
+  "accepted_sources": [
+    {
+      "report": "author/notice-source-v1/source-sew0cwlp/report.json",
+      "sha256": "b9f15df9872fa2e7d7137e3c146f214513a65d8b4e685950eb9a26e4409a11d0",
+      "revision": "a88261d51a098eaa96fd6238eaf58a634feed362",
+      "normal_agreements": 2,
+      "saved_native_reused": true,
+      "model_seconds": [
+        156.71638131141663,
+        37.66929769515991
+      ],
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_author_state": 516
+    },
+    {
+      "report": "peer/notice-source-normal-v1/report.json",
+      "sha256": "48bbfd3b43e929eb655be60349ffd77f4f94eca921a0dd7f4c332233e6f431c6",
+      "revision": "1dd57e386bf3de6b5448cf3468163832d0c6d9cf",
+      "normal_agreements": 1,
+      "expected_unsupported": false,
+      "saved_native_reused": true,
+      "model_seconds": 142.18283486366272,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    },
+    {
+      "report": "peer/notice-source-object-array-cycle-v1/report.json",
+      "sha256": "26e15ebdc19c05ed7b47917bab08e6a9c12a3916b6148ddf76054eab1abeab69",
+      "revision": "1dd57e386bf3de6b5448cf3468163832d0c6d9cf",
+      "normal_agreements": 0,
+      "expected_unsupported": true,
+      "saved_native_reused": true,
+      "model_seconds": 18.325584173202515,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    },
+    {
+      "report": "peer/notice-source-array-object-cycle-v1/report.json",
+      "sha256": "33d906514183af89ae8ddd653104e3dd130d568e5a3aae8de43b4cebf6441055",
+      "revision": "1dd57e386bf3de6b5448cf3468163832d0c6d9cf",
+      "normal_agreements": 0,
+      "expected_unsupported": true,
+      "saved_native_reused": true,
+      "model_seconds": 18.837761878967285,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    },
+    {
+      "report": "peer/notice-source-typed-source-hold-v1/report.json",
+      "sha256": "b8c2ad200eca373ef6113d4479e9ae0c62d5b3ffde6831cc068b08161240c913",
+      "revision": "1dd57e386bf3de6b5448cf3468163832d0c6d9cf",
+      "normal_agreements": 0,
+      "expected_unsupported": true,
+      "saved_native_reused": true,
+      "model_seconds": 20.70317053794861,
+      "process_cap_seconds": 195,
+      "exact_shared_inputs_with_peer_state": 522
+    }
+  ],
+  "separate_fixture_sl_cuts": [
+    {
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "bf74ebd5704bc3e2f051fcbc3fce028617f9dbe3ff2084a491d94040ed19e5d5",
+      "revision": "a88261d51a098eaa96fd6238eaf58a634feed362",
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 462,
+      "reached": 401,
+      "derived": 61,
+      "heap_bindings": 12,
+      "seconds": 468.7527873516083,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-state-v2/report.json",
+      "sha256": "2de803cd6fb6a2e69d9f5a655911dd8c073394cba4278cc740698de93cd9f86d",
+      "revision": "1dd57e386bf3de6b5448cf3468163832d0c6d9cf",
+      "source_agreements": 0,
+      "module_count": 507,
+      "conditions": 434,
+      "reached": 365,
+      "derived": 69,
+      "heap_bindings": 13,
+      "seconds": 347.743017911911,
+      "cap_seconds": 1200
+    }
+  ],
+  "behavior_evidence": {
+    "author": "Actual DIRECT field ARRAY2 owns two physical NODE edges; the node owns one CELL edge and that cell owns one leaf. Handler outside-table COW and old-root retirement preserve shared objects; selected body live-copy arrays1/1 share NODE3, then copy retirement leaves NODE1. Exported child cell survives root/table/node Weak notifications, and scalar payload replacement retires each leaf before cell aliases. Sole throw root1\u2192ARRAY1\u2192NODE2\u2192CELL2\u2192leaf1 retires all before catch. Quiet COW reaches three table roots and five Weak notifications.",
+    "peer": "An ALIAS array field exposes one current table edge despite CELL3 incoming owners. Handler and body COW yield separate current/copy/outside tables with shared object and scalar-cell edges; removing the object, outside table, repeated child edges and final cell payload separates table/object lifetimes from cell aliases. Actual array/object ID collisions remain positive after removing an unrelated parent allocation assumption.",
+    "typed_source_hold": "The real finite heap Holder\u2192A\u2192ARRAY\u2192typedCELL\u2192B has Holder.p as the reciprocal property source and Holder.q as DIRECT A. The source-owner validation path can revisit A, while the owned payload graph has no backedge to Holder or A. This is a source-context hold, not a payload cycle. The empty-object-path source-arm guard prevents recursive public-wrapper validation beneath an object ancestor; earlier root-array source routes remain intact.",
+    "byte_writes": "Actual raw PSTRING32/18/2Z/Y9 values have unknown identity. Original/current metadata carriers stay authenticated pointwise; no fresh REQUEST identity or global STRINGDATA equality is claimed."
+  },
+  "prelaw_evidence": [
+    {
+      "report": "author/notice-baseline-v1/source-h7omepyc/report.json",
+      "sha256": "18141bf578fb9e53c31d89d48bdceeba0dfefdc104cafa5e9e0e5cf5975a0dc1",
+      "revision": "ca0a433ffd8154227b282bafb2108104621d3571",
+      "result": "selected Notice2 expected Unsupported/source0; separate quiet normal1"
+    },
+    {
+      "report": "peer/notice-baseline-normal-v1/report.json",
+      "sha256": "b3f5d31a9c0ee478f04d50afffa5c5587eff459262e73f1e7976724a0a5272ee",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "peer/notice-baseline-object-array-cycle-v1/report.json",
+      "sha256": "892382675fa8a754c1586235b85a9af831d4745c6c4191f58371e11ddd5d7801",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "peer/notice-baseline-array-object-cycle-v1/report.json",
+      "sha256": "b0b21ace239cf3cdff843b067989d2ec1a423c8cd2ee0c5913f2f1217c72b212",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "peer/notice-baseline-typed-source-hold-v1/report.json",
+      "sha256": "9a3e71bfe2d472f31ca00fa125ea54fef75985b8b9e495222f8029543dcfb759",
+      "revision": "dd5ab76e9048dc17f23aa344cf86ff4000d152e4",
+      "result": "expected Unsupported/source0"
+    },
+    {
+      "report": "author/notice-front-v2/report.json",
+      "sha256": "900794de1f6f2382ef102c022bcfbc39dc733c151f5fceb8d97555374c17c720",
+      "revision": "1c9b15158d680f1c26027f93ba7d62025c10588a",
+      "result": "actual mixed owner graph and valid scalar projection open prior gate; alternating cycles/finite source holder grounded separately; source0",
+      "conditions": 241,
+      "reached": 227,
+      "derived": 14,
+      "heap_bindings": 5,
+      "seconds": 271.4376633167267,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-front-v1/report.json",
+      "sha256": "94ae537de30622c87264c218e55eed7b901fafece8dd602992e6140c74d9444c",
+      "revision": "494dab77dea716b740fae0f6a398daa7e6db56e3",
+      "result": "actual mixed owner graph and valid scalar projection open prior gate; alternating cycles/finite source holder grounded separately; source0",
+      "conditions": 271,
+      "reached": 247,
+      "derived": 24,
+      "heap_bindings": 5,
+      "seconds": 129.8579785823822,
+      "cap_seconds": 1200
+    }
+  ],
+  "affected_current_controls": "No legacy script, case expectation or native source changed. Remaining older negative array controls are pooled/immutable roots or genuine cycles; public helper arities and old root-array source predicates remain. No older campaign was replayed.",
+  "preserved_failures": [
+    {
+      "report": "author/notice-front-v1/report.json",
+      "sha256": "708636b1aea95af3c64a00e0f4e5ea0d1b2ea71276c286f35acdcfc76b080a23",
+      "revision": "39b03a8e2f68547af448f11cb82dd4122d19582c",
+      "passed": false,
+      "source_agreements": 0,
+      "role": "Fixture syntax only: two internal blank lines emitted empty premises; remove those two lines, then rerun the affected front with unchanged source/native/rule/cap.",
+      "seconds": 0.5557045936584473,
+      "cap_seconds": 1200
+    },
+    {
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "65a38c4e242bc39af51e334417a1e3d8a79303d81a983d79e39e5dc9382123b2",
+      "revision": "080af7fe5d71d9d5d5cc7575fc932a7c4a5d8fe4",
+      "passed": false,
+      "source_agreements": 0,
+      "role": "Fixture ID assumption only: an earlier WeakReference allocation makes parent OBJECT ID differ from root ARRAY ID. Remove that equality while retaining two actual object/array ID collisions; all reached lifetime/COW facts preceded it, later negative controls were not accepted until corrected v2.",
+      "seconds": 275.86705780029297,
+      "cap_seconds": 1200
+    }
+  ],
+  "independent_review": {
+    "reviewer": "/root/recover2_references_40_review",
+    "decision": "WHOLE9 pointwise READY and mutual FULLCLEAR32 sent before prose. Four paired walkers/stable wrappers, original source/native authority, actual alternating cycles and finite source hold, separate source/state cuts, COW/export/cancellation/Weak lifetimes and static serial registration reviewed.",
+    "continuation_reviewer": "/root/recover3_reference_args_review"
+  },
+  "actual_main_composition": {
+    "revision": "a70ef6338b91c802f3543dc08a6cfecc214a0f5a",
+    "review": "Eight non-Make paths match the canonical manifest and one serial Make recipe remains. Paired207 walkers/public arities/SOURCE-context gate compose with407/408 NULL/string Get,425 plain KEYREF=false closed21/current-UNDEF and456 quiet MOD capture; their source/class/frontier guards and generic owner APIs remain distinct. No30/schema/ownership or private campaign renewal."
+  },
+  "actual_joined_load": {
+    "revision": "a70ef6338b91c802f3543dc08a6cfecc214a0f5a",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main32-null-plain-ref48-ob93-joined-508-v1/report.json",
+    "sha256": "81d0bea388ac41ca8a46ca749f1eb2aae7c300c919935b133848da316ea1d109",
+    "mode": "production_SL",
+    "module_count": 508,
+    "seconds": 15.388790074037388,
+    "cap_seconds": 60,
+    "argv_paths": 511,
+    "watched_paths": 512,
+    "source_agreements": 0,
+    "passed": true
+  },
+  "validation": "Accepted cuts retain original source bytes/profile, stable inputs/HEAD, quiet raw streams and reaped groups. Sources use180s model/195s process caps; fixtures1200s. Seven native originals ran once with no source replacement, superseded preparation or replay. Baselines, fronts, three Unsupported controls, fixtures, two failed fixture cuts and joined load have zero new Notice source credit. Separate physical fixture cuts are not a unique aggregate. The author immutable-header control was corrected before its first full run; no execution was repeated for that pre-run edit.",
+  "remaining_core_work": "Property-source validation beneath object ancestors, pool/immutable field roots, raw/NUL or unknown-identity string ingress and wider producer/callback/source/backing/lifetime contexts remain partial. Existing cell/history/native/GC/WeakMap/table guards and Owned-NUL hold remain unchanged."
+}
