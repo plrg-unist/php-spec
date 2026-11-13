@@ -79,6 +79,10 @@ test-semantics: build
 	  python3 -B tests/semantics/startup_version_constants_sources.py --output "$$out/source" && \
 	  python3 -B tests/semantics/startup_version_constants_compiler.py --sl --native-baseline "$$out/source" --output "$$out/compiler" && \
 	  python3 -B tests/semantics/startup_version_constants_review.py --output "$$out/review"
+	@out="$$(mktemp -d .tools/startup-bool-constants-XXXXXX)" && \
+	  python3 -B tests/semantics/startup_bool_constants_sources.py --output "$$out/source" && \
+	  python3 -B tests/semantics/startup_bool_constants_compiler.py --sl --native-baseline "$$out/source" --output "$$out/compiler" && \
+	  python3 -B tests/semantics/startup_bool_constants_review.py --output "$$out/review"
 	python3 tests/semantics/float_round_overflow_fastpath.py
 	python3 tests/semantics/compiler_lookup_tails.py
 	python3 tests/semantics/property_hook_parameter_list_sources.py --output "$$(mktemp -d /tmp/php-spec-hook-parameters.XXXXXXXX)/source"
