@@ -203,7 +203,7 @@ def render(program, filename_b64):
         '$string_read_resume(S_prior_interned, pstringread) = S_prior_interned[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]',
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PNULL), LEVELS 0}]], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK ($string_plain(perrorcall_cast.CALLBACK)), LEVELS 2}]], pkeyread)',
-        '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER INTERNED_STRING [0]), LEVELS 2}]], pkeyread)',
+        '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER INTERNED_STRING ([0])), LEVELS 2}]], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (POBJECT 0), LEVELS 2}]], pkeyread)',
         # A saved callback may own this exact header even with no ordinary keeper.
         'S_stack = S[.ERRORHANDLERS = [{CALLBACK (pkeyread.BASE), LEVELS 0}]]',

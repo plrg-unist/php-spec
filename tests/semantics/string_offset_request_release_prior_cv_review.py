@@ -167,7 +167,7 @@ def render(program, filename_b64):
     checks += [
         # Raw, NUL and unknown callback payloads cannot close the provider frontier.
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK ($string_plain(perrorcall.CALLBACK)), LEVELS 2}]], pkeyread)',
-        '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER INTERNED_STRING [0]), LEVELS 2}]], pkeyread)',
+        '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (PSTRING_CARRIER INTERNED_STRING ([0])), LEVELS 2}]], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLERS = [{CALLBACK (POBJECT 0), LEVELS 2}]], pkeyread)',
         '~$string_read_cv_released(S[.ERRORHANDLER.CALLBACK = eps], pkeyread)',
     ]
