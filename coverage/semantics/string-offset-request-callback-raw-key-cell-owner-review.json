@@ -1,0 +1,101 @@
+{
+  "feature": "string-offset-request-callback-raw-key-cell-owner",
+  "status": "Independently reviewed source/test packet READY; wider string offsets and complete core remain partial",
+  "scope": "Normal CAST completion with immutable KEYREFfalse reads valid non-NUL in-range raw PSTRING bytes from the actual live ordinary current key cell after the selected REQUEST-base callback owner is removed. The unchanged provider must still authenticate the exact selected base header in its original cell or an admitted real ENV retainer.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_size": 8,
+    "source_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "profile": "tests/semantics/profile.json",
+    "modules": 508,
+    "pstate_fields": 155
+  },
+  "commits": {
+    "source": "6788b511fe1e4883e04f4b42263fad1e203494b3",
+    "implementation": "b3056732085193b3266586b4b9262f832972893f",
+    "author_tests": "4cb67d766c69a8d49b92e1cb6e23245da76c1ba3",
+    "peer_tests": "9baadd7c59fa8686a640aa1baf1c61aaea70fc69",
+    "author_peer_copy": "93e4a1be9",
+    "selection": "Seven non-Make paths and two added Make commands",
+    "production_sha256": "e26fe2689351d90cd0908a093edbef1571218e9b3c1f8efa087f31467f8b3bc1"
+  },
+  "source_basis": "Zend/zend_execute.c zend_fetch_dimension_address_read selects str before the CAST Warning, detects base-header death after it, and then zval_get_long_func(false) silently converts the live key payload. Removing a callback registration does not kill a header still owned by a real cell. Zend/zend.c restores the raw active handler only when its slot remains UNDEF; two genuine restore calls leave the named handler with mask0 and an empty prior stack in these originals.",
+  "implementation": "One disjoint23-line private callback_raw_key arm retains NORMAL/exact TODO/STRING_CAST/KEY_NULL/VARIABLE REQUEST base/source/provider/static nonblocked key/full-heap authority. Existing string_read_cell supplies current ordinary-cell pruning, released-cell and absent-backing constraints; defined raw bytes, non-NUL validity, in-range pure conversion and the existing closed21-field state projection remain required. No new root, copy, cast callback or registry owner is added.",
+  "unchanged": "Both existing callback-owned raw arms, generic source/base/key capture, provider/retainer, last-owner release, throw/discard, conversion, pstate and immutable KEYREF schema remain literal. Prior marked and captured-initial-reference raw routes still require their existing callback owner.",
+  "evidence": [
+    {
+      "kind": "native2_once_and_unchanged_Unsupported_models",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-author-20261114/baseline/report.json",
+      "sha256": "104157d1a9b6c62452f4f12c2ede668f145d08ecb840be69f04e15a094f49bea",
+      "source_credit": 0
+    },
+    {
+      "kind": "prelaw_full155_A",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "1a31992684d07dfb03a73020365a149dd88e34de3ef1ba617b42f9970ab9a586",
+      "conditions": 33,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_prelaw_full155_B",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-peer-20261114/precode-b-sl-v1/report.json",
+      "sha256": "bb192bf2177dbd37dfebdc13c517943155f3dde50bed88ff671ac27775499a96",
+      "conditions": 33,
+      "source_credit": 0
+    },
+    {
+      "kind": "production_SL_original_source2_saved_native_reuse",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-author-20261114/source-v1/report.json",
+      "sha256": "6554eb39fd3890ba8ea2052065e1e2e2a210778b15f1ef0664d26572418cc8f3",
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "author_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-author-20261114/state-a-v2/report.json",
+      "sha256": "4edd08dacb1c2b9e41b4924dc45740f2767631645da0ec1cb11abe4b19f0d3c4",
+      "premises": 182,
+      "derived_conditions": 102,
+      "source_credit": 0
+    },
+    {
+      "kind": "independent_fixture_SL",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-peer-20261114/state-b-v4/report.json",
+      "sha256": "d09e85f02f8c504081af962fe209c0badbd551b4b60f8618d910ce3e25c8574b",
+      "premises": 212,
+      "derived_conditions": 104,
+      "source_credit": 0
+    }
+  ],
+  "frontiers": "Both prelaw exports contain all155 fields and validate the existing closed21 projection, without inventing changed fields. A has18 changed/137 initial fields: selected base2 REQUESTabc and key3 ordinary raw, five actual HCELL/roots, REF[], CELL3/ROOT0. B has20 changed/135 initial: original base2 physically retired, keeper3 REQUESTabc and key4 ordinary raw each rooted once, currentbase11 REFINT99, six HCELL/roots, REF[11], CELL4/ROOT2. Both have no heap edges/debts, STRINGDATAonlyabc and named handler mask0/prior stack empty. Source/provider authenticate while both callback-retention predicates fail. No cell/ROOT guess preceded export.",
+  "validation": "The two current production-SL originals agree exactly with the native observations captured once at baseline; unchanged models remain Unsupported/source0. Separate A182 and independent B212 fixture-SL cuts test live selected/retainer owners, atomic no-owner-added completion, budget resume, old-byte selection, equal-byte distinct-header/registry/stale-cell refusal, marked/reftrue owner-loss refusal and source/heap/constraint/byte/range/closed-state controls. All passing runs are quiet, stable, generated-stable and fully reaped under source60/outer80, compiler120 and state180 caps. No unique aggregate is claimed.",
+  "affected_controls": "Exactly three obsolete ordinary_raw S_hidden refusal assertions are promoted: author key_current/resume and peer key_current. New source-reached A/B actual got-cell keeper projections execute their replacement obligations. Old whole campaigns retain their own revisions, failures and counts without replay or renewed credit; earlier marked/reftrue hidden-owner refusals remain literal.",
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-author-20261114/state-a-v1/report.json",
+      "cause": "Fixture incorrectly expected pure unset_name to remove a physical allocation; corrected to logical pruning.",
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-peer-20261114/state-b-v1/report.json",
+      "cause": "Compiler binding diagnostic before state execution; keeper/got lookups moved before numeric checks.",
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-peer-20261114/state-b-v2/report.json",
+      "cause": "Fixture expected marked INT99 base_capture, whose existing marked arm accepts only string carriers; corrected to eps.",
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-request-callback-raw-key-cell-owner-peer-20261114/state-b-v3/report.json",
+      "cause": "Fixture optional-nat tuple upcast; corrected to the already typed captured KEYCELL.",
+      "source_credit": 0
+    }
+  ],
+  "review": "Both sources/native baseline/full155 frontiers were independently CONTENT CLEAR before the law. Reviewer independently reviewed the full runtime/A/controller/Make/three old promotions and authored/executed B; author independently reviewed complete B and every narrow fixture correction plus its report. Whole seven non-Make/two-Make author READY and independent FULLCLEAR went directly to MAIN36 before this metadata.",
+  "remaining": "Initial raw-key acquisition/classification, selected NUL, marked-current or captured-initial-reference raw keys after callback-owner loss, zero-owner raw release, abrupt handlers and wider producers/provider/lifetime histories remain partial. All exact named PROGRESS holds remain unchanged.",
+  "recovery": "Raw originals/native/model streams, checked programs, full-state exports, generated fixtures and commands remain in the two external archives above. Tracked --request-callback-raw-key-cell-owner has optional --peer. Archives are evidence, never operational inputs."
+}
