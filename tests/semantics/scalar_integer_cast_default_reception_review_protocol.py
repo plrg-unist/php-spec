@@ -139,7 +139,7 @@ for text, expected in [('1e999', '0'), ('-999999999999999999999999', '$(-9223372
     checks.append(f'$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NScalarString (BYTES "{payload}") metadata_a) metadata_a) = ({expected})')
 checks.extend([
     '$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprBinaryOpConcat expression_string_b (NScalarString (BYTES "") metadata_a) metadata_a) metadata_a) = eps',
-    '$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprBinaryOpPlus (NScalarFloat (FLOAT "401f000000000000") metadata_a) (NScalarFloat (FLOAT "0000000000000000") metadata_a) metadata_a) metadata_a) = eps',
+    '$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprBinaryOpPlus (NScalarFloat (FLOAT "401f000000000000") metadata_a) (NScalarFloat (FLOAT "0000000000000000") metadata_a) metadata_a) metadata_a) = (7)',
     '$lossy_optional_integer_default_in(plenv_source, NExprCastInt (NExprBinaryOpEqual (NScalarInt (INTEGER 1) metadata_a) (NScalarInt (INTEGER 1) metadata_a) metadata_a) metadata_a) = (1)',
     '$lossy_optional_integer_default_in(plenv_source, NExprCastBool expression_b metadata_a) = eps',
     '$lossy_optional_integer_default_in(plenv_source, NExprCastDouble expression_b metadata_a) = eps',
