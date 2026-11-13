@@ -185,13 +185,15 @@ checks.extend([
     f'$lossy_optional_integer_numeric(plenv_source, {minimum_negated}) = (NFLOAT $hex_bits("43e0000000000000", 0))',
     f'$lossy_optional_integer_default_in(plenv_source, {cast(minimum_negated)}) = eps',
 ])
-# Raw scalar coercions, unknown types, selected FLOAT operands and malformed INTs stay out.
+# Raw scalar coercions and invalid operands stay out; existing whole INT certificates retain precedence.
 for child in [true, false, null, yes, no, nil, string('1'), string('1tail'), unknown,
               integer(9223372036854775808), node('NExprVariable', 'BYTES "eA=="'),
               node('NExprArray', 'SEQUENCE eps'), conditional(yes, floating('3fe0000000000000'), unknown)]:
     for constructor in ['NExprUnaryPlus', 'NExprUnaryMinus']:
         expression = node(constructor, child)
-        checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps')
+        whole_min = constructor == 'NExprUnaryMinus' and child.startswith('NScalarInt (INTEGER 9223372036854775808) ')
+        result = '(NINT $(-9223372036854775808))' if whole_min else 'eps'
+        checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 for expression in [node('NExprUnaryMinus', binary('Div', integer(1), integer(0))),
                    node('NExprUnaryPlus', binary('Mul', floating('7fe1ccf385ebc8a0'), integer(2))),
                    node('NExprUnaryMinus', binary('Minus', floating('7ff0000000000000'), floating('7ff0000000000000')))]:
