@@ -176,6 +176,9 @@ def $builtin_value_bytes([80, 72, 80, 95, 77, 65, 74, 79, 82, 95, 86, 69, 82, 83
 def $builtin_value_bytes([80, 72, 80, 95, 77, 73, 78, 79, 82, 95, 86, 69, 82, 83, 73, 79, 78]) = (PINT 5)
 def $builtin_value_bytes([80, 72, 80, 95, 82, 69, 76, 69, 65, 83, 69, 95, 86, 69, 82, 83, 73, 79, 78]) = (PINT 10)
 def $builtin_value_bytes([80, 72, 80, 95, 86, 69, 82, 83, 73, 79, 78, 95, 73, 68]) = (PINT 80510)
+;; register_main_symbols: interned release strings from main/php_version.h.
+def $builtin_value_bytes([80, 72, 80, 95, 86, 69, 82, 83, 73, 79, 78]) = (PSTRING ([56, 46, 53, 46, 49, 48]))
+def $builtin_value_bytes([80, 72, 80, 95, 69, 88, 84, 82, 65, 95, 86, 69, 82, 83, 73, 79, 78]) = (PSTRING eps)
 ;; register_main_symbols: Boolean facts of the pinned nondebug NTS build.
 def $builtin_value_bytes([80, 72, 80, 95, 90, 84, 83]) = (PBOOL false)
 def $builtin_value_bytes([80, 72, 80, 95, 68, 69, 66, 85, 71]) = (PBOOL false)
@@ -231,8 +234,9 @@ def $special_constant(n*) = (PBOOL false)
 def $special_constant(n*) = eps
   -- otherwise
 
+dec $string_literal_value(pvalue) : pvalue
 dec $constant_lookup_bytes(nat*) : peval?
-def $constant_lookup_bytes(n*) = (VALUE pvalue)
+def $constant_lookup_bytes(n*) = (VALUE $string_literal_value(pvalue))
   -- if $builtin_value_bytes(n*) = (pvalue)
 def $constant_lookup_bytes(n*) = (ABRUPT (UNSUPPORTED "initial constant"))
   -- if $builtin_value_bytes(n*) = eps

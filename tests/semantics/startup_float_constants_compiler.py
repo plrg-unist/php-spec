@@ -74,6 +74,7 @@ def main():
              ROOT / 'tests/semantics/recorded_worker.py', ROOT / 'spec/semantics/20-machine.watsup',
              ROOT / 'spec/semantics/23-named-constants.watsup', ROOT / 'spec/semantics/46-source-compiler.watsup',
              ROOT / 'spec/semantics/modules.json', ROOT / '_build/default/adapter/main.exe', runner]
+    paths += [ROOT / path for path in getattr(cases, 'WATCHED', ())]
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     before = {str(path.relative_to(ROOT)): digest(path) for path in paths}
     frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d',

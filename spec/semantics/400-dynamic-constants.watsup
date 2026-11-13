@@ -1380,6 +1380,11 @@ def $dynamic_global_constant_value(S, preqbytes) = (pvalue)
   -- if $special_constant(preqbytes) = eps
   -- if $constant_lookup_bytes(preqbytes) = (VALUE pvalue)
   -- if $constant_nonstring_scalar(pvalue)
+def $dynamic_global_constant_value(S, preqbytes) = (PSTRING_CARRIER INTERNED_STRING n*)
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $special_constant(preqbytes) = eps
+  -- if $constant_lookup_bytes(preqbytes) = (VALUE (PSTRING_CARRIER INTERNED_STRING n*))
+  -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n*)
 def $dynamic_global_constant_value(S, preqbytes) = eps -- otherwise
 def $dynamic_global_constant_finish(S, pconfigcall) = S[.TODO = ptask_tail*][.RESULT = KNOWN pvalue][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $dynamic_global_constant_valid(S, pconfigcall)

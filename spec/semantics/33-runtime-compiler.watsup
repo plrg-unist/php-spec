@@ -32,6 +32,7 @@ def $runtime_line(S, pcpath, expression) = $constant_runtime_line(S, $expression
   -- otherwise
 
 dec $compiled_string_value(pstate, porigin, pvalue) : pvalue
+dec $compiled_read(pstate, porigin) : pvalue?
 dec $compiled_special_concat_bytes(pstate, porigin) : nat*?
 dec $string_order(nat*, nat*) : int
 dec $number_string_precision_order(pnumber, nat*, int) : int
@@ -40,6 +41,13 @@ def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_ST
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $compiled_precision(S, (porigin)) = (z)
   -- if $parser_literal_at(expression, z) = (PSTRING n*)
+;; A folded global fetch comes only from the compiler's builtin substitution.
+;; Installed pools retain the existing compiler-output trust boundary.
+def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch name metadata)
+  -- if $compiled_precision(S, (porigin)) = (z)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if $startup_bytes(n*)
 def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_1 expression_2 metadata)
   -- if $compiled_precision(S, (porigin)) = (z)
@@ -47,7 +55,6 @@ def $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_ST
   -- if $compiled_special_concat_bytes(S, porigin) = (n*)
 def $compiled_string_value(S, porigin, pvalue) = pvalue -- otherwise
 
-dec $compiled_read(pstate, porigin) : pvalue?
 def $compiled_read(S, PORIGIN n pcpath) = $pool_value(S.POOLS, PORIGIN n pcpath)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))

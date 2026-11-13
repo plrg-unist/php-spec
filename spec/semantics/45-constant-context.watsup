@@ -760,6 +760,9 @@ def $pfclass_result(F, pcpath, expression, pvalue) = $pfclass_shape(F, pcpath, $
   -- if $pfredirect(F.REDIRECTS, pcpath) = eps
   -- if $pfclass_literal_at(expression, F.PARSEPRECISION) = eps
 
+def $pfclass_shape(F, pcpath, PFNAME name) = (PVSTRING true)
+  -- if $pnresolve(F.ENV, PLCONSTANT, name) = PNRESOLVED pnreference
+  -- if $pffoldname(F, pnreference) = (PSTRING n*)
 def $pfclass_shape(F, pcpath, PFBINARY pbin expression_left expression_right) = ($pvclass_binary(pbin, $pvclass_operand(pvalue_left), pvalueclass_left, $pvclass_operand(pvalue_right), pvalueclass_right))
   -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 0]) = (pvalue_left)
   -- if $pffact(F.FACTS, pcpath ++ [PCFIELD 1]) = (pvalue_right)

@@ -107,6 +107,10 @@ def $constant_name_class(S, preqbytes, (preqbytes_fallback)) = $constant_name_cl
 def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR
   -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
   -- if $constant_lookup_bytes(preqbytes) = (VALUE pvalue)
+  -- if $constant_nonstring_scalar(pvalue)
+def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSTRING true
+  -- if $user_constant_at(S.USERCONSTANTS, $user_constant_key(preqbytes)) = eps
+  -- if $constant_lookup_bytes(preqbytes) = (VALUE (PSTRING_CARRIER INTERNED_STRING n*))
 ;; The source name was resolved by CODE.NAMES. Classification permits the
 ;; completed runtime fetch; it does not supply a value to constant folding.
 def $constant_name_class(S, preqbytes, preqbytes_fallback?) = PVSCALAR

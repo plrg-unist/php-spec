@@ -29,6 +29,7 @@ def main():
              ROOT / 'spec/semantics/45-constant-context.watsup',
              ROOT / 'spec/semantics/46-source-compiler.watsup',
              ROOT / 'spec/semantics/89-user-constants.watsup']
+    paths += [ROOT / path for path in getattr(cases, 'WATCHED', ())]
     before = {str(path.relative_to(ROOT)): digest(path) for path in paths}
     revision = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
