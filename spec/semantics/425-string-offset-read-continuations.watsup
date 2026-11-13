@@ -5,6 +5,7 @@ dec $string_read_capture(pstate, poperand) : (pvalue, nat?)?
 dec $string_read_base_capture(pstate, poperand) : (pvalue, nat?)?
 dec $string_read_key_quiet(pvalue) : bool
 dec $string_read_key_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
+dec $string_read_key_reference(pstate, nat?) : bool
 dec $string_read_offset(pvalue) : int?
 dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
@@ -114,6 +115,10 @@ def $string_read_key_capture(S, VARIABLE n_name* z, pvalue_base) = ((pvalue, n_c
   -- if $string_bytes(pvalue_base) = (n_bytes*)
   -- if $c_string(n_bytes*) = n_bytes*
 def $string_read_key_capture(S, poperand, pvalue_base) = eps -- otherwise
+;; FETCH_DIM_R dereferences an existing key wrapper before the Warning. A plain
+;; CV instead keeps its variable slot; later reference tags cannot recover this.
+def $string_read_key_reference(S, eps) = false
+def $string_read_key_reference(S, (n)) = (n <- S.REFCELLS)
 def $string_read_offset(PINT i) = (i)
 def $string_read_offset(pvalue) = $offset_cast_integer(pvalue) -- otherwise
 def $string_read_in_range(pvalue, i) = $(i >= 0 /\ i < |n_bytes*|) \/ $(i < 0 /\ -i <= |n_bytes*|)
@@ -231,7 +236,7 @@ def $string_read_plan(S) = (pstringread)
   -- if $array_float_key_scalar(S, pvalue_key) \/ $string_read_leading(pvalue_base, pvalue_key) =/= eps
   -- if $string_read_phase(pvalue_base, pvalue_key) = (pstringreadphase)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
-  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE pstringreadphase}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE pstringreadphase}
   -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
@@ -242,7 +247,7 @@ def $string_read_plan(S) = (pstringread)
   -- if n_key? = (n_selected)
   -- if $string_read_request_leading(S, pvalue_base, pvalue_key) = (i)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
-  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE STRING_LEADING i}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE STRING_LEADING i}
   -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
@@ -253,7 +258,7 @@ def $string_read_plan(S) = (pstringread)
   -- if $string_read_key_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
   -- if $string_read_request_base_leading(S, pvalue_base, pvalue_key) = (i)
   -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
-  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, PHASE STRING_LEADING i}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE STRING_LEADING i}
   -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = eps -- otherwise
 def $string_read_pending(S) = ($error_handler_eligible(S, 2) /\ $string_read_plan(S) =/= eps)
@@ -284,6 +289,7 @@ def $string_read_cv_receipt(pkeyread) = true
 def $string_read_cv_receipt(pkeyread) = false -- otherwise
 def $string_read_cv_source(S, pstringread) = true
   -- if $string_read_cv_receipt(pstringread.READ)
+  -- if ~pstringread.KEYREF
   -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
   -- if $key_read_valid(S, pstringread.READ)
   -- if pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING n_bytes*
@@ -295,6 +301,7 @@ def $string_read_cv_source(S, pstringread) = true
 ;; Authenticate the original source owner, never its callback-rebound value.
 def $string_read_cv_source(S, pstringread) = true
   -- if $string_read_cv_receipt(pstringread.READ)
+  -- if ~pstringread.KEYREF
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_name* z)
   -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
   -- if $key_read_valid(S, pstringread.READ)
@@ -302,6 +309,7 @@ def $string_read_cv_source(S, pstringread) = true
   -- if $string_carrier_valid(S, pstringread.READ.BASE) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_cv_source(S, pstringread) = true
   -- if $string_read_cv_request(pstringread.READ)
+  -- if ~pstringread.KEYREF
   -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL = eps
   -- if $key_read_valid(S, pstringread.READ)
   -- if pstringread.READ.BASE = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
@@ -427,7 +435,7 @@ def $string_read_current_offset(S, pstringread, PARRAY n) = ($cast_truth_int(S, 
   -- if $string_read_cv_key(S, pstringread.READ) = (PARRAY n)
 def $string_read_current_offset(S, pstringread, pvalue) = $string_read_offset(pvalue) -- otherwise
 def $string_read_cv_plan(S, pkeyread) = (pstringread)
-  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
+  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}
   -- if $string_read_source(S, pstringread)
   -- if ~$string_read_cv_request(pkeyread) \/ $string_read_retained(S, pstringread, S.ENV) \/ $string_read_callback_retained(S, pstringread)
 def $string_read_cv_plan(S, pkeyread) = eps -- otherwise
@@ -459,6 +467,7 @@ def $string_read_shape(S, pstringread) = true
   -- if ~$string_read_in_range(pstringread.READ.BASE, i)
 def $string_read_shape(S, pstringread) = false -- otherwise
 def $string_read_source(S, pstringread) = true
+  -- if ~pstringread.KEYREF \/ pstringread.KEYCELL =/= eps
   -- if S.ORIGIN = (pstringread.READ.SITE)
   -- if $origin_node(S.SOURCES, pstringread.READ.SITE) = (NExprArrayDimFetch expression phpType5 metadata)
   -- if ~pstringread.READ.GLOBAL /\ pstringread.READ.MODE = KEY_R
@@ -637,7 +646,7 @@ def $string_read_release_handlers(S, n_selected, perrorhandler :: perrorhandler_
 def $string_read_release_handlers(S, n_selected, perrorhandler*) = false -- otherwise
 def $string_read_cv_released(S, pkeyread) = true
   -- if $string_read_cv_request(pkeyread)
-  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}
+  -- if pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}
   -- if S.TODO = ptask :: ptask_tail*
   -- if ptask = KEY_READ_RESULT pkeyread \/ ptask = STRING_READ_RESULT pstringread
   -- if $string_read_cv_source(S, pstringread)

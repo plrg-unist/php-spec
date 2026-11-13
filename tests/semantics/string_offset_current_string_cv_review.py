@@ -21,7 +21,7 @@ def render(program, filename_b64):
         '~(n_key <- S.REFCELLS)',
         '$heap_owners($heap_graph(S), HCELL n_key) = 1',
         '$string_read_cv_plan(S, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_source(S, pstringread)',
         '$string_read_cv_key(S, pkeyread) = (pvalue_first)',
         '$string_read_key_current(S, pstringread) = (pvalue_first)',

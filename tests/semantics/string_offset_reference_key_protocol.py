@@ -22,6 +22,7 @@ def conditions(program, path, thrown):
     checks = ['S_initial = $php_run(' + program + ', 0, ' + encoded + ')',
               'S_initial.COMPLETION = BUDGET'] + seek('S_initial', 0, 'S') + lines(r"""
 $string_read_plan(S) = (pstringread)
+pstringread.KEYREF
 pstringread.PHASE = STRING_CAST /\ pstringread.READ.LINE = 5
 pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING ($ptascii("abc"))
 pstringread.READ.VALUE = PFLOAT 4609434218613702656

@@ -93,7 +93,7 @@ def render(program, filename_b64):
         '$string_read_cell(S_key, n_keeper)',
         'S_key.STORE[n_keeper] = DEFINED pkeyread.BASE',
         'S_key.STRINGDATA[n_identity] = $ptascii("abc")',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$key_read_valid(S_key, pkeyread)',
         '$string_read_cv_request(pkeyread)',
         '$string_read_cv_receipt(pkeyread)',

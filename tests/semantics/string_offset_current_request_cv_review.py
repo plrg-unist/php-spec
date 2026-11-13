@@ -17,7 +17,7 @@ def render(program, filename_b64):
         '$lookup(S.ENV, pkeyread.NAME) = (n_key)',
         'S.STORE[n_key] = DEFINED (PINT 1)',
         '$string_read_cv_plan(S, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_cv_key(S, pkeyread) = (PINT 1)',
         '$string_read_current_offset(S, pstringread, PINT 1) = (1)',
         '$string_read_source(S, pstringread)',

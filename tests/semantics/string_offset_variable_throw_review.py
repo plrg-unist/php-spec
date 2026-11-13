@@ -48,7 +48,7 @@ def render(program, filename_b64):
         '$key_read_valid(S_discard, pkeyread)',
         '$string_read_cv_receipt(pkeyread)',
         '$string_read_cv_plan(S_discard, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_cv_source(S_discard, pstringread)',
         '$origin_child((pkeyread.SITE), [PCFIELD 0]) = (porigin_base)',
         '$compiled_read(S_discard, porigin_base) = eps',

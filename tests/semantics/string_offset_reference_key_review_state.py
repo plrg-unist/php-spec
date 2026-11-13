@@ -64,6 +64,7 @@ def initialize(program, source):
 def source_conditions(program, source, thrown):
     checks = initialize(program, source) + lines(r'''
 $string_read_plan(S_entry) = (pstringread)
+pstringread.KEYREF
 pstringread.PHASE = STRING_CAST /\ pstringread.READ.LINE = 5
 pstringread.READ.BASE = PSTRING_CARRIER INTERNED_STRING ($ptascii("abc"))
 pstringread.READ.VALUE = PFLOAT 4609434218613702656

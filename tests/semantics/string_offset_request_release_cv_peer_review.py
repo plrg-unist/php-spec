@@ -61,7 +61,7 @@ def render(program, filename_b64):
     ] + seek('S_start', 0, 'S_before') + [
         'S_before.TODO = (ERROR_HANDLER_INVOKE perrorcall_cast) :: ptask_tail*',
         'perrorcall_cast.RESUME = STRING_READ_RESULT pstringread',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         r'S_before.CURRENT = eps /\ S_before.FRAMES = eps',
         r'pkeyread.PHASE = KEY_CV /\ pkeyread.VALUE = PNULL',
         'pkeyread.NAME = $ptascii("key")',

@@ -62,7 +62,7 @@ def render(program, filename_b64, control_program, control_filename_b64):
         '~$error_handler_eligible(S_discard, 2)',
         '$key_read_valid(S_discard, pkeyread)',
         '$string_read_cv_plan(S_discard, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_cv_source(S_discard, pstringread)',
         '$string_read_key_current(S_discard, pstringread) = (PINT 8)',
         '$string_read_current_offset(S_discard, pstringread, PINT 8) = (8)',

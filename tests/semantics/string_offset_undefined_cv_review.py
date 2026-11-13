@@ -61,7 +61,7 @@ def render(program, filename_b64):
         '$key_read_valid(S, pkeyread)',
         '$string_read_cv_receipt(pkeyread)',
         '$string_read_cv_plan(S, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_cv_source(S, pstringread)',
         '$string_read_source(S, pstringread)',
         '$string_read_cv_key(S, pkeyread) = (PINT 1)',

@@ -49,7 +49,7 @@ def render(program, filename_b64):
         '$string_carrier_valid(S, pkeyread.BASE)',
         '$error_handler_callable(S, pkeyread.BASE) = (true)',
         '$error_handler_retained(S, pkeyread.BASE)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$key_read_valid(S, pkeyread)',
         '$string_read_cv_source(S, pstringread)',
         '~$string_read_retained(S, pstringread, S.ENV)',

@@ -40,7 +40,7 @@ def render(program, filename_b64):
         '$key_read_valid(S_discard, pkeyread)',
         '$string_read_cv_receipt(pkeyread)',
         '$string_read_cv_plan(S_discard, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_key_current(S_discard, pstringread) = (PINT 1)',
         '$string_read_current_offset(S_discard, pstringread, PINT 1) = (1)',
         'H = $heap_graph(S)',

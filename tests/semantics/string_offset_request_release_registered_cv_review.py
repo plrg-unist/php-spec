@@ -54,7 +54,7 @@ def render(program, filename_b64):
         '$error_handler_eligible(S, 2)',
         '$error_handler_roots(S.ERRORHANDLER) = eps',
         '$error_handler_stack_roots(S.ERRORHANDLERS) = eps',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$key_read_valid(S, pkeyread)',
         '$string_read_cv_source(S, pstringread)',
         '$string_read_cv_plan(S, pkeyread) = eps',

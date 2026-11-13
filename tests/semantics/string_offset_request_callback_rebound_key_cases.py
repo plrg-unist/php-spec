@@ -55,3 +55,33 @@ echo "R:", $got, ";B:", $base, ";K:", $key, ";Z;";
     'expected_warnings': [],
     'read_line': 22,
 }]
+
+CONTROL = {
+    'id': 'initial-reference-alias-retains-current-old-payload',
+    'source': '''<?php
+function abc($level, $message, $file, $line) {
+    echo $level, ":", $message, ";";
+    $name = "base";
+    $replacementBase = 99;
+    $GLOBALS[$name] =& $replacementBase;
+    $name = "key";
+    $replacementKey = 2;
+    $GLOBALS[$name] =& $replacementKey;
+    $name = "alias";
+    $GLOBALS[$name] = 1;
+    return true;
+}
+$left = "a";
+$right = "bc";
+$base = $left . $right;
+$key = false;
+$alias =& $key;
+$got = 99;
+set_error_handler($base);
+$got = $base[$key];
+echo "R:", $got, ";B:", $base, ";K:", $key, ";A:", $alias, ";Z;";
+''',
+    'expected_stdout': '2:String offset cast occurred;R:b;B:99;K:2;A:1;Z;',
+    'expected_warnings': [],
+    'read_line': 21,
+}

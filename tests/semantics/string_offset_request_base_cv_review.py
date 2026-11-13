@@ -38,7 +38,7 @@ def render(program, filename_b64):
         '$string_read_cv_request(pkeyread)',
         '$string_read_cv_receipt(pkeyread)',
         '$string_read_cv_plan(S_key, pkeyread) = (pstringread)',
-        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, PHASE STRING_CAST}',
+        'pstringread = {READ pkeyread, BASECELL eps, KEYCELL eps, KEYREF false, PHASE STRING_CAST}',
         '$string_read_cv_source(S_key, pstringread)',
         '$string_read_retainer(S_key, pstringread, BIND ($ptascii("keeper")) n_keeper)',
         '$string_read_retained(S_key, pstringread, S_key.ENV)',
