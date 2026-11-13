@@ -128,6 +128,13 @@ ownership retain their bounds. An actual global fallback that installs a local
 primary during its body remains Unsupported.
 [Early-primary review](coverage/semantics/namespaced-primary-producer-reference-notice-review.json).
 
+Completed producers also admit one required array BYVAL CV formal with an
+untyped return, authenticated by the raw header and exact normalized type. The
+returned array snapshot survives handler replacement of the caller's original CV;
+an incompatible argument fails before the producer body and outer Notice.
+Array BYREF formals and typed producer returns remain partial.
+[Array-BYVAL producer review](coverage/semantics/array-producer-cv-reference-notice-review.json).
+
 [Comparison warnings](docs/semantics/COMPARISONS.md) preserve a missing
 variable's null result through handlers while following current scalar CV bindings.
 When any of the seven operators resumes, a handler-created bounded flat array
