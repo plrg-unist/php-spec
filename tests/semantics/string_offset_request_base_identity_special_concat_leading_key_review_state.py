@@ -25,7 +25,9 @@ def conditions(program, path, index):
     checks, derived = source.conditions(program, path, index)
     tag = ('identity_root_child', 'identity_root_child', 'identity_root_l', 'identity_root_child_l')[index]
     origin, expression = 'porigin_' + tag, 'expression_' + tag
-    guards = [origin + ' = PORIGIN n_identity pcpath_identity']
+    guards = [origin + ' = PORIGIN n_identity pcpath_identity',
+              origin + '_l = PORIGIN n_identity pcpath_identity_l',
+              origin + '_r = PORIGIN n_identity pcpath_identity_r']
     wrong = 'PBOOL true' if index in (0, 2) else 'PBOOL false'
     for suffix, value in (('drop', 'eps'), ('wrong', '(' + wrong + ')'), ('type', '(PINT 1)')):
         state = 'S_identity_' + suffix
@@ -36,7 +38,6 @@ def conditions(program, path, index):
                ('PBOOL true', 'PINT 1'), ('PFLOAT 4607182418800017408', 'PFLOAT 4607182418800017408'))[index]
     for suffix, value in zip(('_l', '_r'), mutants):
         child = origin + suffix
-        guards += [child + ' = PORIGIN n_identity pcpath_identity' + suffix]
         for operation, replacement in (('drop', 'eps'), ('wrong', '(' + value + ')')):
             state = 'S_identity_child' + suffix + '_' + operation
             guards += [state + ' = S_after[.POOLS = $special_review_pools(S_after.POOLS, ' + child + ', ' + replacement + ')]',
