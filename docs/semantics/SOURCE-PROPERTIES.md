@@ -1552,6 +1552,18 @@ verification and receiver cleanup retain their bounds. Four private507 originals
 and159/124 assertions remain separate from joined508 loading/source0.
 [Untyped-name Get return review](../../coverage/semantics/magic-property-untyped-name-return-get-review.json).
 
+Canonical `void` and `never` return declarations now share those ordinary
+by-value Get bounds. Void bare return or fallthrough supplies NULL; never
+fallthrough raises TypeError at the method end line, while explicit throw and
+exit keep their own behavior. Anonymous never diagnostics retain Zend's full-name
+C-string truncation (`class@anonymous()`), and illegal returns use method wording.
+Seven native-once/private507 originals agree; separate SL81/62/104 state cuts
+check real receiver/formal cleanup and budget resumption, and three compiler
+controls check exact diagnostics on line4. Joined508 loading at `2c2c8f051` is
+separate with source0. Quiet typed-return consumers, owning returns and wider
+source/value/lifetime forms remain partial.
+[Void/never Get review](../../coverage/semantics/magic-property-void-never-return-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS

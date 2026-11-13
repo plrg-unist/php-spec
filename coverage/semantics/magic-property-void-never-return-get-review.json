@@ -1,0 +1,179 @@
+{
+  "scope": "Canonical void/never declarations on bounded ordinary by-value magic Get; complete PHP core remains unfinished.",
+  "status": "Implemented, independently reviewed and integrated; containing PHP obligations remain partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json; LC_ALL=C, TZ=UTC.",
+  "implementation": {
+    "canonical_commit": "e84d7213ae6031aab84dcf11fb08102f62583e1e",
+    "main_revision": "2c2c8f0518234db451d6b5ffea4390178c561177",
+    "files": "141/380/383/408 declaration/source gates and authentic Get method kind;94 fixes three method-context illegal-return messages. Six new test files, six Make recipes. Shared95, scalar helpers, generic full-name truncation and ownership machinery unchanged.",
+    "runtime_sha256": {
+      "94-typed-function-compiler.watsup": "440708949e80ece846303692ebfe790b62c52e9276e04ad04f5e84ae37439fd8",
+      "141-method-compiler.watsup": "e7677b507dcdf6e45bb42054c6d62bc3e1e25d45cd84e7bbdb6a6e9500367d4e",
+      "380-magic-property-get.watsup": "3eb54207f636966a19a10e7260dbd90ceb6ca2a7c99561d53452524b67c50437",
+      "383-anonymous-classes.watsup": "f54030516d37a9dc430b386d6c5e9b1ccae122dd59bfda0a9e7e041ce48f49e2",
+      "408-magic-property-empty.watsup": "f28b55ceac026efe8146bcdb28584e454dc4213276c7e3c1d6e7ba8b10a542e3"
+    }
+  },
+  "engine_basis": "zend_API.c::zend_check_magic_method_implementation imposes no Get return restriction. zend_compile.c::zend_emit_return_type_check selects method/function and rejects void value returns or every explicit never return. zend_vm_def.h::ZEND_VERIFY_NEVER_TYPE delegates to zend_execute.c::zend_verify_never_error/get_function_or_method_name and formats the full name as a C string: anonymous name truncation intentionally yields class@anonymous(): never-returning method must not implicitly return.",
+  "contracts": [
+    "The declaration-only wrapper admits exact singleton void/never while scalar/nullable/union helpers keep their previous domains. Raw383/408 names must normalize to the exact descriptor in its defining return context. Legacy untyped-name/no-return, quiet typed-return, primitive-result and ordinary external-CV consumer fences remain.",
+    "Void bare return/fallthrough produces NULL before real GetRESULT/COPY. Never fallthrough raises TypeError at the method end line; supplied throw and exit retain their distinct control behavior. Exact method-kind authentication does not change full-name C-string truncation.",
+    "Three source-reached state cuts retain separate setup-inclusive81/62/104 counts: receiver owners2-to1, formal-cell retirement, caller/name preservation, real guard cleanup and0/1/full resumption. No AL, aggregate or renewed historical source/state credit."
+  ],
+  "private_cut": {
+    "revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10 plus recorded dirty runtime hashes",
+    "modules": 507,
+    "mode": "production SL_mode",
+    "bridge": "Final94 mappings apply only to compiler-rejected returns. Seven runtime originals and81/62/104 cuts do not enter those error arms and retain their original hashes; current compilation controls bind all five final module hashes."
+  },
+  "native_once": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/native-v1/report.json",
+      "sha256": "069e1b0739ff04fe653a3e8904b1b65a59d44253d9c1b879f94c17af4bc844ca",
+      "role": "four named originals"
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/native-v1/report.json",
+      "sha256": "87ecf6cf0e110322e8baba11157709da671eb9d1e838a8f8d6f35ae3b15754ea",
+      "role": "three anonymous originals; initial NEVER expected wording corrected against saved native bytes without native rerun",
+      "correction": {
+        "report": "../php-spec-evidence-archive/void-never-return-get-independent/native-v1/classification.json",
+        "sha256": "ced6749aea390a2463a61cf697dca391ccef2d20f9758358ea600919c984b1f7",
+        "source_credit": 0
+      }
+    }
+  ],
+  "source_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/source-v1/never-return-get-named-explicit-exit/report.json",
+      "sha256": "2191dd066e5cc69a3a2b3fb14059b37caeb09f765a3304948f4691cf3ddf3e17",
+      "id": "never-return-get-named-explicit-exit",
+      "source_sha256": "b2028705bc532ce7ae83eb82961c757ad2fd1458e5c80604c511b1cec797c794",
+      "role": "named",
+      "seconds": 20.753974910941906
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/source-v1/never-return-get-named-explicit-throw/report.json",
+      "sha256": "c6247f269efdc4eac3be2c2d06c47834227fe89dba5bc6b88195ce3d8446f62c",
+      "id": "never-return-get-named-explicit-throw",
+      "source_sha256": "53f4c1958634a4c7971a100c0923f9e0b4fca5dc80bc9e55f5ab2f97b2309516",
+      "role": "named",
+      "seconds": 30.627599144005217
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/source-v1/never-return-get-named-implicit-error/report.json",
+      "sha256": "04daafc2fd6caabcdc102379e47bb797f0c175bc04025cea365095d472dcad17",
+      "id": "never-return-get-named-implicit-error",
+      "source_sha256": "b691eb55ef6dcdf92c521bcb9bf2f70b4f442f3c2b0bf2dd6d76bf24abef39fd",
+      "role": "named",
+      "seconds": 24.434388892026618
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/source-v1/void-return-get-named-bare-fallthrough/report.json",
+      "sha256": "010d3d803574f9755fbfbd0f6efc689d98d63e7712b78a80aaea3ead0783da2d",
+      "id": "void-return-get-named-bare-fallthrough",
+      "source_sha256": "5d01fb22eb38c740be95b5daa330caaef688c6d36fecc81e4d74cce48b829099",
+      "role": "named",
+      "seconds": 20.977760203997605
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/source-v1/anonymous-strict-never-fallthrough-return-get/report.json",
+      "sha256": "719d2a43b55844dd5f8e81f116824732bebad19086beceb5f0fa9d6bdfac8b11",
+      "id": "anonymous-strict-never-fallthrough-return-get",
+      "source_sha256": "ec8837eadf853332c5b9b95beb2ed9509b6413ea5e66a1fbeaa816713af4c244",
+      "role": "anonymous strict",
+      "seconds": 74.89353731297888
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/source-v1/anonymous-strict-void-bare-return-get/report.json",
+      "sha256": "9ade1d5daad4d283b3eb19d6f30402903b3a1348fde7d29adaf88f74330957bf",
+      "id": "anonymous-strict-void-bare-return-get",
+      "source_sha256": "b699f70315cd9adb8f411b778ff715d925ad207c3b032c800695166dd3e0c282",
+      "role": "anonymous strict",
+      "seconds": 19.780887633096427
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/source-v1/anonymous-strict-void-fallthrough-return-get/report.json",
+      "sha256": "43898c379405467f16c6d80fb31d0190f4f1f584be762692fdb1cf6d76600e82",
+      "id": "anonymous-strict-void-fallthrough-return-get",
+      "source_sha256": "1bfd66d75366d2765878ba54e8ed7207d9e98fc3ce49bd5a96df89c804911660",
+      "role": "anonymous strict",
+      "seconds": 20.333011243026704
+    }
+  ],
+  "fixture_validation": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/fixture-v1/launch.json",
+      "sha256": "219b32a91dc3796b79533f921ffe35958add7b9df36fec01a136a28e20b7c91e",
+      "role": "void fallthrough and NULL copy",
+      "assertions": 81,
+      "seconds": 23.80273460492026,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/exit-fixture-v1/launch.json",
+      "sha256": "f0e24665bc2fd0d79552c3fafefbb8e654dd5cdd3a82adc202e83a19076c8f3f",
+      "role": "never explicit exit",
+      "assertions": 62,
+      "seconds": 20.994748312979937,
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/fixture-v2/launch.json",
+      "sha256": "907a2c1d09bc67cdf3bfcd00f9b6777a64fe58f1141188bb54fb0f981b77e93d",
+      "role": "anonymous never implicit TypeError",
+      "assertions": 104,
+      "seconds": 50.22229840699583,
+      "source_credit": 0
+    }
+  ],
+  "compiler_validation": {
+    "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/compiler-v3/launch.json",
+    "sha256": "2ba21b1087cc293c8dae1b5c615d8c52eb05928ee1ff5844f1d5db605c8c4a8f",
+    "assertions": 9,
+    "controls": 3,
+    "seconds": 16.63037292996887,
+    "source_credit": 0,
+    "native_policy": "Original void-null observation reused unchanged; nonnull-void and never-bare each executed once. All native255 and exact model method messages on line4."
+  },
+  "preserved_zero_credit": [
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/baseline-v1/void-return-get-named-bare-fallthrough/report.json",
+      "sha256": "1ae30afc44bde22323a2368d0315bee9f30a93dad315800bd8fb902658d82103",
+      "result": "Pre-extension Unsupported magic getter signature"
+    },
+    {
+      "report": "../php-spec-evidence-archive/void-never-return-get-independent/fixture-v1/launch.json",
+      "sha256": "9e9fb120a088ab22d8649dbbc42bd2d00462dff45cf5bb5a8358c5fb61cd40ee",
+      "result": "Original103-condition fixture failure; corrected104 cut is separate"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/compiler-v1/launch.json",
+      "sha256": "6b8b4fbcf4c0353460693b05e50f2b5a601570a4317f83c881b0dd23e99f11ba",
+      "result": "Native method/function wording mismatch exposes missing94 mapping; raw native preserved"
+    },
+    {
+      "report": "../php-spec-evidence-archive/magic-property-void-never-return-get/author/compiler-v2/launch.json",
+      "sha256": "e1d09b26d3d21ba976c4f57bb5b1cc2062fa3f02e24ffce4ca6d5c16d3ca29c4",
+      "result": "Private recovery Worker-directory collision before any additional native execution"
+    }
+  ],
+  "review": "Author readiness and independent peer clearance reached MAIN27 for exact e84d12-file blobs and MAIN-based Make6 before metadata. Current actual508 loading adds no source/state credit.",
+  "recovery": "External raw preserves original bytes/path/CWD/profile, local oracle identity and before/after hashes. Source280/290/297s and fixture297s under3GiB; no cap raises or accepted original/native/state replay.",
+  "remaining": "Owning array/object returns, quiet typed-return consumers, optional/reference names and wider owner/receiver/body/value/lifetime domains remain partial. No BOLA or foundational equivalence claim.",
+  "divergences": [],
+  "actual_join": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/enum210-void-get-identity-known-joined-508-v1/report.json",
+    "sha256": "b4e76e949327976bcedaf87ce4ed2d87e4792042616e4c5474eaae0001fcf427",
+    "revision": "2c2c8f0518234db451d6b5ffea4390178c561177",
+    "result": "pass",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "timeout_seconds": 60,
+    "seconds": 15.891098138061352,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  }
+}
