@@ -352,6 +352,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_sources.py
 	python3 tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-quiet-left-cv-modulo-conversion-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_default_quiet_left_cv_modulo_conversion_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-quiet-left-cv-modulo-conversion-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_default_left_modulo_deprecation_error_sources.py
+	python3 tests/semantics/output_final_default_left_modulo_deprecation_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-left-modulo-deprecation-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_default_left_modulo_deprecation_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-default-left-modulo-deprecation-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
