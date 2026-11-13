@@ -1,0 +1,28 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "anonymous-strict-nullable-literal-return-get",
+      "source": "<?php\ndeclare(strict_types=1);\n$nullableFalse = new class {\n    public function __get(mixed $incoming): ?false {\n        if ($incoming === \"bad\") {\n            echo \"ENTER;\";\n            $incoming = true;\n            return 0;\n        }\n        if ($incoming === \"nil\") { return null; }\n        return false;\n    }\n};\n$nullableTrue = new class {\n    public function __get(?string $incoming): null|true {\n        if ($incoming === \"bad\") { echo \"TRUE_ENTER;\"; return false; }\n        if ($incoming === \"nil\") { return null; }\n        return true;\n    }\n};\n$unionFalse = new class {\n    public function __get(int|string $incoming): false|null {\n        if ($incoming === \"nil\") { return null; }\n        return false;\n    }\n};\n$selector = \"nil\";\necho $nullableFalse->$selector === null ? \"FALSE_NULL;\" : \"BAD_FALSE_NULL;\";\necho $nullableFalse->value === false ? \"FALSE;\" : \"BAD_FALSE;\";\necho $nullableTrue->nil === null ? \"TRUE_NULL;\" : \"BAD_TRUE_NULL;\";\necho $nullableTrue->value === true ? \"TRUE;\" : \"BAD_TRUE;\";\necho $unionFalse->nil === null ? \"UNION_NULL;\" : \"BAD_UNION_NULL;\";\necho $unionFalse->value === false ? \"UNION_FALSE;\" : \"BAD_UNION_FALSE;\";\n$nullableFalse->nil;\necho \"DROP;\";\n$destination = 42;\ntry {\n    $destination = $nullableFalse->bad === false;\n} catch (TypeError $failure) {\n    echo $failure->getMessage();\n    echo \";\";\n}\necho $destination === 42 ? \"KEEP;\" : \"BAD_STORE;\";\n$destination = 24;\ntry {\n    $destination = $nullableTrue->bad === true;\n} catch (TypeError $failure) {\n    echo $failure->getMessage();\n    echo \";\";\n}\necho $destination === 24 ? \"KEEP_TRUE;\" : \"BAD_TRUE_STORE;\";\necho $selector === \"nil\" ? \"NAME_KEEP;\" : \"BAD_SELECTOR;\";\necho \"DONE;\";\n",
+      "source_sha256": "1d94cad80a456f492d0a33b0981a6f10ec4f00f30aba26d269a7b37a0043f6fe",
+      "stdout_template_base64": "RkFMU0VfTlVMTDtGQUxTRTtUUlVFX05VTEw7VFJVRTtVTklPTl9OVUxMO1VOSU9OX0ZBTFNFO0RST1A7RU5URVI7Y2xhc3NAYW5vbnltb3VzOjpfX2dldCgpOiBSZXR1cm4gdmFsdWUgbXVzdCBiZSBvZiB0eXBlID9mYWxzZSwgaW50IHJldHVybmVkO0tFRVA7VFJVRV9FTlRFUjtjbGFzc0Bhbm9ueW1vdXM6Ol9fZ2V0KCk6IFJldHVybiB2YWx1ZSBtdXN0IGJlIG9mIHR5cGUgP3RydWUsIGZhbHNlIHJldHVybmVkO0tFRVBfVFJVRTtOQU1FX0tFRVA7RE9ORTs=",
+      "stderr_template_base64": "",
+      "exit_status": 0,
+      "status": "normal"
+    }
+  ]
+}
