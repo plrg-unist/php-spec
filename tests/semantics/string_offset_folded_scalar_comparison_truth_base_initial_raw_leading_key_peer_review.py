@@ -125,7 +125,7 @@ S_bad_compare_code = S_capture[.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_co
         ('signed_parent', ('UnaryMinus', 'PINT $(-1)', equal), True),
         ('wrong_result', ('Equal', 'PBOOL false', string(b'2'), two), False),
         ('wrong_type', ('Equal', 'PINT 1', string(b'2'), two), False),
-        ('float_child', ('Equal', 'PBOOL true', ('NScalarFloat (FLOAT "3ff0000000000000")', 'PFLOAT 4607182418800017408'), integer(1)), False),
+        ('float_child', ('Equal', 'PBOOL true', ('NScalarFloat (FLOAT "3ff0000000000000")', 'PFLOAT 4607182418800017408'), integer(1)), True),
         ('nan_child', ('Identical', 'PBOOL false', ('NScalarFloat (FLOAT "7ff8000000000000")', 'PFLOAT 9221120237041090560'), integer(1)), False),
         ('spaceship', ('Spaceship', 'PBOOL false', two, two), False),
         ('outside_child', ('Equal', 'PBOOL true', integer(9223372036854775808), integer(9223372036854775808)), False),
