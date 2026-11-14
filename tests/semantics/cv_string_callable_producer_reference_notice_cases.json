@@ -1,0 +1,74 @@
+[
+  {
+    "id": "string-union-singleton-byval-casefold-leading-slash-private-cell",
+    "namespace": "CallableSingletonByval85",
+    "source": "<?php\nnamespace CallableSingletonByval85;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(CaLlAbLe|StRiNg $saved):sTrInG|cAlLaBlE{echo 'M:',(int)($saved==='\\CallableSingletonByval85\\MiSsInG'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='\\CallableSingletonByval85\\MiSsInG'),';';$value=23;return $value;}\n$x='\\CallableSingletonByval85\\MiSsInG';$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval85\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='\\CallableSingletonByval85\\MiSsInG'),';';$r=41;echo 'P:',$r,':',(int)($copy==='\\CallableSingletonByval85\\MiSsInG'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "963c37b8d52c7491758d8c249d7384a46959b856a0102b534a995e2b5d5861a2",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "INTERNED_STRING",
+    "line_observation": "Native-first executes this new original once; string exact membership bypasses callable lookup, while weak17 return creates a separate string.",
+    "formal_members": [
+      "callable",
+      "string"
+    ],
+    "return_members": [
+      "string",
+      "callable"
+    ],
+    "value_bytes": "\\CallableSingletonByval85\\MiSsInG",
+    "weak_return": false,
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json"
+  },
+  {
+    "id": "string-union-singleton-byref-strict-noncallable-rebind-and-return",
+    "namespace": "CallableSingletonByref85",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref85;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='AbsentClass85::method'),';';$x=37;return true;}\nfunction make(StRiNg|CaLlAbLe &$saved):cAlLaBlE|sTrInG{$saved=17;echo 'M:',$saved,';';$saved='AbsentClass85::method';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='AbsentClass85::method'),';';$value=23;return $value;}\n$x='AbsentClass85::method';$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref85\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='AbsentClass85::method'),';';$r=41;echo 'P:',$r,':',(int)($copy==='AbsentClass85::method'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "542114c1a6e777caa36060122c71e70aa14fa43bf328f1c528c82f9d850a4196",
+    "native_stdout": "N;M:17;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "INTERNED_STRING",
+    "line_observation": "Native-first executes this new original once; string exact membership bypasses callable lookup, while weak17 return creates a separate string.",
+    "formal_members": [
+      "string",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "string"
+    ],
+    "value_bytes": "AbsentClass85::method",
+    "weak_return": false,
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json"
+  },
+  {
+    "id": "string-union-multi-cv-request-name-byval-snapshot-and-private-cell",
+    "namespace": "CallableMulti85",
+    "source": "<?php\nnamespace CallableMulti85;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):sTrInG|cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===17),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='17'),';';$value=23;$prefix=31;return $value;}\n$x=17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti85\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy===17),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy===17),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "d4f6a80cf31ed02186085e159213aef20aa237d54cf1592fe6178cd9bb0a5f36",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first executes this new original once; string exact membership bypasses callable lookup, while weak17 return creates a separate string.",
+    "formal_members": null,
+    "return_members": [
+      "string",
+      "callable"
+    ],
+    "value_bytes": "17",
+    "weak_return": true,
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json"
+  }
+]

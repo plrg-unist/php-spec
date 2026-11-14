@@ -1,0 +1,56 @@
+[
+  {
+    "id": "strict-unregistered-strings-callable-string-formals-private-cell",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableString85 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($y===null),';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|STRING $saved,StRiNg|CaLlAbLe &$changed):STRING|CALLABLE{echo 'M:',(int)($saved==='\\\\MissingCallableString85::entry'),':',(int)($changed==='MissingRequest85::method'),':',(int)($GLOBALS['x']==='\\\\MissingCallableString85::entry'),':',(int)($GLOBALS['y']==='MissingRequest85::method'),';';$changed=17;echo 'W:',(int)($GLOBALS['y']===17),';';$changed=null;unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value==='\\\\MissingCallableString85::entry'),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x='\\\\MissingCallableString85::entry';$snapshot=$x;$seed='method';$y='MissingRequest85::'.$seed;unset($seed);$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallableString85\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='\\\\MissingCallableString85::entry'),':',(int)($ySnapshot==='MissingRequest85::method'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='\\\\MissingCallableString85::entry'),':',(int)($ySnapshot==='MissingRequest85::method'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='\\\\MissingCallableString85::entry'),':',(int)($ySnapshot==='MissingRequest85::method'),';';\n}\n",
+    "native_stdout": "I;M:1:1:1:1;W:1;H:8:0:1;F:29:\\MissingCallableString85::entry:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_kinds": [
+      "callable",
+      "callable"
+    ],
+    "caller_strict": true,
+    "value_name": "\\MissingCallableString85::entry",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "3cd4db28b96002df99593b15fe2485c2adcb409d544497c7cefe7d2b26f82e32",
+    "derived_from": "tests/semantics/cv_union_callable_producer_reference_notice_review_cases.json:independent-exact-string-arm-and-strict-priority-variants",
+    "formal_orders": [
+      [
+        "callable",
+        "string"
+      ],
+      [
+        "string",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "string",
+      "callable"
+    ],
+    "changed_name": "MissingRequest85::method"
+  },
+  {
+    "id": "strict-null-callable-string-union-receive-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableString85\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|STRING &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableString85\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "1ff25e7dd26aa9bb6a2ab8b9c4d6441b9ee434fed01a6029e7a833a510fd8de2",
+    "derived_from": "tests/semantics/cv_union_callable_producer_reference_notice_review_cases.json:independent-exact-string-arm-and-strict-priority-variants"
+  },
+  {
+    "id": "strict-callable-string-byref-body-write-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableString85\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|STRING &$saved):STRING|CALLABLE{echo 'M;';$saved=17;return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x='notRegisteredReturn85';$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableString85\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0c41ebf5b9f2eb0dd7f40ee1afa1737c182090785ca8acb9f6f0a6d98389d468",
+    "derived_from": "tests/semantics/cv_union_callable_producer_reference_notice_review_cases.json:independent-exact-string-arm-and-strict-priority-variants"
+  }
+]
