@@ -190,6 +190,11 @@ def $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
   -- if ($closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) /\ $function_cache_policy(S, porigin_method, n_source) = (CACHE_SHARED)) \/ $property_magic_cv_static_method_clone_history(S, n_source, porigin_method, porigin_site, porigin_owner)
 def $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_owner) = false -- otherwise
+;; Direct class labels resolve without changing their selected class identity.
+dec $property_magic_cv_static_method_selector(phpType19, ptbytes) : bool
+def $property_magic_cv_static_method_selector(NName (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $property_magic_cv_static_method_selector(NNameFullyQualified (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $property_magic_cv_static_method_selector(phpType19, ptbytes) = false -- otherwise
 dec $property_magic_cv_static_methodclosure(pstate, nat) : bool
 def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -216,11 +221,11 @@ def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
   -- if pmethoddesc.NAME = $base64(text_method)
   -- if pmethoddesc.FUNCTION.BODY = pcpath_method ++ [PCFIELD 6]
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall (NName (BYTES text_requested) metadata_requested) (NIdentifier (BYTES text_selected) metadata_selected) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
-  -- if $base64(text_requested) = pclassdesc.NAME
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector (NIdentifier (BYTES text_selected) metadata_selected) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
+  -- if $property_magic_cv_static_method_selector(phpType19_selector, pclassdesc.NAME)
   -- if $ptlc($base64(text_selected)) = $ptlc(pmethoddesc.NAME)
-  -- if ~$ppscoped_keyword(NName (BYTES text_requested) metadata_requested)
-  -- if $scoped_requested_site(S, porigin_site, NName (BYTES text_requested) metadata_requested, porigin_requested, eps)
+  -- if ~$ppscoped_keyword(phpType19_selector)
+  -- if $scoped_requested_site(S, porigin_site, phpType19_selector, porigin_requested, eps)
   -- if porigin_site = PORIGIN n_site pcpath_site
   -- if $goto_source_owner($all_functions(S), n_site, pcpath_site) = eps
   -- if $closure_source_class(S, porigin_site) = eps

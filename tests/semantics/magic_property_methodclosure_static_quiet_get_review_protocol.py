@@ -189,7 +189,8 @@ AUTHORITY += ['$function_generator(S_raw_generator,pfunction_method)']
 AUTHORITY += source_counterfact('capture_wrong_name', site=SITE.format(class_name='NName (BYTES "T3RoZXI=") metadata_requested'))
 AUTHORITY += source_counterfact('capture_keyword', site=SITE.format(class_name='NName (BYTES "c2VsZg==") metadata_requested'))
 AUTHORITY += source_counterfact('capture_dynamic_class', site=SITE.format(class_name='NExprVariable (BYTES "aGVsZA==") metadata_requested'))
-AUTHORITY += source_counterfact('capture_fully_qualified', site=SITE.format(class_name='NNameFullyQualified (BYTES text_requested) metadata_requested'))
+AUTHORITY += source_counterfact('capture_fully_qualified', site=SITE.format(class_name='NNameFullyQualified (BYTES text_requested) metadata_requested'))[:-1]
+AUTHORITY += ['$property_magic_cv_static_methodclosure(S_capture_fully_qualified,n_closure)']
 
 LIFETIME = r'''
 $property_empty_rv_ready(S,ppropertyempty)

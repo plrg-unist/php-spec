@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-fqn-mixed-case-cv-coalesce",
+      "source": "<?php\nclass QuietNamedStaticMethodCoalesceTarget { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietNamedStaticMethodCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedStaticMethodCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = \\qUIETnAMEDsTATICmETHODcOALESCEtARGET::CoUnTeR(...);\necho QuietNamedStaticMethodCoalesceTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietNamedStaticMethodCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietNamedStaticMethodCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietNamedStaticMethodCoalesceTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "4adf5183b920b004293ecabfd25c48f81a9861eff67b380a45a8cfd88d86ee07",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "methodclosure-static-name-mixed-case-private-coalesce-assignment",
+      "source": "<?php\nclass QuietNamedStaticMethodAssignTarget { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietNamedStaticMethodAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedStaticMethodAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = qUIETnAMEDsTATICmETHODaSSIGNtARGET::CoUnTeR(...);\necho QuietNamedStaticMethodAssignTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietNamedStaticMethodAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietNamedStaticMethodAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietNamedStaticMethodAssignTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "0a29d11827d4f7e347e94dd2e7ddebdab9e6d869426c804022c18d450374a601",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    }
+  ]
+}
