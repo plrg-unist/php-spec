@@ -1571,6 +1571,8 @@ Actual unary-minus float-zero shorthand bases also retain their selected non-NUL
 
 Actual unary-plus float-zero shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact nested literal source and positive-zero unary/child compiled facts remain required; broader producers and lifetimes stay partial. [Unary-plus FLOAT-zero shorthand review](coverage/semantics/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-review.json).
 
+BooleanNot of simple-name literal true also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source and false/true compiled facts remain required; broader operands and lifetimes stay partial. [BooleanNot true shorthand review](coverage/semantics/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),

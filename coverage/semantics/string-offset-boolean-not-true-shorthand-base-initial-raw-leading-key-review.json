@@ -1,0 +1,92 @@
+{
+  "feature": "boolean-not-true-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with BooleanNot of simple-name literal true and a raw string fallback preserves its non-NUL INTERNED base and initial raw leading-integer CV offset through a returning Warning handler. Ordinary key replacement and initial-reference current-name rebinding retain the captured header/index. Original !true and !(TRUE) cases exercise both paths.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "92c212d8bded12054a852ba8051277f380819779",
+  "reviewed_peer_head": "70cb34d916d7a30bcb7c55ff78ad8ecc67c0a399",
+  "implementation_sha256": "ddaf2c6a13cb85b5c3bc0928098209f9c8094ca7dc6ffb367a31c29a67497eec",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "f9dfed9a598a3a2bb01891a1b5f9d875f550ac720ee1a798f6ffc5cd97602f87"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_op and zend_try_ct_eval_unary_op fold literal true through BooleanNot; zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN. Zend/zend_vm_def.h ZEND_BOOL_NOT and ZEND_JMP_SET preserve false/fallback selection. Zend/zend_execute.c zend_fetch_dimension_address_read saves the string header and leading integer before Warning user code. Existing pure compiler rules supply exact PBOOLtrue leaf and PBOOLfalse unary pools; no PHPT was executed.",
+  "implementation": "One local15-line425 raw_known_base arm authenticates parent shape and compiledEPS, actual BooleanNot condition and simple-name true leaf occurrences, casefolded raw name and exact compiled false/true pools, ABSENT true arm, and raw fallback2 with matching compiled read/INTERNED identity. Existing capture, saved index, source, owner and cleanup laws remain. No compiler/numeric, generic233, provider/root, schema, REQUEST/NUL, nonfinite, wider producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "f9b2c4eb43356a7ac6b2f223aa8f349b2d755ab092a3981ced9eab71531294d8",
+      "tested_revision": "d55feb343df647f2ecae5c69073bebb59ae65697",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; actual false/true compiled pools and roots[1,0],edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "34dc62cbc42b32b9910bb6271bd03397ce81bea37e3c6f78dcc5fd79df69c7d7",
+      "tested_revision": "d55feb343df647f2ecae5c69073bebb59ae65697",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; actual false/true compiled pools and roots[1,0,0],edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "4dfd221f70196aebf1b5ae509e64d8797b3f66cd6b2a0ece64e77c8babc59c18",
+      "tested_revision": "71166eeae668d9587178b3a20eb9b3ab77bfe3cb",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "6f75af8ad7a6b49d3213617a26293302d152a3254b3cd19d719a8c0167b0d276",
+      "tested_revision": "92c212d8bded12054a852ba8051277f380819779",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "88e5d4e2644f16b976418751f7962846d074b0a03a04e0b52393635915aa8f1b",
+      "tested_revision": "92c212d8bded12054a852ba8051277f380819779",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 184,
+      "derived_conditions": 76
+    },
+    {
+      "kind": "independent production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "0c7ddbf06d412c3f20c587f105f187c40d40a107fec3200a43849c8cfb4a8b1c",
+      "tested_revision": "70cb34d916d7a30bcb7c55ff78ad8ecc67c0a399",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 286,
+      "derived_conditions": 156
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-boolnot-true-shorthand-joined-508-v1/report.json",
+    "sha256": "fd7cab9bfc9826798ea7bd8a6bdd3da881fafe3ee4a4bd5307530bea7fe989a0",
+    "tested_revision": "3973e03f666841239acce836a936d0c5b3a479cd",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.283693879842758,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 is captured once and reused by the first postlaw source2 comparisons. Separate author184/76-derived and independent286/156-derived fixture-SL cuts retain source0 without a unique aggregate. Genuine prelaw full155 states retain their own cuts. Checks cover wrong own/leaf tag/polarity, simultaneous false/null/qualified raw leaves with unchanged pools, detached condition/leaf occurrences, wrong or extra NOT, folded parent, fallback/header identity, source/CODE/pool and owner bounds, real warning dispatch/resume, rebinding and 0/1 budget rejoin. Source60/outer80/compiler120/state180 caps remain. All semantic attempts are quiet, stable and fully reaped; original Unsupported2 stays0, with no failures, timeouts, unrun outcomes or historical renewal.",
+  "review": "Independent whole6 semantic/source/test FULLCLEAR and donorREADY preceded source-first MAIN3973 integration. Both bounded actual composition reads confirm the complete raw_known_base group equals the donor and removing the new15-line arm restores all prior425, including disjoint runtime EQUALITY, byte-for-byte; controller/cases/A/B/Make2 match. The single saved canonical load has separate source0 identity.",
+  "remaining": "Other BooleanNot operands and computed conditions, wider fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the linked external archives. Tracked cases/renderers and the two Makefile boolean-not-true-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}
