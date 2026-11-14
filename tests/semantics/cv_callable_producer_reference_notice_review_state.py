@@ -30,7 +30,6 @@ def prefix(case):
 
 def controls(case):
     lines = prior.controls(0)
-    lines = ['~' + line if line.startswith('$reference_notice_producer_arguments(') and 'phpType17_nullable,' in line else line for line in lines]
     header = '$reference_notice_producer_header(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), '
     for tag in ('NName', 'NNameRelative', 'NNameFullyQualified'):
         lines += ['~' + header + tag + ' (BYTES text_return) metadata_return, pfunction_producer.SIGNATURE)']
@@ -39,7 +38,7 @@ def controls(case):
     raw = '(NIdentifier (BYTES text_return) metadata_return)'
     nullable = 'NNullableType ' + raw + ' metadata_first_parameter'
     nullable_type = '[(PTBRANCH ([PTBUILTIN "callable"])), (PTBRANCH ([PTBUILTIN "null"]))]'
-    lines += ['~' + header + nullable + ', pfunction_producer.SIGNATURE[.RETURNS = ' + nullable_type + '])']
+    lines += [header + nullable + ', pfunction_producer.SIGNATURE[.RETURNS = ' + nullable_type + '])']
     for kinds in (('callable', 'null'), ('null', 'callable'), ('callable', 'int', 'string')):
         atoms = ', '.join('NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return' for kind in kinds)
         normalized = '[' + ', '.join('(PTBRANCH ([PTBUILTIN ' + json.dumps(kind) + ']))' for kind in kinds) + ']'

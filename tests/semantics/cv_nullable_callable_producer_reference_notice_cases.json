@@ -1,0 +1,50 @@
+[
+  {
+    "id": "nullable-null-singleton-byval-and-private-cell",
+    "namespace": "CallableSingletonByval83",
+    "source": "<?php\nnamespace CallableSingletonByval83;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(?CaLlAbLe $saved):?cAlLaBlE{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=23;return $value;}\n$x=null;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval83\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===null),';';$r=41;echo 'P:',$r,':',(int)($copy===null),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "fd6411a2a54885c0b7d48738712451c8bb9d5b4f2d976a511a8ff6f2bce11f98",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PNULL",
+    "line_observation": "Native-first observes each new nullable-callable original once. NULL is admitted directly; USER-name strings are checked without target invocation.",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json",
+    "nullable": true
+  },
+  {
+    "id": "nullable-null-singleton-byref-strict-rebind-and-return",
+    "namespace": "CallableSingletonByref83",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref83;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===null),';';$x=37;return true;}\nfunction make(?CaLlAbLe &$saved):?cAlLaBlE{$saved=17;echo 'M:',$saved,';';$saved=null;return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=23;return $value;}\n$x=null;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref83\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===null),';';$r=41;echo 'P:',$r,':',(int)($copy===null),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "74d9cba088756b894881605c86238498a0fad488bdab4b4b3a81971d357ead42",
+    "native_stdout": "N;M:17;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "PNULL",
+    "line_observation": "Native-first observes each new nullable-callable original once. NULL is admitted directly; USER-name strings are checked without target invocation.",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json",
+    "nullable": true
+  },
+  {
+    "id": "nullable-request-name-multi-cv-snapshot-and-private-cell",
+    "namespace": "CallableMulti83",
+    "source": "<?php\nnamespace CallableMulti83;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(?CaLlAbLe $saved,&$changed):?cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti83\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti83\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti83\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti83\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti83\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti83\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "630ae1bacd5b865a3ec6f480d6b68218e39caaa168f66c447a5a040a6276c6b5",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first observes each new nullable-callable original once. NULL is admitted directly; USER-name strings are checked without target invocation.",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_cases.json",
+    "nullable": true
+  }
+]

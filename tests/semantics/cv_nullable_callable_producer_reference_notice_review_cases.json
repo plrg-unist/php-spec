@@ -1,0 +1,41 @@
+[
+  {
+    "id": "strict-name-and-null-nullable-callable-cv-formals-private-cell",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNullableCallable83 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($y===null),';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(?cAlLaBlE $saved,?CaLlAbLe &$changed):?CALLABLE{echo 'M:',(int)($saved==='\\\\ReviewNullableCallable83\\\\fIrSt'),':',(int)($changed===null),':',(int)($GLOBALS['x']==='\\\\ReviewNullableCallable83\\\\fIrSt'),':',(int)($GLOBALS['y']===null),';';$changed=17;echo 'W:',(int)($GLOBALS['y']===17),';';$changed=null;unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value==='\\\\ReviewNullableCallable83\\\\fIrSt'),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x='\\\\ReviewNullableCallable83\\\\fIrSt';$snapshot=$x;$y=null;$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewNullableCallable83\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='\\\\ReviewNullableCallable83\\\\fIrSt'),':',(int)($ySnapshot===null),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='\\\\ReviewNullableCallable83\\\\fIrSt'),':',(int)($ySnapshot===null),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='\\\\ReviewNullableCallable83\\\\fIrSt'),':',(int)($ySnapshot===null),';';\n}\n",
+    "native_stdout": "I;M:1:1:1:1;W:1;H:8:0:1;F:29:\\ReviewNullableCallable83\\fIrSt:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_kinds": [
+      "callable",
+      "callable"
+    ],
+    "caller_strict": true,
+    "value_name": "\\ReviewNullableCallable83\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "2c9b00b4e357bc163cd53d1ddc65a8efc2e483cc1a2340b7a17979785a9d5b72",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_review_cases.json:independent-nullable-header-and-priority-variants"
+  },
+  {
+    "id": "strict-missing-name-nullable-callable-receive-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNullableCallable83\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(?cAlLaBlE &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x='ReviewNullableCallable83\\\\doesNotExist';$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNullableCallable83\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "7e6699280d8694a3cfc3c5882bc59ad828c07c3cc4adc9e62d311f737dac35c9",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_review_cases.json:independent-nullable-header-and-priority-variants"
+  },
+  {
+    "id": "strict-nullable-callable-byref-body-write-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNullableCallable83\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(?cAlLaBlE &$saved):?CALLABLE{echo 'M;';$saved=17;return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNullableCallable83\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f89422e3ab63ac8cc9d2aef23e9b4e2944aa77874741c4925ff6cdaee7195936",
+    "derived_from": "tests/semantics/cv_callable_producer_reference_notice_review_cases.json:independent-nullable-header-and-priority-variants"
+  }
+]
