@@ -1671,6 +1671,8 @@ Finite FLOAT arithmetic trees now authenticate literal ternary bases through ret
 
 Exact signed64 integer division now authenticates literal ternary bases through returning Warnings. Existing source, PINT, range and quiet-result guards retain the INTERNED header and frozen initial offset; fractions, errors and FLOAT promotion remain outside this certificate. Wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-integer-division-truth-base-initial-raw-leading-key-review.json).
 
+Exact quiet signed64 modulo, shifts, bitwise AND/OR/XOR and integer-result power now compose through literal string-offset base truth with unchanged source and frozen-offset guards. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-integer-binary-truth-base-initial-raw-leading-key-review.json).
+
 Quiet integer-result unary +/- chains rooted in raw numeric strings also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Actual source/child, literal string identity, quiet NINT classification and a signed64 PINT at every sign remain required; floating classification/overflow and wider producers/lifetimes stay partial.
 
 Integer-result unary +/- chains rooted in simple-name literal true also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact ConstFetch and indexed name authority, case folding, PBOOL true and signed64 PINT signs remain required; other name forms and broader producers/lifetimes stay partial. [Literal-true unary-chain review](coverage/semantics/string-offset-boolean-not-true-unary-shorthand-base-initial-raw-leading-key-review.json).
