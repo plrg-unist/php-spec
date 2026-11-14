@@ -1,0 +1,44 @@
+[
+  {
+    "id": "required-generator-iterable-parameter-and-return",
+    "namespace": "RuntimeIterableGenerator94",
+    "source": "<?php\nnamespace RuntimeIterableGenerator94;\nfunction produce(){yield 17;}\nfunction keep(iterable $saved):iterable{echo 'M;';return $saved;}\n$x=produce();$copy=$x;echo 'N;';\ntry{$r=keep($x);echo 'I:',(int)($r===$copy),':',(int)($x===$copy),';';}catch(\\TypeError $e){echo 'T;';}\necho 'Z;';\n",
+    "source_sha256": "a48c6d0852c6b410246f72a8ac321f5f9a5b22c5da5f2e8e901c31350fcd9b48",
+    "native_stdout": "N;M;I:1:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": false,
+    "value_kind": "generator",
+    "formal_typed": true,
+    "nullable_return": false,
+    "derived_from": "Authored core-only runtime iterable alias witness; no Iterator methods or Generator body is invoked."
+  },
+  {
+    "id": "strict-user-iterator-iterable-parameter-and-return",
+    "namespace": "RuntimeIterableUser94",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace RuntimeIterableUser94;\nclass Items implements \\Iterator{\n public function current():mixed{return 17;}\n public function key():mixed{return 0;}\n public function next():void{}\n public function rewind():void{}\n public function valid():bool{return false;}\n}\nfunction keep(iterable $saved):iterable{echo 'M;';return $saved;}\n$x=new Items;$copy=$x;echo 'N;';\ntry{$r=keep($x);echo 'I:',(int)($r===$copy),':',(int)($x===$copy),';';}catch(\\TypeError $e){echo 'T;';}\necho 'Z;';\n",
+    "source_sha256": "787849f967dd7f42bf4f1dd656486f8857343379ae97e514ce8538bc8a21ae18",
+    "native_stdout": "N;M;I:1:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": true,
+    "value_kind": "user_iterator",
+    "formal_typed": true,
+    "nullable_return": false,
+    "derived_from": "Authored core-only runtime iterable alias witness; no Iterator methods or Generator body is invoked."
+  },
+  {
+    "id": "nullable-generator-iterable-return-and-null-control",
+    "namespace": "RuntimeIterableNullable94",
+    "source": "<?php\nnamespace RuntimeIterableNullable94;\nfunction produce(){yield 19;}\nfunction keep($saved):?iterable{echo 'M;';return $saved;}\n$x=produce();$copy=$x;echo 'B;';\ntry{$r=keep($x);echo 'I:',(int)($r===$copy),';';}catch(\\TypeError $e){echo 'T;';}\n$none=keep(null);echo 'N:',(int)($none===null),';Z;';\n",
+    "source_sha256": "7193bde0e8516b762d2afabef3bb4551443963cff09ab9b22f3c8ae51e43598d",
+    "native_stdout": "B;M;I:1;M;N:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": false,
+    "value_kind": "generator",
+    "formal_typed": false,
+    "nullable_return": true,
+    "derived_from": "Authored core-only runtime iterable alias witness; no Iterator methods or Generator body is invoked."
+  }
+]

@@ -210,7 +210,8 @@ def $typed_class_atoms(S, eps, porigin, n) = true
 def $typed_class_atoms(S, (PTCLASS ptbytes) :: ptatom_tail*, porigin, n) = ($class_origin_matches(S, porigin, ptbytes, n) /\ $typed_class_atoms(S, ptatom_tail*, porigin, n))
 def $typed_class_atoms(S, ptatom*, porigin, n) = false -- otherwise
 dec $typed_class_branch_match(pstate, ptbranch, porigin, nat) : bool
-def $typed_class_branch_match(S, PTBRANCH ((PTCLASS ptbytes) :: ptatom_tail*), porigin, n) = ($class_origin_matches(S, porigin, ptbytes, n) /\ $typed_class_atoms(S, ptatom_tail*, porigin, n))
+def $typed_class_branch_match(S, ptbranch, porigin, n) = ($class_origin_matches(S, porigin, ptbytes, n) /\ $typed_class_atoms(S, ptatom_tail*, porigin, n))
+  -- if $ptclassview(ptbranch) = PTBRANCH ((PTCLASS ptbytes) :: ptatom_tail*)
 def $typed_class_branch_match(S, ptbranch, porigin, n) = false -- otherwise
 def $typed_class_chain(S, eps, porigin, n) = false
 def $typed_class_chain(S, ptbranch :: ptbranch_tail*, porigin, n) = ($typed_class_branch_match(S, ptbranch, porigin, n) \/ $typed_class_chain(S, ptbranch_tail*, porigin, n))

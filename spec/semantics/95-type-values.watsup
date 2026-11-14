@@ -101,7 +101,8 @@ def $typed_closure_type(eps) = false
 def $typed_closure_type(ptbranch :: ptbranch_tail*) = ($typed_closure_branch(ptbranch) \/ $typed_closure_type(ptbranch_tail*))
 dec $typed_class_type(ptbranch*, ptbytes) : bool
 dec $typed_class_branch(ptbranch, ptbytes) : bool
-def $typed_class_branch(PTBRANCH ([(PTCLASS ptbytes_name)]), ptbytes) = ($ptlc(ptbytes_name) = $ptlc(ptbytes))
+def $typed_class_branch(ptbranch, ptbytes) = ($ptlc(ptbytes_name) = $ptlc(ptbytes))
+  -- if $ptclassview(ptbranch) = PTBRANCH ([(PTCLASS ptbytes_name)])
 def $typed_class_branch(ptbranch, ptbytes) = false -- otherwise
 def $typed_class_type(eps, ptbytes) = false
 def $typed_class_type(ptbranch :: ptbranch_tail*, ptbytes) = ($typed_class_branch(ptbranch, ptbytes) \/ $typed_class_type(ptbranch_tail*, ptbytes))

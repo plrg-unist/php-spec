@@ -1,0 +1,47 @@
+[
+  {
+    "id": "iterable-array-copy-and-noniterable-error-priority",
+    "namespace": "RuntimeIterableArrayPeer94",
+    "source": "<?php\nnamespace RuntimeIterableArrayPeer94;\nfunction keep(iterable $saved):iterable{echo 'M;';return $saved;}\nfunction reject($saved):iterable{echo 'B;';return $saved;}\n$x=[17];$copy=$x;echo 'N;';\n$r=keep($x);$r[0]=23;echo 'A:',$x[0],':',$r[0],':',$copy[0],';';\ntry{keep(new \\stdClass);}catch(\\TypeError $e){echo 'O;';}\ntry{keep(17);}catch(\\TypeError $e){echo 'S;';}\ntry{reject(17);}catch(\\TypeError $e){echo 'R;';}\necho 'Z;';\n",
+    "source_sha256": "80cf20b55d300abb332c177b5fce0442022c8613d42c9716d36389466f928c0f",
+    "native_stdout": "N;M;A:17:23:17;O;S;B;R;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": false,
+    "value_kind": "array",
+    "formal_typed": true,
+    "nullable_return": false,
+    "role": "array_controls",
+    "derived_from": "Independent runtime iterable alias witnesses under the three-file activation/runtime contract; no Iterator methods or Generator body is invoked."
+  },
+  {
+    "id": "strict-iterable-union-and-nullable-generator-identity",
+    "namespace": "RuntimeIterableGeneratorUnionPeer94",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace RuntimeIterableGeneratorUnionPeer94;\nfunction produce(){yield 19;}\nfunction keep(iterable|false $saved):false|iterable{echo 'M;';return $saved;}\nfunction maybe(?iterable $saved):?iterable{echo 'Q;';return $saved;}\n$x=produce();$copy=$x;echo 'N;';\ntry{$r=keep($x);echo 'I:',(int)($r===$copy),':',(int)($x===$copy),';';}catch(\\TypeError $e){echo 'T;';}\n$no=keep(false);echo 'F:',(int)($no===false),';';\ntry{$r=maybe($x);echo 'J:',(int)($r===$copy),';';}catch(\\TypeError $e){echo 'U;';}\n$none=maybe(null);echo 'N:',(int)($none===null),';Z;';\n",
+    "source_sha256": "8983f80a3acc1e0b1637efe5a14a44866cd98575056dc4f6122055e8ff7081e2",
+    "native_stdout": "N;M;I:1:1;M;F:1;Q;J:1;Q;N:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": true,
+    "value_kind": "generator",
+    "formal_typed": true,
+    "nullable_return": false,
+    "role": "generator_union",
+    "derived_from": "Independent runtime iterable alias witnesses under the three-file activation/runtime contract; no Iterator methods or Generator body is invoked."
+  },
+  {
+    "id": "inherited-user-iterator-iterable-identity",
+    "namespace": "RuntimeIterableInheritedPeer94",
+    "source": "<?php\nnamespace RuntimeIterableInheritedPeer94;\nclass ItemsParent implements \\Iterator{\n public function current():mixed{return 17;}\n public function key():mixed{return 0;}\n public function next():void{}\n public function rewind():void{}\n public function valid():bool{return false;}\n}\nclass ItemsChild extends ItemsParent{}\nfunction keep(iterable $saved):iterable{echo 'M;';return $saved;}\n$x=new ItemsChild;$copy=$x;echo 'N;';\ntry{$r=keep($x);echo 'I:',(int)($r===$copy),':',(int)($x===$copy),';';}catch(\\TypeError $e){echo 'T;';}\necho 'Z;';\n",
+    "source_sha256": "6e41d37e2c571015251082b410c746860ee2fdbaa5671c3f0013fd3d3749928c",
+    "native_stdout": "N;M;I:1:1;Z;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "caller_strict": false,
+    "value_kind": "user_iterator",
+    "formal_typed": true,
+    "nullable_return": false,
+    "role": "inherited_iterator",
+    "derived_from": "Independent runtime iterable alias witnesses under the three-file activation/runtime contract; no Iterator methods or Generator body is invoked."
+  }
+]
