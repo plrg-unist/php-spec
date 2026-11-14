@@ -378,52 +378,41 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; BooleanNot of literal true is false and selects the shorthand fallback.
+;; Quiet truth authenticates the original scalar, not merely its Boolean result.
+dec $string_read_raw_truth(pstate, porigin, pvalue) : bool
+def $string_read_raw_truth(S, porigin, PBOOL true) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch (NName (BYTES text_true) metadata_name) metadata)
+  -- if $ptlc($base64(text_true)) = $ptascii("true")
+  -- if $compiled_read(S, porigin) = (PBOOL true)
+def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text_bytes) metadata)
+  -- if n_bytes* = $base64(text_bytes)
+  -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+def $string_read_raw_truth(S, porigin, PINT i) = $string_read_raw_unary_integer(S, porigin, i)
+def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
+  -- if |text_float| = 16
+  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
+  -- if n_bits = $hex_bits(text_float, 0)
+  -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
+  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+def $string_read_raw_truth(S, porigin, pvalue) = false -- otherwise
+;; The actual NOT result selects the exact literal fallback through QM_ASSIGN.
+;; Floats keep their emitted source/CODE proof; older scalar folds keep their pool.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_leaf) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $ptlc($base64(text_cond)) = $ptascii("true")
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_leaf) metadata_cond)
-  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
-  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_leaf)
-  -- if $origin_node(S.SOURCES, porigin_leaf) = (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_leaf)
-  -- if $compiled_read(S, porigin_leaf) = (PBOOL true)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; BooleanNot of a truthy raw string selects its exact shorthand fallback.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot (NScalarString (BYTES text_cond) metadata_leaf) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if n_cond* = $base64(text_cond)
-  -- if $truth(S, PSTRING n_cond*)
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot (NScalarString (BYTES text_cond) metadata_leaf) metadata_cond)
-  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
-  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_leaf)
-  -- if $origin_node(S.SOURCES, porigin_leaf) = (NScalarString (BYTES text_cond) metadata_leaf)
-  -- if $compiled_read(S, porigin_leaf) = (PSTRING n_cond*)
-  -- if $compiled_string_value(S, porigin_leaf, PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Certified integer trees fold to a false NOT and select the fallback.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_integer metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_child metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if n_bytes* = $base64(text_false)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot expression_integer metadata_cond)
-  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
-  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_integer)
-  -- if $origin_node(S.SOURCES, porigin_integer) = (expression_integer)
-  -- if $compiled_read(S, porigin_integer) = (PINT i)
-  -- if i =/= 0
-  -- if $string_read_raw_unary_integer(S, porigin_integer, i)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot expression_child metadata_cond)
+  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_read(S, porigin_child) = (pvalue_child)
+  -- if $string_read_raw_truth(S, porigin_child, pvalue_child)
+  -- if $truth_value(S, pvalue_child, 0) = S[.RESULT = KNOWN (PBOOL true)]
+  -- if ($type_bytes(pvalue_child) =/= $ptascii("float") /\ $compiled_read(S, porigin_cond) = (PBOOL false)) \/ ($type_bytes(pvalue_child) = $ptascii("float") /\ $string_read_runtime_value(S, porigin_cond) = (PBOOL false))
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
