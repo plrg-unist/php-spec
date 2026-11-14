@@ -1,0 +1,26 @@
+[
+  {
+    "id": "deferred-integer-minus-wrapper-raw-phases",
+    "source": "<?php\nfunction rawMinus258($zero = -((int)(+(-(float)(+(E_WARNING === E_ERROR))))), $fraction = -((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5)), $large = -((int)(PHP_INT_MAX + (int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $overflow = -((int)(PHP_INT_MIN + (int)(+(-(float)(+(E_WARNING === E_ERROR))))))) {\n    echo 'raw:', $zero === 0, ':', $fraction === -3, ':', $large === -9223372036854775807, ':', $overflow === 9223372036854775808.0, ':', $fraction, ':', $large, '|';\n}\nrawMinus258();\nrawMinus258();\n",
+    "source_sha256": "7d5afed173985d4ecde5e0f7e4e595e31c0d062109bf9fbd579e62f07fb814be",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Expected actual PINT0/-3/-MAX and MIN-overflow PFLOAT2^63 from emitted UnaryMinus; strict value/type checks and cold/warm caches distinguish exact signed integer negation from float roundtrip."
+  },
+  {
+    "id": "deferred-integer-minus-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace MinusIntWrapper258;\nuse const E_WARNING as Base258;\nuse const E_ERROR as One258;\nfunction warning258($errno, $message, $file, $line) {\n    global $x258;\n    echo 'warning:', $message, '|';\n    defaults258(2);\n    $x258 = 3.5;\n}\nfunction defaults258(int $first, int &$integer = -((int)((+(-(float)(+(Base258 === One258)))) + 3.5)), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('MinusIntWrapper258\\\\warning258');\n$x258 = 1.5;\n$last258 = 8;\ndefaults258(last: $last258, first: $x258);\necho 'outer:x=', $x258, '|';\n",
+    "source_sha256": "e66ccc4c35f66a67a790bfdb5a6175501f2546fefb8e7b7b426364a10524dbe7",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Expected actual PINT-3 cache through imported ENV, named holes, warning reentry and private BYREF reception; private mutation must leave the raw cache unchanged."
+  },
+  {
+    "id": "deferred-integer-minus-wrapper-minimum-overflow-type-error",
+    "source": "<?php\nfunction warning258($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction range258(int $first, int $later = -((int)(PHP_INT_MIN + (int)(+(-(float)(+(E_WARNING === E_ERROR))))))) { echo 'unexpected-body|'; }\nset_error_handler('warning258');\n$first258 = 1.5;\ntry { range258($first258); }\ncatch (TypeError $e) { echo 'cold:', $e->getMessage(), ':first=', $first258, '|'; }\n$first258 = 2.5;\ntry { range258($first258); }\ncatch (TypeError $e) { echo 'warm:', $e->getMessage(), ':first=', $first258, '|'; }\n",
+    "source_sha256": "ef894a8dc50446660dc3f670ba7ff4c59b3700203d22f65c89517e9a8bf096e3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Expected quiet MIN negation to cache PFLOAT2^63, then preserve earlier supplied-CV precision warning and later ordinary int-default TypeError on cold/warm calls, without executing the body or changing the by-value caller CV."
+  }
+]
