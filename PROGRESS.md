@@ -222,6 +222,8 @@ Quiet runtime unary +/- preserves fitting integer bytes from typed Boolean and i
 
 Quiet emitted ADD/SUB/MUL and PINT-only BITNOT retain actual source/CODE/read-eps/equal precision, quiet fitting NINT inputs and exact whole-state PINT results/decimal bytes. Native4 once/source4, authorSL932/129derived and inclusive peerSL1660/857derived (=932+728, including42 checked-source compiler conditions) remain separate in string-offset-request-base-runtime-integer-operator-review.json. The v1 fixture expectation failure and unrun3 retain0; actual5889f080 has ONE canonical SL508 load16.2823896210175s/source0. Runtime FLOAT bytes, wider operators/producers/owners/lifetimes and complete core remain unfinished. [Runtime integer-operator review](coverage/semantics/string-offset-request-base-runtime-integer-operator-review.json).
 
+Quiet emitted division retains exact integer bytes from genuinely typed Boolean/integer children, quiet fitting inputs, pure exact-integer division and unchanged full-state results. Source, code, read and captured precision facts preserve the existing Warning histories; zero divisors and floating results remain outside this runtime certificate. Native4 once/source4 retain their agreement identity; authorSL1124/129-derived and independent corrected fixtureSL1685/690-derived keep separate source-zero cuts; v1 notation failure/unrun3 retain0. Actual14002 has one combinedSL508 load15.739573478000239s/source0; wider producers/owners/lifetimes remain partial. [Runtime integer-division review](coverage/semantics/string-offset-request-base-runtime-integer-division-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 
 Typed numeric comparisons include FLOAT operands and canonical
@@ -413,6 +415,8 @@ Literal false shorthand bases retain their non-NUL INTERNED fallback header and 
 
 Literal integer-zero shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact raw INTEGER0/compiledPINT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS source facts remain required. Saved-native source2 and separate author168/65 and peer199/78 fixture-SL/source0 cuts pass; actual MAINe98f35c5 has one combined integer/binary SL508 load15.932173192035407s/source0. Wider conditions/producers, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Integer-zero shorthand review](coverage/semantics/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-review.json).
 
+Literal positive-zero float shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact raw FLOAT bits0/compiledPFLOAT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS source facts remain required. Saved-native source2 and separate author169/65 and peer215/93 fixture-SL/source0 cuts pass; actual MAIN14002d6ef has one combined SL508 load15.739573478000239s/source0. Negative/computed/nonfinite conditions, wider producers, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Positive-zero FLOAT shorthand review](coverage/semantics/string-offset-float-zero-shorthand-base-initial-raw-leading-key-review.json).
+
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
@@ -466,9 +470,12 @@ Numeric-only signed64 AND/OR/XOR/NOT now compose deferred integer defaults, incl
 
 Quiet Numeric-only signed64 modulo and shifts now compose deferred integer defaults, including wrapped/signed/count64 results, MIN%-1, nonnull zero, cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; invalid divisor/count results, coercion, E_STRICT, wider powers and wider scope stay partial. [Review](coverage/semantics/numeric-integer-operator-default-reception-review.json).
 
-Quiet Numeric-only signed64 integer-result powers now compose deferred defaults, including exact (-2)**63, MIN/MAX identity, exponent-zero, odd negative bases, nested powers and nonnull zero through cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; FLOAT/GENERAL, negative exponents, coercion, E_STRICT and wider scope stay partial. [Review](coverage/semantics/numeric-power-default-reception-review.json).
+Quiet Numeric-only signed64 integer-result powers now compose deferred defaults, including exact (-2)**63, MIN/MAX identity, exponent-zero, odd negative bases, nested powers and nonnull zero through cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; float results and negative exponents extend below, while coercion, E_STRICT and wider scope stay partial. [Review](coverage/semantics/numeric-power-default-reception-review.json).
 
-Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. GENERAL, power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
+Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. Quiet GENERAL plans extend below; power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
+
+Quiet Numeric FLOAT powers now complete pure GENERAL plans under unchanged source/ENV/no-DIM/cache/owner guards. Raw fractional caches precede their own precision callbacks, throw/retry and private integer reception. Three fresh source agreements plus three explicit Unsupported controls, two promoted saved originals, author fixtureSL184 and independent229 retain separate cuts/source0 for fixtures. Actual joined `14002d6ef` SL508 loading passes in15.739573478s/source0; held lanes and inventory remain unchanged. [GENERAL-power review](coverage/semantics/numeric-general-power-default-reception-review.json).
+
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
@@ -539,6 +546,9 @@ native observations once; precode17, lifecycle12 and peer16 remain separate
 source-zero cuts, and the initial fixture failure remains zero credit. Mixed
 notices/masks and wider handlers/operands/lifetimes and OB31 remain partial.
 [Selected precision review](coverage/semantics/output-final-selected-precision-modulo-error-review.json).
+
+Selected mask8194 handlers with a literal Echo followed by one own bare `return;` preserve FINAL MOD-zero Error through exact raw/emitted-line authority and two/four-cell retirement. Native4 once/source4 at `1008ec0ca` retain their agreement identity; prelaw19, lifecycle13 and independent24 fixture-SL conditions keep separate source-zero cuts. Baseline2 Unsupported and the other2 unrun retain0. The sole actual `be48fce13` SL508 load passes in15.689459902s/source0; arbitrary PNULL-producing bodies, wider forms and existing holds remain partial. [Bare-return review](coverage/semantics/output-final-selected-bare-return-modulo-error-review.json).
+
 These are bounded extensions; the linked family reviews and inventory retain
 wider producers, consumers, signatures, ownership and lifecycle obligations.
 
@@ -557,12 +567,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `65d8de910` passes its once-only 508-module production SL
-load in 15.732246028026566 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `be48fce13` passes its once-only 508-module production SL
+load in 15.689459902001545 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main43-named-clone-quiet-get-joined-508-v1/report.json`
-(SHA-256 `9bcd3c8189a0bc5968ed203c66bb8cc9a70908366caa1714ea6ca5c0b9d8862e`).
+`../php-spec-evidence-archive/resumed-main-20261112/main44-output-bare-return-joined-508-v1/report.json`
+(SHA-256 `bd68d09c9e67582022af0bed74611ec9b0c16baff832f2bc139b2537afeb4313`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

@@ -1203,8 +1203,8 @@ retain proper signed64 `NINT` children, a nonnegative exponent and a fitting
 Absent whole integer authority keeps the old path disjoint. Exact MIN/MAX,
 exponent-zero, odd negative bases, nested powers and nonnull zero preserve
 source/ENV/no-DIM/name, Shared-cache and receive/owner guards through cold/warm
-BYREF defaults and named warning reentry. FLOAT/GENERAL results, negative
-exponents, coercion, effectful `E_STRICT` and wider scope remain partial.
+BYREF defaults and named warning reentry. FLOAT results and negative exponents
+extend below; coercion, effectful `E_STRICT` and wider scope remain partial.
 
 [Completed Numeric FLOAT power defaults](../../coverage/semantics/numeric-float-power-default-reception-review.json)
 also retain proper signed64/binary64 Numeric children and quiet
@@ -1212,8 +1212,20 @@ also retain proper signed64/binary64 Numeric children and quiet
 remain in Shared caches before private integer reception; nonfitting and NaN
 results reach the ordinary TypeError. Source/ENV/no-DIM/name and owner guards
 remain through cold/warm BYREF defaults and named warning reentry. The affected
-earlier overflow source reuses its saved native observation. GENERAL, power
-diagnostics, implicit coercion, effectful `E_STRICT` and wider scope remain partial.
+earlier overflow source reuses its saved native observation. Quiet GENERAL
+completion extends below; power diagnostics, implicit coercion, effectful
+`E_STRICT` and wider scope remain partial.
+
+[Quiet GENERAL Numeric FLOAT power defaults](../../coverage/semantics/numeric-general-power-default-reception-review.json)
+use `(NFLOAT n, false) = $num_pow(left, right)` after the same proper Numeric
+child and word bounds. The existing pure kernel preserves completed results
+and finishes GENERAL plans, including nonunit overflow factors. Raw fractional
+FLOAT caches precede their own precision callbacks, throwing callbacks, retry
+and private integer reception. Source/declaration ENV/name/no-DIM/selected-child,
+Shared-cache and receive/owner authority remain unchanged. Cold/warm BYREF and
+named reentry source agreements, two saved-original promotions, author184 and
+independent229 fixture conditions retain separate cuts. Power diagnostics,
+implicit coercion, effectful `E_STRICT` and wider scope remain partial.
 
 ## Source metadata and resumed states
 

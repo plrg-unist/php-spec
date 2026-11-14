@@ -1466,3 +1466,15 @@ Actual MAIN `a70ef6338`/508 loads separately in15.388790074s/cap60/source0.
 Wider handler execution, operands/lifetimes and OB31 remain partial.
 [Quiet staged MOD evidence](../../coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-default-selected-handlers-quiet-modulo-error-review.json).
+
+Selected mask8194 handlers with two required untyped BYVAL formals may finish a
+literal Echo with one own bare `return;` before FINAL preserves the MOD-zero
+Error. Exact raw `NStmtReturn ABSENT`, own source/unit/body and emitted statement
+`CODEEXPR` at its source line with flag false are required; no NULL expression
+child or read is invented. Existing implicit and literal-NULL arms retain their
+authority. Actual calls retire two/four formal cells while AH/AHH stays buffered.
+Four source agreements and separate prelaw19/lifecycle13/peer24 fixture-source0
+cuts retain their identities; arbitrary PNULL-producing bodies and wider
+handlers, operands and lifetimes remain partial.
+[Bare-return evidence](../../coverage/semantics/output-final-selected-bare-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-bare-return-modulo-error-review.json).

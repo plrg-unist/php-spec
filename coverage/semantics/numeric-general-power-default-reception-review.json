@@ -1,0 +1,112 @@
+{
+  "feature": "ENUM239: quiet GENERAL Numeric FLOAT power defaults",
+  "status": "Bounded source/test slice independently FULLCLEAR and integrated; full core remains unfinished.",
+  "target": "PHP8.5.10 CLI,NTS,signed64;sole project-local oracle;C/UTC baseline;selected libm2.39 FMA/nearest-even.",
+  "implementation": {
+    "donor": "504cb0202240175ff76e811407af43edecda17ba",
+    "source_commit": "c2975f699",
+    "runtime_revision": "82990fc06171c882282e02d18a77d7d8a446266c",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "Replace only NFLOAT power prepare-DONE premise by (NFLOAT n,false)=$num_pow(left,right). Existing06 prepare and09 power_complete give DONE identity or pure GENERAL completion, including overflow factors. No kernel/native/compiler/state changes.",
+    "preserved": "Proper Numeric children, signed64/binary64 roundtrips, output-word bound, whole default_in EPS, exact source/declarationENV/name/no-DIM/selected-child/Shared-cache/owner authority. Raw FLOAT cache precedes private int conversion, its precision callback or ordinary TypeError."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c:zend_ast_evaluate_inner binary children/get_binary_op",
+      "Zend/zend_operators.c:pow_function_base/safe_pow FLOAT typing,overflow factors,zero-negative Deprecated",
+      "Zend/zend_vm_def.h:ZEND_RECV_INIT caches quiet raw scalar before zend_verify_recv_arg_type"
+    ],
+    "reference": "06-power-prepare/09-libm-power pure .watsup only; platform identity does not compute semantic answers."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-general-power-default-reception-239",
+  "runtime_record": {
+    "report": "runtime.json",
+    "sha256": "5725415f9eae5f7ba29d64429cc0fb11cbe0d799decbee211d2b2a396b160d1a",
+    "profile": "tests/semantics/profile.json"
+  },
+  "platform_record": {
+    "report": "platform.json",
+    "sha256": "47c8fe07a41900a23d0b499296c9afa11935f81107f2c7a6094a564e785bb646",
+    "scope": "Read-only libm identity/IFUNC0x7a1e0/rounding;no semantic answer fallback."
+  },
+  "native_once": {
+    "revision": "8fcc2a2b01261c584b93d82f3d64dc99658aaf9e",
+    "report": "native-v1/report.json",
+    "sha256": "492fdb8f3032c7eb9e15766ffad671a720a80e864ecf704c6a33d182b2d02cee",
+    "fresh_originals": 6,
+    "native_reexecutions": 0
+  },
+  "baseline": {
+    "revision": "8fcc2a2b01261c584b93d82f3d64dc99658aaf9e",
+    "report": "current-v1/report.json",
+    "sha256": "4b3a5c87540a95059d01400c67076ec15da7a65703c272345dc5a28e8660893d",
+    "driver_seconds": 27.747333559,
+    "mode": "production SL_mode,508 modules",
+    "result": "Six explicit Unsupported at handler ingress;zero agreement credit."
+  },
+  "source_evidence": {
+    "revision": "82990fc06171c882282e02d18a77d7d8a446266c",
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "d437f74dcfdec51b5acf339cda6d7e2feff6d5f0dd94ae2ffc58a08a440f45d4",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 91.01915240404196,
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "scope": "Fresh fractional cold/warm BYREF defaults, own precision callbacks, throw/retry, named holes/reentry,root/negative/nested/underflow GENERAL values. Raw strings,E_STRICT,skipped DIM remain Unsupported,not agreements."
+  },
+  "affected_source": {
+    "revision": "82990fc06171c882282e02d18a77d7d8a446266c",
+    "report": "affected-source-v1/report.json",
+    "sha256": "641f4a817bcee39f7c05faafadef5a343493d0374d7a125f794c5866b3c5d8d4",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 25.04327247105539,
+    "exact_normal_agreements": 2,
+    "native_reexecutions": 0,
+    "scope": "Only237 negative-exponent0.5/precision callback and238 GENERAL2**64/caught int TypeError. Exact saved original bytes/hash/path/cwd/native streams/status;other old cuts not replayed."
+  },
+  "state_evidence": [
+    {
+      "revision": "82990fc06171c882282e02d18a77d7d8a446266c",
+      "report": "author-v1/closure-call-protocol-9eite6xn/report.json",
+      "sha256": "b84054508d3682d3dfa75fb7890283164817702a76ffce6cf755b2cea43813fa",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 184,
+      "body": 172,
+      "setup": 12,
+      "fixtures": 2,
+      "source_credit": 0,
+      "driver_seconds": 86.66115052788518,
+      "scope": "Genuine GENERAL0.5 raw cache, own callback/throw retry, ordinary PINT locals, cache/source/ENV/owner refusals,budget/resume,cleanup;two author-owned old EPS promotions freshly executed."
+    },
+    {
+      "revision": "3e81208903be24e868c4b93b780c51c24d0dc41d",
+      "report": "peer-v1/closure-call-protocol-mkz2rlez/report.json",
+      "sha256": "aca16d82a0de973bfe6d900ccf989413bdc88f52814e2bcf5045ce9fbbbd909d",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 229,
+      "body": 223,
+      "setup": 6,
+      "fixtures": 1,
+      "source_credit": 0,
+      "driver_seconds": 46.46758414595388,
+      "scope": "Independent named GENERAL raw FLOAT caches before PINT locals;equal-output changedENV/source refusal;source/cache/owner/budget/cleanup;nonunit factors2**65/(-2)**65,subnormal2**-1074,negativezero(-2)**-1075;seven peer-owned old clauses freshly corrected/executed."
+    }
+  ],
+  "validation": "First-pass current239 checks pass,stable,quiet,trueLF where applicable,exit0,no timeouts/unrun;source inner360/driver600,fixture inner300/driver600;all driver groups reaped. Native original6 once only. Fixture physical counts retain repeated prefixes and separate cuts;no AL or unique/family aggregate claim. Earlier238 failures and accepted237/238 cuts retain original identities/zero-credit failures.",
+  "review": "Independent peer6 FULLCLEAR logical whole8fcc/873/82990fc/23277e+b557;final504cb three peer blobs exactb557. Author actual composition CLEAR at14002d6ef:11 code/test blobs exact504cb,Make3 contiguous recipes once,06/09 exact. Static composition renews no source/state credit.",
+  "actual_joined_load": {
+    "revision": "14002d6ef3b689605d4844805ab14b41ba058af0",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main44-general-floatzero-integerdiv-joined-508-v1/report.json",
+    "sha256": "a3a85052908d1e03223ecd897d2ea8f7d194d6d9e31b6bf939375281f5518224",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "seconds": 15.739573478000239,
+    "source_credit": 0,
+    "result": "PASS,trueLF,quiet,stable,fully reaped;separate from original source/state cuts."
+  },
+  "remaining": "Power diagnostics,implicit scalar coercion,E_STRICT,wider producers/entries/lifetimes remain partial. All exact holds preserved,especially Source47 low-precision DEFINE-name NaN. Inventory169 constructors/306 obligations unchanged,0 constructors and1 obligation closed;ITrees/Rocq/BOLA remain unfinished."
+}

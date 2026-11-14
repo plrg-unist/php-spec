@@ -836,6 +836,9 @@ native observations once; precode17, lifecycle12 and peer16 remain separate
 source-zero cuts, and the initial fixture failure remains zero credit. Mixed
 notices/masks and wider handlers/operands/lifetimes and OB31 remain partial.
 [Selected precision review](coverage/semantics/output-final-selected-precision-modulo-error-review.json).
+
+Selected mask8194 handlers with a literal Echo followed by one own bare `return;` also preserve FINAL MOD-zero Error through exact raw/emitted-line authority and real formal-cell retirement. Four original-source agreements retain their own cut; arbitrary PNULL-producing bodies and wider handler/operand/lifetime forms remain partial. [Bare-return review](coverage/semantics/output-final-selected-bare-return-modulo-error-review.json).
+
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1289,6 +1292,8 @@ Quiet runtime unary +/- preserves fitting integer bytes from typed Boolean and i
 
 Quiet emitted ADD/SUB/MUL and PINT-only BITNOT retain actual source/CODE/read-eps/equal precision, quiet fitting NINT inputs and exact whole-state PINT results/decimal bytes. Runtime FLOAT bytes and wider operators, producers, ownership and lifetimes remain partial. [Runtime integer-operator review](coverage/semantics/string-offset-request-base-runtime-integer-operator-review.json).
 
+Quiet emitted division retains exact integer bytes from genuinely typed Boolean/integer children, quiet fitting inputs, pure exact-integer division and unchanged full-state results. Source, code, read and captured precision facts preserve the existing Warning histories; zero divisors and floating results remain outside this runtime certificate. [Runtime integer-division review](coverage/semantics/string-offset-request-base-runtime-integer-division-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
@@ -1553,6 +1558,8 @@ Literal NULL shorthand bases also retain their selected non-NUL INTERNED fallbac
 Literal false shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [FALSE-shorthand review](coverage/semantics/string-offset-false-shorthand-base-initial-raw-leading-key-review.json).
 
 Literal integer-zero shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [Integer-zero shorthand review](coverage/semantics/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-review.json).
+
+Literal positive-zero float shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact raw binary64-zero and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [Positive-zero FLOAT shorthand review](coverage/semantics/string-offset-float-zero-shorthand-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
@@ -5260,9 +5267,12 @@ Numeric-only signed64 AND/OR/XOR/NOT now compose deferred integer defaults, incl
 
 Quiet Numeric-only signed64 modulo and shifts now compose deferred integer defaults, including wrapped/signed/count64 results, MIN%-1, nonnull zero, cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; invalid divisor/count results, coercion, E_STRICT, wider powers and wider scope stay partial. [Review](coverage/semantics/numeric-integer-operator-default-reception-review.json).
 
-Quiet Numeric-only signed64 integer-result powers now compose deferred defaults, including exact (-2)**63, MIN/MAX identity, exponent-zero, odd negative bases, nested powers and nonnull zero through cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; FLOAT/GENERAL, negative exponents, coercion, E_STRICT and wider scope stay partial. [Review](coverage/semantics/numeric-power-default-reception-review.json).
+Quiet Numeric-only signed64 integer-result powers now compose deferred defaults, including exact (-2)**63, MIN/MAX identity, exponent-zero, odd negative bases, nested powers and nonnull zero through cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; float results and negative exponents extend below, while coercion, E_STRICT and wider scope stay partial. [Review](coverage/semantics/numeric-power-default-reception-review.json).
 
-Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. GENERAL, power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
+Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. Quiet GENERAL plans extend below; power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
+
+Quiet Numeric FLOAT power defaults also complete existing pure GENERAL plans, retaining raw caches before their own precision callbacks, throw/retry and integer reception. Exact source/ENV/no-DIM/cache/owner guards remain; power diagnostics, implicit coercion and wider scope stay partial. [GENERAL-power review](coverage/semantics/numeric-general-power-default-reception-review.json).
+
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through

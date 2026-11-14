@@ -1,0 +1,97 @@
+{
+  "feature": "FINAL MOD zero Error after a selected literal Echo and bare return (OB105)",
+  "decision": "Whole five-file source/test independently accepted; Output and complete core remain partial",
+  "reviewer": "/root/recover10_output_bare_return_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and recorded profile",
+  "cuts": {
+    "source_only": "d1977aa3232c8c96309b0a5ba01e3f90816e4171",
+    "precode": "cdcc939829caf8865c7a7ebf9101ac48fbf7c67e",
+    "runtime": "1008ec0ca00c8ef3d1395822fcb6370f5274c014",
+    "ready": "7ca3e2f49f5933ef0039a2c6be4bafb791c4c2ef"
+  },
+  "scope": "Four originals use an untyped named handler with two required untyped nonvariadic BYVAL formals, a literal H echo and one own bare return, registered with mask8194. Warning LEFT CONST, Deprecated BOTH CV-pair, Warning RIGHT CV-pair and mixed Warning-to-Deprecated CONST/FLOAT retire two/four real formals before FINAL MOD-zero Error; AH/AHH stays buffered.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return supplies CONST NULL for an absent expression and emits ordinary ZEND_RETURN for this untyped non-BYREF function.",
+    "Zend/zend_vm_def.h::ZEND_RETURN copies CONST NULL into the caller return slot and enters ordinary frame retirement; NULL adds no owner.",
+    "Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE; bare-return NULL is consumed through the existing handler path.",
+    "Spec78 locates bare Return at its own statement line;94 emits PPCEXPR at that path with eps;33 emits CODEEXPR at that line with false. There is no NULL child or compiled read."
+  ],
+  "change": "A seven-line pure tail arm admits exactly one own raw NStmtReturn ABSENT. Function origin, CODE.UNIT/BODY, own Return path and exact statement CODEEXPR/source line/false flag remain mandatory. The eps and explicit-NULL arms and every other selected-capture premise are unchanged. No return kernel, schema, ownership, provider, numeric or native-evaluation change.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-bare-return-modulo-error-105",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "c479d310c7ed75e7f23467bccadef903dad9a3fc4891a9834415a1242b19fc9c",
+      "cut": "source_only",
+      "observations": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "90919bc3a8b29074f58763992477627b4c446c045b543230d27446c21ea6bde5",
+      "cut": "source_only",
+      "mode": "production SL508/cache=false/det=true",
+      "selection": [1, 2],
+      "cap_seconds": [90, 120],
+      "collection_complete": true,
+      "aggregate_pass": false,
+      "source_credit": 0,
+      "other_originals_unrun": 2
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "6814dbd94347edccc4fbd7193ca7508feeac9f02f0fe9344468089fb7be18300",
+      "cut": "precode",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [8, 11],
+      "cap_seconds": 300,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "2450ee99a5c095f87c0f3608a898acd4546f7ac75f0793dcbd16bed552bb5c8c",
+      "cut": "runtime",
+      "mode": "production SL508/cache=false/det=true",
+      "cap_seconds": [90, 120],
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "51b060d7d6a8f02ff0a2bfc8cd0dc39a57db957b2db31104c13b41614987d112",
+      "cut": "runtime",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [6, 7],
+      "cap_seconds": 300,
+      "source_credit": 0
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "3edb5149a5d67344c62d330fe5f1d24b3f3d3de3a3e3dc845b6d1465290bd644",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [9, 15],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "peer-launch-01.json",
+      "outer_launch_sha256": "26dff5dbbfbef4f86f5f0f2e971c8e7ab1896f8b354b4f1ae2c53f6c26a70094",
+      "outer_cap_seconds": 660,
+      "outer_seconds": 208.97348068095744
+    }
+  },
+  "validation": "Positive campaigns passed first try. Source4 actual php_error/tool0/reasonNone, DivisionByZeroError lines6/8/8/6, exact saved-native P/full fatal255/no DIAGNOSTIC; native4 reused without replay. Baseline1/2 remain pending-FINAL Unsupported/tool1/P/empty PHP and tool stderr/no DIAGNOSTIC/native_match=false; other2 remain unrun0. Precode19 reaches actual bare RETURN_UNWIND with no source seed and captureeps. Lifecycle13 and peer24 separately authenticate the postlaw source-transition equality, real retirement, C0 and fatal cleanup; neither supplies source agreement. Stable recorded watch counts are native21each, baseline533, precode574each, source541, lifecycle574each and peer575global+3case inputs each, with their exact HEADs and source/checked/fixture hashes. All raw arrays, streams, exits, modes, commands and caps are clear; all jobs fully reaped. No AL, cumulative-unique claim or historical renewal.",
+  "environment": "Native/source drivers explicitly set C/UTC. Authorfront/life interpreter commands record C/UTC; their outer Python environment was not snapshotted at launch, and the author reports inherited LC_ALL/LANG=C.UTF-8 with TZ unset. Peer outer launch and both interpreter commands explicitly record LC_ALL=C,TZ=UTC,PATH=/usr/bin:/bin. These identities are preserved without reruns.",
+  "controls": "Peer originals3/4 retain actual ordered arguments/NULL finishes, conversion INPUT/cursors/full store, real formal/native-cell retirement and fatal Error retirement. New groups authenticate the own bare Return's statement CODEEXPR/line/false flag, no expression child/read and eps compatibility; expressed NULL, TRUE and extra tails cannot replace raw ABSENT source. First-shadowing wrong flag/line and mismatched CODE.UNIT/BODY refuse admission. The old104 constructed bare-tail refusal against raw Return(NULL) source remains false by exact raw-source matching; no old104 campaign is renewed. Current-body refusals do not establish a universal retarget-history exclusion.",
+  "integration": {
+    "tested_revision": "be48fce131d4baa3bd641d8726fc792ba5f4be7c",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main44-output-bare-return-joined-508-v1/report.json",
+    "sha256": "bd68d09c9e67582022af0bed74611ec9b0c16baff832f2bc139b2537afeb4313",
+    "mode": "sole combined production SL508;511argv/512watched;cap60",
+    "seconds": 15.689459902001545,
+    "source_credit": 0,
+    "result": "Independent actual composition CLEAR: exact five-path intake, all four non-Make blobs donor7ca-exact, Make exactly3 additive with parent content retained. Runtime1008 to ready7ca adds only Make3 and the peer fixture; runtime/source/lifecycle inputs retain their exact identities. Sole saved combined result independently verified PASS/trueLF/quiet/exit0/no timeout/stable512+HEAD/fully reaped/C-UTC. Private execution credit is not renewed."
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-bare-return-modulo-error-author.json",
+  "limits": "Only these four originals gain source agreement. Other return bodies/values/signatures, one-CV and wider handler/operand/lifetime contexts remain partial. Standing holds and 169/306 inventory status remain unchanged, with zero constructors and one obligation closed. OB31, complete core, Rocq interaction trees and BOLA/CRIS remain unfinished. No engine bug or deliberate divergence is established."
+}
