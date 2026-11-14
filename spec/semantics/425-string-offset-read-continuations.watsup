@@ -146,6 +146,24 @@ def $string_read_raw_leading(PSTRING_CARRIER INTERNED_STRING n_base*, PSTRING n_
   -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
   -- if $numeric_string(n_key*) = LEADNUM (NINT i)
 def $string_read_raw_leading(pvalue_base, pvalue_key) = eps -- otherwise
+;; Every folded sign in an integer-only unary chain retains its actual child.
+dec $string_read_raw_unary_integer(pstate, porigin, int) : bool
+def $string_read_raw_unary_integer(S, porigin, i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarInt (INTEGER i) metadata)
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+def $string_read_raw_unary_integer(S, porigin, i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_read(S, porigin_child) = (PINT i_child)
+  -- if $long_range(i_child)
+  -- if $string_read_raw_unary_integer(S, porigin_child, i_child)
+  -- if $unary_apply(S, punary, PINT i_child, 0) = S[.RESULT = KNOWN (PINT i)]
+def $string_read_raw_unary_integer(S, porigin, i) = false -- otherwise
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
@@ -360,6 +378,24 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_leaf) = (NScalarString (BYTES text_cond) metadata_leaf)
   -- if $compiled_read(S, porigin_leaf) = (PSTRING n_cond*)
   -- if $compiled_string_value(S, porigin_leaf, PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+;; Integer-only sign chains also fold to a false NOT and select the fallback.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_unary metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $pfshape(expression_unary) = PFUNARY punary expression_child
+  -- if n_bytes* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot expression_unary metadata_cond)
+  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
+  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_unary)
+  -- if $origin_node(S.SOURCES, porigin_unary) = (expression_unary)
+  -- if $compiled_read(S, porigin_unary) = (PINT i)
+  -- if i =/= 0
+  -- if $string_read_raw_unary_integer(S, porigin_unary, i)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
