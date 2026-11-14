@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-float-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawFloatIdentity273($same = ((+(-((float)(+(E_WARNING === E_ERROR))))) === (-(+(-((float)(+(E_WARNING === E_ERROR))))))), $different = ((-((float)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) === (+(-((float)(+(E_WARNING === E_ERROR)))))), $notSame = ((+(-((float)(+(E_WARNING === E_ERROR))))) !== (-(+(-((float)(+(E_WARNING === E_ERROR))))))), $notDifferent = ((-((float)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) !== (+(-((float)(+(E_WARNING === E_ERROR)))))), $sameInf = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) === INF), $differentInf = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) === -INF), $notSameInf = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) !== INF), $notDifferentInf = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) !== -INF)) {\n    echo 'raw:', $same === true, ':', $different === false, ':', $notSame === false, ':', $notDifferent === true, ':', $sameInf === true, ':', $differentInf === false, ':', $notSameInf === false, ':', $notDifferentInf === true, '|';\n    $same = 19;\n    $different = 20;\n    $notSame = 21;\n    $notDifferent = 22;\n}\nrawFloatIdentity273();\nrawFloatIdentity273();\n",
+    "expected_model": "normal",
+    "purpose": "Both strict nonNaN FLOAT identity operators retain raw Boolean tags across distinct signed-zero payloads, finite differences and same/opposite infinities in cold/warm receives.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "57b1ec4f180f93679fedddc5423b5b759917c278e36fbd3a5f32068f1465b8e1"
+  },
+  {
+    "id": "deferred-float-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FloatIdentity273;\nuse const E_WARNING as Base273;\nuse const E_ERROR as One273;\nfunction warning273($errno, $message, $file, $line) {\n    global $x273;\n    echo 'warning:', $message, '|';\n    defaults273(2);\n    $x273 = 3.5;\n}\nfunction defaults273(int $first, int &$same = (int)((+(-((float)(+(Base273 === One273))))) === (-(+(-((float)(+(Base273 === One273))))))), int &$different = (int)((-((float)(!(+(-((float)(+(Base273 === One273)))))))) === (+(-((float)(+(Base273 === One273)))))), int &$notSame = (int)((+(-((float)(+(Base273 === One273))))) !== (-(+(-((float)(+(Base273 === One273))))))), int &$notDifferent = (int)((-((float)(!(+(-((float)(+(Base273 === One273)))))))) !== (+(-((float)(+(Base273 === One273)))))), int $last = 7) {\n    echo 'body:', $first, ':', $same, ':', $different, ':', $notSame, ':', $notDifferent, ':', $last, '|';\n    $same = 19;\n    $different = 20;\n    $notSame = 21;\n    $notDifferent = 22;\n}\n\\set_error_handler('FloatIdentity273\\\\warning273');\n$x273 = 1.5;\n$last273 = 8;\ndefaults273(last: $last273, first: $x273);\necho 'outer:x=', $x273, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Imported names, existing INT parents, four BYREF named holes and Warning reentry retain private integer caches from actual nonNaN FLOAT identity.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:0:0:1:7|body:1:1:0:0:1:8|outer:x=3.5|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "46fea05b7d16813ca1ed77b757cf416453bb70dafc32726b7aa9ce83e4e5b3f0"
+  },
+  {
+    "id": "deferred-float-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryFloatIdentity273(int &$value = (int)(PHP_FLOAT_MIN === PHP_FLOAT_MAX)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryFloatIdentity273();\n",
+    "expected_model": "normal",
+    "purpose": "Existing phase-safe FLOAT identity under an INT parent remains an ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "1f87fd4c819f4e9306f24071bbbef7a66ade32dec292c8baeaf3f9d58abdb52d"
+  }
+]
