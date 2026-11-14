@@ -503,6 +503,47 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL b)
   -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
   -- if $comparison_value(pbin, $scalar_order(S, pvalue_left, pvalue_right)) = PBOOL b
   -- if $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN (PBOOL b)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [LESS, LESSEQUAL, SPACESHIP]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if i = $scalar_order(S, pvalue_left, pvalue_right)
+  -- if $long_range(i)
+  -- if $comparison_value(pbin, i) = pvalue
+  -- if $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN pvalue]
+;; Greater comparisons use the engine's reversed comparison operands.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL b)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [GREATER, GREATEREQUAL]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if $comparison_value(pbin, $scalar_order(S, pvalue_right, pvalue_left)) = PBOOL b
+  -- if $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN (PBOOL b)]
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
