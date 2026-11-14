@@ -1,0 +1,18 @@
+[
+  {
+    "id": "deferred-boolean-truth-wrapper-raw-phases",
+    "source": "<?php\nfunction rawTruth262($falseCast = (bool)((bool)((int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $trueCast = (bool)((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5)))), $notFalse = !((bool)((int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $notTrue = !((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))))) {\n    echo 'raw:', $falseCast === false, ':', $trueCast === true, ':', $notFalse === true, ':', $notTrue === false, '|';\n}\nrawTruth262();\nrawTruth262();\n",
+    "source_sha256": "077f00aded2849c23d91f9279096bee5703234214b345c2742b47090877d8103",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual PBOOLfalse/true from signed integer children cross canonical Boolean identity and logical NOT, retaining genuine PBOOL caches through cold/warm calls."
+  },
+  {
+    "id": "deferred-boolean-truth-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BoolTruth262;\nuse const E_WARNING as Base262;\nuse const E_ERROR as One262;\nfunction warning262($errno, $message, $file, $line) {\n    global $x262;\n    echo 'warning:', $message, '|';\n    defaults262(2);\n    $x262 = 3.5;\n}\nfunction defaults262(int $first, int &$identity = (int)((bool)((bool)(-((int)((+(-(float)(+(Base262 === One262)))) + 3.5))))), int &$negated = (int)(!((bool)(-((int)((+(-(float)(+(Base262 === One262)))) + 3.5))))), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('BoolTruth262\\\\warning262');\n$x262 = 1.5;\n$last262 = 8;\ndefaults262(last: $last262, first: $x262);\necho 'outer:x=', $x262, '|';\n",
+    "source_sha256": "7ac71059b7504503c3ce9c8d57c0887db977eb1181716b7679b90bdfd6015fc9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Existing INT parents consume actual Boolean identity/NOT results as raw PINT1/0 through imported aliases, named holes[1,2], Warning reentry and two distinct private BYREF cells."
+  }
+]
