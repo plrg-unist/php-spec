@@ -1370,9 +1370,18 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprConstFetch (N
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_true) = ((z_true, true))
   -- if z_true = $source_line(metadata_true)
   -- if $compiled_read(S, PORIGIN n_handler pcpath_true) = (PBOOL true)
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NScalarInt (INTEGER 0) metadata_zero) metadata_return]) = true
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NScalarInt (INTEGER 0) metadata_zero) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_zero)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_zero) = ((z_zero, true))
+  -- if z_zero = $source_line(metadata_zero)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_zero) = (PINT 0)
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare or TRUE return.
+;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE or integer-zero return.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
