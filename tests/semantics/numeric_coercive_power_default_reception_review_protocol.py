@@ -204,8 +204,8 @@ for child, expected in [
 checks.extend([
     f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", string("2.0"), zero)}) = (NFLOAT 4607182418800017408)',
     f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, constant("false"))}) = (NINT 1)',
-    f'$lossy_optional_integer_numeric($plempty(false),{binary("Plus", string("2"), one)}) = eps',
-    f'$lossy_optional_integer_numeric($plempty(false),{binary("Mul", constant("true"), one)}) = eps',
+    f'$lossy_optional_integer_numeric($plempty(false),{binary("Plus", string("2"), one)}) = (NINT 3)',
+    f'$lossy_optional_integer_numeric($plempty(false),{binary("Mul", constant("true"), one)}) = (NINT 1)',
     '$coerce_number(PSTRING ([50,116,97,105,108])) = COERCED (NINT 2) true',
     '$coerce_number(PSTRING ([110,111,110,101])) = BADNUMBER',
     '$num_pow(NINT 0,NINT $(-1)) = (NFLOAT 9218868437227405312,true)',

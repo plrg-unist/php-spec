@@ -176,14 +176,16 @@ for expression, value in [(integer(7), '7'), (binary('Plus', integer(1), integer
         f'$lossy_optional_integer_numeric(plenv_source, {expression}) = (NINT {value})',
         f'$lossy_optional_integer_default_in(plenv_source, {cast(expression)}) = ({value})',
     ])
-# No raw bool/null/string coercion, opaque operator, unknown syntax or invalid INT enters numbers.
+# Bare scalar leaves, opaque operators, unknown syntax and invalid INT stay outside Numeric.
 for expression in [true, false, null, yes, no, nil, string('1'), string('1tail'),
                    integer(9223372036854775808), node('NExprVariable', 'BYTES "eA=="'),
                    node('NExprArray', 'SEQUENCE eps'), unknown,
                    binary('Plus', yes, integer(1)), binary('Mul', string('2'), integer(3)),
                    binary('Mod', floating('3ff8000000000000'), integer(1)),
                    conditional(yes, floating('3fe0000000000000'), unknown)]:
-    result = '(NFLOAT $hex_bits("3fe0000000000000", 0))' if expression.startswith('NExprTernary ') else 'eps'
+    result = ('(NINT 2)' if expression.startswith('NExprBinaryOpPlus ')
+              else '(NINT 6)' if expression.startswith('NExprBinaryOpMul ')
+              else '(NFLOAT $hex_bits("3fe0000000000000", 0))' if expression.startswith('NExprTernary ') else 'eps')
     checks.append(f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {result}')
 for expression in [binary('Div', integer(1), integer(0)), binary('Div', floating('3ff0000000000000'), floating('8000000000000000'))]:
     checks.extend([

@@ -294,7 +294,8 @@ for child,bits in [(ternary(expr_yes,string('0.0'),expr_unknown),'00000000000000
     result=f'(NFLOAT $hex_bits("{bits}",0))' if bits is not None else 'eps'
     checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(child)}) = {result}')
 for expression in [binary('Plus',expr_yes,integer(1)),binary('Mul',string('2'),integer(2)),binary('BooleanAnd',integer(1),expr_unknown)]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(expression)}) = eps')
+    result = '(NFLOAT 4611686018427387904)' if expression.startswith('NExprBinaryOpPlus ') else '(NFLOAT 4616189618054758400)' if expression.startswith('NExprBinaryOpMul ') else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source,{float_cast(expression)}) = {result}')
 checks.extend([
     f'$lossy_optional_integer_default_in(plenv_source,{scalar}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source,{string_cast(scalar)}) = eps',

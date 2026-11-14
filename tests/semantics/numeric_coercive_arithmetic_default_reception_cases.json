@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-coercive-arithmetic-default-cold-warm",
+    "source": "<?php\nfunction arithmeticWarning241($errno, $message, $file, $line) {\n    global $xArithmetic241;\n    echo 'warning:', $message, '|';\n    $xArithmetic241 = 3.5;\n}\nfunction arithmeticDefaults241(int $first, int $sum = ('2' + E_ERROR), int $difference = (E_WARNING - '1'), int $product = (true * E_WARNING), int $exact = ('4' / E_WARNING), int &$fraction = ((E_WARNING + E_WARNING + E_ERROR) / '2')) {\n    echo 'body:', $first, ':', $sum, ':', $difference, ':', $product, ':', $exact, ':', $fraction, '|';\n    $fraction = 9;\n}\nset_error_handler('arithmeticWarning241');\n$xArithmetic241 = 1.5;\narithmeticDefaults241($xArithmetic241);\necho 'cold:x=', $xArithmetic241, '|';\n$xArithmetic241 = 1.5;\narithmeticDefaults241($xArithmetic241);\necho 'warm:x=', $xArithmetic241, '|';\n",
+    "source_sha256": "eb9b4761ce6ec93ecea94b0152a5214c10c0f3a787b98bb9cd72763c5bdc621a",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet FULLNUM string and Boolean operands compose ADD/SUB/MUL/DIV under actual source/declaration ENV. Exact division caches PINT2 while inexact division caches raw PFLOAT2.5 before its own precision callback and fresh BYREF local mutation. Cold/warm cache typing, saved first receive and owner guards remain."
+  },
+  {
+    "id": "numeric-coercive-arithmetic-default-alias-named-reentry",
+    "source": "<?php\nnamespace ArithmeticAlias241;\nuse const E_WARNING as Base241;\nuse const E_ERROR as One241;\nfunction warning241($errno, $message, $file, $line) {\n    global $xAlias241;\n    echo 'warning:', $message, '|';\n    defaults241(2);\n    $xAlias241 = 3.5;\n}\nfunction defaults241(int $first, int $sum = (One241 + ' 2 '), int $difference = ('5.0' - Base241), int $product = (Base241 * true), int $zero = (null / Base241), int $last = 7) {\n    echo 'body:', $first, ':', $sum, ':', $difference, ':', $product, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('ArithmeticAlias241\\\\warning241');\n$xAlias241 = 1.5;\n$lastAlias241 = 8;\ndefaults241(last: $lastAlias241, first: $xAlias241);\necho 'outer:x=', $xAlias241, '|';\n",
+    "source_sha256": "3716370dd73b72a9143f331258dfc3238b81938d4a0fe8db2e6afb3b9b998435",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "All four quiet scalar-coerced operators retain proper operand identity: spaced FULLNUM integer string, FLOAT string, right Boolean and left null. Named holes1..4,last8 and warning reentry preserve raw PINT3/PFLOAT3/PINT2/PINT0 Shared caches before private PINT locals and exact source/ENV/no-DIM/cache/owner authority."
+  },
+  {
+    "id": "numeric-coercive-arithmetic-default-fractional-handler-throw-retry",
+    "source": "<?php\nfunction arithmeticThrowWarning241($errno, $message, $file, $line) {\n    global $xThrow241, $countThrow241;\n    $countThrow241 = $countThrow241 + 1;\n    echo 'warning:', $countThrow241, ':', $message, '|';\n    $xThrow241 = 4.5;\n    if ($countThrow241 === 2) { throw new Exception('arithmetic241', 241); }\n}\nfunction arithmeticThrow241(int $first, int $later = ('3.5' - E_ERROR)) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('arithmeticThrowWarning241');\n$countThrow241 = 0;\n$xThrow241 = 1.5;\n$result241 = 99;\ntry { $result241 = arithmeticThrow241($xThrow241); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result241, ':x=', $xThrow241, '|'; }\n$xThrow241 = 1.5;\n$result241 = arithmeticThrow241($xThrow241);\necho 'retry:', $result241, ':x=', $xThrow241, '|';\n",
+    "source_sha256": "bdb62931e301bcf74dfaa6206db37770ce06a5de34b344f796e7223232479d54",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet FULLNUM FLOAT subtraction produces raw PFLOAT2.5 before its own later int precision callback. A callback throw preserves raw cache and destination99;retry converts to private PINT2 after a new callback,with ordinary cleanup and source/ENV/owner guards."
+  },
+  {
+    "id": "numeric-coercive-arithmetic-default-leading-string-control",
+    "source": "<?php\nfunction warning241($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults241(int $first, int $later = ('2tail' + E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning241');\n$x241 = 1.5;\ntry { defaults241($x241); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "1bd686379fba29fcf49dc61c719d332a38079f819f9f69616a473e0560b793ba",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "LEADNUM conversion requires its actual Warning and remains outside COERCED(number,false)."
+  },
+  {
+    "id": "numeric-coercive-arithmetic-default-nonnumeric-string-control",
+    "source": "<?php\nfunction warning241($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults241(int $first, int $later = ('none' * (E_ERROR - E_ERROR))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning241');\n$x241 = 1.5;\ntry { defaults241($x241); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "54f0a86890474ce283a6ce0d2653f3ed97c808f9b48703145a405ba8a06acb70",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "BADNUMBER remains refused even when multiplication has a zero other operand;no omitted conversion or harmless zero stub is admitted."
+  },
+  {
+    "id": "numeric-coercive-arithmetic-default-division-zero-control",
+    "source": "<?php\nfunction warning241($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults241(int $first, int $later = (E_WARNING / null)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning241');\n$x241 = 1.5;\ntry { defaults241($x241); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "d3f80bd4e501260ac011ce5a62a0cc840b38ba0514cf4224b78d9716344798d4",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "NULL converts quietly to NINT0 but division returns DIVZERO,not a NUM result;the actual DivisionByZeroError remains outside this quiet producer certificate."
+  }
+]

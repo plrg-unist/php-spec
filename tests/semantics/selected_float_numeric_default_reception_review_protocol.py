@@ -302,7 +302,7 @@ checks.extend([
     f'$lossy_optional_integer_string_in(plenv_source, {dimension(string("019"), selected_half)}) = eps',
     f'$lossy_optional_integer_string_in(plenv_source, {string_cast(selected_half)}) = eps',
     f'$lossy_optional_integer_numeric(plenv_source, {ternary(expr_yes, string("0.5"), expr_unknown)}) = eps',
-    f'$lossy_optional_integer_numeric(plenv_source, {binary("Plus", expr_yes, integer(1))}) = eps',
+    f'$lossy_optional_integer_numeric(plenv_source, {binary("Plus", expr_yes, integer(1))}) = (NINT 2)',
 ])
 # Preserve the exact old selected-literal and selected-computed unary formulas freshly.
 checks.extend([

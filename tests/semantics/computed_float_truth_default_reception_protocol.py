@@ -246,9 +246,10 @@ for expression, truth, integer_result in [(half, True, '(0)'), (zero, False, '(0
 for expression in [computed_nan(), binary('Div', integer(1), integer(0)), binary('Div', floating('3ff0000000000000'), integer(0)),
                    binary('Plus', constant('true'), integer(1)), binary('Plus', string('1'), integer(1)),
                    binary('Pow', integer(2), integer(63))]:
+    scalar_arithmetic = expression.startswith('NExprBinaryOpPlus ')
     checks.extend([
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprCastBool", expression))}) = eps',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {"(true)" if scalar_arithmetic else "eps"}',
+        f'$lossy_optional_integer_default_in(plenv_source, {cast(node("NExprCastBool", expression))}) = {"(1)" if scalar_arithmetic else "eps"}',
     ])
 # Selection truth retains its route while Numeric preserves the selected FLOAT bits.
 for expression, truth, bits in [

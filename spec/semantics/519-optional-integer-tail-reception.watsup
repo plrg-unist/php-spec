@@ -4,6 +4,7 @@
 dec $lossy_optional_integer_default(expression) : int?
 dec $lossy_optional_integer_default_in(plenv, expression) : int?
 dec $lossy_optional_integer_numeric(plenv, expression) : pnumber?
+dec $lossy_optional_integer_quiet_operand(plenv, expression) : pnumber?
 dec $lossy_optional_integer_power_operand(plenv, expression) : pnumber?
 dec $lossy_optional_integer_special(plenv, expression) : pvalue?
 dec $lossy_optional_integer_condition(plenv, expression) : bool?
@@ -27,16 +28,17 @@ def $lossy_optional_integer_float_literal(NExprUnaryPlus expression metadata) = 
 def $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = ($float_neg(n))
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_float_literal(expression) = eps -- otherwise
-;; Quiet scalar conversion belongs to POWER, not to generic Numeric leaves.
-def $lossy_optional_integer_power_operand(plenv, expression) = (pnumber)
+;; Admitted arithmetic converts scalar operands without changing Numeric leaves.
+def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
-def $lossy_optional_integer_power_operand(plenv, expression) = (pnumber)
+def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
   -- if $coerce_number(pvalue) = COERCED pnumber false
-def $lossy_optional_integer_power_operand(plenv, expression) = (pnumber)
+def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
   -- if $coerce_number(PSTRING n*) = COERCED pnumber false
-def $lossy_optional_integer_power_operand(plenv, expression) = eps -- otherwise
+def $lossy_optional_integer_quiet_operand(plenv, expression) = eps -- otherwise
+def $lossy_optional_integer_power_operand(plenv, expression) = $lossy_optional_integer_quiet_operand(plenv, expression)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
@@ -105,6 +107,16 @@ def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
   -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = eps \/ $lossy_optional_integer_numeric(plenv, expression_right) = eps
+  -- if $lossy_optional_integer_quiet_operand(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_quiet_operand(plenv, expression_right) = (pnumber_right)
+  -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left) /\ $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
+  -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+  -- if $power_warning_number($number_value(pnumber)) = (pnumber)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right

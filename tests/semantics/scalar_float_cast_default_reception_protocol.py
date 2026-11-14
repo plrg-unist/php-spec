@@ -262,7 +262,8 @@ for child, truth, bits in [(conditional(expr_yes, string('.5tail'), expr_unknown
     ])
 for child in [expr_unknown, node('NExprArray', 'SEQUENCE eps'), binary('Plus', string('1'), integer(1)),
               binary('Plus', expr_yes, integer(1)), node('NExprCastBool', computed_nan())]:
-    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = eps')
+    result = '(NFLOAT $hex_bits("4000000000000000", 0))' if child.startswith('NExprBinaryOpPlus ') else 'eps'
+    checks.append(f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = {result}')
 for child in [computed_nan(), floating('7ff8000000000000')]:
     checks.extend([
         f'$lossy_optional_integer_numeric(plenv_source, {float_cast(child)}) = eps',

@@ -303,9 +303,11 @@ for expression in [
     integer(9223372036854775808),
     node('NExprVariable', 'BYTES "eA=="'), node('NExprArray', 'SEQUENCE eps'),
 ]:
+    number = '(NFLOAT 4609434218613702656)' if expression.startswith('NExprBinaryOpPlus ') else '(NINT 2)' if expression.startswith('NExprBinaryOpMul ') else 'eps'
+    truth = '(true)' if expression.startswith(('NExprBinaryOpPlus ', 'NExprBinaryOpMul ')) else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = eps',
-        f'$lossy_optional_integer_condition(plenv_source, {expression}) = eps',
+        f'$lossy_optional_integer_numeric(plenv_source, {expression}) = {number}',
+        f'$lossy_optional_integer_condition(plenv_source, {expression}) = {truth}',
     ])
 checks.extend([
     f'$lossy_optional_integer_condition(plenv_source, {string("0.0")}) = (true)',

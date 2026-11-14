@@ -121,7 +121,7 @@ throwing.extend([
     f'$lossy_optional_integer_numeric($plempty(false),{string_two}) = eps',
     f'$lossy_optional_integer_numeric($plempty(false),{true}) = eps',
     f'$lossy_optional_integer_numeric($plempty(false),{null}) = eps',
-    f'$lossy_optional_integer_numeric($plempty(false),NExprBinaryOpPlus ({string_two}) ({one}) eps) = eps',
+    f'$lossy_optional_integer_numeric($plempty(false),NExprBinaryOpPlus ({string_two}) ({one}) eps) = (NINT 3)',
     f'$lossy_optional_integer_power_operand($plempty(false),{string_two}) = (NINT 2)',
     f'$lossy_optional_integer_power_operand($plempty(false),{true}) = (NINT 1)',
     f'$lossy_optional_integer_power_operand($plempty(false),{null}) = (NINT 0)',
