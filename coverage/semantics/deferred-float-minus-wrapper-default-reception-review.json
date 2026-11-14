@@ -1,0 +1,97 @@
+{
+  "feature": "ENUM252 emitted UnaryMinus wrappers over phase-certified FLOAT defaults",
+  "status": "Independently reviewed bounded extension; calls.defaults remains partial",
+  "implementation": {
+    "base": "d669a471f0baf8ba2a98168627cc9226989a619e",
+    "donor": "10a80be01d3da7357a25f967af406a74c911128a",
+    "tree": "df9643be52e90a3e3c892da3a7a7071b8181a5b4",
+    "path_count": 7,
+    "scope": "Nine lines in519 recursively consume the actual emitted UnaryMinus child through phase-aware deferred_value_at. Root must be phase-unsafe, have exact source and false CODE, and have no own pool, compiled read or redirect. Only authenticated child PFLOAT is multiplied by -1. Compile/stored Numeric and ordinary/runtime unary paths are unchanged.",
+    "compatibility": "Final10a80 after source/author722c adds only the independently executed reviewer fixture and three Make selections. All accepted semantic source/catalogue/author inputs are unchanged. Deleting exact3 additions reproduces every base Make byte; no native/source/author replay."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c: zend_ast_evaluate_inner ZEND_AST_UNARY_MINUS evaluates child then mul_function(-1,child)",
+      "Zend/zend_compile.c: zend_try_ct_eval_unary_pm and zend_compile_unary_pm retain MUL(child,-1)"
+    ]
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-deferred-float-minus-wrapper-default-reception-252",
+  "packet": {
+    "manifest": "actual-manifest.json",
+    "sha256": "998a4026287a8d9d02a876f6eef779e7a53e2f2bfdf5476423627d777ef25a82",
+    "patch": "actual-increment.patch",
+    "patch_sha256": "828472ea72a864f98a6f945b8926144e0d040179e481df0c2b4141d2a69ac618"
+  },
+  "native_once": {
+    "report": "native-final.json",
+    "sha256": "42fa4fd80c577ee52a6fb855a5dfcdcfb0b452bdd4b0a96ae2a57535539ba128",
+    "fresh_originals": 4,
+    "saved_originals": 1,
+    "unchanged_replays": 0,
+    "saved_reference": "saved-native-reference.json",
+    "saved_reference_sha256": "3bbc5dff7c4b34ef3d1554ee0b415bca9f383009bf1f5ecd8250b78018ec93b9"
+  },
+  "source_evidence": {
+    "revision": "722c78a0146b291ae62404b93065f8c85d1ca7b1",
+    "report": "source-v1/report.json",
+    "sha256": "87f374923770141108bd011b97d10e6c3610c7786f0ba7df314f62257a799043",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 2,
+    "outer_seconds": 37.16742717917077,
+    "result": "first-pass/stable/quiet/reaped"
+  },
+  "state_evidence": {
+    "author": {
+      "revision": "722c78a0146b291ae62404b93065f8c85d1ca7b1",
+      "report": "author-v1/closure-call-protocol-ekrq398a/report.json",
+      "sha256": "03784b43c12c3eb64fddf21448405d44fc2d872e1f02b57e2b68c6443346c1ab",
+      "mode": "fixture SL_mode",
+      "modules": 508,
+      "conditions": 67,
+      "source_credit": 0,
+      "outer_seconds": 28.950927305966616,
+      "result": "first-pass/stable/quiet/reaped"
+    },
+    "independent": {
+      "revision": "743afd3da8ac64ec7dbebca71fef579e8bce9181",
+      "report": "peer-v1/closure-call-protocol-i_euef2z/report.json",
+      "sha256": "faecb41d59a53d51b02ddb5fe104d436ed77a3e2f7f707da79eafb85b3fabb0a",
+      "mode": "fixture SL_mode",
+      "modules": 508,
+      "conditions": 118,
+      "selection": "raw64 and named54",
+      "source_credit": 0,
+      "outer_seconds": 48.320785858,
+      "result": "first-pass/stable/quiet/reaped"
+    }
+  },
+  "promotion": "One byte-identical251 nested-Minus source changes current expected classification from Unsupported to normal.252 source comparison reuses its original251 native source/path/cwd/profile/streams/status; prior251 Unsupported retains its original identity.",
+  "test_integration": "Three additive Make selections; deleting them reproduces every old Make byte at d669. Final adds only the independent reviewer fixture and Make selections to accepted722c inputs.",
+  "validation_contract": "Pinned project-local PHP8.5.10 CLI,NTS,signed64,C/UTC baseline; production SL508 source and fixture SL508 state evidence are separate. Source100000steps/360s, fixture300s, outer600s. Native4fresh once+saved2511/replay0; Unsupported2, prior failures/timeouts/unrun remain separate from agreement.",
+  "review": "recover13_enum_phase_review independently FULLCLEARed exact whole7 author10a80be01/reviewer2a41fa95/tree df9643be and alone CLOSED actual composition and SAME sole saved canonical load. Actual/load facts below are its supplied tuple; no author actual/report reread, receipt artifact or metadata-induced semantic rerun.",
+  "actual_composition": {
+    "placement": "06c9502c3e6ad8b4085e97459e7a996d5e47e942",
+    "tree": "97b5fdee804f57647c82bc2639352e539383a97f",
+    "parent": "e78aa8d6",
+    "family_diff_sha256": "ff9d34b4a622eda17954f4fe247227ed902241c67073556c123450411f099797",
+    "scope": "Six donor-exact files plus exact three additive Make lines preserve all parent bytes."
+  },
+  "joined_load": {
+    "revision": "06c9502c3e6ad8b4085e97459e7a996d5e47e942",
+    "tree": "97b5fdee804f57647c82bc2639352e539383a97f",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main58-enum252-current-load-v1/report.json",
+    "sha256": "6686dcca81ed90618b578b2c7052af7269b512dd0fa15648d691733748ff777e",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.240602117963135,
+    "result": "true plus LF; stable HEAD/inputs, quiet exit0, fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Enclosing phase-sensitive UnaryPlus and arithmetic parents remain explicit Unsupported. Wider producers, contexts, lifetimes and complete core remain partial. Exact holds including Source47 lowprecision DEFINE-name NaN stay unchanged; no blanket NaN ban."
+}
