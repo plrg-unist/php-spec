@@ -1,0 +1,126 @@
+{
+  "feature": "ENUM251 quiet deferred FLOAT UnaryPlus phase and root cache reception",
+  "status": "Independently reviewed bounded extension; calls.defaults remains partial",
+  "implementation": {
+    "base": "50d274c4866f18f322c5fa1d676c474cea28fa0f",
+    "donor": "d669a471f0baf8ba2a98168627cc9226989a619e",
+    "tree": "fee0ef816825447cd99504f7a1759e9225388915",
+    "paths": 8,
+    "scope": "Runtime40 calls a separate helper defined89: actual UnaryPlus source below the exact constant-expression root plus quiet COERCED(...,false) uses pure ADD(PINT0,child). Compiler45/ordinary bodies retain unary_apply;79 save_frame clears nested ordinary call context.519 leaves compile/stored Numeric untouched; exact raw folded projections, source/CODE, redirect-condition safety and actual children guard old deferred values. A separate emitted root-only plus with safe Numeric child NFLOAT-0 certifies PFLOAT+0 before integer reception/cache checks.",
+    "compatibility": "Final after efc adds only independent reviewer fixtures, two raw-fixture syntax/setup corrections and three Make selections. Semantic source/catalogue/author fixture bytes are unchanged; accepted source/author/native cuts are not replayed. Named peer56 retains its exact original check body; raw93 adds two setup bindings while correcting list syntax.",
+    "test_integration": "Three new Makefile selections; deleting those exact lines reproduces every old Makefile byte at50d274c48."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_compile_params disables constant substitution; zend_const_expr_to_zval/zend_eval_const_expr and zend_try_ct_eval_unary_pm fold unary+ by MUL(child,+1)",
+      "Zend/zend_compile.c: zend_compile_unary_pm lowers ordinary runtime unary+ by MUL(child,+1)",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner surviving UnaryPlus uses ADD(0,child)"
+    ],
+    "source_observer": "native raw:0:-0:-0|raw:0:-0:-0|ordinary:-0|; prepatch model differed at the two deferred raw0 results"
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-deferred-float-unary-plus-default-reception-251",
+  "packet": {
+    "manifest": "actual-manifest.json",
+    "sha256": "c782bc17bd2754ccc9b17ae6f73a0ad7a075a1166c74cdbf7e00fdb3370d7031",
+    "patch": "actual-increment.patch",
+    "patch_sha256": "18305432e74d02125808945c8687e060b13c46227e0bfc89677ca7ad503ff356"
+  },
+  "native_once": {
+    "report": "native-v1/report.json",
+    "sha256": "7bf2cee48a18269d9172ff65d4643bd77d1dd3c2eec9ff4bd233e078ab423c82",
+    "fresh_originals": 6,
+    "saved_originals": 0,
+    "unchanged_replays": 0,
+    "result": "six normal originals, stable/quiet/reaped"
+  },
+  "source_evidence": [
+    {
+      "revision": "ccf72e388df28287410e0081a86bce63b260b5e1",
+      "report": "source-v1/report.json",
+      "sha256": "382398180b0456710993051da2ecf49d5e37d50ec1f7c80270de99408da6938f",
+      "mode": "production SL_mode",
+      "modules": 508,
+      "accepted_selection": [
+        "deferred-float-unary-plus-raw-phase-observer"
+      ],
+      "accepted_normal_agreements": 1,
+      "outer_seconds": 41.46609037206508,
+      "scope": "The report also retains two earlier typed agreements/three Unsupported controls at ccf. Only raw observer1 is carried forward here: runtime40/89 and source bytes are unchanged by subsequent519-only guard repair."
+    },
+    {
+      "revision": "efc48bb0fdb0f7d1b5327ed57c8f22479eefa2f0",
+      "report": "source-v2/report.json",
+      "sha256": "aa67752258b16bac8240a4d65a9054e3e4cb6369358d3dce386331148597f23b",
+      "mode": "production SL_mode",
+      "modules": 508,
+      "exact_normal_agreements": 2,
+      "unsupported_controls": 3,
+      "outer_seconds": 39.462995438836515,
+      "scope": "Only affected typed/header selections rerun after redirect condition guard repair; original six natives reused without replay. Raw observer is not replayed."
+    }
+  ],
+  "state_evidence": {
+    "author": {
+      "revision": "efc48bb0fdb0f7d1b5327ed57c8f22479eefa2f0",
+      "report": "author-v1/closure-call-protocol-k58y0onx/report.json",
+      "sha256": "c36a806d909303506935b415fa50edc4bcb4af5d803e9b81cdc0f5ab591bc31a",
+      "mode": "fixture SL_mode",
+      "modules": 508,
+      "conditions": 111,
+      "source_credit": 0,
+      "outer_seconds": 27.998123151017353,
+      "result": "first-pass/stable/quiet/reaped"
+    },
+    "independent": [
+      {
+        "revision": "d6e5b39730d49fd55d01ed337eb647d9620a9b5e",
+        "tree": "642344713043c6c7d01fed85fe98aff78286f4dd",
+        "report": "peer-v1/closure-call-protocol-yfljqp5h/report.json",
+        "sha256": "83c1ab7072c2d712454518cc7bcaf155d7711de85f0c7cfe571b69c2008b38df",
+        "mode": "fixture SL_mode",
+        "modules": 508,
+        "accepted_selection": "deferred-float-plus-alias-named-cache",
+        "conditions": 56,
+        "source_credit": 0,
+        "scope": "Named56 passes; the same report retains raw fixture syntax failure with zero raw credit. Later fixes change only raw fixture syntax/setup and never replay named56."
+      },
+      {
+        "revision": "dd668ee0adbace277dddee32b41ebf08b786af2a",
+        "tree": "fee0ef816825447cd99504f7a1759e9225388915",
+        "report": "peer-v3/closure-call-protocol-ic646ygc/report.json",
+        "sha256": "06c1159036128507ecd5a2ad829cdcec40035ac0f92e1cf92af7b0aeb0de8030",
+        "mode": "fixture SL_mode",
+        "modules": 508,
+        "conditions": 93,
+        "source_credit": 0,
+        "outer_seconds": 19.988850626,
+        "result": "affected raw-only/stable/quiet/reaped"
+      }
+    ]
+  },
+  "validation_contract": "Pinned project-local PHP8.5.10 CLI,NTS,signed64,C/UTC baseline; source100000steps/360s, fixture300s and outer600s. Production SL508 source and fixture SL508 state evidence are distinct. No Zend fallback; native6 once/replay0. Source1 runtimeccf and affected source2/Unsupported3 sourceefc retain separate cuts; named56 and corrected raw93 remain separate fixture/source0 cuts.",
+  "preserved": "baseline-v1 recorder path failure before parsing/source0; baseline-v2 actual raw sign mismatch/zero agreement; peer-v1/raw91 syntax0 and peer-v2/raw91 syntax0. Historical failures/Unsupported/timeouts/unrun and all exact holds remain separate.",
+  "review": "recover13_enum_phase_review FULLCLEARed exact whole8 author d669a471f/reviewer dd668ee0a/treefee0ef81, then alone CLOSED actual composition and the SAME sole saved canonical read. This ledger uses its supplied tuple only; no author actual/source/report reread, receipt artifact or metadata-induced semantic rerun.",
+  "actual_composition": {
+    "placement": "298aa9a3d98e4c57e403f6e37a9fd20d99bc55b9",
+    "family_diff_sha256": "c21e20aa7946298e274a83e3216825b5614ab9d224455b284a583efd7d67003f",
+    "scope": "Six donor-exact files plus exact three additive Make lines and exact10 additive89 helper preserving MAIN+4. Independently signed CAST composition stays separate."
+  },
+  "joined_load": {
+    "revision": "8186290cb123200844718d44dba1609197ee27bb",
+    "tree": "2966216bc50eff51e5777d15b41deb37aa860517",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main58-enum251-stringcast-current-load-v2/report.json",
+    "sha256": "03164f02c337b25dab158b36bb7faf6efdc3d031958b9d64958a2e492a4733f5",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.3831550530158,
+    "result": "true plus LF; stable HEAD/inputs,quiet exit0,fully reaped",
+    "source_credit": 0,
+    "earlier_cut": "v1 recorder clean-precondition failure before any runner execution retains zero credit."
+  },
+  "remaining": "Enclosing phase-sensitive wrappers remain explicit Unsupported in the typed optional-tail certificate. Leading-warning/BADNUMBER constant-AST operator identities retain the prior fallback outside this quiet correction. Wider producers, contexts, lifetimes and complete PHP core remain partial; Source47 lowprecision DEFINE-name NaN hold is unchanged, with no blanket NaN ban."
+}
