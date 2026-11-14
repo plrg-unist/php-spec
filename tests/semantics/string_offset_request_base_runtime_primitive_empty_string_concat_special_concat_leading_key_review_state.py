@@ -138,8 +138,8 @@ if __name__ == '__main__':
            ('bitwise_parent', '(' + false + '.' + true + ')&"3"', carrier('1'), '$ptascii("1")'),
            ('empty_coalesce', '((' + false + '.' + null + ')??"fallback")', carrier(''), 'eps'),
            ('empty_truth', '((' + false + '.' + null + ')?"bad":"good")', carrier('good'), '$ptascii("good")'),
-           ('negative_integer', '(-1).' + false, None, '$ptascii("-1")'),
-           ('two_digit_integer', '10 . ' + false, None, '$ptascii("10")'),
+           ('negative_integer', '(-1).' + false, carrier('-1'), '$ptascii("-1")'),
+           ('two_digit_integer', '10 . ' + false, carrier('10'), '$ptascii("10")'),
            ('float_parent', '(int)(' + false + ' . 0.0)', None, None)]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
     for name, expression, *_ in raw:
@@ -174,6 +174,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = 'Fresh four primitive CONCAT histories plus independent original-child source/CODE/line/precision/pool/header mutations, nonnormal cached results and sequential prepare/stringify/final whole-state preservation. Twenty fresh source0 controls cover NULL/BOOL/digits0/9, left/right/both-empty and nested computed3, const-empty slowpath reuse remaining conservatively refused, both-nonempty allocation, NUL carrier bounds, typed INT/bitwise/truth/coalesce parents and negative/two-digit/FLOAT refusals. Known both-STRING behavior remains pointwise; no old campaign/native replay or formatter/owner/held-boundary expansion.'
+    report['scope'] = 'Fresh four primitive CONCAT histories plus independent original-child source/CODE/line/precision/pool/header mutations, nonnormal cached results and sequential prepare/stringify/final whole-state preservation. Twenty fresh source0 controls cover NULL/BOOL/digits0/9, left/right/both-empty and nested computed3, const-empty slowpath reuse remaining conservatively refused, both-nonempty allocation, NUL carrier bounds, typed INT/bitwise/truth/coalesce parents and actual compiled negative/two-digit integer survivors; dynamic wider integers and FLOAT remain refused. Known both-STRING behavior remains pointwise; no old campaign/native replay or formatter/owner/held-boundary expansion.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
