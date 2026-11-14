@@ -1,0 +1,18 @@
+[
+  {
+    "id": "deferred-boolean-int-cast-wrapper-raw-phases",
+    "source": "<?php\nfunction rawInt260($zero = (int)((bool)((int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $negative = (int)((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))))) {\n    echo 'raw:', $zero === 0, ':', $negative === 1, '|';\n}\nrawInt260();\nrawInt260();\n",
+    "source_sha256": "dee898df5eba9b8b8e033675eacc54a0798a690b6b73203ae0a8755c4b6e3f0e",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical emitted INT casts consume actual PBOOL false and true from signed PINT0 and negative3, preserving raw PINT0/1 and cold/warm cache identity."
+  },
+  {
+    "id": "deferred-boolean-int-cast-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BoolIntWrapper260;\nuse const E_WARNING as Base260;\nuse const E_ERROR as One260;\nfunction warning260($errno, $message, $file, $line) {\n    global $x260;\n    echo 'warning:', $message, '|';\n    defaults260(2);\n    $x260 = 3.5;\n}\nfunction defaults260(int $first, int &$integer = (int)((bool)(-((int)((+(-(float)(+(Base260 === One260)))) + 3.5)))), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('BoolIntWrapper260\\\\warning260');\n$x260 = 1.5;\n$last260 = 8;\ndefaults260(last: $last260, first: $x260);\necho 'outer:x=', $x260, '|';\n",
+    "source_sha256": "247a8f3239d231d6f35555bdb5ac0c7a7e1f8591b43afb251ec77e6231db393b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported canonical INT of actual PBOOLtrue keeps raw PINT1 through named holes, first-CV lossy Warning reentry and private BYREF reception."
+  }
+]

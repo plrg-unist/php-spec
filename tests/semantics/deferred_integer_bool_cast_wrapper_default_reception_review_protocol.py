@@ -172,12 +172,16 @@ CASES['deferred-integer-bool-cast-real-int-parent-refusal'] = {
         'i_child = $(-3)',
         'b_truth = true',
     ] + authority + [
-        '$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_root.ORIGIN) = eps',
-        '~$lossy_optional_integer_deferred(S,pfunction,1)',
-        '~$lossy_optional_integer_header(S,pfunction,pfunction.SIGNATURE.PARAMETERS,0)',
-        '$lossy_mixed_parameter_capture(S) = eps',
-        'S_done = $drive_steps(S,100)',
-        'S_done.COMPLETION = UNSUPPORTED text_reason',
+        '$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_root.ORIGIN) = (PINT 1)',
+        '$lossy_optional_integer_deferred(S,pfunction,1)',
+        '$lossy_optional_integer_header(S,pfunction,pfunction.SIGNATURE.PARAMETERS,0)',
+        '$lossy_mixed_parameter_capture(S) = (LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell 4609434218613702656 1 z)',
+        'S_short = $drive_steps(S,100)',
+        'S_short.COMPLETION = BUDGET',
+        'S_done = $drive_steps(S_short[.COMPLETION = NORMAL],3000)',
+        r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps',
+        '$default_cache_at(S_done.DEFAULTCACHE,pdefault_root.ORIGIN) = ({ORIGIN pdefault_root.ORIGIN,VALUE PINT 1,CLASS PVSCALAR})',
+        r'$call_descriptors_valid(S_done) /\ $default_caches_valid(S_done,S_done.DEFAULTCACHE) /\ $heap_valid($heap_graph(S_done))',
     ],
 }
 
