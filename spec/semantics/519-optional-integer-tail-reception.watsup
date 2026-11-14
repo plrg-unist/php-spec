@@ -742,6 +742,17 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PIN
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PINT i)
   -- if $long_range(i)
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PINT i)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprUnaryPlus expression metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b)
+  -- if $coerce_number(PBOOL b) = COERCED (NINT i) false
+  -- if $long_range(i)
 def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($number_value(pnumber))
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
@@ -822,6 +833,17 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($nu
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PINT i)
+  -- if $long_range(i)
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($number_value($num_mul(NINT i, NINT $(-1))))
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprUnaryMinus expression metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b)
+  -- if $coerce_number(PBOOL b) = COERCED (NINT i) false
   -- if $long_range(i)
 def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "deferred-boolean-sign-wrapper-raw-phases",
+    "source": "<?php\nfunction rawSign261($zeroPlus = +((bool)((int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $positive = +((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5)))), $zeroMinus = -((bool)((int)(+(-(float)(+(E_WARNING === E_ERROR)))))), $negative = -((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))))) {\n    echo 'raw:', $zeroPlus === 0, ':', $positive === 1, ':', $zeroMinus === 0, ':', $negative === -1, '|';\n}\nrawSign261();\nrawSign261();\n",
+    "source_sha256": "a45ff45be1134135af0bdc985619876037529ff2de9436022a61d855206f5c9c",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual PBOOLfalse and true from a negative signed child cross both emitted unary signs, retaining raw PINT0/+1/0/-1 and cold/warm caches."
+  },
+  {
+    "id": "deferred-boolean-sign-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BoolSigns261;\nuse const E_WARNING as Base261;\nuse const E_ERROR as One261;\nfunction warning261($errno, $message, $file, $line) {\n    global $x261;\n    echo 'warning:', $message, '|';\n    defaults261(2);\n    $x261 = 3.5;\n}\nfunction defaults261(int $first, int &$positive = +((bool)(-((int)((+(-(float)(+(Base261 === One261)))) + 3.5)))), int &$negative = -((bool)(-((int)((+(-(float)(+(Base261 === One261)))) + 3.5)))), int $last = 7) {\n    echo 'body:', $first, ':', $positive, ':', $negative, ':', $last, '|';\n    $positive = 9;\n    $negative = 10;\n}\n\\set_error_handler('BoolSigns261\\\\warning261');\n$x261 = 1.5;\n$last261 = 8;\ndefaults261(last: $last261, first: $x261);\necho 'outer:x=', $x261, '|';\n",
+    "source_sha256": "2d84fccf34c89bceeec149c14ed44d7c59189500a85f16a03a429f570e97071c",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Both signed actual-Boolean defaults survive imported aliases, named holes[1,2], first-CV lossy Warning reentry and two distinct private BYREF cells."
+  }
+]
