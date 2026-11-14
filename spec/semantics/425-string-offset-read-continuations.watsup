@@ -152,6 +152,19 @@ def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $origin_node(S.SOURCES, porigin) = (NScalarInt (INTEGER i) metadata)
   -- if $long_range(i)
   -- if $compiled_read(S, porigin) = (PINT i)
+;; Literal true supplies an integer at its first quiet sign.
+def $string_read_raw_unary_integer(S, porigin, i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary (NExprConstFetch (NName (BYTES text_true) metadata_name) metadata_child)
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (NExprConstFetch (NName (BYTES text_true) metadata_name) metadata_child)
+  -- if $ptlc($base64(text_true)) = $ptascii("true")
+  -- if $compiled_read(S, porigin_child) = (PBOOL true)
+  -- if $origin_child((porigin_child), [PCFIELD 0]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_true) metadata_name)
+  -- if $unary_apply(S, punary, PBOOL true, 0) = S[.RESULT = KNOWN (PINT i)]
 ;; A raw numeric string supplies an integer at its first quiet sign.
 def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
