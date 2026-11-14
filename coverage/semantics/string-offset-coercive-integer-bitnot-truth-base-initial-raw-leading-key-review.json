@@ -1,0 +1,85 @@
+{
+  "scope": "Quiet signed64 BitwiseNot over recursively certified PINT children selects literal INTERNED bases before returning initial raw-key Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "The new PINT BitwiseNot clause is disjoint from the existing integer helper through a negative helper guard on the original state.",
+    "Own and actual child source occurrences retain exact PINT pools and signed64 bounds. One shared NORMAL probe authenticates the recursive child and full lower bitnot_value result.",
+    "The legacy integer helper and binary/FLOAT rules are unchanged. Direct STRING/BOOL/NULL/FLOAT complement children gain no truth route."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_unary_op_produces_error, zend_try_ct_eval_unary_op: quiet integer complement constant evaluation",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_BW_NOT and Zend/zend_operators.c::bitwise_not_function IS_LONG: exact signed integer complement",
+    "spec/semantics/57-bitnot.watsup::$bitnot_value: full pure PINT complement result, without completion-gated apply"
+  ],
+  "source_cases": [
+    "coercive-integer-bitnot-truth-base-initial-raw-leading-current-key: ~((\"2\"+true)*\"1\") gives PINT-4; ordinary key replacement at line12",
+    "coercive-integer-bitnot-truth-base-initial-raw-leading-reference-key: ~((null/\"2\")-true) gives PINT0; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-author26-20261114",
+  "baseline": {
+    "report": "baseline/report.json",
+    "sha256": "eb230012118f6fe5ef64fa9afe41e84ca346cfb921418951c383d2891a00650e",
+    "cut": "c9b8d4992",
+    "native_originals_once": 2,
+    "expected_Unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json",
+    "sha256": "bae4dc901451104bd0e6166486985cc5d0a7896678dfe6f7df795d1adda2de69",
+    "cut": "e2c305b49",
+    "production_modules": 508,
+    "saved_native_agreements": 2,
+    "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v2/report.json",
+    "sha256": "cf33261ccb89b79ec249fb1ddfd80af9d1ce4276e38acdd84e02dea073f47b7d",
+    "cut": "527cfa517",
+    "mode": "production SL fixture",
+    "premises": 247,
+    "derived": 144,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-peer24-20261114/peer-state-v1/report.json",
+    "sha256": "164fff07f2aae7881e854ef4f7e7332c1cb2b47dd1f6e51f58b44419cc3dd2cb",
+    "cut": "0ed0bcfe2",
+    "mode": "production SL fixture",
+    "premises": 527,
+    "derived": 370,
+    "source_credit": 0
+  },
+  "counterfacts": "Exact own/child source, indexed names, CODE, typed pools, complement/result and signed64 bounds; nested complement/signs, MIN/MAX and out-of-range forgeries; direct BOOL/NULL/STRING/FLOAT refusals and nonquiet/fractional coercions; direct/nested cached-BUDGET DIV-zero beneath coercive ancestors. Genuine folded NOT/shorthand and integer/FLOAT parents are source-zero compositions. Earlier inherited base/owner refusals remain checked.",
+  "affected_old_expectation": "Only currentunaryB bitnot_gate promotes. Fresh B covers the exact ~(\"2\"+true) contour and explicit legacy-helper refusal without replaying the old campaign.",
+  "failures": {
+    "report": "author-state-v1/report.json",
+    "sha256": "e7d4fdbf3a4e665ff2fa54b478ffc89cd8c43b715756b7deac3520f093ef90c0",
+    "classification": "Fixture compiler diagnostic: missing name-path binding in a counterfact update; compiler exit0 was rejected by the def-main check. State execution UNRUN, source_credit0. Exact path binding fixed, only affected A rerun. Prelaw Unsupported2 remains separate0; no source/interruption/timeout failures."
+  },
+  "whole_source": {
+    "logical_commit": "def41c0c46b4b33b8e75622ac465f57fefc55cd2",
+    "tree": "7a835ebabb7fdf31999f7c2d9dd1982b2961eb1a",
+    "owned_paths": 7,
+    "manifest": "whole-source-manifest.json",
+    "sha256": "80b7a91c5db2081522fb57c2fb9db6e7707912f711363152648bbca4ee2f8ad2"
+  },
+  "actual_composition": {
+    "commit": "e2d3f47d1b139ed7965f1943830c482a7da1a214",
+    "tree": "fdcf561059187bab3d17b08cd9f7bbceb1edfc40",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main61-dynamic-bitnot-current-load-v1/report.json",
+    "sha256": "40d921b3b1173476cda5449fde0f2e90a7c7ef0ded92c01601c333d5781a87ec",
+    "mode": "production SL",
+    "modules": 508,
+    "ordered_argv": 511,
+    "stable_watches": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.48971732100472,
+    "source_credit": 0,
+    "compatibility": "Six non-Make family files are donor-exact; exactly two Make recipes preserve the actual parent. The accepted runtime guard-placement correction is preserved. Peer24 closed the sole actual composition/SAME saved-read; author did not reread it."
+  },
+  "validation": "Quiet stable reaped records preserve commands, runtime/profile/environment, original bytes and raw outputs externally. Native originals ran once and were reused. Source, author, independent and load counts retain separate cuts; no unique aggregate or old evidence renewal.",
+  "remaining": "Wider complement children, FALSE/NULL first signs, broader bases/ownership/lifetimes and all exact held boundaries remain partial. No engine bug or intentional PHP divergence identified."
+}
