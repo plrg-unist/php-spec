@@ -40,7 +40,7 @@ $ptlc(ptbytes_parent) = $ptlc(pclassdesc_target.NAME)
 $property_magic_cv_static_method_parent_selector(phpType44_parent,ptbytes_parent)
 $property_magic_cv_inherited_static_methodclosure(S,n_closure)
 ~$property_magic_cv_static_method_clone_history(S,n_closure,porigin_method,porigin_site,porigin_owner)
-~$property_magic_cv_static_method_parent(S,pclassdesc_child,phpType44_parent)
+$property_magic_cv_static_method_parent(S,pclassdesc_child,phpType44_parent)
 S_child_lexical = S[.CLOSURESCOPES = [pclosurescope[.LEXICAL = porigin_requested]]]
 ~$property_magic_cv_inherited_static_methodclosure(S_child_lexical,n_closure)
 S_parent_called = S[.CLOSURESCOPES = [pclosurescope[.CALLED = porigin_owner]]]
