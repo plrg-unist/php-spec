@@ -445,6 +445,27 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $long_range(i)
   -- if S_binary = S[.RESULT = KNOWN (PINT i)]
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [MODULO, BITAND, BITOR, BITXOR, SHIFTLEFT, SHIFTRIGHT]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (PINT i_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (PINT i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $integer_binary(pbin, i_left, i_right) = IRESULT i
+  -- if $long_range(i)
+  -- if $binary_apply(S, pbin, PINT i_left, PINT i_right, z_line) = S[.RESULT = KNOWN (PINT i)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBitwiseNot expression_child metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
