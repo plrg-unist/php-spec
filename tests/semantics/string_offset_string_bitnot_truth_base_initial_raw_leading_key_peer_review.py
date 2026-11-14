@@ -38,7 +38,7 @@ $string_read_raw_truth(S_budget_string_not,porigin_left,PSTRING ([48]))
 $string_read_raw_known_base(S_budget_string_not,porigin_base,pvalue_base)
 ''')
     checks += [f'S_shorthand_string_not = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base (NExprTernary ({condition}) ABSENT (NScalarString (BYTES text_right) metadata_right) metadata)) :: pcunit.OCCURRENCES]]]',
-               '~$string_read_raw_known_base(S_shorthand_string_not,porigin_base,pvalue_base)',
+               '$string_read_raw_known_base(S_shorthand_string_not,porigin_base,pvalue_base)',
                '~$string_read_raw_known_base(S_shorthand_string_not,porigin_base,pvalue_wrong)']
     for label, path, value in (
             ('own_byte', 'pcpath_left', 'PSTRING ([49])'), ('own_int', 'pcpath_left', 'PINT 0'),

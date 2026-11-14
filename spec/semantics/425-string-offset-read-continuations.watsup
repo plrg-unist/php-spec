@@ -514,14 +514,15 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if ($truth(S, PSTRING n_cond*) /\ n_bytes* = n_cond*) \/ (~$truth(S, PSTRING n_cond*) /\ n_bytes* = n_false*)
 ;; Quiet falsey compiled scalars select the exact raw shorthand fallback.
-;; Strings retain their separate truthy/falsey literal-header proof above.
+;; Computed strings require no condition-header ownership when only fallback survives.
+;; Literal string headers retain their separate JMP_SET proof above.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
   -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
   -- if $compiled_read(S, porigin_cond) = (pvalue_cond)
-  -- if $type_bytes(pvalue_cond) =/= $ptascii("string")
+  -- if $type_bytes(pvalue_cond) =/= $ptascii("string") \/ $string_read_literal_bytes(expression_cond) = eps
   -- if $string_read_raw_truth(S, porigin_cond, pvalue_cond)
   -- if $truth_value(S, pvalue_cond, 0) = S[.RESULT = KNOWN (PBOOL false)]
   -- if n_bytes* = $base64(text_false)
