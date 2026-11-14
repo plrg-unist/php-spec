@@ -882,10 +882,24 @@ Iterator methods or Generator bodies. The [runtime iterable review](../../covera
 keeps native3+3 once/source6, author253/peer251 fixture-SL507 and prelaw104/102
 separate. Initial Unsupported and gate-only wrong NORMAL/TypeError cuts retain0.
 Actual2a4c9b927 and its sole production-SL508 load pass16.592779634s/source0,
-independently closed. Completed Notice-producer iterable headers, wider producers,
+independently closed. Other Notice-producer iterable headers, wider producers,
 protocol execution and lifetimes remain partial;90/207/138, typed calls, ownership
 and every exact hold are unchanged. The private controller packet passed; the Make
 target and joined source replay remain unexecuted. Metadata adds no source credit.
+
+Completed one-CV producers now admit a canonical bare `iterable` return across
+all previously admitted required fixed formal shapes. Exact raw/normalized return
+authority reuses the existing argument proof; return verification and frame
+retirement precede finite array Notice operands and separate unconstrained private
+cells. The [singleton iterable-return review](../../coverage/semantics/singleton-cv-iterable-return-producer-reference-notice-review.json)
+keeps native4+3 once/source7 (five admissions/two priority controls), author308 and
+corrected peer230 fixture-SL507 cuts separate. The first controller exit1 and peer
+fixture failure remain0; only that fixture changed to prove its authentic retained
+literal-pool root, preserving private-cell retirement. Actuale81b75b3 and its sole
+production-SL508 load pass16.186114022s/source0, independently closed. Nullable,
+union and multiple-CV iterable returns, new iterable formals, Traversable Notice
+payloads, wider lifetimes and exact holds remain partial. Make/joined source
+replay remain unexecuted; metadata adds no source credit.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
