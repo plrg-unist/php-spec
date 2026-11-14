@@ -145,6 +145,13 @@ and private COW; strict string|array rejects INT before body or Notice. Numeric
 classification, STRING preference and ordinary alias entry conversion retain the
 existing caller-strict, return/frame and ownership bounds. Larger unions remain partial.
 
+The [primitive-union review](../../coverage/semantics/cv-primitive-union-formal-producer-reference-notice-review.json)
+adds an ordered finite formal-member fold in the same six-kind domain, retaining the
+two-member arm. A maximum-six ARRAY formal preserves dynamic copies, three real tables
+and private-cell cleanup. Strict array|bool|float rejects numeric REQUEST text before
+body or Notice; an actual INT could widen to FLOAT. Other types and wider contexts
+remain partial under the existing source, return and ownership guards.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

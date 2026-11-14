@@ -2588,3 +2588,9 @@ one pending-COPY diagnostic adds no agreement. Unconstrained inputs must retain
 the captured referent through callback/precommit cleanup; object/array replacements,
 changed sources/tails, PARAMETERBACKINGS and wider targets/getters remain required. Generic cast timing,
 typed-CV release behavior and prior phase45 evidence retain their original cuts.
+
+Own public untyped sole BYVAL GET hooks with omitted defaults and without same-field THIS access acquire same-name ordinary parent backing after the child’s existing slots. Exact raw header/name/type/origin and root plain-parent authority preserve child NULL, metadata order and physical cleanup. [Appended-slot review](../../coverage/semantics/ordinary-parent-unbacked-get-child-slot-review.json).
+
+When the sole block or short BYVAL GET accesses that same field, its existing child slot instead keeps declaration order. Explicit17 and omittedNULL retain actual getter BODY/CODE/line and child identity through physical cleanup and shared owners. [Existing-slot review](../../coverage/semantics/ordinary-parent-backed-get-child-slot-review.json). Wider parents/types/BYREF and lifetimes remain partial; exact holds stay unchanged.
+
+Own public untyped backed block &get hooks also retain their lexical child slot over a same-name ordinary root parent. Actual returned references, unconstrained aliases and real ALIAS-cell edges survive to physical cleanup without reusing the old parent slot. [Block reference-Get slot review](../../coverage/semantics/ordinary-parent-backed-reference-get-child-slot-review.json). Short reference Get, ordinary This-reference-fetch consumers and wider types/parents/lifetimes remain partial.

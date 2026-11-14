@@ -539,6 +539,15 @@ over BOOL; ordinary BYREF entry conversion adds no persistent constraint. The
 keeps native4 once, postlaw Notice3/prelaw priority1,560/231 private507 fixtures and
 the sole actual508 load separate. Larger unions and wider contexts remain partial.
 
+Formal unions over exactly array/int/float/bool/string/null also admit three to six
+distinct members through an ordered raw/normalized fold. Seen kinds reject duplicates;
+exact exhaustion rejects count/order mismatches. The old two-member arm stays literal.
+The [primitive-union review](../../coverage/semantics/cv-primitive-union-formal-producer-reference-notice-review.json)
+keeps native4 once, postlaw Notice3/prelaw priority1,480/242 private507 fixtures and
+the sole actual508 load separate. Existing STRING membership precedes weak numeric
+preference; ordinary alias entry conversion adds no persistent constraint.
+Other types, signatures and wider contexts remain partial; Owned-NUL stays held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
