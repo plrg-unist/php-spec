@@ -27,9 +27,9 @@
     "id": "numeric-power-default-negative-exponent-control",
     "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = (E_WARNING ** -E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
     "source_sha256": "320197dcdf05acd5544cea5f2579884920214cdc0e2cd1807081248974b0b0b9",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "A negative exponent takes the floating path and remains outside nonnegative integer-result authority."
+    "purpose": "ENUM239 promotes the GENERAL-derived raw FLOAT0.5 through its own precision callback and ordinary PINT0 reception using the saved ENUM237 native observation;the original source and native run are preserved."
   },
   {
     "id": "numeric-power-default-deprecated-control",

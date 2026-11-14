@@ -202,10 +202,10 @@ for left, right, value in [
         f'$lossy_optional_integer_numeric($plempty(false),{expression}) = (NINT {integer})',
     ])
 for left, right, expected in [
-        (base, negative_one, 'eps'), (zero, negative_one, 'eps'),
-        (negative_one, negative_one, 'eps'),
+        (base, negative_one, '(NFLOAT 4602678819172646912)'), (zero, negative_one, 'eps'),
+        (negative_one, negative_one, '(NFLOAT 13830554455654793216)'),
         (base, 'NScalarInt (INTEGER 63) eps', '(NFLOAT 4890909195324358656)'),
-        (minimum, base, 'eps'),
+        (minimum, base, '(NFLOAT 5174635971848699904)'),
         (base, binary('Pow', base, 'NScalarInt (INTEGER 63) eps'), '(NFLOAT 9218868437227405312)'),
         ('NScalarInt (INTEGER 9223372036854775808) eps', one, 'eps'),
         (base, 'NScalarInt (INTEGER 9223372036854775808) eps', 'eps'),
@@ -215,9 +215,10 @@ for child in ['NScalarFloat (FLOAT "4000000000000000") eps',
               'NScalarString (BYTES "Mg==") eps', constant('true'), constant('null'),
               constant('E_STRICT'),
               binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps')]:
-    expected_right = '(NFLOAT 9218868437227405312)' if child == binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps') else 'eps'
+    expected_left = '(NFLOAT 4611686018427387904)' if child == 'NScalarFloat (FLOAT "4000000000000000") eps' else '(NFLOAT 4890909195324358656)' if child == binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps') else 'eps'
+    expected_right = '(NFLOAT 4616189618054758400)' if child == 'NScalarFloat (FLOAT "4000000000000000") eps' else '(NFLOAT 9218868437227405312)' if child == binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps') else 'eps'
     checks.extend([
-        f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", child, one)}) = eps',
+        f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", child, one)}) = {expected_left}',
         f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, child)}) = {expected_right}',
     ])
 

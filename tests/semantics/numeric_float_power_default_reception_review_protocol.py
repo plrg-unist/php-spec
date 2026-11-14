@@ -205,9 +205,9 @@ checks.extend([
     f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", "NExprUnaryMinus (" + one + ") eps", maximum)}) = (NINT $(-1))',
     f'$lossy_optional_integer_numeric($plempty(false),{nan_power}) = (NFLOAT 18444492273895866368)',
     f'$lossy_optional_integer_condition($plempty(false),{nan_power}) = eps',
+    f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, "NScalarInt (INTEGER 64) eps")}) = (NFLOAT 4895412794951729152)',
 ])
 for left, right in [
-        (base, 'NScalarInt (INTEGER 64) eps'),
         (zero, f'NExprUnaryMinus ({one}) eps'),
         ('NScalarFloat (FLOAT "10000000000000000") eps', zero),
         (base, 'NScalarFloat (FLOAT "10000000000000000") eps'),

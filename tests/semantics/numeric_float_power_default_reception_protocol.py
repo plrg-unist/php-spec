@@ -66,7 +66,7 @@ checks.extend([
     '$power_warning_number($number_value(NINT 9223372036854775808)) = eps',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NScalarFloat (FLOAT "10000000000000000") metadata_unit) expression_unit_exponent metadata_unit) = eps',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_one (NScalarFloat (FLOAT "10000000000000000") metadata_unit) metadata_unit) = eps',
-    '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_one expression_negative_one metadata_unit) = eps',
+    '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_one expression_negative_one metadata_unit) = (NFLOAT 4607182418800017408)',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NScalarFloat (FLOAT "0000000000000000") metadata_unit) expression_negative_one metadata_unit) = eps',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NScalarString (BYTES "Mg==") metadata_unit) expression_unit_exponent metadata_unit) = eps',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NExprConstFetch (NName (BYTES "RV9TVFJJQ1Q=") metadata_unit) metadata_unit) expression_unit_exponent metadata_unit) = eps',

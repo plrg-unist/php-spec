@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-general-power-default-fractional-cold-warm",
+    "source": "<?php\nfunction generalPowerWarning239($errno, $message, $file, $line) {\n    global $xGeneralPower239;\n    echo 'warning:', $message, '|';\n    $xGeneralPower239 = 3.5;\n}\nfunction generalPowerDefaults239(int $first, int &$fraction = (E_WARNING ** -E_ERROR), int $root = ((E_WARNING + E_WARNING) ** 0.5)) {\n    echo 'body:', $first, ':', $fraction, ':', $root, '|';\n    $fraction = 9;\n    $root = 9;\n}\nset_error_handler('generalPowerWarning239');\n$xGeneralPower239 = 1.5;\ngeneralPowerDefaults239($xGeneralPower239);\necho 'cold:x=', $xGeneralPower239, '|';\n$xGeneralPower239 = 1.5;\ngeneralPowerDefaults239($xGeneralPower239);\necho 'warm:x=', $xGeneralPower239, '|';\n",
+    "source_sha256": "13af12526fdf30493f827ad9d7487b45357a01d545c2f23fb828d50c9bc0b4b2",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Genuine GENERAL negative-exponent0.5 and fractional-exponent2.0 results retain raw FLOAT Shared caches before integer reception. Cold/warm BYREF defaults observe the separate own precision callback and formal mutation without changing cached bits or the earlier saved first argument."
+  },
+  {
+    "id": "numeric-general-power-default-alias-named-reentry",
+    "source": "<?php\nnamespace GeneralPowerAlias239;\nuse const E_WARNING as Base239;\nuse const E_ERROR as One239;\nfunction warning239($errno, $message, $file, $line) {\n    global $xAlias239;\n    echo 'warning:', $message, '|';\n    defaults239(2);\n    $xAlias239 = 3.5;\n}\nfunction defaults239(int $first, int $root = ((Base239 + \\E_WARNING) ** 0.5), int $negative = ((-One239) ** -One239), int $tiny = (Base239 ** -1075), int $nested = ((Base239 ** Base239) ** 0.5), int $last = 7) {\n    echo 'body:', $first, ':', $root, ':', $negative, ':', $tiny, ':', $nested, ':', $last, '|';\n}\n\\set_error_handler('GeneralPowerAlias239\\\\warning239');\n$xAlias239 = 1.5;\n$lastAlias239 = 8;\ndefaults239(last: $lastAlias239, first: $xAlias239);\necho 'outer:x=', $xAlias239, '|';\n",
+    "source_sha256": "934c23117f54522e4f336c23145181e5c6b1306b77b141176f5566040de96bf4",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported/FQN proper Numeric children complete genuine GENERAL roots,negative-one,underflow-to-zero and nested roots. Named holes1..4,last8 and first-warning reentry warm raw FLOAT caches before ordinary PINT locals,retaining exact source/ENV/name/no-DIM/cache/owner authority."
+  },
+  {
+    "id": "numeric-general-power-default-fractional-handler-throw-retry",
+    "source": "<?php\nfunction generalThrowWarning239($errno, $message, $file, $line) {\n    global $xThrow239, $countThrow239;\n    $countThrow239 = $countThrow239 + 1;\n    echo 'warning:', $countThrow239, ':', $message, '|';\n    $xThrow239 = 4.5;\n    if ($countThrow239 === 2) { throw new Exception('power239', 239); }\n}\nfunction generalThrow239(int $first, int $later = (E_WARNING ** -E_ERROR)) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('generalThrowWarning239');\n$countThrow239 = 0;\n$xThrow239 = 1.5;\n$result239 = 99;\ntry { $result239 = generalThrow239($xThrow239); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result239, ':x=', $xThrow239, '|'; }\n$xThrow239 = 1.5;\n$result239 = generalThrow239($xThrow239);\necho 'retry:', $result239, ':x=', $xThrow239, '|';\n",
+    "source_sha256": "0dcfb914c93732d4505d4240035ba03ccf0d618137fe5b239b84b06f008d30fc",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The raw GENERAL-derived0.5 cache is published before its own precision callback throws. The caller destination stays99;retry reuses the raw cache,executes its own callback and receives PINT0. Ordinary exception/receive cleanup remains unchanged."
+  },
+  {
+    "id": "numeric-general-power-default-string-coercion-control",
+    "source": "<?php\nfunction warning239($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults239(int $first, int $later = ('4' ** (E_ERROR / E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning239');\n$x239 = 1.5;\ntry { defaults239($x239); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "3b339244bd6f0a1594c87b4dc1970af34665593eba66f76935fe08ee461faae6",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A raw numeric string has no Numeric identity;implicit arithmetic coercion remains outside the general-power certificate."
+  },
+  {
+    "id": "numeric-general-power-default-deprecated-control",
+    "source": "<?php\nfunction warning239($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults239(int $first, int $later = (E_STRICT ** -E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning239');\n$x239 = 1.5;\ntry { defaults239($x239); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "0bd4b4e21fc9f77e4e63c9a540d353e35c550b1a928c35431f37c826df59c170",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The real E_STRICT fetch is effectful and remains outside quiet Numeric producers even when the subsequent power has a general FLOAT result."
+  },
+  {
+    "id": "numeric-general-power-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning239($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults239(int $first, int $later = ((E_WARNING ** -E_ERROR) ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning239');\n$x239 = 1.5;\ntry { defaults239($x239); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "f8ba25212aa12d4698ea32cbf313a7bbdc95c0031357eb8cd2abb5f7eb29de43",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The skipped DIM remains outside complete whole-tree no-DIM authority despite a genuine nonnull GENERAL FLOAT left result."
+  }
+]

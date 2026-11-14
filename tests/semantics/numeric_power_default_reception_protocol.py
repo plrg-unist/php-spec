@@ -72,7 +72,7 @@ checks.extend([
     '$lossy_optional_integer_condition(pfunction.ENV,expression_zero) = (false)',
     '$power_prepare(NINT 2,NINT 63) = POWERDONE (NFLOAT 4890909195324358656) false',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_unit_base expression_bottom_exponent metadata_unit) = (NFLOAT 4890909195324358656)',
-    '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_unit_base (NScalarInt (INTEGER $(-1)) metadata_unit) metadata_unit) = eps',
+    '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_unit_base (NScalarInt (INTEGER $(-1)) metadata_unit) metadata_unit) = (NFLOAT 4602678819172646912)',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NScalarFloat (FLOAT "4000000000000000") metadata_unit) expression_unit_exponent metadata_unit) = (NFLOAT 4607182418800017408)',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow expression_unit_base (NScalarFloat (FLOAT "0000000000000000") metadata_unit) metadata_unit) = (NFLOAT 4607182418800017408)',
     '$lossy_optional_integer_numeric(pfunction.ENV,NExprBinaryOpPow (NScalarString (BYTES "Mg==") metadata_unit) expression_unit_exponent metadata_unit) = eps',
