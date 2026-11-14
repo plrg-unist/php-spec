@@ -210,90 +210,61 @@ def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $string_read_raw_unary_integer(S, porigin_right, i_right)
   -- if $binary_apply(S, pbin, PINT i_left, PINT i_right, 0) = S[.RESULT = KNOWN (PINT i)]
 def $string_read_raw_unary_integer(S, porigin, i) = false -- otherwise
+;; Quiet truth authenticates the original scalar, not merely its Boolean result.
+dec $string_read_raw_truth(pstate, porigin, pvalue) : bool
+def $string_read_raw_truth(S, porigin, PBOOL b) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch (NName (BYTES text_name) metadata_name) metadata)
+  -- if (b /\ $ptlc($base64(text_name)) = $ptascii("true")) \/ (~b /\ $ptlc($base64(text_name)) = $ptascii("false"))
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_name) metadata_name)
+  -- if $compiled_read(S, porigin) = (PBOOL b)
+def $string_read_raw_truth(S, porigin, PNULL) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch (NName (BYTES text_name) metadata_name) metadata)
+  -- if $ptlc($base64(text_name)) = $ptascii("null")
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_name) metadata_name)
+  -- if $compiled_read(S, porigin) = (PNULL)
+def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text_bytes) metadata)
+  -- if n_bytes* = $base64(text_bytes)
+  -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+def $string_read_raw_truth(S, porigin, PINT i) = $string_read_raw_unary_integer(S, porigin, i)
+def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
+  -- if |text_float| = 16
+  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
+  -- if n_bits = $hex_bits(text_float, 0)
+  -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
+  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+def $string_read_raw_truth(S, porigin, pvalue) = false -- otherwise
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; A quiet full ternary copies its selected literal header through QM_ASSIGN.
-;; Authenticate the Boolean and both literal arms at their actual occurrences.
+;; A quiet full ternary copies its truth-selected literal header through QM_ASSIGN.
+;; The compiled scalar certificate authenticates the condition and both raw arms.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PBOOL b)
-  -- if (b /\ $ptlc($base64(text_cond)) = $ptascii("true")) \/ (~b /\ $ptlc($base64(text_cond)) = $ptascii("false"))
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
+  -- if $compiled_read(S, porigin_cond) = (pvalue_cond)
+  -- if $string_read_raw_truth(S, porigin_cond, pvalue_cond)
+  -- if S_truth = $truth_value(S, pvalue_cond, 0)
+  -- if S_truth.RESULT = KNOWN (PBOOL b)
+  -- if S_truth = S[.RESULT = KNOWN (PBOOL b)]
   -- if n_true* = $base64(text_true)
   -- if n_false* = $base64(text_false)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $origin_node(S.SOURCES, porigin_true) = (NScalarString (BYTES text_true) metadata_true)
   -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
   -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if (b /\ n_bytes* = n_true*) \/ (~b /\ n_bytes* = n_false*)
-;; A literal integer condition selects an arm through its exact compiled value.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarInt (INTEGER i) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if n_true* = $base64(text_true)
-  -- if n_false* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PINT i)
-  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
-  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
-  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
-  -- if ($truth(S, PINT i) /\ n_bytes* = n_true*) \/ (~$truth(S, PINT i) /\ n_bytes* = n_false*)
-;; A finite literal float condition selects an arm through its exact raw bits.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarFloat (FLOAT text_cond) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if n_cond = $hex_bits(text_cond, 0)
-  -- if $float_decode(n_cond) = FINITE n_sign n_num n_den
-  -- if n_true* = $base64(text_true)
-  -- if n_false* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PFLOAT n_cond)
-  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
-  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
-  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
-  -- if ($truth(S, PFLOAT n_cond) /\ n_bytes* = n_true*) \/ (~$truth(S, PFLOAT n_cond) /\ n_bytes* = n_false*)
-;; A literal null condition selects the false arm with its compiled NULL fact.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $ptlc($base64(text_cond)) = $ptascii("null")
-  -- if n_true* = $base64(text_true)
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PNULL)
-  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
-  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
-  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; A raw string condition selects an arm; its own header is only the condition.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if n_cond* = $base64(text_cond)
-  -- if n_true* = $base64(text_true)
-  -- if n_false* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PSTRING n_cond*)
-  -- if $compiled_string_value(S, porigin_cond, PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
-  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
-  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
-  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
-  -- if ($truth(S, PSTRING n_cond*) /\ n_bytes* = n_true*) \/ (~$truth(S, PSTRING n_cond*) /\ n_bytes* = n_false*)
 ;; JMP_SET keeps a truthy literal header; a false one selects the fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
@@ -378,27 +349,6 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Quiet truth authenticates the original scalar, not merely its Boolean result.
-dec $string_read_raw_truth(pstate, porigin, pvalue) : bool
-def $string_read_raw_truth(S, porigin, PBOOL true) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprConstFetch (NName (BYTES text_true) metadata_name) metadata)
-  -- if $ptlc($base64(text_true)) = $ptascii("true")
-  -- if $compiled_read(S, porigin) = (PBOOL true)
-def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text_bytes) metadata)
-  -- if n_bytes* = $base64(text_bytes)
-  -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-def $string_read_raw_truth(S, porigin, PINT i) = $string_read_raw_unary_integer(S, porigin, i)
-def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
-  -- if |text_float| = 16
-  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
-  -- if n_bits = $hex_bits(text_float, 0)
-  -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
-  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
-def $string_read_raw_truth(S, porigin, pvalue) = false -- otherwise
 ;; The actual NOT result selects the exact literal fallback through QM_ASSIGN.
 ;; Floats keep their emitted source/CODE proof; older scalar folds keep their pool.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true

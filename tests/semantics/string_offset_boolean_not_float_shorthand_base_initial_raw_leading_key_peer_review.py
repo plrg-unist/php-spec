@@ -209,8 +209,8 @@ S_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_bas
     # an interned condition; it introduces no owned NUL string or release route.
     for label, expression, value, valid, selected in (
             ('true', 'NExprConstFetch (NName (BYTES "VHJ1RQ==") metadata_float) metadata_float', 'PBOOL true', True, True),
-            ('false', 'NExprConstFetch (NName (BYTES "ZmFsc2U=") metadata_float) metadata_float', 'PBOOL false', False, False),
-            ('null', 'NExprConstFetch (NName (BYTES "bnVsbA==") metadata_float) metadata_float', 'PNULL', False, False),
+            ('false', 'NExprConstFetch (NName (BYTES "ZmFsc2U=") metadata_float) metadata_float', 'PBOOL false', True, False),
+            ('null', 'NExprConstFetch (NName (BYTES "bnVsbA==") metadata_float) metadata_float', 'PNULL', True, False),
             ('qualified', 'NExprConstFetch (NNameFullyQualified (BYTES "dHJ1ZQ==") metadata_float) metadata_float', 'PBOOL true', False, False),
             ('text', 'NScalarString (BYTES "dHJ1dGh5") metadata_float', 'PSTRING ($ptascii("truthy"))', True, True),
             ('nul', 'NScalarString (BYTES "eAA=") metadata_float', 'PSTRING ([120,0])', True, True),
@@ -220,17 +220,19 @@ S_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_bas
             ('minimum', 'NScalarInt (INTEGER $(-9223372036854775808)) metadata_float', 'PINT $(-9223372036854775808)', True, True),
             ('integer_zero', 'NScalarInt (INTEGER 0) metadata_float', 'PINT 0', True, False),
             ('outside', 'NScalarInt (INTEGER 9223372036854775808) metadata_float', 'PINT 9223372036854775808', False, False)):
+        name = {'true': 'VHJ1RQ==', 'false': 'ZmFsc2U=', 'null': 'bnVsbA=='}.get(label)
+        name_occurrence = f' :: (PCOCCURRENCE (pcpath_leaf ++ [PCFIELD 0]) (NName (BYTES "{name}") metadata_float))' if name else ''
         checks += lines(f"""
 expression_scalar_{label} = {expression}
 expression_scalar_{label}_cond = NExprBooleanNot expression_scalar_{label} metadata_cond
 expression_scalar_{label}_base = NExprTernary expression_scalar_{label}_cond ABSENT (NScalarString (BYTES text_false) metadata_false) metadata
-S_scalar_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_scalar_{label}_base) :: (PCOCCURRENCE pcpath_cond expression_scalar_{label}_cond) :: (PCOCCURRENCE pcpath_leaf expression_scalar_{label}) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_cond (PBOOL false)) :: (PCONSTANT pcpath_leaf ({value})) :: ppool.CONSTANTS]]][.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_cond 18 true) :: pcode.EXPRESSIONS]]]
+S_scalar_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_scalar_{label}_base) :: (PCOCCURRENCE pcpath_cond expression_scalar_{label}_cond) :: (PCOCCURRENCE pcpath_leaf expression_scalar_{label}){name_occurrence} :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_cond (PBOOL false)) :: (PCONSTANT pcpath_leaf ({value})) :: ppool.CONSTANTS]]][.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_cond 18 true) :: pcode.EXPRESSIONS]]]
 $compiled_read(S_scalar_{label},porigin_cond) = (PBOOL false)
 $string_read_raw_truth(S_scalar_{label},porigin_leaf,{value}) = {str(valid).lower()}
 $string_read_raw_known_base(S_scalar_{label},porigin_base,pvalue_base) = {str(selected).lower()}
 """)
     checks += lines(r"""
-S_true_fallback_metadata = S_scalar_true[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_scalar_true_base) :: (PCOCCURRENCE pcpath_cond expression_scalar_true_cond) :: (PCOCCURRENCE pcpath_leaf expression_scalar_true) :: (PCOCCURRENCE pcpath_false (NScalarString (BYTES text_false) eps)) :: pcunit.OCCURRENCES]]]
+S_true_fallback_metadata = S_scalar_true[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_scalar_true_base) :: (PCOCCURRENCE pcpath_cond expression_scalar_true_cond) :: (PCOCCURRENCE pcpath_leaf expression_scalar_true) :: (PCOCCURRENCE (pcpath_leaf ++ [PCFIELD 0]) (NName (BYTES "VHJ1RQ==") metadata_float)) :: (PCOCCURRENCE pcpath_false (NScalarString (BYTES text_false) eps)) :: pcunit.OCCURRENCES]]]
 $compiled_read(S_true_fallback_metadata,porigin_false) = (PSTRING ($ptascii("abc")))
 $compiled_string_value(S_true_fallback_metadata,porigin_false,PSTRING ($ptascii("abc"))) = pvalue_base
 $string_read_raw_truth(S_true_fallback_metadata,porigin_leaf,PBOOL true)
