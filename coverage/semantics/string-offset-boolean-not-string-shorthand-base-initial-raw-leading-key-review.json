@@ -1,0 +1,102 @@
+{
+  "feature": "boolean-not-string-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with BooleanNot of a truthy raw NScalarString literal and a raw string fallback preserves its non-NUL INTERNED base and initial raw leading-integer CV offset through a returning Warning handler. Every decoded byte string except empty and exactly ASCII \"0\" is truthy, including NUL. Original !\"00\" and !(\"\\0\") cases exercise ordinary key replacement and initial-reference current-name rebinding. The NUL condition is a folded INTERNED literal, distinct from the non-NUL selected fallback and held Owned-NUL release.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "b670a8854b86711ae3be82ee2245a92896ddca28",
+  "reviewed_peer_head": "7acff5df942256cbd517448d16c0196c743c827b",
+  "implementation_sha256": "703c5f08b83ff9cfc8b807a2bf21a8e03a3a1d2a52cedf230336480534e3b6f6",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest-v2.json",
+    "sha256": "2c0654338a3989cdd0abddcdab4ace704532f2abacf2fcb526806a481c9250ca"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_op and zend_try_ct_eval_unary_op fold string BooleanNot through Zend/zend_operators.c boolean_not_function and Zend/zend_operators.h i_zend_is_true. The string branch tests length and exactly ASCII zero without numeric conversion or C-string truncation. zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN; Zend/zend_execute.c zend_fetch_dimension_address_read freezes the header and leading integer before Warning user code. Existing pure pfnot/truth and compiler rules supply exact leaf PSTRING bytes and unary PBOOLfalse pools; no PHPT was executed.",
+  "implementation": "One local18-line425 raw_known_base arm authenticates actual parent/BooleanNot/raw-string leaf/literal fallback occurrences, parent compiledEPS, decoded leaf bytes and quiet true truth, exact compiled unary PBOOLfalse and leaf PSTRING/INTERNED identity, ABSENT true arm and fallback2 compiled PSTRING/INTERNED identity. No compiler/numeric, generic233, provider/root, owner, schema, REQUEST/selected-NUL, nonfinite, wider producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "a46b735cd94a2e5cf8dbbb14260bfad7d652e0c0eb524765fa98251f7dbdef4d",
+      "tested_revision": "e9a4a204572ac4d89a74b341fc9f5a380ba32375",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; decoded 00/ownPBOOLfalse/leafPSTRING[48,48], roots[1,0], edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "56fb70c40179d1b4c522d40d588259e0af5d584e83a2f2a7625e5f2408135591",
+      "tested_revision": "e9a4a204572ac4d89a74b341fc9f5a380ba32375",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 65
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; raw NUL/ownPBOOLfalse/leafPSTRING[0], quiet truth despite empty C-string prefix, roots[1,0,0], edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "e3c734ec459511cdaecd16e7b2a8f9d595fcd5195db949bec6ec812b7711146f",
+      "tested_revision": "779cc8f69ff0fa0187fc2de8dfce222a3983519f",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 63
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "200b828ff40af1d26156df97da3cd76aed102e4a8314f17086b9e0ce1c72adc5",
+      "tested_revision": "2a5f1f4e29e45874e850a06b47960d009be6276f",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "204c8435f575212d7a29eb18d45a175807471c468c8562b97d70c2ffc81f13b6",
+      "tested_revision": "2a5f1f4e29e45874e850a06b47960d009be6276f",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 225,
+      "derived_conditions": 112
+    },
+    {
+      "kind": "independent v1 fixture compiler binding failure; compiler exit0 but no main, state unrun0; no agreement credit",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "16d4927f3e9f91ce2abdd1f3e445294095e46d8d949a244a316f46a2ce27248f",
+      "tested_revision": "e07d6bcf71fca1c58d64385b9b10e1742e6b9569",
+      "source_credit": 0,
+      "passed": false,
+      "premises": 338,
+      "derived_conditions": 204
+    },
+    {
+      "kind": "independent corrected v2 production-SL fixture; only ordered binding changed; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v2/report.json",
+      "sha256": "887c082ef5fa9ccdea5f69845a69a201622bb80885224a4d76eb80c1d9da90d6",
+      "tested_revision": "7acff5df942256cbd517448d16c0196c743c827b",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 339,
+      "derived_conditions": 204
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main46-string-not-shorthand-joined-508-v1/report.json",
+    "sha256": "392088d05feea3e8dabbd1ae88fae486dda811f2907ef1651b1e2237272c8000",
+    "tested_revision": "c694da6d19ed4cb9dcf761a10d68f9b35969d627",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.990419904934242,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 is captured once and reused by the first postlaw source2 comparisons. Separate author225/112-derived and independent corrected339/204-derived fixture-SL cuts retain source0 without a unique aggregate. Genuine prelaw full155 states retain their own cuts. Checks cover falsey empty/ASCII zero with matching pools, quiet single-byte, whitespace, high-byte and embedded-NUL positives, exact tags/polarity/decoded bytes, detached same-byte condition/leaf/fallback occurrences, raw source or pools mismatches, folded parent, fallback/header identity, source/CODE/pool and owner bounds, real Warning dispatch/resume, reference rebinding and 0/1 budget rejoin. The peer v1 compiler binding failure and unrun state retain0; only the ordered binding changed before v2. Source2/A inputs are unchanged by that test-only correction and are not rerun. Source60/outer80/compiler120/state180 caps remain; passing execution cuts are quiet, stable and fully reaped. Original Unsupported2 retains0; no historical evidence is renewed.",
+  "review": "Independent whole6 semantic/source/test FULLCLEAR and donorREADY preceded source-first MAINc694 integration alongside the accepted XOR change. The final donor differs from the source2/A tested revision only by the independent fixture ordered-binding correction. The sole saved canonical load has separate source0 identity; the independent reviewer owns the bounded final source/content comparison.",
+  "remaining": "Unary-signed integer BooleanNot and other operands, wider computed conditions or fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the linked external archives. Tracked cases/renderers and the two Makefile boolean-not-string-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}
