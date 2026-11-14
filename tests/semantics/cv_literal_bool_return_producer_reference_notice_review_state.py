@@ -47,7 +47,7 @@ def normal(initial, case, front):
                 ('NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_return', '[(PTBRANCH ([PTBUILTIN "true"])), (PTBRANCH ([PTBUILTIN "null"]))]'),
                 ('NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return', '[(PTBRANCH ([PTBUILTIN "true"])), (PTBRANCH ([PTBUILTIN "null"]))]'),
                 ('NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES "aW50") metadata_return])) metadata_return', '[(PTBRANCH ([PTBUILTIN "true"])), (PTBRANCH ([PTBUILTIN "int"]))]')):
-            derived += [('' if raw.startswith('NNullableType') or '"bnVsbA=="' in raw else '~') + header.replace('phpType18,', raw + ',').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])')]
+            derived += [header.replace('phpType18,', raw + ',').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])')]
         derived += ['~' + header.replace('phpType18,', 'NIdentifier (BYTES "ZmFsc2U=") metadata_return,'),
             '~' + header.replace('phpType18,', 'NName (BYTES text_return) metadata_return,'),
             '~' + header.replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])'),

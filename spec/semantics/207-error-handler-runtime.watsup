@@ -787,8 +787,7 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
   -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
   -- if text_first_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ text_second_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ text_first_type =/= text_second_type
-  -- if ~(text_first_type <- ["false", "true"]) \/ text_second_type = "null"
-  -- if ~(text_second_type <- ["false", "true"]) \/ text_first_type = "null"
+  -- if ~(text_first_type <- ["bool", "false", "true"] /\ text_second_type <- ["bool", "false", "true"])
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE phpType69*) metadata_union) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
@@ -915,7 +914,8 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first, NIdentifier (BYTES text_second) metadata_second])) metadata_union, pssignature) = true
   -- if $(|phpType7*| > 0)
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
-  -- if text_first_type <- ["array", "int", "float", "bool", "string"] /\ text_second_type <- ["array", "int", "float", "bool", "string"] /\ text_first_type =/= text_second_type
+  -- if text_first_type <- ["array", "int", "float", "bool", "string", "false", "true"] /\ text_second_type <- ["array", "int", "float", "bool", "string", "false", "true"] /\ text_first_type =/= text_second_type
+  -- if ~(text_first_type <- ["bool", "false", "true"] /\ text_second_type <- ["bool", "false", "true"])
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true

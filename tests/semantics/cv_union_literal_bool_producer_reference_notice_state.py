@@ -102,8 +102,8 @@ def controls(index, case):
         wider = 'NUnionType (SEQUENCE ([' + literal + ', NIdentifier (BYTES "aW50") ' + meta + '])) ' + meta
         normalized = '[(PTBRANCH ([PTBUILTIN "' + literal_kind + '"])), (PTBRANCH ([PTBUILTIN "int"]))]'
         parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (' + wider + ') (BOOLEAN ' + byref + ') (BOOLEAN false) ' + variable + ' ABSENT (SEQUENCE eps) ' + parameter_meta
-        lines += ['~' + header + wider + ', ' + signature + '[.RETURNS = ' + normalized + '])',
-            '~' + proof + parameter + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [' + slot + '[.TYPE = ' + normalized + ']' + tail + ']])']
+        lines += [header + wider + ', ' + signature + '[.RETURNS = ' + normalized + '])',
+            proof + parameter + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [' + slot + '[.TYPE = ' + normalized + ']' + tail + ']])']
     for name in ('return', 'notice'):
         stage = 'S_' + name
         lines += ['S_zero_' + name + ' = $drive(' + stage + ', 0)',

@@ -95,7 +95,7 @@ def controls(index):
             ('NUnionType (SEQUENCE ([' + raw + ', NIdentifier (BYTES "aW50") ' + meta + '])) ' + metadata, '[(PTBRANCH ([PTBUILTIN "false"])), (PTBRANCH ([PTBUILTIN "int"]))]'),
             ('NUnionType (SEQUENCE ([' + raw + ', ' + raw + '])) ' + metadata, '[(PTBRANCH ([PTBUILTIN "false"])), (PTBRANCH ([PTBUILTIN "false"]))]'),
             ('NName (BYTES "ZmFsc2U=") ' + metadata, literal('false'))]:
-        lines += [('' if raw_type.startswith('NNullableType') else '~') + proof + '([' + param.replace('__TYPE__', '(' + raw_type + ')') + raw_tail + ']), ' + signature + '[.PARAMETERS = [' + slot + '[.TYPE = ' + normalized + ']' + tail + ']])']
+        lines += [('' if raw_type.startswith('NNullableType') or '"aW50"' in raw_type else '~') + proof + '([' + param.replace('__TYPE__', '(' + raw_type + ')') + raw_tail + ']), ' + signature + '[.PARAMETERS = [' + slot + '[.TYPE = ' + normalized + ']' + tail + ']])']
     for update in ('.BYREF = ' + ('false' if index == 0 else 'true'), '.REQUIRED = false', '.VARIADIC = true', '.DEFAULT = PSDEFAULTUNSUPPORTED "forged literal default"'):
         lines += ['~' + proof + parameters + ', ' + signature + '[.PARAMETERS = [' + slot + '[' + update + ']' + tail + ']])']
     if index == 1:
