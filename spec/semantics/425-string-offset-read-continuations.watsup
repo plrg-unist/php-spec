@@ -596,7 +596,7 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
   -- if S.COMPLETION = NORMAL
   -- if S.CONSTCONTEXT = eps
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression (NName (BYTES text) metadata_name) metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression name metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
@@ -604,9 +604,10 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_name)
-  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text) metadata_name)
-  -- if $ptast(NName (BYTES text) metadata_name) = PTNAME PTPLAIN preqbytes
-  -- if $ptvalidname(preqbytes, true) /\ ~(92 <- preqbytes)
+  -- if $origin_node(S.SOURCES, porigin_name) = (name)
+  -- if $ptast(name) = PTNAME ptqual preqbytes
+  -- if ptqual <- [PTPLAIN, PTFULL]
+  -- if $ptvalidname(preqbytes, true)
   -- if ~($ptlc(preqbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)

@@ -77,8 +77,11 @@ def conditions(program, path, index):
             name = constructor + ' (BYTES ' + json.dumps(base64.b64encode(text.encode()).decode()) + ') eps'
             node = 'NExprInstanceof expression_' + tag + '_0 (' + name + ') eps'
             state = 'S_peer_instanceof_' + tag + '_lexical_' + str(number)
+            refusal = refused(state)
+            if number in (3, 7):
+                refusal[0] = '$string_read_runtime_value(' + state + ', ' + origin + ') = (PBOOL false)'
             guards += [state + ' = S_after[.SOURCES[0] = pcunit_peer_instanceof[.OCCURRENCES = (PCOCCURRENCE ' + target + ' (' + node + ')) :: (PCOCCURRENCE ' + target + '_name (' + name + ')) :: pcunit_peer_instanceof.OCCURRENCES]][.CODE[0] = pcode_peer_instanceof[.NAMES = (CODENAME ' + target + ' (' + str(list(text.encode())) + ') eps) :: pcode_peer_instanceof.NAMES]]',
-                       *refused(state)]
+                       *refusal]
 
         whole = 'S_peer_instanceof_' + tag + '_whole'
         ignored = 'S_peer_instanceof_' + tag + '_ignored_pool'
@@ -130,7 +133,7 @@ if __name__ == '__main__':
            )]
     raw += [(name, '<?php ' + prefix + '$x=' + ('$left' if name == 'dynamic' else true) + ' instanceof ' + target + ';', accepted)
             for name, prefix, target, accepted in (
-                ('fully_qualified', '', '\\stdClass', False), ('qualified', '', 'Other\\Target', False),
+                ('fully_qualified', '', '\\stdClass', True), ('qualified', '', 'Other\\Target', True),
                 ('relative', '', 'namespace\\Target', False), ('namespaced', 'namespace Ns;', 'Target', False),
                 ('renamed_import', 'namespace Ns;use stdClass as Alias;', 'Alias', False),
                 ('identity_import', 'namespace Ns;use stdClass;', 'stdClass', True),
@@ -170,6 +173,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = 'Exact current author prefixes plus independent root/both-child SOURCE, emitted CODE/line/read/precision, same raw/compiled target without fallback, coherent keyword/invalid/qualified/FQN/relative target refusals, cached nonnormal and CONSTCONTEXT controls, ignored unselected pool and full resolve_at/class_instanceof state preservation. Twenty-two fresh checked-source source0 controls cover NULL, signed64 boundaries, signed zero, finite/infinite FLOAT, canonical INTERNED STRING, NUL/array/object/allocated-string/NaN refusal, namespace/renamed-import/dynamic mismatches and the admitted same-byte identity import/case-preserved name. Explicit NaN classifications retain the nonNaN fence; no fresh native observations, old replay, compiler/formatter/owner changes or exact held-boundary expansion.'
+    report['scope'] = 'Exact current author prefixes plus independent root/both-child SOURCE, emitted CODE/line/read/precision, same raw/compiled target without fallback, coherent keyword/invalid/relative refusals and qualified/FQN direct-VALUE admission with unmodified ancestor refusal, cached nonnormal and CONSTCONTEXT controls, ignored unselected pool and full resolve_at/class_instanceof state preservation. Twenty-two fresh checked-source source0 controls cover NULL, signed64 boundaries, signed zero, finite/infinite FLOAT, canonical INTERNED STRING, NUL/array/object/allocated-string/NaN refusal, namespace/renamed-import/dynamic mismatches and admitted qualified/FQN/same-byte identity-import/case-preserved names. Explicit NaN classifications retain the nonNaN fence; no fresh native observations, old replay, compiler/formatter/owner changes or exact held-boundary expansion.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
