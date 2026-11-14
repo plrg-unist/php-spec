@@ -183,8 +183,9 @@ for expression in [node('NExprBooleanNot', constant('NAN')),
 derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", string("2.5"))}) = (NFLOAT 13836183955189006336)')
 for name, integer in [('true', '$(-1)'), ('false', '0'), ('null', '0')]:
     derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", constant(name))}) = (NINT {integer})')
-for expression, _ in positive[:6]:
-    derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryPlus", expression)}) = eps')
+for expression, boolean in positive[:6]:
+    integer = '1' if boolean == 'true' else '0'
+    derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryPlus", expression)}) = (NINT {integer})')
 selected = node('NExprTernary', greater, string('-0.0'), constant('UnknownBooleanUnary245'))
 derived.extend([
     rf'$lossy_optional_integer_selection_shape({selected}) /\ ~$lossy_optional_integer_boolean_shape({selected})',

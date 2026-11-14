@@ -193,14 +193,17 @@ derived.extend([
     f'$lossy_optional_integer_default_in($plempty(false),{negate(null_plus)}) = (0)',
     f'$lossy_optional_integer_default_in($plempty(false),{binary("Plus", true_plus, "NScalarInt (INTEGER 2) eps")}) = (3)',
 ])
-for child in [constant('PHP_ZTS'), constant('PHP_DEBUG'), string('-2'), string('-0.0'),
-              binary('Greater', constant('E_WARNING'), constant('E_ERROR')),
-              node('NExprCastBool', string('0.0')), node('NExprBooleanNot', constant('null')),
-              binary('Coalesce', constant('null'), constant('true'))]:
+for child, integer in [(constant('PHP_ZTS'), None), (constant('PHP_DEBUG'), None),
+                       (string('-2'), None), (string('-0.0'), None),
+                       (binary('Greater', constant('E_WARNING'), constant('E_ERROR')), '1'),
+                       (node('NExprCastBool', string('0.0')), '1'),
+                       (node('NExprBooleanNot', constant('null')), '1'),
+                       (binary('Coalesce', constant('null'), constant('true')), None)]:
     parent = positive(child)
+    numeric = 'eps' if integer is None else f'(NINT {integer})'
     derived.extend([
         f'$lossy_optional_integer_default_in($plempty(false),{parent}) = eps',
-        f'$lossy_optional_integer_numeric($plempty(false),{parent}) = eps',
+        f'$lossy_optional_integer_numeric($plempty(false),{parent}) = {numeric}',
     ])
 # Pin the pre-existing FLOAT phase split; it supplies no plus-source agreement.
 floating = positive(node('NExprCastDouble', string('-0.0')))
