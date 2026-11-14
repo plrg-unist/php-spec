@@ -131,6 +131,13 @@ the producer frame retires; strict bool|null return rejection precedes Notice,
 consumer and assignment. Raw/normalized authority, existing formal and ownership
 bounds remain. Formal unions and wider signatures/lifetimes remain partial.
 
+The [union-null formal review](../../coverage/semantics/cv-union-null-formal-producer-reference-notice-review.json)
+admits ordered array/int/float/bool/string with null formals at singleton and
+multi-CV producers. A singleton null|array BYVAL formal preserves the dynamic
+outside copy through producer/private COW, while named prefix references follow
+current handler writes. Strict bool|null rejects INT before body or Notice.
+Existing return/ownership guards remain; broader unions and lifetimes stay partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

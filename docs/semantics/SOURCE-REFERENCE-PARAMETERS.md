@@ -522,6 +522,15 @@ observations once. The [nullable-return review](../../coverage/semantics/singlet
 keeps author287/peer184 private507 fixtures and the sole actual508 load separate.
 Formal unions, broader headers and lifetimes remain partial; Owned-NUL stays held.
 
+Required producer formals also admit exactly ordered kind|null/null|kind pairs for
+array/int/float/bool/string through the existing raw/normalized/BYREF fold, for
+singleton and multiple literal CV actuals. Caller-strict reception preserves BYVAL
+snapshots and permits ordinary BYREF entry coercion without a persistent type
+constraint. The [union-null formal review](../../coverage/semantics/cv-union-null-formal-producer-reference-notice-review.json)
+keeps three postlaw Notice originals, one prelaw strict parameter-priority control,
+native4 once,480/216 private507 fixtures and the sole actual508 load separate.
+Broader unions, defaults/variadics/attributes and lifetimes remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

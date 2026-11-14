@@ -495,12 +495,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `e5feacd37` passes its once-only 508-module production SL
-load in 16.692407349823043 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `43c3535bb` passes its once-only 508-module production SL
+load in 16.19188898615539 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main41-output102-runtime-float-not-joined-508-v1/report.json`
-(SHA-256 `0d21b229f96fe253313cde07cff1a2b27ac944833616fd9a880459c1a925a22b`).
+`../php-spec-evidence-archive/resumed-main-20261112/main42-nested-float-not-joined-508-v1/report.json`
+(SHA-256 `864f2e472bac90793b90e7c49a3adfebca6157ead488c50f2bae3d8b767fc0df`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
