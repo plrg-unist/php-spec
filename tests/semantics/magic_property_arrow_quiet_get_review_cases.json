@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "arrow-cv-empty-implicit-capture-before-receiver",
+      "source": "<?php\nclass QuietArrowCVPayload {\n    public function __destruct() { global $watch, $readerWeak, $selector; echo \"PAYLOAD;\"; echo $watch->get() === null ? \"CLOSURE_GONE;\" : \"BAD_CLOSURE;\"; echo $readerWeak->get() !== null ? \"RECEIVER_LIVE;\" : \"BAD_RECEIVER;\"; $selector = \"after-payload\"; }\n}\nclass QuietArrowCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$payload = new QuietArrowCVPayload;\n$held = fn() => $payload;\n$payload = null;\n$watch = WeakReference::create($held);\n$reader = new QuietArrowCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"after-payload\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "157ed0cc696138eeb9da9caa616ed2a12cbb5a0810502f107faaff6adc6dd1a4",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1BBWUxPQUQ7Q0xPU1VSRV9HT05FO1JFQ0VJVkVSX0xJVkU7UkVDRUlWRVI7RkFMU0U7Q0FQVFVSRTtSRUNFSVZFUl9HT05FO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "arrow-literal-empty-implicit-capture-throw-control",
+      "source": "<?php\nclass QuietArrowLiteralPayload {\n    public function __destruct() { global $watch, $readerWeak, $selector; echo \"PAYLOAD;\"; echo $watch->get() === null ? \"CLOSURE_GONE;\" : \"BAD_CLOSURE;\"; echo $readerWeak->get() !== null ? \"RECEIVER_LIVE;\" : \"BAD_RECEIVER;\"; $selector = \"after-payload\"; throw new Exception(\"capture\"); }\n}\nclass QuietArrowLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\n$payload = new QuietArrowLiteralPayload;\n$held = fn() => $payload;\n$payload = null;\n$watch = WeakReference::create($held);\n$reader = new QuietArrowLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"after-payload\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "22046860f90456e71fd56656f3073b8bfcf786f61f7d41d9adedb36071a32b48",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1BBWUxPQUQ7Q0xPU1VSRV9HT05FO1JFQ0VJVkVSX0xJVkU7UkVDRUlWRVI7Q0FVR0hUO0tFRVA7Q0FQVFVSRTtSRUNFSVZFUl9HT05FO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}

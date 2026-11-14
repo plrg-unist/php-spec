@@ -109,6 +109,26 @@ def $property_magic_cv_realclosure(S, n) = true
   -- if {OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)} <- S.CLOSURECACHES
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_realclosure(S, n) = false -- otherwise
+;; Arrow templates bind their implicit captures to the actual source expression.
+dec $property_magic_cv_arrow(pstate, nat) : bool
+def $property_magic_cv_arrow(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* eps
+  -- if $function_at(S.CLOSURETEMPLATES, porigin) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprArrowFunction phpType14 phpType4_static phpType4_ref phpType16 phpType18 expression metadata)
+  -- if porigin = PORIGIN n_unit pcpath
+  -- if pfunction.BODY = pcpath ++ [PCFIELD 5]
+  -- if $pparrow_template(pfunction) /\ ~$function_generator(S, pfunction)
+  -- if (IMPLICIT ptbytes z)* = $closure_lexicals(pfunction.CODE.EXPRESSIONS)
+  -- if ptbytes* = $pparrow_remove($pparrow_discover(expression), $pparrow_param_names(phpType16))
+  -- if $closure_capture_tasks(S.TODO, n) ++ $closure_capture_frames(S.FRAMES, n) = eps
+  -- if $closure_capture_prefix(S, pitem*, $closure_lexicals(pfunction.CODE.EXPRESSIONS), |$closure_lexicals(pfunction.CODE.EXPRESSIONS)|)
+  -- if $closure_live_object_valid(S, n)
+  -- if $closure_source_class(S, porigin) = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if {OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)} <- S.CLOSURECACHES
+  -- if $closure_cache_records_valid(S)
+def $property_magic_cv_arrow(S, n) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
@@ -136,7 +156,7 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PARRAY n)) =
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (POBJECT n)) = true
   -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z) \/ $property_magic_cv_coalesce_assign_source(S, porigin, z)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if ($eager_property_class_valid(S, S.OBJECTS[n]) \/ $enum_case_object(S, n) =/= eps \/ $property_magic_cv_weakmap(S.OBJECTS[n]) \/ $property_magic_cv_weakreference(S.OBJECTS[n]) \/ $property_magic_cv_realclosure(S, n)) /\ ~$instance_storage_freeing(S, n)
+  -- if ($eager_property_class_valid(S, S.OBJECTS[n]) \/ $enum_case_object(S, n) =/= eps \/ $property_magic_cv_weakmap(S.OBJECTS[n]) \/ $property_magic_cv_weakreference(S.OBJECTS[n]) \/ $property_magic_cv_realclosure(S, n) \/ $property_magic_cv_arrow(S, n)) /\ ~$instance_storage_freeing(S, n)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true
