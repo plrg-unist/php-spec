@@ -1,0 +1,123 @@
+{
+  "feature": "FINAL MOD zero Error after own raw signed64 integer UnaryMinus Returns (OB112)",
+  "decision": "Whole five-file source/test milestone independently accepted; Output and complete PHP core remain partial",
+  "reviewer": "/root/recover13_output_negative_integer_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php; recorded baseline profile/C/UTC",
+  "cuts": {
+    "source_and_prelaw": "93f6ff3dd8b7d4be85333a43db27ea529f9269e2",
+    "runtime": "59f49ce985f42d95c8f4fbd76e78f8ed8b10f530",
+    "ready": "2cfcb322f27ca9a5d6f769b86138c170eeb6bcf9",
+    "base": "751830ccf31717cb1e8155451d99a13100f18b57"
+  },
+  "scope": "One own UnaryMinus(raw NScalarInt) Return after the selected named mask8194 handler literal H Echo, with two required untyped nonvariadic BYVAL formals. Both child and result must be signed64 PINTs. Four new originals return -1, -7, -0 and -9223372036854775807 in Warning LEFT CONST, Deprecated BOTH CV-pair, Warning RIGHT CV-pair and mixed Warning-to-Deprecated CONST/FLOAT histories. Integer zero remains distinct from Boolean FALSE and resumed NULL scratch.",
+  "source_basis": [
+    "Zend scanner processes the unsigned literal before unary grammar. Decimal 9223372036854775808 overflows to T_DNUMBER, so source -9223372036854775808 has a FLOAT child. zend_language_parser.y and PHP-Parser Php8.php retain the UnaryMinus node; raw negative Int children, including MIN, are local projections only.",
+    "zend_try_ct_eval_unary_pm and zend_compile_unary_pm fold or emit MUL by LONG -1. mul_function_fast promotes integer overflow to DOUBLE. Existing35 NEGATIVE unary_apply delegates to00 num_mul, so raw child MIN produces PFLOAT +2^63 and cannot satisfy the signed64 PINT-result arm. Integer -0 produces ordinary PINT0.",
+    "Existing20 expression_line follows the unary child;32/33/45/46 preserve separate folded root/child values. Zend compile_return/ZEND_RETURN and existing80 transfer the untyped scalar through real frame retirement. zend_error_zstr_at and207/270 consume every PINT under strict-FALSE handling, then restore the callback and NULL scratch."
+  ],
+  "change": "Exact five-file READY267add1del: one18-line pure tail arm plus its adjacent comment, source generator18, author state73, peer154 and Make3. The arm authenticates own Return/root/child occurrences, UNIT/BODY, both true CODE flags and child-derived root/child lines, both exact PINT reads and signed ranges, then full quiet unary_apply state equality. Root result is bound before the non-invertible equality. All older tail arms and capture premises remain literal; no numeric, return, handler, owner, provider or schema kernel changed.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-negative-integer-return-modulo-error-112",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "c2fc2c3c79fa7dbe32d106cc3a3b0c3ac1e69d9027edaad3368560c39c3a6377",
+      "cut": "source_and_prelaw",
+      "originals": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "4a46a5868fbbba774a6df04cef34efe3dd2c84a433bee14f6e0fa4fb5be3f74f",
+      "cut": "source_and_prelaw",
+      "selection": [
+        1,
+        2
+      ],
+      "other_originals_unrun": 2,
+      "collection_complete": true,
+      "aggregate_pass": false,
+      "source_credit": 0
+    },
+    "prelaw": {
+      "report": "front-all-02/report.json",
+      "sha256": "774fbc99ba394c2b0c2e29c928ecab971fd196ca1328e6b970c2436a3a101da6",
+      "cut": "source_and_prelaw",
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch": "front-launch-02.json",
+      "launch_sha256": "f5e48f043bcb4a7eb598462132efa762f5b5d5821a22b0314600aa0ebe65a532"
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "96fd09249b22d9d227e18d32af8b6d6f5cfa7c90ec15b2723e599e9d2ee68ed6",
+      "cut": "runtime",
+      "cap_seconds": 90,
+      "outer_cap_seconds": 120,
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "c66708cb30f918ff946a9a1529ee1fa53c9e59a06d25190dd887121b5dfcebb7",
+      "cut": "runtime",
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch": "life-launch-01.json",
+      "launch_sha256": "d237f81aebac7961083b6432d7f99ea921db02409c04f90525142fbf78e0e691"
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "d35137971a8344e62d6f3fd0a71fa598f80f24cb7d7e2906fe3268c63829884b",
+      "cut": "ready",
+      "groups": [
+        18,
+        24
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch": "peer-launch-01.json",
+      "launch_sha256": "323451a5cf13efeaeb4c8cfd96ab93ce2afabdb4d3e85bd24740b515d8fefd55",
+      "outer_cap_seconds": 660,
+      "outer_seconds": 267.6694275108166
+    }
+  },
+  "failures": [
+    {
+      "report": "front-all-01/report.json",
+      "sha256": "a5c40c5cc089e94eecfaac60e3b0ff0c2fb85204b1c8d2bf58a2c429f59e7866",
+      "cut": "source_and_prelaw",
+      "source_credit": 0,
+      "other_fixture_unrun": 1,
+      "launch": "front-launch-01.json",
+      "launch_sha256": "8e016d8539f5170cc35aebfe82160443b28f00c7f085359944a4c3fd8a55c89a",
+      "result": "First prelaw fixture returned7 true/1 false with quiet SL508: one inherited conjunct expected the new capture success before the law existed. The raw unary/PINT/Return proof passed. External run-fixture-02 changes only that exact capture-success conjunct to eps; all other conjuncts, final fixture and lifecycle expectations remain unchanged. The original failure and then-unrun second fixture retain zero credit."
+    }
+  ],
+  "validation": "Native4 once and source4 bind identical original bytes/profile and exact P/full fatal255 at lines6/8/8/6. Source model is production SL508/tool0/php_error/reasonNone/no DIAGNOSTIC, complete/pass/stable/source4 at46.444/51.745/51.077/50.796s. Baseline2 remain Unsupported/tool1/P/empty PHP stderr/native_matchfalse; other2 unrun0. Corrected prelaw19, lifecycle13 and first peer42 pass as separate fixture-SL508/source0 cuts. Lifecycle actual drive_steps(S,1) equals the full expected zero-budget projection before real formal/native-cell retirement, C0/fatal reporting and nonowning Error retirement; its expected seed never replaces actual execution. Native24each, baseline536, prelaw/lifecycle578each, source544 and peer579global+3case inputs retain stable watches and recorded HEADs. Author launches and peer own group are reaped; raw arrays/streams/exits and command modes were independently inspected.",
+  "controls": "Thirteen added peer groups per original protect separate Return/root/child source, each CODE line/true flag, UNIT/BODY, distinct wrong values in both populated pools, Boolean FALSE and PFLOAT0 tags, and consumed result/child/FALSE versus NULL scratch. The -0 original has equal root/child PINT0, so pool-corruption controls use a distinct +1 instead of claiming swapped-value refusal. Local projections replace all three occurrence rows and both pools while retaining original AST/CODE: raw -1/-LONGMAX children admit exact quiet positive PINT results; MIN rejects both an out-of-range PINT claim and its correct PFLOAT +2^63 result; above/below signed64 children/results refuse. Every constructed projection has local-tail/source0 credit only, without full-function-source or whole-state validity claims.",
+  "environment": "Source uses production SL_mode/cache=false/det=true with90 inner/120 outer caps and C/UTC/profile. Fixtures use SL508 with300 per interpreter; author has no added outer cap. Peer outer660 finishes267.6694275108166s, quiet exit0/no timeout/stable/reaped/groupempty. A peer static string-escape warning was corrected before the first Boolean run and carries zero execution/source credit.",
+  "bridge": "Runtime59f49ce985 to READY2cfcb322f adds only Make3 plus peer154; private source/lifecycle identities are retained. Whole exact-five READY and independent FULL CLEAR were sent directly to MAIN before concise metadata. No accepted OB109/110/111 evidence was renewed.",
+  "author_ledger": "coverage/semantics/output-final-selected-negative-integer-return-modulo-error-author.json",
+  "limits": "Only four new original programs gain source agreement. UnaryPlus, chains/computed/named operands and other returns/signatures, wider handler/operand/reporting/body-retarget histories/lifetimes remain partial. This authenticates the current body without excluding arbitrary earlier callback or diagnostic histories. Exact holds, one-CV/cross-product bounds,169/306 partial inventory and OB31 remain. Complete PHP core, Rocq interaction trees and BOLA/CRIS are unfinished; no engine bug or intentional divergence is established.",
+  "integration": {
+    "tested_revision": "545b96f90beaa1c6ea881d7fa1a1135ef00bc091",
+    "parent": "caf26145e4e46f9826a568b0628f5bdc5b797cf0",
+    "tree": "cbfef5a6a1b57a73157700278dc3f96ceac50a43",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main51-compiled-primitive-ref73-negative-integer-joined-508-v1/report.json",
+    "sha256": "c929f8cf42920f4ad03014a4e179f4cfdd41802fdb1bb10c095e6d34eb0882a0",
+    "mode": "sole actual MAIN production SL508/511argv/512watched+HEAD/C-UTC/cap60",
+    "seconds": 16.49282610602677,
+    "source_credit": 0,
+    "result": "Reviewer13 owns the sole bounded actual source and same saved-report comparison. Exact5/267add1del; non-Make4 are READY2cfcb322f-exact, and Make3 inserts while preserving every parent recipe and order. Projection f374af6c67a6016ff6ef1cfde8278c2e0aee914e527178c64dba8dffa004d7ca binds final source/tree. Saved PASS/true LF/quiet/exit0/no timeout/stable512+HEAD/reaped binds actual module order,456030d54de and literal-true fixture; no source/native/fixture replay or duplicate author read.",
+    "dependency_bridge": "32/35/80/270 and relevant source-line,compiled-read,error-target,call-valid and handled/fallback clauses remain unchanged. New00 FLOAT overflow shortcut is unreachable in the admitted signed64 integer nonoverflow branch.20 startup names and33 additional string/number certificate arms are disjoint from raw integer returns/literal H Echo.45/46 paired-list lookup rewrites preserve first-match behavior;207 changes concern separate reference-Notice producers and graphs. Private source/lifecycle cuts retain their identities; this bounded composition review adds source0."
+  }
+}
