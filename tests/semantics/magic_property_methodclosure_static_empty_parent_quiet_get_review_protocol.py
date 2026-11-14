@@ -35,7 +35,7 @@ $property_magic_cv_static_method_parent(S,pclassdesc_target,phpType44_parent)
 $property_magic_cv_static_method_parent(S,pclassdesc_parent,ABSENT)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_target,ABSENT)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_parent,phpType44_parent)
-~$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameFullyQualified (BYTES text_parent) metadata_extends)
+$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameFullyQualified (BYTES text_parent) metadata_extends)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameRelative (BYTES text_parent) metadata_extends)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_target,NName (BYTES "T3RoZXI=") metadata_extends)
 ~$property_magic_cv_static_method_parent(S[.CLASSES = [pclassdesc_target,pclassdesc_receiver]],pclassdesc_target,phpType44_parent)
@@ -72,10 +72,11 @@ for label, field in (
     child = ('NStmtClass phpType14_class phpType24_class '
              '(NIdentifier (BYTES text_class) metadata_class_name) '
              f'({field}) phpType42 (SEQUENCE ([statement_method])) metadata_class')
+    prefix = '' if label == 'fully_qualified' else '~'
     PARENT += [
         f'S_child_{label} = S[.SOURCES = [pcunit[.OCCURRENCES = $rc_review_occurrence(pcunit.OCCURRENCES,pcpath_class,{child})]]]',
-        f'~$property_magic_cv_static_methodclosure(S_child_{label},n_closure)',
-        f'~$property_empty_rv_kind(S_child_{label},S.OBJECTS[n_closure])',
+        f'{prefix}$property_magic_cv_static_methodclosure(S_child_{label},n_closure)',
+        f'{prefix}$property_empty_rv_kind(S_child_{label},S.OBJECTS[n_closure])',
     ]
 
 for label, field, value in (

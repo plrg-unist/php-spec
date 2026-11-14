@@ -195,17 +195,22 @@ dec $property_magic_cv_static_method_selector(phpType19, ptbytes) : bool
 def $property_magic_cv_static_method_selector(NName (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $property_magic_cv_static_method_selector(NNameFullyQualified (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $property_magic_cv_static_method_selector(phpType19, ptbytes) = false -- otherwise
+;; Direct parent labels retain descriptor bytes before class-name lookup.
+dec $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) : bool
+def $property_magic_cv_static_method_parent_selector(NName (BYTES text) metadata, ptbytes) = ($base64(text) = ptbytes)
+def $property_magic_cv_static_method_parent_selector(NNameFullyQualified (BYTES text) metadata, ptbytes) = ($base64(text) = ptbytes)
+def $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) = false -- otherwise
 ;; An empty source parent leaves the own static method's scope and cache intact.
 dec $property_magic_cv_static_method_parent(pstate, pclassdesc, phpType44) : bool
 def $property_magic_cv_static_method_parent(S, pclassdesc, ABSENT) = true
   -- if pclassdesc.PARENT = eps
-def $property_magic_cv_static_method_parent(S, pclassdesc, NName (BYTES text_parent) metadata_parent) = true
+def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44_parent) = true
   -- if pclassdesc.PARENT = (ptbytes_parent)
-  -- if $base64(text_parent) = ptbytes_parent
+  -- if $property_magic_cv_static_method_parent_selector(phpType44_parent, ptbytes_parent)
   -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
   -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
   -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
-  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.NAME = ptbytes_parent
+  -- if pclassdesc_parent.KIND = "class" /\ $ptlc(pclassdesc_parent.NAME) = $ptlc(ptbytes_parent)
   -- if pclassdesc_parent.PARENT = eps /\ pclassdesc_parent.INTERFACES = eps
   -- if pclassdesc_parent.PROPERTIES = eps /\ pclassdesc_parent.METHODS = eps /\ pclassdesc_parent.CONSTANTS = eps
   -- if ~pclassdesc_parent.ABSTRACT /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY

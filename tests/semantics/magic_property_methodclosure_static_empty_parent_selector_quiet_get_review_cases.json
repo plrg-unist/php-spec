@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-empty-parent-selector-plain-cv-empty-retired-sources",
+      "source": "<?php\nclass QuietMethodStaticEmptyParentSelectorCVBase {}\nclass QuietMethodStaticEmptyParentSelectorCVTarget extends qUIETmETHODsTATICeMPTYpARENTsELECTORcvbASE { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietMethodStaticEmptyParentSelectorCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$original = \\qUIETmETHODsTATICeMPTYpARENTsELECTORcvtARGET::counter(...);\n$intermediate = clone $original;\n$held = clone $intermediate;\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticEmptyParentSelectorCVTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticEmptyParentSelectorCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticEmptyParentSelectorCVTarget::counter() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "45b0bb57728ccdd2adc24f706ca04a68f206bf4a126e697b3c8c84fd9b6fd3f0",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtTT1VSQ0VTX0dPTkU7STtHO1JFQ0VJVkVSO1dSQVBQRVJfR09ORTtGQUxTRTtDQVBUVVJFO1JFQ0VJVkVSX0dPTkU7U1RBVElDO0RPTkU7",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_empty_parent_quiet_get_review_cases.json",
+        "id": "methodclosure-static-empty-parent-fqn-cv-empty-retired-sources",
+        "source_sha256": "9178da0fddada0bb7bdcbf4a54e2cf55a61f8bb3e85c1a8bab6da5e0a99f101d",
+        "change": "Fresh declaration identities and a mixed-case direct parent label (plain for CV Empty, fully qualified for literal Empty). Keep the genuine empty source root, own method, clone ancestry, line 8 receiver throw and every original lifetime observation. Execute these new native originals once."
+      }
+    },
+    {
+      "id": "methodclosure-static-empty-parent-selector-fqn-literal-empty-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticEmptyParentSelectorLiteralBase {}\nclass QuietMethodStaticEmptyParentSelectorLiteralTarget extends \\qUIETmETHODsTATICeMPTYpARENTsELECTORlITERALbASE { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietMethodStaticEmptyParentSelectorLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$original = qUIETmETHODsTATICeMPTYpARENTsELECTORlITERALtARGET::counter(...);\n$intermediate = clone $original;\n$held = clone $intermediate;\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticEmptyParentSelectorLiteralTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticEmptyParentSelectorLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticEmptyParentSelectorLiteralTarget::counter() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "94f5e40e3c35be67bc536d936fe11d084d5142a5e1a2c94c720e456de155e365",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtTT1VSQ0VTX0dPTkU7STtHO1JFQ0VJVkVSO1dSQVBQRVJfR09ORTtDQVVHSFQ7S0VFUDtDQVBUVVJFO1JFQ0VJVkVSX0dPTkU7U1RBVElDO0RPTkU7",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_empty_parent_quiet_get_review_cases.json",
+        "id": "methodclosure-static-empty-parent-unqualified-literal-empty-receiver-throw",
+        "source_sha256": "0ffbbb9ffe7d80a51e3e063ecb797764a559b24525fd0b9b557baf10254859eb",
+        "change": "Fresh declaration identities and a mixed-case direct parent label (plain for CV Empty, fully qualified for literal Empty). Keep the genuine empty source root, own method, clone ancestry, line 8 receiver throw and every original lifetime observation. Execute these new native originals once."
+      }
+    }
+  ]
+}

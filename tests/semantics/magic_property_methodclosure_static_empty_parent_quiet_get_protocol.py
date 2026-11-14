@@ -28,7 +28,7 @@ pclassdesc_parent.PROPERTIES = eps /\ pclassdesc_parent.METHODS = eps /\ pclassd
 $property_magic_cv_static_method_parent(S,pclassdesc_target,phpType44_parent)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_target,ABSENT)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_parent,phpType44_parent)
-~$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameFullyQualified (BYTES text_parent) metadata_parent)
+$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameFullyQualified (BYTES text_parent) metadata_parent)
 ~$property_magic_cv_static_method_parent(S,pclassdesc_target,NNameRelative (BYTES text_parent) metadata_parent)
 '''.strip().splitlines()
 
