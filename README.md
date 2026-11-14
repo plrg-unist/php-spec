@@ -8738,6 +8738,11 @@ Closure producers, initialized static cells, binding and lifetimes remain partia
 [Literal Closure quiet Get review](coverage/semantics/magic-property-realclosure-quiet-get-review.json).
 [Arrow quiet Get review](coverage/semantics/magic-property-arrow-quiet-get-review.json).
 [Shared-cache clone quiet Get review](coverage/semantics/magic-property-clone-quiet-get-review.json).
+Original unscoped named user-function FCC results also cross quiet CV ??,
+private ??= and literal/CV Empty. Their shared function statics remain separate
+roots when the wrapper retires; copied, bound and private-cache named wrappers
+remain outside this increment.
+[Named FCC quiet Get review](coverage/semantics/magic-property-namedclosure-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).

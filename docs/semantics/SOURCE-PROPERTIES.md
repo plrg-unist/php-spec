@@ -1704,6 +1704,19 @@ static/scope/binding and owner/cleanup checks remain. Wrapped/fake ancestors,
 private/scoped/unknown stamps and other clone/lifetime modes stay outside.
 [Shared-cache clone quiet Get review](../../coverage/semantics/magic-property-clone-quiet-get-review.json).
 
+Original raw named USER FCC wrappers also cross quiet CV binary ??, private
+??= and literal/CV Empty. A registered nongenerator NStmtFunction, no binding
+or scope record, and the exact SOURCE-eps Unscoped/Shared cache stamp with
+whole-cache validity authenticate the live result. Literal Empty checks the
+actual result object ID through that same predicate, keeping named clones
+outside. The wrapper owns no function-static cells: shared static roots survive
+its weak notification and retirement. Empty retires the wrapper before its
+receiver, including a receiver throw that preserves the destination. Four
+changed-source agreements reuse four native originals once; separate SL
+fixtures check ownership, malformed histories and budget0/1/full rejoining.
+Wider named wrappers and lifetimes remain partial.
+[Named FCC quiet Get review](../../coverage/semantics/magic-property-namedclosure-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
