@@ -490,6 +490,14 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF true})[.RETURNREF = true][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, true, metadata, pchheader)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if ppropertydesc.TYPE = eps /\ pchheader.KIND = "class" /\ pchheader.PARENT =/= eps /\ ~pchheader.READONLY
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+  -- if $hook_parameter_facts(metadata) = [false]
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF true})[.RETURNREF = true][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $pphook_body_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, b, metadata, pchheader) = P_body
@@ -512,6 +520,7 @@ def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction[.ORIGIN = $origi
   -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
 
 dec $property_hook_reference_expression_return(pstate, porigin, int) : expression?
+dec $property_hook_short_parent(pstate, ppropertydesc) : ppropertydesc?
 def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction, expression, z)
   -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
   -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF true}
@@ -1396,6 +1405,16 @@ def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) 
   -- if $origin_node(S.SOURCES, pclassdesc_parent.ORIGIN) = (statement_parent)
   -- if $pchlower(statement_parent) = PCHRAW pchraw_parent
   -- if pchraw_parent.KIND = "class" /\ pchraw_parent.PARENT = ABSENT
+;; A short getter's actual expression and function receipt retain that slot.
+def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if $property_hook_short_parent(S, ppropertydesc_child) = (ppropertydesc_parent)
+  -- if ppropertydesc_child.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($(|pcpath| - 2))]
+  -- if porigin_hook = PORIGIN n (pcpath_group ++ [PCFIELD 4, PCINDEX 0])
+  -- if $function_at(S.FUNCTIONS, porigin_hook) = (pfunction)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+  -- if $property_hook_reference_expression_return(S, porigin_hook, z) = (expression)
 def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 ;; Omitted-default sole getters receive an inherited slot after own storage.
 def $property_hook_child_append_slot(S, ppropertydesc_parent, ppropertydesc_child) = true
@@ -1786,6 +1805,40 @@ def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
   -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner phpType23_owner metadata_owner)
   -- if $trait_plan(S, pclassdesc).TRAITS = eps
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook])) metadata)
+  -- if flags <- [0,1]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_parameter_facts(metadata_hook) = [false]
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+;; Parent authority is independent of the child's body, function and layout.
+def $property_hook_short_parent(S, ppropertydesc) = (ppropertydesc_parent)
+  -- if ppropertydesc.TYPE = eps
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps /\ ~pclassdesc_parent.READONLY
+  -- if $trait_plan(S, pclassdesc).TRAITS = eps /\ $trait_plan(S, pclassdesc_parent).TRAITS = eps
+  -- if $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent)
+  -- if $property_hook_trait_parent_linked(S, pclassdesc) /\ $property_hook_trait_parent_linked(S, pclassdesc_parent)
+  -- if $property_hook_pair_plain_parent(S, pclassdesc_parent.PROPERTIES)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $ppproperty_desc_at(pclassdesc_parent.PROPERTIES, ppropertydesc.NAME) = (ppropertydesc_parent)
+  -- if $property_hook_reference_plain_parent(S, ppropertydesc_parent, ppropertydesc)
+def $property_hook_short_parent(S, ppropertydesc) = eps -- otherwise
+
+def $property_hook_reference_decl(S, ppropertydesc) = true
+  -- if $property_hook_short_parent(S, ppropertydesc) = (ppropertydesc_parent)
   -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
   -- if $(|pcpath| >= 2)
   -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]

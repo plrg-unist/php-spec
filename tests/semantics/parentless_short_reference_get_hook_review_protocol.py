@@ -5,6 +5,7 @@ import base64
 import hashlib
 import json
 from pathlib import Path
+import re
 import subprocess
 
 from error_handler_run import recorded
@@ -71,7 +72,7 @@ def $srgh_explicit(metadataEntry :: metadataEntry_tail*) = metadataEntry :: $srg
 '''
 
 
-def fields(fixture, source, form, body='identifier'):
+def fields(fixture, source, form, body='identifier', parented=False):
     initial = 'PINT 17' if form == 'initialized' else 'PNULL'
     namespace = 'Ns292ShortReference' + form.title() + 'Peer' + chr(92)
     name_node = 'NScalarString' if body == 'literal' else 'NIdentifier'
@@ -317,16 +318,94 @@ def fields(fixture, source, form, body='identifier'):
             f'~$reference_arrow_boundary(S_{label},ppropertyhook.HOOK,24)',
             f'~$arrow_context(S_{label})',
         ]
+    if parented:
+        replacements = {
+            'pclassdesc_root.PARENT = eps':
+                'pclassdesc_root.PARENT = ($base64(' + quoted(namespace + 'Parent294') + '))',
+            '$property_hook_reference_expression_return(S_forged,ppropertyhook.HOOK,24) = (expression_get)':
+                '$property_hook_reference_expression_return(S_forged,ppropertyhook.HOOK,24) = eps',
+        }
+        assert set(replacements) <= set(checks)
+        checks = [replacements.get(check, check) for check in checks]
+        checks = [check if check.startswith(('U = ', 'S_start = ')) else
+                  re.sub(r'(?<![A-Za-z0-9_])24(?![A-Za-z0-9_])', '27',
+                         re.sub(r'(?<![A-Za-z0-9_])23(?![A-Za-z0-9_])', '26', check))
+                  for check in checks]
+        checks += [
+            '$class_link_at(S_front.LINKEDPARENTS,porigin_root) = (SOURCE_PARENT porigin_parent)',
+            '$class_at(S_front.CLASSES,porigin_parent) = (pclassdesc_parent)',
+            'pclassdesc_parent.NAME = $base64(' + quoted(namespace + 'Parent294') + ')',
+            'pclassdesc_parent.KIND = "class"', 'pclassdesc_parent.PARENT = eps',
+            '~pclassdesc_parent.READONLY', '$trait_plan(S_front,pclassdesc_parent).TRAITS = eps',
+            'pclassdesc_parent.PROPERTIES = [ppropertydesc_parentpad]',
+            'ppropertydesc_parentpad.ORIGIN = PORIGIN n_source pcpath_parentproperty',
+            '$property_declaring_class(S_front.CLASSES,PORIGIN n_source pcpath_parentproperty) = (porigin_parent)',
+            'ppropertydesc_parentpad.NAME = $ptascii("pad")',
+            'ppropertydesc_parentpad.TYPE = eps',
+            '$property_default_state(S_front,ppropertydesc_parentpad) = (PROP_VALUE (DIRECT (PINT (-17))))',
+            '$property_hook_pair_plain_parent(S_front,pclassdesc_parent.PROPERTIES)',
+            '$property_hook_pair_source_headers(S_front,pclassdesc_root,pclassdesc_parent)',
+            '$property_hook_trait_parent_linked(S_front,pclassdesc_root)',
+            '$property_hook_reference_plain_parent(S_front,ppropertydesc_parentpad,ppropertydesc_pad)',
+            '$property_hook_short_parent(S_front,ppropertydesc_pad) = (ppropertydesc_parentpad)',
+            '$property_hook_child_own_slot(S_front,ppropertydesc_parentpad,ppropertydesc_pad)',
+            '~$property_hook_child_append_slot(S_front,ppropertydesc_parentpad,ppropertydesc_pad)',
+            'porigin_root = PORIGIN n_source pcpath_root',
+            '$origin_node(S_return.SOURCES,porigin_root) = (NStmtClass phpType14_root phpType24_root phpType3_root phpType44_root phpType42_root phpType23_root metadata_root)',
+            'phpType44_root = NName (BYTES text_parent) metadata_parent_name',
+            '$base64(text_parent) = $ptascii("Parent294")',
+            '$origin_node(S_return.SOURCES,porigin_parent) = (statement_parent)',
+            '$pchlower(statement_parent) = PCHRAW pchraw_parent',
+            'pchraw_parent.KIND = "class"', 'pchraw_parent.PARENT = ABSENT',
+            'statement_noextends = NStmtClass phpType14_root phpType24_root phpType3_root ABSENT phpType42_root phpType23_root metadata_root',
+            'S_noextends = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_root statement_noextends) :: pcunit.OCCURRENCES]]]',
+            '$property_hook_short_parent(S_noextends,ppropertydesc_pad) = eps',
+            '~$property_hook_reference_decl(S_noextends,ppropertydesc_pad)',
+            '~$property_hook_child_own_slot(S_noextends,ppropertydesc_parentpad,ppropertydesc_pad)',
+            '~$reference_return_source(S_noextends,27)',
+        ]
+        for label, change in (
+            ('nolink', '[.LINKEDPARENTS = eps]'),
+            ('parentkind', '[.CLASSES = (pclassdesc_parent[.KIND = "trait"]) :: S_return.CLASSES]'),
+            ('grandparent', '[.CLASSES = (pclassdesc_parent[.PARENT = ($ptascii("OtherGrandparent"))]) :: S_return.CLASSES]'),
+            ('parenttype', '[.CLASSES = (pclassdesc_parent[.PROPERTIES = [ppropertydesc_parentpad[.TYPE = [(PTBRANCH ([PTBUILTIN "int"]))]]]]) :: S_return.CLASSES]'),
+        ):
+            checks += [
+                f'S_{label} = S_return{change}',
+                f'$property_hook_short_parent(S_{label},ppropertydesc_pad) = eps',
+                f'~$property_hook_reference_decl(S_{label},ppropertydesc_pad)',
+                f'~$property_hook_child_own_slot(S_{label},ppropertydesc_parentpad,ppropertydesc_pad)',
+                f'~$reference_return_source(S_{label},27)',
+            ]
+        for label in ('marker', 'expression', 'line', 'read', 'unit'):
+            checks += [f'~$property_hook_child_own_slot(S_{label},ppropertydesc_parentpad,ppropertydesc_pad)']
     return checks
+
+
+def budget_part(checks, part):
+    if part == 'all':
+        return checks
+    labels = ('return', 'fetch', 'cleanup')
+    starts = [checks.index(f'S_{label}_zero = $drive_steps(S_{label if label != "cleanup" else "middle"},0)')
+              for label in labels]
+    end = checks.index('$source_unit(S_return.SOURCES,n_source) = (pcunit)')
+    index = labels.index(part)
+    stop = starts[index + 1] if index < 2 else end
+    return checks[:starts[0]] + checks[starts[index]:stop] + checks[end:]
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--form', required=True, choices=['initialized', 'null'])
     parser.add_argument('--body', choices=['identifier', 'literal'], default='identifier')
+    parser.add_argument('--parented', action='store_true')
+    parser.add_argument('--budget-part', choices=['all', 'return', 'fetch', 'cleanup'], default='all')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
+    assert not args.parented or args.body == 'literal'
     sources = SOURCES if args.body == 'identifier' else SOURCES.with_name('parentless_literal_short_reference_get_hook_review')
+    if args.parented:
+        sources = SOURCES.with_name('ordinary_parent_short_reference_get_hook_review')
     source = sources / ('short-reference-' + args.form + '-shared.php')
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -337,7 +416,7 @@ def main():
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body,
+    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body, 'parented': args.parented,
               'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
@@ -350,7 +429,9 @@ def main():
         finally:
             try: adapter.close()
             finally: frontend.close()
-        checks = fields(checked['fixture'], source, args.form, args.body); report['premises'] = len(checks)
+        checks = fields(checked['fixture'], source, args.form, args.body, args.parented)
+        report['all_premises'] = len(checks); report['budget_part'] = args.budget_part
+        checks = budget_part(checks, args.budget_part); report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
         (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
                                            + ''.join('  -- if ' + check + '\n' for check in checks))
@@ -365,7 +446,7 @@ def main():
     finally:
         (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     assert report['passed'], report.get('stderr', '')[:4000]
-    print('pass', args.form, report['premises'])
+    print('pass', args.form, args.budget_part, report['premises'])
 
 
 if __name__ == '__main__': main()

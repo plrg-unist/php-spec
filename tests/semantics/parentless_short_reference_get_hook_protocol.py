@@ -4,6 +4,7 @@ import argparse
 import base64
 import json
 from pathlib import Path
+import re
 import subprocess
 
 import parentless_short_reference_get_hook_review_protocol as peer
@@ -25,7 +26,7 @@ def $srgh_phase(S,9,n) = true
 def $srgh_phase(S,n_stage,n) = false -- otherwise''')
 
 
-def fields(fixture, source, form, body='identifier'):
+def fields(fixture, source, form, body='identifier', parented=False):
     initial = 'PINT 17' if form == 'initialized' else 'PNULL'
     namespace = 'Ns292ShortReference' + form.title() + chr(92)
     name_node = 'NScalarString' if body == 'literal' else 'NIdentifier'
@@ -172,6 +173,38 @@ def fields(fixture, source, form, body='identifier'):
             f'$drive(S_{label}_zero[.COMPLETION = NORMAL],30000) = S_done',
             f'$drive(S_{label}_one[.COMPLETION = NORMAL],30000) = S_done',
         ]
+    if parented:
+        parent_check = 'pclassdesc_root.PARENT = eps'
+        assert parent_check in checks
+        checks = ['pclassdesc_root.PARENT = ($base64(' + quoted(namespace + 'Parent294') + '))'
+                  if check == parent_check else check for check in checks]
+        checks = [check if check.startswith(('U = ', 'S_start = ')) else
+                  re.sub(r'(?<![A-Za-z0-9_])24(?![A-Za-z0-9_])', '27',
+                         re.sub(r'(?<![A-Za-z0-9_])16(?![A-Za-z0-9_])', '19',
+                                re.sub(r'(?<![A-Za-z0-9_])15(?![A-Za-z0-9_])', '18', check)))
+                  for check in checks]
+        checks += [
+            '$class_link_at(S_front.LINKEDPARENTS,porigin_root) = (SOURCE_PARENT porigin_parent)',
+            '$class_at(S_front.CLASSES,porigin_parent) = (pclassdesc_parent)',
+            'pclassdesc_parent.NAME = $base64(' + quoted(namespace + 'Parent294') + ')',
+            'pclassdesc_parent.KIND = "class"', 'pclassdesc_parent.PARENT = eps',
+            '~pclassdesc_parent.READONLY', '$trait_plan(S_front,pclassdesc_parent).TRAITS = eps',
+            'pclassdesc_parent.PROPERTIES = [ppropertydesc_parenttag]',
+            'ppropertydesc_parenttag.ORIGIN = PORIGIN n_parent pcpath_parent_property',
+            '$property_declaring_class(S_front.CLASSES,PORIGIN n_parent pcpath_parent_property) = (porigin_parent)',
+            'ppropertydesc_parenttag.NAME = $ptascii("tag")', 'ppropertydesc_parenttag.TYPE = eps',
+            '$property_default_state(S_front,ppropertydesc_parenttag) = (PROP_VALUE (DIRECT (PINT (-17))))',
+            '$property_hook_pair_plain_parent(S_front,pclassdesc_parent.PROPERTIES)',
+            '$property_hook_pair_source_headers(S_front,pclassdesc_root,pclassdesc_parent)',
+            '$property_hook_trait_parent_linked(S_front,pclassdesc_root)',
+            '$property_hook_reference_plain_parent(S_front,ppropertydesc_parenttag,ppropertydesc_tag)',
+            '$property_hook_short_parent(S_front,ppropertydesc_tag) = (ppropertydesc_parenttag)',
+            '$property_hook_child_own_slot(S_front,ppropertydesc_parenttag,ppropertydesc_tag)',
+            '~$property_hook_child_append_slot(S_front,ppropertydesc_parenttag,ppropertydesc_tag)',
+            '$property_layout(S_front,porigin_root,|S_front.CLASSES|) = [ppropertydesc_middle,ppropertydesc_tag,ppropertydesc_tail]',
+            'ppropertyslot_initialtag.DECL = (ppropertydesc_tag.ORIGIN)',
+            '$property_slot_descriptor(S_front,n_root,ppropertyslot_initialtag) = (ppropertydesc_tag)',
+        ]
     return checks
 
 
@@ -179,9 +212,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--form', required=True, choices=['initialized', 'null'])
     parser.add_argument('--body', choices=['identifier', 'literal'], default='identifier')
+    parser.add_argument('--parented', action='store_true')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
+    assert not args.parented or args.body == 'identifier'
     sources = SOURCES if args.body == 'identifier' else SOURCES.with_name('parentless_literal_short_reference_get_hook')
+    if args.parented:
+        sources = SOURCES.with_name('ordinary_parent_short_reference_get_hook')
     source = sources / ('short-reference-' + args.form + '.php')
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -192,7 +229,7 @@ def main():
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body,
+    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body, 'parented': args.parented,
               'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
@@ -205,7 +242,7 @@ def main():
         finally:
             try: adapter.close()
             finally: frontend.close()
-        checks = fields(checked['fixture'], source, args.form, args.body); report['premises'] = len(checks)
+        checks = fields(checked['fixture'], source, args.form, args.body, args.parented); report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
         (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
                                            + ''.join('  -- if ' + check + '\n' for check in checks))
