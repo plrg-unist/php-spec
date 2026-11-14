@@ -1,0 +1,155 @@
+{
+  "family": "canonical standalone null in parentless same-field short reference Get",
+  "status": "bounded slice integrated; independent source, state and actual composition/SAME checks clear",
+  "target": "PHP8.5.10 CLI NTS64",
+  "oracle": {
+    "path": ".tools/php/bin/php",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json plus include_path=.:",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "scope": [
+    "Own ordinary parentless class, public nonstatic nonreadonly nonfinal property, no Trait or set visibility, sole short &get with no explicit parameter list.",
+    "Identifier or literal-string same-field body; exact raw null header and normalized singleton null type authenticate the property and implicit reference return.",
+    "A first genuine by-value read invokes the reference getter. Its actual backing reference acquisition initializes an omitted nullable slot to NULL; no receive or cleanup step supplies that value.",
+    "Copies are independent. Both outer aliases retain only-NULL constraints until real quiet receiver removal detaches the property source; later alias37 succeeds."
+  ],
+  "refusals": [
+    "Malformed ?null/[null,null] and duplicate null|null headers remain refused by the short-reference header helper.",
+    "False, true, int0, string and array assignments through the constrained alias reject with exact type null diagnostics in weak and strict originals.",
+    "Mixed and wider headers, parents, Trait, bodies, consumers and lifetimes remain partial; existing exact holds are unchanged."
+  ],
+  "engine_pin": "vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348",
+  "source_routes": {
+    "Zend/zend_compile.c": [
+      "zend_compile_property_hooks: short GET becomes RETURN and inherits property return type",
+      "zend_compile_return: by-reference variable returns compile BP_VAR_W",
+      "zend_compile_typename_ex: rejects nullable-null and duplicate union overlap"
+    ],
+    "Zend/zend_execute.c": [
+      "zend_handle_fetch_obj_flags/ZEND_FETCH_REF: NULL initialization and actual type source",
+      "i_zend_verify_type_assignable_zval/zend_verify_ref_assignable_zval: NULL-only assignment"
+    ],
+    "Zend/zend_objects.c": [
+      "zend_object_dtor_property: remove actual property type source"
+    ]
+  },
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_header"
+  ],
+  "whole_source": {
+    "donor": "ed9827656abe6c37c4e0b0390ea666ad19f09164",
+    "tree": "c0402e0f275511ee2f68834b77cc88e9501cbeed",
+    "base": "d86b3f457fa032ce25d287d396198c540feda5d3",
+    "paths": 14,
+    "manifest": "source-ready.json",
+    "manifest_sha256": "cc84e3a5fb84729ed16f05ce080b8c92e551c29609122095a702446cbc5c3982",
+    "excluded_separately_integrated_metadata": [
+      "coverage/semantics/union-literal-boolean-parentless-short-reference-get-hook-review.json"
+    ]
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/comp304",
+  "source_cuts": [
+    {
+      "role": "author-weak",
+      "head": "8772569e83590f70c249d2edab8c948cef91c43c",
+      "mode": "production-SL",
+      "native_runs_once": 2,
+      "source_agreements": 2,
+      "report": "author-source/report.json",
+      "sha256": "276871429e57e38299d9d61f752d86c4f6f90f8c791916e6961778b1bbda36ea",
+      "head_note": "Dirty law and prepared source bytes at877; exact frozen input hashes bridge to READY. Synthetic donor was not executed.",
+      "modules": 508
+    },
+    {
+      "role": "independent-strict",
+      "head": "8b018cbc4b89087d9728aa045a469f4af01ec9af",
+      "mode": "production-SL",
+      "native_runs_once": 2,
+      "source_agreements": 2,
+      "report": "peer14-source-v1/report.json",
+      "sha256": "e01df91fb9a2e1e95499cca34030f5d5bed976f7cad561a3efb024ca91e77689",
+      "modules": 508
+    }
+  ],
+  "fixture_cuts": [
+    {
+      "role": "author-initialized",
+      "head": "738155eba82793bb816098dfc5d9a728050863da",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "conditions": 153,
+      "source_agreements": 0,
+      "report": "author-initialized-protocol/report.json",
+      "sha256": "e06e819aa953ae9b3cd1f2159c1d645d9a576e06ab7478c4bcf46b598f2cdc8f"
+    },
+    {
+      "role": "author-omitted",
+      "head": "738155eba82793bb816098dfc5d9a728050863da",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "conditions": 154,
+      "source_agreements": 0,
+      "report": "author-omitted-protocol/report.json",
+      "sha256": "f58e7457a2980d561af053dc273f3dd8b4ece4e097a6976277bb38973612af95"
+    },
+    {
+      "role": "independent-initialized",
+      "head": "8b018cbc4b89087d9728aa045a469f4af01ec9af",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "conditions": 179,
+      "source_agreements": 0,
+      "report": "peer14-initialized-protocol-v1/report.json",
+      "sha256": "f7997dc480884c6b273508391159ce378fb31ec7f4d845ea2256ff76fea819a7"
+    },
+    {
+      "role": "independent-omitted",
+      "head": "8b018cbc4b89087d9728aa045a469f4af01ec9af",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "conditions": 180,
+      "source_agreements": 0,
+      "report": "peer14-omitted-protocol-v1/report.json",
+      "sha256": "4f7f55748648826d952a4bcdf393af285d349555adcabbb82e30607a0ac43037"
+    }
+  ],
+  "compatibility": "The source campaigns share525 identical runtime/frontend inputs and profiles. Peer fixture inputs differ only in two closed303 string controls inside unused prior.fields. Consumed PREFIX and all other module AST are identical; the304 helper uses prior only as PREFIX and __file__. Independent whole14 review clears this explicit bridge.",
+  "controls": {
+    "prelaw_author": {
+      "report": "author-prelaw/report.json",
+      "unsupported": 2,
+      "native_runs": 0,
+      "source_agreements": 0
+    },
+    "prelaw_independent": {
+      "report": "peer14-prelaw-v1/report.json",
+      "unsupported": 1,
+      "native_runs": 0,
+      "source_agreements": 0
+    },
+    "new_execution_failures": 0,
+    "draft_fixture_correction": "A destructor-only checkpoint was removed before first execution; checks use actual quiet UNSET and return/cleanup budget joins.",
+    "reuse_driver": "prepared/unrun; unchanged sources and runtime were not replayed"
+  },
+  "actual_composition": {
+    "family_commit": "9c21c1318356ad85d8a7dcd97fe407b7bb340b77",
+    "family_tree": "b5779e263ce5856ada69c5ae503aad722a1776ff",
+    "projection": "13 donor-exact paths plus the six Make commands; shared Make additions compose with GETconcat",
+    "tested_joined_head": "269d88e9aea9357c90a834c4e879ce03b7a4c93a",
+    "tested_joined_tree": "f6eda80234efd04ad5dbc709f7471305cce9180b",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main58-comp304-getconcat-current-load-v1/report.json",
+    "sha256": "50bed26f9bc10d86eb348558545a4685a3d1a623c02bae30ff49b5fcd79544ce",
+    "mode": "production-SL",
+    "modules": 508,
+    "elapsed_seconds": 16.040785808116198,
+    "cap_seconds": 60,
+    "source_agreements": 0,
+    "passed": true,
+    "stable_quiet_reaped": true,
+    "review": "Independent actual14 composition and SAME read CLEAR once by retained peer15; no source or state renewal."
+  }
+}
