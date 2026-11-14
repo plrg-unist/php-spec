@@ -198,6 +198,21 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if ($truth(S, PFLOAT n_cond) /\ n_bytes* = n_true*) \/ (~$truth(S, PFLOAT n_cond) /\ n_bytes* = n_false*)
+;; A literal null condition selects the false arm with its compiled NULL fact.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $ptlc($base64(text_cond)) = $ptascii("null")
+  -- if n_true* = $base64(text_true)
+  -- if n_bytes* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (PNULL)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
+  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 ;; A raw string condition selects an arm; its own header is only the condition.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
