@@ -125,7 +125,7 @@ for name, value in [('PHP_INT_MAX', '9223372036854775807'), ('PHP_INT_MIN', '$(-
 for environment, name, qualified, expected in [
     ('$plempty(false)', 'php_int_max', False, 'eps'),
     ('$plempty(false)', 'MISSING_INTEGER225', False, 'eps'),
-    ('$plempty(false)', 'E_WARNING', False, 'eps'),
+    ('$plempty(false)', 'E_WARNING', False, '(NINT 2)'),
     ('$plempty(false)', 'PHP_OUTPUT_HANDLER_START', False, 'eps'),
     ('pfunction.ENV', 'PHP_INT_MAX', False, 'eps'),
     ('pfunction.ENV', 'Bound225', False, '(NINT 9223372036854775807)'),

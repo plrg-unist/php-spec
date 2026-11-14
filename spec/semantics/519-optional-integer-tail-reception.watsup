@@ -33,7 +33,7 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NINT i)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
-  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG"), $ptascii("PHP_MAJOR_VERSION"), $ptascii("PHP_MINOR_VERSION"), $ptascii("PHP_RELEASE_VERSION"), $ptascii("PHP_VERSION_ID")]
+  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG"), $ptascii("PHP_MAJOR_VERSION"), $ptascii("PHP_MINOR_VERSION"), $ptascii("PHP_RELEASE_VERSION"), $ptascii("PHP_VERSION_ID"), $ptascii("E_ERROR"), $ptascii("E_WARNING"), $ptascii("E_PARSE"), $ptascii("E_NOTICE"), $ptascii("E_CORE_ERROR"), $ptascii("E_CORE_WARNING"), $ptascii("E_COMPILE_ERROR"), $ptascii("E_COMPILE_WARNING"), $ptascii("E_USER_ERROR"), $ptascii("E_USER_WARNING"), $ptascii("E_USER_NOTICE"), $ptascii("E_RECOVERABLE_ERROR"), $ptascii("E_DEPRECATED"), $ptascii("E_USER_DEPRECATED"), $ptascii("E_ALL")]
   -- if $builtin_value_bytes(pnreference.RESOLVED) = (PINT i)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
