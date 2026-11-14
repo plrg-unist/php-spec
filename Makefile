@@ -1491,6 +1491,9 @@ test-semantics: build
 	python3 tests/semantics/produced_string_unary_minus_default_reception.py
 	python3 tests/semantics/produced_string_unary_minus_default_reception_protocol.py
 	python3 tests/semantics/produced_string_unary_minus_default_reception_review_protocol.py
+	python3 tests/semantics/integer_string_unary_minus_default_reception.py
+	python3 tests/semantics/integer_string_unary_minus_default_reception_protocol.py
+	python3 tests/semantics/integer_string_unary_minus_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py

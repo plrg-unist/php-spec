@@ -68,7 +68,7 @@ for index, label, payload, operand, number, value, integer in VALUES:
         f'$lossy_optional_integer_numeric(pfunction.ENV,expression_{label}_string) = eps',
         f'$lossy_optional_integer_string_in(pfunction.ENV,expression_{label}_string) = ({payload})',
         f'$coerce_number(PSTRING ({payload})) = COERCED ({operand}) false',
-        f'$lossy_optional_integer_default_in(pfunction.ENV,expression_{label}) = eps',
+        f'$lossy_optional_integer_default_in(pfunction.ENV,expression_{label}) = {"($(-22))" if label == "integer" else "eps"}',
         f'$lossy_optional_integer_numeric(pfunction.ENV,expression_{label}) = ({number})',
         f'$lossy_optional_integer_deferred_value(pfunction.ENV,expression_{label}) = ({value})',
         f'$lossy_optional_integer_deferred_bindings(S,pfunction.ENV,porigin_{label})',
@@ -178,7 +178,7 @@ for expression, _ in produced[:6]:
 literal = node('NExprUnaryMinus', string('2.5'))
 derived.extend([
     f'$lossy_optional_integer_numeric($plempty(false),{literal}) = (NFLOAT 13836183955189006336)',
-    f'$lossy_optional_integer_default_in($plempty(false),{node("NExprUnaryMinus", string("2"))}) = eps',
+    f'$lossy_optional_integer_default_in($plempty(false),{node("NExprUnaryMinus", string("2"))}) = ($(-2))',
     '$coerce_number(PSTRING ([50,0])) = COERCED (NINT 2) true',
     '$lossy_optional_integer_numeric($plempty(false),NExprUnaryMinus (NScalarString (BYTES "MgA=") eps) eps) = eps',
     f'~$lossy_optional_integer_quiet_shape({node("NExprUnaryMinus", node("NExprArrayDimFetch", string("12"), "NScalarInt (INTEGER 0) eps"))})',

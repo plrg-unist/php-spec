@@ -1,0 +1,50 @@
+[
+  {
+    "id": "integer-string-unary-minus-stored-cold-warm",
+    "source": "<?php\nfunction storedStringWarning247($errno, $message, $file, $line) {\n    global $xStored247;\n    echo 'warning:', $message, '|';\n    $xStored247 = 3.5;\n}\nfunction storedStringDefaults247(int $first, int &$integer = -'22', int $zero = -'-0', int $nested = -(-'22'), int $wrapped = +(-'22')) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $nested, ':', $wrapped, '|';\n    $integer = 9;\n}\nset_error_handler('storedStringWarning247');\n$xStored247 = 1.5;\nstoredStringDefaults247($xStored247);\necho 'cold:x=', $xStored247, '|';\n$xStored247 = 1.5;\nstoredStringDefaults247($xStored247);\necho 'warm:x=', $xStored247, '|';\n",
+    "source_sha256": "af13d17196c0083f9298425243d80085b563c30238fc19c5d0cb48512d7391b5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet fitting NINT string negation now certifies actual compiled stored PINT defaults, including string integer-zero and nested integer negation and a phase-consistent integer UnaryPlus wrapper. Stored pool values remain immutable and uncached while omitted BYREF formals stay private through cold/warm mutation and the earlier supplied precision callback."
+  },
+  {
+    "id": "integer-string-unary-minus-alias-composition-reentry",
+    "source": "<?php\nnamespace StoredStringAlias247;\nuse const E_WARNING as Base247;\nuse const E_ERROR as One247;\nfunction warning247($errno, $message, $file, $line) {\n    global $xAlias247;\n    echo 'warning:', $message, '|';\n    defaults247(2);\n    $xAlias247 = 3.5;\n}\nfunction defaults247(int $first, int &$integer = -'22', int $joined = (int)((string)(-'2') . (string)(int)(Base247 - One247)), int $nested = -(-'22'), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $joined, ':', $nested, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('StoredStringAlias247\\\\warning247');\n$xAlias247 = 1.5;\n$lastAlias247 = 8;\ndefaults247(last: $lastAlias247, first: $xAlias247);\necho 'outer:x=', $xAlias247, '|';\n",
+    "source_sha256": "1a25ac48211e20cd6a08d810fdcd4de6fbff121197d460689e9df207348394c9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV and named warning reentry preserve separate stored compiled PINT-22/+22 authority and one deferred raw PINT-21 cache. The new integer result certificate intentionally composes through CASTSTRING/CONCAT/CASTINT rather than changing a Numeric result value or storage policy."
+  },
+  {
+    "id": "produced-string-unary-minus-stored-literal-receipt-control",
+    "source": "<?php\nfunction warning246($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults246(int $first, int $later = -('2' . '2')) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning246');\n$x246 = 1.5;\ntry { defaults246($x246); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "ee2c76440f82ef9c6a8152651561344e663791d64a5a1d67a5aec5c220df57ba",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Promoted byte-identical246 stored-literal source. Authoritative247 validation reuses its original native source/path/cwd/profile/streams/status and reruns only the affected model assertion; fresh local regression has no archive dependency."
+  },
+  {
+    "id": "integer-string-unary-minus-leading-produced-control",
+    "source": "<?php\nfunction warning247($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults247(int $first, int $later = -('2tail' . (string)(int)(E_WARNING - E_ERROR))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning247');\n$x247 = 1.5;\ntry { defaults247($x247); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "447fde40b6983418243a693399ef634f90d5426b4fafed6069590b27100094f9",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The new integer certificate still refuses a leading-numeric conversion flag even when its numeric prefix is an in-range NINT."
+  },
+  {
+    "id": "integer-string-unary-minus-nonnumeric-produced-control",
+    "source": "<?php\nfunction warning247($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults247(int $first, int $later = -('bad' . (string)(int)(E_WARNING - E_ERROR))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning247');\n$x247 = 1.5;\ntry { defaults247($x247); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "31fab9cd0aea06204cf1af851bd8946ed47389616c97e47d59b73f1dac4ae852",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Nonnumeric produced bytes cannot be certified as a stored integer or stub zero."
+  },
+  {
+    "id": "integer-string-unary-minus-stored-dimension-control",
+    "source": "<?php\nfunction warning247($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults247(int $first, int $later = -('2' . (string)'2'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning247');\n$x247 = 1.5;\ntry { defaults247($x247); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "a235b46fd406153916c99d512f749fd2e0e46af9e3695c6c5230c69aad0a35aa",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The explicit quiet_shape child guard preserves no-DIM on the new stored certificate even when ordinary compilation has a fitting PINT value."
+  }
+]

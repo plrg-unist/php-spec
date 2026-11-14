@@ -19,6 +19,7 @@ dec $lossy_optional_integer_float_literal(expression) : nat?
 dec $lossy_optional_integer_boolean_shape(expression) : bool
 dec $lossy_optional_integer_selection_shape(expression) : bool
 dec $lossy_optional_integer_cast_leaf(plenv, expression) : expression?
+dec $lossy_optional_integer_quiet_shape(expression) : bool
 
 def $lossy_optional_integer_default(expression) = $lossy_optional_integer_default_in($plempty(false), expression)
 def $lossy_optional_integer_string(expression) = $lossy_optional_integer_string_in($plempty(false), expression)
@@ -489,6 +490,13 @@ def $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadat
   -- if $long_range(i_child)
   -- if i = $(-i_child)
   -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadata) = (i)
+  -- if $lossy_optional_integer_quiet_shape(expression)
+  -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
+  -- if $lossy_optional_integer_numeric(plenv, expression) = eps
+  -- if $coerce_number(PSTRING n*) = COERCED (NINT i_child) false
+  -- if i = $(-i_child)
+  -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprTernary expression_cond expression_true expression_false metadata) = (i)
   -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
   -- if $lossy_optional_integer_default_in(plenv, expression_true) = (i)
@@ -514,7 +522,6 @@ def $lossy_optional_integer_default_in(plenv, expression) = eps -- otherwise
 
 ;; The stored projection also serves compile-time DIM folding. Deferred defaults
 ;; need an independent runtime-quiet domain; this conservative one excludes DIM.
-dec $lossy_optional_integer_quiet_shape(expression) : bool
 dec $lossy_optional_integer_quiet_optional(phpType5) : bool
 def $lossy_optional_integer_quiet_shape(NScalarInt (INTEGER i) metadata) = true
 def $lossy_optional_integer_quiet_shape(NScalarFloat (FLOAT text) metadata) = true
