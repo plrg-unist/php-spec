@@ -672,8 +672,21 @@ The [nonnull literal-Boolean review](../../coverage/semantics/cv-nonnull-literal
 keeps native6 once/source6 (Notice4/RECEIVE1/RETURN1), separate author679/peer504
 fixture-SL507 cuts and the sole composed production-SL508 load distinct. Five
 current helper files contain six matching expectation corrections without
-historical campaign renewal. Literal-Boolean unions of three or more members,
+historical campaign renewal. The following increment extends the larger unions;
 wider contexts and every exact held lane remain partial.
+
+The existing ordered primitive fold also admits one `false` or `true` member
+among three through six distinct builtin members. It rejects a second Boolean
+kind (`bool`/`false`/`true`) and retains exact raw/normalized order and count.
+Exact tag membership precedes weak scalar selection; numeric strings use their
+numeric classification when both int and float occur. The existing actual
+RECEIVE/RETURN, frame retirement, private-cell and payload/owner proofs remain.
+The [primitive literal-Boolean review](../../coverage/semantics/cv-primitive-literal-bool-producer-reference-notice-review.json)
+keeps native6 once/source6, author635 and independent466 fixture-SL507, separate
+prelaw184/276 and actual009eabd9 production-SL508 loading distinct. Two current
+helper files correct four matching larger-union expectations without historical
+campaign renewal. Unsupported2 and the first failed619 fixture retain zero credit.
+Object/class and wider types, signatures, source/ownership and lifetimes remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing

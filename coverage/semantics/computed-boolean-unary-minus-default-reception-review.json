@@ -1,0 +1,97 @@
+{
+  "feature": "ENUM245: direct quiet computed-Boolean UnaryMinus defaults",
+  "status": "Independently reviewed bounded extension; complete PHP core remains unfinished",
+  "implementation": {
+    "base": "93baaa56ac8214c71d5891fe05c3d52945b9ee70",
+    "donor": "9c4789596299dfed9465a8b4cae81ebb0ca78c7e",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "One existing UnaryMinus premise admits selection_shape(child) OR boolean_shape(child). Constructor-disjoint Boolean children retain Numeric(child)=eps and the unchanged quiet_operand condition/NINT0-or-1 proof; multiplication therefore yields only PINT0/-1.",
+    "preserved": "Parent default/float-literal exclusions, exact raw source/declaration ENV/names, whole-tree no-DIM, Shared-cache, ordinary receive/owner bounds and every old typed/selected/raw-scalar route remain. UnaryPlus is unchanged.",
+    "affected_test": "Only the current244 derived Smaller(1,2) UnaryMinus expectation promotes from eps to NINT-1, preserving its condition count and all historical244 evidence."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c: zend_ast_evaluate_ex ZEND_AST_UNARY_MINUS multiplies the evaluated Boolean by -1",
+      "Zend/zend_operators.c: scalar-to-number converts false/true to LONG0/1 before multiplication",
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT publishes eligible raw scalar constant-AST cache values before parameter verification"
+    ],
+    "phase_distinction": "UnaryMinus consistently uses multiplication by -1. UnaryPlus remains separately bounded: deferred AST adds integer0 while compile/runtime multiply by +1, with signed-zero differences."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-computed-boolean-unary-minus-default-reception-245",
+  "native_once": {
+    "revision": "13f83c068ef49ae57256ae01b6bed5075b912496",
+    "report": "native-v1/report.json",
+    "sha256": "d30fef758b38fb21cad2b76d4a7a19b4c3600db1d8db4231da735ffd7786633c",
+    "current_originals": 6,
+    "unchanged_original_replays": 0,
+    "runtime": "runtime.json",
+    "runtime_sha256": "bbba271e97be1ea0395919a5809c92d508da4286c0ccbc323f21baac29513f33",
+    "identity_bridge": "Retain244 same project-local binary/profile observation; fresh245 input hashes match that identity and unchanged profile. No additional identity probe or ordinary-library semantic dependency."
+  },
+  "source_evidence": {
+    "revision": "13f83c068ef49ae57256ae01b6bed5075b912496",
+    "report": "source-v1/report.json",
+    "sha256": "11ab5ff00308636b184ef952a4c15e2aa45845cccf548aba22263834b4ae72d0",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "outer_seconds": 64.78666880796663,
+    "scope": "Cold/warm private BYREF Boolean defaults, imported named warning reentry, quiet NaN identity and genuinely skipped logical E_STRICT agree exactly. Noisy NaN truth, demanded E_STRICT and skipped DIM remain explicit Unsupported."
+  },
+  "state_evidence": [
+    {
+      "revision": "13f83c068ef49ae57256ae01b6bed5075b912496",
+      "report": "author-v1/closure-call-protocol-jo5st405/report.json",
+      "sha256": "db975871b7c44beeea295405155a959f6583898b733462496b8f3321ac618ee5",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": 173,
+      "source_credit": 0,
+      "outer_seconds": 35.67024882603437,
+      "scope": "Five actual Boolean defaults retain raw PINT0/-1 caches and private BYREF cells. Source/ENV/name/tag/cache forgeries, budgets, cold/warm completion and real retirement remain discriminated."
+    },
+    {
+      "revision": "7cf3ae610cb1901b69a76a1745a18838b4478c20",
+      "report": "peer-v1/closure-call-protocol-hn0rj7ji/report.json",
+      "sha256": "e34864faf8fb2797a5eeafed334bcc3080e88dd23991664f7e8bc94893ee212d",
+      "mode": "fixture SL_mode,508 modules",
+      "derived_conditions": 82,
+      "source_credit": 0,
+      "outer_seconds": 46.63421206106432,
+      "scope": "Only derived82 passes in this packet; named metadata-variable equality fails and remains0. No passing whole-packet aggregate is claimed. Boolean forms, string truth, skipped/demanded levels, NaN truth/comparison and unchanged raw/plus/selected routes are distinct controls."
+    },
+    {
+      "revision": "8e4816188",
+      "report": "peer-named-v2/closure-call-protocol-svfxuz18/report.json",
+      "sha256": "8920aa2144a2929f1fd7d96af70b8333c0beaa49c42deaa5114f2a7b0f927510",
+      "mode": "fixture SL_mode,508 modules",
+      "named_conditions": 157,
+      "source_credit": 0,
+      "outer_seconds": 36.05456674983725,
+      "scope": "Only the corrected named front reruns. Exact imported source/name/ENV, raw caches, first-argument snapshot, owner/budget and retirement challenges pass."
+    }
+  ],
+  "compatibility": "Final source/catalogue/author inputs are13f83-exact. Later independent-review-only changes add Boolean string-truth controls and correct three parent/child metadata identifiers; successful cuts retain their original identities with no renewed execution credit. Existing selected inputs retain the identical first shape disjunct.",
+  "prior_zero_credit": [
+    "Initial peer named metadata-variable reuse fails; only corrected named-v2 earns157 conditions"
+  ],
+  "validation_contract": "Pinned PHP8.5.10 CLI,NTS,signed64, project-local oracle only, C/UTC baseline. Source360/100000steps and fixture300 retain outer600. Passing cuts bind exact stable inputs/revisions, honest modes/counts, quiet closures/exit0 and fully reaped groups. Native, normal agreement, Unsupported, failure and unrun credit remain separate.",
+  "review": "recover12_enum_selected_unary_review sent whole-seven FULLCLEAR directly MAIN53 for donor9c478959/tree1b615dcc, manifest81d556ae and patchd9d73486; all changed blobs and retained input/report identities are matched.",
+  "joined_load": {
+    "revision": "6e520b56bc0b5abce5ca4c41d2b408e4d5af5b47",
+    "tree": "7155a610c3c79d18f201d3f7f5e2b2c22d5c2612",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main53-computed-boolean-minus-default-source-projection-v1.json",
+    "source_projection_sha256": "a97f0454243e1b3d11dfb958d4441ec5fd88c38fe8f0f9123811afb8278efa44",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main53-computed-boolean-minus-default-joined-508-v1/report.json",
+    "sha256": "f59f3c8c0822815ec7946ad6694a3cf08798daf50a50c810132d6b0e79f315c5",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.98580081993714,
+    "result": "true plus LF; quiet/stable inputs and HEAD,exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Wider direct scalar unary producers/receipts, UnaryPlus phases, entries/contexts and lifetimes remain partial. Every exact hold stays unchanged; no constructor/obligation closure or full-core/Zend-equivalence claim."
+}

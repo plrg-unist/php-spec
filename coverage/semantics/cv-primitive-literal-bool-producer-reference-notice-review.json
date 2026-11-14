@@ -1,0 +1,98 @@
+{
+  "milestone": "REF75",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "7d58cda9c698c5a9f97d4b45b2b671e5e4510eb9",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "6b44d2bcfd5ccc4d40c1da43719ac230512aaaf1d78feca6cffed5a7745208ac",
+    "law": "The existing ordered 3+ primitive-member FORMAL/RETURN fold gains false/true and rejects any second bool/false/true member. Exact raw NIdentifier case-folding, normalized singleton builtin branches, distinctness and simultaneous exhaustion are unchanged. Five other primitive kinds plus one Boolean kind imply three through six admitted members. Existing two-member gates and all required/default/variadic/BYREF, argument, actual RECEIVE/RETURN, frame, payload/source and owner guards remain literal.",
+    "source_symbols": [
+      "Zend/zend_compile.c::builtin_types, zend_compile_typename_ex, zend_emit_return_type_check, zend_compile_return",
+      "Zend/zend_execute.c::zend_check_type, zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "Zend/zend_compile.h::ZEND_ARG_USES_STRICT_TYPES, ZEND_RET_USES_STRICT_TYPES",
+      "spec/semantics/16-static-types.watsup::ptunioncheck, ptmasks; 95-type-values.watsup::typed_exact, typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-primitive-literal-bool-producer-reference-notice-75",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "3457033f7180f1f816d0cecf3af698a1d02bdf63d224a2307e3dd4f0508e9634",
+    "source_donor": "50cc30de67872a7afdc645964fba52a994bee342",
+    "files": 11,
+    "scope": "Whole11 READY and independent FULLCLEAR preceded integration. Serial combined controller remains UNEXECUTED/source0; helper closure and saved-native forwarding have static review."
+  },
+  "semantics": "Pinned builtin masks are disjoint except bool includes true/false. zend_compile_typename_ex rejects overlaps and the complementary true/false pair. Exact tag membership precedes weak selection; int+float numeric strings use their numeric classification, while an opposite Boolean uses int preference when int is present. Weak Boolean conversion requires the full BOOL mask. RECV uses caller strictness and RETURN verification uses callee strictness. Ordinary BYREF reception has no persistent parameter constraint; producer retirement precedes the separate fresh untyped Notice cell.",
+  "counts": {
+    "native_originals_once": 6,
+    "native_replays": 0,
+    "new_notice_agreements": 4,
+    "fresh_receive_priority_agreements": 1,
+    "fresh_return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "state_cuts": {
+    "author": {
+      "report": "author/postlaw-state-v2/report.json",
+      "sha256": "4a1d9f9c06bea1a61460f43821dd5b6a01833aeca3c8437a7978511942f7e4eb",
+      "revision": "151461ee622618b9933ffa7420c430b65ffce12d",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 635,
+      "reached": 279,
+      "derived": 356,
+      "elapsed_seconds": 60.73044443130493,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "peer": {
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "2dc3f4d238b1b8724faff7df26125af28a2beedaff7fa612dd862f69b363303f",
+      "revision": "e95a6d6cca12763da5f32e0e90b621a9aaced1d2",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 466,
+      "reached": 380,
+      "derived": 86,
+      "elapsed_seconds": 82.83036589622498,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    }
+  },
+  "prelaw": "Genuine author fixture-SL507184 at26e2caf1b and peer fixture-SL507276 atec3f0c6ea remain separate source-zero cuts. Original production Unsupported2 and failed619 compiler binding retain zero credit. Exact reports, hashes and revisions remain in the manifest.",
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "8c309e5c172b54136ba4d4d69f3f3209caaac63ca6aa9893744b4ee8b9015a10",
+    "decision": "FULLCLEAR",
+    "actual_composition": "Reviewer recover13 cleared actual009eabd9/tree7532efdf whole11: ten donor-exact paths and one additive Make recipe preserving21b5db14, plus the SAME8039f6d5 production-SL508 canonical report. No execution or duplicate author receipt."
+  },
+  "canonical_main": {
+    "source_revision": "009eabd9adeda9aafefa3bdedc35fa5ca159ac47",
+    "revision": "009eabd9adeda9aafefa3bdedc35fa5ca159ac47",
+    "tree": "7532efdfb2dd5eb9019af1b2fca84b7569c404ae",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main53-primitive-literal-bool-producer-joined-508-v1/report.json",
+    "sha256": "8039f6d551f4c44f88d13551488765c24d47a32cd70c681f3b39abe31f5e7a2d",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 15.789590564,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Two current helper files change four generator statements: peer73 literal|null|int and peer74 literal|int|string HEADER/FORMAL rows become positive. The fresh author fixture executes these exact shapes for both literal kinds in singleton BYREF and multi BYVAL contexts without historical campaign renewal. Other controls retain raw/normalized order/count mismatches, duplicate and Boolean redundancy, seven-member impossibility, unsupported object/mixed/callable/void/never forms, formal flags, Notice line/level, budget rejoining, aliases/snapshots/COW and frame/private-cell retirement. Final donor imports only the three exact successful peer preparation files from ec3f0c6ea. All shared production and current-correction files equal independently tested peer e95a6d6cc. The final author state equals tested151461ee6; the source law equals tested7d58cda9c. No metadata enters the whole11 source packet. Native/source, fixture and actual canonical cuts retain separate identities.",
+  "limits": "Original Unsupported2 and failed619 compiler binding plus all earlier failures/timeouts/unrun retain zero credit. Object/class and wider types, signatures, formals/payload/source/backing/history/GC/lifetimes remain partial. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}
