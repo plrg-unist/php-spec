@@ -8,6 +8,10 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Folded one-byte STRING BitwiseNot native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-string-bitnot-truth-base-initial-raw-leading-key-{author29,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json) retains the original failure/unrun tail and accepted actual/SAME tuple.
+
+Compiled-NaN instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-compiled-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-compiled-nan-instanceof-review.json) retains the original cuts, corrected fixture failure and accepted actual/SAME tuple.
+
 Deferred Boolean XOR originals and separate source/control/fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-xor-wrapper-default-reception-266/`; the [review](../coverage/semantics/deferred-boolean-xor-wrapper-default-reception-review.json) retains their original identities and accepted actual/SAME tuple.
 
 Integer UnaryPlus selector originals and separate SL507 source/fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get-review.json) retains their original identities and accepted actual/SAME tuple.
