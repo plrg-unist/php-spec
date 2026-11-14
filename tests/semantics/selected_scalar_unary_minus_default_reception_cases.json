@@ -1,0 +1,50 @@
+[
+  {
+    "id": "selected-scalar-unary-minus-cold-warm",
+    "source": "<?php\nfunction unaryWarning244($errno, $message, $file, $line) {\n    global $xUnary244;\n    echo 'warning:', $message, '|';\n    $xUnary244 = 3.5;\n}\nfunction unaryDefaults244(int $first, int $integer = -(E_WARNING > E_ERROR ? '2' : false), int $zero = -((E_WARNING > E_ERROR ? false : null) ?? '9'), int $floating = -((E_WARNING > E_ERROR ? '0.0' : false) ?? '9'), int &$fraction = -(E_WARNING > E_ERROR ? '-2.5' : false)) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $floating, ':', $fraction, '|';\n    $fraction = 9;\n}\nset_error_handler('unaryWarning244');\n$xUnary244 = 1.5;\nunaryDefaults244($xUnary244);\necho 'cold:x=', $xUnary244, '|';\n$xUnary244 = 1.5;\nunaryDefaults244($xUnary244);\necho 'warm:x=', $xUnary244, '|';\n",
+    "source_sha256": "dd45b17fab63ee9a80d3ceaff77a71e86989a0e450ce284a08164994b917e652",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual selected strings and nonnull false traverse proper cast_leaf descendants before quiet negation. PINT-2/PINT0/PFLOAT-negative-zero/PFLOAT2.5 cache tags precede ordinary int reception; cold/warm BYREF defaults remain private and own fractional callbacks retain saved PINT2."
+  },
+  {
+    "id": "selected-scalar-unary-minus-alias-named-reentry",
+    "source": "<?php\nnamespace UnaryAlias244;\nuse const E_WARNING as Base244;\nuse const E_ERROR as One244;\nfunction warning244($errno, $message, $file, $line) {\n    global $xAlias244;\n    echo 'warning:', $message, '|';\n    defaults244(2);\n    $xAlias244 = 3.5;\n}\nfunction defaults244(int $first, int $integer = -(Base244 > One244 ? '2' : false), int $zero = -((Base244 > One244 ? null : false) ?? false), int $floating = -((Base244 > One244 ? '-0.0' : false) ?? '9'), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $floating, ':', $last, '|';\n}\nfunction overflow244(int $first, int $later = -(Base244 > One244 ? '-9223372036854775808' : false)) { echo 'overflow-body|'; }\n\\set_error_handler('UnaryAlias244\\\\warning244');\n$xAlias244 = 1.5;\n$lastAlias244 = 8;\ndefaults244(last: $lastAlias244, first: $xAlias244);\necho 'outer:x=', $xAlias244, '|';\ntry { overflow244(2); }\ncatch (\\TypeError $e) { echo 'cold-overflow:', $e->getMessage(), '|'; }\ntry { overflow244(2); }\ncatch (\\TypeError $e) { echo 'warm-overflow:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "306bbcddc0484da2a49ec423f74b0e72ab6e06ef32925e23dea4f5b28e68dcdf",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV authenticates unary selection under named holes and warning reentry. Selected null coalesce yields INT0; selected numeric string negative zero yields raw positive FLOAT0. Negating selected MIN-string overflows to PFLOAT2^63 before repeated ordinary TypeErrors; it cannot be relabeled as an integer cache."
+  },
+  {
+    "id": "selected-scalar-unary-minus-fractional-handler-throw-retry",
+    "source": "<?php\nfunction unaryThrowWarning244($errno, $message, $file, $line) {\n    global $xThrow244, $countThrow244;\n    $countThrow244 = $countThrow244 + 1;\n    echo 'warning:', $countThrow244, ':', $message, '|';\n    $xThrow244 = 4.5;\n    if ($countThrow244 === 2) { throw new Exception('unary244', 244); }\n}\nfunction unaryThrow244(int $first, int $later = -(E_WARNING > E_ERROR ? '-2.5' : false)) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('unaryThrowWarning244');\n$countThrow244 = 0;\n$xThrow244 = 1.5;\n$result244 = 99;\ntry { $result244 = unaryThrow244($xThrow244); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result244, ':x=', $xThrow244, '|'; }\n$xThrow244 = 1.5;\n$result244 = unaryThrow244($xThrow244);\necho 'retry:', $result244, ':x=', $xThrow244, '|';\n",
+    "source_sha256": "4f2c82b48b56ec9d1efa8f8daff1a577b8b179aaa2c9cc83d9b2e81d83c0ed3c",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Negation retains raw PFLOAT2.5 through its own precision-handler throw before private PINT2 reception. The abandoned caller destination99, original exception, shared raw cache, retry and cell retirement remain separate from scalar helper evidence."
+  },
+  {
+    "id": "selected-scalar-unary-minus-leading-selected-control",
+    "source": "<?php\nfunction warning244($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults244(int $first, int $later = -(E_WARNING > E_ERROR ? '2tail' : false)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning244');\n$x244 = 1.5;\ntry { defaults244($x244); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "5616bf7fb223a5ddfb422eb78d964ab6830ad6155c51985e2d764f37dec90486",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Leading numeric data still requires a Warning; selected quiet negation refuses it."
+  },
+  {
+    "id": "selected-scalar-unary-minus-deprecated-condition-control",
+    "source": "<?php\nfunction warning244($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults244(int $first, int $later = -(E_STRICT > E_ERROR ? '2' : false)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning244');\n$x244 = 1.5;\ntry { defaults244($x244); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "99fb3bc3aab64de0c229fc6f0fb896850431c8c5f0216e5651295bd46a5b5853",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Effectful deprecated conditions retain their lack of quiet truth/source authority."
+  },
+  {
+    "id": "selected-scalar-unary-minus-skipped-dimension-control",
+    "source": "<?php\nfunction warning244($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults244(int $first, int $later = -(E_WARNING > E_ERROR ? '2' : (int)'8'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning244');\n$x244 = 1.5;\ntry { defaults244($x244); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "5f15661d500b312d04d808791f772e6217738c9c39ac51d5b1bb6ae5fd313838",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Whole-tree no-DIM still rejects a skipped dimension under selected UnaryMinus."
+  }
+]
