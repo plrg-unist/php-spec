@@ -78,10 +78,10 @@ S_source_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE {pa
             ('add', 'NExprBinaryOpPlus', fhalf, fhalf, 4607182418800017408, True),
             ('multiply_negative_zero', 'NExprBinaryOpMul', fnegativezero, ftwo, 9223372036854775808, True),
             ('divide_negative_zero', 'NExprBinaryOpDiv', fnegativezero, ftwo, 9223372036854775808, True),
-            ('mixed_int', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 0)', 'PINT 0'), fzero, 0, False),
+            ('mixed_int', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 0)', 'PINT 0'), fzero, 0, True),
             ('numeric_string', 'NExprBinaryOpPlus', ('NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))'), fzero, 0, False),
             ('leading_string', 'NExprBinaryOpPlus', ('NScalarString (BYTES "MHg=")', 'PSTRING ($ptascii("0x"))'), fzero, 0, False),
-            ('integer_promotion', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 9223372036854775807)', 'PINT 9223372036854775807'), ('NScalarInt (INTEGER 1)', 'PINT 1'), 4890909195324358656, False),
+            ('integer_promotion', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 9223372036854775807)', 'PINT 9223372036854775807'), ('NScalarInt (INTEGER 1)', 'PINT 1'), 4890909195324358656, True),
             ('division_zero', 'NExprBinaryOpDiv', fhalf, fzero, 0, False),
             ('forged_overflow', 'NExprBinaryOpMul', fmax, ftwo, 0, False),
             ('actual_overflow', 'NExprBinaryOpMul', fmax, ftwo, 9218868437227405312, False),
@@ -100,7 +100,7 @@ $compiled_read(S_{label},porigin_float_right) = ({right[1]})
 {'' if accepted else '~'}$string_read_raw_truth(S_{label},porigin_left,PFLOAT {bits})
 ''')
         if accepted:
-            selected = 'pvalue_wrong' if label == 'add' else 'pvalue_base'
+            selected = 'pvalue_wrong' if label in ('add', 'integer_promotion') else 'pvalue_base'
             checks.append(f'$string_read_raw_known_base(S_{label},porigin_base,{selected})')
         else:
             checks += [f'~$string_read_raw_known_base(S_{label},porigin_base,{value})'

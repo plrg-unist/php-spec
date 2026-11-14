@@ -274,7 +274,7 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $compiled_read(S, porigin_child) = (PFLOAT n_bits_child)
   -- if $string_read_raw_truth(S, porigin_child, PFLOAT n_bits_child)
   -- if $unary_apply(S, punary, PFLOAT n_bits_child, 0) = S[.RESULT = KNOWN (PFLOAT n_bits)]
-;; Quiet finite FLOAT arithmetic authenticates both typed source children.
+;; Quiet finite numeric arithmetic authenticates both original typed children.
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
@@ -285,11 +285,14 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
   -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
   -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
-  -- if $compiled_read(S, porigin_left) = (PFLOAT n_bits_left)
-  -- if $compiled_read(S, porigin_right) = (PFLOAT n_bits_right)
-  -- if $string_read_raw_truth(S, porigin_left, PFLOAT n_bits_left)
-  -- if $string_read_raw_truth(S, porigin_right, PFLOAT n_bits_right)
-  -- if $binary_apply(S, pbin, PFLOAT n_bits_left, PFLOAT n_bits_right, 0) = S[.RESULT = KNOWN (PFLOAT n_bits)]
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $compiled_read(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("float")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
+  -- if $binary_apply(S_probe, pbin, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_read_raw_truth(S, porigin, pvalue) = false -- otherwise
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
