@@ -105,8 +105,8 @@ expression_overflow = NExprUnaryMinus expression_overflow_child metadata_cond
 expression_overflow_base = NExprTernary expression_overflow (NScalarString (BYTES text_true) metadata_true) expression_fallback metadata
 S_overflow = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_overflow_base) :: (PCOCCURRENCE pcpath_left expression_overflow) :: (PCOCCURRENCE pcpath_inner expression_overflow_child) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_left (PFLOAT 4890909195324358656)) :: (PCONSTANT pcpath_inner (PINT $(-9223372036854775808))) :: ppool.CONSTANTS]]]
 $unary_apply(S_overflow,NEGATIVE,PINT $(-9223372036854775808),0) = S_overflow[.RESULT = KNOWN (PFLOAT 4890909195324358656)]
-~$string_read_raw_truth(S_overflow,porigin_left,PFLOAT 4890909195324358656)
-~$string_read_raw_known_base(S_overflow,porigin_base,pvalue_wrong)
+$string_read_raw_truth(S_overflow,porigin_left,PFLOAT 4890909195324358656)
+$string_read_raw_known_base(S_overflow,porigin_base,pvalue_wrong)
 expression_string_child = NScalarString (BYTES "MS4w") metadata_inner
 expression_string_sign = NExprUnaryPlus expression_string_child metadata_cond
 expression_string_base = NExprTernary expression_string_sign (NScalarString (BYTES text_true) metadata_true) expression_fallback metadata

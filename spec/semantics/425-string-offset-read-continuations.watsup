@@ -263,17 +263,20 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if n_bits = $hex_bits(text_float, 0)
   -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
-;; Quiet finite FLOAT signs retain their exact typed child and result bits.
+;; Quiet finite numeric signs retain their original typed child and result bits.
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary <- [POSITIVE, NEGATIVE]
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
   -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
-  -- if $compiled_read(S, porigin_child) = (PFLOAT n_bits_child)
-  -- if $string_read_raw_truth(S, porigin_child, PFLOAT n_bits_child)
-  -- if $unary_apply(S, punary, PFLOAT n_bits_child, 0) = S[.RESULT = KNOWN (PFLOAT n_bits)]
+  -- if $compiled_read(S, porigin_child) = (pvalue_child)
+  -- if $type_bytes(pvalue_child) <- [$ptascii("int"), $ptascii("float")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_child, pvalue_child)
+  -- if $unary_apply(S_probe, punary, pvalue_child, 0) = S_probe[.RESULT = KNOWN (PFLOAT n_bits)]
 ;; Quiet finite numeric arithmetic authenticates both original typed children.
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
