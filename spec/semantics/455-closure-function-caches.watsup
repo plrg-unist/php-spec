@@ -21,7 +21,6 @@ dec $closure_cache_resolved_body(pobject) : bool
 def $closure_cache_resolved_body(pobject) = true -- if $object_body(pobject) = ARRAYMETHODCLOSURE pcalltarget parrayselection pmethodcapture?
 def $closure_cache_resolved_body(pobject) = true -- if $object_body(pobject) = STRINGMETHODCLOSURE pcalltarget pstringselection
 def $closure_cache_resolved_body(pobject) = false -- otherwise
-dec $function_cache_policy(pstate, porigin, nat) : pfncacheowner?
 dec $function_cache_source(pstate, porigin) : pmethoddesc?
 dec $closure_cache_capture_initialized(pstate, nat, porigin) : bool
 def $closure_cache_capture_initialized(S, n, porigin) = (~$closure_cache_resolved_body(S.OBJECTS[n]) \/ $function_cache_policy(S, porigin, n) = (CACHE_SHARED))

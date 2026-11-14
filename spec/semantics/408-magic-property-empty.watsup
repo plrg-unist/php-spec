@@ -521,6 +521,10 @@ def $property_empty_rv_kind(S, NAMEDCLOSURE porigin) = true
   -- if S.RESULT = KNOWN (POBJECT n)
   -- if $(n < |S.OBJECTS|) /\ S.OBJECTS[n] = NAMEDCLOSURE porigin
   -- if $property_magic_cv_namedclosure(S, n)
+def $property_empty_rv_kind(S, METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?) = true
+  -- if S.RESULT = KNOWN (POBJECT n)
+  -- if $(n < |S.OBJECTS|) /\ S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if $property_magic_cv_static_methodclosure(S, n)
 def $property_empty_rv_kind(S, INSTANCE porigin_class) = true
   -- if $class_at(S.CLASSES, porigin_class) = (pclassdesc)
   -- if pclassdesc.KIND = "class"

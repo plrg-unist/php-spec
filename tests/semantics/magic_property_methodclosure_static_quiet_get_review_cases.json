@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-cv-empty-wrapper-before-receiver",
+      "source": "<?php\nclass QuietMethodStaticCVTarget { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietMethodStaticCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$held = QuietMethodStaticCVTarget::counter(...);\necho QuietMethodStaticCVTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticCVTarget::counter() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "eeb55e9f29d2086f6039ee88ec61498ade865bf26b63d6574b56b924a91303fb",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0ZBTFNFO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtTVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "methodclosure-static-literal-empty-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticLiteralTarget { public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietMethodStaticLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$held = QuietMethodStaticLiteralTarget::counter(...);\necho QuietMethodStaticLiteralTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticLiteralTarget::counter() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "b3f2c01d443d154f3a7249071d42de5d542d3009aa6b2b90bf6b8a3d2494edc3",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0NBVUdIVDtLRUVQO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtTVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": ""
+    }
+  ]
+}
