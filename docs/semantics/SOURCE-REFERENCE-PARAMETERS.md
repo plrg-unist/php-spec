@@ -822,6 +822,19 @@ expectations using fresh states. Two elaboration-only failures remain preserved
 at zero credit; controller/Make remain unexecuted/source0. Wider callable unions,
 forms, contexts, lifetimes and every exact held dependency remain partial.
 
+Ordered `callable|int` and `int|callable` required formals and returns retain the
+same raw/normalized authority. Exact integers bypass callable lookup; registered
+USER names precede weak numeric-string integer conversion. BYVAL preserves the
+caller snapshot; ordinary BYREF conversion changes the shared cell without a
+persistent constraint. Return checks and frame retirement still precede separate
+private Notice cells. The [integer/callable review](../../coverage/semantics/cv-int-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (Notice4/RECEIVE1/RETURN1), author544/peer292 and genuine
+prelaw220/135 fixture-SL507 cuts separate from actual `d92a64df05` and its sole
+production-SL508 load. Four current helper files promote only exact int-pair
+expectations using fresh states. The first author elaboration failure remains
+zero credit; controller/Make remain unexecuted/source0. Wider callable unions,
+forms, contexts, lifetimes and every exact held dependency remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

@@ -1,0 +1,131 @@
+{
+  "milestone": "COMP308",
+  "status": "bounded source semantics independently accepted; complete PHP core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle; pure authored SpecTec production SL",
+  "scope": "Parentless public short reference Get with exact ordered raw float|string or string|float headers, canonical property/function types, and ordinary quiet backing owners.",
+  "behavior": [
+    "The initialized float|string case starts with FLOAT0.0. The omitted string|float case first throws on a genuine by-value Get, preserving the saved destination and PROP_INITIAL, then an ordinary outer write of FLOAT0.0 permits reads.",
+    "The by-value result is an independent copy. Two later aliases share the genuine field cell and its single property type source.",
+    "Both modes preserve exact FLOAT2.0 and STRING12/plain. INT17 widens to FLOAT17.0 in both weak and strict modes. Weak booleans convert to FLOAT1.0/0.0; strict booleans reject while preserving FLOAT17.0.",
+    "Both modes reject null, array and stdClass writes, preserving the prior value. Diagnostic ordering is canonical string|float and strict Boolean errors name true/false.",
+    "A real STRINGkept payload survives quiet receiver retirement while the two aliases remain. The property constraint is removed, so shared BOOLfalse then remains uncoerced; final cleanup retires the real cells."
+  ],
+  "guards": "Exact raw/normalized order, implicit RETURNS, raw zero-FLOAT defaults, genuine Hook and CODEARROW lines 6/7, by-value result phase, source/return/code mutations, parentless nontrait ownership, heap validity and zero/one-step budget joins remain explicit. Other parent/trait/modifier and wider lifetime gates are unchanged.",
+  "source_provenance": {
+    "engine_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_compile.c:zend_compile_property_hooks and zend_type_to_string_resolved",
+      "Zend/zend_execute.c:zend_handle_fetch_obj_flags, i_zend_verify_type_assignable_zval, zend_verify_scalar_type_hint and zend_assign_to_typed_ref_ex",
+      "Zend/zend_API.c:zend_parse_arg_double_weak",
+      "Zend/zend_objects.c:zend_object_dtor_property"
+    ]
+  },
+  "implementation": {
+    "source_commit": "af8d9ead77925f6237e1ed5f4058782cb5df106a",
+    "source_tree": "769e807dbb72d011f50d2008cb6a703495bf0669",
+    "source_base": "c1ff2fcefc169ea82c98bd591bd9cdc666fe54eb",
+    "actual_changed_paths": 14,
+    "source_manifest": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp308/source-ready.json",
+      "sha256": "53b2e9258206011d64bed915f8fe9b9a342bfcfb4cb2f83b92764968e608b7fa",
+      "frozen": true
+    },
+    "rule": "spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_header; exactly two additive ordered alternatives",
+    "make_rows": 6,
+    "helpers": [
+      "tests/semantics/float_string_parentless_short_reference_get_hook_protocol.py",
+      "tests/semantics/float_string_parentless_short_reference_get_hook_review_protocol.py"
+    ],
+    "sources": [
+      "tests/semantics/float_string_parentless_short_reference_get_hook_sources.py",
+      "tests/semantics/float_string_parentless_short_reference_get_hook_review_sources.py"
+    ]
+  },
+  "author_validation": {
+    "tested_head": "483d41adce7f431a8216a6deec28b97ceaf8fac9",
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp308/weak-sources/report.json",
+      "sha256": "b15a6607f6e3ac2e1050a4ba1c96ebe643d3015abec47d7709cab6e715ea01e9"
+    },
+    "native_originals_once": 2,
+    "normal_source_agreements": 2,
+    "fixture_SL508": [
+      {
+        "form": "float-string",
+        "premises": 304,
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp308/weak-protocol-float-string/report.json",
+        "sha256": "6bf1adbcca02c3714c83da291052f342d12075e336db890f1cbbe4a79f5cfeb5"
+      },
+      {
+        "form": "string-float",
+        "premises": 338,
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp308/weak-protocol-string-float/report.json",
+        "sha256": "d99e5cb75488ddd23025c21c10621b32c319f752dfe919b0978051ce8170e7cd"
+      }
+    ],
+    "fixture_source_credit": 0,
+    "quiet_stable": true,
+    "all_sessions_reaped": true
+  },
+  "independent_semantic_review": {
+    "reviewer": "/root/recover16_compiler_intstring_review",
+    "decision": "FULLCLEAR for the whole actual 14-path source patch",
+    "tested_head": "f20d8f82a50479e2076dc6eae869a0dea98ade87",
+    "tested_tree": "355d8b11a861a558cb37f616a5826a53729ebae6",
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp308/strict-sources/report.json",
+      "sha256": "536af54227fccbceb12aa91a773dc98dda37548bd9db3d4ae60f99d716337634"
+    },
+    "native_originals_once": 2,
+    "normal_source_agreements": 2,
+    "fixture_SL508": [
+      {
+        "form": "float-string",
+        "premises": 309,
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp308/strict-protocol-float-string/report.json",
+        "sha256": "b41e8e80eaa6af5050087b46d182618b6261e05f6470cccded318ef14f347506"
+      },
+      {
+        "form": "string-float",
+        "premises": 344,
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp308/strict-protocol-string-float/report.json",
+        "sha256": "3ab25e9be86a5a1294c72e9ad874c781e2a4d7f9f517829a400f5a2b0f886e49"
+      }
+    ],
+    "fixture_source_credit": 0,
+    "quiet_stable": true,
+    "all_sessions_reaped": true
+  },
+  "prelaw": {
+    "tested_head": "4ad0e56bba9c3853ad1d459c71562c73aa2259d8",
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp308/weak-prelaw/report.json",
+    "sha256": "e51426487c07bb66e01553bfce8ff6f672727f2a7ae119ed11c5a68c80063ca7",
+    "expected_unsupported": 2,
+    "native_observations": 0,
+    "source_credit": 0
+  },
+  "actual_composition": {
+    "family_commit": "f68aaf095c475d27504a04429c6d644536ba1107",
+    "family_tree": "22415cb0262c5cec08b0f70fa9f664b63b7c6fdc",
+    "same_commit": "690713df7a78532702af62ecb092bbd1d89e34ed",
+    "same_tree": "20f6195529fc713c05eb11fae0e606df446d6150",
+    "projection": "13 exact source/test blobs plus the six signed Make rows; whole 14-path projection retained",
+    "report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-six-source-current-load-v1/report.json",
+      "sha256": "4bafa228d940d5cec7707c5bc2f575a274f390e210b25a3d431268ad90b67158"
+    },
+    "SL_modules": 508,
+    "argv_count": 511,
+    "equal_watches": 512,
+    "cap_seconds": 60,
+    "seconds": 15.840063706,
+    "outcome": "true+LF; quiet/stable/reaped; exit0; no timeout",
+    "source_credit": 0,
+    "reviewer": "/root/recover17_compiler_intbool_review",
+    "review": "Successor read the sole saved report once and independently cleared actual composition/SAME using the retained semantic signature. No author duplicate read or semantic rerun."
+  },
+  "failures": 0,
+  "timeouts": 0,
+  "intentional_divergences": [],
+  "limits": "Further short-reference getter headers, owners, modifiers, parent/trait forms and wider payload/lifetime histories remain partial. State fixtures and composition loading carry source credit zero; the private source cuts retain their own identities."
+}

@@ -1,0 +1,83 @@
+{
+  "scope": "Quiet signed64 unary signs over certified original Boolean/null children select literal INTERNED bases before returning initial raw-key Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "Only the existing POSITIVE/NEGATIVE PINT clause changes. Original typed INT/BOOL/NULL children require quiet NINT coercion and signed64 bounds; the former INT premises remain pointwise equivalent.",
+    "Exact own/child source and typed pools, ORIGINAL-state negative legacy-helper guard and one shared NORMAL recursive-child/full unary_apply probe remain required. Full unary_apply consumes the original child tag.",
+    "Legacy TRUE/raw numeric STRING first signs and the integer helper, BitwiseNot, binary and FLOAT routes are unchanged. No new STRING/FLOAT child gate is added."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_try_ct_eval_unary_pm: constant signs multiply by +1/-1",
+    "vendor/php-src/Zend/zend_operators.c::_zendi_try_convert_scalar_to_number, mul_function_slow, mul_function_fast: NULL/FALSE become LONG0, TRUE LONG1 without diagnostics",
+    "spec/semantics/35-scalar-operations.watsup::$coerce_number and $unary_apply: original typed coercion and full pure result"
+  ],
+  "source_cases": [
+    "boolean-null-unary-truth-base-initial-raw-leading-current-key: +false gives PINT0; ordinary key replacement at line12",
+    "boolean-null-unary-truth-base-initial-raw-leading-reference-key: -null gives PINT0; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-boolean-null-unary-truth-base-initial-raw-leading-key-author26-20261114",
+  "baseline": {
+    "report": "baseline/report.json",
+    "sha256": "1e5ff1073a3c5717be111647961653492882f8ffadd3010d22566b56176c42f5",
+    "cut": "aad772839",
+    "native_originals_once": 2,
+    "expected_Unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json",
+    "sha256": "8f022c45b7ce4327fce8e6593f48b0a39c4bd32ef900b5864e06efa4b2c4fdc2",
+    "cut": "76247a37d",
+    "production_modules": 508,
+    "saved_native_agreements": 2,
+    "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json",
+    "sha256": "e9964123b14650f429afdcda76edcbeaf143ea919e15909c48a28eda8eacdff5",
+    "cut": "87866f568",
+    "mode": "production SL fixture",
+    "premises": 212,
+    "derived": 109,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-boolean-null-unary-truth-base-initial-raw-leading-key-peer24-20261114/peer-state-v1/report.json",
+    "sha256": "3d7f787b25f52cb1adff243dbdbc7680db1e055c8eb57e8685c8460165b7eb5d",
+    "cut": "bbcfb681ea64e2962b77b50b2f02bd4d7fcc11d1",
+    "mode": "production SL fixture",
+    "premises": 448,
+    "derived": 314,
+    "source_credit": 0
+  },
+  "counterfacts": "Exact source, indexed names, CODE, own/result/child tags and bounds, including NULL-vs-FALSE or BOOL-vs-INT equal-coercion forgeries. Fresh +null/-false keep explicit legacy-helper refusal. Nested signs, certified BooleanNot, complement and integer/FLOAT/NOT/shorthand parents, signed64 MIN overflow and legacy STRING/FLOAT behavior retain separate source-zero controls. BUDGET-cached DIV-zero below BooleanNot and a coercive ancestor is rejected by the same NORMAL child probe.",
+  "affected_old_expectation": "Only currentunaryB null_first_sign and false_first_sign flags promote; fresh exact +null/-false controls replace an old-campaign replay.",
+  "failures": "No new compiler, source, fixture, timeout or interruption failures. The two expected prelaw Unsupported outcomes retain zero source credit.",
+  "whole_source": {
+    "logical_commit": "87866f5683d7df4b435bf4db2d186fabd383d802",
+    "tree": "bfef92507000237446e94ee4e5f4e9e747a7e87d",
+    "owned_paths": 7,
+    "manifest": "whole-source-manifest.json",
+    "sha256": "4a11833f3fe4e66df5cac0b04ecab5341fb275a8bb92aef27a1dd9117b69bd7f"
+  },
+  "actual_composition": {
+    "own_commit": "8ae5605d5e60826627c4b352d8c1440065fdb0a3",
+    "own_tree": "51f3c53cf3da989c450a20d8c7fc81055678ae27",
+    "final_combined_commit": "690713df7a78532702af62ecb092bbd1d89e34ed",
+    "final_combined_tree": "20f6195529fc713c05eb11fae0e606df446d6150",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-six-source-current-load-v1/report.json",
+    "sha256": "4bafa228d940d5cec7707c5bc2f575a274f390e210b25a3d431268ad90b67158",
+    "mode": "production SL",
+    "modules": 508,
+    "ordered_argv": 511,
+    "stable_watches": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.840063706040382,
+    "source_credit": 0,
+    "compatibility": "Six non-Make own files are donor-exact; exactly two Make recipes preserve the actual parent. The final combined cut preserves the sign clause and other five family blobs; its intervening 425 delta is accepted runtime CONCAT only. Peer24 closed the sole actual composition/SAME saved-read; author did not reread it."
+  },
+  "validation": "Quiet stable reaped records preserve commands, runtime/profile/environment, original bytes and raw outputs externally. Native originals ran once and were reused. Source, author, independent and combined-load counts retain separate cuts; no unique aggregate or old evidence renewal.",
+  "remaining": "Wider source producers, bases, ownership/lifetimes and all exact held boundaries remain partial. No engine bug or intentional PHP divergence identified."
+}

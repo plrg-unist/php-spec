@@ -1,0 +1,92 @@
+{
+  "feature": "OUTPUT122: selected FINAL MOD handlers with intrinsically quiet raw FLOAT Boolean casts",
+  "status": "independently reviewed and source-integrated; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64, vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local PHP; recorded baseline; pure authored semantics",
+  "reviewed_ready": "147f79f4a3074d687d3fffc444dd3c16142ea508",
+  "contract": "Own canonical kind1 (bool) casts authenticate exact Return/root/raw PFLOAT child SOURCE, handler UNIT/BODY and CODE lines/flags. Sixteen lowercase hexadecimal digits are checked before binary64 decoding. The emitted root retains CODEfalse/read-eps and its child CODEtrue/exact bits. NORMAL, number_bool(NFLOAT bits)=(result,false) and full-state quiet CASTBOOL preserve strict PBOOL results. Positive zero returns FALSE and permits default diagnostics; subnormal and positive infinity return TRUE and suppress fallback. Two required untyped BYVAL formals, literal echo, actual handler RETURN, real cell retirement and FINAL MOD-zero Error retain existing guards.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_cast emits ZEND_BOOL for _IS_BOOL",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BOOL calls i_zend_is_true",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true warns for NaN and tests double zero",
+    "spec/semantics/04-numeric-context.watsup:number_bool separates truth from intrinsic NaN warning",
+    "spec/semantics/50-control-flow.watsup:truth_value and 56-casts.watsup:cast_apply retain diagnostic/full-state behavior"
+  ],
+  "packet": {
+    "base": "31df6babd334453ce29386331fe558d0abed99a2",
+    "delta": "Five source paths, +257/0: Make4, 45623, sources17, state69, review_state144. Interleaved121 twoJSON are excluded.",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/milestone-summary-01.json",
+    "sha256": "d47c2b5ef0d17fc7334685ee79b17e6c9ee1115311cab8a5c2cae4b896ccd136"
+  },
+  "validation": {
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/native-summary-01.json",
+      "sha256": "7839ab2e7cfd9d9a002e1d6e87d7acdf03f397052eb3e11750e142f8d95d38ec",
+      "originals_once": 4,
+      "result": "Complete native observations; saved reuse without replay."
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/model-final-01/report.json",
+      "sha256": "36d2090198170a91a33c57e3eaeced784ad98f3e6b718b9c256aad1b79a6052e",
+      "agreements": 4,
+      "result": "Production SL508/cache=false/det=true at reviewed READY; complete php_error outcomes, raw observations and exits match saved natives. Zero/FALSE defaults and nonzero/TRUE suppression remain distinct."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/model-first-01/report.json",
+      "sha256": "5e645803395a48c1d541675815a10b23769cdba038329c64238407c9fa785a31",
+      "result": "Two complete Unsupported outcomes at2dbca045c; two other originals UNRUN; all retain source0."
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/front-all-01/report.json",
+      "sha256": "83eaba8f4765ebfe600df9c6a5369cc9d5325c8a1eb7932bbfcfd5417362ee07",
+      "conditions": [
+        8,
+        11
+      ],
+      "result": "Postlaw fixture SL508, source0; this is not prelaw evidence."
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/life-all-01/report.json",
+      "sha256": "d84f350fb218b302a0363e51ae9050972b6b2f85e5d835517fe176b683b750b4",
+      "conditions": [
+        6,
+        7
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/peer-front-all-01/report.json",
+      "sha256": "ccda95ca8408bbbabd2d203c6366d0e3a8e24f3d1a4dbbfff60ca6d952c5d557",
+      "conditions": [
+        49,
+        46,
+        49
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-bool-cast-return-modulo-error-122/peer-life-all-01/report.json",
+      "sha256": "5895625d7f9733896c9b3cd369a5caae1b9ea0586bb0418329cc60243aef2121",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "source_credit": 0
+    },
+    "controls": "Consistent raw SOURCE and PFLOAT pools cover both signed zeros, both subnormal signs, negative finite values, both infinities and quiet/signaling/negative NaNs at source0. Each NaN remains intrinsically noisy and the tail refuses even when REPORTING0, CALLBACKeps, empty fatal trace and preset TRUE scratch make CASTBOOL a full-state no-op. Exact source/CODE/unit/body/typed pools, canonical kind, NORMAL no-op forgeries, unread versus folded root authority, width/lowercase checks before partial decoding and actual Boolean return/formal/native-cell retirement also pass.",
+    "reliability": "All postlaw cuts share READY147f79f4a and retain separate identities. Author589/peer595 input watches; fixed outer660/fixture300 caps, quiet/stable/reaped, empty launcher groups, no timeouts or new semantic failures. The original corrected Python proof-builder assertion remains prep-failure-01.json/source0. Make recipes are wired, not claimed executed. The reviewer read current results and packet once without semantic reruns."
+  },
+  "actual_composition": {
+    "revision": "1708375f8c6e9aa0d5e00b42ac2a25f9adae23c9",
+    "tree": "98006de99b2525db490afaa0f86e76502b125797",
+    "parent": "eef6c9263121c1ae8e716cdeffb18d7470d1a276",
+    "final_revision": "690713df7a78532702af62ecb092bbd1d89e34ed",
+    "final_tree": "20f6195529fc713c05eb11fae0e606df446d6150",
+    "projection": "Exact five-path +257/0 actual delta; all four nonMake blobs equal signed READY in both actual and final trees. Makefile applies the identical four recipe additions while retaining newer MAIN content;121 metadata is excluded.",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-six-source-current-load-v1/report.json",
+    "sha256": "4bafa228d940d5cec7707c5bc2f575a274f390e210b25a3d431268ad90b67158",
+    "result": "Sole production-SL508 load passes in15.840063706040382 seconds, cap60;511 ordered arguments/512 watches, exit0/true LF/empty stderr/no timeout, source0, stable/reaped. Actual composition and saved report independently consumed once; no duplicate author read or renewed execution credit."
+  },
+  "remaining": "NaN callbacks, wider cast children/styles, handlers, retarget histories, lifetimes and OB31 remain partial. Synthetic negative/raw NaN bits add no original-source credit. All exact holds remain unchanged; no full-core, Rocq or BOLA claim. Metadata changes do not renew execution credit."
+}
