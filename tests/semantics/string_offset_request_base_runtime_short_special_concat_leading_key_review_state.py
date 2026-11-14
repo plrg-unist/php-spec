@@ -131,7 +131,7 @@ if __name__ == '__main__':
                 ('demand_or_' + name, zero + ' || ' + right, None),
                 ('demand_and_' + name, one + ' && ' + right, None)]
     raw += [('nan_left', 'NAN || ' + one, None),
-            ('runtime_float', '(0.0+(+' + zero + ')) && ' + one, None),
+            ('runtime_float', '(0.0+(+' + zero + ')) && ' + one, 'PBOOL false'),
             ('compiled_integer', '1 && ' + one, None),
             ('compiled_boolean', 'true || ' + zero, None)]
     paths = {name: prep / (name + '.php') for name, *_ in raw}

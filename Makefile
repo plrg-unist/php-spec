@@ -1133,6 +1133,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_short_special_concat_leading_key_sources.py --output "$$request_runtime_short_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_short_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_short_out/source/report.json" --output "$$request_runtime_short_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_short_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_short_out/source/report.json" --output "$$request_runtime_short_out/review-state"
+	@request_runtime_float_arithmetic_out=$$(mktemp -d .tools/runtime-float-arithmetic-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_float_arithmetic_special_concat_leading_key_sources.py --output "$$request_runtime_float_arithmetic_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_float_arithmetic_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_float_arithmetic_out/source/report.json" --output "$$request_runtime_float_arithmetic_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_float_arithmetic_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_float_arithmetic_out/source/report.json" --output "$$request_runtime_float_arithmetic_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
