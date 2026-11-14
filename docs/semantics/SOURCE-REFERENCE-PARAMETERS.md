@@ -618,7 +618,7 @@ still precedes private Notice-cell creation. The
 [literal-Boolean formal review](../../coverage/semantics/cv-literal-bool-formal-producer-reference-notice-review.json)
 keeps three new Notice agreements, two distinct weak integer RECEIVE-priority
 controls, five native originals once, separate private fixtures and the sole
-actual canonical load distinct. Wider explicit-union literal-Boolean headers
+actual canonical load distinct. Non-null or wider literal-Boolean union headers
 and contexts remain partial; all existing holds remain.
 
 Canonical standalone `false` and `true` returns share the completed ordinary-CV
@@ -630,7 +630,7 @@ The [literal-Boolean return review](../../coverage/semantics/cv-literal-bool-ret
 keeps three new Notice agreements, two weak integer RETURN-priority controls,
 five native originals once, separate private fixtures and the sole actual canonical
 load distinct. Constructed int-return controls distinguish callee and caller
-strictness at the actual RETURN stage with source credit zero. Explicit-union
+strictness at the actual RETURN stage with source credit zero. Non-null or wider union
 literal-Boolean formals and returns, wider contexts and all held lanes remain partial.
 
 Canonical `?false` and `?true` formals and returns also share the completed
@@ -644,7 +644,21 @@ keeps four fresh Notice agreements, one RECEIVE-priority and one RETURN-priority
 control, six native originals once, separate author400/peer452 fixture-SL507 cuts
 and the sole actual canonical load distinct. Exactly four matching current old
 nullable predicates become positive without historical campaign renewal.
-Explicit literal-Boolean unions, wider contexts and all held lanes remain partial.
+Non-null or wider literal-Boolean unions, broader contexts and all held lanes remain partial.
+
+Explicit `false|null`, `null|false`, `true|null` and `null|true` formals and
+returns also share that completed ordinary-CV proof. Raw two-member unions
+match normalized members in source order. A literal member must pair with null;
+only its exact Boolean tag or NULL passes, without weak scalar coercion.
+Caller reception, callee return verification, producer retirement and separate
+alias/private-cell ownership retain their existing rules. The
+[ordered literal/null review](../../coverage/semantics/cv-union-literal-bool-producer-reference-notice-review.json)
+keeps four fresh Notice agreements and two distinct RECEIVE/RETURN-priority
+controls, six native originals once, separate author487/peer532 fixture-SL507
+cuts and the sole composed canonical load distinct. Four current helper files
+contain five matching expectation corrections without historical campaign renewal.
+Non-null or wider literal-Boolean unions and broader contexts remain partial;
+all held lanes remain.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
