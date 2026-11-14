@@ -1016,6 +1016,10 @@ def $string_read_runtime_integer_quiet(PFLOAT n_bits) = true
   -- if $(n_bits < 18446744073709551616)
   -- if $float_long(n_bits, true) = (i, eps)
   -- if $long_range(i)
+def $string_read_runtime_integer_quiet(PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $string_long(n_bytes*) = STRINT i eps
+  -- if $long_range(i)
 def $string_read_runtime_integer_quiet(pvalue) = false -- otherwise
 def $string_read_runtime_bytes(S, porigin) = (n*)
   -- if $compiled_precision(S, (porigin)) = (z_precision)

@@ -105,7 +105,7 @@ if __name__ == '__main__':
            ('other_cast', '(string)' + selected('1'), None),
            ('nul_cast', '(int)((!0.0)?"a\\0b":(1/0))', None),
            ('leading_arithmetic', '"1tail"+(+(!INF))', None),
-           ('string_integer_binary', '"1"&(+(!0.0))', None)]
+           ('string_integer_binary', '"1"&(+(!0.0))', 'PINT 1')]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
     for name, expression, *_ in raw:
         paths[name].write_bytes(('<?php $x=(' + expression + ');\n').encode())
@@ -139,6 +139,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = ('Exact author histories plus independent demanded CAST/selected-ternary/literal source, CODE, precision, line and raw-pool authority, actual nonnormal completions and whole-state stale RESULT/TODO/BASE controls. Fifteen fresh checked-source controls cover the affected literal cast, Boolean empty/zero/double-zero truth, signed fractional truncation, both integer saturation bounds, FLOAT negative zero/nonnumeric/fractional prefixes, other-cast/NUL/integer-binary and suppressed leading-arithmetic refusals. Canonical nonNUL INTERNED helpers admit only BOOL/INT/FLOAT casts; raw PSTRING, REQUEST, malformed bytes and NUL remain refused. STRING-result BYTE and FLOAT BYTE stay eps. Fixture source0/native0; no old campaign/native replay, primitive/compiler/formatter/owner change or held-boundary expansion.')
+    report['scope'] = ('Exact author histories plus independent demanded CAST/selected-ternary/literal source, CODE, precision, line and raw-pool authority, actual nonnormal completions and whole-state stale RESULT/TODO/BASE controls. Fifteen fresh checked-source controls cover the affected literal cast, Boolean empty/zero/double-zero truth, signed fractional truncation, both integer saturation bounds, FLOAT negative zero/nonnumeric/fractional prefixes, quiet mixed integer-binary consumption and other-cast/NUL/suppressed leading-arithmetic refusals. Canonical nonNUL INTERNED cast helpers admit only BOOL/INT/FLOAT casts; raw PSTRING, REQUEST, malformed bytes and NUL remain refused. STRING-result BYTE and FLOAT BYTE stay eps. Fixture source0/native0; no old campaign/native replay, primitive/compiler/formatter/owner change or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
