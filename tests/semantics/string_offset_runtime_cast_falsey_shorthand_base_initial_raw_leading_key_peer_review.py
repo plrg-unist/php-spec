@@ -89,6 +89,6 @@ $string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_base) = {str(n ==
 ~$string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_wrong)
 ''')
             if kind == 'String':
-                checks.append(f'~$string_read_raw_known_base(S_cast_{label},porigin_base,{value})')
+                checks.append(f'{"~" if n == 0 else ""}$string_read_raw_known_base(S_cast_{label},porigin_base,{value})')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + 2 + len(checks), derived + 2 + len(checks)
