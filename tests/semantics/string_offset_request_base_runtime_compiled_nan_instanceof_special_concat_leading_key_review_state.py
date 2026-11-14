@@ -66,10 +66,16 @@ def conditions(program, path, index):
             guards += [state + ' = ' + replacement, *refused(state)]
         for label, flag in (('drop', 'eps'), ('flip', '(false)')):
             state = 'S_peer_nan_child_' + label
+            expected, outcome = 'eps', refused(state)
+            if index == 2 and label == 'flip':
+                expected = '(' + value + ')'
+                outcome = ['$string_read_runtime_value(' + state + ', ' + origin + ') = (PBOOL false)',
+                           '$string_read_runtime_bytes(' + state + ', porigin_key) = $string_read_runtime_bytes(S_after, porigin_key)',
+                           '$string_read_request_base_saved(' + state + ', pstringread) = $string_read_request_base_saved(S_after, pstringread)']
             guards += [state + ' = S_after[.CODE[0] = pcode_peer_nan[.EXPRESSIONS = $float_not_review_expressions(pcode_peer_nan.EXPRESSIONS, ' + child_path + ', ' + flag + ')]]',
                        '$compiled_read(' + state + ', ' + child + ') = eps',
-                       '$string_read_runtime_instanceof_operand(' + state + ', ' + child + ') = eps',
-                       *refused(state)]
+                       '$string_read_runtime_instanceof_operand(' + state + ', ' + child + ') = ' + expected,
+                       *outcome]
         if index == 0:
             for bits in (18444492273895866368, 9221120237041090561, 9218868437227405313, 18446744073709551616):
                 state, raw = 'S_peer_nan_bits_' + str(bits), 'PFLOAT ' + str(bits)
@@ -125,7 +131,7 @@ if __name__ == '__main__':
         ('bool_fallback', '', 'false', 'stdClass', True, False),
         ('null_fallback', '', 'null', 'stdClass', True, False),
         ('string_fallback', '', '"x"', 'stdClass', True, False),
-        ('emitted_nan', '', '((float)(!INF))*INF', 'stdClass', False, True),
+        ('emitted_nan', '', '((float)(!INF))*INF', 'stdClass', True, True),
         ('array', '', '[1]', 'stdClass', False, False),
         ('object', '', 'new stdClass', 'stdClass', False, False),
         ('dynamic', '$left=NAN;', '$left', '$target', False, True),
@@ -162,6 +168,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Current four histories add independent consumer-only NaN bit/identity, missing/flipped child and root CODE, exact target/fallback/line/source/precision, NORMAL/CONSTCONTEXT, keyword and saved-receipt controls. Fifteen checked-source source0 controls cover genuine NaN unary/arithmetic/POWER/scalar children, ordinary fallback types, namespace/alias targets and emitted-NaN/owning/dynamic refusal. Namespaced late-fallback INF operands lack compiled NaN facts and remain refused; fully qualified INF operands supply the genuine positive namespace case. Negative/payload/signaling NaN compiler outputs preserve instanceof=false while general VALUE/BYTE and quiet truth stay refused; invalid64 bits refuse. Existing raw ConstFetch compiler-output trust is explicit. Native originals reused once; no general truth/formatter/compiler/owner or held-boundary widening.'
+    report['scope'] = 'Current four histories add independent consumer-only NaN bit/identity, missing/flipped child and root CODE, exact target/fallback/line/source/precision, NORMAL/CONSTCONTEXT, keyword and saved-receipt controls. Fifteen checked-source source0 controls cover genuine NaN unary/arithmetic/POWER/scalar children, ordinary fallback types, namespace/alias targets and owning/dynamic refusal. The later arithmetic operand certificate promotes the emitted-NaN control and the coherent false-CODE INF-INF child; missing CODE and other flips retain refusal. Namespaced late-fallback INF operands lack compiled NaN facts and remain refused; fully qualified INF operands supply the genuine positive namespace case. Negative/payload/signaling NaN compiler outputs preserve instanceof=false while general VALUE/BYTE and quiet truth stay refused; invalid64 bits refuse. Existing raw ConstFetch compiler-output trust is explicit. Native originals reused once; no general truth/formatter/compiler/owner or held-boundary widening.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
