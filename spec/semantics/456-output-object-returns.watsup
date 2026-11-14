@@ -1341,6 +1341,78 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+dec $ob_object_cast_chain_kind(expression) : bool
+def $ob_object_cast_chain_kind(NExprCastInt expression metadata) = true -- if $plstyle(metadata) = 1
+def $ob_object_cast_chain_kind(NExprCastBool expression metadata) = true -- if $plstyle(metadata) = 1
+def $ob_object_cast_chain_kind(NExprCastDouble expression metadata) = true -- if $plstyle(metadata) = 2
+def $ob_object_cast_chain_kind(expression) = false -- otherwise
+dec $ob_object_cast_chain_quiet(pcast, pvalue) : bool
+def $ob_object_cast_chain_quiet(CASTINT, PFLOAT n) = true
+  -- if $float_long(n, false) = (i, eps)
+def $ob_object_cast_chain_quiet(CASTBOOL, PFLOAT n) = true
+  -- if $number_bool(NFLOAT n) = (b, false)
+def $ob_object_cast_chain_quiet(CASTFLOAT, PFLOAT n) = true
+def $ob_object_cast_chain_quiet(pcast, PINT i) = true
+  -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
+def $ob_object_cast_chain_quiet(pcast, PBOOL b) = true
+  -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
+def $ob_object_cast_chain_quiet(pcast, PNULL) = true
+  -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
+def $ob_object_cast_chain_quiet(pcast, PSTRING_CARRIER INTERNED_STRING n*) = true
+  -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
+def $ob_object_cast_chain_quiet(pcast, pvalue) = false -- otherwise
+dec $ob_object_cast_chain_result(pcast, pvalue) : bool
+def $ob_object_cast_chain_result(CASTINT, PINT i) = $long_range(i)
+def $ob_object_cast_chain_result(CASTBOOL, PBOOL b) = true
+def $ob_object_cast_chain_result(CASTFLOAT, PFLOAT n) = true
+def $ob_object_cast_chain_result(pcast, pvalue) = false -- otherwise
+dec $ob_object_cast_chain_node(pstate, pfunction, porigin, expression, int, bool) : bool
+def $ob_object_cast_chain_node(S, pfunction, PORIGIN n_unit pcpath, expression, z, b) = true
+  -- if S.COMPLETION = NORMAL
+  -- if pfunction.CODE.UNIT = n_unit
+  -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (expression)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, b))
+def $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b) = false -- otherwise
+dec $ob_object_cast_chain_value(pstate, pfunction, porigin, expression) : pvalue?
+def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarInt (INTEGER i) metadata) = (PINT i)
+  -- if $long_range(i)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NScalarInt (INTEGER i) metadata, $source_line(metadata), true)
+  -- if $compiled_read(S, porigin) = (PINT i)
+def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarFloat (FLOAT text_float) metadata) = (PFLOAT n)
+  -- if |text_float| = 16
+  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NScalarFloat (FLOAT text_float) metadata, $source_line(metadata), true)
+  -- if $evaluate(NScalarFloat (FLOAT text_float) metadata) = VALUE (PFLOAT n)
+  -- if $compiled_read(S, porigin) = (PFLOAT n)
+def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarString (BYTES text_string) metadata) = (PSTRING_CARRIER INTERNED_STRING n*)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NScalarString (BYTES text_string) metadata, $source_line(metadata), true)
+  -- if $evaluate(NScalarString (BYTES text_string) metadata) = VALUE (PSTRING n*)
+  -- if ~(0 <- n*)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata) = (pvalue)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata, $source_line(metadata), true)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_constant) metadata_name)
+  -- if $special_constant($base64(text_constant)) = (pvalue)
+  -- if $compiled_read(S, porigin) = (pvalue)
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
+  -- if $ob_object_cast_chain_kind(expression)
+  -- if $pfshape(expression) = PFCAST pcast expression_child
+  -- if z = $expression_line(expression_child)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, false)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if $ob_object_cast_chain_quiet(pcast, pvalue_child)
+  -- if S_child = S[.RESULT = KNOWN pvalue_child]
+  -- if S_cast = $cast_apply(S_child, pcast, pvalue_child, z)
+  -- if S_cast.RESULT = KNOWN pvalue
+  -- if $ob_object_cast_chain_result(pcast, pvalue)
+  -- if S_cast = S[.RESULT = KNOWN pvalue]
+  -- if $value_nodes(pvalue) = eps
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = eps -- otherwise
 dec $ob_object_error_handler_tail(pstate, pfunction, statement*) : bool
 def $ob_object_error_handler_tail(S, pfunction, eps) = true
 def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprConstFetch (NName (BYTES text_null) metadata_name) metadata_null) metadata_return]) = true
@@ -1750,6 +1822,19 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastDouble (N
   -- if $compiled_string_value(S, PORIGIN n_handler pcpath_string, PSTRING n_string*) = PSTRING_CARRIER INTERNED_STRING n_string*
   -- if n_cast = $string_cast_float(n_string*)
   -- if $cast_apply(S, CASTFLOAT, PSTRING_CARRIER INTERNED_STRING n_string*, z_cast) = S[.RESULT = KNOWN (PFLOAT n_cast)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn phpType5 metadata_return]) = true
+  -- if phpType5 = expression
+  -- if S.COMPLETION = NORMAL
+  -- if $ob_object_cast_chain_kind(expression)
+  -- if $pfshape(expression) = PFCAST pcast expression_child
+  -- if $ob_object_cast_chain_kind(expression_child)
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn expression metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (porigin_expression)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_expression, expression) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
 ;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or admitted emitted CASTINT/CASTFLOAT/CASTBOOL return.
