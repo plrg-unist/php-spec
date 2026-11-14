@@ -1,0 +1,92 @@
+{
+  "feature": "boolean-not-integer-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with BooleanNot of a raw nonzero signed64 NScalarInt INTEGER value and a raw string fallback preserves its non-NUL INTERNED base and initial raw leading-integer CV offset through a returning Warning handler. Ordinary key replacement and initial-reference current-name rebinding retain the captured header/index. Original !1 and !(9223372036854775807) cases exercise both paths; unary-signed source syntax is separate.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "de6568740522f141bf75b6843d1b9d966be658e0",
+  "reviewed_peer_head": "5d2afa766f27944c6cffd0561cb35a8de742fc86",
+  "implementation_sha256": "570944c006be4f96ab2ebb2b0c7585eafe8bd50b765ce82dbceab13e13a6e095",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "9e8b562bb77d0d3df5d44b81d686d988df278b74c9d4ef52c2294da4d07a256b"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_op and zend_try_ct_eval_unary_op fold integer BooleanNot through Zend/zend_operators.c boolean_not_function and the quiet nonzero-long branch of Zend/zend_operators.h i_zend_is_true. zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN. Zend/zend_execute.c zend_fetch_dimension_address_read saves the string header and leading integer before Warning user code. Existing pure long_range/truth/compiler rules supply exact leaf PINTi and unary PBOOLfalse pools; no PHPT was executed.",
+  "implementation": "One local17-line425 raw_known_base arm authenticates actual parent/BooleanNot/raw-integer leaf/literal fallback occurrences, parent compiledEPS, signed64 range and nonzero value, exact compiled unary PBOOLfalse and leaf PINTi, ABSENT true arm and fallback2 compiled PSTRING/INTERNED identity. The actual fallback equality also rejects a detached pure CONCAT with identical bytes/header; earlier accepted arms retain their own byte/identity contracts. No compiler/numeric, generic233, provider/root, owner, schema, REQUEST/NUL, nonfinite, wider producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "4056755843241c1bbbd3beb266d46b464a95106dc6c51a55bb7d36cec459df8f",
+      "tested_revision": "d1da23ceb2b82c285510701214c98bb425fd9f65",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; raw INTEGER1/ownPBOOLfalse/leafPINT1 and roots[1,0],edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "acb240dbec7114f72aa67f4800375bbad777e33cfb04ee0965b38847a873b8cf",
+      "tested_revision": "d1da23ceb2b82c285510701214c98bb425fd9f65",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 61
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; raw INTEGERmax/ownPBOOLfalse/leafPINTmax and roots[1,0,0],edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "8385a027bfb59ae6abd966a99da45cac3f80f6b5f5a01fbc0342636099b816f7",
+      "tested_revision": "2ea23e359f33c7a9cb5baf9428b0bbb0ac3117fa",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "f51dedbf86b89e2266713a7d4b8d57f0d8723dd1d8fab904559ae6317b5cb040",
+      "tested_revision": "de6568740522f141bf75b6843d1b9d966be658e0",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "3123b309a9e4a0b8c699cac35d9a42fe8a6447ee76c99bc8c08b3b1d52a19f26",
+      "tested_revision": "de6568740522f141bf75b6843d1b9d966be658e0",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 187,
+      "derived_conditions": 76
+    },
+    {
+      "kind": "independent production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "f8572b713a092f1c6e1ae093da4f5decbdea1433c18bfe3981423e5db7f3890c",
+      "tested_revision": "5d2afa766f27944c6cffd0561cb35a8de742fc86",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 345,
+      "derived_conditions": 214
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-boolnot-integer-shorthand-joined-508-v1/report.json",
+    "sha256": "e4e2cf78f001b7926094f58da0b0cfe576abf89610083d758cf87786fb22fa1c",
+    "tested_revision": "b181805a93e964276214695643abe72ed3f830bf",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.090435076970607,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 is captured once and reused by the first postlaw source2 comparisons. Separate author187/76-derived and independent345/214-derived fixture-SL cuts retain source0 without a unique aggregate. Genuine prelaw full155 states retain their own cuts. Checks cover zero and both out-of-range raw integers with matching leaf pools, wrong own/leaf tag/polarity/value, nonzero source/pool mismatch, detached condition/leaf/fallback occurrences, wrong or extra NOT, folded parent, fallback/header identity, source/CODE/pool and owner bounds, real Warning dispatch/resume, rebinding and 0/1 budget rejoin. Matching raw INTEGER2/MININT local-law controls are constructed fixture source0; they are not native-source evidence for unary-negative syntax. Source60/outer80/compiler120/state180 caps remain. All semantic attempts are quiet, stable and fully reaped; original Unsupported2 stays0, with no failures, timeouts, unrun outcomes or historical renewal.",
+  "review": "Independent whole6 semantic/source/test FULLCLEAR and donorREADY preceded source-first MAINb181 integration. Both bounded actual composition reads confirm the complete raw_known_base group equals the donor and removing the new17-line arm restores all prior425, including disjoint typed runtime ORDER/EQUALITY, byte-for-byte; controller/cases/A/B/Make2 match. The single saved canonical load has separate source0 identity.",
+  "remaining": "BooleanNot of unary-signed integers and other operands, wider computed conditions or fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the linked external archives. Tracked cases/renderers and the two Makefile boolean-not-integer-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

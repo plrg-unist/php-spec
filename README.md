@@ -1577,6 +1577,8 @@ Actual unary-plus float-zero shorthand bases also retain their selected non-NUL 
 
 BooleanNot of simple-name literal true also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source and false/true compiled facts remain required; broader operands and lifetimes stay partial. [BooleanNot true shorthand review](coverage/semantics/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-review.json).
 
+BooleanNot of raw nonzero signed64 integer literals also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source, integer range and compiled facts remain required; unary-signed syntax and broader lifetimes stay partial. [BooleanNot integer shorthand review](coverage/semantics/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),

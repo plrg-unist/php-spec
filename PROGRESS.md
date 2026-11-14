@@ -437,6 +437,8 @@ Actual unary-plus float-zero shorthand bases retain their non-NUL INTERNED fallb
 
 BooleanNot of simple-name literal true preserves the raw shorthand fallback's non-NUL INTERNED header and frozen leading offset through returning Warnings, including current-key replacement and initial-reference rebinding. Exact parent/condition/leaf source, false/true pools, fallback2 identity and parentEPS remain required. Saved-native source2, separate author184/76 and peer286/156 fixture-SL/source0 cuts, and actual MAIN3973 SL508 load16.283693879842758s/source0 pass. Wider operands, producers and lifetimes remain partial; existing holds stay unchanged. [BooleanNot true shorthand review](coverage/semantics/string-offset-boolean-not-true-shorthand-base-initial-raw-leading-key-review.json).
 
+BooleanNot of raw nonzero signed64 integer literals preserves the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warnings, including key replacement and initial-reference rebinding. Exact parent/condition/leaf/fallback source, range/nonzero, ownfalse/leafPINTi pools and parentEPS remain required. Saved-native source2, separate author187/76 and peer345/214 fixture-SL/source0 cuts, and actual MAINb181 SL508 load16.090435076970607s/source0 pass. Raw MININT local-law fixtures earn0 source credit; unary-signed source syntax and wider operands/lifetimes remain partial, with all holds unchanged. [BooleanNot integer shorthand review](coverage/semantics/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-review.json).
+
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
