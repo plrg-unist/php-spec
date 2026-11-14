@@ -35,8 +35,8 @@
     "id": "deferred-float-minus-wrapper-arithmetic-parent-control",
     "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR)))) + (E_WARNING - E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
     "source_sha256": "200f0cdef1dd4953927f740509a10ab0b3c37ae2e1cd33c89d37c0f82b99f48b",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Arithmetic enclosing a phase-sensitive child remains outside exact Minus-only recursion even when final numerical equality hides a different child sign."
+    "purpose": "As of254, emitted ADD/SUB/MUL/DIV parents consume authenticated phase-aware numeric children. The byte-identical252 native is reused without replay; earlier Unsupported cuts retain their historical identities."
   }
 ]

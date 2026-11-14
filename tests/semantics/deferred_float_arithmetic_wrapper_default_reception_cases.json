@@ -1,0 +1,34 @@
+[
+  {
+    "id": "deferred-float-arithmetic-wrapper-raw-four-operators",
+    "source": "<?php\nfunction rawArithmetic254($add = +(-(float)(+(E_WARNING === E_ERROR))) + (E_WARNING - E_WARNING), $subtract = -(+(-(float)(+(E_WARNING === E_ERROR)))) - (E_WARNING - E_WARNING), $multiply = +(-(float)(+(E_WARNING === E_ERROR))) * (E_ERROR - E_WARNING), $divide = +(-(float)(+(E_WARNING === E_ERROR))) / (E_ERROR - E_WARNING), $folded = +((float)'-0.0') * (E_WARNING - E_ERROR)) {\n    echo 'raw:', $add, ':', $subtract, ':', $multiply, ':', $divide, ':', $folded, '|';\n}\nrawArithmetic254();\nrawArithmetic254();\n",
+    "source_sha256": "9a155b52bdd20b6ecb8af74f379a09d653d4641a75bb9629640058978355f05f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual ADD/SUB/MUL/DIV compose phase-aware +0/-0 operands through cold/warm raw caches, with a compile-folded -0 sibling."
+  },
+  {
+    "id": "deferred-float-arithmetic-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace ArithmeticWrapper254;\nuse const E_WARNING as Base254;\nuse const E_ERROR as One254;\nfunction warning254($errno, $message, $file, $line) {\n    global $x254;\n    echo 'warning:', $message, '|';\n    defaults254(2);\n    $x254 = 3.5;\n}\nfunction defaults254(int $first, int &$add = +(-(float)(+(Base254 === One254))) + (Base254 - Base254), int $subtract = -(+(-(float)(+(Base254 === One254)))) - (Base254 - Base254), int $multiply = +(-(float)(+(Base254 === One254))) * (One254 - Base254), int $divide = +(-(float)(+(Base254 === One254))) / (One254 - Base254), int $last = 7) {\n    echo 'body:', $first, ':', $add, ':', $subtract, ':', $multiply, ':', $divide, ':', $last, '|';\n    $add = 9;\n}\n\\set_error_handler('ArithmeticWrapper254\\\\warning254');\n$x254 = 1.5;\n$last254 = 8;\ndefaults254(last: $last254, first: $x254);\necho 'outer:x=', $x254, '|';\n",
+    "source_sha256": "a8e77369462716c6f81f0473d8ba36635a5ce8169cd2e2bda4d14b884459de9e",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Four actual arithmetic default caches retain raw +0/-0/-0/-0 through imported declaration ENV, named holes, warning reentry and separate int reception. A private BYREF default mutation leaves its raw cache unchanged."
+  },
+  {
+    "id": "deferred-float-arithmetic-wrapper-cast-parent-control",
+    "source": "<?php\nfunction warning254($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults254(int $first, int $later = (float)(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning254');\n$x254 = 1.5;\ndefaults254($x254);\n",
+    "source_sha256": "e3b9828cd19a400c64443cc31ef20e538f9a62e7f62f55ccb622b9a6e4b584df",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "An enclosing phase-sensitive FLOAT cast has no phase-aware recursive parent certificate. Arithmetic recursion does not borrow compile-projected child bits."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-arithmetic-parent-control",
+    "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR)))) + (E_WARNING - E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
+    "source_sha256": "200f0cdef1dd4953927f740509a10ab0b3c37ae2e1cd33c89d37c0f82b99f48b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "As of254, emitted ADD/SUB/MUL/DIV parents consume authenticated phase-aware numeric children. The byte-identical252 native is reused without replay; earlier Unsupported cuts retain their historical identities."
+  }
+]
