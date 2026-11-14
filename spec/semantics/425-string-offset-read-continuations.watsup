@@ -787,7 +787,6 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
   -- if $compiled_read(S, PORIGIN n pcpath) = eps
-  -- if $string_read_runtime_value(S, PORIGIN n pcpath) = eps
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
   -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
@@ -1151,6 +1150,7 @@ def $string_read_runtime_bytes(S, PORIGIN n pcpath) = (n_left* ++ n_right*)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
   -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $string_read_runtime_value(S, PORIGIN n pcpath) = eps
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
   -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
