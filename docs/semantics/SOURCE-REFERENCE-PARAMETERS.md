@@ -648,7 +648,7 @@ Non-null or wider literal-Boolean unions, broader contexts and all held lanes re
 
 Explicit `false|null`, `null|false`, `true|null` and `null|true` formals and
 returns also share that completed ordinary-CV proof. Raw two-member unions
-match normalized members in source order. A literal member must pair with null;
+match normalized members in source order. At this cut a literal member paired with null;
 only its exact Boolean tag or NULL passes, without weak scalar coercion.
 Caller reception, callee return verification, producer retirement and separate
 alias/private-cell ownership retain their existing rules. The
@@ -657,8 +657,23 @@ keeps four fresh Notice agreements and two distinct RECEIVE/RETURN-priority
 controls, six native originals once, separate author487/peer532 fixture-SL507
 cuts and the sole composed canonical load distinct. Four current helper files
 contain five matching expectation corrections without historical campaign renewal.
-Non-null or wider literal-Boolean unions and broader contexts remain partial;
+Wider literal-Boolean unions and broader contexts remained partial at that cut;
 all held lanes remain.
+
+Two-member headers also admit one literal Boolean with array/int/float/string
+in either source order. Exact raw/normalized order and distinctness remain;
+any pair wholly drawn from bool/false/true is refused. The literal branch stays
+exact, while weak conversion may select its admitted scalar alternative.
+Caller-strict reception, callee-strict return verification and frame retirement
+retain their existing rules. Ordinary BYREF entry conversion changes the real
+caller cell without a persistent parameter constraint; BYVAL conversion preserves
+the caller and its snapshot. The fresh untyped Notice cell remains separate.
+The [nonnull literal-Boolean review](../../coverage/semantics/cv-nonnull-literal-bool-producer-reference-notice-review.json)
+keeps native6 once/source6 (Notice4/RECEIVE1/RETURN1), separate author679/peer504
+fixture-SL507 cuts and the sole composed production-SL508 load distinct. Five
+current helper files contain six matching expectation corrections without
+historical campaign renewal. Literal-Boolean unions of three or more members,
+wider contexts and every exact held lane remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing

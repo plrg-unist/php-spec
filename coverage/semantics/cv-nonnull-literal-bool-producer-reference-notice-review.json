@@ -1,0 +1,98 @@
+{
+  "milestone": "REF74",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "05d692f23047fed4759f1a91e40066e7954ed6c8",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "e76f5a81f8585475efa38e61bb1c83c86999c161acc90325e2ed87d0b49dd50f",
+    "law": "Two existing two-member FORMAL and non-null RETURN gates admit exactly one literal Boolean plus array/int/float/string in either source order. The Boolean-redundancy fence refuses any pair wholly drawn from bool/false/true. Distinctness, exact ordered raw/normalized authority and all ordinary-CV/required/default/variadic/BYREF, actual RECEIVE/RETURN, frame, payload/source and owner guards remain. Literal/null support and the 3+ fold are unchanged.",
+    "source_symbols": [
+      "Zend/zend_compile.c::builtin_types, zend_compile_typename_ex, zend_emit_return_type_check, zend_compile_return",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "Zend/zend_execute.c::zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_compile.h::ZEND_ARG_USES_STRICT_TYPES, ZEND_RET_USES_STRICT_TYPES",
+      "spec/semantics/95-type-values.watsup::typed_exact, typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-nonnull-literal-bool-producer-reference-notice-74",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "8e692d443ad8beedc89c32bee40d584fe820d808e9780d7b07061a45e7135e61",
+    "source_donor": "3074922cf3138188b838079eb1b8094593a5c55d",
+    "files": 14,
+    "scope": "Whole fourteen-path READY and independent FULLCLEAR preceded integration. Serial combined controller remains UNEXECUTED/source0; its complete helper/recorder/frontend/profile closure and optional saved-native forwarding have static review."
+  },
+  "semantics": "Pinned literal Boolean masks admit only their exact tag. Existing union weak selection can instead choose an admitted int, float or string branch; Boolean coercion requires the full BOOL mask. RECV uses caller strictness and VERIFY_RETURN_TYPE uses callee strictness. Ordinary BYREF reception imposes no persistent alias constraint. RETURN verification and producer retirement precede the fresh untyped private Notice cell.",
+  "counts": {
+    "native_originals_once": 6,
+    "native_replays": 0,
+    "new_notice_agreements": 4,
+    "fresh_receive_priority_agreements": 1,
+    "fresh_return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "state_cuts": {
+    "author": {
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "5b72fe86615a08353fdf729ace6755ceac0b288294d0680766d8451cdc24fe1c",
+      "revision": "05d692f23047fed4759f1a91e40066e7954ed6c8",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 679,
+      "reached": 279,
+      "derived": 400,
+      "elapsed_seconds": 58.65499782562256,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "peer": {
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "4e2f1790c6e69a7ed5194d60fe944bcfe094d9709eb764be0b3ce15b2008f89c",
+      "revision": "eadf2a730c3b170b5d5074e925e65c76c505a90f",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 504,
+      "reached": 370,
+      "derived": 134,
+      "elapsed_seconds": 82.7379698753357,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    }
+  },
+  "prelaw": "Genuine author fixture-SL507184 at9bf75612d and peer fixture-SL507266 at3d57849d7 remain separate source-zero cuts. Both original author production-source Unsupported baselines retain zero agreement credit. Reports, hashes and revisions remain in the manifest.",
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "9fb398e702b7f2fee7d8ee20631462ee66956b87bb22518e171e4024b29e0332",
+    "decision": "FULLCLEAR",
+    "actual_composition": "Reviewer recover12 cleared actual insertion a71a1700c, composed fbb5aae311 and the SAME saved cfdc6a08 canonical report. All thirteen non-Make paths remain donor-exact; one additive Make recipe preserves existing recipes. The 93/95 conversion bridge is exact, and the 00 numeric overflow-only arm is disjoint from the tested int1/string17 conversions. No execution or duplicate author receipt."
+  },
+  "canonical_main": {
+    "source_revision": "a71a1700ccceeced970017f5c30a39be51cc0380",
+    "revision": "fbb5aae3114d20d9a8689f307888ef2f6e2285dd",
+    "tree": "224f4981273b54fb81eca6a90e4ac2a3ef8365c8",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main51-nonnull-literal-bool-ref74-positive-integer-joined-508-v1/report.json",
+    "sha256": "cfdc6a08e85629c240106a586b0e6fb8735f728f7df10e44bd11443a65f5ccb7",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 15.638695576926693,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Five current helper files contain six changed generator statements, only matching literal|int rows becoming positive. Fresh controls retain raw/normalized mismatches, formal flags, all eight valid literal/nonliteral pairs in both orders/modes, weak alternatives, aliases/snapshots/COW, frame/private-cell retirement, diagnostic priority and budget rejoining. Peer one-step post-RECEIVE cuts distinguish shared BYREF string17-to-int17 mutation from private BYVAL int1-to-float1 conversion. Native/source, fixture and actual canonical cuts retain separate identities; no historical campaign is renewed.",
+  "limits": "Original Unsupported2 and all earlier failures/timeouts/unrun retain zero credit. Literal-Boolean unions of 3+ members and wider formals/payload/source/backing/history/GC/lifetimes remain partial. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}

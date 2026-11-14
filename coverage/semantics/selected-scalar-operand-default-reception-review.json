@@ -1,0 +1,102 @@
+{
+  "feature": "Selected scalar operands in guarded integer defaults",
+  "target": "PHP 8.5.10 CLI,NTS,signed64; sole project-local .tools/php/bin/php; C/UTC baseline profile",
+  "status": "Reviewed bounded extension; complete core remains unfinished",
+  "implementation": {
+    "base": "8c585dc229d16b198dd2cec636337cdd8d452407",
+    "donor": "725d84ea8ceb64953eef8b3010597cb38ff10c35",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "A proper-descendant selection arm supplies quiet scalar operands to existing arithmetic/POWER. It retains Numeric-EPS and the existing cast_leaf nonnull CASTINT witness; no wider leaf, compiler, state, native, cache or owner policy is introduced.",
+    "preserved": "Declaration ENV, exact raw source and names, whole-tree no-DIM, condition/selected-child authority, Shared-cache and ordinary receive/owner guards remain. The prior Boolean-operand peer expectation now admits selected NINT1."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c: zend_ast_evaluate_inner ZEND_AST_CONDITIONAL/COALESCE retain the selected value; arithmetic uses the existing scalar operators",
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT publishes eligible raw constant-AST cache values before parameter type verification",
+      "Zend/zend_execute.c: zend_verify_scalar_type_hint preserves caller-strict versus weak scalar reception"
+    ]
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-selected-scalar-operand-default-reception-243",
+  "native_once": {
+    "revision": "4c108308c67583e439fc36154be31b1391ee3c0b",
+    "report": "native-v1/report.json",
+    "sha256": "09d0a186caca6f3f7fc4afa692759b744459c9cdaf8b00462a29b75a7e8e71dd",
+    "fresh_originals": 6,
+    "runtime": "runtime.json",
+    "reuse": "All model cuts reuse the original bytes/path/cwd/profile/streams/status; no native replay."
+  },
+  "baseline": {
+    "revision": "4c108308c67583e439fc36154be31b1391ee3c0b",
+    "report": "current-v1/report.json",
+    "sha256": "3a9caa957e31919860fe2e84c012e203fc35ec81491587556ab4ae85af12e865",
+    "mode": "production SL_mode,508 modules",
+    "result": "Six explicit Unsupported outcomes; zero native-agreement credit."
+  },
+  "source_evidence": {
+    "revision": "70f3264f70111b3f7d319d5a68860c5d04484667",
+    "report": "source-v3/report.json",
+    "sha256": "b9d864b6862a925f3577078b2ef855a3772476358a65602a346f0fca262be2ea",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "driver_seconds": 495.1427434680518,
+    "scope": "Cold/warm selection defaults, named alias/reentry and fractional handler throw/retry agree exactly. Leading-number selected leaves, deprecated conditions and skipped-DIM controls remain Unsupported."
+  },
+  "state_evidence": [
+    {
+      "revision": "725d84ea8ceb64953eef8b3010597cb38ff10c35",
+      "report": "author-v3/closure-call-protocol-m6zxe51y/report.json",
+      "sha256": "9cac255b586b1e62eefec200a75816d6a5a8b6bff05369b73d5d38344a09bd46",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": [
+        132,
+        93
+      ],
+      "body": 213,
+      "setup": 12,
+      "driver_seconds": 279.19508771714754,
+      "scope": "Unchanged reference-resume and throw-retry fixtures preserve raw caches, ENV/source/name/tag/readiness guards, budgets, private BYREF formal cells, later completion and real retirement."
+    },
+    {
+      "revision": "22659a968a64b7862e409bf16de0642c187e209e",
+      "report": "peer-v2/closure-call-protocol-x0jwny8i/report.json",
+      "sha256": "5cd73d4a9e645861640ee4ea78c6289c030503c9806d51ba5dce9f89ffd4b16a",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 269,
+      "body": 263,
+      "setup": 6,
+      "scope": "Independent named-alias reentry, raw caches and selected-child/counterfeit/source/ENV/owner controls; all source0."
+    }
+  ],
+  "compatibility": "Independent full-domain review bridges the retained source/peer cuts through pure guard permutations, the post-header selected-deferred entailment and the exact23-name ASCII list replacement. The first cache/tag and partial selector prerequisite order remains authenticated; no genuine semantic extension is hidden in a cost bridge.",
+  "cost_evidence": {
+    "retained": "ac420c263 scalar/snapshot guard ordering;97dac65f0 reuses full-header selected-deferred proof;725d84ea8 uses identical literal-name bytes. literal-name-cost-v1 passes23 equalities and unchanged selected-string-sum16 in24.415163273s versus30.128802527s.",
+    "diagnostics": "scalar-guards-v1,first-prefix-v1/v2,selected-deferred-cost-v1,cache-validation-cost-v0/v1,completion-segment-v1 and bindings-cost-v1 remain separate source0 cuts. Cache/origin-dispatch factoring was not introduced.",
+    "reverted": "The earlier CODE.NAMES helper trial and its syntax failure,8 passing controls and immaterial timings remain in name-state-cost-v1/v2; the helper stays reverted."
+  },
+  "prior_zero_credit": [
+    "source-v1/timeout-outcome.json",
+    "source-v2/timeout-outcome.json",
+    "author-v1/timeout-outcome.json",
+    "author-v2/timeout-outcome.json",
+    "author-al-v1/timeout-outcome.json",
+    "peer-v1/closure-call-protocol-uxipavwn/report.json"
+  ],
+  "validation_contract": "Source360s/100000steps and fixture300s retain outer600s. Passing reports bind stable inputs/revisions, exact modes/counts, quiet stderr, exit0 and fully reaped groups. The two original author fixtures remain132+93; metadata renews no execution credit. Failures, Unsupported, caps and earlier unrun cases keep their original identities.",
+  "review": "Independent recover11_enum_selected_operand_review FULL CLEAR covers the exact seven-file473+/16- source/test/Make increment, all current cost bridges and unchanged author225 closure. Actual MAIN8c3e4c000 and its sole SAME canonical load were separately checked once: six non-Makefile contents donor-exact and only three additive Makefile target lines.",
+  "joined_load": {
+    "revision": "8c3e4c000df46a71a103784478a9aaa400922cb2",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main51-selected-scalar-operand-enum243-joined-508-v1/report.json",
+    "sha256": "fca22c48c90ee46ecd140f007769ea9d4daa060e75dce377a8834fc80989f483",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.23125653085299,
+    "result": "true plus LF; quiet,stable inputs/HEAD,exit0,fully reaped",
+    "source_agreement_credit": 0
+  },
+  "remaining": "Other selected scalar leaves,unary/consumer/operator contexts,producers,entries and lifetimes remain partial. Every exact hold remains unchanged. Inventory169 constructors/306 obligations,0 constructors and1 obligation closed; no full-core or Zend-equivalence claim."
+}

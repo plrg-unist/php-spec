@@ -228,6 +228,8 @@ Completed ordinary-CV producers also admit canonical ?false and ?true formals an
 
 Completed ordinary-CV producers admit ordered false|null/null|false and true|null/null|true required formals and returns. Only the matching literal tag or NULL passes, without weak scalar coercion; caller reception, callee verification and separate alias/private-cell ownership remain. Non-null or wider unions and broader contexts remain partial. [Ordered literal/null review](coverage/semantics/cv-union-literal-bool-producer-reference-notice-review.json).
 
+Completed ordinary-CV producers also admit two-member formals and returns pairing one literal Boolean with array/int/float/string, in either source order. Exact raw/normalized authority and Boolean-redundancy rejection remain; weak conversion may select the other scalar branch. Native6 once/source6 (Notice4/RECEIVE1/RETURN1), separate author679/peer504 fixture-SL507 cuts and actual a71a1700c/composed fbb5aae311 with the sole cfdc6a08 production-SL508 load retain distinct identities. Literal-Boolean unions of three or more members, wider contexts and all exact holds remain partial. [Review](coverage/semantics/cv-nonnull-literal-bool-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The
@@ -867,6 +869,8 @@ Own UnaryMinus of a non-NaN raw FLOAT also preserves exact parent/child source, 
 
 Selected handlers also admit own UnaryMinus of a raw signed64 integer when its exact full unary result is a signed64 PINT, including -0. Exact Return/root/child source, CODE/lines and both folded pools preserve real formal retirement and FINAL MOD-zero Error in four new originals; raw MIN overflow, wider returns/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-negative-integer-return-modulo-error-review.json).
 
+Own UnaryPlus of a raw signed64 integer also retains its identical PINT under full pure unary state and exact Return/root/child/CODE/two-pool authority. Four new originals, including +0, retire two/four real cells before FINAL MOD-zero Error; local raw MIN controls add no source credit, and wider returns/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-positive-integer-return-modulo-error-review.json).
+
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1343,6 +1347,8 @@ Quiet emitted full ternaries preserve the selected typed value through existing 
 Quiet emitted shorthand ternaries preserve the original typed truthy condition or the selected fallback through existing string-offset consumers. Wider producers and lifetimes remain partial. [Runtime shorthand-ternary review](coverage/semantics/string-offset-request-base-runtime-shorthand-ternary-review.json).
 
 Certified compiled Boolean/null/signed64 integer values compose through emitted string-offset key parents, retaining raw literal type/value agreement and the existing nonliteral compiler-output trust boundary; compiled and emitted BYTE routes remain disjoint. [Review](coverage/semantics/string-offset-request-base-runtime-compiled-primitive-review.json).
+
+Ordinary emitted null coalescing preserves certified primitive values, selects by nullness and demands only the chosen value while retaining both source identities. [Review](coverage/semantics/string-offset-request-base-runtime-coalesce-review.json).
 
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
@@ -5360,6 +5366,8 @@ Quiet POWER-specific operands also admit decoded fully numeric strings and Boole
 Quiet ADD/SUB/MUL/DIV default operands also admit the existing fully numeric string and Boolean/null projections, preserving raw cache types before private reception, BYREF resume and own precision throw/retry. Source/ENV/no-DIM/cache/owner guards remain; conversion effects, division by zero and wider scope stay partial. [Scalar-arithmetic review](coverage/semantics/numeric-coercive-arithmetic-default-reception-review.json).
 
 Genuine computed Boolean children also supply quiet integer 0/1 operands for arithmetic and POWER defaults, retaining raw cache types before private reception, BYREF resume and own precision throw/retry. Source/ENV/no-DIM/cache/owner guards remain; noisy truth, selected effects, raw scalar selections and wider scope stay partial. [Boolean-operand review](coverage/semantics/computed-boolean-operand-default-reception-review.json).
+
+Selected scalar leaves now supply quiet operands to existing arithmetic/POWER defaults through proper selected descent. Raw INT/FLOAT caches precede private integer reception and own precision callbacks; exact source/declaration ENV/no-DIM/name/cache/owner guards remain. Three source agreements plus three Unsupported controls reuse six native originals once; separate author225/peer269 fixtures, the seven-file source/test integration at 8c3e4c and the separate sole saved canonical SL508 load retain their identities. Unary and wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/selected-scalar-operand-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
