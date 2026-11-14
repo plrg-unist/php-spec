@@ -1,0 +1,104 @@
+{
+  "feature": "boolean-not-certified-integer-tree-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "BooleanNot directly accepts certified nonzero signed64 integer trees as shorthand conditions, including ADD/SUBTRACT/MULTIPLY roots without an artificial outer sign. The same integer certificate now subsumes the old raw-Integer spelling. Exact source, PINT pools/ranges and recursive operands retain the non-NUL INTERNED fallback and frozen initial raw leading-integer CV offset through returning Warnings, including ordinary-key replacement and initial-reference rebinding.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "fa96a4c82e643e4459c0b6c9eb4ddf63b08c8b13",
+  "reviewed_peer_head": "31506d2f8f0a1100c16c1d2a73059e13f2e26ad0",
+  "donor_implementation_sha256": "2a10b7b38be9a3906d85f57f12574c14a9de86f2ce02dc5a53956766f2408f22",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "4b5785a06ee2d82e1a75681a59e4e20afd241ef1f893662fe82159707c1185ce"
+  },
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_binary_op folds quiet integer CONST pairs via zend_try_ct_eval_binary_op/get_binary_op. zend_compile_unary_op folds BOOL_NOT on the integer result directly; zend_compile_shorthand_conditional retains JMP_SET/QM_ASSIGN and the selected literal header regardless of an outer +/- sign. The existing pure integer arithmetic certificate already authenticates those actual compiler pools. No new engine path, arithmetic model, native helper or PHPT execution is introduced.",
+  "implementation": "Consolidate the generic integer-tree shorthand arm by removing its outer PFUNARY requirement and the now-subsumed raw NScalarInt spelling. Pointwise guard equivalence is explicit: for a raw INTEGER child, the unchanged integer certificate expands to exactly the old source/own-PINT/range checks; parent/condition, final nonzero/NOTfalse, parentEPS and exact fallback source/header are unchanged. This removes equivalent overlap rather than adding another literal/operator ladder. INTEGER, sign and ADD/SUBTRACT/MULTIPLY certificates and generic233/provider/root/schema/ownership/numeric bounds remain unchanged.",
+  "evidence": [
+    {
+      "kind": "fresh native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "9520b1b871684d326bda7769db2a0694c43a852d70100f1d453b90cbe6e78a3b",
+      "tested_revision": "4b406fe3fa2fb87fbc840e3eca0db96bfdc725bd",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine A full155:19 changed/136 initial; direct ADD3/SUB2 certificate already true, NOTfalse/parentEPS and outer-shape source refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "a11d1551d3da4eef63807306c2ff5fd67c6e87f83a7554b4cfcd220eca953ae5",
+      "tested_revision": "4b406fe3fa2fb87fbc840e3eca0db96bfdc725bd",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 92
+    },
+    {
+      "kind": "genuine B full155:20 changed/135 initial; direct MUL2 certificate already true, true-plus1/INTEGER2, NOTfalse/parentEPS and old marked key source refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "be4acfbc7b28df03b522a5b8ec12b7f3b58ece707c2ac9ff5ddcef0a7de2dc13",
+      "tested_revision": "2294d6954b4099eb20d4e1f2a6c8d010df46d5da",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 91
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native observations reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "e43f4a933d22e275a31ee41e3de584a53a817a0bc30a44475edc3788f59e2ca2",
+      "tested_revision": "a77945bd0acddd92b2ba5cfdf864aa71225f076f",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "775a5aa0c92911de3f7981a9d42e6d3379d56594aec27ddff210a1648110783c",
+      "tested_revision": "a77945bd0acddd92b2ba5cfdf864aa71225f076f",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 339,
+      "derived_conditions": 201
+    },
+    {
+      "kind": "independent production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "a05416a26a63152081754edbb70633ccfe3b9768485c66a7e42abdecef8fdc53",
+      "tested_revision": "31506d2f8f0a1100c16c1d2a73059e13f2e26ad0",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 484,
+      "derived_conditions": 321
+    },
+    {
+      "kind": "specifically affected raw-Integer production-SL fixture after its clause is consolidated; separate source-zero cut; prior native/source evidence stays closed",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-author-20261114/affected-raw-integer-sl-v1/report.json",
+      "sha256": "ce18b861484d62cc638b59850b5841bf32e50e426c1bee581a1fea01222b1a5d",
+      "tested_revision": "a77945bd0acddd92b2ba5cfdf864aa71225f076f",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 187,
+      "derived_conditions": 76
+    }
+  ],
+  "preserved_failures": [],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main49-direct-integer-arithmetic-shorthand-base-joined-508-v1/report.json",
+    "sha256": "1ffd26c740fe5bdb4849cb34bcad39a30654e4fc19823f7451d1f43bf7b7e844",
+    "tested_revision": "6e0fc4b3970de2ddbd32d673ad2420aa51fcbaac",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.6919290041551,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 once/source2, genuine A92/B91 prelaw full155, separate author339/201-derived and independent484/321-derived fixtures and the specifically affected raw-Integer187/76 fixture retain their own identities. New tests check direct arithmetic roots, real old-reference callback rebinding, full-state cleanup and budget rejoining, coherent raw INTEGER MIN/MAX/zero/outside controls, recursive source/pool/CODE refusals and wrong conditions/fallbacks/parent facts. Constructed raw MIN controls carry zero source credit. No direct-root failures, native replay or historical campaign renewal; unchanged arithmetic helper evidence stays separate.",
+  "review": "Whole-six actual-manifest READY and independent composition FULLCLEAR preceded source-first integration at MAIN6e0fc4b397. One bounded independent actual-source/saved-canonical comparison closes exact four donor test/protocol blobs, two added Make recipes and the composed 425 consolidation preserving prior runtime/cast additions. The sole saved canonical load independently matches the actual revision and ordered508 source modules, passes separately with zero source credit, and is quiet/stable/reaped. No execution replay or extra receipt artifact.",
+  "remaining": "Other operators, FLOAT/overflow intermediates, direct BOOL/NULL/raw-string arithmetic leaves, wider producers/handlers/ownership/lifetimes and complete core remain partial. All exact PROGRESS holds, including Owned-NUL source release, remain unchanged; no feature obligation closes.",
+  "recovery": "Raw originals, native-once observations, launchers and reports remain in the linked external archives. Tracked cases/renderers and two Makefile direct-arithmetic shorthand selections regenerate checked fixtures; external archives are not build dependencies.",
+  "joined_implementation_sha256": "c140991166e15a8e1fa5bbf40baec675a1d7aabb380c4d4a27f19b3d3a6884c4"
+}

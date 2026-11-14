@@ -14,7 +14,7 @@ Completed ordinary-CV producers also admit required canonical standalone false a
 
 Selected mask8194 handlers also admit own raw canonical binary64 FLOAT returns through 16 lowercase hexadecimal digits, exact child/CODE/line and compiled-bit authority. Four finite/subnormal/+0/+INF originals preserve AH/AHH, real formal retirement and FINAL MOD-zero Error without default diagnostics. Malformed payloads refuse before decoding; local -0/NaN projections stay source0. Actual `a7826ca029`/508 loading passes separately (15.987692816s/cap60/source0); UnaryMinus, named/computed returns and wider handlers, operands, histories, lifetimes and OB31 remain partial. [FLOAT-return review](coverage/semantics/output-final-selected-float-return-modulo-error-review.json).
 
-Quiet signed64 ADD/SUBTRACT/MULTIPLY trees now compose inside the integer unary-chain BooleanNot shorthand certificate. Exact own and both indexed-child source, PINT pools/ranges, recursive certificates and quiet full-state results retain nonzero/NOTfalse, parentEPS/fallback2 and existing ownership guards. Native2 once/source2, genuine prelaw A98/B96 full155, separate author395/251 and peer483/314 fixture-SL/source0 cuts and actual MAIN00c367de7 joined SL508 loading pass. Two fixture-only failures remain preserved with narrow corrected cuts; direct binary NOT roots, wider producers/lifetimes and all held boundaries remain partial. [Review](coverage/semantics/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-review.json).
+BooleanNot directly accepts certified nonzero signed64 integer trees, including ADD/SUBTRACT/MULTIPLY roots without an outer sign. The general certificate subsumes the old raw-Integer spelling with pointwise equivalent source/range/pool guards; nonzero/NOTfalse, parentEPS/fallback2 and ownership bounds remain. Native2 once/source2, genuine A92/B91 prelaw full155, separate author339/201 and peer484/321 fixtures, the specifically affected raw-Integer187/76 fixture/source0 and actual MAIN6e0fc4b397 joined SL508 loading pass. Constructed raw MIN controls earn no source credit; other operators, wider producers/lifetimes and held lanes remain partial. [Review](coverage/semantics/string-offset-boolean-not-integer-arithmetic-shorthand-base-initial-raw-leading-key-review.json).
 
 Own public static USER method Get values on a child of a genuine empty global source parent now cross quiet CV ??, private ??= and literal/CV Empty, including authenticated Shared clones. Exact raw empty-parent/link and own child-scope authority retain existing cache and cleanup guards. Four native-once agreements and separate fixture-SL145/146/421/361 plus affected parentless292 pass; three fixture preparation failures and four prelaw Unsupported cuts retain0. Sole actual902d/SL508 canonical loading adds source0. Wider ancestry and exact holds remain. [Review](coverage/semantics/magic-property-methodclosure-static-empty-parent-quiet-get-review.json).
 
@@ -640,12 +640,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `65bda8fcb` passes its once-only 508-module production SL
-load in 15.738607943989336 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `6e0fc4b39` passes its once-only 508-module production SL
+load in 16.6919290041551 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main49-runtime-scalar-cast-joined-508-v1/report.json`
-(SHA-256 `620ed4abf81eb84475593054431246806bac4a689b821dbb3dfefa7da3b5cc0c`).
+`../php-spec-evidence-archive/resumed-main-20261112/main49-direct-integer-arithmetic-shorthand-base-joined-508-v1/report.json`
+(SHA-256 `1ffd26c740fe5bdb4849cb34bcad39a30654e4fc19823f7451d1f43bf7b7e844`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
