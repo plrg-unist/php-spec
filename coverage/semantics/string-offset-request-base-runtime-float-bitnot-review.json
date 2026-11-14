@@ -1,0 +1,90 @@
+{
+  "scope": "Direct emitted BITNOT of recursively certified int/float values with quiet fitting integral FLOAT conversion; containers.string-offsets remains partial.",
+  "target": "PHP8.5.10 CLI NTS64; project-local oracle and unchanged baseline profile; pure authored semantics.",
+  "implementation": "Existing own/child source, CODEfalse, read-eps, positive line and equal captured precision remain exact. An explicit int/float gate and intrinsic integer_quiet predicate require implicit float_long(bits,true) empty notices and signed64 range before whole-state integer_coerce. New FLOAT requires NORMAL; prior PINT completion independence remains. Exact long_not/range and full original-typed bitnot_value prove the result. Emitted FLOAT BYTE remains eps; the PINT parent has decimal bytes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_operators.c::bitwise_not_function IS_DOUBLE -> zend_dval_to_lval_safe, then ~lval; BOOL/NULL use TypeError and strings use their separate byte operation.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_BW_NOT",
+    "spec/semantics/57-bitnot.watsup::$bitnot_value and spec/semantics/54-binary-operators.watsup::$integer_coerce"
+  ],
+  "owned_source": {
+    "base": "b877b98c2e8d66ff8ac2e5c05d9d9352f1c7241f",
+    "head": "80c63f644c7cc4aab575b52514e1f9880901b8ce",
+    "paths": 6,
+    "patch_sha256": "e4bfaa657d8efb082b94333e277199e5cad0d048ecbca5f2c6d5753e1fc25e4b"
+  },
+  "actual": {
+    "revision": "f920ca4479bad45feef49b7a165bd67138c243a0",
+    "tree": "02e1347971948562d6c1f67845bd844b1b7c9137",
+    "composed_425_sha256": "f691f4869b0911658c9ed51d37092148131608349c24ecff97365e9f16c8b81d",
+    "composition": "Owned6 preserves parent raw DIV, PFLOAT arithmetic and integral-FLOAT integer binary additions; one independent actual source/composition read cleared by recover20."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-float-bitnot",
+  "native_once_prelaw": {
+    "revision": "28836c5810f19c09a5dc5ca2e2832a2fccb29e41",
+    "report": "author/baseline-v1/report.json",
+    "sha256": "2848193ea6e7f29684fde32d597b10eba36f53e2260f1c68e4e95d91b31cbb48",
+    "native": 4,
+    "unsupported": 4,
+    "source_credit": 0
+  },
+  "source": {
+    "revision": "19f44a25f26daa3bdc16120393600fa325e53791",
+    "report": "author/source-v1/report.json",
+    "sha256": "575266ad7c99b33171776b5074d862a3289e8167b199c3786fca5aaa177e952e",
+    "mode": "production SL",
+    "agreements": 4,
+    "saved_native_only": true,
+    "model_cap": 90,
+    "process_cap": 120
+  },
+  "author_fixture": {
+    "revision": "19f44a25f26daa3bdc16120393600fa325e53791",
+    "report": "author/state-v1/report.json",
+    "sha256": "07bbdbe40daf649b3a6a65c317f9233989ee5e86e4be0c6fa4ad0938ec56dccc",
+    "mode": "fixture SL",
+    "assertions": 944,
+    "derived": 129,
+    "rows": [
+      210,
+      227,
+      245,
+      262
+    ],
+    "cap": 180,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "reviewer": "recover20_string_integral_float_review",
+    "revision": "40cded835ebdf6fcad069831de4714e4fcbe519e",
+    "report": "peer/state-v1/report.json",
+    "sha256": "3534a1f0be3b564e2fe8cd74946e0e060db63a025f26907da5dea561c21ba5a7",
+    "mode": "fixture SL",
+    "assertions": 1647,
+    "derived": 832,
+    "rows": [
+      685,
+      303,
+      321,
+      338
+    ],
+    "checked_source_controls": 25,
+    "cap": 180,
+    "source_credit": 0
+  },
+  "canonical": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main55-integral-float-bitnot-current-load-v1/report.json",
+    "sha256": "0f97bc6eb9214328696fe9c4c15f10910fed5d03f31480b1a9929db1c3b892e3",
+    "mode": "SL",
+    "canonical_files": 508,
+    "argv_files": 511,
+    "watched_files": 512,
+    "seconds": 15.639397244900465,
+    "cap": 60,
+    "source_credit": 0,
+    "independently_read_once": true
+  },
+  "compatibility": "After runtime19f only Make4 and exact independently tested reviewer import changed; accepted native/source/state observations were not renewed. No new semantic fixture failure, timeout or PHP-byte correction occurred. Metadata has no execution credit and needs no semantic rerun.",
+  "remaining": "BOOL/NULL, strings and owning operands do not enter this integer-result certificate. Fractional/nonfinite/out-of-range/malformed FLOAT and wider producers/owners/lifetimes remain outside. Module57/387/compiler/numeric/cast/formatter/API/owner bodies and all exact paused boundaries are unchanged.",
+  "review": "Source, test reliability, whole6, actual composition and sole canonical read independently cleared by recover20; metadata content independently cleared by recover20."
+}
