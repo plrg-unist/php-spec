@@ -1,0 +1,27 @@
+[
+  {
+    "id": "named-fqn-stdclass-byref-rebind-and-canonical-return",
+    "source": "<?php\nnamespace ReviewNotice77\\ObjectNamed;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\sTdClAsS &$saved):\\stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice77\\\\ObjectNamed\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "b3f11403b340ec76a920e0f507e6b85cd6da9baa077eaec3d058444e01600080"
+  },
+  {
+    "id": "wrong-class-fqn-stdclass-byref-receive-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice77\\ReceivePriority;\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(\\stdClass &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice77\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "02a173025bde3fa3cc1dacfe23113cd9a48fb7bdf3f75c699fa2bbdbecbe876c"
+  },
+  {
+    "id": "wrong-class-fqn-stdclass-return-before-notice",
+    "source": "<?php\nnamespace ReviewNotice77\\ReturnPriority;\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):\\stdClass{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice77\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f00dc75f4019be6a0e87d7473adeb05183b13e6abc4bacb40bd83485d328a5c6"
+  }
+]

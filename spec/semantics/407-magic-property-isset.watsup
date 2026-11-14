@@ -200,7 +200,8 @@ dec $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) : bool
 def $property_magic_cv_static_method_parent_selector(NName (BYTES text) metadata, ptbytes) = ($base64(text) = ptbytes)
 def $property_magic_cv_static_method_parent_selector(NNameFullyQualified (BYTES text) metadata, ptbytes) = ($base64(text) = ptbytes)
 def $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) = false -- otherwise
-;; An empty source parent leaves the own static method's scope and cache intact.
+dec $property_magic_cv_static_method_members(pstate, porigin, nat, statement*, pmethoddesc*) : bool
+;; Source parents leave the own static method's scope and cache intact.
 dec $property_magic_cv_static_method_parent(pstate, pclassdesc, phpType44) : bool
 def $property_magic_cv_static_method_parent(S, pclassdesc, ABSENT) = true
   -- if pclassdesc.PARENT = eps
@@ -216,6 +217,27 @@ def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44_parent) = t
   -- if ~pclassdesc_parent.ABSTRACT /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
   -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata_class)
   -- if pclassdesc_parent.NAME = $base64(text_name)
+def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44_parent) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $property_magic_cv_static_method_parent_selector(phpType44_parent, ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ $ptlc(pclassdesc_parent.NAME) = $ptlc(ptbytes_parent)
+  -- if pclassdesc_parent.PARENT = eps /\ pclassdesc_parent.INTERFACES = eps
+  -- if pclassdesc_parent.PROPERTIES = eps /\ pclassdesc_parent.CONSTANTS = eps /\ pclassdesc_parent.METHODS =/= eps
+  -- if ~pclassdesc_parent.ABSTRACT /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
+  -- if pclassdesc.ORIGIN = PORIGIN n_unit pcpath_child
+  -- if porigin_parent = PORIGIN n_unit pcpath_parent
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_parent) metadata_parent_name) ABSENT (SEQUENCE eps) (SEQUENCE statement_parent*) metadata_parent)
+  -- if pclassdesc_parent.NAME = $base64(text_parent)
+  -- if $property_magic_cv_static_method_members(S, porigin_parent, 0, statement_parent*, pclassdesc_parent.METHODS)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.INTERFACES = eps
+  -- if pclassdesc.PROPERTIES = eps /\ pclassdesc.CONSTANTS = eps
+  -- if ~pclassdesc.ABSTRACT /\ ~pclassdesc.FINAL /\ ~pclassdesc.READONLY
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_child) metadata_child_name) phpType44_parent (SEQUENCE eps) (SEQUENCE statement_child*) metadata_child)
+  -- if pclassdesc.NAME = $base64(text_child)
+  -- if $property_magic_cv_static_method_members(S, pclassdesc.ORIGIN, 0, statement_child*, pclassdesc.METHODS)
 def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44) = false -- otherwise
 ;; Inherited captures keep declaring and requested classes distinct in history.
 dec $property_magic_cv_inherited_static_method_clone_history(pstate, nat, porigin, porigin, porigin, porigin) : bool
@@ -238,7 +260,6 @@ def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_metho
   -- if ($closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) /\ $function_cache_policy(S, porigin_method, n_source) = (CACHE_SHARED)) \/ $property_magic_cv_inherited_static_method_clone_history(S, n_source, porigin_method, porigin_site, porigin_requested, porigin_owner)
 def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested, porigin_owner) = false -- otherwise
 ;; Method-only roots authenticate every descriptor at its real source index.
-dec $property_magic_cv_static_method_members(pstate, porigin, nat, statement*, pmethoddesc*) : bool
 def $property_magic_cv_static_method_members(S, porigin_owner, n, eps, eps) = true
 def $property_magic_cv_static_method_members(S, porigin_owner, n, statement_method :: statement_tail*, pmethoddesc :: pmethoddesc_tail*) = true
   -- if porigin_owner = PORIGIN n_unit pcpath_owner

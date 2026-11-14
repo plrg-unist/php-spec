@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-own-child-members-cv-coalesce",
+      "source": "<?php\nclass QuietOwnChildMembersMethodCoalesceBase { protected function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } public static function counter() { static $counter = 100; $counter = $counter + 1; return $counter; } private static function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } }\nclass QuietOwnChildMembersMethodCoalesceTarget extends QuietOwnChildMembersMethodCoalesceBase { public static function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } private function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietOwnChildMembersMethodCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietOwnChildMembersMethodCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = \\qUIEToWNcHILDmEMBERSmETHODcOALESCEtARGET::CoUnTeR(...);\necho QuietOwnChildMembersMethodCoalesceBase::counter() === 101 ? \"PARENT_WARM;\" : \"BAD_PARENT_WARM;\";\necho QuietOwnChildMembersMethodCoalesceTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietOwnChildMembersMethodCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietOwnChildMembersMethodCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietOwnChildMembersMethodCoalesceTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietOwnChildMembersMethodCoalesceBase::counter() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "ca26cfaeb9eb1231e9b6f7374a88aba59106bb76cfad26a1fdb448ab99601736",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UEFSRU5UX1dBUk07V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO1BBUkVOVF9TVEFUSUM7Q0FQVFVSRTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UEFSRU5UX1dBUk07V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_empty_parent_quiet_get_cases.json",
+        "id": "methodclosure-static-empty-parent-fqn-cv-coalesce",
+        "source_sha256": "6af480a62f70a1bcee3b620244ab2d459546be5a3a4e44b7b362419a6ee564f8",
+        "change": "Replace the empty root with three genuine methods and the child with a complete three-method list whose selected public static counter overrides its parent. Parent and child static counters stay distinct; the assignment case transfers a Shared clone after the original retires."
+      }
+    },
+    {
+      "id": "methodclosure-static-own-child-members-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietOwnChildMembersMethodAssignBase { public static function counter() { static $counter = 100; $counter = $counter + 1; return $counter; } private static function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } protected function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } }\nclass QuietOwnChildMembersMethodAssignTarget extends QuietOwnChildMembersMethodAssignBase { public static function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } private function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } public static function counter() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietOwnChildMembersMethodAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietOwnChildMembersMethodAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$original = qUIEToWNcHILDmEMBERSmETHODaSSIGNtARGET::CoUnTeR(...);\n$held = clone $original;\nunset($original);\necho QuietOwnChildMembersMethodAssignBase::counter() === 101 ? \"PARENT_WARM;\" : \"BAD_PARENT_WARM;\";\necho QuietOwnChildMembersMethodAssignTarget::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietOwnChildMembersMethodAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietOwnChildMembersMethodAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietOwnChildMembersMethodAssignTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietOwnChildMembersMethodAssignBase::counter() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "698a1ee903ff4525688494655f29f63cac1f92fbe179e78ed20d21522f379274",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UEFSRU5UX1dBUk07V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO1BBUkVOVF9TVEFUSUM7Q0FQVFVSRTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UEFSRU5UX1dBUk07V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_empty_parent_quiet_get_cases.json",
+        "id": "methodclosure-static-empty-parent-name-private-coalesce-assignment",
+        "source_sha256": "79d58303e447fb259101cc115bceb21db2015e299520cf8b646af58386493375",
+        "change": "Replace the empty root with three genuine methods and the child with a complete three-method list whose selected public static counter overrides its parent. Parent and child static counters stay distinct; the assignment case transfers a Shared clone after the original retires."
+      }
+    }
+  ]
+}

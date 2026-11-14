@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-own-child-members-cv-empty-retired-sources",
+      "source": "<?php\nclass QuietMethodStaticInheritedCVBase { final protected static function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public function unusedMiddle(): int { echo \"BAD_MIDDLE;\"; return 8; } public static function counter() { static $counter = 100; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVTarget extends qUIETmETHODsTATICiNHERITEDcvbASE { public function childUnused(): int { echo \"BAD_CHILD;\"; return 6; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$original = \\qUIETmETHODsTATICiNHERITEDcvtARGET::counter(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedCVBase::counter() === 101 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedCVTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietMethodStaticInheritedCVBase::counter() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "4ce2213224aada1198b972efa52da7e27c6fe9af6de0e0f2872c86347a60ef15",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldD5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWVGFyZ2V0O0ZJUlNUO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZUYXJnZXQ+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDtDTE9ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWQmFzZTtXQVJNO1NPVVJDRVNfR09ORTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0ZBTFNFO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWVGFyZ2V0PlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZUYXJnZXQ7U1RBVElDO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlO1BBUkVOVF9TVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_inherited_child_members_quiet_get_review_cases.json",
+        "id": "methodclosure-static-inherited-child-members-cv-empty-retired-sources",
+        "source_sha256": "5f4c887bc9d8be989b25bedcd8d18e14c129203109a10df7c53d9c1ff008b140",
+        "change": "Add an own public-static child counter at child index1 overriding the root counter. Keep complete finite method-only classes, but use independent child0/parent100 static seeds and parent101/102 versus child1/2/3 observations. Preserve original/retired Shared-chain, saved names and Empty/line8 receiver-throw cleanup. Preparation only; no execution."
+      }
+    },
+    {
+      "id": "methodclosure-static-own-child-members-literal-empty-retired-sources-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticInheritedLiteralBase { private function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public static function counter() { static $counter = 100; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } final public static function unusedAfter(): int { echo \"BAD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralTarget extends \\qUIETmETHODsTATICiNHERITEDlITERALbASE { private static function childBefore(): int { echo \"BAD_CHILD_BEFORE;\"; return 6; } protected function childMiddle(): int { echo \"BAD_CHILD_MIDDLE;\"; return 7; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } final public static function childAfter(): int { echo \"BAD_CHILD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$original = qUIETmETHODsTATICiNHERITEDlITERALtARGET::counter(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedLiteralBase::counter() === 101 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedLiteralTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietMethodStaticInheritedLiteralBase::counter() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "8922b444ebd5fc551ebc7d84d541bffaf5fcd82615f81e110e9b40959d4f1fdc",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsVGFyZ2V0PlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbFRhcmdldDtGSVJTVDtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsVGFyZ2V0O0NMT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbEJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZTtXQVJNO1NPVVJDRVNfR09ORTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0NBVUdIVDtLRUVQO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsVGFyZ2V0O1NUQVRJQztRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbEJhc2U7UEFSRU5UX1NUQVRJQztET05FOw==",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_inherited_child_members_quiet_get_review_cases.json",
+        "id": "methodclosure-static-inherited-child-members-literal-empty-retired-sources-receiver-throw",
+        "source_sha256": "9cff02cf99079df5b3c62ed45cfd81aeffb7fcc91b0ee1da5c99f206ae701229",
+        "change": "Add an own public-static child counter at child index2 overriding the root counter. Keep complete finite method-only classes, but use independent child0/parent100 static seeds and parent101/102 versus child1/2/3 observations. Preserve original/retired Shared-chain, saved names and Empty/line8 receiver-throw cleanup. Preparation only; no execution."
+      }
+    }
+  ]
+}
