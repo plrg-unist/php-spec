@@ -1,0 +1,25 @@
+[
+  {
+    "id": "named-singleton-mixed-return-stdclass-recreate-and-private-retarget",
+    "source": "<?php\nnamespace ReviewNotice67\\Named;\nfunction h($n,$m,$file,$line){global $copy,$prefix;echo 'H:',$line,':',(int)($GLOBALS['x']===$copy),':',$copy->v,':',$prefix,';';unset($GLOBALS['x']);$GLOBALS['x']=new \\stdClass;$GLOBALS['x']->v=77;$copy->v=17;$prefix=29;return true;}\nfunction make($saved):mIxEd{echo 'M:',$saved->v,';';unset($GLOBALS['x']);$GLOBALS['x']=new \\stdClass;$GLOBALS['x']->v=11;return $saved;}\nfunction &take(&$prefix,&$value){global $copy;echo 'F:',$prefix,':',(int)($value===$copy),':',$value->v,';';$value->v=19;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=5;$copy=$x;$alias=&$copy;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice67\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\necho 'R:',$r->v,':',$alias->v,':',$x->v,':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$alias->v,':',$x->v,':',$prefixAlias,';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:5;H:{notice_line}:0:5:2;F:29:1:17;R:19:19:77:31;D:41:19:77:31;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "line_observation": "Capture the native Notice line once, then pin metadata without changing original source bytes.",
+    "native_stdout": "N;M:5;H:8:0:5:2;F:29:1:17;R:19:19:77:31;D:41:19:77:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "e18479e5aa3d2851b03a3d7436e4ebd7743bd552be7f6ef8f39c70dd3a5266ed",
+    "notice_line": 8
+  },
+  {
+    "id": "strict-singleton-mixed-return-int-formal-rejects-request-before-body",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice67\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(iNt $saved):mIxEd{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice67\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x==='17'),':',(int)($copy==='17'),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy==='17'),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "fbd34d9d04d4dc6cb246c3dc4c4bc3d9254b9efdf751a6237ab3937f528d19b6"
+  }
+]
