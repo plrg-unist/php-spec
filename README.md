@@ -132,6 +132,8 @@ Ordered callable|object/object|callable required ordinary-CV producer formals an
 
 Distinct ordered builtin unions of three through eight members admit callable in required ordinary-CV producer formals and returns. Exact raw order, tags, callable precedence, transient BYREF writes, producer retirement and separate private Notice cells retain their existing bounds. Wider contexts, owners and lifetimes remain partial. [Review](coverage/semantics/cv-builtin-callable-union-producer-reference-notice-review.json).
 
+Exact FQN stdClass/callable unions of two through eight members admit required ordinary-CV producer formals and returns. Exact raw/normalized class bytes, one class, ordered unique builtins, at most one Boolean kind and existing payload/ownership guards remain required. Wider spellings, contexts and lifetimes remain partial. [Review](coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json).
+
 Completed one-CV producers with canonical `array` formals also admit `array`
 by-value returns before the Notice. Actual return verification and frame
 retirement preserve the returned table; the later private argument cell remains

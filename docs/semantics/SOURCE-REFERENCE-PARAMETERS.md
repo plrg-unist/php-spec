@@ -874,6 +874,17 @@ fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL5
 load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
 partial.
 
+Exact FQN stdClass/callable unions of two through eight members also admit
+required ordinary-CV producer formals and returns. Raw/normalized class bytes,
+case-folded stdClass identity, member order, unique builtins, one class and at
+most one Boolean kind remain required; builtin object stays excluded.
+The [FQN class/callable review](../../coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json)
+keeps native6 once/source6, author437/peer218 and genuine prelaw247/102 separate.
+Six precise helper shapes use fresh93 states. Actualb2f2e9497ce and its sole
+production-SL508 load pass in16.240492338s/source0, independently closed.
+Controller/Make remain unexecuted/source0; wider class spellings, contexts and
+every exact hold stay partial.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags

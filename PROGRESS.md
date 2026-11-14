@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Exact FQN stdClass/callable unions of two through eight members admit required ordinary-CV producer formals and returns. Exact raw/normalized class bytes, one class, ordered unique builtins, at most one Boolean kind and existing payload/ownership guards remain required. Wider spellings, contexts and lifetimes remain partial. [Review](coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json).
+
 Raw Integer UnaryPlus selectors: native4 once/prelaw Unsupported4 before edit; separate privateSL507 source2+2 and173/173+244/244 pass. Stable literal-v1 fixture path failure remains0, one tuple corrected with exact CV/source bridge. Actual78dfb00b/tree5b7db2c4 and sole SL50816.691157202s/source0 independently clear. All exact held boundaries remain unchanged. [Review](coverage/semantics/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get-review.json).
 
 Ordered int|float|bool short reference Get headers retain exact raw order, INT/FLOAT/BOOL returns, independent copies, weak numeric-string preference, strict rejection and quiet type-source removal. Wider headers, producers, owners and lifetimes remain partial; all exact holds remain unchanged. [Review](coverage/semantics/int-float-bool-parentless-short-reference-get-hook-review.json).
@@ -838,7 +840,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current combined source cut `c94bbefaaa3f2b56b8cb419267b516b1b1ab5f6f` (tree `8cffa39ad3577fa3a4fbce624c335bd07009efd3`) passes its saved 508-module production SL load in 15.987770929932594 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main65-compiled-nan-instanceof-current-load-v1/report.json` (SHA-256 `1222d66a84f0cb5f1ae6f8a5a4d8f95f9e3a1ca80f24cd1cca8c4a528bf82376`). Earlier family cuts and their source/fixture selections retain their original identities.
+The current combined source cut `e6e956f24863bab50614e0fcf737b0b243a1b7ff` (tree `ef5d0aad8522ddd56cd681bd14a27bad0a19951c`) passes its saved 508-module production SL load in 16.38843487505801 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main66-enum267-boolean-ternary-current-load-v1/report.json` (SHA-256 `f68998a2a12cca9c94bd4f7f7007dc88b7bf527a609a6d7cd02ec15a2a31563d`). Earlier family cuts and their source/fixture selections retain their original identities.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,
