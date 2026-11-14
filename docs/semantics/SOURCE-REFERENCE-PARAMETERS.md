@@ -548,6 +548,14 @@ the sole actual508 load separate. Existing STRING membership precedes weak numer
 preference; ordinary alias entry conversion adds no persistent constraint.
 Other types, signatures and wider contexts remain partial; Owned-NUL stays held.
 
+Return headers also admit exactly two distinct NONNULL array/int/float/bool/string
+members through pointwise raw/normalized proof and the unchanged argument gate.
+Callee-strict verification precedes frame retirement and private Notice-cell creation;
+the strict numeric-REQUEST control enters its body, then rejects at RETURN before
+Notice, consumer or assignment. The [nonnull-return review](../../coverage/semantics/cv-distinct-builtin-union-return-producer-reference-notice-review.json)
+keeps native4 once, Notice3/prelaw RETURN-priority1,280/261 private507 fixtures and
+the sole actual508 load separate. Higher return unions and wider contexts remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

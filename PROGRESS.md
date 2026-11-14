@@ -208,6 +208,8 @@ Completed singleton and multi-CV producers also admit ordered two-member formal 
 
 Completed singleton and multi-CV producers admit ordered distinct formal unions over array/int/float/bool/string/null. A finite raw/normalized member fold rejects duplicates and mismatches, preserving caller-strict reception and existing return/frame/ownership bounds. [Primitive union-formal review](coverage/semantics/cv-primitive-union-formal-producer-reference-notice-review.json).
 
+Completed singleton and multi-CV producers admit distinct nonnull two-member array/int/float/bool/string return unions. Callee-strict return verification precedes frame retirement/private Notice cells, retaining ordinary alias/snapshot/COW ownership bounds. [Distinct nonnull return-union review](coverage/semantics/cv-distinct-builtin-union-return-producer-reference-notice-review.json).
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.
@@ -223,6 +225,8 @@ Quiet runtime unary +/- preserves fitting integer bytes from typed Boolean and i
 Quiet emitted ADD/SUB/MUL and PINT-only BITNOT retain actual source/CODE/read-eps/equal precision, quiet fitting NINT inputs and exact whole-state PINT results/decimal bytes. Native4 once/source4, authorSL932/129derived and inclusive peerSL1660/857derived (=932+728, including42 checked-source compiler conditions) remain separate in string-offset-request-base-runtime-integer-operator-review.json. The v1 fixture expectation failure and unrun3 retain0; actual5889f080 has ONE canonical SL508 load16.2823896210175s/source0. Runtime FLOAT bytes, wider operators/producers/owners/lifetimes and complete core remain unfinished. [Runtime integer-operator review](coverage/semantics/string-offset-request-base-runtime-integer-operator-review.json).
 
 Quiet emitted division retains exact integer bytes from genuinely typed Boolean/integer children, quiet fitting inputs, pure exact-integer division and unchanged full-state results. Source, code, read and captured precision facts preserve the existing Warning histories; zero divisors and floating results remain outside this runtime certificate. Native4 once/source4 retain their agreement identity; authorSL1124/129-derived and independent corrected fixtureSL1685/690-derived keep separate source-zero cuts; v1 notation failure/unrun3 retain0. Actual14002 has one combinedSL508 load15.739573478000239s/source0; wider producers/owners/lifetimes remain partial. [Runtime integer-division review](coverage/semantics/string-offset-request-base-runtime-integer-division-review.json).
+
+Quiet emitted ===/!== retain exact typed Boolean/integer/float operands, pure strict results and unchanged full-state evaluation through actual source, code, reads and captured precision. Equal bytes or truth do not erase types; wider leaves, NaN truth and runtime FLOAT producers remain partial. Native4 once/source4 retain their agreement identity; authorSL1055/129-derived and independent fixtureSL1679/753-derived remain separate source-zero cuts. Actualf1c9 has one combinedSL508 load15.580887952819467s/source0; wider producers/owners/lifetimes remain partial. [Runtime identity review](coverage/semantics/string-offset-request-base-runtime-identity-review.json).
 
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 
@@ -419,6 +423,8 @@ Literal positive-zero float shorthand bases retain their non-NUL INTERNED fallba
 
 Actual unary-minus float-zero shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact UnaryMinus/raw-positive-zero leaf source, compiled unaryPFLOAT2^63/leafPFLOAT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS facts remain required. Saved-native source2 and separate author183/76 and peer239/114 fixture-SL/source0 cuts pass; actual MAIN1e86e3dc1 has one combined SL508 load16.03118209494278s/source0. Wider conditions/producers, direct raw negative-zero or nonfinite scalars, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Unary-minus FLOAT-zero shorthand review](coverage/semantics/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-review.json).
 
+Actual unary-plus float-zero shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact UnaryPlus/raw-positive-zero leaf source, compiled unaryPFLOAT0/leafPFLOAT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS facts remain required. Saved-native source2 and separate author183/76 and peer248/123 fixture-SL/source0 cuts pass; actual MAIN9d2af7d6e has one combined SL508 load16.392686638981104s/source0. Wider conditions/producers, direct raw negative-zero or nonfinite scalars, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Unary-plus FLOAT-zero shorthand review](coverage/semantics/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-review.json).
+
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
@@ -477,6 +483,8 @@ Quiet Numeric-only signed64 integer-result powers now compose deferred defaults,
 Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. Quiet GENERAL plans extend below; power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
 
 Quiet Numeric FLOAT powers now complete pure GENERAL plans under unchanged source/ENV/no-DIM/cache/owner guards. Raw fractional caches precede their own precision callbacks, throw/retry and private integer reception. Three fresh source agreements plus three explicit Unsupported controls, two promoted saved originals, author fixtureSL184 and independent229 retain separate cuts/source0 for fixtures. Actual joined `14002d6ef` SL508 loading passes in15.739573478s/source0; held lanes and inventory remain unchanged. [GENERAL-power review](coverage/semantics/numeric-general-power-default-reception-review.json).
+
+Quiet POWER-specific conversion now admits existing decoded FULLNUM strings and Boolean/null operands, retaining generic Numeric/Add/Mul identity and source/ENV/no-DIM/cache/owner guards. Three fresh source agreements plus three explicit Unsupported controls and two saved-original promotions stay separate; corrected authorSL109 and independent257 have source0, while the original pre-main fixture syntax failure retains0. Raw int/float caches precede private receives and own precision throw/retry. Actual `c8749a4fc` SL508 loading passes15.738766288s/source0; leading/nonnumeric effects, power diagnostics and wider scope remain partial. [Scalar-power review](coverage/semantics/numeric-coercive-power-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
@@ -569,12 +577,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `37cc3f22c` passes its once-only 508-module production SL
-load in 15.881875016028062 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `9d2af7d6e` passes its once-only 508-module production SL
+load in 16.392686638981104 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main44-distinct-nonnull-union-reference-joined-508-v1/report.json`
-(SHA-256 `022653c564318744b6e2d3980fb83771e970dd4b0cd731d2ba44487aa65cd399`).
+`../php-spec-evidence-archive/resumed-main-20261112/main44-pluszero-shorthand-joined-508-v1/report.json`
+(SHA-256 `54611cecaa230ca5a84c6d0927214b5b5dad1e2d9bfe4c931242a25e4813cf26`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

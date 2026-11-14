@@ -1,0 +1,120 @@
+{
+  "feature": "ENUM240: quiet scalar operands for power defaults",
+  "target": "PHP8.5.10 CLI,NTS,signed64;sole project-local oracle;C/UTC baseline;selected libm2.39 FMA/nearest-even.",
+  "status": "Bounded independently FULLCLEAR source/test slice integrated;complete core remains unfinished.",
+  "implementation": {
+    "donor": "bb5dbdb1c288467fee648787e38930c6de7e66fc",
+    "source_commit": "c8749a4fcf0a60e6f1f186e139d22bfe894a927c",
+    "runtime_revision": "650f424698da94af0ccb968626bfe1e7b9a6aa19",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "20lines add dedicated power_operand:existing Numeric identity,special BOOL/NULL or existing decoded string projection with COERCED(number,false). Add disjoint POWER arm requiring at least one child Numeric=EPS,proper operand404 roundtrips BEFORE num_pow(false),then result404 roundtrip. Old2 POWER arms,kernels,native/compiler/state remain unchanged.",
+    "preserved": "Generic raw Numeric identity and ADD/MUL remain unchanged. Whole default_in EPS,source/declarationENV/resolved-name/no-DIM/selected-child/Shared-cache/receive/owner authority remain. Raw PINT/PFLOAT cache types precede private int reception or its own callback/TypeError."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_operators.c:pow_function->_zendi_try_convert_scalar_to_number:NULL/false0,true1,FULLNUM integer/float;trailing-data Warning and nonnumeric failure",
+      "Zend/zend_operators.c:pow_function_base/safe_pow preserve result types/overflow factors/zero-negative Deprecated",
+      "Zend/zend_vm_def.h:ZEND_RECV_INIT caches quiet raw scalar before type verification"
+    ],
+    "reference": "35coerce_number FULLNUMfalse/LEADNUMtrue/BADNUMBER;20special_constant onlyBOOL/NULL;06/09 pure power. No native arithmetic fallback."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-coercive-power-default-reception-240",
+  "runtime_record": {
+    "report": "runtime.json",
+    "sha256": "c0a8e31d147ec3a61c72a8c5cbe7299bfce7d93374edd3130b45717ee226133d",
+    "scope": "Unchanged239 project-local binary/profile identity checked by hash/profile;no identity execution."
+  },
+  "platform_record": {
+    "report": "platform.json",
+    "sha256": "5a62a525a3094e2be25a8a5004387ddc9c6e5dcb30365d48c9e76306cb8801ee",
+    "scope": "Unchanged libm hash;239 selected IFUNC/rounding evidence referenced;no semantic answers."
+  },
+  "native_once": {
+    "report": "native-v1/report.json",
+    "sha256": "fd8ac0cbee2895d623ae143042bfa7ee5053f1cd895c3e9a7f5411321f10d6f5",
+    "revision": "d7d7fd3a5016b0197e85461284ff1bbc97c31cd9",
+    "originals": 6,
+    "driver_seconds": 0.11594192800112069,
+    "native_reexecutions": 0
+  },
+  "baseline": {
+    "report": "current-v1/report.json",
+    "sha256": "11e095ddfb5229a9d5bc01f12a65e1fa00b4c8f1b1ee7f17f756d74d3cb4d8e3",
+    "revision": "d7d7fd3a5016b0197e85461284ff1bbc97c31cd9",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 27.09525644709356,
+    "result": "6explicit Unsupported;0semantic agreement credit."
+  },
+  "source_evidence": {
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "cf1302c883623c8fd7d40de611f96901fbe436989725e7b321cb5ed16748769e",
+    "revision": "650f424698da94af0ccb968626bfe1e7b9a6aa19",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 86.31016736803576,
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "scope": "Cold/warm FULLNUM string bases/BOOL/NULL,raw FLOAT2 versus PINT4/1/1,fresh BYREF mutation;named RHS string0.5/spaced integer/reentry;own FLOAT0.5 precision callback throws then retry. LEADNUM,BADNUMBER at exponent0,NULLnegative powerDeprecated stay Unsupported,not native agreements."
+  },
+  "affected_source": {
+    "report": "affected-source-v1/report.json",
+    "sha256": "a396d21dc57a212f183b8814dc270db7c70ba6887fa5eec678a5a4dc84c140d6",
+    "revision": "3c055bf61b281ceee0a166ffa375a535b323675a",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 22.18887682305649,
+    "exact_normal_agreements": 2,
+    "native_reexecutions": 0,
+    "scope": "Only saved238 rawstring2**0 and239 rawstring4**half now agree. Exact original bytes/hash/path/cwd/native streams/status retained;old campaigns not replayed."
+  },
+  "state_evidence": [
+    {
+      "report": "author-v2/closure-call-protocol-z39_6u7y/report.json",
+      "sha256": "4f5dd279df3a9ddca54d01e2f9a02f33761ae0c058b1e2bfe37736c0525987cc",
+      "revision": "3c055bf61b281ceee0a166ffa375a535b323675a",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 109,
+      "body": 103,
+      "setup": 6,
+      "source_credit": 0,
+      "driver_seconds": 51.17044469201937,
+      "scope": "Focused own FLOAT0.5 precision callback/throw/retry,raw cache/source/ENV/owner/budget/cleanup;2author old EPS promotions freshly executed;genericNumeric/Add,BADNUMBER/no-shortcut/power-effect controls."
+    },
+    {
+      "report": "peer-v1/closure-call-protocol-mqkkcvg0/report.json",
+      "sha256": "3922933f9b242ca1ade58a43926f9e5801154a4626bbcdd0be561c86c672ae0a",
+      "revision": "18ee3168b896345b9b2b66b07d96463162e583b7",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 257,
+      "body": 251,
+      "setup": 6,
+      "source_credit": 0,
+      "driver_seconds": 43.661771036917344,
+      "scope": "Independent named raw FLOAT2/PINT4/1/0 caches become private PINT locals. Wrong tags,value,cache,source/equal-outputENV,owner,budget,cleanup,bounds,effect/no-shortcut refuse. Decimal2.0**0 retains FLOAT1;2**0 retains PINT1. Exactly11old peer clauses freshly executed;genericNumeric/Add/Mul unchanged."
+    }
+  ],
+  "preserved_failure": {
+    "report": "author-v1/closure-call-protocol-m4kc4rtl/report.json",
+    "sha256": "f6f2775a6850186f15632c4e452d8df8ab83433e6cd9b685bfd1fb07a90336e2",
+    "revision": "4d5ff27a04f37fad1ff5c97a34bb288c54ac34f5",
+    "assertions": 109,
+    "credit": 0,
+    "driver_seconds": 0.7665543130133301,
+    "scope": "PRE-MAIN DSL syntax failure:3PSTRING literal byte lists lacked parentheses. Only3literal parentheses corrected3c055;onlythissinglefixture rerun,source/module evidence unchanged."
+  },
+  "validation": "Successful current cuts stable,quiet,exit0,fully reaped;fixtures trueLF;source inner360/outer600,fixture inner300/outer600. No timeout/unrun. Native originals6once;source controls and state cuts retain separate credit. Physical counts include repeated prefixes;no AL,unique or family aggregate claim.",
+  "review": "Peer6 FULLCLEAR whole d7d7fd3a/650f42469/4d5ff27a/3c055bf61/18ee,13paths;finalbb5 fourpeerblobs exact18ee. Author+peer actualc874 composition CLEAR:12module/source/testblobs exactbb5,Make3 contiguous once,06/09/35 exact. Static composition renews no source/state credit.",
+  "actual_joined_load": {
+    "revision": "c8749a4fcf0a60e6f1f186e139d22bfe894a927c",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main44-coercive-power-joined-508-v1/report.json",
+    "sha256": "f4bd3f684fada9a53380ded907fad597edfedbaf8eebbf18b30e5962f99c60f2",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "seconds": 15.738766288151965,
+    "source_credit": 0,
+    "result": "PASS,trueLF,quiet,stable,fully reaped;separate from original source/state cuts."
+  },
+  "remaining": "Leading/nonnumeric conversion effects,power diagnostics,E_STRICT,wider producers/entries/lifetimes remain partial. All exact holds remain,especially Source47 low-precision DEFINE-name NaN. Inventory169 constructors/306obligations unchanged,0constructors/1obligation closed;ITrees/Rocq/BOLA unfinished."
+}

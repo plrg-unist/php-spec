@@ -1,0 +1,88 @@
+{
+  "feature": "unary-plus-zero-float-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with actual unary plus of a positive-zero float literal and raw string fallback supplies its non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index supplies the original byte. +0.0 and +(0e0) originals authenticate compiled positive-zero bits at both unary expression and nested literal.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "870dd857c967013ba315544456b4f7c711ef7921",
+  "reviewed_peer_head": "425154448a049fd2721bb7eed1cb17cc2caa8ee6",
+  "implementation_sha256": "f5ba8f9b631eb0002f3526d0766ead8033c0fef7d8d3a28711f4b0741201ecdf",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_pm and zend_try_ct_eval_unary_pm fold a constant operand through multiplication by signed +1, before zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN. Zend/zend_operators.h i_zend_is_true treats floating zero as false; Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code. Existing pure compiler/numeric rules supply both exact PFLOAT0 pools; no PHPT was executed.",
+  "implementation": "One local14-line425 raw_known_base arm authenticates actual NExprUnaryPlus over NScalarFloat raw bits0, its matching nested leaf occurrence/compiledPFLOAT0, compiled unary PFLOAT0, ABSENT true arm, raw string fallback at PCFIELD2 with matching compiled read/INTERNED identity, and parent compiledEPS. Existing raw capture, saved index, source and ownership guards remain. No numeric/compiler, generic233, provider/root, schema, REQUEST/NUL, raw-negative-zero/nonfinite scalar, wider computed producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and current production-SL Unsupported2, zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "b6a6d925ccb9698cf2562226714293aadc99c3c62519a2563f97c83a40143674",
+      "tested_revision": "ccb0c10995336a7bbb170979d8daf2546b59785d",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; both actual compiled pool observations exported, roots[1,0],edges0,debts0",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "7e32c6a23ff5309a5798b699f2296e09fa4552efcf1aa52a2f8f0ac8093084eb",
+      "tested_revision": "34690e00c1f4833af6d5c74841e25965051d6146",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 59
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; nested actual source and both exact PFLOAT0 pools, roots[1,0,0],edges0,debts0",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "7a01047be867915d8528d07bbfa99b7c2bc69f0a42586bf1e1b2f501a0988835",
+      "tested_revision": "b9040815a62ee37756b95facfe30a7128f334fe1",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "e3c58540c7d11fd106e0b3fa05a90c7df4a965e15b195048b1f6d86c1298187c",
+      "tested_revision": "b355bc404c2c651a083ec3f4725b962cd51d4c3a",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture, separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "f5f44cf0414ad33b024558c9102326b568cdba1a774ca1038771122b25ba2236",
+      "tested_revision": "b355bc404c2c651a083ec3f4725b962cd51d4c3a",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 183,
+      "derived_conditions": 76
+    },
+    {
+      "kind": "independent production-SL fixture, separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-unary-plus-zero-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "8577ee2322ec4a34ec238b4e2e79c8cd57be6fef6a226133c0047df7d9dc7c25",
+      "tested_revision": "425154448a049fd2721bb7eed1cb17cc2caa8ee6",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 248,
+      "derived_conditions": 123
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main44-pluszero-shorthand-joined-508-v1/report.json",
+    "sha256": "54611cecaa230ca5a84c6d0927214b5b5dad1e2d9bfe4c931242a25e4813cf26",
+    "tested_revision": "9d2af7d6e1fae8a0d6e6e90e4ca3f4c345549058",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.392686638981104,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author183/76-derived and independent248/123-derived fixture-SL cuts retain source0. Genuine full155 prelaw states retain their own cuts and owner graphs. Exact nested UnaryPlus/raw FLOAT0/compiled childPFLOAT0 and unaryPFLOAT0, ABSENT/no source child1, fallback bytes/identity, parent-fold refusal, wrong unary or child sign/type/value pools, simultaneous raw nonzero/negative-zero leaves versus unchanged exact pools, direct raw-negative-zero source refusal, forged UnaryMinus with unchanged zero/zero pools, key rebinding, unchanged owners, dispatch/resume/output and budgets are checked. A docstring-only correction after the baseline fully reaped changes no original PHP bytes or expectations and requires no source renewal. Source60/outer80/compiler120/state180 caps remain. Successful runs are quiet, stable and fully reaped; prelaw Unsupported retains0. No unique aggregate or historical renewal.",
+  "review": "Independent whole six source/test files, source2 and author183 FULLCLEAR preceded direct MAIN44 READY. Author reciprocal independent248 and genuine prelaw full155 reads are CLEAR. Actual MAIN9d2af7d6e source/controller/Make2 and complete raw_known_base group match the reviewed donor; separately accepted runtime-key IDENTITY/DIVIDE changes remain byte-identical and retain their own evidence. Both actual composition reads and the sole saved combined load are CLEAR, separately from source agreements.",
+  "remaining": "BooleanNot and wider computed conditions, raw negative-zero/nonfinite scalar conditions, wider fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the linked external archives. Tracked cases/renderers and the two Makefile unary-plus-zero-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

@@ -152,6 +152,13 @@ and private-cell cleanup. Strict array|bool|float rejects numeric REQUEST text b
 body or Notice; an actual INT could widen to FLOAT. Other types and wider contexts
 remain partial under the existing source, return and ownership guards.
 
+The [nonnull-return review](../../coverage/semantics/cv-distinct-builtin-union-return-producer-reference-notice-review.json)
+admits distinct array/int/float/bool/string return pairs. Array|string preserves the
+existing six-member ARRAY-formal copies, real tables and private COW. Strict
+array|float enters the untyped-formal body, then rejects numeric REQUEST text at
+RETURN before Notice/consumer/assignment. Old nullable/formal/ownership guards stay
+literal; higher return unions and wider contexts remain partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

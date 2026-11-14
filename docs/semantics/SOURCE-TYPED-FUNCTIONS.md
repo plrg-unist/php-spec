@@ -1224,8 +1224,18 @@ FLOAT caches precede their own precision callbacks, throwing callbacks, retry
 and private integer reception. Source/declaration ENV/name/no-DIM/selected-child,
 Shared-cache and receive/owner authority remain unchanged. Cold/warm BYREF and
 named reentry source agreements, two saved-original promotions, author184 and
-independent229 fixture conditions retain separate cuts. Power diagnostics,
-implicit coercion, effectful `E_STRICT` and wider scope remain partial.
+independent229 fixture conditions retain separate cuts. Quiet scalar operands
+extend below; power diagnostics, effectful `E_STRICT` and wider scope remain partial.
+
+[Quiet scalar power-default operands](../../coverage/semantics/numeric-coercive-power-default-reception-review.json)
+use a dedicated POWER projection for existing Numeric values, Boolean/null and
+decoded FULLNUM strings whose conversion is quiet. The added arm requires a
+proper child without Numeric identity, exact operand bounds before pure power,
+a quiet power result and exact result bounds. Generic raw Numeric identity and
+ADD/MUL retain their rules. Raw PINT/PFLOAT cache tags precede private integer
+reception, including a fractional default's own throwing precision callback
+and retry. Source/ENV/no-DIM/cache/owner guards remain. LEADNUM, nonnumeric
+strings and zero-negative power diagnostics remain outside this certificate.
 
 ## Source metadata and resumed states
 
