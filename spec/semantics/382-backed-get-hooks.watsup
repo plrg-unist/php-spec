@@ -1352,6 +1352,29 @@ def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) 
   -- if $origin_node(S.SOURCES, pclassdesc_parent.ORIGIN) = (statement_parent)
   -- if $pchlower(statement_parent) = PCHRAW pchraw_parent
   -- if pchraw_parent.KIND = "class" /\ pchraw_parent.PARENT = ABSENT
+;; A backed block reference getter keeps that same existing child slot.
+def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) = true
+  -- if $property_hook_reference_plain_parent(S, ppropertydesc_parent, ppropertydesc_child)
+  -- if ppropertydesc_child.TYPE = eps /\ ppropertydesc_child.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc_child.SETVISIBILITY = eps
+  -- if ~ppropertydesc_child.STATIC /\ ~ppropertydesc_child.READONLY /\ ~ppropertydesc_child.FINAL
+  -- if ppropertydesc_child.ORIGIN = PORIGIN n_child pcpath_child
+  -- if $(|pcpath_child| >= 2)
+  -- if pcpath_group = pcpath_child[0:$nabs($(|pcpath_child| - 2))]
+  -- if pcpath_child = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n_child pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags_child) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get_name) (SEQUENCE eps) (SEQUENCE statement_get*) metadata_get])) metadata_group)
+  -- if flags_child <- [0,1] /\ ppropertydesc_child.NAME = $base64(text_name)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_parameter_facts(metadata_get) = [false]
+  -- if $hook_body_supported(SEQUENCE statement_get*) /\ $hook_body_backed(SEQUENCE statement_get*, ppropertydesc_child.NAME)
+  -- if ppropertydesc_parent.ORIGIN = PORIGIN n_parent pcpath_parent
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n_parent pcpath_parent) = (porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps
+  -- if $hook_property_at(pclassdesc_parent.PROPERTIES, PORIGIN n_parent pcpath_parent) = (ppropertydesc_parent)
+  -- if $trait_plan(S, pclassdesc_parent).TRAITS = eps
+  -- if $origin_node(S.SOURCES, pclassdesc_parent.ORIGIN) = (statement_parent)
+  -- if $pchlower(statement_parent) = PCHRAW pchraw_parent
+  -- if pchraw_parent.KIND = "class" /\ pchraw_parent.PARENT = ABSENT
 def $property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child) = false -- otherwise
 ;; Omitted-default sole getters receive an inherited slot after own storage.
 def $property_hook_child_append_slot(S, ppropertydesc_parent, ppropertydesc_child) = true
