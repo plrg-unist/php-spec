@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-positive-keyword-concat-tree-cv-empty-own-child-retired-sources",
+      "source": "<?php\nclass QuietMethodStaticInheritedCVBase { final protected static function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public function unusedMiddle(): int { echo \"BAD_MIDDLE;\"; return 8; } public static function counter01() { static $counter = 100; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVTarget0012 extends qUIETmETHODsTATICiNHERITEDcvbASE { public function childUnused(): int { echo \"BAD_CHILD;\"; return 6; } public static function counter01() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$original = (('\\\\qUIET' . 'mETHODsTATICiN') . ('HERITEDcv' . ('tARGET' . (((+\\fAlSe) . (+NuLl)) . (+0xC)))))::{('Co' . '') . ('Un' . ('TeR' . ((+0) . (+TrUe))))}(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedCVBase::counter01() === 101 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedCVTarget0012::counter01() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietMethodStaticInheritedCVBase::counter01() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "2ec79c3a0022830166e9b5d59f74a955fddbc31b8ea1cf2b4e3afb48e129110b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI7RklSU1Q7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI7Q0xPTkU7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVkJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVkJhc2U7V0FSTTtTT1VSQ0VTX0dPTkU7STtHO1JFQ0VJVkVSO1dSQVBQRVJfR09ORTtGQUxTRTtDQVBUVVJFO1JFQ0VJVkVSX0dPTkU7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDAwMTI7U1RBVElDO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlO1BBUkVOVF9TVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_positive_integer_concat_tree_quiet_get_review_cases.json",
+        "id": "methodclosure-static-raw-positive-integer-concat-tree-cv-empty-own-child-retired-sources",
+        "source_sha256": "8e90d58332e06f94e819292ed7b7332483f1f3e7690aa5cb745bdf1f10b04640",
+        "change": "Wrap all three reserved keyword leaves in UnaryPlus, covering each word as simple/FQN across these cases. Preserve existing raw Integer UnaryPlus and cleanup/static observations. CV uses FQNfalse/simpleNULL/simpleTRUE and genuine Target0012; literal uses FQNTRUE/simplefalse/FQNNULL and genuine counter1200. Streams are fresh hypotheses until native-once observations."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-positive-keyword-concat-tree-literal-empty-inherited-retired-sources-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticInheritedLiteralBase { private function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public static function counter1200() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } final public static function unusedAfter(): int { echo \"BAD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralTarget01 extends \\qUIETmETHODsTATICiNHERITEDlITERALbASE { private static function childBefore(): int { echo \"BAD_CHILD_BEFORE;\"; return 6; } protected function childMiddle(): int { echo \"BAD_CHILD_MIDDLE;\"; return 7; } final public static function childAfter(): int { echo \"BAD_CHILD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$original = (('qUIETmETHODsTATICiNHERITEDlITERALtARGET' . ((+0) . (+\\TRUE))) . ('' . ('' . '')))::{\"c\" . (\"O\" . (\"un\\x74\" . (\"e\" . (\"r\" . ((+1_2) . ((+false) . (+\\nUlL)))))))}(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedLiteralBase::counter1200() === 3 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedLiteralTarget01::counter1200() === 4 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "c79582f88564ad375c003d7f84c86dd9c60c787daf109aa5797ddcd03b378cea",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQwMTtGSVJTVDtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbFRhcmdldDAxO0NMT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbEJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZTtXQVJNO1NPVVJDRVNfR09ORTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0NBVUdIVDtLRUVQO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbFRhcmdldDAxO1NUQVRJQztET05FOw==",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_positive_integer_concat_tree_quiet_get_review_cases.json",
+        "id": "methodclosure-static-raw-positive-integer-concat-tree-literal-empty-inherited-retired-sources-receiver-throw",
+        "source_sha256": "59e072fd798e1b9b17425c5e1c7911783e9affddcc3a815a2898a4bd1aa7386f",
+        "change": "Wrap all three reserved keyword leaves in UnaryPlus, covering each word as simple/FQN across these cases. Preserve existing raw Integer UnaryPlus and cleanup/static observations. CV uses FQNfalse/simpleNULL/simpleTRUE and genuine Target0012; literal uses FQNTRUE/simplefalse/FQNNULL and genuine counter1200. Streams are fresh hypotheses until native-once observations."
+      }
+    }
+  ]
+}
