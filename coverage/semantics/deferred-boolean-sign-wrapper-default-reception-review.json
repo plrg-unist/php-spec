@@ -1,0 +1,87 @@
+{
+  "status": "reviewed bounded slice; calls.defaults remains partial",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local oracle and tests/semantics/profile.json",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_authority": "Zend/zend_ast.c: zend_ast_evaluate_ex UnaryPlus uses ADD(0,child), UnaryMinus uses MULTIPLY(-1,child). _zendi_try_convert_scalar_to_number maps false/true quietly to LONG0/1; pure coerce_number and existing unary_apply agree.",
+  "contract": "Two phase-unsafe emitted unary-sign arms consume recursive PBOOLb through quiet coerce_number(PBOOLb)=COERCED(NINTi)false and long_range(i). UnaryPlus returns PINTi; UnaryMinus returns number_value(num_mul(NINTi,NINT-1)), hence exact PINT0/1 and0/-1. Exact own/child SOURCE, false CODE, absent own pool/read/redirect and existing declaration ENV/Shared cache/private reception bounds remain. No completion gate, helper, compiler, stored Numeric or runtime widening.",
+  "source_packet": {
+    "donor": "8d8990c6faa80e76ee22136e5d064306a4923840",
+    "tree": "a682ac4dcab49666ea9350c73a789d3d111c58f4",
+    "files": 6,
+    "manifest_sha256": "302c83febbf9651a43a6d9a15238e01f01b957bfd193b46195fd0aba51e3e2a4",
+    "patch_sha256": "960f17f76a147605464fb884682964c0c85c42880aaa502bd29b03e7cf23300c",
+    "scope": "519 plus22, four new source/state test files and own three Make lines;339 additions/zero deletions. Unrelated260 metadata excluded."
+  },
+  "source_validation": {
+    "revision": "58512981ed8c4b5e15f6a89f67b19934369ee25d",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "normal_agreements": 2,
+    "unsupported_controls": 0,
+    "native_fresh_originals": 2,
+    "native_saved_originals": 0,
+    "native_replays": 0,
+    "elapsed_seconds": [
+      23.38126176316291,
+      20.411440043943003
+    ],
+    "native_report_sha256": "aafeae76ade33d0c4e6b3d935660ee77b1e3f49182c76e02d9b6c144d4b0811d",
+    "source_report_sha256": "ccdaeb90ade88b5de9b54400c585a1e3e768e956937802929975218eccef878d",
+    "scope": "Both signs on actual false/true-from-negative3 retain raw PINT0/+1/0/-1 and cold/warm caches. Imported named holes[1,2] retain distinct private BYREF defaults+1/-1 through first-CV Warning reentry and retirement."
+  },
+  "prelaw_baseline": {
+    "revision": "b938852cae037852d0ee1a20f9255c735157332d",
+    "unsupported": 1,
+    "native_agreements": 0,
+    "source_credit": 0,
+    "report_sha256": "59603c1ad5eeb6a5b130ca60008e3df456b0ce0ac239549f747be4525b96dbc5",
+    "scope": "Only the new named261 source was checked under unchanged260 runtime rules; explicit Unsupported ingress is preserved without native reexecution."
+  },
+  "author_fixture": {
+    "revision": "58512981ed8c4b5e15f6a89f67b19934369ee25d",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "assertions": 106,
+    "source_credit": 0,
+    "report_sha256": "499e6282eca25acbbcafb1a10bf8129f9592b1f83ba2d37594a82ff4bdaaafeb",
+    "scope": "Two distinct private cells and exact caches, quiet full-state signs including reporting0, CODE/ENV/tag/value controls, completion-independent certificates, budget rejoin and real retirement."
+  },
+  "independent_fixtures": {
+    "revision": "7bca81cb473d974105dba14c3a5c580711c51f62",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "assertions": [
+      71,
+      71,
+      71,
+      71,
+      75
+    ],
+    "total": 359,
+    "source_credit": 0,
+    "report_sha256": "16c63a1fc666b246e67bfa04983b7e2e7f563bb72d398f0a2c36b85f78cd1b39",
+    "summary_sha256": "c0e543e0ea2503ffbf08844019077291090e788eeef0b922251c57af6a84bd59",
+    "scope": "Four actual UNARY sign/truth steps retain full-state operation and four raw integer caches; source/CODE/pool/redirect counterfacts, BUDGET helpers and outer named two-BYREF continuation retain their distinct cuts."
+  },
+  "actual_composition": {
+    "placement": "5c36031a36d8dfaee30841b74afcb1d16fc6def9",
+    "tree": "de2fd0f707a7030bd21a1cb49c62d49bca2d76a1",
+    "parent": "c947bb30cf11f6e47c38a1d06aebac17dc68064a",
+    "scope": "Five nonMake files match frozen donor individually; only approved Make3 preserves parent bytes; unrelated260 ledger excluded. Independently reviewed once by reviewer16; author uses supplied tuple."
+  },
+  "joined_load": {
+    "report_sha256": "f59a02e48f9c5d30615591f5f784181be33d3c1cf807f16672f00d46ff62f08b",
+    "mode": "canonical production SL_mode",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.38366606994532,
+    "source_credit": 0,
+    "result": "true LF; quiet, stable, reaped; before/after input maps equal"
+  },
+  "new_failures": 0,
+  "noncredit": "Make remains unexecuted0. Fixture assertions, joined loading and prelaw Unsupported add no source agreements. No accepted260 execution is renewed for source or metadata.",
+  "raw_evidence": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-boolean-sign-wrapper-default-reception-261",
+  "remaining": "Wider wrappers/producers/contexts/lifetimes and complete core remain partial; every exact held boundary stays held."
+}

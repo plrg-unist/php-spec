@@ -1576,4 +1576,6 @@ Quiet signed64 PINT unary truth originals, native-once baseline and separate aut
 
 Boolean/null unary PINT truth originals, saved-native baseline and separate fixtures: ../php-spec-evidence-archive/string-offset-boolean-null-unary-truth-base-initial-raw-leading-key-{author26,peer24}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-boolean-null-unary-truth-base-initial-raw-leading-key-review.json.
 
+Coercive PINT binary truth originals, native-once baseline, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-{author26,peer24}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-review.json.
+
 Coercive integer BitwiseNot truth originals, saved-native baseline and separate author/peer fixtures: ../php-spec-evidence-archive/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-{author26,peer24}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-review.json.

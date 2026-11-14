@@ -1,0 +1,84 @@
+{
+  "scope": "Quiet scalar-coercive signed64 integer MODULO, shifts, bitwise AND/OR/XOR and POWER select literal INTERNED bases before returning initial raw-key Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "Only the existing PINT binary operator list adds MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR, BITXOR and POWER; the four arithmetic operators remain admitted.",
+    "Exact own/child source and typed pools, original INT/BOOL/NULL/raw STRING tags, quiet NINT coercions and signed64 bounds remain required.",
+    "The ORIGINAL-state negative legacy-helper guard and SAME NORMAL recursive-child/full original-tag binary_apply result remain unchanged. Old integer-helper and FLOAT lists, compiler and numeric rules are untouched.",
+    "Full PINT result equality rejects two-STRING bitwise results, overflow/FLOAT/GENERAL/Deprecated/errors and cached-budget forgeries."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_operators.c::mod_function, shift_left_function, shift_right_function, bitwise_and_function, bitwise_or_function, bitwise_xor_function, pow_function"
+  ],
+  "source_cases": [
+    "coercive-integer-binary-truth-base-initial-raw-leading-current-key: nested coerced MODULO/left-shift/AND/OR/XOR gives PINT1; ordinary key replacement at line12",
+    "coercive-integer-binary-truth-base-initial-raw-leading-reference-key: (null**false)>>true gives PINT0; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-author26-20261114",
+  "baseline": {
+    "report": "baseline/report.json",
+    "sha256": "c79a6640d7c8c66a4948677891452cf71e9fc01f4c0a69dfff96d766a4dba60e",
+    "cut": "607809af4",
+    "native_originals_once": 2,
+    "expected_Unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json",
+    "sha256": "d7b8e1f5da3024d299fe457ae7a9e1421d64e2f2260d3044e962e7540102d033",
+    "cut": "4aef1d42b",
+    "production_modules": 508,
+    "saved_native_agreements": 2,
+    "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json",
+    "sha256": "9f9c95dc82d41369e15dcfca4d9d7a352a4049b1b20e6d3a915eda6abf74bcd8",
+    "cut": "78210b5366a826496a0a7b399283c5db41bf3922",
+    "mode": "production SL fixture",
+    "premises": 296,
+    "derived": 193,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-peer24-20261114/peer-state-v1/report.json",
+    "sha256": "7525508be866a32bc988f4880bcb0c8396649dfda7a8955813dcd96d010b323c",
+    "cut": "2b519913e45b94c8d82c2befbf6cf8e7da928965",
+    "mode": "production SL fixture",
+    "premises": 570,
+    "derived": 413,
+    "source_credit": 0
+  },
+  "counterfacts": "Exact own/child/source/name/CODE and original tags, signed64 limits, negative/large shifts, minimum modulo, both-STRING bitwise refusal, nonquiet/decimal coercions, power overflow/negative/GENERAL/Deprecated and BUDGET-cached DIV-zero descendants retain separate source-zero controls.",
+  "affected_old_expectation": "Only current coercive-integer-arithmetic peer modulo_gate/shift_gate/power_gate flags promote; fresh exact gates replace an old-campaign replay.",
+  "failures": "No new compiler, source, fixture, timeout or interruption failures. The two expected prelaw Unsupported outcomes retain zero source credit.",
+  "whole_source": {
+    "logical_commit": "4fe3c440c8a5abf1be36a821aa36380dd7797c4a",
+    "tree": "82455b66c536ee3b05dc24c1cc48e0d6ff4ffe00",
+    "owned_paths": 7,
+    "manifest": "whole-source-manifest.json",
+    "sha256": "0861663710957a61ed03cf8d26d7a7e405b9367d1be73926c5ce6b1572be2896",
+    "patch": "whole-source.patch",
+    "patch_sha256": "95df39c11407d501678b290bf06432f692071494fafb5a118abeb8b18ad479f9"
+  },
+  "actual_composition": {
+    "commit": "ab9aad45c51df0700eed66d105e6685ab8016c8d",
+    "tree": "91d603cc95bfd269787850e7a121cc616449f2b4",
+    "parent": "5c36031a36d8dfaee30841b74afcb1d16fc6def9",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-coercive-integer-binary-current-load-v1/report.json",
+    "sha256": "cb923ddf938499b5c6a8ea0d6c47a58f61d16da5b43f6bc2e534ad5b98cfb97c",
+    "mode": "production SL",
+    "modules": 508,
+    "ordered_argv": 511,
+    "stable_watches": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.392209354089573,
+    "source_credit": 0,
+    "compatibility": "Exact seven-path delta (+308/-6): six non-Make files match donor4fe3; exactly two Make recipes preserve the actual parent. Reviewer25 consumed the sole actual composition/load once and closed SAME; author did not read the report."
+  },
+  "validation": "Quiet stable reaped records preserve commands, runtime/profile/environment, originals and raw outputs externally. Native originals ran once and were reused. Source cut4aef predates the accepted207 refresh; author782/peer2b and actualab9 retain their own identities. No semantic rerun follows metadata.",
+  "remaining": "Wider producers, source/base forms, ownership/lifetimes and every exact held boundary remain partial. No engine bug or intentional PHP divergence identified."
+}
