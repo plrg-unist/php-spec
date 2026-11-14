@@ -1,0 +1,143 @@
+{
+  "scope": "Parentless public untyped sole short &get with literal-string same-field body, including an escaped literal. Outside ordinary-CV reference/copy consumers and all declaration/owner/layout/lifetime bounds remain unchanged.",
+  "status": "partial; independently reviewed and source/test integrated at006fba30251e425c4b241b938e96a7f6474ccbdb",
+  "target": "PHP8.5.10 CLI NTS signed64; project-only oracle SHA b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json +include_path=.:; LC_ALL=C; TZ=UTC.",
+  "implementation": {
+    "selected": "be9db0450c11104b9d42ca464f6353e735c58039",
+    "base": "dd8d1ce63",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "module_sha256": "8553179fa9217521d34be87f12cbcd3fefd234361ee0eba32e2911f752187e86",
+    "delta": "One additive NScalarString pattern beside the unchanged NIdentifier pattern; exact decoded this/name bytes must match. All compiler/declaration/marker/current-origin/return/Notice and ownership guards remain literal."
+  },
+  "authority": [
+    "Zend/zend_compile.c::zend_property_hook_find_property_usage accepts string-this and literal string property bytes equal to the actual property name; escaped spelling retains its decoded name.",
+    "zend_compile_property_hooks rewrites short GET to RETURN; zend_compile_return uses BP_VAR_W/RETURN_BY_REF for this variable expression. No storage, owner or Notice rule changes."
+  ],
+  "source_validation": {
+    "unique_original_agreements": 4,
+    "native_originals_executed_once": 4,
+    "author": {
+      "report": "author-source-v1/report.json",
+      "sha256": "6791c7d10666c7c2b8af15eb45363c7870a0d671ff518b7c5bda5d7bd855ce28",
+      "head": "955014cc91eb309098a972adeb96a3ba9b0d9188",
+      "mode": "production-SL508",
+      "agreements": 2,
+      "elapsed_seconds": [
+        26.852929830551147,
+        25.141942262649536
+      ]
+    },
+    "peer": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "98ba9190bddf00c4a039d26045438d17880a3d92c28291e764cdcb64520c660c",
+      "head": "7adcd1edf73e0517928fb589ee1451a513a0bc08",
+      "mode": "production-SL508",
+      "agreements": 2,
+      "elapsed_seconds": [
+        32.55031609535217,
+        30.79738426208496
+      ]
+    },
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "f6d635886319b03da3830d8d1b35c04908135f346b59fa74efa04a9b2b00ca37"
+      },
+      {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "139cec36a0c047f18dc371f81081025801693681a85ff9a69a9626a317f0a0e3"
+      }
+    ],
+    "prelaw_unsupported": {
+      "count": 4,
+      "source_agreement_credit": 0,
+      "author": {
+        "report": "author-precompile-v1/report.json",
+        "sha256": "c7a8824d1fc111b6b00c922a635229e68b5ecf74efc6df24b6eb2a559d0ef196"
+      },
+      "peer": {
+        "report": "reviewer-precompile-v1/report.json",
+        "sha256": "b58c967c2907ecc54975181a11655cc29386b7a7896de28c4483d09c1412ac9c"
+      }
+    },
+    "caps": "model120/process140 seconds,100000 steps; native15 seconds per original"
+  },
+  "state_validation": {
+    "author_initialized": {
+      "report": "author-initialized-protocol-v1/report.json",
+      "sha256": "8eba04d0191b55d048a1343cf95010714cd9defb8040cbbe7bb0d5b9af5528ae",
+      "head": "955014cc91eb309098a972adeb96a3ba9b0d9188",
+      "premises": 189,
+      "mode": "fixture-SL508",
+      "selector": "--body literal",
+      "elapsed_seconds": 61.8072350025177,
+      "source_agreement_credit": 0
+    },
+    "author_null": {
+      "report": "author-null-protocol-v1/report.json",
+      "sha256": "697a76966e3a7ae3ef7238b3d4de7feda35a6cf448063bdc6ec61b74c72df772",
+      "head": "955014cc91eb309098a972adeb96a3ba9b0d9188",
+      "premises": 189,
+      "mode": "fixture-SL508",
+      "selector": "--body literal",
+      "elapsed_seconds": 62.578213691711426,
+      "source_agreement_credit": 0
+    },
+    "peer_initialized": {
+      "report": "reviewer-initialized-protocol-v1/report.json",
+      "sha256": "34fb7459345199da66727229f8ddd28364019157809825dcb19a8c8c4338e247",
+      "head": "7adcd1edf73e0517928fb589ee1451a513a0bc08",
+      "premises": 340,
+      "mode": "fixture-SL508",
+      "selector": "--body literal",
+      "elapsed_seconds": 108.44736194610596,
+      "source_agreement_credit": 0
+    },
+    "peer_null": {
+      "report": "reviewer-null-protocol-v1/report.json",
+      "sha256": "7e3b798f363b43d238cd1cface8f9d939b4ee6eefd469521e71651f9a21f3f56",
+      "head": "7adcd1edf73e0517928fb589ee1451a513a0bc08",
+      "premises": 340,
+      "mode": "fixture-SL508",
+      "selector": "--body literal",
+      "elapsed_seconds": 112.02168464660645,
+      "source_agreement_credit": 0
+    },
+    "caps_seconds": 240,
+    "coverage": "Authentic literal NAME/BODY/functions/compiler markers, real pending reference fetch and backing cell, alias/copy distinction, physical child/cell retirement and exact zero/one-step whole-state return/fetch/cleanup resumptions. Peer raw counterfacts reject case-changed/dynamic/integer/nullsafe/non-this bodies. Distinct premise/cut identities are retained, with no aggregate unique-condition or equivalence claim."
+  },
+  "default_compatibility": {
+    "author": {
+      "report": "author-default-protocol-bridge-v1/report.json",
+      "sha256": "8aedaf9e4acd3ca9e0b363c065e1bf3076e069c5e857133220e13fdede149d70"
+    },
+    "peer": {
+      "report": "reviewer-default-protocol-bridge-v1/report.json",
+      "sha256": "5233d1ffd795c5a22f5c785473d4a61869472b3e964d402aba468263439a5c34"
+    },
+    "meaning": "Existing292 default identifier selections produce byte-exact189/305 DSL; explicit literal selectors use only the new originals. No292 native or semantics replay; accepted292 cuts retain their original identities."
+  },
+  "integration": {
+    "actual": "006fba30251e425c4b241b938e96a7f6474ccbdb",
+    "bounded_actual": {
+      "report": "main-actual-read-v1/report.json",
+      "sha256": "0d0d89b622d57ba93a80e71be4a074208a197b8de4bd6df0236ccc1fb46ee4c4"
+    },
+    "combined_pin": "3196dd2b78f4d1348594494d861778b5d3afe73c",
+    "canonical": {
+      "report": "../resumed-main-20261112/main45-literal-ref-arithmetic-default-joined-508-v1/report.json",
+      "sha256": "2611c4bcf3731e9e6ded97a11d099bf62056b04d819bd4d32d69ab3a2c1ab0a8",
+      "mode": "production-SL508 main24",
+      "elapsed_seconds": 15.330673544202,
+      "cap_seconds": 60,
+      "source_agreement_credit": 0
+    },
+    "make_registration": {
+      "report": "make-v1/report.json",
+      "sha256": "fea5719bcd3353f13662f8111f9249e8fd7e1bca33d5b8f8a58e01c17af05f5e"
+    },
+    "review": "recover9_compiler_hook_review whole14 FULLCLEAR and actual006/final3196 bounded content CLEAR. Exact13 donor files plus six recipes; unchanged old292 registrations/default bridges. One canonical combines disjoint Enum241; no application replay."
+  },
+  "preserved_limits": "Prelaw Unsupported4 remain controls/source0; all postlaw293 checks passed first try, without fixture corrections, timeouts or runner failures. Metadata and static bridges add no execution credit. Typed, parented/Trait, SET/paired, nonpublic/attributed and broader short-reference bodies/consumers/lifetimes remain partial; exact held boundaries stay held. No inventory constructor or runtime obligation closes; core, ITrees/Rocq and BOLA/CRIS remain unfinished.",
+  "archive": "../php-spec-evidence-archive/comp293/; report members are relative here. Raw original bytes, paths/cwd/profile, streams, processes, input fingerprints and generated fixtures remain external. Canonical member points to the sibling resumed-main-20261112 directory. No archive is a build input."
+}

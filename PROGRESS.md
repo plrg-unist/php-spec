@@ -116,6 +116,9 @@ Own public untyped sole BYVAL GET hooks over a same-name ordinary root parent re
 Own public untyped backed block &get hooks also retain their lexical child slot over a same-name ordinary root parent. Actual returned references, unconstrained aliases and real ALIAS-cell edges survive to physical cleanup without reusing the old parent slot. [Block reference-Get slot review](coverage/semantics/ordinary-parent-backed-reference-get-child-slot-review.json). Typed, parented and wider short reference Get producers, ordinary This-reference-fetch consumers and wider lifetimes remain partial.
 
 Parentless public untyped sole short `&get => $this->sameField` now uses genuine Hook/BODY and compiled expression/arrow lines. Alias/copy identity, physical child/cell retirement and exact zero/one-step return/fetch/cleanup resumptions pass; expression fetches stay distinct from implicit-null/Notice fallthrough. Four originals reuse native once, with author 189/189 and independent 305/305 fixture-SL cuts kept separate. The actual 14242d240 SL508 canonical load passes in 15.587678412906826s with source credit 0. Wider typed/parented/Trait/SET bodies, consumers and lifetimes remain partial. [Short-reference Get review](coverage/semantics/parentless-short-reference-get-hook-review.json).
+
+Same-field short reference getters also accept literal-string field spellings, including an escaped-name witness. Four new originals reuse native once; author189/189 and independent340/340 fixture-SL cuts retain separate identities, malformed-name/body refusals and exact resumptions. Actual006fba302 and joined3196/SL508 canonical15.330673544202s add source0; wider parent/type/consumer/lifetime modes remain partial.
+
 Existing DIRECT storage and cleanup remain. Live array/object Get results, selected
 canonical-int, Boolean, FLOAT, string and NULL quiet Get returns, nullable scalar
 and scalar-union quiet headers and supported unselected typed Get companions.
