@@ -67,7 +67,7 @@ def conditions(program, path, index):
         for label, flag in (('drop', 'eps'), ('flip', '(false)')):
             state = 'S_peer_nan_child_' + label
             expected, outcome = 'eps', refused(state)
-            if index == 2 and label == 'flip':
+            if index in (1, 2) and label == 'flip':
                 expected = '(' + value + ')'
                 outcome = ['$string_read_runtime_value(' + state + ', ' + origin + ') = (PBOOL false)',
                            '$string_read_runtime_bytes(' + state + ', porigin_key) = $string_read_runtime_bytes(S_after, porigin_key)',
@@ -168,6 +168,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Current four histories add independent consumer-only NaN bit/identity, missing/flipped child and root CODE, exact target/fallback/line/source/precision, NORMAL/CONSTCONTEXT, keyword and saved-receipt controls. Fifteen checked-source source0 controls cover genuine NaN unary/arithmetic/POWER/scalar children, ordinary fallback types, namespace/alias targets and owning/dynamic refusal. The later arithmetic operand certificate promotes the emitted-NaN control and the coherent false-CODE INF-INF child; missing CODE and other flips retain refusal. Namespaced late-fallback INF operands lack compiled NaN facts and remain refused; fully qualified INF operands supply the genuine positive namespace case. Negative/payload/signaling NaN compiler outputs preserve instanceof=false while general VALUE/BYTE and quiet truth stay refused; invalid64 bits refuse. Existing raw ConstFetch compiler-output trust is explicit. Native originals reused once; no general truth/formatter/compiler/owner or held-boundary widening.'
+    report['scope'] = 'Current four histories add independent consumer-only NaN bit/identity, missing/flipped child and root CODE, exact target/fallback/line/source/precision, NORMAL/CONSTCONTEXT, keyword and saved-receipt controls. Fifteen checked-source source0 controls cover genuine NaN unary/arithmetic/POWER/scalar children, ordinary fallback types, namespace/alias targets and owning/dynamic refusal. The later arithmetic/unary operand certificates promote the emitted-NaN control and coherent false-CODE INF-INF and +NAN children; missing CODE and other flips retain refusal. Namespaced late-fallback INF operands lack compiled NaN facts and remain refused; fully qualified INF operands supply the genuine positive namespace case. Negative/payload/signaling NaN compiler outputs preserve instanceof=false while general VALUE/BYTE and quiet truth stay refused; invalid64 bits refuse. Existing raw ConstFetch compiler-output trust is explicit. Native originals reused once; no general truth/formatter/compiler/owner or held-boundary widening.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

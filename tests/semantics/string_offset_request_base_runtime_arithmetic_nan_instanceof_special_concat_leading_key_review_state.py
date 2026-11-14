@@ -114,7 +114,7 @@ if __name__ == '__main__':
         ('bad_string', '', '"no"*' + emitted, 'stdClass', False, True),
         ('zero_division', '', emitted + '/((float)(!INF))', 'stdClass', False, True),
         ('emitted_power', '', '(-1.0)**(((float)(!0.0))/2)', 'stdClass', False, True),
-        ('emitted_unary', '', '+' + emitted, 'stdClass', False, True),
+        ('emitted_unary', '', '+' + emitted, 'stdClass', True, True),
         ('late_namespace_inf', 'namespace Ns;', emitted, 'namespace\\Missing', False, True),
         ('fqn_namespace_inf', 'namespace Ns;', '((float)(!\\INF))*\\INF', 'namespace\\Missing', True, True),
         ('finite_fallback', '', '((float)(!INF))+1.0', 'stdClass', True, False),
@@ -153,6 +153,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Current four histories add independent emitted-NaN missing/flipped CODE, root/both-child source/precision and line fences, live-versus-captured precision and explicit cached-paused-NaN counterexamples. Lower binary_apply can retain the paused cached result while the operand certificate refuses it. Fifteen checked-source source0 controls cover proper left/right recursive NaNs, quiet string/BOOL/NULL operands, warningful/bad strings, zero division, emitted POWER/unary and late namespace fallback refusal, genuine FQN namespace and finite fallback. Fresh emitted and compiled-INF-INF false-CODE bridge controls validate only the two affected old compiled-NaN expectation promotions without historical replay. General VALUE/BYTE/truth/compiler/formatter/owner and exact held boundaries stay unchanged; native originals reused once, fixture source0/native0.'
+    report['scope'] = 'Current four histories add independent emitted-NaN missing/flipped CODE, root/both-child source/precision and line fences, live-versus-captured precision and explicit cached-paused-NaN counterexamples. Lower binary_apply can retain the paused cached result while the operand certificate refuses it. Fifteen checked-source source0 controls cover proper left/right recursive NaNs, quiet string/BOOL/NULL operands, warningful/bad strings, zero division, emitted POWER and late namespace fallback refusal, genuine FQN namespace and finite fallback. The later unary operand certificate promotes the emitted-unary control. Fresh emitted and compiled-INF-INF false-CODE bridge controls validate only the two affected old compiled-NaN expectation promotions without historical replay. General VALUE/BYTE/truth/compiler/formatter/owner and exact held boundaries stay unchanged; native originals reused once, fixture source0/native0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
