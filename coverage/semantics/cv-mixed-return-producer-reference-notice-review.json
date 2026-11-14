@@ -1,0 +1,183 @@
+{
+  "milestone": "REF67",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "129a23b57a72dae51e2ed146cfab46ca53f4b67b",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "e503ce2590aa1d5f7c6778124d2a8178ffed6827ed1c15ec933064e75ecd87b3",
+    "law": "Five added watsup lines require >0 actuals, canonical raw NIdentifier mixed, exactly normalized[mixed], then the existing argument proof with RETURNS=eps. The existing zero-actual arm, verifier/frame/Notice-source/owner laws and every other clause remain literal.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_emit_return_type_check, zend_compile_typename_ex",
+      "Zend/zend_vm_def.h: ZEND_RETURN, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "spec/semantics/95-type-values.watsup: typed_exact, typed_conversion_at; 95-typed-calls.watsup: typed_return_value, typed_return_task_valid"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-mixed-return-producer-reference-notice-67",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "7b980227fe8073d5dd9fdb75948a713aab9bae919704a09c0e4dc39329c6a6a2",
+    "files": 10,
+    "scope": "Whole ten-path author READY and independent FULLCLEAR preceded MAIN integration. Combined controller UNEXECUTED; its imported closure, saved-native forwarding and unique serial Make recipe have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "634db9175ef934cd3fbda4c817ec69ef6f61bba0eac38d7ae416bc17be5f4ba7",
+    "decision": "FULLCLEAR",
+    "scope": "Source contract, counterexamples, source/native reliability, exact ten-path manifest and controller/Make wiring. Actual MAIN source delta was independently read without execution."
+  },
+  "counts": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "new_postlaw_notice_agreements": 3,
+    "separate_prelaw_strict_receive_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "ownership": "Mixed preserves the admitted REQUEST string, ARRAY or quiet stdClass identity without coercion. Producer formals retire before private Notice cells; source CV rebinding does not retarget the returned payload. String/array COW preserves caller snapshots, object mutation preserves shared identity, and later private INT writes add no persistent return constraint.",
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "e4b3f1394611f5b536ace1349321ce7e29525714e7c6e1ad174c591be1998693",
+      "revision": "5c6d6679ea68c663eff1a38faa18643e5c3bf14e",
+      "source_agreements": 0
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "c5ab8bf6e9ab84c71aef7d38fd3415195cc51aff273acfc126b9f75a9025eeb1",
+      "revision": "bb38c83f9e9dc5597e45cdc0be91432fb125b76f",
+      "source_agreements": 0
+    },
+    {
+      "role": "author production SL Notice1; saved native",
+      "report": "author/postlaw-source-0-scwd572b/report.json",
+      "sha256": "00e28c037971e54e3e13f7329f66d851ab58a734502a14131e78db6e2d906295",
+      "revision": "7d6363250fb25de13e1d60e692b3ee8175699f23",
+      "source_agreements": 1
+    },
+    {
+      "role": "author production SL Notice1; saved native",
+      "report": "author/postlaw-source-1-u5uo_3bz/report.json",
+      "sha256": "49fc86ef811d38181e2b618c7dabde481d086c26bf5136db3f9f954218006b58",
+      "revision": "7d6363250fb25de13e1d60e692b3ee8175699f23",
+      "source_agreements": 1
+    },
+    {
+      "role": "peer production SL Notice1; saved native",
+      "report": "peer/postlaw-source-v1/source-mtr97fdh/report.json",
+      "sha256": "c0eccc6bf13d34246909cda7a801ba931133cd48262570945c9ef3a38dc1feec",
+      "revision": "0053d0c6433681684de9e122b8d43cda7ee188e3",
+      "source_agreements": 1
+    },
+    {
+      "role": "separate prelaw production SL strict RECEIVE-priority1",
+      "report": "peer/prelaw-priority-source-v1/source-q5oj0vqx/report.json",
+      "sha256": "3a2a6db9f39e9e7ebab66ab2869010e4542f0eaddddfe98b18d16a37263c4abe",
+      "revision": "6a01d164d2e782ae3954bf62eb2d0fe08b84fea8",
+      "source_agreements": 1
+    },
+    {
+      "role": "author fixture SL507390/source0",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "211cad46e6df3cef876bce69c2d0997f676658ad9f882cc14bcf89cb6079e7ca",
+      "revision": "7d6363250fb25de13e1d60e692b3ee8175699f23",
+      "source_agreements": 0,
+      "conditions": 390,
+      "reached": 281,
+      "derived": 109,
+      "module_count": 507,
+      "elapsed_seconds": 61.53672671318054,
+      "process_cap_seconds": 1200
+    },
+    {
+      "role": "peer fixture SL507200/source0",
+      "report": "peer/postlaw-state-v1/report.json",
+      "sha256": "637856c760a12ff050630f0fea7be9e2c9214e128f4b9a9bc25d559fe72bc249",
+      "revision": "0053d0c6433681684de9e122b8d43cda7ee188e3",
+      "source_agreements": 0,
+      "conditions": 200,
+      "reached": 178,
+      "derived": 22,
+      "module_count": 507,
+      "elapsed_seconds": 49.13749313354492,
+      "process_cap_seconds": 1200
+    }
+  ],
+  "prelaw": {
+    "author_unsupported2": {
+      "report": "author/prelaw-baseline-summary.json",
+      "sha256": "cfb617a46edbfdb1fe6f542c6602577b252045461dd1d152f22c5f526bf8e809",
+      "source_agreements": 0,
+      "disposition": "Both original comparisons remain false/Unsupported: error-handler ingress requires a producer continuation. Saved native reused."
+    },
+    "author_front": {
+      "role": "actual front165/source0",
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "5a57faf9ec6b8e7136939ce5ef3187a2e1a81e276df1d19935d5280c08072b55",
+      "revision": "449e7fa932e85e0b140892d2a014dfae81f10665",
+      "source_agreements": 0,
+      "conditions": 165,
+      "reached": 165,
+      "derived": 0,
+      "module_count": 507,
+      "elapsed_seconds": 29.978352785110474,
+      "process_cap_seconds": 1200
+    },
+    "peer_front": {
+      "role": "corrected actual front125/source0",
+      "report": "peer/prelaw-front-v2/report.json",
+      "sha256": "6eb982af616eaf18402f9e0cb082fcb554884efb7c8993e45318da6714b7f533",
+      "revision": "c38c4496027c93bbb91c4b0d78530d8239cfa7d5",
+      "source_agreements": 0,
+      "conditions": 125,
+      "reached": 125,
+      "derived": 0,
+      "module_count": 507,
+      "elapsed_seconds": 30.777096271514893,
+      "process_cap_seconds": 1200
+    },
+    "preserved_peer_binding_failure": {
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "a912007ff603d35a1537b4aeb9fd0f3f27595df84437654327db636a8abc1eab",
+      "source_agreements": 0,
+      "disposition": "First prelaw fixture stopped at a SpecTec binding error before execution; corrected v2 is separate."
+    }
+  },
+  "canonical_main": {
+    "tested_revision": "6f4f06356ab917458b1aab0cb53f6a13a8f31dde",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main46-mixed-return-producer-joined-508-v1/report.json",
+    "sha256": "11e0d826f03ca1dd212efce822970f3d4e5f0f263fa624b965afcbd054a2dfa3",
+    "mode": "production SL/cache=false/det=true",
+    "module_count": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "process_cap_seconds": 60,
+    "elapsed_seconds": 16.038901602849364,
+    "source_agreements": 0,
+    "result": "PASS once: exit0, true LF, quiet stderr, stable HEAD/inputs, fully reaped."
+  },
+  "compatibility": {
+    "current39": "Exactly matching raw NIdentifier mixed+normalized singleton mixed loses one leading refusal. Other raw/normalized mismatches remain negative. Fresh67 covers exact mixed and malformed nullable/union forms; historical39 and53-66 cuts remain unchanged and unrenewed.",
+    "tested_author": "Final donor differs from author7d6363250 only in three peer-counterexample typing lines independently exercised by the peer full fixture. Author executed source/state closures remain literal.",
+    "source_watches": [
+      {
+        "report": "author/postlaw-source-summary.json",
+        "sha256": "6208f1d0cd3ec427dcb094e1035ab7bc69d5dd47a82a87877560ea60ad6a5cc0"
+      },
+      {
+        "report": "peer/postlaw-source-v1/manifest.json",
+        "sha256": "9746d2881d82e2328fda2e7671cde55156ad187a53c44df2004532e3177b7ca2"
+      },
+      {
+        "report": "peer/prelaw-priority-source-v1/manifest.json",
+        "sha256": "c9ad7b0e1b07dfe198beea2c982e47a5f336ecba3db6830432f133ad3ff716df"
+      }
+    ]
+  },
+  "limits": "Only canonical standalone mixed RETURN headers extend the existing completed ordinary-CV producer route. Current formal, payload, source, backing, history, GC and ownership bounds remain. Mixed formals, nullable/union mixed, defaults/variadics/attributes and wider contexts/lifetimes remain partial. Existing zero-actual admission is unchanged. All exact holds, especially Owned-NUL source-release, remain held."
+}

@@ -214,6 +214,8 @@ Completed singleton and multi-CV producers admit three to six distinct ordered a
 
 Completed singleton and multi-CV producers admit canonical standalone null return declarations. Return checking accepts only NULL even in weak mode; producer retirement precedes the fresh untyped private Notice cell, retaining existing alias and cleanup bounds. [Null return review](coverage/semantics/cv-null-return-producer-reference-notice-review.json).
 
+Completed ordinary-CV producers also admit canonical standalone `mixed` returns, preserving the admitted payload identity before frame retirement and private Notice-cell creation. See the [mixed-return review](coverage/semantics/cv-mixed-return-producer-reference-notice-review.json); existing formal, payload and lifetime limits remain, including the Owned-NUL hold.
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The

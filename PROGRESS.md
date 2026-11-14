@@ -223,6 +223,8 @@ Completed singleton and multi-CV producers admit three to six distinct ordered a
 
 Completed singleton and multi-CV producers admit canonical standalone null return declarations. Return checking accepts only NULL even in weak mode; producer retirement precedes the fresh untyped private Notice cell, retaining existing alias and cleanup bounds. [Null return review](coverage/semantics/cv-null-return-producer-reference-notice-review.json).
 
+REF67 admits standalone raw mixed/normalized[mixed] returns through the existing completed ordinary-CV producer proof. Three new Notice source agreements and a separate prelaw strict RECEIVE-priority control use four native originals once; author390 and peer200 fixture-SL507 conditions keep separate source-zero cuts. The sole actual canonical load is recorded in the mixed-return review. The current old39 exact-mixed header expectation changes without renewing historical evidence; wider contexts and all held lanes remain partial.
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.

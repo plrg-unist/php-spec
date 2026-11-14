@@ -577,6 +577,16 @@ keeps the native originals, new Notice agreements, weak RETURN-priority control,
 state fixtures and canonical load separate. Wider contexts remain partial;
 Owned-NUL stays held.
 
+Canonical standalone `mixed` returns also use the completed singleton and
+multi-CV producer route. Exact raw/normalized authentication reuses the existing
+argument proof. Mixed preserves the admitted value without coercion; producer-frame
+retirement still precedes private Notice-cell creation. The
+[mixed-return review](../../coverage/semantics/cv-mixed-return-producer-reference-notice-review.json)
+keeps three new Notice agreements, the separate prelaw strict RECEIVE-priority
+control, four native originals run once, private state fixtures and the sole actual
+canonical load distinct. Existing formal/payload/source/ownership bounds remain;
+Owned-NUL stays held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
