@@ -832,6 +832,22 @@ def $string_read_runtime_instanceof_operand(S, PORIGIN n pcpath) = (PFLOAT n_bit
   -- if $power_prepare(pnumber_left, pnumber_right) = POWERDONE (NFLOAT n_bits) false
   -- if $pfcast_nan(PFLOAT n_bits)
   -- if $binary_apply(S, POWER, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN (PFLOAT n_bits)]
+def $string_read_runtime_instanceof_operand(S, PORIGIN n pcpath) = (PFLOAT n_bits)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFCAST CASTFLOAT expression_child
+  -- if $pplist_meta_kind($pcmetadata(expression)) = 2
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_instanceof_operand(S, porigin_child) = (PFLOAT n_bits)
+  -- if $pfcast_nan(PFLOAT n_bits)
+  -- if $cast_apply(S, CASTFLOAT, PFLOAT n_bits, z_line) = S[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_read_runtime_instanceof_operand(S, porigin) = $string_read_runtime_value(S, porigin) -- otherwise
 ;; Raw equality keeps its compiler-output boundary; other names need lexical proof.
 def $string_read_runtime_named_target(S, porigin, name, preqbytes, z_line) = true
