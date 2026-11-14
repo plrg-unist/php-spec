@@ -1522,6 +1522,12 @@ A162/B188 fixture-source-zero cuts remain separate; wider conditions/producers,
 REQUEST/NUL ingress, abrupt paths and lifetimes remain partial.
 [String-condition base review](coverage/semantics/string-offset-string-conditional-base-initial-raw-leading-key-review.json).
 
+Literal string/null coalesce bases also retain the selected non-NUL INTERNED
+header and frozen leading index through returning Warning handlers. Exact raw
+source, child reads and string/null identities preserve nullness selection;
+wider producers, REQUEST/NUL ingress, abrupt paths and lifetimes remain partial.
+[Coalesce-base review](coverage/semantics/string-offset-coalesce-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
@@ -5210,6 +5216,13 @@ and nonnull-left coalesce, including zero. Exact raw source/declaration ENV,
 no-DIM/name bindings and Shared-cache/receive/owner guards remain; wider
 producers, pruned syntax, private/Generator contexts and lifetimes remain partial.
 [Numeric integer-cast default review](coverage/semantics/numeric-integer-cast-default-reception-review.json).
+
+Resolved case-sensitive PHP_MAJOR_VERSION, PHP_MINOR_VERSION,
+PHP_RELEASE_VERSION and PHP_VERSION_ID also supply deferred integers 8/5/10/80510
+through existing arithmetic/casts/selection and named warning reentry. Exact
+source/declaration ENV, no-DIM/name/cache/receive/owner guards remain; wider
+producers, pruned syntax, entries and lifetimes stay partial.
+[Version integer-default review](coverage/semantics/version-integer-default-reception-review.json).
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
@@ -8706,11 +8719,12 @@ receiver preserves the caller destination. Borrowed target IDs add no owner,
 and pending constructors remain excluded. Wider producers and lifetimes
 remain partial.
 [WeakReference quiet Get review](coverage/semantics/magic-property-weakreference-quiet-get-review.json).
-Authentic unscoped function-literal Closure Get results also cross quiet CV
+Authentic unscoped function-literal and Arrow Closure Get results cross quiet CV
 binary ??, private ??= and Empty with complete captures and the original
 shared cache stamp. Empty releases its result owner before its receiver; wider
 Closure producers, initialized static cells, binding and lifetimes remain partial.
 [Literal Closure quiet Get review](coverage/semantics/magic-property-realclosure-quiet-get-review.json).
+[Arrow quiet Get review](coverage/semantics/magic-property-arrow-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).

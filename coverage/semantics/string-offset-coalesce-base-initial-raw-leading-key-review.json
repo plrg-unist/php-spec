@@ -1,0 +1,87 @@
+{
+  "feature": "literal-coalesce-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed and validated; full core remains partial",
+  "scope": "A literal string/string or NULL/string coalesce supplies its selected non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index still supplies the original byte. The falsey nonnull string 0 stays selected; a NULL left operand selects the fallback.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_head": "8b126ae1e8663df6e25b1635de98211defea7c9f",
+  "reviewed_tree": "18bdf11e1bbe17ab318336f9e6c6df11929e4707",
+  "implementation_sha256": "5dfe47029233697d405ee85ac8d233d59f5bd6d46aeac947625d2e31e0d820bc",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_coalesce emits COALESCE and fallback QM_ASSIGN. Zend/zend_vm_def.h ZEND_COALESCE copies values above IS_NULL, including the falsey string 0; ZEND_QM_ASSIGN copies the fallback. Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code.",
+  "implementation": "Two local425 raw_known_base arms authenticate the raw coalesce shape, exact child compiled reads and INTERNED identities, parent compiledEPS and selected bytes. The NULL arm also checks case-insensitive raw NULL spelling and its compiled PNULL. Existing raw capture/saved-index, source and ownership guards remain. No generic233, provider/root, schema, REQUEST/NUL, abrupt or held-boundary change.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "2217e0a272205e976322738d803a584bdb6d2852be2fe84f9d4c6fb3f6d4064f",
+      "tested_revision": "65640e55e551e66b841e1401efd26f87227a5871",
+      "passed": true,
+      "source_credit": 0,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "f660a93add57f940ac6e1cce145e29a04e13672ecc657c6b7ba095e96f4e83ad",
+      "tested_revision": "65640e55e551e66b841e1401efd26f87227a5871",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 56
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "72e9aa444f67e9557e44ea0157fc023fad713bad1eeb5a47c6a57119fa00be2b",
+      "tested_revision": "9bc1dfa25dceb69cde4b799a553dc88f5696f043",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 56
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "3059859ce11847c32729bc84a0bc7d2052e5b70a191a643a3a6aa3db4eeb7b96",
+      "tested_revision": "602f8b14f05671c58991ca8329953333c53204bb",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "2812567a84241fa8e380aa59bdb9d44f2137e2e0c0647a22a691cdac7e5c3b68",
+      "tested_revision": "602f8b14f05671c58991ca8329953333c53204bb",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 151,
+      "derived_conditions": 50
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-coalesce-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "fd7f7ce539f1cd34d8ed4d3359b714d15e0042a5fad506ed90e18fd236499453",
+      "tested_revision": "8b126ae1e8663df6e25b1635de98211defea7c9f",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 180,
+      "derived_conditions": 62,
+      "compiler_seconds": 13.105180501937866,
+      "execution_seconds": 22.996212482452393
+    }
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main41-version233-ref61-coalesce-base-joined-508-v1/report.json",
+    "sha256": "b291aefe6f4df3a78428a3892f324836ec3d183172d0f091da0fd6f60a79df8c",
+    "tested_revision": "572bebcea73269d0063cb012b72ee97915223ae1",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.931867307983339,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author151/50-derived and independent180/62-derived fixture-SL cuts retain source0. Full155 prelaw captures, falsey nonnull versus NULL selection, exact raw child/pool/source authority, parent-fold refusal, ordinary/current versus initial-reference rebinding, unchanged heap owners, dispatch/resume/output, malformed records and budgets are checked. Source60/outer80/compiler120/state180 caps remain; all successful runs are quiet, stable and fully reaped. Independent B shares identical recorded hashes with all525 common author inputs and all516 common source inputs. No unique aggregate or historical renewal is claimed.",
+  "review": "Independent whole five nonMake files and two Make commands CONTENT/FULLCLEAR; saved-native source2 and author151 FULLCLEAR; author reciprocal independent180 review CLEAR. Whole READY and independent FULLCLEAR were sent directly to MAIN41 before this ledger. Canonical current composition is maintained by MAIN, separately from these private cuts.",
+  "preparation": "The conjoined byte-sequence binder was split into separate premises before execution. This preparation correction caused no failed execution or native replay; baseline Unsupported2 remains source0.",
+  "remaining": "Wider coalesce operands/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the external archives linked above. Tracked cases/renderers and the two Makefile coalesce-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

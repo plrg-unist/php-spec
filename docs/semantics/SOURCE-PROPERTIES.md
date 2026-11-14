@@ -1680,8 +1680,19 @@ blanket-rejected. Existing literal Empty already handles the throwing-capture
 control: last-owner capture disposal precedes receiver cleanup and preserves the caller
 destination on throw. Three changed-model source agreements and that retained
 prelaw control remain distinct; SL98/106/187/198 fixtures add no source credit.
-Arrow, fake, bound, cloned/private-cache and wider lifetimes remain partial.
+Fake, bound, cloned/private-cache and wider lifetimes remain partial.
 [Literal Closure quiet Get review](../../coverage/semantics/magic-property-realclosure-quiet-get-review.json).
+
+Genuine unscoped Arrow results follow those quiet consumers with the same
+owner and cleanup laws. Raw Arrow source, BODY child5, CODEARROW marker and
+exact IMPLICIT names from source discovery minus parameters authenticate
+the template. Captures must be complete; an undefined IMPLICIT slot may be
+completed UNINITIALIZED, while ALIAS slots and pending cursors remain refused.
+The original unscoped/shared stamp, no binding or initialized static cells
+and existing live/cache checks remain. Three changed-source agreements and
+the retained prelaw literal control keep distinct cuts; SL115/127/207/216
+fixtures add no source credit. Wider producers and lifetimes remain partial.
+[Arrow quiet Get review](../../coverage/semantics/magic-property-arrow-quiet-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
