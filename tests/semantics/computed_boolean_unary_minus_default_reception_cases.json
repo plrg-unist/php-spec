@@ -1,0 +1,50 @@
+[
+  {
+    "id": "computed-boolean-unary-minus-cold-warm",
+    "source": "<?php\nfunction booleanUnaryWarning245($errno, $message, $file, $line) {\n    global $xBooleanUnary245;\n    echo 'warning:', $message, '|';\n    $xBooleanUnary245 = 3.5;\n}\nfunction booleanUnaryDefaults245(int $first, int &$comparison = -(E_WARNING > E_ERROR), int $equal = -(E_WARNING === E_ERROR), int $cast = -(bool)(E_WARNING - E_ERROR), int $negation = -(!(E_WARNING > E_ERROR)), int $exclusive = -((E_WARNING > E_ERROR) xor (E_WARNING === E_ERROR))) {\n    echo 'body:', $first, ':', $comparison, ':', $equal, ':', $cast, ':', $negation, ':', $exclusive, '|';\n    $comparison = 9;\n}\nset_error_handler('booleanUnaryWarning245');\n$xBooleanUnary245 = 1.5;\nbooleanUnaryDefaults245($xBooleanUnary245);\necho 'cold:x=', $xBooleanUnary245, '|';\n$xBooleanUnary245 = 1.5;\nbooleanUnaryDefaults245($xBooleanUnary245);\necho 'warm:x=', $xBooleanUnary245, '|';\n",
+    "source_sha256": "65b61909310f54c25aa4bbc62f80655fcdf1b2412bf518d7a8f7e4a93f99e249",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Genuine E_* defaults remain deferred. Comparison, identity, explicit BOOL cast, NOT and logical XOR children have Boolean shape and no Numeric certificate; quiet conversion yields NINT0/1 before negation. Cold/warm raw PINT-1/0 caches survive private BYREF default mutation and the earlier supplied-int precision callback."
+  },
+  {
+    "id": "computed-boolean-unary-minus-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanUnaryAlias245;\nuse const E_WARNING as Base245;\nuse const E_ERROR as One245;\nfunction warning245($errno, $message, $file, $line) {\n    global $xAlias245;\n    echo 'warning:', $message, '|';\n    defaults245(2);\n    $xAlias245 = 3.5;\n}\nfunction defaults245(int $first, int $comparison = -(Base245 > One245), int $conjunction = -((Base245 > One245) && (One245 < Base245)), int $zero = -((Base245 === One245) || (One245 > Base245)), int $last = 7) {\n    echo 'body:', $first, ':', $comparison, ':', $conjunction, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('BooleanUnaryAlias245\\\\warning245');\n$xAlias245 = 1.5;\n$lastAlias245 = 8;\ndefaults245(last: $lastAlias245, first: $xAlias245);\necho 'outer:x=', $xAlias245, '|';\n",
+    "source_sha256": "a4f72c8fb390293d57b0ad12616d9f321ed612dcde362800c692068f6ea6fc62",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual imported declaration ENV and named holes authenticate comparison and demanded logical Boolean children. Reentry fills Shared raw PINT-1/-1/0 caches before outer first-argument resumption, without changing source/name/type/owner authority."
+  },
+  {
+    "id": "computed-boolean-unary-minus-nan-comparison-skipped-level",
+    "source": "<?php\nfunction booleanQuietWarning245($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction booleanQuietDefaults245(int $first, int $nan = -((NAN === NAN) || (E_WARNING === E_ERROR)), int $skippedOr = -((E_WARNING > E_ERROR) || E_STRICT), int $skippedAnd = -((E_WARNING === E_ERROR) && E_STRICT)) {\n    echo 'body:', $first, ':', $nan, ':', $skippedOr, ':', $skippedAnd, '|';\n}\nset_error_handler('booleanQuietWarning245');\n$xQuiet245 = 1.5;\nbooleanQuietDefaults245($xQuiet245);\n$xQuiet245 = 1.5;\nbooleanQuietDefaults245($xQuiet245);\n",
+    "source_sha256": "e693019f301494ca4b8bb1e02c694fbb2294762d715df9f46ad26d019157a451",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet numeric NaN identity produces a Boolean without NaN truth coercion. Actual decisive logical children skip E_STRICT on both truth values, retaining raw cache INT0/-1 and the complete existing source/no-DIM/name binding proof."
+  },
+  {
+    "id": "computed-boolean-unary-minus-noisy-nan-truth-control",
+    "source": "<?php\nfunction warning245($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults245(int $first, int $later = -(!(NAN + (E_WARNING - E_WARNING)))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning245');\n$x245 = 1.5;\ntry { defaults245($x245); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "a570a25273ff12d7595004152b46d2ad858d25a6c52a01ba382d2175fa51bbb3",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Demanded NaN truth remains nonquiet and does not gain a Boolean Numeric certificate."
+  },
+  {
+    "id": "computed-boolean-unary-minus-demanded-deprecated-level-control",
+    "source": "<?php\nfunction warning245($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults245(int $first, int $later = -((E_WARNING > E_ERROR) && E_STRICT)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning245');\n$x245 = 1.5;\ntry { defaults245($x245); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "bea569058711adaa5284fb1e65ad2e801bbbc71ec3d89460244e9a61762c7554",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A demanded deprecated E_STRICT name remains outside quiet Boolean condition authority."
+  },
+  {
+    "id": "computed-boolean-unary-minus-skipped-dimension-control",
+    "source": "<?php\nfunction warning245($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults245(int $first, int $later = -((E_WARNING > E_ERROR) || (int)'8'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning245');\n$x245 = 1.5;\ntry { defaults245($x245); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "3c426909948884ead273cb801264687061666a4e84451ee46f68cc473a5038d6",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Whole-tree no-DIM still rejects an actually skipped dimension below direct Boolean UnaryMinus."
+  }
+]
