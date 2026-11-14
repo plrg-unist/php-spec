@@ -1,0 +1,102 @@
+{
+  "feature": "quiet-falsey-raw-scalar-truth-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Quiet computed signed64 integer-zero shorthand conditions retain the literal non-NUL INTERNED fallback header and frozen initial raw CV offset through returning Warnings, with ordinary key replacement or genuine initial-reference rebinding. Four literal falsey ladders and folded non-FLOAT NOT share the same proof; their affected controls earn no new source credit.",
+  "target": "PHP8.5.10 CLI NTS signed64; sole local .tools/php/bin/php oracle and tests/semantics/profile.json; pure authored .watsup; production SL508",
+  "reviewed_author_head": "a2ab79ec86de2ccf6bcd955bb35a80ea4e80d75a",
+  "reviewed_peer_head": "b6a80cb9fcb95b5e0a49785a12d04b6e2870ede7",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "3d8936b21ba0fed63da5676daf5916e19e52e1d93c2f6ee56cf2819ef237175d"
+  },
+  "donor_implementation_sha256": "46ba6d00974a206fd815337a5406534ee279df15a0ba0eba6e7ff3ebbe0283bf",
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_shorthand_conditional emits JMP_SET for the compiled condition and QM_ASSIGN for the fallback; Zend/zend_vm_def.h JMP_SET computes truth and skips or enters that fallback, whose QM_ASSIGN preserves the literal header. Compiler45 already folds the certified signed64 trees. BooleanNot of every FLOAT remains emitted through the existing separate runtime proof.",
+  "implementation": "One exact non-string falsey raw_truth clause replaces the NULL/false/int0/rawFloat0 ladders. It authenticates parent/condition/fallback occurrences, parent read-eps, own compiled condition, shared raw_truth, full-state quiet truth_value=false at line0 and fallback PSTRING/INTERNED identity. Direct raw strings retain the existing two-orientation rule. Folded non-FLOAT NOT has the same source/pool/quiet-complement authority through raw_truth, so its old special branch is removed and the FLOAT-emitted branch remains literal. Completion, CODE and precision contracts are unchanged.",
+  "intentional_guard_strengthening": "Removed literal helper ladders now refuse detached condition/fallback metadata. NULL/false gain exact simple-name/indexed NName authority; raw FLOATzero gains canonical16 lowercase-hex finite proof. Canonical raw negative-zero is admitted only as a constructed source-zero projection, distinct from the unchanged actual unary-minus FLOATzero source route.",
+  "composition": "Accepted4250ccf at aa436 was byte-identical to the then-current MAIN425 per integrator direct confirmation; newer ENUM519/GET407/COMP382 prerequisites were disjoint. The surgical425 patch was then composed with newer coalesce36/current changes: actual425f20e differs from donor46ba and retains those parent changes. No stale whole-file replacement or old source/native/model/state replay.",
+  "evidence": [
+    {
+      "kind": "Fresh native2 once and unchanged-model Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "383597ee96154c495a55ee804bf89d3f7c7ceaa92ed6365a86802b52d268ce6a",
+      "tested_revision": "c83e645216f5372791f62e9fb30650dab7b0a461",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "Two final original-source production-SL exact agreements; original native observations reused",
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "9e7964aca45abbaada3e53e3528ad9abaa380293733fe274672274e221e8ef41",
+      "tested_revision": "ed874add08e831c724a0152a5ff1bd3d057bc682",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "Inclusive author production-SL fixture: 168 inherited plus98 added; source0",
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v3/report.json",
+      "sha256": "6609267e705eb5344fbc5985ee717c2953e9dc380918c856f2135860cad5d85d",
+      "tested_revision": "1bf4187ba8156e8cdf7e8a7cb26d6a9e0eb7acad",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 266,
+      "derived_conditions": 163
+    },
+    {
+      "kind": "Inclusive independent production-SL fixture: 199 inherited plus107 added; source0",
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "c744876522cb5adb87ca7f3e6423ae57dbccb3a4d8c99331b5aedfb68e8f3e92",
+      "tested_revision": "b6a80cb9fcb95b5e0a49785a12d04b6e2870ede7",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 306,
+      "derived_conditions": 185
+    }
+  ],
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "9e61ebf1ea5e14464f68b193b70561456283cd362570b6a9d2fe331c96368ee3",
+      "tested_revision": "ed874add08e831c724a0152a5ff1bd3d057bc682",
+      "passed": false,
+      "source_credit": 0,
+      "reason": "Fixture compiler binding diagnostic: metadata_cond was bound after an inherited guard used it; no state execution."
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v2/report.json",
+      "sha256": "7a3d08d47d1e6d7ebd6f9fdc25da4e750f12e002c25c3f1f4713b66b546d9163",
+      "tested_revision": "b3516ff7316144ecc4ff7f5b566c4ebf7f3ea1a1",
+      "passed": false,
+      "source_credit": 0,
+      "reason": "Fixture state refused inconsistent NUlL/NuLl parent/indexed-name bytes; corrected only the fixture spelling."
+    }
+  ],
+  "preparation": "Before native/law work, source assembly expected decimal0 in both inherited cases, while the peer old spelling was hex0x0. Corrected before execution; preparation.json retains0 credit.",
+  "validation": "Native2 once/source2 exact agreements, A266/163-derived and independent B306/185-derived retain separate identities. Actual arithmetic spines and real ordinary/reference Warning continuation preserve fixed offset, current-key state, owners and budget rejoining. Derived controls discriminate valid truthy-tree refusal, exact metadata/name/hex pools, raw negative-zero0, folded-NOT equivalence, preserved emitted FLOAT NOT and forged-PBOOL refusal, precision and BUDGET behavior. Baseline Unsupported2, preparation and both fixture failures remain0; no unique aggregate or renewed old credit.",
+  "remaining": "Other producers, numeric overflow/nonfinite conditions, selected-NUL and Owned-NUL release, wider REQUEST/base/key/handler/ownership/lifetime histories and complete core remain partial. Compiler45/spec233/numeric/provider/root/schema/ownership and all exact PROGRESS holds remain unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact author/peer renderers and two Make recipes regenerate checked fixtures, with both inherited renderers watched. Raw originals/native-once observations, launchers and reports remain in linked external archives, which are not build dependencies.",
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main52-raw-truth-shorthand-joined-508-v1/report.json",
+    "sha256": "df5eceafe3f0b2d80965510ba99f8925cd09da04379e59f523e46889e90b3400",
+    "tested_revision": "3fa360cb16c2ca4ff8acdf8330941793655f0124",
+    "tested_tree": "540fce48be6570ea06865bbcaf449801cf528727",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.792736103991047,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "review": "Whole six-file READY and independent FULLCLEAR preceded source-first integration. Peer19 independently cleared actual MAIN3fa360cb16/tree540fce48 and the SAME saved canonical reportdf5eceaf against projectiond8969d54: exact six paths, four donor-exact Python files and exact425/Make patch lines preserving coalesce36/current entries. Actual425f20e is distinct from donor46ba. The ordered508 modules/511 arguments/complete512 watches bind the quiet, stable, fully reaped source-zero load. No author duplicate read, source rerun or extra receipt; source/report follow-up is closed.",
+  "source_integration": {
+    "projection": "../php-spec-evidence-archive/resumed-main-20261112/main52-raw-truth-shorthand-source-projection-v1.json",
+    "sha256": "d8969d54ab34d4d5dd0e3eb5c6b696f90eae0a8ccc718aad2f09b831b40429d1",
+    "actual_implementation_sha256": "f20e34a9a3663c4af673173d1fa5e314852ca693be8f97745ca40065c4e13533",
+    "composition": "Four Python files are donor-exact; exact425 and two additive Make changes retain all parent coalesce36/current entries."
+  }
+}

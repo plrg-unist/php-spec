@@ -16,6 +16,8 @@ Shared raw scalar truth now certifies zero/nonzero signed64 sign and ADD/SUBTRAC
 
 Folded non-FLOAT BooleanNot trees now certify both full-ternary selections while preserving the selected INTERNED header and frozen raw CV offset through returning Warnings. Each actual link requires its own PBOOL, exact child/source/value and quiet full-state complement; emitted FLOAT remains separate. Native2 once/source2, inclusive author273/170-derived and peer291/171-derived retain distinct cuts, with transitive nested-shorthand state0. Original07/currentc7 Unsupported2 cuts remain separate0; no new failures. Actual6680e5342/SL508 loads in15.936372417025268s/source0. Wider producers/lifetimes and every exact hold remain partial. [Review](coverage/semantics/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-review.json).
 
+Shared falsey scalar truth now certifies computed signed64 integer-zero shorthand conditions, preserving the literal INTERNED fallback and frozen raw CV offset through returning Warnings. Exact condition/fallback occurrences, raw_truth and full-state quiet false truth replace four literal ladders; folded NOT shares the proof while emitted FLOAT NOT remains separate. Native2 once/source2, author266/163-derived and independent306/185-derived retain distinct cuts; baseline Unsupported2, preparation and both fixture failures stay0. Actual3fa360cb16/SL508 loads in16.792736103991047s/source0. Wider producers/lifetimes and every exact hold remain partial. [Review](coverage/semantics/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-review.json).
+
 Quiet emitted shorthand ternaries require ABSENT true arms and exact source2/NORMAL/CODEfalse/read-eps/demanded precision/quiet full-state truth. Truthy returns the original BOOL/INT/FLOAT condition; falsey demands the fallback. Source4 reuse native4 once; authorSL1125/129-derived, inclusive peerSL1983/987-derived with31 explicit controls, and actuald767 sole SL508 load15.888855s/source0 retain separate cuts. The two old shorthand expectations and their scope sentence are updated; wider producers/owners/lifetimes and all exact holds remain partial. [Runtime shorthand-ternary review](coverage/semantics/string-offset-request-base-runtime-shorthand-ternary-review.json).
 
 Quiet emitted full ternaries preserve typed condition/selected VALUE through NORMAL/source/CODEfalse/read-eps/equal captured precision and exact full-state truth. Both present arm SOURCE identities are required; only the selected arm needs CODE/line/precision/value. Source4 reuse native4 once; author fixture SL1186/129-derived and inclusive independent SL2128/1071-derived with33 explicit source-zero controls remain separate. Actual6096251217 and sole SL508 load15.639037s/source0 pass; wider producers/owners/lifetimes and every exact hold remain partial. [Runtime full-ternary review](coverage/semantics/string-offset-request-base-runtime-full-ternary-review.json).
@@ -676,12 +678,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `ecf0e8c2a` passes its once-only 508-module production SL
-load in 15.48843676992692 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `bb1867cff` passes its once-only 508-module production SL
+load in 16.434753306908533 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main52-runtime-coalesce-joined-508-v1/report.json`
-(SHA-256 `18e0ea67698e51249c474a31e3e83bf986249141889aa16ed6e8a95ac97cfe1f`).
+`../php-spec-evidence-archive/resumed-main-20261112/main52-ordered-array-get-hook-joined-508-v1/report.json`
+(SHA-256 `d888ad8c13235851dae334bb3213e2d892582c65819e47c7e48d6a63d126a119`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
