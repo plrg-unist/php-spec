@@ -261,6 +261,8 @@ Quiet emitted &&/and/||/or retains actual NORMAL/source/CODE/read/precision and 
 
 Quiet emitted FLOAT arithmetic supplies exact nonNaN VALUE through existing typed truth/identity/comparison consumers while BYTE remains eps. Native4 once/source4, authorSL1196/129-derived, inclusive independentSL2782/1715-derived and narrow affected-logicalSL34 retain separate identities. Whole8 source/test integration0024679cf and the sole composed7266312e1 SL508 load16.382309734s/source0 pass; earlier Unsupported4 remain0. Wider producers/owners/lifetimes and all exact holds remain partial. [Runtime FLOAT arithmetic review](coverage/semantics/string-offset-request-base-runtime-float-arithmetic-review.json).
 
+Quiet emitted unary +/- supplies genuine nonNaN FLOAT VALUE, including nested signs, with BYTE eps. Four final source agreements retain2+1+1 pointwise cuts and six native originals once; both earlier adapter90 timeouts/recorder failures and missed final-assertion limits remain0. AuthorSL1143/129-derived and inclusive peerSL1950/936-derived, including24 controls and source-zero MIN overflow, remain separate. Actual79c161bda and its sole canonical SL508 load16.642128s/source0 pass. Wider producers/owners/lifetimes and all exact holds remain partial. [Runtime FLOAT unary review](coverage/semantics/string-offset-request-base-runtime-float-unary-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 
 Typed numeric comparisons include FLOAT operands and canonical
@@ -628,12 +630,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `4c1cc93c6` passes its once-only 508-module production SL
-load in 15.837800811976194 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `79c161bda` passes its once-only 508-module production SL
+load in 16.642128000035882 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main48-null-formal-producer-joined-508-v1/report.json`
-(SHA-256 `5274b143dc9eb679accd1625f27f47452b374b826e8d2044ea610822052803b6`).
+`../php-spec-evidence-archive/resumed-main-20261112/main48-runtime-float-unary-joined-508-v1/report.json`
+(SHA-256 `8ef69e98f7c2b51543607b14b5d9d12f2995d42cc8e0c674ddc0e8faa08ad673`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

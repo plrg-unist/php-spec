@@ -1320,6 +1320,8 @@ Quiet emitted &&/and/||/or retains actual NORMAL/source/CODE/read/precision and 
 
 Quiet emitted FLOAT ADD/SUBTRACT/MULTIPLY/DIVIDE values now compose through existing truth, identity and comparison consumers under exact source, code, captured-precision and quiet full-state proofs. Runtime FLOAT bytes and wider producers remain partial.
 
+Quiet emitted FLOAT unary +/- values now compose through existing typed consumers while retaining exact source/code/precision and quiet whole-state proofs. Runtime FLOAT bytes remain partial; deep source-cost limits retain separate evidence. [Runtime FLOAT unary review](coverage/semantics/string-offset-request-base-runtime-float-unary-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
