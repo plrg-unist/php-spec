@@ -1,0 +1,81 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored watsup; production SL",
+  "scope": "Emitted CONCAT retains an existing canonical non-NUL INTERNED STRING header under NORMAL, empty CONSTCONTEXT, exact own/child source, CODEfalse, absent own read, positive line, equal captured precision, two typed INTERNED children, actual concat_constant facts and unchanged whole-state string_concat result. Typed INT/identity parents compose; recursive BYTE fallback requires absent VALUE.",
+  "partial": "Allocating CONCAT, mixed primitive/FLOAT/raw/REQUEST inputs and wider owners/lifetimes remain outside this milestone. Existing formatters, compiler, modules30/59 and ownership bodies are unchanged; all paused boundaries remain held. Complete PHP core remains unfinished.",
+  "provenance": {
+    "engine": "vendor/php-src/Zend/zend_vm_def.h::ZEND_CONCAT and ZEND_FAST_CONCAT",
+    "rules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup",
+      "spec/semantics/59-concat-expressions.watsup::$concat_constant",
+      "spec/semantics/30-string-carriers.watsup::$string_concat"
+    ],
+    "php_binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": "LC_ALL=C; TZ=UTC; no request clock or LD_PRELOAD"
+  },
+  "source": {
+    "base": "cc64a17f16f3cc3d4dd518f051d60071b074ec8e",
+    "author_ready": "468aa8e4fff5b64649c6e245f6ec39ff27fa8fad",
+    "tested_peer": "14ba4553acab6b28be4f92d4de0984d03412e516",
+    "tree": "581f596649dafe022c4ee1f01ce42a7cdfb68750",
+    "manifest": "6 files, 321 insertions: Makefile4, module42525, new cases25/protocol72/review169/sources26; independently identical author/peer trees."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-empty-string-concat",
+  "cuts": [
+    {
+      "report": "author/baseline-v1/report.json",
+      "sha256": "eb067fe4fbb5c9d6287544910e2fd1eea0c783fd1e325b3865a9b1af4b81b4ed",
+      "revision": "439dc7d013ae03c9f750f8c2d960965f671c2747",
+      "result": "Native4 once; prelaw Unsupported4; agreement0."
+    },
+    {
+      "report": "author/source-v1/report.json",
+      "sha256": "b012849a48724e7ab8b841066970f7bcd96f362418a73533ada9122526e37643",
+      "revision": "ebd7483dfd25c236e9afe8f6b35e1e03f494b914",
+      "result": "Original24-line law: production-SL source4 PASS using saved native observations; separate historical cut."
+    },
+    {
+      "report": "author/state-v1/report.json",
+      "sha256": "444263c66f4e8375c44ca10138145a54be1019778ca691275b55251b828a0197",
+      "revision": "648ac9709e20f0d4d2e6933048c923670d02f58a",
+      "result": "First293 fixture failed encountered runtime_bytes nondeterminism (typed and recursive CONCAT BYTE overlap); other3 unrun, all agreement0. Raw failure preserved."
+    },
+    {
+      "report": "author/source-v2/report.json",
+      "sha256": "5172b1ce2afee167c2a58b79fea89158d36512c16f89c1fd155ccfb0351d6317",
+      "revision": "105334285ea38e2e760bb7b07673af97100274e6",
+      "result": "Corrected VALUE-eps fallback guard: affected current source4 PASS, saved native only; current source credit4."
+    },
+    {
+      "report": "author/state-v2/report.json",
+      "sha256": "9cb18b81fe7d14946428d64f5fb7318030d6a21e779dc338e3f432bc035cbb15",
+      "revision": "105334285ea38e2e760bb7b07673af97100274e6",
+      "result": "Fixture SL1147/129 derived, rows293/238/254/362 PASS; fixed180, source0/native0."
+    },
+    {
+      "report": "reviewer/state-v1/report.json",
+      "sha256": "8b07b757c1a74c31d8d90cbee3eb2cb768f72221aada542739a83e64856886f4",
+      "revision": "14ba4553acab6b28be4f92d4de0984d03412e516",
+      "result": "Independent fixture SL1975/957 derived, rows717/347/359/552 PASS; twenty fresh controls, fixed180, source0/native0."
+    }
+  ],
+  "independent_controls": "Original source/CODE/line/precision/pool/header mutations; nonnormal cached-result refusal; exact full state and STRINGDATA preservation; runtime empty-left/right/both versus constant-empty/both-nonempty allocation; CONSTCONTEXT refusal with direct BYTE retained; multibyte/nested/cast/bitwise/INT/truth/coalesce composition; raw NUL BYTE versus selected NUL refusal.",
+  "integration": {
+    "initial_actual": "436c92647ed9a05fa6bc2b997f5e2113229a1297",
+    "initial_placement_error": "Integration put the VALUE-eps guard inside integer POWER VALUE, introducing self recursion and leaving CONCAT overlap. Independent actual review rejected this placement; the structurally passing original canonical is source0, not semantic acceptance.",
+    "original_structural_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main61-string-output121-enum258-current-load-v1/report.json",
+    "original_structural_sha256": "70ae076488f567b20e5e9c65083635535a1d313ba7b360e14313e337a695da95",
+    "correction": "8843f128ba1f6a770c6335926366dbbfdc63fd4c",
+    "correction_scope": "Exact one-file +1/-1 move from POWER VALUE to recursive CONCAT BYTE, preserving all other current-parent bytes. Independently reviewed by unique rule identity.",
+    "corrected_425_sha256": "5e52a6d8e17733832b42994abc1e9abea935a2a23d8e0db56420d488ea634656",
+    "focus_report": "reviewer/current-main-focus-v1/report.json",
+    "focus_sha256": "81fe08512e635a2a7741f46e8ca0c9262ca0df81b25a3f2eea489fa76c995f12",
+    "focus": "Saved current CONCAT717 plus fresh emitted integer POWER26 PASS65.089434862/16.685908318s; explicit SL, argv511, fixed180, stable517 inputs, source0/native0.",
+    "joined_revision": "acbbef9b1d0105f14ebb6388b3a0674742bb662c",
+    "joined_tree": "e141160735bdac3cfa424fe43accc733c3dd89a4",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main61-string-guard-correction-enum259-current-load-v1/report.json",
+    "canonical_sha256": "da237500e5bcd1e98305187b3869d1a173865ed19f37364e9c249c1b2ac71474",
+    "canonical": "Corrected production-SL508 loading PASS16.282133020926267s, argv511, watches512, cap60, source0. Independently consumed once; exact fixed425 and four reviewed scripts retained."
+  },
+  "review": "Source semantics, compiler authority, no VALUE-to-BYTE cycle, test reliability and actual composition independently clear. All passing processes are quiet, stable, group-empty and reaped; frontend/adapter workers close0 without trailing output. Raw statuses, commands, inputs and failures remain at the external report paths. Historical failures/Unsupported/unrun are not added to agreement counts; metadata does not renew execution."
+}

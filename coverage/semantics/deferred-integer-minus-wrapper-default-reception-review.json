@@ -1,0 +1,79 @@
+{
+  "status": "reviewed bounded slice; calls.defaults remains partial",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local oracle and tests/semantics/profile.json",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_authority": "Zend/zend_ast.c: zend_ast_evaluate_ex UnaryMinus uses mul_function with INT-1; existing pure num_mul and runtime NEGATIVE preserve signed64 negation and MIN overflow promotion.",
+  "contract": "One phase-unsafe emitted UnaryMinus arm consumes recursive PINTi with long_range(i), returning number_value(num_mul(NINTi,NINT-1)). The result may be PFLOAT: negating MIN retains exact +2^63. Exact own/child SOURCE, false CODE, absent own pool/read/redirect and existing declaration ENV/cache/owner bounds remain. No result-range restriction, float roundtrip, completion gate, helper, compiler, stored Numeric or runtime widening.",
+  "source_packet": {
+    "donor": "e6461d8a10cf7af85fecacac9ced21c97b606589",
+    "tree": "1650bb6ece282958213616302af6e676ba668ce8",
+    "files": 6,
+    "manifest_sha256": "cd90ba32fc7b0c8593a779e291a914b984ddc421bcca8ff8c9066f22351eee4f",
+    "patch_sha256": "9d55e931032faab2a383c00d57d9f3e0da0c552b959848ef356a68324bc29b3d",
+    "scope": "519 plus10 lines, four new source/state test files and own three Make lines;257 metadata and259 preparation excluded."
+  },
+  "source_validation": {
+    "revision": "739100410b3aab374828cad1d5e6a447641eb17e",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "normal_agreements": 3,
+    "unsupported_controls": 0,
+    "native_fresh_originals": 3,
+    "native_saved_originals": 0,
+    "native_replays": 0,
+    "elapsed_seconds": [
+      24.85756250610575,
+      11.567874027881771,
+      11.430660441983491
+    ],
+    "native_report_sha256": "c76089547c24429b1da90562e97a9d86d6eb4bb895d5519a61bfdeefd02f364c",
+    "source_report_sha256": "b21af71974d5547808b7700cb4b37f210081c133666d3a87dc5b46909218cb58",
+    "scope": "Actual PINT0/-3/-MAX and MIN-overflow PFLOAT+2^63 survive cold/warm caches. Imported named/private negative defaults and caught later int-default TypeErrors preserve earlier supplied-CV warnings, caller BYVAL values and the unexecuted-body sentinel."
+  },
+  "author_fixture": {
+    "revision": "739100410b3aab374828cad1d5e6a447641eb17e",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "assertions": 77,
+    "source_credit": 0,
+    "report_sha256": "e6820903c48e4c473005ba0e9a5fccbee1f53fc7e82eebe0f2018fb3c4d874f9",
+    "scope": "Actual PINT3 child produces raw cached PINT-3; full quiet negative state including reporting0, cache tag/value and ENV/source/CODE/pool counterfacts, private-cell retirement and budget rejoin."
+  },
+  "independent_fixtures": {
+    "revision": "e6461d8a10cf7af85fecacac9ced21c97b606589",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "assertions": [
+      66,
+      66,
+      68,
+      54,
+      54
+    ],
+    "total": 308,
+    "source_credit": 0,
+    "report_sha256": "42cce69c4a9b23718eb9f8e1927a2eae161c0c7df878e511065d0aa6fcba9f8c",
+    "scope": "Actual MAX/MIN unary steps and full-state PINT/PFLOAT promotion, completion-independent certificates and budget, source/CODE/pool/redirect refusal, genuine outer named HOLES/private-3, cold DEFAULT_BIND and warm DEFAULT_RECEIVE TypeError with raw cache, caller retention and real retirement."
+  },
+  "actual_composition": {
+    "placement": "513f10653700e85b68bbd4796381e9853403241d",
+    "tree": "5f087d9ffc3d7aa45bce7875658e7c0dadee99ff",
+    "parent": "e02c303730da19f3f08731811d46efd0e84fc2d5",
+    "scope": "Five nonMake files match frozen donor individually; own three Make additions retain all parent bytes. Independently reviewed once by reviewer15."
+  },
+  "joined_load": {
+    "report_sha256": "70ae076488f567b20e5e9c65083635535a1d313ba7b360e14313e337a695da95",
+    "mode": "canonical production SL_mode",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.031517492840067,
+    "source_credit": 0,
+    "result": "true LF; quiet, stable, exit0, reaped"
+  },
+  "new_failures": 0,
+  "noncredit": "Make remains unexecuted0; fixture assertions and joined loading add no source agreements. No accepted257 campaign is renewed.",
+  "raw_evidence": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-minus-wrapper-default-reception-258",
+  "remaining": "Wider wrappers/producers/contexts/lifetimes and complete core remain partial; all exact held boundaries remain held."
+}

@@ -1,0 +1,53 @@
+{
+  "scope": "Quiet signed64 POSITIVE/NEGATIVE over certified PINT arithmetic children selects literal INTERNED bases before returning initial raw-key Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "The new POSITIVE/NEGATIVE PINT clause is disjoint from the existing integer helper through a negative helper guard on the original state.",
+    "Own and actual child source occurrences retain exact typed PINT pools and signed64 bounds. One shared NORMAL probe authenticates the recursive child and full unary_apply result.",
+    "Negative MIN overflow retains its genuine PFLOAT result under the unchanged FLOAT route; a forged PINT refuses. Existing raw-integer, binary/FLOAT rules and literal-TRUE/string first signs remain unchanged. FALSE/NULL first signs gain no route."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_try_ct_eval_unary_pm and zend_compile_unary_pm: compile the actual child, fold quiet constants through multiplication by +1/-1",
+    "vendor/php-src/Zend/zend_operators.c::mul_function_fast; spec/semantics/35-scalar-operations.watsup::$unary_apply and pure numeric helpers"
+  ],
+  "source_cases": [
+    "coercive-integer-unary-truth-base-initial-raw-leading-current-key: +((\"2\"+true)*\"1\") gives PINT3; ordinary key replacement at line12",
+    "coercive-integer-unary-truth-base-initial-raw-leading-reference-key: -((null/\"2\")-false) gives PINT0; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-unary-truth-base-initial-raw-leading-key-author25-20261114",
+  "baseline": {
+    "report": "baseline/report.json", "sha256": "6014b0868827584341e94a0fdc035395ccec806bbc86bc80bd1badd4eedf32bf",
+    "cut": "9594d9c1ecf3cd6a62343f358fbc00ce7e691533", "native_originals_once": 2, "expected_Unsupported": 2, "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json", "sha256": "74c327cc778892e2000caee64c58a7ee731b2464a861ece8ff88b54f1a3b012d",
+    "cut": "d077784d5548042c3483d8f972134920d985624b", "production_modules": 508, "saved_native_agreements": 2, "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json", "sha256": "2ae083ddea919b5d9a0b3cc11796a20417bfa1902a1e1830d8958039ec2c99cc",
+    "cut": "d077784d5548042c3483d8f972134920d985624b", "mode": "production SL fixture", "premises": 268, "derived": 165, "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-unary-truth-base-initial-raw-leading-key-peer23-20261114/postlaw-b-sl-v1/report.json",
+    "sha256": "b1373f0123bbb171c9e018de277686bda416dc66e8fa4e2b68aab99df072c90c",
+    "cut": "b00ff68aa93b609cdf5442ac404f8dccd1d5171c", "mode": "production SL fixture", "premises": 506, "derived": 349, "source_credit": 0
+  },
+  "counterfacts": "Exact own/child source, metadata, names, CODE, typed pools, sign/result and range; nested/double signs; MIN and out-of-range upper bounds, including negative-MIN overflow; child BOOL/NULL/FLOAT and integral-decimal forgeries; nonquiet conversions; direct/nested cached-BUDGET DIV-zero beneath coercive ancestors. Explicit legacy DIV acceptance remains separate. Genuine folded NOT/shorthand, arithmetic and FLOAT parents are source-zero compositions. Inherited NUL base capture refusals remain checked.",
+  "affected_old_expectation": "Only the prior PINT-arithmetic B S_unary_integer truth/base assertions promote. Fresh B covers the exact UnaryPlus(null/\"2\") contour without an old campaign replay.",
+  "failures": "No new compiler, source, fixture, timeout or interruption failures. The two expected prelaw Unsupported outcomes retain zero credit.",
+  "whole_source": {
+    "logical_commit": "d077784d5548042c3483d8f972134920d985624b", "tree": "98afce643c4d2424efbd2b1ebeaf33dfb32be392", "owned_paths": 7,
+    "manifest": "whole-source-manifest.json", "sha256": "f1ae5977e0739de60cd66dea452c585a0c31826cb394c55b1230462b74533ddb"
+  },
+  "actual_composition": {
+    "commit": "85bbb0bd6fe6331d2b6d0bbf7bf7c93c4aaf2f87", "tree": "d7352d451f3181ce593a623627fefd8d0b893e17", "parent": "322179723647584b680f534547b4419bdd9209fb",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main60-dynamicpintunary-current-load-v1/report.json",
+    "sha256": "ea352e39535a397be24845ebe4f1e45d72c2c53dc3c1eab91f54a36149810052",
+    "mode": "production SL", "modules": 508, "ordered_argv": 511, "stable_watches": 512, "cap_seconds": 60, "elapsed_seconds": 16.635596378939226, "source_credit": 0,
+    "compatibility": "Exact seven-path projection: five donor-exact test files, the new fifteen-line proof and two Make recipes preserve the actual parent and prior bytes. Peer23 closed the sole actual composition/SAME saved-read; author did not reread it."
+  },
+  "validation": "Quiet, stable, reaped records preserve commands, runtime/profile/environment, original bytes and raw outputs externally. Native originals ran once and were reused. Source, author, independent and load counts remain separate; no unique aggregate or renewed old evidence is claimed.",
+  "remaining": "Wider producers including complement over new PINT trees, FALSE/NULL first signs, broader bases/ownership/lifetimes and all exact held boundaries remain partial. No engine bug or intentional PHP divergence identified."
+}
