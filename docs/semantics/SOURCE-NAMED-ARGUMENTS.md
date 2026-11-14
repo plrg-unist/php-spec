@@ -157,7 +157,14 @@ admits distinct array/int/float/bool/string return pairs. Array|string preserves
 existing six-member ARRAY-formal copies, real tables and private COW. Strict
 array|float enters the untyped-formal body, then rejects numeric REQUEST text at
 RETURN before Notice/consumer/assignment. Old nullable/formal/ownership guards stay
-literal; higher return unions and wider contexts remain partial.
+literal; higher return unions and wider contexts remained partial at that cut.
+
+The [primitive-return review](../../coverage/semantics/cv-primitive-union-return-producer-reference-notice-review.json)
+admits three to six distinct ordered array/int/float/bool/string/null return members.
+The named six-member ARRAY return preserves producer and private COW, current
+prefix aliases and real-cell cleanup. Strict array|bool|float rejects numeric
+REQUEST text at RETURN before Notice, consumer or assignment; existing source,
+formal and ownership guards remain, with wider contexts still partial.
 
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and

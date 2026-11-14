@@ -212,6 +212,8 @@ Completed singleton and multi-CV producers admit ordered distinct formal unions 
 
 Completed singleton and multi-CV producers admit distinct nonnull two-member array/int/float/bool/string return unions. Callee-strict return verification precedes frame retirement/private Notice cells, retaining ordinary alias/snapshot/COW ownership bounds. [Distinct nonnull return-union review](coverage/semantics/cv-distinct-builtin-union-return-producer-reference-notice-review.json).
 
+Completed singleton and multi-CV producers admit three to six distinct ordered array/int/float/bool/string/null return members. Raw/normalized authentication preserves callee-strict verification before frame retirement and private Notice cells, with existing alias/snapshot/COW bounds. [Primitive return-union review](coverage/semantics/cv-primitive-union-return-producer-reference-notice-review.json).
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.

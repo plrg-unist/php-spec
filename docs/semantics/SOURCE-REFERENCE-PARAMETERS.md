@@ -554,7 +554,18 @@ Callee-strict verification precedes frame retirement and private Notice-cell cre
 the strict numeric-REQUEST control enters its body, then rejects at RETURN before
 Notice, consumer or assignment. The [nonnull-return review](../../coverage/semantics/cv-distinct-builtin-union-return-producer-reference-notice-review.json)
 keeps native4 once, Notice3/prelaw RETURN-priority1,280/261 private507 fixtures and
-the sole actual508 load separate. Higher return unions and wider contexts remain partial.
+the sole actual508 load separate. At that cut, higher return unions and wider contexts remained partial.
+
+Completed singleton and multi-CV producers also admit three to six distinct ordered
+array/int/float/bool/string/null return members. The existing raw/normalized fold
+rejects duplicate, count and order mismatches before reusing the argument proof.
+Exact membership precedes weak scalar preference; callee-strict return verification
+and frame retirement precede private Notice-cell creation. The
+[primitive-return review](../../coverage/semantics/cv-primitive-union-return-producer-reference-notice-review.json)
+keeps the native, source, state and canonical-load cuts separate. The exact raw
+triple control in the current two-member test suite accepts its normalized triple;
+its historical results retain their original identity. Wider types, signatures,
+owners and lifetimes remain partial; Owned-NUL stays held.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
