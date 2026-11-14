@@ -1,0 +1,27 @@
+[
+  {
+    "id": "strict-singleton-true-byval-local-object-and-private-snapshot",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice70\\Strict;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===true),':',$prefix,';';$x=23;$prefix=29;return true;}\nfunction make(tRuE $saved):mIxEd{echo 'M:',(int)($saved===true),';';$saved=new \\stdClass;$saved->v=13;return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=19;$prefix=31;return $value;}\n$x=true;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice70\\\\Strict\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r->v=23;echo 'R:',$r->v,':',$snapshot->v,':',$x,':',(int)($copy===true),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===true),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:23:1:31;D:41:23:23:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "f45a40f70bb35ab15e6d8ae5468f67e6351b2714024c0b49d17ea7ab525350d4"
+  },
+  {
+    "id": "weak-singleton-false-byref-rejects-integer-0-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice70\\FalsePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(fAlSe &$saved):mIxEd{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice70\\\\FalsePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===0),':',(int)($copy===0),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===0),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ffc2cf55705cdb0cbf83875451e74a221c85ad2140e33c3b940ca0877bc8ff1d"
+  },
+  {
+    "id": "weak-singleton-true-byval-rejects-integer-1-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice70\\TruePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(tRuE $saved):mIxEd{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=1;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice70\\\\TruePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===1),':',(int)($copy===1),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===1),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "55c46e857b823cd4ed2467b85540248433e52e2d8090162a617ef86a5bdde908"
+  }
+]
