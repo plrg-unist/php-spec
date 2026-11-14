@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Completed finite FLOAT power originals, native-once/prelaw, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-completed-float-power-truth-base-initial-raw-leading-key-{author28,peer26}-20261114/. Concise cuts and recovery: coverage/semantics/string-offset-completed-float-power-truth-base-initial-raw-leading-key-review.json.
+
 ENUM264 deferred FLOAT truth-wrapper native-once, source, corrected author and independent fixtures remain in `../php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/`. The [review](../coverage/semantics/deferred-float-truth-wrapper-default-reception-review.json) keeps the original elaboration failure at zero and the accepted actual/SAME tuple.
 
 Fully qualified keyword CONCAT Get sources and separate private-SL507 comparisons/fixtures remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get-review.json) preserves the wrong-catalogue preparation error at zero and the accepted actual/SAME tuple.
