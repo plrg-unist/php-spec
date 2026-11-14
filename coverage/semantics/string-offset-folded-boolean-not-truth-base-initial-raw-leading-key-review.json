@@ -1,0 +1,91 @@
+{
+  "feature": "folded-nonfloat-boolean-not-scalar-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Folded non-FLOAT BooleanNot trees certify both full-ternary truth orientations for exact literal string arms, preserving the selected non-NUL INTERNED base and frozen initial raw CV offset through returning Warnings. The recursive shared certificate also admits nested NOT children at the existing shorthand fallback guard; that transitive path has an explicit source-zero state control, without additional original-source/native credit.",
+  "target": "PHP8.5.10 CLI NTS signed64; sole local .tools/php/bin/php oracle and tests/semantics/profile.json; pure authored .watsup; production SL508",
+  "reviewed_author_head": "c191b7cecb0a9fc7c2a64747116c75ea43aec9d7",
+  "reviewed_peer_head": "1d7567122e3027d85be6382787e85a688e58545a",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "e6e42eeb51ffdca11b57d8ff3fc4e255ae38b6606cde90ad2f83fee1e3d6f0c1"
+  },
+  "donor_implementation_sha256": "0ccf3bf62841482bcfeeb4e56236c86288db949f32efa70c779e26c365d75b08",
+  "source_basis": "Pinned Zend/zend_compile.c zend_unary_op_produces_error refuses BOOL/BOOL_NOT folding for every IS_DOUBLE child, not only NaN; zend_try_ct_eval_unary_op preserves that split. Unchanged compiler45 pfnot mirrors FLOAT -> VALUEeps and a non-FLOAT condition before remembering PBOOL(~truth). Ordinary full/shorthand ternary lowering retains the selected literal header through the existing rules. No compiler/runtime folding or numeric implementation changes are introduced.",
+  "implementation": "Exactly13 new specification lines add a source-kind-disjoint PBOOL BooleanNot raw_truth clause: exact own source/PBOOL pool, actual child source/value, explicit non-FLOAT type, recursive raw_truth, full-state quiet child truth and the exact Boolean complement. The name/scalar/integer certificates and complete full/shorthand/runtime/provider/root/ownership rules remain byte-identical over coherent acceptedc7. No new NORMAL/CODE/precision fence is imposed. Finite FLOAT emitted reads and forged own PBOOL pools refuse this folded certificate while the existing runtime VALUE path remains intact.",
+  "composition": {
+    "accepted_source_base": "07d9a42678e9b14c3322e8c78c523ab7fa38d702",
+    "current_prerequisite": "c7b7e0e057e17a9a5790dea7f464e262789e8c33",
+    "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/composition.json",
+    "note": "Actual07 accepted207/382/407 prerequisites and then coherentc7 STRING VALUE/BYTE plus current207/456 changes were imported before the new law. Original07 and currentc7 model cuts remain separate. Saved native originals ran once; no stale425 replacement or accepted-source/native replay."
+  },
+  "evidence": [
+    {
+      "kind": "fresh native2 once and actual07 production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "3432219fa7846113027896f7ca9de9b6b408d1cdbbdb14ad5f0c133d15d02849",
+      "tested_revision": "cb9cee27b9921bb3163e1eed34e42cf6a48a832d",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "coherent acceptedc7/4257f90 prerequisite comparison against saved native originals; Unsupported2 and zero credit",
+      "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/prerequisite-v1/report.json",
+      "sha256": "d7ac93eada678d20905814355587ffea59271c8a16277e16a4ea51d8908c039d",
+      "tested_revision": "b08370a1b21df3f9f3e0de62b1cf19f256edc96e",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "two final original-source production-SL exact agreements; original native executions reused",
+      "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "09f45da571fd144f54a75ee1125237359e259b2ce1dae7a345df7dbcc88998b9",
+      "tested_revision": "c191b7cecb0a9fc7c2a64747116c75ea43aec9d7",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "inclusive author production-SL fixture: 161 inherited plus112 added; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "1b63d59e98c810032ac10b5d6fa97610e81e15193dd6c6a77d37b8ff1c79382c",
+      "tested_revision": "c191b7cecb0a9fc7c2a64747116c75ea43aec9d7",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 273,
+      "derived_conditions": 170
+    },
+    {
+      "kind": "inclusive independent production-SL fixture: 175 inherited plus116 added, including transitive shorthand; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-folded-boolean-not-truth-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "91dfc38acca06e461779180ad9c787f567aa4be3d7c8f3fadf96c87a222ff8c5",
+      "tested_revision": "1d7567122e3027d85be6382787e85a688e58545a",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 291,
+      "derived_conditions": 171
+    }
+  ],
+  "preserved_failures": [],
+  "validation": "Native2 once/source2 final exact agreements and distinct original07/currentc7 Unsupported2 cuts retain their own identities. Inclusive A273/170-derived and B291/171-derived prove actual one/double-NOT pools/source spines, real ordinary/reference Warning state, scalar complements, contradictory pools/types, detached metadata, preserved BUDGET/full-state behavior, finite FLOAT emitted read-eps and forged-PBOOL refusals, and transitive nested-shorthand certification. Constructed NUL conditions are INTERNED and gain no owned-release authority. Fixtures earn0 source credit; no new campaign failures or unique aggregate.",
+  "remaining": "Emitted FLOAT NOT remains under its existing runtime certificate; this folded proof excludes all FLOAT children. Wider Boolean producers, uncertified children/overflow, selected-NUL and Owned-NUL release, REQUEST/base/key/handler/ownership/lifetime expansions and complete core remain partial. Compiler45/generic233/provider/root/schema/numeric/ownership rules and all exact PROGRESS holds stay unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact author/peer renderers and two Make recipes regenerate checked fixtures, with inherited renderers explicitly watched. Raw originals/native-once observations, launchers and reports remain in the linked external archives, which are not build dependencies.",
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main51-folded-not-truth-dynamic425-joined-508-v1/report.json",
+    "sha256": "f56583bc49303b75e1aefeb4cad89cbd5f645701d195d908215e18f149aefb88",
+    "tested_revision": "6680e5342fb3f63807808e1c3df7ac6ee3551808",
+    "tested_tree": "d050ff4dfcbb5d4d27a1b4bd5427d7558dba1c22",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.936372417025268,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "review": "Whole actual six-file READY and independent FULLCLEAR preceded source-first integration. Peer19 independently compared actual MAIN6680e5342, the SAME saved canonical report and the existing projection68120caf: exact six paths, five donor-literal non-Make files and exactly two additive Make commands, with coherentc7 base images/absences. Source4250ccf and the ordered508 modules/511 arguments/complete512 watches bind the quiet, stable and fully reaped source-zero load. No author duplicate read, source rerun or new receipt."
+}

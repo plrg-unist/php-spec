@@ -1,0 +1,177 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with canonical array or ?array headers and literal identifier/string same-field bodies. This is a bounded partial-core slice.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; sole oracle .tools/php/bin/php; baseline tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "7db502554057e71c8dc9a09191e20cb3f2c0015c0443e225baa35caeafdba84b",
+    "source_donor": "56371982bf2241dd3eaec7960d7577b69f37c92a",
+    "change": "Add array to the existing raw/normalized canonical header whitelist; nullable recursion and all source/body/return/owner guards are unchanged."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_property_hooks supplies the property return type and lowers the short GET body to a return.",
+    "vendor/php-src/Zend/zend_execute.c::zend_handle_fetch_obj_flags initializes nullable backing to NULL, rejects nonnullable uninitialized reference access, and adds the real property type source.",
+    "vendor/php-src/Zend/zend_objects.c::zend_object_dtor_property removes that type source during physical receiver retirement."
+  ],
+  "validated_behavior": [
+    "Alias writes preserve the typed outer cell. Copied outer/nested array containers separate through COW while embedded reference cells remain shared and do not gain the outer array constraint.",
+    "Nullable omitted/default-NULL headers retain their distinct initial storage. By-value nullable GET can initialize NULL; nonnullable errors preserve the old caller array aliases and uninitialized backing.",
+    "Nonnullable array aliases reject NULL; both headers reject scalars without changing the prior payload. Receiver retirement detaches the genuine property source before escaped aliases accept otherwise incompatible scalar writes. Reached source/type/line checks and full-state 0/1-step joins preserve these effects."
+  ],
+  "sources": {
+    "mode": "production SL, exact original source/native stdout, stderr, completion and process status",
+    "author": {
+      "report": "author-source-v1/report.json",
+      "sha256": "8d879d4716d8f898f6521ea908a1efd7ec6504adf6d6067ceea9373a327a300f",
+      "revision": "7a473d37bdd26b1a217db486cbbc0761d621e97f",
+      "agreements": 3
+    },
+    "independent": {
+      "report": "reviewer-source-v2/report.json",
+      "sha256": "46fec70e915b56997c3f96919b9c3a32548ede13ca72082a0c25ed5805824bfd",
+      "revision": "63d4f5e5a7fabb6c80192c26795d12215bff3fa8",
+      "agreements": 3
+    },
+    "oracle_observations": {
+      "distinct_original_byte_revisions_once": 7,
+      "author": {
+        "report": "author-native-v1/report.json",
+        "sha256": "bdb8fca02bc6e31790a4d00b631c68a259f85b34a314ff55060c9f8569565717",
+        "revision": "9acff813cd13a41e7520010df03de1bd823dd96b"
+      },
+      "independent_initial": {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "0af49060c05b2cac471cfebae35da19c2dd28d9e249fbb2e107c80e6d093f1de",
+        "revision": "3209c934014903a284c9ab85a765db3eb40f6927"
+      },
+      "independent_corrected_first_only": {
+        "report": "reviewer-corrected-native-v1/report.json",
+        "sha256": "09dd152d83f0c501bdf350226a884cb9f27629fa080fafdd6df98fedba067072",
+        "revision": "63d4f5e5a7fabb6c80192c26795d12215bff3fa8"
+      },
+      "reuse": "The corrected peer COW row uses one fresh native observation. The unchanged two rows retain their exact original paths/bytes, binary/profile/environment under the explicit per-row bridge. The superseded wider-consumer original earns zero source agreement."
+    },
+    "caps_seconds": {
+      "native": 15,
+      "model": 120,
+      "outer_recorder": 140
+    }
+  },
+  "fixture_cuts": [
+    {
+      "report": "author-array-protocol-v1/report.json",
+      "sha256": "b74b321340fb0d3e7d7db98062852c02ceb18e8199a6a81bd4164ea459d662de",
+      "revision": "c51baa03ba3321d4617004cf9ffcc8b7813b6fae",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 127,
+      "elapsed_seconds": 63.46860361099243,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-nullable-protocol-v1/report.json",
+      "sha256": "176364c0ee96eb487bf269e562ade57800dbb36716a676eeb76eb08e754cd3b2",
+      "revision": "c51baa03ba3321d4617004cf9ffcc8b7813b6fae",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 118,
+      "elapsed_seconds": 44.04941010475159,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-array-protocol-v1/report.json",
+      "sha256": "4f429ccaf40a9a42f1cd78838b181069eac59d409b4b87f7e8edd62833a52b94",
+      "revision": "63d4f5e5a7fabb6c80192c26795d12215bff3fa8",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 129,
+      "elapsed_seconds": 57.22772574424744,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-nullable-protocol-v2/report.json",
+      "sha256": "4774f6b8dffc3022c839dad2c90bb31c63687aa86f2c0be34770914051f36af7",
+      "revision": "ccc5eaba9eddb2854e2e7fc92dc56238bd79e23d",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 140,
+      "elapsed_seconds": 45.91465401649475,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-uninitialized-protocol-v2/report.json",
+      "sha256": "db6cf9866e51ede81e7602730f1b6f7b3852343d818f67dfaa195eafebbbf019",
+      "revision": "ccc5eaba9eddb2854e2e7fc92dc56238bd79e23d",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 150,
+      "elapsed_seconds": 39.11866593360901,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    }
+  ],
+  "compatibility": {
+    "manifest": "final-static-v2/report.json",
+    "sha256": "034d6bfdcaddac5e7c919e66a764bf0117f28a57b6870bed5659f3958ee89845",
+    "selected_source_paths": 17,
+    "source_agreement_credit": 0,
+    "checks": "Author127/118 and independent array129 complete tested DSL stay exact at the donor. The one matching raw-array legacy helper refusal is promoted; all other old premises, including mismatched array/int, class and explicit-union refusals, retain their bytes and historical execution cuts. Make adds exactly seven recipes. No old source/state execution is renewed."
+  },
+  "preserved_zero_credit": [
+    {
+      "cut": {
+        "report": "author-prelaw-v1/report.json",
+        "sha256": "85fd79139f3152caa1170828bd2f4b34f90536fb9aa7344bef1f86c15d5550ae",
+        "revision": "9acff813cd13a41e7520010df03de1bd823dd96b"
+      },
+      "outcome": "The selected prelaw array-cow original is Unsupported at the hook-body admission gate."
+    },
+    {
+      "cut": {
+        "report": "reviewer-source-v1/report.json",
+        "sha256": "0a7c70c6e286f7ea71d1798b4aca3eb7a1b716038e7bfd7a8cf7ec7cfc175f46",
+        "revision": "3209c934014903a284c9ab85a765db3eb40f6927"
+      },
+      "outcome": "The original wider direct nested-property observer is Unsupported (property hook read mode or receiver); its other two source rows were unrun. Only the two wider observers were replaced by supported by-value captures. The changed PHP byte revision was run natively once; source-v2 reused the unchanged two native rows."
+    },
+    {
+      "cut": {
+        "report": "reviewer-nullable-protocol-v1/report.json",
+        "sha256": "2595967b65efad628708b774d630f46f23556ae11f786880f8d07ccc04a5e944",
+        "revision": "63d4f5e5a7fabb6c80192c26795d12215bff3fa8"
+      },
+      "outcome": "The complete nullable136 fixture failed its terminal deallocation premise: its copied literal remains legitimately rooted in the permanent compiled pool. No partial premise/source credit is claimed."
+    },
+    {
+      "revision": "63d4f5e5a7fabb6c80192c26795d12215bff3fa8",
+      "outcome": "Prepared uninitialized146 was unrun before the same pool-lifetime correction. Corrected nullable140/uninitialized150 prove removal of the CV/cell and survival of the genuine unchanged pool root. Dynamic array129 deallocation stays literal; its complete passed DSL is unchanged, without replay.",
+      "source_agreement_credit": 0
+    }
+  ],
+  "actual_integration": {
+    "revision": "8c17d4fac320a8c354824f24d7882e589f85cc1b",
+    "tree": "62038e137f5febb69c6742562711c6152df1eb76",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main51-array-reference-get-comp297-source-projection-v1.json",
+    "source_projection_sha256": "ee040fb9bb510ce0713c7656b55b0d5249d7d241384d3c55fb10951e6aecc628",
+    "sole_saved_canonical": "../php-spec-evidence-archive/resumed-main-20261112/main51-array-reference-get-comp297-joined-508-v1/report.json",
+    "sha256": "40442535d7c755a44dc1a779b25bd4a062eebdb0ed890e36a06c0797f46e8a23",
+    "elapsed_seconds": 15.638529527001083,
+    "cap_seconds": 60,
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "result": "PASS; quiet true LF, stable inputs/HEAD, fully reaped",
+    "source_agreement_credit": 0
+  },
+  "independent_review": {
+    "private_source_and_state": "recover11_compiler_typed_short_ref_review: whole selected17 donor independently FULLCLEAR before release.",
+    "actual_source_and_same_saved_canonical": "recover12_compiler_array_union_review: independently CLEAR; no semantic/native rerun or duplicate author actual receipt."
+  },
+  "remaining": "Parented/Trait typed short hooks, class/union/intersection and wider headers, direct nested-property consumers and wider bodies/lifetimes remain partial. Preserve V110, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and every other exact hold.",
+  "engine_divergences": [],
+  "recovery": "Raw reports, exact original snapshots, commands, inputs and earlier failures are under ../php-spec-evidence-archive/comp297. Source records retain their original revisions; metadata descendants renew no execution credit.",
+  "artifact_root": "../php-spec-evidence-archive/comp297"
+}
