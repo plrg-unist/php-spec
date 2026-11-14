@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Completed ordinary-CV producers also admit required canonical standalone false and true formals together. Each accepts only its exact Boolean tag under either caller mode. Ordinary BYREF formals impose no persistent alias constraint; existing return/frame/private-cell and owner bounds remain. Five native originals ran once: three fresh Notice agreements and two distinct weak integer RECEIVE-priority controls. Separate author444/peer296 fixture-SL507 cuts and the sole actual c3fc20b8 production-SL508 load (16.332990513183177 seconds, cap60, source0) retain their own identities. Wider nullable/union literal-Boolean forms and returns remain partial; all exact holds remain. [Literal-Boolean formal review](coverage/semantics/cv-literal-bool-formal-producer-reference-notice-review.json).
+
+Selected mask8194 handlers also admit own raw canonical binary64 FLOAT returns through 16 lowercase hexadecimal digits, exact child/CODE/line and compiled-bit authority. Four finite/subnormal/+0/+INF originals preserve AH/AHH, real formal retirement and FINAL MOD-zero Error without default diagnostics. Malformed payloads refuse before decoding; local -0/NaN projections stay source0. Actual `a7826ca029`/508 loading passes separately (15.987692816s/cap60/source0); UnaryMinus, named/computed returns and wider handlers, operands, histories, lifetimes and OB31 remain partial. [FLOAT-return review](coverage/semantics/output-final-selected-float-return-modulo-error-review.json).
+
+Quiet signed64 ADD/SUBTRACT/MULTIPLY trees now compose inside the integer unary-chain BooleanNot shorthand certificate. Exact own and both indexed-child source, PINT pools/ranges, recursive certificates and quiet full-state results retain nonzero/NOTfalse, parentEPS/fallback2 and existing ownership guards. Native2 once/source2, genuine prelaw A98/B96 full155, separate author395/251 and peer483/314 fixture-SL/source0 cuts and actual MAIN00c367de7 joined SL508 loading pass. Two fixture-only failures remain preserved with narrow corrected cuts; direct binary NOT roots, wider producers/lifetimes and all held boundaries remain partial. [Review](coverage/semantics/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-review.json).
+
+Own public static USER method Get values on a child of a genuine empty global source parent now cross quiet CV ??, private ??= and literal/CV Empty, including authenticated Shared clones. Exact raw empty-parent/link and own child-scope authority retain existing cache and cleanup guards. Four native-once agreements and separate fixture-SL145/146/421/361 plus affected parentless292 pass; three fixture preparation failures and four prelaw Unsupported cuts retain0. Sole actual902d/SL508 canonical loading adds source0. Wider ancestry and exact holds remain. [Review](coverage/semantics/magic-property-methodclosure-static-empty-parent-quiet-get-review.json).
+
 Shared-cache clones and finite clone chains of the fixed global own public static USER method capture now cross quiet CV ??, private ??= and literal/CV Empty. Descending raw ancestry and immutable owner/cache stamps authenticate retired sources; absent historical scope rows are expected. Original Shared birth and current source/live/consumer fences remain. Four new native-once source agreements and separate new/affected-old fixtures pass; earlier Unsupported and preparation failures retain zero credit. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-clone-quiet-get-review.json).
 
 Direct NName and NNameFullyQualified static-method capture labels now match their genuine global class names case-insensitively through quiet CV ??, private ??= and literal/CV Empty, including authenticated Shared clones. Raw own-method/source/CODE.NAMES/scope/cache/birth and existing cleanup fences stay exact. Four native-once source agreements and separate fixture-SL129/130/292/232 plus affected-old231 pass; four prelaw Unsupported cuts retain0. Sole joined726/SL508 loading adds source0. Wider forms and exact holds remain. [Review](coverage/semantics/magic-property-methodclosure-static-named-selector-quiet-get-review.json).
@@ -630,12 +638,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `79c161bda` passes its once-only 508-module production SL
-load in 16.642128000035882 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `65bda8fcb` passes its once-only 508-module production SL
+load in 15.738607943989336 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main48-runtime-float-unary-joined-508-v1/report.json`
-(SHA-256 `8ef69e98f7c2b51543607b14b5d9d12f2995d42cc8e0c674ddc0e8faa08ad673`).
+`../php-spec-evidence-archive/resumed-main-20261112/main49-runtime-scalar-cast-joined-508-v1/report.json`
+(SHA-256 `620ed4abf81eb84475593054431246806bac4a689b821dbb3dfefa7da3b5cc0c`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

@@ -610,6 +610,17 @@ control, four native originals run once, the private fixture cuts and the sole
 actual canonical load. Existing return, payload, source and ownership bounds
 remain partial; all paused boundaries, including Owned-NUL, remain held.
 
+Required canonical standalone `false` and `true` formals share that pointwise
+proof. Each raw identifier matches its normalized singleton tag and reference
+mode. Neither literal type coerces another value, even under weak reception.
+Ordinary BYREF formals add no persistent constraint; BYVAL formal retirement
+still precedes private Notice-cell creation. The
+[literal-Boolean formal review](../../coverage/semantics/cv-literal-bool-formal-producer-reference-notice-review.json)
+keeps three new Notice agreements, two distinct weak integer RECEIVE-priority
+controls, five native originals once, separate private fixtures and the sole
+actual canonical load distinct. Wider nullable/union literal-Boolean headers,
+return headers and contexts remain partial; all existing holds remain.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

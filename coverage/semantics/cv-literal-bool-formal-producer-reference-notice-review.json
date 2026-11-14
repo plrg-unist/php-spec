@@ -1,0 +1,94 @@
+{
+  "milestone": "REF70",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "d930c7b99678ca9ce5bcdde74c8aff2762363f9e",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "97fb08f69470ff2d45bf748bdcac9e3b0c228118fce51b111b0412ef87e6bc95",
+    "law": "Required canonical NIdentifier formals gain false and true together. Raw identifier, normalized singleton type and reference mode must match pointwise. Required/default/variadic/attribute/ordinary-CV guards and return/frame/payload/Notice/ownership rules remain unchanged.",
+    "source_symbols": [
+      "Zend/zend_compile.c: builtin_types, zend_compile_single_typename, zend_compile_params",
+      "Zend/zend_execute.c: zend_check_type, zend_verify_recv_arg_type, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_vm_def.h: ZEND_RECV, zend_verify_recv_arg_type_helper"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-literal-bool-formal-producer-reference-notice-70",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "bff66180034b7b4fbbe172c1501ab1c5e4137aa7d3c701dfe65401007aae650a",
+    "source_donor": "d62797e504718afe21ae03203b517220f54d9e88",
+    "files": 9,
+    "scope": "Whole nine-path READY and independent FULLCLEAR preceded integration. The combined serial controller remains UNEXECUTED; imported-helper closure and saved-native forwarding have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "5d51ed2ab7711c000bc162a73b31622d1a9258e6b773fcaa73cc3e79051a8d77",
+    "decision": "FULLCLEAR",
+    "actual_composition": "Reviewer recover11 separately checked the actual MAIN source delta and sole saved canonical report without execution renewal."
+  },
+  "semantics": "Matching FALSE or TRUE preserves its exact tag under either caller mode. Neither singleton type accepts the opposite tag or scalar coercion: weak Boolean conversion requires the full BOOL mask. BYVAL formal cells retire before private Notice-cell creation; ordinary BYREF uses the real caller cell without a persistent type constraint and may replace its payload in the body.",
+  "counts": {
+    "native_originals_once": 5,
+    "native_replays": 0,
+    "new_notice_agreements": 3,
+    "fresh_receive_priority_agreements": 2,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "state_cuts": {
+    "author": {
+      "revision": "d930c7b99678ca9ce5bcdde74c8aff2762363f9e",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "685c93c7f1e0a4d1e5788cbc6e4e7165ace030c55a27b2f29305e8cb46a5a996",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 444,
+      "reached": 308,
+      "derived": 136,
+      "source_agreements": 0,
+      "elapsed_seconds": 70.06330513954163,
+      "cap_seconds": 1200,
+      "stable": true,
+      "reaped": true
+    },
+    "peer": {
+      "revision": "5a92a48ce0838082c6cda5e5a35f1f162e3de09b",
+      "report": "peer/postlaw-state-v1/report.json",
+      "sha256": "28dfbabaae5e745669f64779a6a87afc6209e44da1a51545cd82219da8ea24fb",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 296,
+      "reached": 246,
+      "derived": 50,
+      "source_agreements": 0,
+      "elapsed_seconds": 52.37240290641785,
+      "cap_seconds": 1200,
+      "stable": true,
+      "reaped": true
+    }
+  },
+  "prelaw": "Corrected author fixture-SL507200 and peer fixture-SL507198 are genuine separate prelaw cuts. Original author source2 Unsupported retain zero agreement credit. The first author fixture200 wrongly expected both TYPE_RECEIVE tasks prequeued; a narrow [true,false] diagnostic identified sequential reception. That failure and diagnostic retain zero credit. The manifest preserves their exact reports, hashes and revisions.",
+  "canonical_main": {
+    "revision": "c3fc20b8dd5fea145a52b2bd89890111c9f09949",
+    "tree": "f08e4bcd70686217165907857365990e7322270d",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main49-literal-bool-formals-reference70-joined-508-v1/report.json",
+    "sha256": "552113604d3765942578909704dd5b2e58935ff3ca818b6f085c3cb610e53fba",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 16.332990513183177,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "The eight non-Make source/test files match the signed donor literally; one additive serial Make recipe preserves existing recipes. No prior expectation changes are required: the old raw-true/normalized-true RETURN refusal remains valid at REF70. Separate author/peer source and fixture cuts keep their own revisions and counts; neither the controller nor metadata placement adds execution credit.",
+  "limits": "Nullable/union literal-Boolean formals, literal-Boolean return headers and wider formals/payload/source/backing/history/GC/lifetimes remain partial. Earlier failures, Unsupported, timeouts and unrun cases retain zero credit. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}

@@ -1,0 +1,113 @@
+{
+  "feature": "boolean-not-integer-arithmetic-unary-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Finite signed64 ADD/SUBTRACT/MULTIPLY trees compose inside the existing quiet unary +/- certificate. Exact own and both indexed-child source, PINT pools/ranges and recursively certified operands retain the integer result. BooleanNot of the nonzero outer sign selects the non-NUL INTERNED shorthand fallback and frozen initial raw leading-integer CV offset through returning Warnings, including ordinary-key replacement and initial-reference rebinding.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "83601e5b01ac7541074e7e1bae7a5f59530dabbe",
+  "reviewed_peer_head": "50befb15d3905aa83e161c6a4c9e1e50c46d4920",
+  "implementation_sha256": "0c3dacb4e2b1960546ec18defbe798f515c939596bad15a7514d18efa53d4fba",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "12dac8e30ba498e7d2447d1c42378d1b036d179f73fd6c5fcd51ecc8a4445ce0"
+  },
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_binary_op compiles both children and folds a CONST pair through zend_try_ct_eval_binary_op/get_binary_op. zend_operators.c add_function_fast/sub_function_fast/mul_function_fast and zend_operators.h fast_long_add_function/fast_long_sub_function keep in-range LONG results and produce DOUBLE on overflow. Existing pure num_add/num_sub/num_mul, number_binary and binary_apply preserve these types. zend_compile_unary_pm, zend_compile_unary_op and zend_compile_shorthand_conditional retain the existing signs, false NOT and JMP_SET/QM_ASSIGN fallback route. No PHPT was executed.",
+  "implementation": "One disjoint 17-line PFBINARY clause in string_read_raw_unary_integer admits only ADD/SUBTRACT/MULTIPLY, requires exact own/source and both actual indexed child nodes, signed64 PINT pools, recursive certificates and full-state quiet binary_apply. Existing INTEGER/raw numeric-string/raw true first-sign clauses, later signs, final nonzero/NOTfalse, parentEPS/fallback2, generic233, provider/root/ownership/schema/numeric bounds remain unchanged. Direct binary NOT roots remain outside this increment.",
+  "evidence": [
+    {
+      "kind": "fresh native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "b163f1008a8a13998cf2146cb9fdcd7a2e5c162652360e7284e0e65519fdd438",
+      "tested_revision": "3ffcd6b5c93fc602829c2e4054aedb9f2e4bfd80",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine A full155:19 changed/136 initial; ADD3/SUB2/outer-minus-2, NOTfalse and parentEPS refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "2b3fa262051263e61e564f30232c5b85067b764b4fd68a7b9eb8f889f85bf55c",
+      "tested_revision": "3ffcd6b5c93fc602829c2e4054aedb9f2e4bfd80",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 98
+    },
+    {
+      "kind": "genuine B full155:20 changed/135 initial; true-plus1 times INTEGER2, MUL2/outer-plus2, NOTfalse, old marked key and parentEPS refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v2/report.json",
+      "sha256": "d988860eafcdbab0cece286bd6b2be676a4f144fbc9e19eac1349ab2789e84fa",
+      "tested_revision": "a8d80ff0233577043e5a55cb416e4e31ef1ae92c",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 96
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native observations reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "8840e2154bd7ba78622c23829e496157b26c276cc9dc09b75c916286e5dd11d1",
+      "tested_revision": "c818791de6621388aab28f70bb043f87a2fd6f46",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "7536d0a26e16f867699622539aa748fcc3ca0f4e40e25912190d9c31f5bf2fc5",
+      "tested_revision": "c818791de6621388aab28f70bb043f87a2fd6f46",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 395,
+      "derived_conditions": 251
+    },
+    {
+      "kind": "independent production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v2/report.json",
+      "sha256": "bb76103d267d52e2d70dab68bb8c80f2373db3c18c6d39f4f2646f5788a6fbb8",
+      "tested_revision": "50befb15d3905aa83e161c6a4c9e1e50c46d4920",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 483,
+      "derived_conditions": 314
+    }
+  ],
+  "preserved_failures": [
+    {
+      "kind": "compiler-only fixture binding diagnostic, exit0 rejected because def main was missing; state execution unrun0; split fresh bindings in corrected v2 only",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "6da5004ecb06d720525f658495ed7e5d1fcb7c511749516d5ac1f995899103c4",
+      "tested_revision": "a8d80ff0233577043e5a55cb416e4e31ef1ae92c",
+      "source_credit": 0,
+      "passed": false,
+      "conditions": 95
+    },
+    {
+      "kind": "fixture expected-pair nat? representation error; explicit option binding corrects affected v2 only; no model/native change",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-arithmetic-unary-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "f979b3a350dea4feaee9e4b8637109b1739c065368de7c701991a58c4202a896",
+      "tested_revision": "ab1f282f165f82ae9737ec0252389e77a7e42e6d",
+      "source_credit": 0,
+      "passed": false,
+      "premises": 482,
+      "derived_conditions": 314
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main48-integer-arithmetic-shorthand-base-joined-508-v1/report.json",
+    "sha256": "25d458ad2b9b9a92b0cb1208f2c5c0903b5a0461f85a9dd549f2db885c2772d6",
+    "tested_revision": "00c367de7c2213f32a46de890b7a60fd21158a15",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.681585264857858,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 once/source2, genuine A98/B96 prelaw full155 and separate author395/251-derived and independent483/314-derived fixtures retain their own identities. Derived controls check zero children/results, signed boundaries, all-three overflow with forged PINT results, same-result operand forgeries requiring recursive child certificates, detached left/right source, own/child pool/CODE/type/range forgeries, exact-result unsupported operators, real old-reference callback rebinding, full-state cleanup and 0/1-step budget rejoining. Two fixture failures remain separate with zero source credit and narrow corrected cuts; no native/source/history replay.",
+  "review": "Whole-six actual-manifest READY and independent FULLCLEAR preceded source-first integration at MAIN00c367de7 over a7826ca029. The independent bounded actual-source read confirms four donor-exact test/protocol blobs and that reversing only the 17-line 425 arm and two Make recipes recovers complete prior source/recipes. The sole saved combined canonical load independently matches the actual508 sources and passes separately with zero source credit; no execution replay or extra receipt artifact.",
+  "remaining": "Direct binary NOT roots, FLOAT/overflow intermediates, direct BOOL/NULL/raw-string arithmetic leaves, other operators, wider producers/handlers/ownership/lifetimes and complete core remain partial. All exact PROGRESS holds, including Owned-NUL source release, remain unchanged; no feature obligation closes.",
+  "recovery": "Raw originals, native-once observations, launchers, reports and both fixture failures remain in the linked external archives. Tracked cases/renderers and two Makefile arithmetic-unary shorthand selections regenerate checked fixtures; external archives are not build dependencies."
+}
