@@ -1548,6 +1548,8 @@ Literal NULL full ternary bases also retain their selected non-NUL INTERNED head
 
 Literal NULL shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [NULL-shorthand review](coverage/semantics/string-offset-null-shorthand-base-initial-raw-leading-key-review.json).
 
+Literal false shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [FALSE-shorthand review](coverage/semantics/string-offset-false-shorthand-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),
