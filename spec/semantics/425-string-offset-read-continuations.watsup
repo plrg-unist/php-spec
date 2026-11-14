@@ -19,6 +19,7 @@ dec $string_read_request_base_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_literal_bytes(expression) : nat*?
 dec $string_read_runtime_value(pstate, porigin) : pvalue?
 dec $string_read_runtime_cast_quiet(pcast, pvalue) : bool
+dec $string_read_runtime_integer_quiet(pvalue) : bool
 dec $string_read_runtime_bytes(pstate, porigin) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
@@ -749,8 +750,8 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $compiled_precision(S, (porigin_right)) = (z_precision)
   -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
   -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
-  -- if $type_bytes(pvalue_left) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int")]
-  -- if $type_bytes(pvalue_right) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int")]
+  -- if $string_read_runtime_integer_quiet(pvalue_left)
+  -- if $string_read_runtime_integer_quiet(pvalue_right)
   -- if S_left = $integer_coerce(S, pvalue_left, z_line)
   -- if S_left.RESULT = KNOWN (PINT i_left)
   -- if S_left = S[.RESULT = KNOWN (PINT i_left)]
@@ -924,6 +925,15 @@ def $string_read_runtime_cast_quiet(pcast, PFLOAT n_bits) = true
 def $string_read_runtime_cast_quiet(CASTINT, PFLOAT n_bits) = true
   -- if $float_long(n_bits, false) = (i, eps)
 def $string_read_runtime_cast_quiet(pcast, pvalue) = false -- otherwise
+def $string_read_runtime_integer_quiet(PNULL) = true
+def $string_read_runtime_integer_quiet(PBOOL b) = true
+def $string_read_runtime_integer_quiet(PINT i) = true
+  -- if $long_range(i)
+def $string_read_runtime_integer_quiet(PFLOAT n_bits) = true
+  -- if $(n_bits < 18446744073709551616)
+  -- if $float_long(n_bits, true) = (i, eps)
+  -- if $long_range(i)
+def $string_read_runtime_integer_quiet(pvalue) = false -- otherwise
 def $string_read_runtime_bytes(S, porigin) = (n*)
   -- if $compiled_precision(S, (porigin)) = (z_precision)
   -- if $compiled_read(S, porigin) = (pvalue)

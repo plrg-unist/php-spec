@@ -124,7 +124,7 @@ if __name__ == '__main__':
                 ('right_true_' + name, '(' + one + symbol + 'true)', true_result, False),
                 ('left_false_' + name, '(false' + symbol + one + ')', false_result, False),
                 ('pure_int_' + name, '(' + one + symbol + one + ')', true_result, True)]
-    raw += [(name, expression, None, False) for name, expression in (
+    raw += [(name, expression, 1 if name == 'float_or' else 0 if name == 'float_mod' else None, False) for name, expression in (
         ('zero_mod_null', '(' + one + '%null)'), ('zero_mod_false', '((!0.0)%false)'),
         ('negative_left', '(true<<' + negative + ')'), ('negative_right', '(null>>' + negative + ')'),
         ('float_or', '(0.0|' + one + ')'), ('float_mod', '(0.0%' + one + ')'),
@@ -167,6 +167,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author histories plus independent demanded six-op parent/child source, CODE, positive-line and equal-precision controls; original typed sequential coercion/binary state retains nonempty TODO and BASE. New BOOL/NULL requires NORMAL even when raw compiled children and stale RESULT remain available, while six old pure-PINT operators retain five nonnormal completions. ' + str(len(CONTROLS)) + ' checked-source controls cover all six operators with raw NULL/true/false, pure-PINT compatibility, quiet FLOAT refusal, numeric strings, arrays/objects, unchanged Boolean BITNOT, MOD0/negative shifts, count64 and signed64 boundaries. Actual REQUEST owners, supplied Throwable, fixed bounds, cleanup and inherited budgets remain. Fixture source0/native0; original author binding failure/unrun cuts retain zero credit. No387/compiler/numeric/formatter/API/owner or held-boundary change and no accepted source/native replay.')
+    report['scope'] = ('Exact author histories plus independent demanded six-op parent/child source, CODE, positive-line and equal-precision controls; original typed sequential coercion/binary state retains nonempty TODO and BASE. New BOOL/NULL/FLOAT requires NORMAL even when raw compiled children and stale RESULT remain available, while six old pure-PINT operators retain five nonnormal completions. ' + str(len(CONTROLS)) + ' checked-source controls cover all six operators with raw NULL/true/false, pure-PINT compatibility, two promoted quiet integral-FLOAT NORMAL values with unchanged BUDGET refusals, numeric strings, arrays/objects, unchanged Boolean BITNOT, MOD0/negative shifts, count64 and signed64 boundaries. Actual REQUEST owners, supplied Throwable, fixed bounds, cleanup and inherited budgets remain. Fixture source0/native0; original author binding failure/unrun cuts and historical4029 BOOL/NULL-only campaign retain their identities. No387/compiler/numeric/formatter/API/owner or held-boundary change and no accepted source/native replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

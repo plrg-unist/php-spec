@@ -39,7 +39,7 @@ def value(checks, tag, tree):
         child_tag = tag + '_' + str(index)
         checks += ['$origin_child((' + origin + '), [PCFIELD ' + str(index) + ']) = (porigin_' + child_tag + ')']
         child_value, number = value(checks, child_tag, child)
-        checks += ['$type_bytes(' + child_value + ') <- [$ptascii("null"), $ptascii("bool"), $ptascii("int")]',
+        checks += ['$string_read_runtime_integer_quiet(' + child_value + ')',
                    '$long_range(' + number + ')']
         if kind in ('BITAND', 'BITOR', 'BITXOR'):
             checks += ['$integer_tmp_source(expression_' + child_tag + ')']
@@ -78,6 +78,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four emitted MOD/BW/shift trees admit exact BOOL/NULL/signed64 INT values under explicit types/ranges, ordered quiet full-state integer_coerce, exact IRESULT and actual full-state binary_apply. New BOOL/NULL operands require NORMAL; original pure-PINT completion independence is retained. Genuine ternary/unary TMP operands preserve unchanged387 slot authority. Zero-divisor/negative-shift errors, FLOAT/string/owning/location/warningful operands and wider producers stay outside. Real REQUEST keys1/-1/0/-4 preserve captured14/live17 precision, returning Warning, supplied Throwable, bounds, cleanup and budget rejoining. FLOAT BYTE/formatter/compiler/API/owner and exact holds are unchanged; saved native originals reused once and fixture source0/native0.'
+    report['scope'] = 'Four emitted MOD/BW/shift trees admit exact BOOL/NULL/signed64 INT values under explicit types/ranges, ordered quiet full-state integer_coerce, exact IRESULT and actual full-state binary_apply. New non-PINT operands require NORMAL; original pure-PINT completion independence is retained. Genuine ternary/unary TMP operands preserve unchanged387 slot authority. Zero-divisor/negative-shift errors, nonquiet FLOAT/string/owning/location/warningful operands and wider producers stay outside. Real REQUEST keys1/-1/0/-4 preserve captured14/live17 precision, returning Warning, supplied Throwable, bounds, cleanup and budget rejoining. FLOAT BYTE/formatter/compiler/API/owner and exact holds are unchanged; saved native originals reused once and fixture source0/native0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
