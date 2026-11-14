@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Original direct global public static USER method captures now cross quiet CV ??, private ??= and literal/CV Empty through exact own-method/source/scope/cache/birth authority. Shared method statics survive wrapper retirement. Four native-once source agreements and separate lifetime/source-counterfeit fixtures pass; wider METHOD producers, wrappers and lifetimes remain partial. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json).
+
 Shared-cache clones of raw named USER FCC Get results now cross quiet CV ??,
 private ??= and literal/CV Empty. A strictly descending same-origin raw ancestry
 certificate extends the unchanged explicit original guard. Current cache fields

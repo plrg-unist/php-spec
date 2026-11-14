@@ -1533,3 +1533,5 @@ at private496. Source `73d05f315`, author tests `80322a2a6`/`8bc97f17e`, registr
 three failed checks and interrupted v2 packet at zero credit; its completed
 direct raw has no final fingerprint report and is supplemental only. Original
 FILE/cwd/profile, streams/exits, fixtures and input maps stay external.
+
+Static-method FCC quiet Get raw originals, native-once observations, prelaw Unsupported results, separate source/fixture cuts and two fixture preparation failures are under `/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-quiet-get/{author,independent}`. [Review](../coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json) records exact hashes and the sole MAIN48c joined load.

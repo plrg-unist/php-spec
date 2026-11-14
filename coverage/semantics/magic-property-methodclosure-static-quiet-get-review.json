@@ -1,0 +1,175 @@
+{
+  "status": "Integrated independently reviewed partial increment; complete core remains unfinished.",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and tests/semantics/profile.json.",
+  "scope": "Original raw USER public static nongenerator/nonabstract own-method FCC Get results from fixed direct GLOBAL Class::method(...), in a named parentless class without traits, through quiet CV binary coalesce/private coalesce-assignment and literal/CV Empty.",
+  "implementation": {
+    "proposal": "f42ff480a4ee4da4885668a1cdc175f3fa0ae39d",
+    "source_proposal": "b245039fa284fb11fa8498842dd47887847c245d",
+    "accepted_main": "48c878b98292e3332fb3e348b7549ebbf8104ebc",
+    "runtime_sha256": {
+      "spec/semantics/407-magic-property-isset.watsup": "5adbab7a61396f8394bc57ab0f0f0cb200f3294022ac6dd39e00c4a02455fa8d",
+      "spec/semantics/408-magic-property-empty.watsup": "40e377d98ac06659a9594372a0a6d05869d41706a9cd5b24efd38b9de5d00cea",
+      "spec/semantics/455-closure-function-caches.watsup": "9685f700863d6f01ec48ccbfb27f515af17ad97ec16e1c3759d8f20d09d3c154"
+    },
+    "delta": "407 exact source/live/scope/cache/birth predicate;408 actual RESULT-ID gate; function_cache_policy declaration455->407 only. New4 tests/Make4;416, definitions, policy and module order unchanged."
+  },
+  "engine_basis": [
+    "Zend/zend_vm_def.h::ZEND_INIT_STATIC_METHOD_CALL initializes USER cache and supplies called class without HAS_THIS for static methods; CALLABLE_CONVERT uses zend_closure_from_frame then frees the call frame.",
+    "Zend/zend_closures.c::zend_closure_from_frame passes method scope/called class/NULL This to zend_create_fake_closure; same-scope initialized cache and function statics are shared. Fake free_storage skips function-static disposal. Existing173/455/116 and Empty RV/receiver cleanup laws are reused."
+  ],
+  "contracts": [
+    "Raw METHOD and capture-eps; exact own raw indexed method/body/flags and declaring Identifier, direct NName/literal method/placeholder, resolved CODE.NAMES and global source context. Live scope LEXICAL=CALLED=REQUESTED=OWNER, no receiver/creation/binding.",
+    "Exact OBJECT/FUNCTION/SOURCE-eps/BIND_CLASS-owner/Shared cache stamp, explicit Shared birth policy and whole-cache validity; allocation/nonfreeing and authenticated consumer fences remain. Clones/wrappers/factories/inheritance/Generator/This/private-cache modes gain no route.",
+    "Binary??/private??= preserve result identity, name/receiver rebinding and lazy RHS/SET. Shared method-static roots outlive wrapper retirement; Empty disposes RV before receiver. Receiver throw preserves destination; budget0/1/full rejoins."
+  ],
+  "source_validation": {
+    "mode": "production SL_mode",
+    "modules": 507,
+    "changed_model_agreements": 4,
+    "native_originals": 4,
+    "executions_per_native_original": 1,
+    "native_reports": [
+      {
+        "report": "author/native-v1/report.json",
+        "sha256": "b84622a52257de36dffe6be2a2db4f66eaa1ea72059196104624047b09eda5c7"
+      },
+      {
+        "report": "independent/native-v1/report.json",
+        "sha256": "ef7b929efbbda6a48f07461e0b273cb4af9e541fd85b06c87e2a30c0f2e2292c"
+      }
+    ],
+    "reports": [
+      {
+        "report": "author/final-binary-v2/methodclosure-static-cv-coalesce-shared-method-static/report.json",
+        "sha256": "e880306b22680c8f20595e6a4535eba34b7ce0b63f007bfe41c265f114424c34",
+        "id": "methodclosure-static-cv-coalesce-shared-method-static",
+        "seconds": 36.713967841817066
+      },
+      {
+        "report": "author/final-assignment-v2/methodclosure-static-private-coalesce-assignment-shared-method-static/report.json",
+        "sha256": "164dabe5f076722a822210dda4d3460709c55e8e534ef5efd4f4e3e6297a95b3",
+        "id": "methodclosure-static-private-coalesce-assignment-shared-method-static",
+        "seconds": 36.50052461819723
+      },
+      {
+        "report": "independent/postlaw-v1/methodclosure-static-cv-empty-wrapper-before-receiver/report.json",
+        "sha256": "dd1b58eb117d121085ed12771d484aef2b3b75da755c5a621e8f58b2479bcb8b",
+        "id": "methodclosure-static-cv-empty-wrapper-before-receiver",
+        "seconds": 40.494818513980135
+      },
+      {
+        "report": "independent/postlaw-v1/methodclosure-static-literal-empty-receiver-throw/report.json",
+        "sha256": "458d46da9046b8c8e47ac69262fb92084041a4a83f367a38e8972f7f4d65c58c",
+        "id": "methodclosure-static-literal-empty-receiver-throw",
+        "seconds": 42.91522327391431
+      }
+    ],
+    "note": "Saved original bytes/path/CWD/profile reused once. Physical tested HEAD8f34ccfe with dirty-input hashes in reports; actual MAIN source3 byte-equals proposal. Prior cuts are separate. Relative report paths resolve under evidence_root."
+  },
+  "fixture_validation": {
+    "mode": "fixture SL_mode",
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "author/fixture-binary-v1/launch.json",
+        "sha256": "af7f3131209c638c597e2b50d0d1c8cb0479f1620e9701e21a60037f4364fa53",
+        "assertions": 110,
+        "seconds": 49.909300352912396
+      },
+      {
+        "report": "author/fixture-assignment-v1/launch.json",
+        "sha256": "bf9094fa4aaed8c262ce81929bae707024b996ce73f985a20ae10f3e2971d076",
+        "assertions": 111,
+        "seconds": 47.585776548832655
+      },
+      {
+        "report": "independent/fixture-cv-v3/launch.json",
+        "sha256": "e7cfa440fa29350816fed26cdfd05f22c22c4be0d3824bc6217daef1d3ef5949",
+        "assertions": 231,
+        "seconds": 65.47229316201992
+      },
+      {
+        "report": "independent/fixture-literal-v1/launch.json",
+        "sha256": "e3fbd27d697549f626d93c8e108f9bf1b5ad0c25a0e17033928bc42f49826d09",
+        "assertions": 172,
+        "seconds": 81.39170269202441
+      }
+    ],
+    "note": "Separate totals include setup premises; no unique aggregate or AL/source agreement credit. Peer live/cache-valid n+1 birth, raw source/class/member/capture/code forgeries, genuine Shared clone and actual result ID discriminators pass."
+  },
+  "preserved_non_agreements": {
+    "source_credit": 0,
+    "prelaw_unsupported": [
+      {
+        "report": "author/baseline-binary-v1/methodclosure-static-cv-coalesce-shared-method-static/report.json",
+        "sha256": "118aea1ef6bb8bbd3784d0a4788f5d4ceef8b7ad82e7fbb49cbd4e541e4571e2",
+        "id": "methodclosure-static-cv-coalesce-shared-method-static",
+        "seconds": 31.08722214703448,
+        "reason": "CV-name magic coalesce callback result"
+      },
+      {
+        "report": "author/baseline-assignment-v1/methodclosure-static-private-coalesce-assignment-shared-method-static/report.json",
+        "sha256": "6aefa04ae0604981c3c6edb66882d21aeda6f58d519787c85f9573a67f19a47c",
+        "id": "methodclosure-static-private-coalesce-assignment-shared-method-static",
+        "seconds": 31.74096488696523,
+        "reason": "CV-name magic coalesce callback result"
+      },
+      {
+        "report": "independent/baseline-cv-v1/methodclosure-static-cv-empty-wrapper-before-receiver/report.json",
+        "sha256": "0ee222a746c9be38a24d1eb862c062772e777916d1331928807815a0f96db142",
+        "id": "methodclosure-static-cv-empty-wrapper-before-receiver",
+        "seconds": 30.328865070827305,
+        "reason": "CV-name magic empty getter result"
+      },
+      {
+        "report": "independent/baseline-literal-v1/methodclosure-static-literal-empty-receiver-throw/report.json",
+        "sha256": "4f28d0b3c4decee7bc7b5888516835756e86c664384ccc888c1574f22d88893e",
+        "id": "methodclosure-static-literal-empty-receiver-throw",
+        "seconds": 32.90267156390473,
+        "reason": "magic empty getter result type"
+      }
+    ],
+    "fixture_preparation_failures": [
+      {
+        "report": "independent/fixture-cv-v1/launch.json",
+        "sha256": "55aba38215f4fb45721fcd7fd821c2bf05f4d94ca5c53c6e94be563a6711eccb",
+        "seconds": 11.417896136874333,
+        "cause": "Pre-execution AST-template elaboration: missing parentheses around class AST. Fixture-only correction.",
+        "reported_unexecuted_conditions": 228,
+        "executed_conditions": 0
+      },
+      {
+        "report": "independent/fixture-cv-v2/launch.json",
+        "sha256": "4bfc764d78e8925d635ddc2ab7a072a99af59692ef957cb22abdcf991fc44457",
+        "seconds": 12.369031416019425,
+        "cause": "Pre-execution binding: pcunit/pcode/n_clone bound and used in one conjunction. Split premises; fixture-only correction.",
+        "reported_unexecuted_conditions": 228,
+        "executed_conditions": 0
+      }
+    ],
+    "note": "Both fixture failures occur before assertion execution. Only affected fixture rerun; no model-source/native renewal. Source/fixture launch records retain 3GiB, 280/290s production and297s fixture caps, raw outputs and stable inputs. Peer prelaw baselines preceded saved native execution; all four baselines retain zero source credit."
+  },
+  "earlier_positive_source_cut": {
+    "report": "author/final-binary-v1/methodclosure-static-cv-coalesce-shared-method-static/report.json",
+    "sha256": "9e7ef940f616e51a479843b5286036fabaf4b60f349c070a3f5673944ab5dac8",
+    "id": "methodclosure-static-cv-coalesce-shared-method-static",
+    "seconds": 36.89199627703056,
+    "note": "Earlier positive source cut before explicit raw owner-child membership guards. Retained at its own cut; not added to final four."
+  },
+  "current_joined_loading": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main45-static-method-get-joined-508-v1/report.json",
+    "sha256": "b0505733bc3fade3f67ca981dd00f8ec7d0af90548d6fcb636ecf178d9d53a92",
+    "revision": "48c878b98292e3332fb3e348b7549ebbf8104ebc",
+    "mode": "production_SL",
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "seconds": 16.34184169396758,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "note": "One actual MAIN load: trueLF, quiet, stable HEAD+inputs and fully reaped."
+  },
+  "review": "Independent recover9 FULLCLEAR for exact whole8 f42 and bounded actual MAIN48c source3/test4/Make4 composition; author actual CLEAR agrees. Sole joined load accepted at48c. Metadata causes no semantic rerun.",
+  "limits": "Wider METHOD producers, clones/wrappers/binding/private caches, Generator/This/inheritance/factories and lifetimes remain partial. No cache/free/GC policy or exact held-boundary changes; no engine divergence identified. Inventory169/306; closed counts unchanged: 0 constructors, 1 runtime obligation; full core, ITrees/Rocq and BOLA remain unfinished.",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-quiet-get"
+}

@@ -8803,6 +8803,8 @@ Shared-cache clones of those raw named wrappers also cross these quiet Get
 consumers through strictly descending, same-origin raw ancestry. Historical
 stamps own no function statics; wrapped and private-cache histories stay outside.
 [Named FCC clone quiet Get review](coverage/semantics/magic-property-namedclosure-clone-quiet-get-review.json).
+
+Original direct global own public static USER method captures also cross these quiet Get consumers. Exact declaring source/scope and Shared cache-at-birth checks retain shared method statics through wrapper retirement; wider METHOD forms remain partial. [Static-method FCC quiet Get review](coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).

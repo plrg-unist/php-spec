@@ -1729,6 +1729,8 @@ private-cache counterfacts prompted the explicit field checks; earlier positive
 source observations retain their own cut. No cache/free/GC policy changes.
 [Named FCC clone quiet Get review](../../coverage/semantics/magic-property-namedclosure-clone-quiet-get-review.json).
 
+Original raw USER public static nongenerator/nonabstract own-method captures now cross the same quiet consumers. The capture occurs in global code through an exact direct class token and literal method placeholder; its named parentless owner has no traits. Indexed raw class/member/body/flags, CODE.NAMES resolution, live equal lexical/called/requested/owner scope and absent receiver/creation/binding authenticate it. The original SOURCE-eps BIND_CLASS-owner Shared stamp must agree with Shared birth policy and whole-cache validity. Literal Empty checks the actual result ID. Shared method-static roots outlive wrapper disposal; Empty retires RV before receiver, including throw and budget rejoining. No cache/free/GC policy changes. [Review](../../coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
