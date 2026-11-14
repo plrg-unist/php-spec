@@ -42,7 +42,7 @@ def controls(case):
     for kinds in (('callable', 'null'), ('null', 'callable'), ('callable', 'int', 'string')):
         atoms = ', '.join('NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return' for kind in kinds)
         normalized = '[' + ', '.join('(PTBRANCH ([PTBUILTIN ' + json.dumps(kind) + ']))' for kind in kinds) + ']'
-        lines += [('~' if len(kinds) > 2 else '') + header + 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_first_parameter, pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])']
+        lines += [header + 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_first_parameter, pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])']
     missing = '$ptascii("ReviewCallable82\\\\doesNotExist")'
     lines += ['~$typed_registered(S_return, ' + missing + ')', '$typed_callable(S_return, PSTRING (' + missing + ')) = (false)']
     for strict in ('false', 'true'):

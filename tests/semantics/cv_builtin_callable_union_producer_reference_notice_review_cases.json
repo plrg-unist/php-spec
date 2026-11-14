@@ -1,0 +1,85 @@
+[
+  {
+    "id": "builtin-callable-three-weak-callable-before-bool-private-cell",
+    "namespace": "CallableBuiltinPeer92",
+    "source": "<?php\nnamespace CallableBuiltinPeer92;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(NuLl|BoOl|CaLlAbLe $saved):cAlLaBlE|bOoL|nUlL{echo 'M:',(int)($saved==='CallableBuiltinPeer92\\f17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='CallableBuiltinPeer92\\f17'),';';$value=23;return $value;}\n$x='CallableBuiltinPeer92\\f'.(string)17;$copy=$x;$alias=&$x;set_error_handler('CallableBuiltinPeer92\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='CallableBuiltinPeer92\\f17'),';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableBuiltinPeer92\\f17'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "f2e6efb6ec9a966c808ac57b22ca569b3379aa038562231ec2e522a9dcfd3637",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "REQUEST_STRING",
+    "formal_members": [
+      "null",
+      "bool",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "bool",
+      "null"
+    ],
+    "value_kind": "callable",
+    "integer": null,
+    "weak_receive": false,
+    "outcome": "NOTICE",
+    "line_observation": "Independent exact original; registered USER callable precedes weak Boolean conversion, while strict scalar RECEIVE/RETURN errors precede the outer Notice and sink.",
+    "derived_from": "Independent REF92 complementary source witnesses under the settled builtin callable-union contract."
+  },
+  {
+    "id": "builtin-callable-three-strict-receive-before-notice",
+    "namespace": "CallableBuiltinReceivePeer92",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableBuiltinReceivePeer92;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(BoOl|CaLlAbLe|NuLl $saved):nUlL|cAlLaBlE|bOoL{echo 'BADM;';return $saved;}\nfunction &take(&$value){echo 'BADF;';return $value;}\n$x=17;$copy=$x;set_error_handler('CallableBuiltinReceivePeer92\\h',8);echo 'N;';\ntry{$r=&take(make(\n    $x\n));}catch(\\TypeError $e){echo 'T;';}\necho 'Z:',(int)($x===17),':',(int)($copy===17),';';\n",
+    "source_sha256": "37de77f632e6e07b8c08a31a09909adcb4ea8da588a79198d54e5b56b4bfa6f9",
+    "native_stdout": "N;T;Z:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PINT",
+    "formal_members": [
+      "bool",
+      "callable",
+      "null"
+    ],
+    "return_members": [
+      "null",
+      "callable",
+      "bool"
+    ],
+    "value_kind": "integer",
+    "integer": 17,
+    "weak_receive": false,
+    "outcome": "RECEIVE",
+    "line_observation": "Independent exact original; registered USER callable precedes weak Boolean conversion, while strict scalar RECEIVE/RETURN errors precede the outer Notice and sink.",
+    "derived_from": "Independent REF92 complementary source witnesses under the settled builtin callable-union contract."
+  },
+  {
+    "id": "builtin-callable-three-strict-return-before-notice",
+    "namespace": "CallableBuiltinReturnPeer92",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableBuiltinReturnPeer92;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):bOoL|nUlL|cAlLaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'BADF;';return $value;}\n$x=17;$copy=$x;set_error_handler('CallableBuiltinReturnPeer92\\h',8);echo 'N;';\ntry{$r=&take(make(\n    $x\n));}catch(\\TypeError $e){echo 'T;';}\necho 'Z:',(int)($x===17),':',(int)($copy===17),';';\n",
+    "source_sha256": "30921a47490c6fd71367ff8809f8a9e82e782a8d8e5a517a291b026187fe71aa",
+    "native_stdout": "N;M;T;Z:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PINT",
+    "formal_members": [],
+    "return_members": [
+      "bool",
+      "null",
+      "callable"
+    ],
+    "value_kind": "integer",
+    "integer": 17,
+    "weak_receive": false,
+    "outcome": "RETURN",
+    "line_observation": "Independent exact original; registered USER callable precedes weak Boolean conversion, while strict scalar RECEIVE/RETURN errors precede the outer Notice and sink.",
+    "derived_from": "Independent REF92 complementary source witnesses under the settled builtin callable-union contract."
+  }
+]

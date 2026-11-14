@@ -744,7 +744,7 @@ def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_
 dec $reference_notice_producer_union_members(phpType69*, ptbranch*, text*) : bool
 def $reference_notice_producer_union_members(eps, eps, text_seen*) = true
 def $reference_notice_producer_union_members((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTBUILTIN text_kind])) :: ptbranch*, text_seen*) = $reference_notice_producer_union_members(phpType69*, ptbranch*, text_kind :: text_seen*)
-  -- if text_kind <- ["array", "int", "float", "bool", "string", "null", "false", "true", "object"]
+  -- if text_kind <- ["array", "int", "float", "bool", "string", "null", "false", "true", "object", "callable"]
   -- if ~(text_kind <- text_seen*)
   -- if ~(text_kind <- ["bool", "false", "true"]) \/ ~("bool" <- text_seen* \/ "false" <- text_seen* \/ "true" <- text_seen*)
   -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
