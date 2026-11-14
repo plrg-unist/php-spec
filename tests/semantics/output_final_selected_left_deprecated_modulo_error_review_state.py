@@ -69,11 +69,11 @@ def authority(name, fixture, path):
          r'S_retarget_raw = S_request[.ERRORHANDLER = S_retarget.ERRORHANDLER] /\ '
          r'$ob_object_return_error_live(S_retarget_generated, pobreturnerror) /\ '
          r'$ob_object_division_error_capture(S_retarget, S_retarget_generated) = eps'),
-        ('a handler eligible for both numeric notice classes retains the Error outside this bounded mask',
+        ('a handler eligible for both numeric notice classes captures the authentic Deprecated Error',
          r'$error_handler_eligible(S_both, 2) /\ $error_handler_eligible(S_both, 8192) /\ '
          r'$call_current_valid(S_both) /\ S_both_raw = S_request[.ERRORHANDLER = S_both.ERRORHANDLER] /\ '
          r'$ob_object_return_error_live(S_both_generated, pobreturnerror) /\ '
-         r'$ob_object_division_error_capture(S_both, S_both_generated) = eps')]
+         r'$ob_object_division_error_capture(S_both, S_both_generated) = ((pobobjectreturn, pobreturnerror))')]
 
 
 if __name__ == '__main__':

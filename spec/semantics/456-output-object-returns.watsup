@@ -1379,7 +1379,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $integer_conversion(pvalue_right) = (pintegerconversion)
   -- if pintegerconversion.VALUE = 0
   -- if (z_level, ptbytes_notice)* = pintegerconversion_left.NOTICES ++ pintegerconversion.NOTICES
-  -- if ((z_level* = [2] \/ z_level* = [2, 2]) /\ $error_handler_eligible(S, 2) /\ ~$error_handler_eligible(S, 8192)) \/ ((z_level* = [8192] \/ z_level* = [8192, 8192]) /\ $error_handler_eligible(S, 8192) /\ ~$error_handler_eligible(S, 2)) \/ ((z_level* = [2, 8192] \/ z_level* = [8192, 2]) /\ $error_handler_eligible(S, 2) /\ $error_handler_eligible(S, 8192))
+  -- if ((z_level* = [2] \/ z_level* = [2, 2]) /\ $error_handler_eligible(S, 2)) \/ ((z_level* = [8192] \/ z_level* = [8192, 8192]) /\ $error_handler_eligible(S, 8192)) \/ ((z_level* = [2, 8192] \/ z_level* = [8192, 2]) /\ $error_handler_eligible(S, 2) /\ $error_handler_eligible(S, 8192))
   -- if $(|pintegerconversion_left.NOTICES| <= 1) /\ $(|pintegerconversion.NOTICES| <= 1)
   -- if n = |pintegerconversion.NOTICES|
   -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
