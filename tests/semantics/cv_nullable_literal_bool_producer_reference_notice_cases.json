@@ -1,0 +1,47 @@
+[
+  {
+    "id": "strict-singleton-nullable-false-formal-and-return-literal-arm",
+    "source": "<?php declare(strict_types=1);\nnamespace SingletonNullableFalse72 {\nfunction h($n,$m,$file,$line){global $alias;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($alias===false),';';$GLOBALS['x']=37;$alias=43;return true;}\nfunction make(?fAlSe &$changed):?fAlSe{echo 'M:',(int)($changed===false),':',(int)($GLOBALS['x']===false),';';unset($GLOBALS['x']);return $changed;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=['tag'=>41];return $value;}\n$x=false;$snapshot=$x;$alias=&$x;set_error_handler('SingletonNullableFalse72\\\\h',8);echo 'N;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$GLOBALS['x'],':',$alias,':',(int)($snapshot===false),';';unset($alias);$r=47;echo 'P:',$r,':',$GLOBALS['x'],':',(int)($snapshot===false),';';\n}\n",
+    "formal_kind": "false",
+    "formal_byref": true,
+    "formal_nullable": true,
+    "caller_strict": true,
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:0:1;F:1;R:41:37:43:1;P:47:37:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ecd1d4b94b840fbe63cc9354101c768aba209608b5ea2c77784f3387ffa4f160",
+    "return_kind": "false",
+    "return_shape": "nullable",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_literal_bool_return_producer_reference_notice_cases.json",
+      "id": "strict-singleton-false-return-byref-source-and-private-cell",
+      "source_sha256": "23df0aa8844300869c156299be329448e5e5b43ab2af02e3678855efd854f1bf",
+      "edits": "Fresh namespaces and canonical nullable literal-Boolean formal and return headers; multiple first value becomes NULL and second value false, with exact NULL observers. Runtime CV returns and all owner mutations remain."
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:0:1;F:1;R:41:37:43:1;P:47:37:1;"
+  },
+  {
+    "id": "weak-multiple-nullable-true-null-return-and-false-reference-formal",
+    "source": "<?php\nnamespace MultiCvNullableTrue72 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(?tRuE $saved,?fAlSe &$changed):?tRuE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===null),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value='true';$prefix=31;return $value;}\n$x=null;$snapshot=$x;$y=false;$yAlias=&$y;set_error_handler('MultiCvNullableTrue72\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===null),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===null),';';\n}\n",
+    "source_sha256": "a8cbb36422d5ffbc9ae695af3b862681a65604c3ff2b65ee62374593a6ed4406",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "true",
+    "return_shape": "nullable",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_literal_bool_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-cv-true-return-live-prefix-and-private-cell",
+      "source_sha256": "631f853007f04ec65bc5ee659e166fbaebcf00958b35b7e254b9242e289a18f9",
+      "edits": "Fresh namespaces and canonical nullable literal-Boolean formal and return headers; multiple first value becomes NULL and second value false, with exact NULL observers. Runtime CV returns and all owner mutations remain."
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:23:0;H:8:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;"
+  }
+]

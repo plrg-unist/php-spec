@@ -92,7 +92,7 @@ def controls(index, case):
                     '[(PTBRANCH ([PTBUILTIN "' + literal_kind + '"])), (PTBRANCH ([PTBUILTIN "null"]))]'),
                 ('NUnionType (SEQUENCE ([' + raw_literal + ', NIdentifier (BYTES "aW50") ' + meta + '])) ' + meta,
                     '[(PTBRANCH ([PTBUILTIN "' + literal_kind + '"])), (PTBRANCH ([PTBUILTIN "int"]))]')]:
-            lines += ['~' + header + wrapper + ', ' + signature + '[.RETURNS = ' + normalized + '])']
+            lines += [('' if wrapper.startswith('NNullableType') else '~') + header + wrapper + ', ' + signature + '[.RETURNS = ' + normalized + '])']
         for strict in ('false', 'true'):
             lines += ['$typed_conversion_at(S_return, ' + literal(literal_kind) + ', PBOOL ' + literal_kind + ', ' + strict + ') = TYPEVALUE (PBOOL ' + literal_kind + ')']
             for value in ('PBOOL ' + ('true' if literal_kind == 'false' else 'false'), 'PNULL', 'PINT 0', 'PINT 1', 'PFLOAT 0', 'PSTRING eps', 'PARRAY 0', 'POBJECT 0'):
