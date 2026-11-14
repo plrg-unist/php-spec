@@ -9,8 +9,7 @@ def render(program, filename_b64):
     for old, new in (
             ('$compiled_read(S_capture,porigin_cond) = (PSTRING ($ptascii("abc")))', '$compiled_read(S_capture,porigin_cond) = eps'),
             ('$compiled_string_value(S_capture,porigin_cond,PSTRING ($ptascii("abc"))) = pkeyread.BASE', '$string_read_runtime_value(S_capture,porigin_cond) = (pkeyread.BASE)'),
-            ('$truth(S_capture,PSTRING ($ptascii("abc")))', '$truth_value(S_capture,pkeyread.BASE,0) = S_capture[.RESULT = KNOWN (PBOOL true)]'),
-            ('  -- if $string_read_raw_known_base(S_capture,porigin_cond,pkeyread.BASE)\n', '  -- if ~$string_read_raw_known_base(S_capture,porigin_cond,pkeyread.BASE)\n')):
+            ('$truth(S_capture,PSTRING ($ptascii("abc")))', '$truth_value(S_capture,pkeyread.BASE,0) = S_capture[.RESULT = KNOWN (PBOOL true)]')):
         assert body.count(old) == 1
         body = body.replace(old, new)
     early = lines(r'''
