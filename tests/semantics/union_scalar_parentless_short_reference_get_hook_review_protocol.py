@@ -123,7 +123,7 @@ def fields(fixture, source, form):
         '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bWl4ZWQ=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NName (BYTES "TGVhZjMwMQ==") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTCLASS ($ptascii("Leaf301"))])),(PTBRANCH ([PTBUILTIN "null"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "string"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "string"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "string"]))])',
     ]
     for label, state in (('return', 'S_return'), ('cleanup', 'S_before')):
