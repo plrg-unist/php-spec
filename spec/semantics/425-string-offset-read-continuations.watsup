@@ -436,6 +436,25 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL (~b))
   -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
   -- if b = $truth(S, pvalue_child)
   -- if $truth_value(S, pvalue_child, z_line) = S[.RESULT = KNOWN (PBOOL b)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL b)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [IDENTICAL, NOTIDENTICAL]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if b = ($strict_identical(pvalue_left, pvalue_right) =/= (pbin = NOTIDENTICAL))
+  -- if $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN (PBOOL b)]
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
