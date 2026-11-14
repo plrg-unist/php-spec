@@ -1341,8 +1341,21 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if pobreturnerror = {SITE porigin_operator, OBJECT n_exception, MESSAGE preqbytes_message, LINE z}
   -- if $ob_object_division_error_source(S_next, pfunction, pobreturnerror)
   -- if $ob_object_return_error_live(S_next, pobreturnerror)
+dec $ob_object_error_handler_tail(pstate, pfunction, statement*) : bool
+def $ob_object_error_handler_tail(S, pfunction, eps) = true
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprConstFetch (NName (BYTES text_null) metadata_name) metadata_null) metadata_return]) = true
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $ptlc($base64(text_null)) = $ptascii("null")
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprConstFetch (NName (BYTES text_null) metadata_name) metadata_null) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_null)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_null) = ((z_null, b_null))
+  -- if z_null = $source_line(metadata_null)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_null) = (PNULL)
+def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit NULL.
+;; a named, untyped two-parameter handler with a literal echo and implicit or literal NULL.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
@@ -1352,7 +1365,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if S.ERRORHANDLER.CALLBACK = (pvalue_handler)
   -- if $error_handler_target(S, pvalue_handler) = (PORIGIN n_handler pcpath_handler)
   -- if $function_at($all_functions(S), PORIGIN n_handler pcpath_handler) = (pfunction_handler)
-  -- if $origin_node(S.SOURCES, pfunction_handler.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text_handler) metadata_name) phpType16_handler ABSENT (SEQUENCE ([NStmtEcho (SEQUENCE ([NScalarString (BYTES text_literal) metadata_literal])) metadata_echo])) metadata_handler)
+  -- if $origin_node(S.SOURCES, pfunction_handler.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) (NIdentifier (BYTES text_handler) metadata_name) phpType16_handler ABSENT (SEQUENCE ((NStmtEcho (SEQUENCE ([NScalarString (BYTES text_literal) metadata_literal])) metadata_echo) :: statement_tail*)) metadata_handler)
   -- if pfunction_handler.NAME = $base64(text_handler)
   -- if pfunction_handler.CODE.UNIT = n_handler /\ pfunction_handler.BODY = pcpath_handler ++ [PCFIELD 5]
   -- if pfunction_handler.DEFAULTS = eps /\ ~pfunction_handler.SIGNATURE.BYREF /\ pfunction_handler.SIGNATURE.RETURNS = eps
@@ -1365,6 +1378,7 @@ def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturne
   -- if $code_expression(pfunction_handler.CODE.EXPRESSIONS, pcpath_literal) = ((z_echo, b_echo))
   -- if z_echo = $source_line(metadata_literal)
   -- if $compiled_read(S, PORIGIN n_handler pcpath_literal) = (PSTRING $base64(text_literal))
+  -- if $ob_object_error_handler_tail(S, pfunction_handler, statement_tail*)
   -- if pintegeroperation.OP = MODULO /\ ~pintegeroperation.SWAPPED
   -- if $integer_warning_valid(S, pintegeroperation, INTEGER_RIGHT i_left, pintegerconversion, n)
   -- if $integer_pointer_select(S, pintegeroperation.LEFT) = (pintegeroperation.LEFTPOINTER)
