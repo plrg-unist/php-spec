@@ -238,6 +238,8 @@ Canonical fully qualified `\stdClass` required formals and returns also retain e
 
 Raw `?\stdClass` formals and returns also preserve exact class bytes and `[class,null]` order under the existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain separate evidence; explicit unions, plain/imported/wider classes and all exact holds remain partial. [Nullable FQN review](coverage/semantics/cv-nullable-fqn-stdclass-producer-reference-notice-review.json).
 
+Explicit `\stdClass|null` and `null|\stdClass` formals/returns preserve exact raw/normalized order and existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain distinct evidence; wider class/builtin unions, plain/imported classes and all exact holds stay partial. [Ordered FQN/null review](coverage/semantics/cv-union-fqn-stdclass-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The

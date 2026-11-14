@@ -729,6 +729,18 @@ on fresh78 reached states without historical renewal. The first403 elaboration
 failure and unexecuted controller/Make retain zero credit. Explicit unions,
 plain/imported or wider class types and all exact held dependencies stay partial.
 
+Explicit `\stdClass|null` and `null|\stdClass` required formals and returns
+retain exactly two raw/normalized members in source order. Decoded FQN bytes
+match the class branch exactly before case-insensitive stdClass matching; the
+raw null Identifier casefolds to null. Actual NULL/object checks, ordinary BYREF
+rebinding, producer retirement and private Notice-cell ownership stay unchanged.
+The [ordered FQN/null review](../../coverage/semantics/cv-union-fqn-stdclass-producer-reference-notice-review.json)
+keeps native6 once/source6 (four Notice and separate RECEIVE/RETURN priorities),
+first-run author479/peer308 and prelaw145/159 fixture-SL507 cuts separate from the
+sole batchcfb37f6ef SL508 load. Seven exact current78 header corrections use fresh79
+states without historical renewal. Controller/Make remain unexecuted/source0;
+wider class/builtin unions, plain/imported class forms and every exact hold stay partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

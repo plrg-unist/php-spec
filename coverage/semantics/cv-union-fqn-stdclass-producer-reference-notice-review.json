@@ -1,0 +1,128 @@
+{
+  "milestone": "REF79",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "857c665fca7acff94db5b6c99eebcf59f7ce92fe",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "32ad8569eff368e98e422217dcae658405dc71a21e4238c0330570ad5e05112c",
+    "law": "Thirty additive207 lines add four disjoint FORMAL/RETURN arms for explicit ordered FQN stdClass|null and null|FQN stdClass only. Exactly two raw members match two normalized branches in source order; decoded raw FQN bytes equal PTCLASS bytes whose casefold is stdclass, and raw null NIdentifier casefolds null. Required ordinary-CV/BYREF/default/variadic/count and actual RECEIVE/RETURN, frame retirement, compiled line, private Notice cell, quiet STDINSTANCE/PNULL payload, source/owner/lifetime proofs stay literal. No generic class-union fold, runtime/compiler/schema/module change.",
+    "source_symbols": [
+      "Zend/zend_compile.c::zend_compile_single_typename, zend_compile_typename_ex, zend_resolve_class_name, zend_emit_return_type_check, zend_compile_args",
+      "Zend/zend_execute.c::zend_check_type, zend_check_type_slow, zend_verify_recv_arg_type",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "spec/semantics/16-static-types.watsup::ptast, ptunionfold, ptunionchecked; 130-stdclass-runtime.watsup::typed_object_exact",
+      "spec/semantics/95-type-values.watsup::typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-union-fqn-stdclass-producer-reference-notice-79",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "7a9afbd7ce11714c3fdb8df6e4d14b8ea0ace7b87ef0c2f73e6f2a833578454b",
+    "source_donor": "a3df4ada064b74ab3618fbd1b3ee8d52c91c68c7",
+    "files": 11,
+    "scope": "Exact11/593 additions/2 deletions versus70ff70597; whole READY and independent FULLCLEAR preceded integration. Two unchanged78 metadata ancestry paths were excluded."
+  },
+  "semantics": "zend_compile_typename_ex retains a class name plus the NULL bit for either raw order. Local16::ptunionfold/ptunionchecked preserve source branch order for normalized authority. Actual NULL or matching stdClass identity passes without weak scalar coercion; Other rejects at RECEIVE or RETURN before Notice. Ordinary BYREF parameters gain no persistent type source; returned object/NULL passes verified producer retirement into the independent untyped private Notice cell.",
+  "counts": {
+    "native_originals_once": 6,
+    "native_replays": 0,
+    "notice_agreements": 4,
+    "receive_priority_agreements": 1,
+    "return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "source_cuts": [
+    {
+      "role": "author source2 saved-native",
+      "report": "author/postlaw-source-v1-szj1u323/report.json",
+      "sha256": "e89342b700cc220b4dde575de35810a99f3286348d375c9a733518764b884578",
+      "revision": "ad2aa656dbd97d3e7fc50ea7c0d483b3c7eb88c9",
+      "passed": true,
+      "normal_agreements": 2,
+      "php_error_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true
+    },
+    {
+      "role": "peer source4 saved-native",
+      "report": "peer/postlaw-source-v1-erdgtxfm/report.json",
+      "sha256": "7576b3385ddd1611960718ea7d483456705b88a581006820bd21bafb4c76ff6a",
+      "revision": "f13bc67fdecde0c8209780af7e96ff6d68294c99",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "normal_agreements": 4,
+      "php_error_agreements": 0
+    }
+  ],
+  "state_cuts": [
+    {
+      "role": "author fixture479",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "4e5d3033d682d168820eb612dc4855f120ce5224be6852e2933591d72dc79ebb",
+      "revision": "ad2aa656dbd97d3e7fc50ea7c0d483b3c7eb88c9",
+      "passed": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 479,
+      "reached_conditions": 207,
+      "derived_conditions": 272,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "elapsed_seconds": 61.06998348236084,
+      "cap_seconds": 1200,
+      "reaped": true
+    },
+    {
+      "role": "peer fixture308",
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "a8c740d7b9eff41b79cc4c61f6f42378f0b5b63e8f7da0779af4b4da58cc8397",
+      "revision": "f13bc67fdecde0c8209780af7e96ff6d68294c99",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 308,
+      "reached_conditions": 232,
+      "derived_conditions": 76,
+      "source_agreements": 0,
+      "elapsed_seconds": 69.594482899,
+      "cap_seconds": 1200,
+      "reaped": true
+    }
+  ],
+  "prelaw": "Genuine author145 and independent159 fixture-SL507 cuts retain their original source-zero identities, revisions and report hashes in the manifest.",
+  "independent_review": {
+    "source": "Predecessor recover14 substantive whole11 content/controller/hash/report/compatibility FULLCLEAR remains valid and was preserved at transfer.",
+    "actual": "recover15 ONE actual1bf90bb1/tree0857b3ce owned11/composition through batchfinalcfb37f6ef/tree19be6360 plus SAME 96559967 canonical comparison FULLCLEAR sent directly MAIN56. No author duplicate read or execution."
+  },
+  "canonical_main": {
+    "source_revision": "1bf90bb1be9e34c7659cee13ea76a737dfba0dff",
+    "source_tree": "0857b3cee27f9c88211a44f543c20d52172d5356",
+    "revision": "cfb37f6ef2201450c8cce424929ec7916515fdfd",
+    "tree": "19be63608b20d6d04e7fce03fa2ae2450b27c3d9",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main56-ref79-getliteral-power-enum248-current-load-v1/report.json",
+    "sha256": "96559967f839382d0f8b68a8006f7db2dbe9e4dd1ed581c1ca6d29d32e502ead",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 15.681472308933735,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Source207 equals independently reviewed857c665fc and independently source/fixture-testedf13bc67fd. Author catalogue/wrapper/state and the current78 author helper remain acceptedad2aa656d; both76 ownership and current77 helper inputs remain unchanged. Exactly two current78 helper sign edits expand7 matching union HEADER truths (author6, peerobject1), directly selected on fresh79 reached states; no78 historical renewal. Existing argument-only RETURNS=eps, zero-actual helper base and raw nullable class-first acceptance stay unchanged. Three peer files are imported literally from testedf13bc67fd (preparedbc3a76d80). Final import adds only peer witnesses.",
+  "preserved_failures": "No REF79 native/source/fixture execution failure, timeout, interrupted run or native replay. All four genuine prelaw/postlaw fixture identities remain source0. Original REF78 failed403 and other earlier failures retain their existing zero-credit status, without reread or renewal. Combined controller and Make recipe remain UNEXECUTED/source0.",
+  "limits": "Wider class/builtin unions, plain/imported class forms, other classes, wider signatures/payload/source/backing/history/GC/lifetimes and complete core remain partial. Historical V110 stdClass dependency stays held without a finer recovered operation; existing quiet STDINSTANCE/PNULL operations gain no lifecycle widening or held rerun. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension warnings, Source47 low-precision DEFINE-name NaN conversion, COMP88 Stringable supplied-throw crash, GC35/I106/COMP123/ATTR87/GC87 and every other exact hold stay untouched."
+}
