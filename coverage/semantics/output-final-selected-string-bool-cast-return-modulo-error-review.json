@@ -1,0 +1,92 @@
+{
+  "feature": "OUTPUT124: selected FINAL MOD handlers with non-NUL literal-string Boolean casts",
+  "status": "independently reviewed and source-integrated; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64, vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local PHP; recorded baseline; pure authored semantics",
+  "reviewed_ready": "25ef43771fab9ba2c96b005d8db35a3170613ebc",
+  "contract": "Own canonical kind1 (bool) casts authenticate exact Return/root/ScalarString SOURCE, handler UNIT/BODY and CODE lines/flags. The emitted root retains CODEfalse/read-eps; its child retains CODEtrue and exact raw PSTRING bytes. Non-NUL bytes must produce an authenticated INTERNED runtime carrier through compiled_string_value. NORMAL, carrier truth and full-state quiet CASTBOOL preserve strict PBOOL results. Empty and sole-zero strings return FALSE and permit default diagnostics; '00' and 'x' return TRUE and suppress fallback. The carrier owns no heap nodes. Actual handler RETURN and real formal/native-cell retirement precede FINAL MOD-zero Error.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_cast emits ZEND_BOOL",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BOOL calls i_zend_is_true",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true IS_STRING is false only for length0 or sole byte48",
+    "spec/semantics/20-machine.watsup:evaluate preserves decoded raw PSTRING bytes",
+    "spec/semantics/33-runtime-compiler.watsup:compiled_read is raw; compiled_string_value requires actual source and compiled precision for INTERNED identity",
+    "spec/semantics/50-control-flow.watsup:raw/carrier string truth; 56-casts.watsup:NORMAL/full-state CASTBOOL"
+  ],
+  "packet": {
+    "base": "0643f9ed4ea71579d7f7e3aead5eccb8a50c1e20",
+    "delta": "Five source paths, +249/0: Make4,45622,sources17,state71,review_state135. Closed123 twoJSON ancestry is excluded.",
+    "runtime_sha256": "252eefcebd5ca037868d76cce9448b198904569465fc6398f4980b400406baf4",
+    "peer_sha256": "be2477769b037f49ae158d4021e19615734393766fae0cac5951732df9b4093e"
+  },
+  "validation": {
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/native-summary-01.json",
+      "sha256": "840dbf5b1ec20002b8441068ae81b5b2d5a9006d1a78ad0f62d139be628a002c",
+      "originals_once": 4,
+      "result": "Complete saved native observations, reused without replay."
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/model-final-01/report.json",
+      "sha256": "ffe133b0af253cbdf6ce374dda97a73fbc50b733045f3e71035ee576a6aa5a81",
+      "agreements": 4,
+      "result": "Production SL508/cache=false/det=true at ce201f51b; complete php_error outcomes, raw observations and exits match saved natives, including default FALSE diagnostics and TRUE suppression."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/model-first-01/report.json",
+      "sha256": "3d3c1a95f8d3a85d470ebc5318c8524167207a05bde5c6ce948581f1f38b6ca3",
+      "result": "Two complete Unsupported outcomes at35e8d5e1; two other originals UNRUN; source0."
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/front-all-01/report.json",
+      "sha256": "a69f8293dc711229f22f31664c29913b9d1c65643b7f2054c2212f5c7f54c155",
+      "conditions": [
+        8,
+        11
+      ],
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/life-all-01/report.json",
+      "sha256": "48bbed73f6a4302c55fbc236698caf709a73e40d12040f85e1be2c3f796ee21b",
+      "conditions": [
+        6,
+        7
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/peer-front-all-02/report.json",
+      "sha256": "b60b68687856d4b00ba29b7ad068a5ffa95fe1b31a13d0fb3b6bb87d5808ea6d",
+      "conditions": [
+        49,
+        46,
+        49
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/peer-life-all-01/report.json",
+      "sha256": "ad3325360870e112f063ed48dfbbce61e085bb5388299471af3e3703c8270e1c",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "source_credit": 0
+    },
+    "controls": "Exact raw pools and authenticated carriers stay distinct. Missing precision refuses even with unchanged source/CODE, exact raw read and matching quiet raw/carrier cast answers. Empty/sole-zero pool exchanges refuse despite equal FALSE results; typed/carrier-pool, SOURCE/CODE/unit/body/kind, NORMAL no-op and actually folded root forgeries refuse. An unread raw root pool is ignored. Local byte-string truth, NUL refusal and final INTERNED header persistence after actual retirement pass with source0.",
+    "correction": "Original peer-front-all-01/peer-front-launch-01 failed before semantic execution: unparenthesized byte-list constructor syntax caused the runner JSON decode error. Raw parser/launch failure is preserved with zero credit. Commit25ef43771 changes exactly three peer fixture byte-expression lines, preserving intended bytes and all assertions. The corrected peer frontier and previously UNRUN peer lifecycle ran at25ef; runtime/source/author fixtures are byte-identical to ce201, so accepted native/source/frontier/lifecycle cuts keep their original identities without replay.",
+    "reliability": "All accepted cuts use SL508 with separate source/fixture identities, fixed outer660/fixture300 caps, quiet/stable/reaped launchers and empty groups. Author cuts are atce201, corrected independent cuts at25ef. Current reports/launch hashes and source packet were independently read once. Make recipes are wired, not claimed executed."
+  },
+  "actual_composition": {
+    "revision": "187ecaf7570556a906b663c033bdc3e133184df7",
+    "tree": "15e3271f883b31a84d28b777b035d8673c50f040",
+    "parent": "3138ce8c02d5d616f85f6814d241a486aee84dad",
+    "projection": "Exact five-path +249/0 actual delta; all four nonMake blobs equal signed25ef. Makefile applies exactly the four signed recipes while preserving newer MAIN content;123 metadata is excluded.",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main64-output124-string-bool-cast-current-load-v1/report.json",
+    "sha256": "9740e7a8e5f295408fc759d454b35756efc651d2d97af8c5b9c8415803d275e2",
+    "result": "Sole production-SL508 load passes in16.2897166388575 seconds, cap60;511 ordered arguments/512 watches, exit0/true LF/empty stderr/no timeout, source0, stable/reaped. Actual composition and saved report independently consumed once; no author duplicate or renewed execution credit."
+  },
+  "remaining": "NUL, owning/CV/computed strings, wider children/styles, handlers, retarget histories, lifetimes and OB31 remain partial. NUL controls establish rejection only, with no release behavior or original-source credit. All exact holds remain unchanged; no full-core, Rocq or BOLA claim. Metadata does not renew semantic evidence."
+}

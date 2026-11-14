@@ -8,6 +8,14 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+REF90 array/callable producer originals and separate native-once, source, author/peer fixture and prelaw cuts remain in `../php-spec-evidence-archive/cv-array-callable-producer-reference-notice-90/`. The [review](../coverage/semantics/cv-array-callable-producer-reference-notice-review.json) retains the accepted actual/SAME tuple.
+
+OUTPUT124 literal-string Boolean-cast handler originals and separate source/author/peer cuts remain in `../php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/`. The [review](../coverage/semantics/output-final-selected-string-bool-cast-return-modulo-error-review.json) preserves the original fixture parse failure at zero and the accepted actual/SAME tuple.
+
+Qualified/FQN scalar instanceof original native-once/prelaw, saved-native source and separate author/peer fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-scalar-qualified-instanceof/`. The [review](../coverage/semantics/string-offset-request-base-runtime-scalar-qualified-instanceof-review.json) retains the original cuts and sole actual/SAME load without renewing execution.
+
+Folded short-circuit truth originals, native-once/prelaw, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-folded-short-circuit-truth-base-initial-raw-leading-key-{author27,peer26}-20261114/. Concise cuts and recovery: coverage/semantics/string-offset-folded-short-circuit-truth-base-initial-raw-leading-key-review.json.
+
 Canonical-string ordinary missing-Get originals, native-once observations,
 corrected production-SL comparisons and source-derived fixtures remain under
 `../php-spec-evidence-archive/magic-property-string-read-get/author/` and

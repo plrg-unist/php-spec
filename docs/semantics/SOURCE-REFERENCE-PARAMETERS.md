@@ -874,6 +874,17 @@ fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL5
 load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
 partial.
 
+Ordered `callable|array` and `array|callable` required formals and returns retain
+the same raw/normalized authority. Exact arrays bypass callable lookup;
+registered USER names retain their callable route, while scalar mismatches reject
+in both strict modes. Existing finite array graphs, ordinary BYREF writes,
+producer retirement and separate untyped private Notice cells retain their bounds.
+The [array/callable review](../../coverage/semantics/cv-array-callable-producer-reference-notice-review.json)
+keeps native6 once/source6, author595/peer300 and genuine prelaw229/137
+fixture-SL507 cuts separate from actual `8490ca0c88` and its sole production-SL508
+load. Ten old-header controls use fresh90 states; controller/Make remain
+unexecuted/source0. Wider forms and every exact held boundary remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
