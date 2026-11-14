@@ -741,6 +741,14 @@ def $named_reference_notice_names(S, eps) = true
 def $named_reference_notice_names(S, (preqbytes, poperand) :: (preqbytes_tail, poperand_tail)*) = ($named_reference_notice_operand(S, poperand) /\ $named_reference_notice_names(S, (preqbytes_tail, poperand_tail)*))
 def $named_reference_notice_arguments(S, pnamedargs) = ($named_reference_notice_slots(S, pnamedargs.SLOTS) /\ $named_reference_notice_names(S, pnamedargs.NAMED))
 
+dec $reference_notice_producer_union_members(phpType69*, ptbranch*, text*) : bool
+def $reference_notice_producer_union_members(eps, eps, text_seen*) = true
+def $reference_notice_producer_union_members((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTBUILTIN text_kind])) :: ptbranch*, text_seen*) = $reference_notice_producer_union_members(phpType69*, ptbranch*, text_kind :: text_seen*)
+  -- if text_kind <- ["array", "int", "float", "bool", "string", "null"]
+  -- if ~(text_kind <- text_seen*)
+  -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
+def $reference_notice_producer_union_members(phpType69*, ptbranch*, text_seen*) = false -- otherwise
+
 dec $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) : bool
 def $reference_notice_producer_multiple(eps, eps, eps) = true
 def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
@@ -780,6 +788,14 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
   -- if text_first_type <- ["array", "int", "float", "bool", "string", "null"] /\ text_second_type <- ["array", "int", "float", "bool", "string", "null"] /\ text_first_type =/= text_second_type
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
+def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE phpType69*) metadata_union) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
+  -- if $(|phpType69*| > 2)
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
+  -- if $reference_notice_producer_union_members(phpType69*, psparam.TYPE, eps)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) = false -- otherwise
 
