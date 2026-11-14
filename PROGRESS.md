@@ -231,6 +231,8 @@ REF67 admits standalone raw mixed/normalized[mixed] returns through the existing
 
 REF68 extends the pointwise ordinary-CV argument proof to required canonical mixed formals with exact raw/normalized/reference-mode authority. Four new Notice source agreements use four native originals once; author427 and peer296 fixture-SL507 cuts stay separate from the sole actual canonical load. Two current matching formal-header expectations change without renewing historical evidence. Wider formals/contexts and all exact holds remain partial.
 
+REF69 admits required canonical standalone null formals through the existing pointwise argument proof, with return/frame/payload/ownership rules unchanged. Four native originals ran once; three new Notice agreements and one separate fresh weak BYREF REQUEST RECEIVE-priority agreement pass. Author fixture-SL507416 (296 reached, 120 derived) and peer fixture-SL507217 (188 reached, 29 derived) retain separate source0 cuts, as do genuine prelaw188/140 and original Unsupported2. Actual MAIN 4c1cc93c has the sole 508-module SL load at 15.837800811976194 seconds, cap60, quiet/stable/reaped/source0; report main48-null-formal-producer-joined-508-v1 SHA5274b143dc9eb679accd1625f27f47452b374b826e8d2044ea610822052803b6. The combined controller is UNEXECUTED. All held lanes and complete-core partial status remain. [Null-formal review](coverage/semantics/cv-null-formal-producer-reference-notice-review.json).
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.
@@ -626,12 +628,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `f755c0b9b` passes its once-only 508-module production SL
-load in 15.63138233916834 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `4c1cc93c6` passes its once-only 508-module production SL
+load in 15.837800811976194 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main48-true-unary-shorthand-base-joined-508-v1/report.json`
-(SHA-256 `4d8882bcb4e56fa46a8bde8fa6033d6e78fd18bb418b3255dd68c4639bb38841`).
+`../php-spec-evidence-archive/resumed-main-20261112/main48-null-formal-producer-joined-508-v1/report.json`
+(SHA-256 `5274b143dc9eb679accd1625f27f47452b374b826e8d2044ea610822052803b6`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

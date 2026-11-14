@@ -598,6 +598,18 @@ state cuts and the sole actual canonical load distinct. Existing return, payload
 source and ownership bounds remain; nullable/union mixed and wider contexts remain
 partial, with Owned-NUL held.
 
+Required canonical standalone `null` formals also use the completed singleton
+and multi-CV proof. The raw identifier matches its sole normalized null branch
+and exact reference mode. NULL reception preserves identity in either caller
+mode; other values fail reception before the producer body or Notice. Ordinary
+BYREF formals add no persistent alias type constraint, so body mutation can
+replace the caller cell with a quiet object. The
+[null-formal review](../../coverage/semantics/cv-null-formal-producer-reference-notice-review.json)
+separates three fresh Notice agreements from the weak REQUEST receive-priority
+control, four native originals run once, the private fixture cuts and the sole
+actual canonical load. Existing return, payload, source and ownership bounds
+remain partial; all paused boundaries, including Owned-NUL, remain held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

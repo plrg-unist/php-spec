@@ -1,0 +1,162 @@
+{
+  "milestone": "REF69",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "47938c4be66681c98091845f64dcfcdca4143564",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "bffcb0fa256fa3419c6bc6d3373c87e03ca672ae1b96473c72993ca1e72a5e16",
+    "law": "Exactly one kind, null, is added to the required canonical NIdentifier-formal arm of reference_notice_producer_multiple. Matching raw identifier/normalized singleton type, BYREF, required/default/variadic/attribute/ordinary-CV guards remain literal. Return, nullable/union, actual TYPE_RECEIVE, frame, payload, Notice-source and ownership laws are unchanged.",
+    "source_symbols": [
+      "Zend/zend_compile.c: builtin_types, zend_compile_single_typename, zend_compile_typename_ex, zend_compile_params",
+      "Zend/zend_execute.c: zend_check_type, zend_verify_recv_arg_type, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_vm_def.h: ZEND_RECV, zend_verify_recv_arg_type_helper",
+      "spec/semantics/95-type-values.watsup: typed_exact, typed_conversion_at; 95-typed-calls.watsup: typed_parameter_conversion, typed_receive_valid"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-null-formal-producer-reference-notice-69",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "39f534d869dd0895d03d06cb0ff7acea366b2f1e67e445733cafbdd582962ded",
+    "files": 9,
+    "scope": "Whole nine-path author READY and independent FULLCLEAR preceded MAIN integration. The combined controller is UNEXECUTED; imported helper closure, saved-native forwarding and the unique serial Make recipe have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "60c1a81fd326b547f5cd79c64a72c09a243b93c83c596711f76b5e808f2a064e",
+    "decision": "FULLCLEAR",
+    "scope": "Pinned source contract, counterexamples, source/native reliability and all nine actual donor paths. Peer separately read the actual MAIN source delta and sole saved canonical report; no execution was renewed."
+  },
+  "counts": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "new_notice_agreements": 3,
+    "fresh_receive_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "ownership": "NULL reception preserves identity under either caller mode. BYVAL uses a fresh formal cell that retires before the private Notice cell is created; ordinary BYREF uses the real caller cell without a persistent type constraint. Body mutation can replace a received NULL with a quiet stdClass. Private Notice cells, caller aliases, saved snapshots and object owners remain distinct through later writes and cleanup.",
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "c2b81c0e81a1cd08829c9fa03e5d3d895becde75251f308d7065c754913eec56",
+      "revision": "0f259ce444f3df06326855d424811400ecaee6dd"
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "2ceb111d9c3da52afd53bc2658d9234e313ac8ed1f6fc006e19e901c17834da7",
+      "revision": "696fb7cd28522af2f059e662788b2a4b8c4738c4"
+    },
+    {
+      "role": "author genuine prelaw188",
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "68adf7f0a46948ca1ef594bb07bf0a5b6f168e9b105032a35d606ba0c3a9a9f5",
+      "revision": "0f259ce444f3df06326855d424811400ecaee6dd"
+    },
+    {
+      "role": "peer genuine prelaw140",
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "8194092e4f60596d086714bf80d2a61b379af438185eaeb90844263021b75f8d",
+      "revision": "696fb7cd28522af2f059e662788b2a4b8c4738c4"
+    },
+    {
+      "role": "author Unsupported source2 baseline",
+      "report": "author/prelaw-baseline-summary.json",
+      "sha256": "aee5b6ed04a7a73306a5160f3defcf718c30170ddca516c9b7a92a7a44270591",
+      "revision": "0f259ce444f3df06326855d424811400ecaee6dd"
+    },
+    {
+      "role": "author postlaw Notice2",
+      "report": "author/postlaw-source-summary.json",
+      "sha256": "38f7b67c0228ab5d30c5e09cfb7ffe7b87cb51b6b493921dcd1a15ac408e634c",
+      "revision": "c4e820747ccbee5c8a4d0afe65cd82ff486c6c5f"
+    },
+    {
+      "role": "author postlaw fixture416",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "4c9272374e9a53495266d249f8bf5cd0fb4713ae23c66cbd7e4319e94b337e0a",
+      "revision": "c4e820747ccbee5c8a4d0afe65cd82ff486c6c5f"
+    },
+    {
+      "role": "peer postlaw Notice1 and RECEIVE priority1",
+      "report": "peer/postlaw-source-v1/report.json",
+      "sha256": "851a278c3ce13072b990e2ef202dc86b4c799a7f37085e5e7d36067c5eecc425",
+      "revision": "6646c1286e9f373cca8802cf082971afbe08ab63"
+    },
+    {
+      "role": "peer postlaw fixture217",
+      "report": "peer/postlaw-state-v1/report.json",
+      "sha256": "3a517dec33998887973c58e4237a35f97726d549f5d26707fc32cf1498b75fa5",
+      "revision": "6646c1286e9f373cca8802cf082971afbe08ab63"
+    }
+  ],
+  "prelaw": {
+    "author_fixture": {
+      "revision": "0f259ce444f3df06326855d424811400ecaee6dd",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 188,
+      "source_agreements": 0
+    },
+    "peer_fixture": {
+      "revision": "696fb7cd28522af2f059e662788b2a4b8c4738c4",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 140,
+      "source_agreements": 0
+    },
+    "original_source_controls": "Both author originals reach the unchanged Notice fence as expected Unsupported, with zero agreement credit. The peer weak BYREF REQUEST rejection already reaches cleanup in its genuine prelaw state fixture; its production source comparison is separately recorded at the postlaw cut."
+  },
+  "state_cuts": {
+    "author": {
+      "revision": "c4e820747ccbee5c8a4d0afe65cd82ff486c6c5f",
+      "modules": 507,
+      "mode": "fixture-SL/cache=false/det=true",
+      "conditions": 416,
+      "reached": 296,
+      "derived": 120,
+      "elapsed_seconds": 63.16843819618225,
+      "cap_seconds": 1200,
+      "source_agreements": 0
+    },
+    "peer": {
+      "revision": "6646c1286e9f373cca8802cf082971afbe08ab63",
+      "modules": 507,
+      "mode": "fixture-SL/cache=false/det=true",
+      "conditions": 217,
+      "reached": 188,
+      "derived": 29,
+      "elapsed_seconds": 47.3299560546875,
+      "cap_seconds": 1200,
+      "source_agreements": 0
+    }
+  },
+  "canonical_main": {
+    "revision": "4c1cc93c67824e7ab9390ac2f798a8411da3baa9",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main48-null-formal-producer-joined-508-v1/report.json",
+    "sha256": "5274b143dc9eb679accd1625f27f47452b374b826e8d2044ea610822052803b6",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 15.837800811976194,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": {
+    "author": "Native2 once and genuine prelaw fixture-SL507188 at0f259ce444f3df06326855d424811400ecaee6dd; original source2 Unsupported/source0. Postlaw Notice source2 and fixture-SL507416=296 reached+120 derived atc4e820747ccbee5c8a4d0afe65cd82ff486c6c5f pass, stable/reaped. Final donor adds only the three independent peer files outside the author executed closure. Between prelaw and postlaw, author helper edits fix only derived-control metadata bindings; the prelaw reached conditions remain literal.",
+    "peer": "Native2 once and genuine prelaw fixture-SL507140 at696fb7cd28522af2f059e662788b2a4b8c4738c4. Postlaw source2 (one strict BYVAL Notice and one weak BYREF REQUEST RECEIVE-priority control) plus fixture-SL507217=188 reached+29 derived at6646c1286 pass, stable/reaped. Counts remain separate; no unique aggregate claim.",
+    "prior_expectations": "No prior expectation changes are required. Existing REF68 normalized-null negatives retain raw mixed identifiers and remain mismatches. Fresh69 checks matching raw/normalized null, both reference modes, NULL identity, non-NULL rejection, invalid nullable/duplicate union forms, mismatched raw/normalized/mode/default/required/variadic controls, real formal/private-cell retirement and budget resumption.",
+    "actual_main": "The eight non-Make files match the whole donor literally; one additive serial Make recipe preserves all existing recipes. Production source comparisons, fixture cuts and the sole canonical load retain their own revisions and counts."
+  },
+  "limits": "All69 expected Unsupported/prelaw fixture controls retain0 semantic source credit. Every earlier failure, timeout and unrun remains0. Existing return/payload/source/backing/history/GC/lifetime bounds and wider formals remain partial. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}

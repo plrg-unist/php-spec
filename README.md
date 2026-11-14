@@ -218,6 +218,8 @@ Completed ordinary-CV producers also admit canonical standalone `mixed` returns,
 
 Required canonical `mixed` producer formals preserve admitted values, including NULL, under both caller modes. BYVAL and ordinary BYREF reception retain their distinct cell lifetimes without a persistent alias constraint. See the [mixed-formal review](coverage/semantics/cv-mixed-formal-producer-reference-notice-review.json); existing return/payload/ownership bounds and holds remain.
 
+Completed singleton and multi-CV Notice producers now admit required canonical standalone null formals. NULL reception preserves identity; non-NULL values fail before the body/Notice, and ordinary BYREF parameters add no persistent alias constraint. [Null-formal review](coverage/semantics/cv-null-formal-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The
