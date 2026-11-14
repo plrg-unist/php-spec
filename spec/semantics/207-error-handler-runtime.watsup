@@ -778,7 +778,7 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if n_name* =/= $ptascii("http_response_header")
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
   -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
-  -- if (text_first_type <- ["array", "int", "float", "bool", "string"] /\ text_second_type = "null") \/ (text_first_type = "null" /\ text_second_type <- ["array", "int", "float", "bool", "string"])
+  -- if text_first_type <- ["array", "int", "float", "bool", "string", "null"] /\ text_second_type <- ["array", "int", "float", "bool", "string", "null"] /\ text_first_type =/= text_second_type
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) = false -- otherwise

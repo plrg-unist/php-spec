@@ -1,0 +1,60 @@
+[
+  {
+    "id": "distinct-float-int-byval-and-int-float-byref-numeric-string-choice",
+    "source": "<?php\nnamespace CvDistinctBuiltinUnionFormal62 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(float|InT $saved,int|fLoAt &$changed):int{echo 'M:',(int)($saved===17),':',(int)($changed===17.5),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===17.5),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=(string)17;$snapshot=$x;$seed=17.5;$y=(string)$seed;unset($seed);$ySnapshot=$y;$yAlias=&$y;set_error_handler('CvDistinctBuiltinUnionFormal62\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';\n}\n",
+    "source_sha256": "0bdba64382f1259018daaf28d707333dcf761a65f7833d7d0a26d28a3a6a7c9d",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "int",
+      "float"
+    ],
+    "caller_strict": false,
+    "formal_others": [
+      "float",
+      "int"
+    ],
+    "formal_other_first": [
+      true,
+      true
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;"
+  },
+  {
+    "id": "distinct-bool-string-and-string-bool-prefer-string-to-bool",
+    "source": "<?php\nnamespace CvDistinctBuiltinUnionFormalString62 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(bool|sTrInG $saved,sTrInG|bool &$changed):int{echo 'M:',(int)($saved==='37'),':',(int)($changed==='17'),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']==='17'),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('CvDistinctBuiltinUnionFormalString62\\\\h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n}\n",
+    "source_sha256": "0a80f92de06b3b82265ab8c63fc9dec116a384746a061ecf92a374b120eaf83c",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "string",
+      "string"
+    ],
+    "caller_strict": false,
+    "formal_others": [
+      "bool",
+      "bool"
+    ],
+    "formal_other_first": [
+      true,
+      false
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "S;M:1:1:1:1;H:8:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;"
+  }
+]

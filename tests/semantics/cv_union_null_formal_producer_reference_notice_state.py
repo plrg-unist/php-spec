@@ -83,7 +83,7 @@ def controls(index):
         raw = ['NIdentifier (BYTES "' + base64.b64encode(kind.encode()).decode() + '") metadata_first_type' for kind in members]
         normalized = '[' + ', '.join('(PTBRANCH ([PTBUILTIN "' + kind + '"]))' for kind in members) + ']'
         lines += [name + ' = NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE ([' + ', '.join(raw) + '])) metadata_first_union) (BOOLEAN false) (BOOLEAN false) phpType10_first ABSENT (SEQUENCE eps) metadata_first_parameter',
-            '~' + arguments.replace('phpType17_first,', name + ',') + signature + '[.PARAMETERS = [psparam_first[.TYPE = ' + normalized + '], psparam_last]])']
+            ('' if members == ('int', 'float') else '~') + arguments.replace('phpType17_first,', name + ',') + signature + '[.PARAMETERS = [psparam_first[.TYPE = ' + normalized + '], psparam_last]])']
     return lines
 
 

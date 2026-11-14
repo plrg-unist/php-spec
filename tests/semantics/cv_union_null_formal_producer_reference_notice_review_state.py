@@ -56,7 +56,7 @@ def normal(initial, case, front):
                 '$reference_notice_producer_arguments(SEQUENCE ([phpType7, phpType7]), SEQUENCE ([' + raw + ', phpType17_nullable_int]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [' + param + ', psparam_int]])']
         derived += [
             'phpType17_wider = NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE ([NIdentifier (BYTES "YXJyYXk=") metadata_type, NIdentifier (BYTES "aW50") metadata_null])) metadata_formal_union) (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter',
-            '~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([phpType17_wider]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "int"]))]]]])']
+            '$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([phpType17_wider]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "array"])), (PTBRANCH ([PTBUILTIN "int"]))]]]])']
     return conditions, derived
 
 
