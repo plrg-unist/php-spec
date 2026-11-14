@@ -1,0 +1,97 @@
+{
+  "milestone": "REF71",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "60318ea621aae9b355f432fd67963d8e2f7ef66d",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "68fa84bc9a5615456c30a67f904229bc17b68ebc2718721000734b55a8932f1b",
+    "law": "The existing positive-arity canonical mixed identifier-return arm gains a shared normalized kind list [mixed,false,true], with exact case-folded raw NIdentifier agreement and the unchanged ordinary-CV argument proof. Nullable/union, actual RETURN verification, frame retirement, private Notice-cell creation, payload/source and ownership laws are unchanged.",
+    "source_symbols": [
+      "Zend/zend_compile.c::builtin_types, zend_emit_return_type_check, zend_compile_return",
+      "Zend/zend_vm_def.h::ZEND_VERIFY_RETURN_TYPE",
+      "Zend/zend_execute.c::zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_compile.h::ZEND_RET_USES_STRICT_TYPES",
+      "spec/semantics/95-type-values.watsup::typed_exact, typed_conversion_at; 95-typed-calls.watsup::typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-literal-bool-return-producer-reference-notice-71",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "af4d123017fe9970d0a16cbe8adc4dcfcd30534d2d5fc4ab1b19eba7f75368bd",
+    "source_donor": "e5b1c2233dfc20c001ba9a6867c9c6765076d99d",
+    "files": 10,
+    "scope": "Whole ten-path READY and independent FULLCLEAR preceded integration. The combined serial controller remains UNEXECUTED; helper closure and saved-native forwarding have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "7b32d0e44fcb3ab505a696420403d48c10f65b14715513d053fae232c9d16222",
+    "decision": "FULLCLEAR",
+    "actual_composition": "Reviewer recover11 independently cleared actual MAIN9b70b2d2 source composition and the sole saved canonical report without execution renewal."
+  },
+  "semantics": "Standalone false and true accept only their exact Boolean tag under either callee mode. Actual RETURN verification uses callee strictness before producer-frame retirement and fresh private Notice-cell creation. Private cells have no persistent return constraint; earlier outer references, source aliases, copied values and COW owners retain their separate lifetimes.",
+  "counts": {
+    "native_originals_once": 5,
+    "native_replays": 0,
+    "new_notice_agreements": 3,
+    "fresh_return_priority_agreements": 2,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "state_cuts": {
+    "author": {
+      "revision": "989704f8d4d80b12d0a2b5547bc7b93aebd703d6",
+      "report": "author/postlaw-state-v2/report.json",
+      "sha256": "f4309a2708658a727c766e9bd05a2220ceeca33e4035ed82cbc617c59f03d883",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 424,
+      "reached": 275,
+      "derived": 149,
+      "elapsed_seconds": 58.07788920402527,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "peer": {
+      "revision": "c9a51daab85d4cc8f45b9173d1ea0a93d5e7fa57",
+      "report": "peer/postlaw-state-v3/report.json",
+      "sha256": "1b5229f0ba99273896d24ccd4a793270890610e61a3a6bd92b65b1b882abcabe",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 292,
+      "reached": 235,
+      "derived": 57,
+      "elapsed_seconds": 54.012489557266235,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    }
+  },
+  "prelaw": "Genuine author fixture-SL507180 and peer fixture-SL507183 are separate source-zero cuts. Both original author source Unsupported baselines retain zero agreement credit. The manifest preserves their reports, hashes and revisions.",
+  "preserved_failures": "Author fixture424 initially retained an inherited R:null checkpoint instead of R:true; its isolating diagnostic returned [true,false]. Peer fixture292 v1 used a broad return-domain node as a union member; v2 omitted the final THROWN line operand. Narrow helper corrections changed no native source bytes or production rules. All four failed/diagnostic cuts remain zero credit and are linked in the manifest.",
+  "canonical_main": {
+    "revision": "9b70b2d218b5929651aa6117a38a824ec0060bbc",
+    "tree": "77d4c7882b254e383498b408874281f70deed5f1",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main49-literal-bool-returns-reference71-joined-508-v1/report.json",
+    "sha256": "4af230918dde140bb4286ac6982f90bcdca520ba3ee2365993693114743489d6",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 16.33276844304055,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Nine non-Make paths match the signed donor literally; one additive serial Make recipe preserves existing recipes. Exactly one current old raw-true/normalized-true header refusal becomes positive and is exercised in fresh controls; its historical campaign is not replayed. Separate constructed int-return checks at the actual RETURN stage distinguish callee strictness from opposite caller strictness and earn source0. Production source/native, private fixture and canonical-load cuts keep their own revisions and counts.",
+  "limits": "Original Unsupported2, all fixture failures/diagnostic and every earlier timeout or unrun retain zero credit. Nullable/union literal-Boolean formals/returns and wider formals/payload/source/backing/history/GC/lifetimes remain partial. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}

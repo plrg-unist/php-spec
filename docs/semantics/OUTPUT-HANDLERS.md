@@ -1480,3 +1480,5 @@ handlers, operands and lifetimes remain partial.
 and [review](../../coverage/semantics/output-final-selected-bare-return-modulo-error-review.json).
 
 Own literal integer-zero Returns after the selected handler Echo also preserve FINAL MOD-zero Error. PINT0 is consumed under strict-FALSE handling and remains distinct from resumed NULL scratch. Native4 once/source4, prelaw19, lifecycle13 and peer24 retain separate cuts; the actual86fe SL508 load passes16.141093342s/source0. Wider forms and OB31 remain partial. [Integer-zero return review](../../coverage/semantics/output-final-selected-zero-return-modulo-error-review.json).
+
+Own UnaryMinus of a non-NaN raw FLOAT also preserves exact parent/child source, both folded values and the full pure unary result before FINAL MOD-zero Error, including a genuine -0.0 return ([review](../../coverage/semantics/output-final-selected-negative-float-return-modulo-error-review.json)).

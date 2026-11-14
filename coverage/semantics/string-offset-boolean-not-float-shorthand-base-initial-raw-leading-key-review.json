@@ -1,0 +1,149 @@
+{
+  "feature": "boolean-not-shared-scalar-truth-finite-float-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shared authenticated scalar truth certificate preserves literal true, raw string and certified integer conditions and adds raw finite FLOAT under BooleanNot. The exact non-NUL INTERNED shorthand fallback and initial raw leading-integer CV offset survive returning Warnings, including initial-reference rebinding.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "602a0a476b9b0b39854bd05949012b525890496f",
+  "reviewed_peer_head": "784d800bd4e43d03054f94a083e5921d56bb9b9e",
+  "donor_implementation_sha256": "91f32ea5f6527e1e08dae2b0860a0851cbc54d8653f301552850f1c6fcfbb453",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "8e6305d08692c85dac98431dcd79dad1741924e2ccd47608907083ba3827ac38"
+  },
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_unary_op and zend_compile_shorthand_conditional, Zend/zend_vm_def.h JMP_SET/QM_ASSIGN/FETCH_DIM_R, and Zend/zend_operators.h i_zend_is_true retain quiet nonzero finite-double truth, including subnormals, and the selected literal header. Native folds finite FLOAT NOT; the specification keeps its existing emitted CODE/NOTeps representation and proves the same quiet Boolean result through the already accepted string_read_runtime_value. No compiler or numeric rule changes.",
+  "implementation": "Module425 replaces three BooleanNot fallback arms with one typed source-truth proof. TRUE retains exact spelling/source and own Boolean pool; raw strings retain bytes, own pool and interning; integers reuse the unchanged recursive certificate. New raw FLOAT requires canonical hex, exact source/own PFLOAT and FINITE. Full-state truth_value must be quiet and true. Old nonfloat conditions retain own compiled NOTfalse; FLOAT uses actual emitted runtime_value with source/CODE/NOTeps and matching precision. The exact fallback occurrence is now also required for TRUE, deliberately rejecting a formerly admitted forged metadata mismatch. This strengthening is not claimed pointwise equivalent on forged states. Generic233, provider, roots, schema, ownership, compiler45 and numeric rules are unchanged.",
+  "evidence": [
+    {
+      "kind": "native2 once; original donor Unsupported2; source0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "489eb76fb5e9051d82c9622a15134b2ee73c4789e7a73e7ca5e23179428acf91",
+      "tested_revision": "88cb36dc347a0cd6e62c15f943e114a1d62a572e",
+      "source_credit": 0,
+      "passed": true
+    },
+    {
+      "kind": "corrected genuine A prelaw: full155,19 changed/136 initial; NOTeps and raw FLOAT1.25",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v2/report.json",
+      "sha256": "bd4247a04ea437beeadbfd1a38d668184c1829ca5367a9bbea06e6657eb6cda1",
+      "tested_revision": "88cb36dc347a0cd6e62c15f943e114a1d62a572e",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 70
+    },
+    {
+      "kind": "independent genuine B prelaw: full155,20 changed/135 initial; NOTeps and raw subnormal bit1",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "a19ed7c6a882bcbc1708b892b2b1354549ed1346713f42fc4008d9b0b3dce954",
+      "tested_revision": "88cb36dc347a0cd6e62c15f943e114a1d62a572e",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 76
+    },
+    {
+      "kind": "coherent whole-MAINc6f4 prerequisite comparison; same saved native observations, Unsupported2 and no inherited agreement",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/prerequisite-v2/report.json",
+      "sha256": "46ee01b9e6255e4db87b3ebb0f8383869b02bbaf16adb76df19671e4a6cab797",
+      "tested_revision": "54c5803e26a0ca6f8042d82a8761b30904ed1a97",
+      "source_credit": 0,
+      "passed": true
+    },
+    {
+      "kind": "two frozen original production-SL agreements; saved native observations reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "5f26b61d82445a6532041dc50f354452ac9d8e301b4b41ac7f0f876928426db3",
+      "tested_revision": "aca716c596b275611c761dcb308327a5dc8fcbb2",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "b4a7e8fde1172a9b87c435281ada1c257349f13fc65e7965d971350ccc803e9a",
+      "tested_revision": "aca716c596b275611c761dcb308327a5dc8fcbb2",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 253,
+      "derived_conditions": 134
+    },
+    {
+      "kind": "independent production-SL fixture",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "eaf64f0d770b9ebe2d4464b0bcbfb60168c49512980eb40befb262e5a445f9c3",
+      "tested_revision": "784d800bd4e43d03054f94a083e5921d56bb9b9e",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 417,
+      "derived_conditions": 271
+    },
+    {
+      "kind": "affected old TRUE fixture only",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/affected-true-sl-v1/report.json",
+      "sha256": "042edbb142e1490b5fac91b668c30abda9cac85f6c9a56cc157a3bab05e0ea20",
+      "tested_revision": "aca716c596b275611c761dcb308327a5dc8fcbb2",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 184,
+      "derived_conditions": 76
+    },
+    {
+      "kind": "affected old raw-string fixture only",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/affected-string-sl-v1/report.json",
+      "sha256": "ea622f3be132f98e818f65c9c8e9e7b691a63c230140f020dec8398581b3e6bb",
+      "tested_revision": "aca716c596b275611c761dcb308327a5dc8fcbb2",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 225,
+      "derived_conditions": 112
+    },
+    {
+      "kind": "affected old certified-integer fixture only",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/affected-integer-sl-v1/report.json",
+      "sha256": "1b15b310531738209335368c922a8bdd27128c5a9ba0b1d541a765e54d4438b4",
+      "tested_revision": "aca716c596b275611c761dcb308327a5dc8fcbb2",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 339,
+      "derived_conditions": 201
+    }
+  ],
+  "preserved_failures": [
+    {
+      "kind": "first A fixture incorrectly expected NOTfalse rather than authentic NOTeps",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "10b0b640a01daca65c20839e71ce48c73eb54d9f8e33da366213a70bb9fa20c9",
+      "tested_revision": "88cb36dc347a0cd6e62c15f943e114a1d62a572e",
+      "source_credit": 0,
+      "passed": false
+    },
+    {
+      "kind": "425-only prerequisite lacked accepted compiled_identity_value dependency; runner_failure2 before evaluation",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-float-shorthand-base-initial-raw-leading-key-author-20261114/prerequisite-v1/report.json",
+      "sha256": "9b2c8b13b9505b7ba7ad16d245a367e4fc87408362b310efecddeca79586780d",
+      "tested_revision": "14060edb7a0c548ffcc97df2cecc8ba499dde27e",
+      "source_credit": 0,
+      "passed": false
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main50-finite-float-not-shorthand-dynamic425-joined-508-v1/report.json",
+    "sha256": "a17897c0b1bfd9a1873f02334f935fa2b3d3d5a98a8f20ba1fa5164a375e1a90",
+    "tested_revision": "21a07289e380056fd508c0be69af6024268c3111",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "fixture": 1,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.53812194103375,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 once/source2, genuine A70/B76 prelaw full155, author253/134-derived and independent417/271-derived fixtures, and affected TRUE184/76,string225/112,integer339/201 fixtures retain separate cuts. New checks cover exact float bits, subnormal/maximum finite truth, both zeros, quiet infinity versus noisy NaN, malformed hex, wrong source/pool/CODE/precision, old scalar and pooled-NUL condition compatibility, the strengthened TRUE fallback, real reference rebinding, complete-state cleanup and budget rejoining. Local projections carry zero source credit. No native replay or historical campaign renewal.",
+  "review": "Whole-six actual-manifest READY and independent composition FULLCLEAR preceded source-first MAIN21a07289e placement. One bounded independent actual-source and SAME saved-canonical comparison verifies four donor Python files, two Make recipes and composed425, preserving the disjoint PFTERNARY runtime clauses. The sole saved508 load is exact, quiet/stable/reaped and source0. No duplicate author canonical read or execution replay.",
+  "joined_implementation_sha256": "07576abe5e98693f1d4bc6f3538a96ce5b1c8055e019d2072c7590454d983f3b",
+  "remaining": "Other FLOAT producers, unary/computed or ConstFetch FLOAT operands, wider condition/base/key and handler histories, owning values, releases and complete core remain partial. All exact PROGRESS holds, including Owned-NUL release, Source47, COMP88, Generator private cache/This, GC87 and ATTR87, remain unchanged; no obligation closes.",
+  "recovery": "Frozen originals, native-once observations, commands, inputs and raw traces remain in the linked external archives. Tracked source cases, renderers and two Make selections regenerate fixtures; archives are not operational prerequisites."
+}

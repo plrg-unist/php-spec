@@ -618,8 +618,20 @@ still precedes private Notice-cell creation. The
 [literal-Boolean formal review](../../coverage/semantics/cv-literal-bool-formal-producer-reference-notice-review.json)
 keeps three new Notice agreements, two distinct weak integer RECEIVE-priority
 controls, five native originals once, separate private fixtures and the sole
-actual canonical load distinct. Wider nullable/union literal-Boolean headers,
-return headers and contexts remain partial; all existing holds remain.
+actual canonical load distinct. Wider nullable/union literal-Boolean headers
+and contexts remain partial; all existing holds remain.
+
+Canonical standalone `false` and `true` returns share the completed ordinary-CV
+producer proof. Exact raw identifiers match their normalized singleton tags;
+neither type coerces other values under weak return checking. Actual verification
+uses callee strictness and precedes frame retirement and fresh private Notice-cell
+creation. The private cell remains untyped through later mutation and cleanup.
+The [literal-Boolean return review](../../coverage/semantics/cv-literal-bool-return-producer-reference-notice-review.json)
+keeps three new Notice agreements, two weak integer RETURN-priority controls,
+five native originals once, separate private fixtures and the sole actual canonical
+load distinct. Constructed int-return controls distinguish callee and caller
+strictness at the actual RETURN stage with source credit zero. Nullable/union
+literal-Boolean formals and returns, wider contexts and all held lanes remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
