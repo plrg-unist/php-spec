@@ -112,7 +112,7 @@ if __name__ == '__main__':
         ('leading_string', '', '+("0junk"*' + emitted + ')', 'stdClass', False, True),
         ('bad_string', '', '+("no"*' + emitted + ')', 'stdClass', False, True),
         ('zero_division', '', '+(' + emitted + '/((float)(!INF)))', 'stdClass', False, True),
-        ('emitted_power', '', '+((-1.0)**(((float)(!0.0))/2))', 'stdClass', False, True),
+        ('emitted_power', '', '+((-1.0)**(((float)(!0.0))/2))', 'stdClass', True, True),
         ('boolnot', '', '!' + emitted, 'stdClass', False, False),
         ('int_cast', '', '(int)' + emitted, 'stdClass', False, False),
         ('late_namespace_inf', 'namespace Ns;', '+' + emitted, 'namespace\\Missing', False, True),
@@ -154,6 +154,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four current histories add independent unary-NaN source/child, missing/flipped CODE, positive-line and captured-precision fences, live precision independence and cached paused-NaN counterexamples. Seventeen checked-source source0 controls cover both signs, proper nested descent, arithmetic parents and quiet BOOL children, refused leading/bad strings, zero division, POWER, NOT/int casts, dynamic children and late namespace fallback, plus genuine FQN/finite fallback. Fresh emitted-unary and compiled +NAN false-CODE bridge controls validate the two affected old reviewer promotions without historical replay. General VALUE/BYTE/truth/compiler/formatter/owners/lifetimes and all exact held boundaries remain unchanged; native originals reused once, fixture source0/native0.'
+    report['scope'] = 'Four current histories add independent unary-NaN source/child, missing/flipped CODE, positive-line and captured-precision fences, live precision independence and cached paused-NaN counterexamples. Seventeen checked-source source0 controls cover both signs, proper nested descent, arithmetic parents and quiet BOOL children, refused leading/bad strings, zero division, NOT/int casts, dynamic children and late namespace fallback, plus genuine FQN/finite fallback. Fresh emitted-unary and compiled +NAN false-CODE bridge controls validate the two affected old reviewer promotions without historical replay. The later completed-POWER certificate promotes emitted_power. General VALUE/BYTE/truth/compiler/formatter/owners/lifetimes and all exact held boundaries remain unchanged; native originals reused once, fixture source0/native0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
