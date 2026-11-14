@@ -883,6 +883,8 @@ Own UnaryPlus of a canonical non-NaN raw FLOAT also preserves its exact child/re
 
 Own emitted (int) casts of raw signed64 integers also preserve the identical PINT through real formal retirement and FINAL MOD-zero Error in four new originals. Exact Return/root/child code and NORMAL/full cast state retain an emitted root without a folded-value certificate; wider casts/children/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-integer-cast-return-modulo-error-review.json).
 
+Own canonical (int) casts of intrinsically quiet raw FLOATs preserve truncated PINT returns through real formal retirement and FINAL MOD-zero Error in four new originals. The emitted root has no folded value; NORMAL, exact pooled child authority, an empty intrinsic notice vector and full cast state remain required. Both raw-Int and raw-FLOAT rules refuse alias or missing-kind metadata; wider casts/children/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-float-int-cast-return-modulo-error-review.json).
+
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
