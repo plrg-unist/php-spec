@@ -1,0 +1,97 @@
+{
+  "milestone": "REF72",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "237bb7604e72c724551f1fbe902e074cf02e8d1c",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "15ad9def2a8b7e5daff43c0e070b6d154cc7844a007513561ffaed082c333e91",
+    "law": "Three existing nullable whitelists add false and true: required pointwise ordinary-CV formals and singleton/multiple completed-producer returns. Exact raw NNullableType/NIdentifier bytes agree case-insensitively with ordered normalized [kind,null]. Explicit union gates and every argument/reference-mode/required/default/variadic, actual RECEIVE/RETURN, frame, payload/source and owner guard remain literal.",
+    "source_symbols": [
+      "Zend/zend_compile.c::builtin_types, zend_compile_typename_ex, zend_emit_return_type_check, zend_compile_return",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "Zend/zend_execute.c::zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_compile.h::ZEND_ARG_USES_STRICT_TYPES, ZEND_RET_USES_STRICT_TYPES",
+      "spec/semantics/95-type-values.watsup::typed_exact, typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-nullable-literal-bool-producer-reference-notice-72",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "a35f0ce5ac4561e5142cbae6e98c3eda32c26e7e9a0dfdae8d72737b1f8285be",
+    "source_donor": "8e136dbcd28549a295933e59c6a84ef331782236",
+    "files": 13,
+    "scope": "Whole thirteen-path READY and independent FULLCLEAR preceded integration. The serial combined controller remains UNEXECUTED/source0; helper closure and saved-native forwarding have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "641cd25c392897a56a171b136ef6f30265c904951df8c38879f1bff4d1e4c621",
+    "decision": "FULLCLEAR",
+    "actual_composition": "Reviewer recover12 independently cleared actual MAIN b1c99cb02 source composition and the same saved canonical report, including the narrow required-formal/valued-return 94/95 dependency bridge. No execution or new receipt."
+  },
+  "semantics": "Pinned builtin_types distinguishes IS_FALSE and IS_TRUE; zend_compile_typename_ex adds MAY_BE_NULL for nullable syntax. Exact tag or NULL passes; weak Boolean coercion requires the full BOOL mask, so neither literal-null type coerces other tags. RECV uses caller strictness and VERIFY_RETURN_TYPE uses callee strictness. Ordinary BYREF reception imposes no persistent alias constraint. RETURN verification and producer retirement precede the fresh untyped private Notice cell.",
+  "counts": {
+    "native_originals_once": 6,
+    "native_replays": 0,
+    "new_notice_agreements": 4,
+    "fresh_receive_priority_agreements": 1,
+    "fresh_return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "state_cuts": {
+    "author": {
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "9a88f6823efc778fa70edad0690d8492dae9421215cd84e5b35479d5911509f0",
+      "revision": "237bb7604e72c724551f1fbe902e074cf02e8d1c",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 400,
+      "reached": 275,
+      "derived": 125,
+      "elapsed_seconds": 51.51959538459778,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "peer": {
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "4e267674a55b998973cb5de507ab41539b99e9e9e05d31e1294543f8d9e02afd",
+      "revision": "2fefc2c916279a74956daa3ab791a9c72b575ea3",
+      "mode": "fixture-SL/cache=false/det=true",
+      "modules": 507,
+      "conditions": 452,
+      "reached": 350,
+      "derived": 102,
+      "elapsed_seconds": 83.15742325782776,
+      "cap_seconds": 1200,
+      "source_agreements": 0,
+      "stable": true,
+      "reaped": true
+    }
+  },
+  "prelaw": "Genuine author fixture-SL507180 at273a09cb2 and peer fixture-SL507246 at3f3a26bed remain separate source-zero cuts. Both original author production-source Unsupported baselines retain zero agreement credit. Exact reports, hashes and revisions are preserved in the manifest.",
+  "canonical_main": {
+    "revision": "b1c99cb02251eea00e5de3cc3b8663006a25919e",
+    "tree": "bf101072d1d7bd4f7e679afde602e22a6ac94dcf",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main50-nullable-literal-bool-producer-reference72-joined-508-v1/report.json",
+    "sha256": "9e17e4a28d065f286b1b8850e1a0f3d9a51d356f44095c67503ade92b832df86",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 16.140110824024305,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Twelve non-Make paths are donor-exact; one additive serial Make recipe preserves all existing recipes. Exactly four matching current prior70/71 nullable formal/return refusals become positive and fresh controls exercise both literal kinds. Explicit-union refusals and other old controls remain literal; no historical campaign is replayed. Author and peer source/native, private fixture and canonical-load cuts retain separate identities.",
+  "limits": "Original Unsupported2 and all earlier failures/timeouts/unrun retain zero credit. Explicit literal-Boolean union formals/returns and wider formals/payload/source/backing/history/GC/lifetimes remain partial. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion and COMP88 Stringable supplied-throw crash remain held."
+}

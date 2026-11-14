@@ -1,0 +1,238 @@
+{
+  "scope": "Own public parentless sole short reference Get of its same identifier or literal-string backing field, with canonical int/float/bool/string and ?scalar headers. Raw/normalized types, actual source/function/return and physical property-reference authority remain separate.",
+  "status": "partial; independently reviewed and source/test integrated at bffc0d15a5a9f4250f06097a44a2180538fb004e",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-only oracle SHA b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398; tests/semantics/profile.json +include_path=.:; LC_ALL=C; TZ=UTC.",
+  "implementation": {
+    "candidate": "9f4c886e45c01823cba3c15ee0d3f5b6be65137a",
+    "base": "44603a45d3f22620992ae1f0ca58d452d31f2b9a",
+    "typed_rule": "7a82221e54f40f57a35c513da43b8016d163f1eb",
+    "consumed_line_rule": "eae1c30e8c51b2b7a5be9b2b3d1c220e1647da7e",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "module_sha256": "020132aaafdb099c88f6ec1784d07117c7a12c01fb2c701139cd633ba361b1b1",
+    "module_numstat": "28\t8\tspec/semantics/382-backed-get-hooks.watsup",
+    "meaning": "A raw scalar/nullable header predicate ties compiler occurrence and parentless declaration types; implicit-reference receipts retain the exact property return type. Current Hook/BODY/CODEARROW authority supplies the acquisition line after task inputs consume RETURN_REF_FETCH. Shared storage, throw, coercion, ownership and cleanup rules remain."
+  },
+  "authority": [
+    "Zend/zend_compile.c::zend_compile_property_hooks supplies the property type as Get return type and rewrites short Get to RETURN; zend_compile_return uses BP_VAR_W for a reference variable and emits return verification.",
+    "Zend/zend_execute.c::zend_handle_fetch_obj_flags under ZEND_FETCH_REF initializes nullable UNDEF to NULL, rejects nonnullable UNDEF before alias creation and attaches the property type source.",
+    "Zend/zend_object_handlers.c::zend_call_get_hook retains the receiver during the actual call; Zend/zend_objects.c removes property type sources when physical storage retires."
+  ],
+  "source_validation": {
+    "mode": "production-SL508",
+    "unique_original_agreements": 6,
+    "native_originals_executed_once": 6,
+    "author_partial_campaign": {
+      "cut": {
+        "report": "author-source-v1/report.json",
+        "sha256": "10f9c54813365105983a295bb232cfeb41fcc80cd91da8a321dd8586d0a6fc8c",
+        "head": "7a82221e54f40f57a35c513da43b8016d163f1eb",
+        "elapsed_seconds": [
+          39.92535042762756,
+          57.38468933105469,
+          18.01956343650818
+        ]
+      },
+      "whole_campaign": "failed overall on the third original; not a passing three-case run",
+      "accepted_rows": [
+        {
+          "name": "scalar-aliases",
+          "source_sha256": "6fef214ac80ec745456053339ccbee5d0be3028f9ec1a28b2a46f15e9d969574",
+          "source_agreement_credit": 1
+        },
+        {
+          "name": "nullable-aliases",
+          "source_sha256": "40a96cc4dfcb2a28fabc3ca9f1b53b795dbe8432de96f095984ae0f2a5f7ca1a",
+          "source_agreement_credit": 1
+        }
+      ],
+      "failed_third_credit": 0
+    },
+    "author_fixed_third": {
+      "report": "author-uninitialized-source-v3/report.json",
+      "sha256": "da5610075e8f306d5576b45ef15c1c182f2561ca989f0bf8694d60d839bd3391",
+      "head": "eae1c30e8c51b2b7a5be9b2b3d1c220e1647da7e",
+      "elapsed_seconds": [
+        21.365414142608643
+      ]
+    },
+    "independent_three": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "721d9cdb9e63e73f2fc2bfbed7e1a80d2da0ee1721c01650ab13bfc3fa04e2aa",
+      "head": "f5e72a2235b89eac220708a090ba33f64bbf6019",
+      "elapsed_seconds": [
+        42.59000825881958,
+        56.17297124862671,
+        26.77913999557495
+      ]
+    },
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "34a52d154f4eb82cc9e4b0122e29b3216586ade0221028a27ae99bfe79df0a32",
+        "head": "7b72e3c034c12462319588e6f831585b545a2d54",
+        "elapsed_seconds": [
+          0.003457307815551758,
+          0.002308368682861328,
+          0.0025327205657958984
+        ]
+      },
+      {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "742548c3817bdc11be367b7fc33f8f614f02ec69318b03404aca28ea5368834c",
+        "head": "f5e72a2235b89eac220708a090ba33f64bbf6019",
+        "elapsed_seconds": [
+          0.0034122467041015625,
+          0.0025343894958496094,
+          0.0019807815551757812
+        ]
+      }
+    ],
+    "prelaw": {
+      "cut": {
+        "report": "author-precompile-v1/report.json",
+        "sha256": "a3341ed1ffcb1bc1596b14ca80ecc6b342b2040699d39137325b0033bd74dad9",
+        "head": "7b72e3c034c12462319588e6f831585b545a2d54",
+        "elapsed_seconds": [
+          16.64536213874817,
+          16.419927835464478,
+          16.542274475097656
+        ]
+      },
+      "classification": "All three originals are checked Unsupported at short-hook compilation.",
+      "source_agreement_credit": 0
+    },
+    "quiet_line_bridge": "Independent review accepts the first two 7a82221e5 rows under the later line-only change. Their getter acquisitions are quiet and type-compatible, so the computed line feeds no diagnostic and is not stored. Array-assignment TypeErrors and weak coercions run in main with CURRENT eps. Final full-original author fixtures exercise the consumed-state line and terminal joins; the earlier source revision identities are preserved.",
+    "caps": "Native15 seconds; model120/process140 seconds,100000 steps."
+  },
+  "state_validation": {
+    "mode": "fixture-SL508",
+    "author": [
+      {
+        "report": "author-scalar-protocol-v2/report.json",
+        "sha256": "d88fdcc0b1bf4e4941fa329b5394ad1735b6d71a4eeca39d8fbd60ed48d64de4",
+        "head": "f065b6d93711bb7e4f0fb7f4bbc9863ee3ae4f8e",
+        "premises": 129,
+        "elapsed_seconds": 121.63945770263672
+      },
+      {
+        "report": "author-nullable-protocol-v2/report.json",
+        "sha256": "ae9a638c04e6bfeba761af3a6aa281dddabf232d7e47ef27ec3c6ef3837b44b4",
+        "head": "f065b6d93711bb7e4f0fb7f4bbc9863ee3ae4f8e",
+        "premises": 129,
+        "elapsed_seconds": 179.64716744422913
+      }
+    ],
+    "independent": [
+      {
+        "report": "reviewer-scalar-protocol-v1/report.json",
+        "sha256": "7cd21976403e2940c1892e6c8d1ff239d9a4a6631611b472be7f877d65698eec",
+        "head": "f5e72a2235b89eac220708a090ba33f64bbf6019",
+        "premises": 180,
+        "elapsed_seconds": 72.40821504592896
+      },
+      {
+        "report": "reviewer-nullable-protocol-v1/report.json",
+        "sha256": "38488216461229979592d0a0714ea4695d16a7f51af09df3804cdbc4751a197f",
+        "head": "f5e72a2235b89eac220708a090ba33f64bbf6019",
+        "premises": 180,
+        "elapsed_seconds": 101.17311596870422
+      },
+      {
+        "report": "reviewer-uninitialized-protocol-v1/report.json",
+        "sha256": "bd536ad194bd1ab82af9ef5db1a3520b22fc46722ee8433cbf4d36928e258246",
+        "head": "f5e72a2235b89eac220708a090ba33f64bbf6019",
+        "premises": 188,
+        "elapsed_seconds": 34.54609775543213
+      }
+    ],
+    "cap_seconds": 240,
+    "source_agreement_credit": 0,
+    "coverage": "Real typed source and implicit-reference return/fetch, ordinary and consumed-state expression lines, scalar/nullable alias constraints, by-value nullable initialization, nonnullable Error with old caller alias preservation, raw-header substitutions and wider-type refusals, wrong or missing sources, receiver detach and exact zero/one-step terminal joins. Counts retain separate cuts and are not summed into a source/equivalence claim."
+  },
+  "affected_old_controls": {
+    "source": {
+      "report": "affected-parentless-source-v1/report.json",
+      "sha256": "c7351b38033d73a53936ef3e1dde3295356f72f9a51f2edca32fc2af89a680e8",
+      "head": "f065b6d93711bb7e4f0fb7f4bbc9863ee3ae4f8e",
+      "elapsed_seconds": [
+        24.639972925186157,
+        24.753357410430908
+      ]
+    },
+    "source_meaning": "Two parentless untyped originals use COMP292 saved native observations only; no native replay or new source credit.",
+    "state": {
+      "report": "affected-parentless-protocol-v1/report.json",
+      "sha256": "dec14577bb59c689f8f3caed891e6cb85761b43901ee87062e52d92e9afcbb54",
+      "head": "f065b6d93711bb7e4f0fb7f4bbc9863ee3ae4f8e",
+      "premises": 189,
+      "elapsed_seconds": 66.72428750991821
+    },
+    "state_meaning": "Existing initialized parentless189 fixture-SL passes under the final law.",
+    "source_agreement_credit": 0
+  },
+  "compatibility": {
+    "report": "final-static-v1/report.json",
+    "sha256": "538df862275a9ca50c8a6d2a155615e0dfb29627e7c46ac035a944b001368dd8",
+    "meaning": "Exact selected16 payload hashes, tested author129 DSL, independent180/180/188 projections, unchanged older protocol files and seven additive Make commands. Semantic/native evaluations and source credit are zero."
+  },
+  "preserved_zero_credit": {
+    "missing_line_attempts": [
+      {
+        "cut": {
+          "report": "author-source-v1/report.json",
+          "sha256": "10f9c54813365105983a295bb232cfeb41fcc80cd91da8a321dd8586d0a6fc8c",
+          "head": "7a82221e54f40f57a35c513da43b8016d163f1eb",
+          "elapsed_seconds": [
+            39.92535042762756,
+            57.38468933105469,
+            18.01956343650818
+          ]
+        },
+        "row": "uninitialized-int only; the first two accepted rows retain their own identities"
+      },
+      {
+        "cut": {
+          "report": "author-uninitialized-source-v2/report.json",
+          "sha256": "a8b569244378e8c8f48fd09bfc1d60a1a28846b4f2cbf8b192f013084e396316",
+          "head": "790e82c5d63ee3e0d830a333418d0bc9fc9b1eaf",
+          "elapsed_seconds": [
+            17.756632804870605
+          ]
+        },
+        "meaning": "The task-gated line clause missed acquisition after task input capture consumed RETURN_REF_FETCH."
+      }
+    ],
+    "fixture_failure": {
+      "report": "author-scalar-protocol-v1/report.json",
+      "sha256": "6917fb789016ac1afe954365f8b76b155bdecfed816cd8f7006780d5018a990b",
+      "head": "4b5976c9d2babcb3fbfa609dbbb28ec9d38bec18",
+      "premises": 120,
+      "elapsed_seconds": 42.76491069793701
+    },
+    "fixture_meaning": "The first budget test passed a BUDGET state directly into drive_steps. Its corrected harness explicitly restores NORMAL and checks terminal joins; no production rule changed for this fixture correction.",
+    "unrun": "The nullable fixture and affected-old commands queued after that first scalar fixture failure were not executed in that block. Their later successful cuts retain separate recorded identities.",
+    "source_agreement_credit": 0
+  },
+  "canonical_integration": {
+    "source_revision": "bffc0d15a5a9f4250f06097a44a2180538fb004e",
+    "source_tree": "a175e99f48362691d897d7bfd76dd3b192d97a11",
+    "placement": "Exactly16 selected paths;15 non-Make files donor-literal and seven additive Make commands. Sole MAIN50 placement and independent actual comparison are clear; no duplicate author read.",
+    "report": "../resumed-main-20261112/main50-typed-short-reference-get-comp296-joined-508-v1/report.json",
+    "sha256": "e57bdf8b7c29c6f776df460b0fba5f6c3caf356e69a67c78aa178579eaefcaeb",
+    "mode": "canonical-SL508",
+    "elapsed_seconds": 15.839124860940501,
+    "cap_seconds": 60,
+    "modules": 508,
+    "arguments": 511,
+    "watched_inputs": 512,
+    "passed": true,
+    "quiet_stable_reaped": true,
+    "source_agreement_credit": 0
+  },
+  "remaining": "Parented/Trait typed short hooks, array/class/union/intersection and wider headers, bodies, consumers and lifetimes remain partial. V110, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw and all other exact holds remain unchanged.",
+  "recovery": {
+    "external_root": "../php-spec-evidence-archive/comp296",
+    "commands": "Reports retain original bytes/file/CWD/profile, exact argv, tested revision, binary/module fingerprints, caps/exits/reap state and raw failures. Archived evidence is not a build/runtime dependency.",
+    "selection": "Use final-static-v1 selected_source_paths against the recorded base/candidate; exclude earlier COMP294/295 ledger changes from the broader branch."
+  }
+}

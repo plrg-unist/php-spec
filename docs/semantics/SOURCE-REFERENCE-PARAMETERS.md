@@ -618,7 +618,7 @@ still precedes private Notice-cell creation. The
 [literal-Boolean formal review](../../coverage/semantics/cv-literal-bool-formal-producer-reference-notice-review.json)
 keeps three new Notice agreements, two distinct weak integer RECEIVE-priority
 controls, five native originals once, separate private fixtures and the sole
-actual canonical load distinct. Wider nullable/union literal-Boolean headers
+actual canonical load distinct. Wider explicit-union literal-Boolean headers
 and contexts remain partial; all existing holds remain.
 
 Canonical standalone `false` and `true` returns share the completed ordinary-CV
@@ -630,8 +630,21 @@ The [literal-Boolean return review](../../coverage/semantics/cv-literal-bool-ret
 keeps three new Notice agreements, two weak integer RETURN-priority controls,
 five native originals once, separate private fixtures and the sole actual canonical
 load distinct. Constructed int-return controls distinguish callee and caller
-strictness at the actual RETURN stage with source credit zero. Nullable/union
+strictness at the actual RETURN stage with source credit zero. Explicit-union
 literal-Boolean formals and returns, wider contexts and all held lanes remain partial.
+
+Canonical `?false` and `?true` formals and returns also share the completed
+ordinary-CV producer proof. Raw nullable identifiers match exact normalized
+`[kind,null]` order. Only the exact literal tag or NULL passes, without weak
+scalar coercion; required reference modes, caller-strict reception and callee-strict
+return verification remain intact. Ordinary BYREF formals add no persistent
+alias constraint. Frame retirement precedes the fresh untyped private Notice cell.
+The [nullable literal-Boolean review](../../coverage/semantics/cv-nullable-literal-bool-producer-reference-notice-review.json)
+keeps four fresh Notice agreements, one RECEIVE-priority and one RETURN-priority
+control, six native originals once, separate author400/peer452 fixture-SL507 cuts
+and the sole actual canonical load distinct. Exactly four matching current old
+nullable predicates become positive without historical campaign renewal.
+Explicit literal-Boolean unions, wider contexts and all held lanes remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
