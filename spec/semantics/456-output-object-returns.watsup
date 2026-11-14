@@ -1433,9 +1433,27 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprUnaryMinus (N
   -- if $compiled_read(S, PORIGIN n_handler pcpath_negative) = (PFLOAT n_negative)
   -- if $compiled_read(S, PORIGIN n_handler pcpath_float) = (PFLOAT n_child)
   -- if $unary_apply(S, NEGATIVE, PFLOAT n_child, z_negative) = S[.RESULT = KNOWN (PFLOAT n_negative)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprUnaryMinus (NScalarInt (INTEGER i_child) metadata_integer) metadata_negative) metadata_return]) = true
+  -- if $long_range(i_child)
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprUnaryMinus (NScalarInt (INTEGER i_child) metadata_integer) metadata_negative) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_negative)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_negative) = (NExprUnaryMinus (NScalarInt (INTEGER i_child) metadata_integer) metadata_negative)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_negative) = ((z_negative, true))
+  -- if z_negative = $expression_line(NScalarInt (INTEGER i_child) metadata_integer)
+  -- if $origin_child((PORIGIN n_handler pcpath_negative), [PCFIELD 0]) = (PORIGIN n_handler pcpath_integer)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_integer) = (NScalarInt (INTEGER i_child) metadata_integer)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_integer) = ((z_integer, true))
+  -- if z_integer = $source_line(metadata_integer)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_negative) = (PINT i_negative)
+  -- if $long_range(i_negative)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_integer) = (PINT i_child)
+  -- if $unary_apply(S, NEGATIVE, PINT i_child, z_negative) = S[.RESULT = KNOWN (PINT i_negative)]
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT or non-NaN raw FLOAT unary-minus return.
+;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT or bounded raw FLOAT/integer unary-minus return.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
