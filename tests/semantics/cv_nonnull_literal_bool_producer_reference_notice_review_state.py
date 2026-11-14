@@ -97,9 +97,9 @@ def normal(initial, case, front):
                 derived += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + param + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
             raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES "' + base64.b64encode(literal.encode()).decode() + '") metadata_return, NIdentifier (BYTES "aW50") metadata_return, NIdentifier (BYTES "c3RyaW5n") metadata_return])) metadata_union_return'
             normalized = union(literal, 'int', False)[:-1] + ', (PTBRANCH ([PTBUILTIN "string"]))]'
-            derived += ['~' + header.replace('phpType18,', raw + ',').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])')]
+            derived += [header.replace('phpType18,', raw + ',').replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])')]
             param = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw + ') (BOOLEAN ' + byref + ') (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-            derived += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + param + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
+            derived += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + param + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
         for update in ('.BYREF = ' + ('false' if case['formal_byref'] else 'true'), '.VARIADIC = true', '.REQUIRED = false', '.DEFAULT = PSDEFAULTUNSUPPORTED "forged union default"'):
             derived += ['~' + proof.replace('.RETURNS = eps]', '.RETURNS = eps][.PARAMETERS = [psparam[' + update + ']]]')]
         derived += ['~$error_call_valid(S_notice, perrorcall[.LINE = 9])', '~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])']

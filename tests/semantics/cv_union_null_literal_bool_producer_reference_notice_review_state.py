@@ -88,10 +88,10 @@ def normal(initial, case, front):
             derived += [('' if other == 'int' else '~') + '$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + raw_parameter + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
         wider = 'NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return, NIdentifier (BYTES "aW50") metadata_return])) metadata_union_return'
         normalized = union(kind, False)[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]'
-        derived += ['~' + header.replace('phpType18,', wider + ',').replace(
+        derived += [header.replace('phpType18,', wider + ',').replace(
             'pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.RETURNS = ' + normalized + '])')]
         raw_parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (' + wider + ') (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-        derived += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + raw_parameter + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
+        derived += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + raw_parameter + ']), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])']
         for literal_kind in ('false', 'true'):
             for null_first in (False, True):
                 for strict in ('false', 'true'):

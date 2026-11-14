@@ -1,0 +1,79 @@
+[
+  {
+    "id": "strict-singleton-false-int-float-formal-and-float-false-array-return",
+    "source": "<?php declare(strict_types=1);\nnamespace SingletonPrimitiveFalse75 {\nfunction h($n,$m,$file,$line){global $alias;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($alias===false),';';$GLOBALS['x']=37;$alias=43;return true;}\nfunction make(fAlSe|int|float &$changed):float|fAlSe|array{echo 'M:',(int)($changed===false),':',(int)($GLOBALS['x']===false),';';unset($GLOBALS['x']);return $changed;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=['tag'=>41];return $value;}\n$x=false;$snapshot=$x;$alias=&$x;set_error_handler('SingletonPrimitiveFalse75\\\\h',8);echo 'N;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$GLOBALS['x'],':',$alias,':',(int)($snapshot===false),';';unset($alias);$r=47;echo 'P:',$r,':',$GLOBALS['x'],':',(int)($snapshot===false),';';\n}\n",
+    "formal_kind": "false",
+    "formal_byref": true,
+    "caller_strict": true,
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:0:1;F:1;R:41:37:43:1;P:47:37:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "442c61df5cda99caf1957e39993061feb078bb4f793f3d69cbfb044b8f3cd12e",
+    "return_kind": "false",
+    "return_shape": "union",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_nonnull_literal_bool_producer_reference_notice_cases.json",
+      "id": "strict-singleton-false-int-formal-and-int-false-return-literal-arm",
+      "source_sha256": "fb4bc96b6562705a84a6e92e1ee8bcbee3182c4e39982e57690ca6e9b0fcba9c",
+      "edits": "Fresh namespaces and three-through-six-member primitive literal-Boolean formal/return unions. All runtime statements, physical lines, ownership mutations and observers are unchanged."
+    },
+    "formal_members": [
+      "false",
+      "int",
+      "float"
+    ],
+    "return_members": [
+      "float",
+      "false",
+      "array"
+    ],
+    "formal_shape": "union",
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:0:1;F:1;R:41:37:43:1;P:47:37:1;"
+  },
+  {
+    "id": "weak-multiple-primitive-literal-formals-and-six-member-true-return",
+    "source": "<?php\nnamespace MultiCvPrimitiveTrue75 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(tRuE|string|array $saved,fAlSe|int|float|null &$changed):string|tRuE|null|int|float|array{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===true),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===true),';';$value='true';$prefix=31;return $value;}\n$x=true;$snapshot=$x;$y=false;$yAlias=&$y;set_error_handler('MultiCvPrimitiveTrue75\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===true),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===true),';';\n}\n",
+    "source_sha256": "39ca249148cdc761ac642ee2fc47bfd91ff55155dc8b4bc4b516ddef681f3539",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "true",
+    "return_shape": "union",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_nonnull_literal_bool_producer_reference_notice_cases.json",
+      "id": "weak-multiple-true-string-and-false-int-formals-string-true-return",
+      "source_sha256": "81d8ddf1ab658aee4ff6fea0e327d7a7f8d928402258eab1ceb1705eabbe0de6",
+      "edits": "Fresh namespaces and three-through-six-member primitive literal-Boolean formal/return unions. All runtime statements, physical lines, ownership mutations and observers are unchanged."
+    },
+    "formal_members": [
+      [
+        "true",
+        "string",
+        "array"
+      ],
+      [
+        "false",
+        "int",
+        "float",
+        "null"
+      ]
+    ],
+    "return_members": [
+      "string",
+      "true",
+      "null",
+      "int",
+      "float",
+      "array"
+    ],
+    "formal_shape": "union",
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:23:0;H:8:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;"
+  }
+]
