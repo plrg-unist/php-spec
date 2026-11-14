@@ -8,6 +8,24 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet emitted CASTSTRING full-ternary originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-truth-base-initial-raw-leading-key-author31-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-truth-base-initial-raw-leading-key-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Quiet falsey emitted-cast shorthand originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-cast-falsey-shorthand-base-initial-raw-leading-key-author31-20261115/`; the [review](../coverage/semantics/string-offset-runtime-cast-falsey-shorthand-base-initial-raw-leading-key-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Deferred FLOAT spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-float-spaceship-wrapper-default-reception-270/`; the [review](../coverage/semantics/deferred-float-spaceship-wrapper-default-reception-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Deferred mixed INT/FLOAT spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-mixed-spaceship-wrapper-default-reception-271/`; the [review](../coverage/semantics/deferred-mixed-spaceship-wrapper-default-reception-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Deferred signed64 strict identity originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-integer-identity-wrapper-default-reception-272/`; the [review](../coverage/semantics/deferred-integer-identity-wrapper-default-reception-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Numeric-String UnaryPlus selector originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-positive-string-concat-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-positive-string-concat-tree-quiet-get-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Ordered int/bool/string short reference Get originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/comp314/`; the [review](../coverage/semantics/int-bool-string-parentless-short-reference-get-hook-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Nested scalar-cast FINAL MOD handler originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/`; the [review](../coverage/semantics/output-final-selected-nested-scalar-cast-return-modulo-error-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
+Singleton-CV iterable-return Notice producer originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/singleton-cv-iterable-return-producer-reference-notice-95/`; the [review](../coverage/semantics/singleton-cv-iterable-return-producer-reference-notice-review.json) retains their original identities, failures and accepted actual/SAME tuple.
+
 Deferred boolean ternary originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-ternary-wrapper-default-reception-267/`; the [review](../coverage/semantics/deferred-boolean-ternary-wrapper-default-reception-review.json) retains their separate accepted cuts and actual/SAME tuple.
 
 Deferred nonnull coalesce originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-nonnull-coalesce-wrapper-default-reception-268/`; the [review](../coverage/semantics/deferred-nonnull-coalesce-wrapper-default-reception-review.json) retains their separate accepted cuts and actual/SAME tuple.
@@ -30,9 +48,13 @@ FQN stdClass/callable producer originals and separate native-once, source, fixtu
 
 Folded one-byte STRING BitwiseNot native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-string-bitnot-truth-base-initial-raw-leading-key-{author29,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json) retains the original failure/unrun tail and accepted actual/SAME tuple.
 
+Completed POWER-NaN instanceof originals, native-once/prelaw, saved-native source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-power-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-power-nan-instanceof-review.json) preserves distinct cuts and the fresh controls for three affected older certificates.
+
 Compiled-NaN instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-compiled-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-compiled-nan-instanceof-review.json) retains the original cuts, corrected fixture failure and accepted actual/SAME tuple.
 
 Emitted arithmetic-NaN instanceof originals, native-once/prelaw, saved-native source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-arithmetic-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-arithmetic-nan-instanceof-review.json) preserves their distinct cuts and fresh controls for the two affected older certificates.
+
+Emitted unary-NaN instanceof originals, native-once/prelaw, saved-native source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-unary-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-unary-nan-instanceof-review.json) preserves their distinct cuts and fresh controls for both affected older certificates.
 
 Deferred Boolean XOR originals and separate source/control/fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-xor-wrapper-default-reception-266/`; the [review](../coverage/semantics/deferred-boolean-xor-wrapper-default-reception-review.json) retains their original identities and accepted actual/SAME tuple.
 
