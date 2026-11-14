@@ -216,6 +216,8 @@ Completed singleton and multi-CV producers admit canonical standalone null retur
 
 Completed ordinary-CV producers also admit canonical standalone `mixed` returns, preserving the admitted payload identity before frame retirement and private Notice-cell creation. See the [mixed-return review](coverage/semantics/cv-mixed-return-producer-reference-notice-review.json); existing formal, payload and lifetime limits remain, including the Owned-NUL hold.
 
+Required canonical `mixed` producer formals preserve admitted values, including NULL, under both caller modes. BYVAL and ordinary BYREF reception retain their distinct cell lifetimes without a persistent alias constraint. See the [mixed-formal review](coverage/semantics/cv-mixed-formal-producer-reference-notice-review.json); existing return/payload/ownership bounds and holds remain.
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The

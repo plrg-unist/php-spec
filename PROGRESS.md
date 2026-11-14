@@ -227,6 +227,8 @@ Completed singleton and multi-CV producers admit canonical standalone null retur
 
 REF67 admits standalone raw mixed/normalized[mixed] returns through the existing completed ordinary-CV producer proof. Three new Notice source agreements and a separate prelaw strict RECEIVE-priority control use four native originals once; author390 and peer200 fixture-SL507 conditions keep separate source-zero cuts. The sole actual canonical load is recorded in the mixed-return review. The current old39 exact-mixed header expectation changes without renewing historical evidence; wider contexts and all held lanes remain partial.
 
+REF68 extends the pointwise ordinary-CV argument proof to required canonical mixed formals with exact raw/normalized/reference-mode authority. Four new Notice source agreements use four native originals once; author427 and peer296 fixture-SL507 cuts stay separate from the sole actual canonical load. Two current matching formal-header expectations change without renewing historical evidence. Wider formals/contexts and all exact holds remain partial.
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.
@@ -618,12 +620,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `40459b788` passes its once-only 508-module production SL
-load in 16.331940515898168 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `97f6f17d6` passes its once-only 508-module production SL
+load in 16.08896259102039 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main47-integer-return-modulo-joined-508-v1/report.json`
-(SHA-256 `1ac41574c106baae0cbc2ea393cfd253404bbbfd8b8e4548615612b79d7b65f7`).
+`../php-spec-evidence-archive/resumed-main-20261112/main48-ordinary-parent-short-reference-get-joined-508-v1/report.json`
+(SHA-256 `3e39ff54610109c715906a60c190f0f7d10dee4f261c8408a7f0e2b7f07f68a0`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

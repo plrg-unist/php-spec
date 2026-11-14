@@ -1,0 +1,168 @@
+{
+  "milestone": "REF68",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "ed3d7c7377d301f790462f894666a9f5d3839c80",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "79f835e033d23dfedfa93e36be04aa7eb804ec61e0f09b1c1a85ddc04d5acc52",
+    "law": "Exactly one kind, mixed, is added to the canonical int/float/bool/string required parameter arm of reference_notice_producer_multiple. Matching raw NIdentifier, normalized singleton type, BYREF, required/default/variadic/attribute/ordinary-CV proofs remain literal. The ARRAY arm, nullable/union kind lists, return proof, actual TYPE_RECEIVE, frame, Notice-source and ownership laws are unchanged.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_params, zend_compile_typename_ex",
+      "Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type",
+      "Zend/zend_vm_def.h: ZEND_RECV, ZEND_RECV_NOTYPE, ZEND_RETURN",
+      "spec/semantics/95-typed-calls.watsup: typed_parameter_conversion, typed_receive_valid; 95-type-values.watsup: typed_exact, typed_conversion_at"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-mixed-formal-producer-reference-notice-68",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "c5600bf0580a3395bfad100aac3d1ff567ac00162928bcdda32b84c31e4d459d",
+    "files": 11,
+    "scope": "Whole eleven-path author READY and independent FULLCLEAR preceded MAIN integration. Combined controller UNEXECUTED; its exact imported closure, saved-native forwarding and unique serial Make recipe have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "527952bc955e738cd3c02bb5edcef9c3be72fb3621389dc8413956eb5de2dca4",
+    "decision": "FULLCLEAR",
+    "scope": "Source contract, counterexamples, source/native reliability, eleven-path manifest and controller/Make wiring. Actual MAIN delta was independently read without execution."
+  },
+  "counts": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "new_postlaw_notice_agreements": 4,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "ownership": "Mixed reception preserves the admitted REQUEST string, ARRAY, quiet stdClass or NULL under either caller mode. BYVAL uses a separate formal cell that retires before the Notice. Ordinary BYREF uses the real caller cell, admits NULL and can replace it with an object or integer without a persistent parameter constraint. Private Notice cells remain separate; string/array COW and object snapshots preserve real owners through later writes and cleanup.",
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "7716ec61b82390c040dfbc0af5a32a6729d60ac00e154cfa58030c544c272eae",
+      "revision": "fb9545fa479ea668dd4602f450fb0355bc3fb28c",
+      "source_agreements": 0
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "1b13b80fd837b8e292243e8ed012fa0fd5b041583c721c51d52a6baf2590a284",
+      "revision": "03e7bdd77132d8e722adb50e582ee4cc6033440b",
+      "source_agreements": 0
+    },
+    {
+      "role": "author production SL Notice1; saved native",
+      "report": "author/postlaw-source-0-wkstpfud/report.json",
+      "sha256": "5270296e3e8c20811e8d84d36e62694b9f107818844078b2a7988e11327a14cd",
+      "revision": "ae9a5f686bb22665789244b0cdb8b8e06a995073",
+      "source_agreements": 1
+    },
+    {
+      "role": "author production SL Notice1; saved native",
+      "report": "author/postlaw-source-1-kgxue1b3/report.json",
+      "sha256": "23349b405752fbd1b77d9e5c76341d969f3135a8d253458cfe4ea2604eb5b5dc",
+      "revision": "ae9a5f686bb22665789244b0cdb8b8e06a995073",
+      "source_agreements": 1
+    },
+    {
+      "role": "peer production SL Notice2; saved native",
+      "report": "peer/postlaw-source-v1/source-wq49eh1x/report.json",
+      "sha256": "8639f95e1e4d6ed57d0fa3e833939e3a867e7d9d5455a67a5d0163516699421b",
+      "revision": "7807d71c82103c55669f955eade67e5f8c7cb03c",
+      "source_agreements": 2
+    },
+    {
+      "role": "author fixture SL507427/source0",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "3cafb86aa5434011295e49804afc29969f800c4941ebe941af0e3a4205f934d0",
+      "revision": "ae9a5f686bb22665789244b0cdb8b8e06a995073",
+      "source_agreements": 0,
+      "conditions": 427,
+      "reached": 288,
+      "derived": 139,
+      "module_count": 507,
+      "elapsed_seconds": 65.00143027305603,
+      "process_cap_seconds": 1200
+    },
+    {
+      "role": "peer fixture SL507296/source0",
+      "report": "peer/postlaw-state-v1/report.json",
+      "sha256": "23bad9692b2ddbb41c186e57be7afaeb8efc40e8e2b7049381d60934ea39540c",
+      "revision": "7807d71c82103c55669f955eade67e5f8c7cb03c",
+      "source_agreements": 0,
+      "conditions": 296,
+      "reached": 256,
+      "derived": 40,
+      "module_count": 507,
+      "elapsed_seconds": 68.58468270301819,
+      "process_cap_seconds": 1200
+    }
+  ],
+  "prelaw": {
+    "author_unsupported2": {
+      "report": "author/prelaw-baseline-summary.json",
+      "sha256": "9a4b2a593ae3dbfdf10d7d450e155951ae7ae73f83de07080f0b8387d560f41d",
+      "source_agreements": 0,
+      "disposition": "Both original comparisons remain false/Unsupported: error-handler ingress requires a producer continuation. Saved native reused."
+    },
+    "author_front": {
+      "role": "actual front172/source0",
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "d5f867ef4684f0f8ea8ba26602114f847a48a40ff7e96d248d1ccd401fe65ad3",
+      "revision": "8d6422b43cd9df4198cf51eb31a9fb13ce1af905",
+      "source_agreements": 0,
+      "conditions": 172,
+      "reached": 172,
+      "derived": 0,
+      "module_count": 507,
+      "elapsed_seconds": 31.2735493183136,
+      "process_cap_seconds": 1200
+    },
+    "peer_front": {
+      "role": "actual front157/source0",
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "aa645205239c6020aa011353d29cae2ad221d6bc206b3201d7f5df8c2ecb125d",
+      "revision": "77b35760c315d35818d2e4fd1c867dda6aea15e2",
+      "source_agreements": 0,
+      "conditions": 157,
+      "reached": 157,
+      "derived": 0,
+      "module_count": 507,
+      "elapsed_seconds": 29.580424547195435,
+      "process_cap_seconds": 1200
+    },
+    "failures": "No semantic or fixture failure in REF68. Constructed-control metadata/grouping fixes occurred before those controls executed."
+  },
+  "canonical_main": {
+    "tested_revision": "477ab7291d005aed4346901a5a10a8af64d8a6cb",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main47-mixed-formal-producer-joined-508-v1/report.json",
+    "sha256": "38ab223c955ae172d7e5b1af9c6de7c33c792d36aa1ab466cda81dd3021f85dc",
+    "mode": "production SL/cache=false/det=true",
+    "module_count": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "process_cap_seconds": 60,
+    "elapsed_seconds": 16.53241455811076,
+    "source_agreements": 0,
+    "result": "PASS once: exit0, true LF, quiet stderr, stable HEAD/inputs, fully reaped."
+  },
+  "compatibility": {
+    "current_helpers": "Only the leading negations on matching reconstructed raw/normalized mixed-formal assertions change in tests/semantics/multi_cv_scalar_formal_producer_reference_notice_state.py (REF57) and tests/semantics/cv_mixed_return_producer_reference_notice_review_state.py (REF67). Fresh68 covers canonical mixed positives, formal-mode/raw/type mismatches and nullable/union mixed refusals. Historical57/67 and other campaigns retain their original identities and are not replayed.",
+    "tested_author": "Final donor adds only independent peer state/control files and unexecuted controller/Make wiring after author ae9a5f686. The author executed source/state closure remains literal.",
+    "helper_closure": "Author68 imports the integrated author67 state, then primitive65 and multi52. Peer68 has no historical state helper imports. The selective reviewer tree does not provision the absent scalar-formal historical helper merely to replay it.",
+    "source_watches": [
+      {
+        "report": "author/postlaw-source-summary.json",
+        "sha256": "7b63f79eca8ba43a4307a91619228c98a04ab424d2c41438ad2a9f93b566655e"
+      },
+      {
+        "report": "peer/postlaw-source-v1/manifest.json",
+        "sha256": "2920a4d679963478ca5af065a93d77061205c52b1eee619c77a73f1707e668a9"
+      }
+    ]
+  },
+  "limits": "Only required canonical mixed formals extend the existing completed ordinary-CV producer proof. Return, payload, source, backing, history, GC and owner guards remain. Nullable/union mixed, broader types/defaults/variadics/attributes and wider actuals/contexts/lifetimes remain partial. Prior67 strict RECEIVE-priority evidence keeps its original cut without renewal. All exact holds, especially Owned-NUL source-release, remain held."
+}

@@ -587,6 +587,17 @@ control, four native originals run once, private state fixtures and the sole act
 canonical load distinct. Existing formal/payload/source/ownership bounds remain;
 Owned-NUL stays held.
 
+Required canonical `mixed` formals share the completed singleton and multi-CV
+producer proof. Each raw identifier matches its sole normalized mixed branch and
+reference mode. Mixed includes NULL and preserves admitted values under either
+caller mode; BYVAL formal cells retire before private Notice-cell creation, while
+ordinary BYREF formals use the real caller cell without a persistent type
+constraint. The [mixed-formal review](../../coverage/semantics/cv-mixed-formal-producer-reference-notice-review.json)
+keeps four fresh Notice agreements/native originals run once, separate private
+state cuts and the sole actual canonical load distinct. Existing return, payload,
+source and ownership bounds remain; nullable/union mixed and wider contexts remain
+partial, with Owned-NUL held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
