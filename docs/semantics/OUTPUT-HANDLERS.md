@@ -1503,3 +1503,15 @@ Own emitted canonical kind1 BOOL casts of raw signed64 literals authenticate exa
 Own canonical kind1 BOOL casts of raw FLOAT literals preserve strict FALSE for zero and TRUE for the smallest positive subnormal or positive infinity through FINAL MOD-zero Error. Exact16 lowercase binary64 text, rootCODEfalse/read-eps versus childCODEtrue/exactPFLOAT, SOURCE/UNIT/BODY/line authority, NORMAL, intrinsic no-warning truth and full quiet cast state remain required; NaN stays outside even with diagnostics masked. Four originals agree with PHP; signed-zero/negative-bit/NaN counterfacts source0; wider children/styles, handlers, histories/lifetimes and OB31 remain partial. [Review](../../coverage/semantics/output-final-selected-float-bool-cast-return-modulo-error-review.json).
 
 Own canonical kind1 BOOL casts of simple case-insensitive true/false/null keywords retain exact Return/root/ConstFetch/indexed-name SOURCE, UNIT/BODY/CODE-line authority, rootCODEfalse/read-eps versus childCODEtrue/exactPBOOL/PNULL, and full quiet NORMAL cast state. FALSE/NULL casts return strictFALSE/defaultdiagnostics; TRUE suppressesfallback. Native4once/source4; same-output wrong-tag/name/CODE/kind counterfacts and actualretirement source0; wider names/styles/children, handlers/histories/lifetimes and OB31 remain partial. [Review](../../coverage/semantics/output-final-selected-constant-bool-cast-return-modulo-error-review.json).
+Selected FINAL MOD handlers admit finite canonical nested BOOL/INT/FLOAT cast
+chains over authenticated raw scalar leaves. Every proper source/CODE link
+reconstructs its typed child and proves a NORMAL, intrinsically quiet, nonowning
+full-state cast. Mandatory non-NUL INTERNED string carriers and explicit FLOAT
+notice guards remain required, including under reporting masks. Strict FALSE
+keeps default reporting distinct from numeric zero; real formal/native-cell
+retirement retains the original Error. Four originals reuse native observations
+once; author16/12 and independent187/23 remain separate fixture source0 cuts.
+Baseline2 Unsupported/2 unrun and the external builder-check failure retain0.
+Wider producers, owners, noisy conversions and every exact hold remain partial.
+[Evidence](../../coverage/semantics/output-final-selected-nested-scalar-cast-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-nested-scalar-cast-return-modulo-error-review.json).

@@ -1,0 +1,90 @@
+{
+  "feature": "OUTPUT126: selected FINAL MOD handlers with recursively certified quiet scalar cast chains",
+  "status": "independently reviewed and source-integrated; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64;vendor34308a6666b2d489c509541ea9befea9e2b42348;sole project-local PHP;recorded baseline;pure authored semantics",
+  "reviewed_ready": "efc315d51f15b13cc6069319889ccf5c956f9dee",
+  "contract": "The new Return arm explicitly narrows the optional expression and requires a canonical cast child, leaving direct arms unchanged. A recursive certificate follows actual proper SOURCE/CODE children under the same function unit/body. Raw signed64 INT, guarded lowercase16 FLOAT bits, strict simple-name Boolean/null pools and non-NUL raw string pools authenticate typed nonowning leaves; strings require an actual INTERNED carrier. Every cast node requires NORMAL, canonical INT/BOOL kind1 or FLOAT kind2, CODEfalse/read-eps, exact child line and full-state cast with RESULT reconstructed from the child. FLOAT-to-INT requires an intrinsically empty float_long notice vector, and FLOAT-to-BOOL requires number_bool warning=false, even when reporting masks diagnostics. Typed values and strict FALSE/default versus numeric suppression survive actual handler RETURN and formal/native-cell retirement before FINAL MOD-zero Error.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c:explicit cast lowering and special constants;zend_vm_def.h:ZEND_CAST/ZEND_BOOL",
+    "vendor/php-src/Zend/zend_operators.h:i_zend_is_true FLOAT NaN warning;IS_STRING empty/sole-zero truth",
+    "spec/semantics/04-numeric-context.watsup:number_bool separates truth/warning;dedicated numeric conversions",
+    "spec/semantics/33-runtime-compiler.watsup:raw compiled pools versus authenticated INTERNED carrier",
+    "spec/semantics/56-casts.watsup:full-state cast semantics;existing float_long intrinsic notices are retained at each link"
+  ],
+  "packet": {
+    "base": "d6b21877c0733d0596df9a954810fbc6998572da",
+    "delta": "Five paths,+440/0:Make4,45685,sources20,state149,review_state182;closed125 twoJSON ancestry excluded.",
+    "runtime_sha256": "6c5b25887b272ad51d8432ad680b3792495d671cea7a985fd969227a7f7991ef",
+    "peer_sha256": "a4ebbe406393bc323e7570a95e2c29c81a34ddf0a783252e97863e8c33549ee3"
+  },
+  "validation": {
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/native-summary-01.json",
+      "sha256": "e0e45a31a467e1e5ccf1d8b9a9a0cb315478c2a30b9faf3b0269f6f618f27b9d",
+      "originals_once": 4,
+      "result": "At0b52e25f3;complete observations reused without replay."
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/model-final-01/report.json",
+      "sha256": "2bc451a826f4cc80fe33e96cea002c2a498a39183fa197e6c2e1fcba76cbd0f2",
+      "agreements": 4,
+      "result": "Production SL508/cache=false/det=true at efc315d51. Four real chains preserve silent strict-type/value witnesses, FALSE/default diagnostics and numeric zero/one suppression; complete php_error outcomes/raw observations match saved natives."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/model-first-01/report.json",
+      "sha256": "87e898223508fcc7419bea34568995cfd343e89167d49700efc259a31992b5e8",
+      "result": "Two complete Unsupported outcomes at0b52e25f3;other two originals UNRUN;source0."
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/front-all-01/report.json",
+      "sha256": "e6dedb46fa8f696a94d619e8537a100c89cc01a9bae8fe7dcb841406ef7a8c14",
+      "conditions": [
+        8,
+        8
+      ],
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/life-all-01/report.json",
+      "sha256": "0e6e970a1b75dbc02391d58446e4e9c3cf86b560bda9dd9eda3243cd19ccf032",
+      "conditions": [
+        6,
+        6
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/peer-front-all-01/report.json",
+      "sha256": "4afdf540153f355cbc2a1ac2286403805ee4dcde380e8e5c2b201d7416eb5d7b",
+      "conditions": [
+        61,
+        58,
+        68
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-nested-scalar-cast-return-modulo-error-126/peer-life-all-01/report.json",
+      "sha256": "c5556e217ea8989a04d228682486103780cba63a5b9271e3cbc128ac0caa2823",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "source_credit": 0
+    },
+    "controls": "Each cast link retains SOURCE, canonical kind, CODE flag/line and emitted read authority. Strict signed64/keyword/raw-string leaves, malformed FLOAT width/glyph rejection before decode, missing precision, NUL refusal and BUDGET preset-result forgeries are checked. Coherent raw FLOAT/pool states prove that quiet inner FLOAT NaN identity remains admitted while outer BOOL/INT NaN or range casts refuse even when REPORTING0/CALLBACKeps/empty fatal trace make the full cast match its preset result. Quiet FLOAT NaN identity, infinity truth and signed-zero false truth remain accepted at source0. Bare Return and old one-cast component paths remain disjoint; actual retirement preserves typed result, NULL scratch and nonowning header.",
+    "reliability": "All postlaw cuts share efc315d51;native/baseline retain0b52. Accepted launchers are quiet/stable/reaped with empty groups,fixed outer660/fixture300 caps. An initial external builder-name assertion incorrectly rejected inherited S_zero budget bindings; prep-builder-01.txt preserves it at zero credit. Only that name check was narrowed; no source/fixture predicate changed. No semantic campaign failure or timeout. Current reports/launch hashes and packet independently consumed once;Make recipes wired,not claimed executed."
+  },
+  "actual_composition": {
+    "revision": "47236b36ff39d4b458d76612b3dcc4e560cb7558",
+    "tree": "381a51d92b889a47c4bace3a0a5383307d9c7c72",
+    "parent": "3b49af0171fc66f04fb78f89ed7a914cd424e92a",
+    "projection": "Exact five-path+440/0 delta;four nonMake blobs equal signed efc. Makefile adds exactly four signed recipes while retaining newer MAIN content;125 metadata excluded.",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main67-normal-batch-current-load-v1/report.json",
+    "sha256": "9849de02d4b00c1eba8251aec63f0179f51193236771b612becebd4562b00b11",
+    "result": "Sole production-SL508 combined load passes in16.48128742398694 seconds,cap60;511 ordered arguments/512 watches,exit0/true LF/empty stderr/no timeout,source0,stable/reaped. Actual composition and saved report consumed once; no author duplicate or renewed execution credit."
+  },
+  "remaining": "Other expressions, CASTSTRING, owning/CV/computed leaves, wider names/styles/signatures/histories/lifetimes and OB31 remain partial. Raw NaN/NUL/malformed and other constructed-state controls add no original-source credit. All exact holds remain unchanged;full PHP core,Rocq and BOLA verification remain unfinished. Metadata does not renew execution credit."
+}
