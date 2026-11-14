@@ -1,0 +1,86 @@
+{
+  "feature": "ENUM248: literal Boolean/null UnaryMinus certificates for stored/composed integer defaults",
+  "status": "Independently reviewed bounded extension; complete PHP core remains unfinished",
+  "implementation": {
+    "base": "54d3312e8af031c8c8e04a32bf1aa7f615dff7fc",
+    "donor": "bd9b6f2127587ad8ab7e6008d1c721ecb817f435",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "One child-only Default_in UnaryMinus arm uses existing Special and quiet COERCED NINT0/1 to certify signed64 result0/-1. Numeric follows the integer certificate; existing stored compiled-PINT authority is unchanged.",
+    "domain": "Resolved literal true/false/null and existing integer/CASTSTRING/arithmetic compositions. The new direct special child is structurally DIM-free; existing composed Default_in contexts retain their prior domains.",
+    "preserved": "Exact source/pool/declaration ENV/name/cache/ordinary reception/owner bounds stay unchanged. Raw PINT remains distinct from BOOL/NULL/FLOAT pools. Direct literal UnaryPlus, startup Booleans and string/FLOAT phase questions remain separate.",
+    "test_integration": "The source/author cuts precede one review-only test addition and a Makefile-only three-recipe addition; every old recipe remains byte-identical. Final source/test increment is nine files,384 additions/5 deletions.",
+    "affected_tests": "Only eight current predecessor formulas promote, representing five unique predicates tested independently here. Current245/246/247 named/derived body counts remain151/76,150/44,140/45; historical cuts are not renewed."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_try_ct_eval_unary_pm and zend_eval_const_expr fold literal special negation using multiplication by -1",
+      "Zend/zend_operators.c: _zendi_try_convert_scalar_to_number maps NULL/FALSE to LONG0 and TRUE to LONG1 without diagnostics",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner UnaryMinus uses multiplication by -1; stored RECV_INIT receipt remains separate from deferred cache publication"
+    ],
+    "phase_boundary": "No direct string/FLOAT UnaryPlus claim. Deferred AST add(0,child) versus compile/runtime multiplication by +1 remains a separate signed-zero question."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-literal-special-unary-minus-default-reception-248",
+  "native_once": {
+    "report": "native-v1/report.json",
+    "sha256": "07e710ce96f6d16278116bc7b1bfaa372250cea6410b25c477b9f1d36c6c82b4",
+    "originals": 4,
+    "unchanged_replays": 0,
+    "runtime_reference": "../enum-integer-string-unary-minus-default-reception-247/runtime.json",
+    "runtime_sha256": "bbba271e97be1ea0395919a5809c92d508da4286c0ccbc323f21baac29513f33",
+    "scope": "Retained pinned PHP8.5.10 CLI,NTS,signed64 runtime identity; native inputs record the executed binary/profile hashes. Only four changed originals execute natively."
+  },
+  "source_evidence": {
+    "revision": "5528c39f19a33a5ce138d3307a2d2097e0bb1a64",
+    "report": "source-v1/report.json",
+    "sha256": "85925e218838c82f95b9dc7c3ff821ee44af17308fbf5b6e323057ed7f4f0812",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 2,
+    "unsupported_controls": 2,
+    "outer_seconds": 49.867453349987045,
+    "scope": "Stored cold/warm private BYREF defaults and imported-ENV named stored/deferred CASTSTRING composition with warning reentry. Direct +true and -PHP_ZTS remain explicit Unsupported controls at this cut."
+  },
+  "state_evidence": [
+    {
+      "revision": "41fd4d34f39416ab68e9a699560146b7a6dc3583",
+      "report": "author-v2/closure-call-protocol-g983cixq/report.json",
+      "sha256": "962c3441b7a65e2a569c7374f67b0e4b9569cd3eca67f33e8b3adbe768c46a9b",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": 137,
+      "source_credit": 0,
+      "outer_seconds": 26.19491881597787,
+      "scope": "Exact stored pools/source, BOOL/NULL/FLOAT/wrong-int counterfacts, quiet literal inputs, private BYREF cells, budgets, cold/warm immutability and real cell retirement."
+    },
+    {
+      "revision": "7b057af1e97271be15cefb31b36bb60d86bf6ef8",
+      "report": "peer-v1/closure-call-protocol-19lfdw7y/report.json",
+      "sha256": "d46e6a70d2911032618fba7c3e4f62cd3878e0b221029eb3c65a93c542052e32",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        150,
+        38
+      ],
+      "source_credit": 0,
+      "outer_seconds": 48.690869127,
+      "scope": "Independent named stored-PINT versus deferred raw-PINT-11 authority, pool/source/kind/import/cache/owner/budget/retirement counterfacts, unique promotions, case folding, compositions and preserved exclusions."
+    }
+  ],
+  "prior_zero_credit": "author-v1/closure-call-protocol-iy_2w1nk/report.json preserves the first pre-elaboration CONSTANTS-list fixture syntax failure. Only that one fixture grouping was corrected and author137 rerun; source/catalogue/semantics/native bytes stayed unchanged. Superseded whole-eight proposal before Makefile selection is preserved outside Git.",
+  "validation_contract": "Pinned project-local oracle only; pure authored watsup, no Zend evaluation fallback. C/UTC baseline, source100000steps/360s, fixture300s and outer600s. Cuts retain exact revisions, stable inputs, quiet exits and fully reaped groups. Normal agreements, Unsupported and fixture failure stay distinct.",
+  "review": "recover12_enum_selected_unary_review independently FULLCLEARed final whole-nine donorbd9b/treee81be, manifest7ef7e91d and patchf4967acd, then independently CLOSED actual source/composition and the one saved canonical report; no author duplicate read or semantic replay.",
+  "joined_load": {
+    "revision": "cfb37f6ef2201450c8cce424929ec7916515fdfd",
+    "tree": "19be63608b20d6d04e7fce03fa2ae2450b27c3d9",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main56-ref79-getliteral-power-enum248-current-load-v1/report.json",
+    "sha256": "96559967f839382d0f8b68a8006f7db2dbe9e4dd1ed581c1ca6d29d32e502ead",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.681472308933735,
+    "result": "true plus LF; stable HEAD/inputs,quiet exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Direct literal UnaryPlus and startup Boolean defaults, wider producers, contexts and lifetimes remain partial at this cut. All exact holds remain separate. No constructor/obligation closure, full-core completion or Zend-equivalence claim."
+}
