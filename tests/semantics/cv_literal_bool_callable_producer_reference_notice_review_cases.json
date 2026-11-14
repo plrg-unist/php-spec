@@ -1,0 +1,55 @@
+[
+  {
+    "id": "exact-true-byval-false-byref-literal-bool-callable-private-cell",
+    "source": "<?php\nnamespace ReviewCallableLiteralBool89 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|TRUE $saved,FaLsE|CaLlAbLe &$changed):TRUE|CALLABLE{echo 'M:',(int)($saved===true),':',(int)($changed===false),':',(int)($GLOBALS['x']===true),':',(int)($GLOBALS['y']===false),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)$value,':',(int)($value===true),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=true;$snapshot=$x;$y=false;$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallableLiteralBool89\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===true),':',(int)($ySnapshot===false),';';$r=43;echo 'P:',$r,':',(int)($snapshot===true),':',(int)($ySnapshot===false),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===true),':',(int)($ySnapshot===false),';';\n}\n",
+    "source_sha256": "5326609e110a90fb77a9b4b144c411d58351e71b62276be387abb4e05968b4f9",
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:1:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_review_cases.json:independent-single-Boolean-bit-and-priority-variants",
+    "formal_kinds": [
+      "true",
+      "false"
+    ],
+    "caller_strict": false,
+    "callable_name": "\\ReviewCallableLiteralBool89\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "formal_orders": [
+      [
+        "callable",
+        "true"
+      ],
+      [
+        "false",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "true",
+      "callable"
+    ]
+  },
+  {
+    "id": "weak-int-zero-literal-false-callable-receive-priority",
+    "source": "<?php\nnamespace ReviewCallableLiteralBool89\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|FALSE &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableLiteralBool89\\ReceivePriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "ca6158a21fa6439d047260a09f30f9cd786f8fa8492b9fc6e92d7eb2bc571cdf",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_review_cases.json:independent-single-Boolean-bit-and-priority-variants"
+  },
+  {
+    "id": "weak-opposite-boolean-literal-false-callable-return-priority",
+    "source": "<?php\nnamespace ReviewCallableLiteralBool89\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(FALSE|CaLlAbLe &$saved):CALLABLE|FALSE{echo 'M;';$saved=true;return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=false;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableLiteralBool89\\ReturnPriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "0a416f7be843cfd8dd4b91f2843eb2da3d5ff49c79af96c572f48d4bc10c720a",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_review_cases.json:independent-single-Boolean-bit-and-priority-variants"
+  }
+]

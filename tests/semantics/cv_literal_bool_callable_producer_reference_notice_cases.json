@@ -1,0 +1,83 @@
+[
+  {
+    "id": "true-union-singleton-byval-exact-private-cell",
+    "namespace": "CallableSingletonByval89",
+    "source": "<?php\nnamespace CallableSingletonByval89;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(CaLlAbLe|TrUe $saved):TrUe|cAlLaBlE{echo 'M:',(int)($saved===true),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===true),';';$value=23;return $value;}\n$x=true;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval89\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===true),';';$r=41;echo 'P:',$r,':',(int)($copy===true),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "f139914e6501007c3804cc7152245f1ef449872ad2f00793a6249cf6b1102047",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PBOOL",
+    "line_observation": "Native-first executes each exact original once; exact singleton Boolean or registered USER-callable verification precedes producer retirement and separate private Notice cells.",
+    "formal_members": [
+      "callable",
+      "true"
+    ],
+    "return_members": [
+      "true",
+      "callable"
+    ],
+    "value_kind": "boolean",
+    "integer": 0,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_cases.json",
+    "bool_value": true
+  },
+  {
+    "id": "false-union-singleton-byref-strict-unconstrained-body-write",
+    "namespace": "CallableSingletonByref89",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref89;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===false),';';$x=37;return true;}\nfunction make(FaLsE|CaLlAbLe &$saved):cAlLaBlE|fAlSe{$saved='unconstrained89';echo 'M:',(int)($saved==='unconstrained89'),';';$saved=false;return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=23;return $value;}\n$x=false;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref89\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===false),';';$r=41;echo 'P:',$r,':',(int)($copy===false),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "63f804aa40b82390c6e755664c2c9ac635baf8f98159235eedc21ab1fc2ae6f0",
+    "native_stdout": "N;M:1;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "PBOOL",
+    "line_observation": "Native-first executes each exact original once; exact singleton Boolean or registered USER-callable verification precedes producer retirement and separate private Notice cells.",
+    "formal_members": [
+      "false",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "false"
+    ],
+    "value_kind": "boolean",
+    "integer": 0,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_cases.json",
+    "bool_value": false
+  },
+  {
+    "id": "literal-bool-union-multi-cv-request-callable-crosses-true-false-headers",
+    "namespace": "CallableMulti89",
+    "source": "<?php\nnamespace CallableMulti89;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(CaLlAbLe|TrUe $saved,&$changed):FaLsE|cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti89\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti89\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti89\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti89\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti89\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti89\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "23f7e6423f4cb3d283133514df9e2f8c6ace8b6fd31cb5e7d1a159bca8a43438",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first executes each exact original once; exact singleton Boolean or registered USER-callable verification precedes producer retirement and separate private Notice cells.",
+    "formal_members": [
+      "callable",
+      "true"
+    ],
+    "return_members": [
+      "false",
+      "callable"
+    ],
+    "value_kind": "callable",
+    "integer": null,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_bool_callable_producer_reference_notice_cases.json",
+    "bool_value": null
+  }
+]
