@@ -750,6 +750,17 @@ def $reference_notice_producer_union_members((NIdentifier (BYTES text_type) meta
   -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
 def $reference_notice_producer_union_members(phpType69*, ptbranch*, text_seen*) = false -- otherwise
 
+dec $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, bool, text*) : bool
+def $reference_notice_producer_stdclass_union_members(eps, eps, b_class, text_seen*) = b_class
+def $reference_notice_producer_stdclass_union_members((NNameFullyQualified (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTCLASS preqbytes_type])) :: ptbranch*, false, text_seen*) = $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, true, text_seen*)
+  -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
+def $reference_notice_producer_stdclass_union_members((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTBUILTIN text_kind])) :: ptbranch*, b_class, text_seen*) = $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, b_class, text_kind :: text_seen*)
+  -- if text_kind <- ["array", "int", "float", "bool", "string", "null", "false", "true"]
+  -- if ~(text_kind <- text_seen*)
+  -- if ~(text_kind <- ["bool", "false", "true"]) \/ ~("bool" <- text_seen* \/ "false" <- text_seen* \/ "true" <- text_seen*)
+  -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
+def $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, b_class, text_seen*) = false -- otherwise
+
 dec $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) : bool
 def $reference_notice_producer_multiple(eps, eps, eps) = true
 def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) ABSENT (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
@@ -831,7 +842,7 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
-  -- if $reference_notice_producer_union_members(phpType69*, psparam.TYPE, eps)
+  -- if $reference_notice_producer_union_members(phpType69*, psparam.TYPE, eps) \/ $reference_notice_producer_stdclass_union_members(phpType69*, psparam.TYPE, false, eps)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) = false -- otherwise
 
@@ -977,7 +988,7 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
   -- if $(|phpType7*| > 0) /\ $(|phpType69*| > 2)
-  -- if $reference_notice_producer_union_members(phpType69*, pssignature.RETURNS, eps)
+  -- if $reference_notice_producer_union_members(phpType69*, pssignature.RETURNS, eps) \/ $reference_notice_producer_stdclass_union_members(phpType69*, pssignature.RETURNS, false, eps)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 

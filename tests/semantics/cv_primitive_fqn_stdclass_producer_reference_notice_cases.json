@@ -1,0 +1,156 @@
+[
+  {
+    "id": "weak-max7-class-object-formal-return-and-private-identity",
+    "source": "<?php\nnamespace SingletonPrimitiveFqnStdClass81;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(aRrAy|InT|fLoAt|\\sTdClAsS|sTrInG|nUlL|BoOl $saved):nUlL|BoOl|sTrInG|fLoAt|InT|aRrAy|\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('SingletonPrimitiveFqnStdClass81\\\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "099a3addd430ef6b0c5c4239c286f1f62f8bd99fd5b86d98070f1ac33b2c3868",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": "tests/semantics/cv_union_fqn_stdclass_producer_reference_notice_cases.json",
+    "formal_members": [
+      [
+        "array",
+        "int",
+        "float",
+        "stdClass",
+        "string",
+        "null",
+        "bool"
+      ]
+    ],
+    "return_members": [
+      "null",
+      "bool",
+      "string",
+      "float",
+      "int",
+      "array",
+      "stdClass"
+    ],
+    "state_family": "object",
+    "caller_strict": false,
+    "line_observation": "Expected Notice physical line8; native-first must observe each new original once before law, without changing PHP bytes."
+  },
+  {
+    "id": "weak-max7-class-array-formal-return-snapshot-and-private-cow",
+    "source": "<?php\nnamespace ArrayPrimitiveFqnStdClass81 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(\\sTdClAsS|aRrAy|InT|fLoAt|sTrInG|nUlL|fAlSe $saved,&$changed):aRrAy|InT|fLoAt|\\StDcLaSs|sTrInG|nUlL|fAlSe{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],':',(int)($value[0]==='17'),';';$value[0][0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('ArrayPrimitiveFqnStdClass81\\\\h',8);echo 'A;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$copy[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'P:',$r,':',$copy[0],';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "6d4a8d75cd99f97b50fcb1ac66f9f8915e66a55ac7f18533682bac3bb2b488b9",
+    "native_stdout_template": "A;M:17:23:0;H:{notice_line}:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Expected Notice physical line8; native-first must observe each new original once before law, without changing PHP bytes.",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout": "A;M:17:23:0;H:8:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "formal_members": [
+      [
+        "stdClass",
+        "array",
+        "int",
+        "float",
+        "string",
+        "null",
+        "false"
+      ],
+      []
+    ],
+    "class_formals": [
+      "sTdClAsS",
+      null
+    ],
+    "return_members": [
+      "array",
+      "int",
+      "float",
+      "stdClass",
+      "string",
+      "null",
+      "false"
+    ],
+    "class_return": "StDcLaSs",
+    "state_family": "array",
+    "derived_from": "tests/semantics/multi_cv_union_array_return_producer_reference_notice_cases.json",
+    "caller_strict": false
+  },
+  {
+    "id": "weak-class-array-null-formal-return-and-untyped-private-cell",
+    "source": "<?php\nnamespace NullPrimitiveFqnStdClass81 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(nUlL|\\sTdClAsS|aRrAy $saved,&$changed):aRrAy|nUlL|\\StDcLaSs{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===null),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value='null';$prefix=31;return $value;}\n$x=null;$snapshot=$x;$y=5;$yAlias=&$y;set_error_handler('NullPrimitiveFqnStdClass81\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===null),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===null),';';\n}\n",
+    "source_sha256": "61be71c720651bc83582a60f2b591ed23a6c0efda3924754d32d09a6709ee1e1",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:null:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Expected Notice physical line8; native-first must observe each new original once before law, without changing PHP bytes.",
+    "native_stderr": "",
+    "native_exit": 0,
+    "native_stdout": "N;M:1:23:0;H:8:0:23;F:29:1;R:null:31:37:1;P:41;Q:41:37:43:1;",
+    "formal_members": [
+      [
+        "null",
+        "stdClass",
+        "array"
+      ],
+      []
+    ],
+    "class_formals": [
+      "sTdClAsS",
+      null
+    ],
+    "return_members": [
+      "array",
+      "null",
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "state_family": null,
+    "derived_from": "tests/semantics/multi_cv_union_array_return_producer_reference_notice_cases.json",
+    "caller_strict": false
+  },
+  {
+    "id": "weak-class-array-true-formal-return-and-untyped-private-cell",
+    "source": "<?php\nnamespace TruePrimitiveFqnStdClass81 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(tRuE|\\sTdClAsS|aRrAy $saved,&$changed):nUlL|\\StDcLaSs|tRuE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===true),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===true),';';$value='true';$prefix=31;return $value;}\n$x=true;$snapshot=$x;$y=5;$yAlias=&$y;set_error_handler('TruePrimitiveFqnStdClass81\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===true),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===true),';';\n}\n",
+    "source_sha256": "8f3f38cf19968abaf5fac694447912d487928c6373fae917e6c42c68e1c5d11f",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "true",
+    "return_shape": "union",
+    "derived_from": "tests/semantics/cv_literal_bool_return_producer_reference_notice_cases.json",
+    "native_stdout": "N;M:1:23:0;H:8:0:23;F:29:1;R:true:31:37:1;P:41;Q:41:37:43:1;",
+    "formal_members": [
+      [
+        "true",
+        "stdClass",
+        "array"
+      ],
+      []
+    ],
+    "class_formals": [
+      "sTdClAsS",
+      null
+    ],
+    "return_members": [
+      "null",
+      "stdClass",
+      "true"
+    ],
+    "class_return": "StDcLaSs",
+    "state_family": null,
+    "caller_strict": false,
+    "line_observation": "Expected Notice physical line8; native-first must observe each new original once before law, without changing PHP bytes."
+  }
+]
