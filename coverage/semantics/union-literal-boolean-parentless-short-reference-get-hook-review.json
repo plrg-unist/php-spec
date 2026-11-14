@@ -1,0 +1,124 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with exact ordered false|null/null|false and true|null/null|true headers and actual same-field identifier/literal-string bodies. Partial core.",
+  "target": "PHP8.5.10 CLI NTS64; pinned .tools/php/bin/php; profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp303",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "df1e26a61feff85212de474189259b382cef1ca0c93156178159385a7c1ce39e",
+    "source_donor": "d86b3f457fa032ce25d287d396198c540feda5d3",
+    "change": "Only both ordered two-member union whitelists add false/true. Exact pointwise decoded raw-order equality, canonical/nullable cases, source/body/signature/owner/cleanup guards and wider refusals remain unchanged."
+  },
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_property_hooks supplies the implicit property return type; zend_type_to_string_resolved prints either nullable literal order as ?false/?true. Existing ptast/ptunionfold/ptunionchecked retain raw order.",
+    "Zend/zend_execute.c::i_zend_verify_type_assignable_zval and zend_verify_weak_scalar_type_hint preserve literal tags without weak Boolean coercion; zend_handle_fetch_obj_flags supplies nullable NULL initialization and real type sources."
+  ],
+  "behavior": "Both raw orders preserve exact property and implicit return authority while sharing canonical ?literal diagnostics. NULL initialization/reset, exact false/true writes, rejected weak/strict0/1 and opposite tags, independent copies and genuine alias constraints retain native observations. Reversed normalized headers/descriptors and forged swapped raw SOURCE reject.",
+  "ownership_and_resumption": "Author cells lose owners from2 to1 through actual destructor storage0. Peer false cells with an extra alias lose3 to2 and true cells2 to1 through genuine quiet UNSET/prune. Ordinary copies stay unconstrained. Author return/storage0 have full0/1 joins; peer return0/1 is local and cleanup has a full rejoin.",
+  "source_agreements": {
+    "author": {
+      "report": "author-postlaw-v1/report.json",
+      "sha256": "b53a379727684715f3dc382d93617ff55b7ae10f178b2bd57ab93eddc5ae0930",
+      "head": "9e01152b3f742f72c4776b2316fac9b64d87a483",
+      "module_count": 508,
+      "source_agreement_credit": 2
+    },
+    "independent": {
+      "report": "peer14-saved-native-source-v1/report.json",
+      "sha256": "5781f0366453b0e750b9f21292b8ee4723d4f56011e91497f9e420bbad05e642",
+      "head": "aad87c1bbe7135a3bec8c446bd9ee1038f708dcb",
+      "mode": "production-SL",
+      "module_count": 508,
+      "agreements": 2
+    },
+    "total": 4,
+    "current_originals_native_once": 4,
+    "native_replayed": false,
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "69cfdca57d4e01050a68843c40d64af852e9e4e8a287a2167bdd6a44aa428c17",
+        "head": "3d11dfbe573adee455bdd361f74f49f40b4bc6ab",
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "peer14-native-prelaw-v1/report.json",
+        "sha256": "fd5b698456fd0a249e57a78f31caa9c6e6c37a3dfb6b4b84eb7b8f46b152487a",
+        "head": "b875f75af40544dc3474eb8ca1caa0cb1c5c0516",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      }
+    ]
+  },
+  "fixture_cap_seconds": 240,
+  "fixture_cuts": [
+    {
+      "report": "author-literal-null-protocol-v1/report.json",
+      "sha256": "168f0e2dc340ec5804e095d6c58e76ef61029a8e2ed26c934ea235ea1ea6d587",
+      "head": "9e01152b3f742f72c4776b2316fac9b64d87a483",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 182,
+      "source_agreement_credit": 0,
+      "seconds": 90.35280251502991
+    },
+    {
+      "report": "author-null-literal-protocol-v1/report.json",
+      "sha256": "8b95588a041e2e2e985c9827499c11dc553f97805d7b24948534998dbed29ae4",
+      "head": "9e01152b3f742f72c4776b2316fac9b64d87a483",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 182,
+      "source_agreement_credit": 0,
+      "seconds": 93.4513680934906
+    },
+    {
+      "report": "peer14-literal-null-protocol-v1/report.json",
+      "sha256": "ced888916641c6f15b92c2d08d783e3aa539174af1184cf216fcf1bcbf28b8df",
+      "head": "aad87c1bbe7135a3bec8c446bd9ee1038f708dcb",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 232,
+      "source_agreement_credit": 0,
+      "seconds": 47.233479499816895
+    },
+    {
+      "report": "peer14-null-literal-protocol-v1/report.json",
+      "sha256": "1f80d45be3107dda88964cd6c57ee6bf2a450c66a3fa54d6150c766ae4e77c20",
+      "head": "aad87c1bbe7135a3bec8c446bd9ee1038f708dcb",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 232,
+      "source_agreement_credit": 0,
+      "seconds": 46.50340986251831
+    }
+  ],
+  "prelaw": {
+    "author": {
+      "report": "author-prelaw-v1/report.json",
+      "sha256": "21cf82cd98953c70aa58430aeb3436da0de00a2177a1e90f24ca281d48cd1268",
+      "head": "3d11dfbe573adee455bdd361f74f49f40b4bc6ab",
+      "module_count": 508,
+      "source_agreement_credit": 0
+    },
+    "independent_report": "peer14-native-prelaw-v1/report.json",
+    "selection": "Each selected literal-null original is Unsupported/source0 at the prior runtime. Both reverse-order prelaw cases were unrun."
+  },
+  "new_failures": [],
+  "actual_composition": {
+    "head": "52be72b75fee8390382201620982bc8c96c98fa5",
+    "tree": "ceb8af07f0467d82680e77732b2717676747d2f3",
+    "report": "../resumed-main-20261112/main57-comp303-current-load-v1/report.json",
+    "sha256": "02ac87e8af8b8b19fb4992c7d29773b5232deff5e596adce0c05ce6c50899317",
+    "seconds": 15.481223844923079,
+    "mode": "production-SL",
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "status": "One saved canonical report consumed by the independent reviewer; actual17 composition/SAME quiet, stable and reaped. No author duplicate run/read."
+  },
+  "compatibility": "Manifest9611261b retains early weak5 and excludes only the separately closed COMP302 ledger. Exactly five matching pure controls across current301/302 helpers promote; their two unique positive calls execute in new303 fixtures. Old source/state suites retain original identities without rerun. Both saved actual peer adapter fixtures regenerate exactly the passed232 assertion vectors/PREFIX under the final promoted prior helper. Actual U/source bytes remain literal. Six Make recipes prepared, aggregate unrun. Prior302 failures retain their own zero-credit cuts.",
+  "remaining": "Canonical standalone null/mixed, class/intersection and wider unions, parented/Trait typed short hooks and broader bodies/consumers/lifetimes remain partial at this donor. A null increment must retain malformed ?null rejection; mixed needs its own invalid nullable guard. Preserve narrow V110, COMP123 pendingException/recursiveError, exact COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and all standing holds.",
+  "engine_bug_or_intentional_divergence": null
+}
