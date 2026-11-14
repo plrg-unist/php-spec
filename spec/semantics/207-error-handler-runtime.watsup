@@ -860,8 +860,9 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier (BYTES text_type) metadata_type, pssignature) = true
   -- if $(|phpType7*| > 0)
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "mixed"]))]
-  -- if $ptlc($base64(text_type)) = $ptascii("mixed")
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_return]))]
+  -- if text_return <- ["mixed", "false", "true"]
+  -- if $ptlc($base64(text_type)) = $ptascii(text_return)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
   -- if |phpType7*| = 1

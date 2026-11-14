@@ -240,7 +240,7 @@ $reference_notice_producer_header(phpType6_producer, phpType16_untyped, phpType1
 ~$reference_notice_producer_header(SEQUENCE ([NArg ABSENT expression_input (BOOLEAN false) (BOOLEAN true) metadata_input]), phpType16, phpType18, pfunction_producer.SIGNATURE)
 $reference_notice_producer_header(SEQUENCE eps, phpType16, phpType18, pfunction_producer.SIGNATURE)
 $reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "Ym9vbA==") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "bool"]))]])
-~$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "dHJ1ZQ==") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "true"]))]])
+$reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "dHJ1ZQ==") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "true"]))]])
 $reference_notice_producer_header(phpType6_producer, phpType16, NIdentifier (BYTES "bWl4ZWQ=") metadata_return, pfunction_producer.SIGNATURE[.RETURNS = [(PTBRANCH ([PTBUILTIN "mixed"]))]])
 $named_reference_notice_value(PSTRING_CARRIER INTERNED_STRING ($ptascii("5")))
 ~$named_reference_notice_value(PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("17")))

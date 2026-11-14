@@ -1,0 +1,56 @@
+[
+  {
+    "id": "named-singleton-true-return-private-cow-and-source-rebind",
+    "source": "<?php\nnamespace ReviewNotice71\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===true),':',$prefix,';';$seed=17;$x=[$seed];$prefix=29;return true;}\nfunction make(mIxEd $saved):tRuE{echo 'M:',(int)($saved===true),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===true),';';$seed=19;$value=[$seed];$prefix=31;return $value;}\n$x=true;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice71\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$copyPrivate=$r;$r[0]=23;echo 'R:',$r[0],':',$copyPrivate[0],':',$alias[0],':',(int)($copy===true),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$copyPrivate[0],':',$x[0],':',(int)($copy===true),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$copyPrivate,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:1;H:{notice_line}:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "line_observation": "Capture the native Notice line once, then pin metadata without changing original source bytes.",
+    "source_sha256": "f82ef777912b313dd60e957cdef688158cd2e9e6e54971ebeaa2339165a7eea1",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "return_kind": "true",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_null_return_producer_reference_notice_review_cases.json",
+      "id": "named-singleton-null-return-nullable-array-formal-and-private-cow",
+      "source_sha256": "7846333940b5115a7fef1203eda17192eaaf46f7b5263cc7a4fda343f0a1fe15",
+      "edits": "Fresh namespace; canonical mixed required formal and true return identifier; actual source and snapshots are true; return remains the received formal CV."
+    }
+  },
+  {
+    "id": "weak-singleton-false-return-rejects-integer-0-before-notice",
+    "source": "<?php\nnamespace ReviewNotice71\\FalsePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):fAlSe{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice71\\\\FalsePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===0),':',(int)($copy===0),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===0),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:0;C:11:2:1:1;D:11:31:23:1;",
+    "source_sha256": "9cdd483478ec3f15f0fcf9d8740c5a6c678308c57f57f97fd6d4d80e07395860",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "false",
+    "input_integer": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_null_return_producer_reference_notice_review_cases.json",
+      "id": "weak-singleton-null-return-rejects-request-before-notice",
+      "source_sha256": "4ec4b6bf2e377f80e53daecf0b59b9d5bd2dbc7a8538739a5166e5efe60cd4d2",
+      "edits": "Fresh namespace and canonical standalone false return identifier; untyped formal receives integer 0 and RETURN of the received CV must fail before the Notice and consumer."
+    }
+  },
+  {
+    "id": "weak-singleton-true-return-rejects-integer-1-before-notice",
+    "source": "<?php\nnamespace ReviewNotice71\\TruePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):tRuE{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=1;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice71\\\\TruePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===1),':',(int)($copy===1),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===1),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:1;C:11:2:1:1;D:11:31:23:1;",
+    "source_sha256": "6972b489c73a8dcad528311682b9e87a7c10ae8831eefac9fc99480ab7f5c22d",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "true",
+    "input_integer": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_null_return_producer_reference_notice_review_cases.json",
+      "id": "weak-singleton-null-return-rejects-request-before-notice",
+      "source_sha256": "4ec4b6bf2e377f80e53daecf0b59b9d5bd2dbc7a8538739a5166e5efe60cd4d2",
+      "edits": "Fresh namespace and canonical standalone true return identifier; untyped formal receives integer 1 and RETURN of the received CV must fail before the Notice and consumer."
+    }
+  }
+]
