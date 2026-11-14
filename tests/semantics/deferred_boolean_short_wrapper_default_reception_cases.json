@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-boolean-short-wrapper-raw-phases",
+    "source": "<?php\nfunction rawBooleanShort265($a = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) && Missing265), $b = (!(+(-((float)(+(E_WARNING === E_ERROR))))) || Missing265), $c = (!(+(-((float)(+(E_WARNING === E_ERROR))))) && (bool)(+(-((float)(+(E_WARNING === E_ERROR)))))), $d = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) || !(+(-((float)(+(E_WARNING === E_ERROR)))))), $e = (((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) and E_STRICT)), $f = ((!(+(-((float)(+(E_WARNING === E_ERROR))))) or E_STRICT)), $g = ((!(+(-((float)(+(E_WARNING === E_ERROR))))) and !(+(-((float)(+(E_WARNING === E_ERROR))))))), $h = (((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) or (bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $a === false, ':', $b === true, ':', $c === false, ':', $d === true, ':', $e === false, ':', $f === true, ':', $g === true, ':', $h === false, '|';\n}\nrawBooleanShort265();\nrawBooleanShort265();\n",
+    "expected_model": "normal",
+    "purpose": "All four AND/OR constructors return raw Booleans through cold/warm caches; decisive left values skip unresolved and deprecated RHS names.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "source_sha256": "fb6a6c7d80688e21770d2e9f38b86ffdc07d08442b17950ed1d0dd9fe1c7ee3b",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "deferred-boolean-short-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanShort265;\nuse const E_WARNING as Base265;\nuse const E_ERROR as One265;\nfunction warning265($errno, $message, $file, $line) {\n    global $x265;\n    echo 'warning:', $message, '|';\n    defaults265(2);\n    $x265 = 3.5;\n}\nfunction defaults265(int $first, int &$identity = (int)(!(+(-((float)(+(Base265 === One265))))) || Missing265), int &$negated = (int)((bool)(+(-((float)(+(Base265 === One265))))) and Missing265), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('BooleanShort265\\\\warning265');\n$x265 = 1.5;\n$last265 = 8;\ndefaults265(last: $last265, first: $x265);\necho 'outer:x=', $x265, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Decisive actual PBOOL AND/OR retain raw PINT1/0 caches through imported aliases, two BYREF named holes and first-CV Warning reentry, while skipped unresolved names retain compiler authority.",
+    "source_sha256": "c93d2a17e0b0ec7ba74834a52e9d7a034c982d27eee5334f50bbbf66b797a4ea",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "deferred-boolean-short-wrapper-demanded-integer-control",
+    "source": "<?php\nfunction demandedIntegerShort265(int &$value = (int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) || 7)) {\n    echo 'wider:', $value, '|';\n}\ndemandedIntegerShort265();\n",
+    "expected_model": "normal",
+    "purpose": "Existing ordinary quiet execution already accepts a demanded integer RHS; this normal control does not widen or validate the new PBOOL-only lossy receipt.",
+    "source_sha256": "ff8193a64d0f499e073dc2682e7d884f8be7defe87515d00623a12441b0f2773",
+    "model_timeout_seconds": 360
+  }
+]
