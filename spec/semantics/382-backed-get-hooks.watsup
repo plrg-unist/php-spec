@@ -60,6 +60,10 @@ def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_
   -- if text_1 <- ["int","float","bool"] /\ text_2 <- ["int","float","bool"] /\ text_3 <- ["int","float","bool"]
   -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
   -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
+def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
+  -- if text_1 <- ["int","float","string"] /\ text_2 <- ["int","float","string"] /\ text_3 <- ["int","float","string"]
+  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
+  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
 def $hook_short_reference_header(phpType18, ptbranch*) = false -- otherwise
 
 dec $hook_name(ptbytes) : ptbytes
