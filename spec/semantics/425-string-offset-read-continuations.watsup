@@ -370,8 +370,8 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
-;; Quiet compiled FLOAT leaves and emitted NOT/sign results enter this typed
-;; certificate. Every NOT and sign remains a real runtime expression.
+;; Quiet compiled FLOAT leaves and emitted Boolean/integer results enter this
+;; typed certificate. Runtime nodes retain their actual source and code.
 def $string_read_runtime_value(S, porigin) = (PFLOAT n_bits)
   -- if $compiled_precision(S, (porigin)) = (z_precision)
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
@@ -409,6 +409,45 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if S_unary.RESULT = KNOWN (PINT i)
   -- if $long_range(i)
   -- if S_unary = S[.RESULT = KNOWN (PINT i)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if $coerce_number(pvalue_left) = COERCED (NINT i_left) false
+  -- if $coerce_number(pvalue_right) = COERCED (NINT i_right) false
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if S_binary = $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line)
+  -- if S_binary.RESULT = KNOWN (PINT i)
+  -- if $long_range(i)
+  -- if S_binary = S[.RESULT = KNOWN (PINT i)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBitwiseNot expression_child metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_child) = (PINT i_child)
+  -- if $long_range(i_child)
+  -- if i = $long_not(i_child)
+  -- if $long_range(i)
+  -- if $bitnot_value(S, PINT i_child, z_line) = S[.RESULT = KNOWN (PINT i)]
 def $string_read_runtime_value(S, porigin) = eps -- otherwise
 def $string_read_runtime_bytes(S, porigin) = (n*)
   -- if $compiled_precision(S, (porigin)) = (z_precision)
