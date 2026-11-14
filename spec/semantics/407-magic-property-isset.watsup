@@ -286,11 +286,12 @@ def $property_magic_cv_inherited_static_methodclosure(S, n) = true
   -- if pmethoddesc.FUNCTION.BODY = pcpath_method ++ [PCFIELD 6]
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc_child)
   -- if pclassdesc_child.KIND = "class" /\ pclassdesc_child.INTERFACES = eps
-  -- if pclassdesc_child.PROPERTIES = eps /\ pclassdesc_child.METHODS = eps /\ pclassdesc_child.CONSTANTS = eps
+  -- if pclassdesc_child.PROPERTIES = eps /\ pclassdesc_child.CONSTANTS = eps
   -- if ~pclassdesc_child.ABSTRACT /\ ~pclassdesc_child.FINAL /\ ~pclassdesc_child.READONLY
   -- if porigin_requested = PORIGIN n_unit pcpath_child
-  -- if $origin_node(S.SOURCES, porigin_requested) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_child) metadata_child_name) phpType44_parent (SEQUENCE eps) (SEQUENCE eps) metadata_child)
+  -- if $origin_node(S.SOURCES, porigin_requested) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_child) metadata_child_name) phpType44_parent (SEQUENCE eps) (SEQUENCE statement_child*) metadata_child)
   -- if pclassdesc_child.NAME = $base64(text_child)
+  -- if $property_magic_cv_static_method_members(S, porigin_requested, 0, statement_child*, pclassdesc_child.METHODS)
   -- if pclassdesc_child.PARENT = (ptbytes_parent)
   -- if $property_magic_cv_static_method_parent_selector(phpType44_parent, ptbytes_parent)
   -- if $ptlc(ptbytes_parent) = $ptlc(pclassdesc_owner.NAME)
