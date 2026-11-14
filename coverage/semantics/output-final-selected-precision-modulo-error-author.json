@@ -1,0 +1,82 @@
+{
+  "feature": "FINAL MOD zero Error after returning selected RIGHT or BOTH precision-loss handlers (OB101)",
+  "target": "PHP 8.5.10 CLI NTS64; sole project-local .tools/php/bin/php and tests/semantics/profile.json",
+  "source_only_revision": "6f5b065dbca6d0407e41613a73a53a38d9b47e19",
+  "precode_front_revision": "de5a286ac7ef88fc02b9634553bc00983e6de736",
+  "corrected_front_revision": "a2ea5c1a5d0d4ee5cd0a1e8591e621cc3ee186c6",
+  "runtime_revision": "a896fbb4696b3677c46e3fcd4e1c2fc2152cf66a",
+  "source_test_ready_revision": "954baa8a4209a90dd4908ea07c265a5c8ab4653b",
+  "files_at_source_test_ready": {
+    "spec/semantics/456-output-object-returns.watsup": "6e9e0a5f6963ae04ebce72afc773f3c29785e7a767db0ae80408b05ac22597e0",
+    "Makefile": "2b8046ffdb0364a62d16fae263ad5ed60ec77f530a1714bb9323e6441e41034a",
+    "tests/semantics/output_final_selected_precision_modulo_error_sources.py": "63b2773b1be93c3fcdc921b04d42009089f4e3187a06a41dfd5f77435c45a21d",
+    "tests/semantics/output_final_selected_precision_modulo_error_state.py": "7e451187fb525f22a4223c85e510a05a4a1bc944238e74b9c12238ec68025445",
+    "tests/semantics/output_final_selected_precision_modulo_error_review_state.py": "28a44fe40aafc34877d972b6e63fc95f83700019cdc4d67045d429658429b99b"
+  },
+  "scope": "Sixteen new originals: quiet PINT LEFT 1 with string/FLOAT RIGHT 0.5, or BOTH same-kind string/FLOAT 1.5 % 0.5; each uses all four CONST/CV forms. The selected named E_DEPRECATED handler has two required untyped nonvariadic BYVAL formals, literal H echo and implicit NULL. One or two real ordinary calls retire two or four distinct formal cells; AH or AHH stays buffered while stdout is P and the original MOD Error reaches FINAL.",
+  "rule_and_compatibility": "The precision alternative now accepts total levels [8192] or [8192,8192] with eligible8192/no2. Per-side notice length <=1, exact consumed RHS cursor and fresh LEFT conversion preserve order and the saved integer. The old Warning alternative and accepted LEFT-only precision subset are pointwise unchanged. Source/header/current-read/pointer/cache/null-scratch/native/owner/raw-live-Error guards remain; no kernel, schema or owner-policy change.",
+  "history_boundary": "Current registration authenticates the current handler, not a past callback receipt. Capture preserves the actual next state's complete store, callback effects, registration, heap, owners and trace, changing only the native frame TODO. Different LEFT1.5/RIGHT0.5 messages and actual callback retirement are checked independently. Wider histories remain partial without a new exclusion or hold.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_compile.c: zend_binary_op_produces_error / zend_try_ct_eval_binary_op retain incompatible MOD operands and zero divisors at runtime.",
+    "vendor/php-src/Zend/zend_operators.c: zendi_try_get_long, zend_incompatible_string_to_long_error, zend_incompatible_double_to_long_error, convert_op1_op2_long and mod_function order LEFT conversion, RIGHT conversion and the zero check; zend_operators.h: zend_dval_to_lval_safe preserves the converted integer.",
+    "vendor/php-src/Zend/zend.c: zend_error_zstr_at calls the ordinary handler and consumes its NULL return. Existing387/207/270 preserve cursors, ordinary return and actual formal retirement;193/195 authenticate source images; main/output.c retains buffered output and FINAL conversion lifetimes."
+  ],
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-precision-modulo-error-101",
+  "native_once": {
+    "report": "native-summary-01.json",
+    "sha256": "3d471b45d8ec9950d447a4982f665cf177a126b6b896724374a19fe4442ce56a",
+    "classification": "native-classification-01.json",
+    "classification_sha256": "7428afe0c463505e40c58af26f61ba26826f9679a6d282e7005d45b998d49261",
+    "originals": 16,
+    "replays": 0,
+    "result": "Complete/stable P stdout and exact full fatal255 at lines6/7/7/8 four times. Handler H is buffered; real invocation is established by source/engine and genuine fronts, not invisible output alone."
+  },
+  "preserved_baseline": {
+    "report": "model-first-01/report.json",
+    "sha256": "11436124d5891e5ee09819b0276db82c91e72eb3f2010eaa6e55815f91ee7f68",
+    "revision": "6f5b065dbca6d0407e41613a73a53a38d9b47e19",
+    "source_credit": 0,
+    "result": "All16 actual Unsupported, tool1/P/empty PHP and tool stderr/no DIAGNOSTIC; complete/stable581+HEAD/passfalse. Retained without replay."
+  },
+  "precode_fronts": {
+    "mode": "fixture SL508/cache=false/det=true; cap300; source0",
+    "preserved_failure": ["front-right-constant-float-01/report.json", "0e18200ecbddf98a08173d7f9ef9a5a1851fc5fdc70efed37de3ea6534042792", 59.450478623],
+    "correction": "At de5 only the original-source assertion expected an encoded old Warning message: 6true/1false, runner0/quiet. a2ea corrects only the new fixture helper to side-specific ptascii/base64 precision messages; no semantic/native/baseline change or replay.",
+    "corrected_revision": "a2ea5c1a5d0d4ee5cd0a1e8591e621cc3ee186c6",
+    "passed": [
+      ["front-right-constant-float-02/report.json", "e256584586af03d09d55a88f7fc40af5a982e8c592135f606af269e1135467ff", 7, 59.944711230],
+      ["front-both-cv-pair-string-01/report.json", "8cc62d1421bb288dd02622b2e6fc604d7747cdb7265b4914d640f135a99f7714", 10, 65.324903388]
+    ],
+    "result": "Corrected RHS7 and first BOTH10 pass before the minimal capture law or SOURCE seed; stable563+HEAD/quiet/reaped. Failed01 retains zero credit."
+  },
+  "source_comparisons": {
+    "report": "model-final-01/report.json",
+    "sha256": "be7838757f4f4b72a0e2aba8c7a88f0fe05bd93bf8d862de6a648b5f93adb7ea",
+    "revision": "954baa8a4209a90dd4908ea07c265a5c8ab4653b",
+    "mode": "production SL508/cache=false/det=true; inner90/outer120",
+    "source_credit": 16,
+    "seconds_range": [44.887, 51.260],
+    "result": "All16 first-patch actual php_error/tool0, exact saved-native full stdout/stderr/status255 and structured Error; complete/pass/stable581+HEAD/quiet/reaped. Native16 reused without replay."
+  },
+  "author_lifecycle": {
+    "report": "life-all-01/report.json",
+    "sha256": "d0a71aeecd4494ecd73820f72c982f06a9c36e8eeeeac29e054e014ad6f81875",
+    "revision": "954baa8a4209a90dd4908ea07c265a5c8ab4653b",
+    "mode": "fixture SL508/cache=false/det=true; cap300; source0",
+    "groups": [6, 6],
+    "seconds": [108.85144420503639, 118.01868170895614],
+    "result": "First-pass RHSconstantFLOAT/BOTHcvpairSTRING; stable563+HEAD/quiet/reaped. Full actual store survives genuine formal retirement; zero/two native operand cells retire before C0/fatal, and nonowning source/Error receipts never revive cells."
+  },
+  "independent_peer": {
+    "report": "peer-all-01/report.json",
+    "sha256": "cc2e95c3f8aa8132eace6dbeb2189ce3ec3695d28b0cf701a1e3b3aebd51c3f1",
+    "revision": "954baa8a4209a90dd4908ea07c265a5c8ab4653b",
+    "mode": "fixture SL508/cache=false/det=true; cap300; source0",
+    "groups": [10, 6],
+    "seconds": [112.4872020019684, 80.32491356879473],
+    "result": "First-pass BOTHconstantFLOAT/RHScvpairSTRING; stable562+6fixtureinputs+HEAD/exacttrue/quiet/fully reaped. Distinct messages/four-formal retirement, early cursor, false saved LEFT, owning scratch, other handler/both mask and equal-byte raw-PSTRING versus INTERNED conversion-input controls pass through real native release/C0/full fatal. Whole5 and all current author raw evidence independently FULLCLEAR."
+  },
+  "validation": "Whole5 source/test author READY and independent FULLCLEAR sent directly to MAIN40 before metadata. Source16/native16once/precode17/lifecycle12/peer16 are separate cuts, not an aggregate. Metadata does not renew any execution credit.",
+  "remaining": "Mixed string/FLOAT BOTH pairs are not newly source-validated. Mixed notice classes, wider handler masks/bodies/signatures/retarget/throw histories, operands/owners/lifetimes and OB31 remain partial. Exact standing holds and169/306 inventory status remain; complete PHP core, Rocq interaction trees and BOLA/CRIS verification are unfinished. No engine bug or intentional divergence is established.",
+  "recovery": "External records preserve original bytes/path/cwd/profile/environment, exact commands/caps/modes, pinned compiler/runtime identities, before/after manifests and raw streams/status. Large artifacts remain outside Git."
+}

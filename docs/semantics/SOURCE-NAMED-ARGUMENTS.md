@@ -114,6 +114,23 @@ return, frame-retirement, current-prefix and ownership guards remain. Singleton
 scalar/nullable formals, wider unions/defaults/variadics/attributes and lifetimes
 remain partial at this cut; Owned-NUL remains held.
 
+The [singleton formal review](../../coverage/semantics/singleton-cv-typed-formal-producer-reference-notice-review.json)
+adds exactly one literal ordinary CV actual with canonical scalar or nullable
+ARRAY/scalar formals through the same raw/normalized/BYREF proof. Old untyped
+and singleton ARRAY arms remain literal. A named nullable ARRAY producer keeps
+its outside copy through producer/private COW while prior prefix references
+follow current handler writes. Strict INT rejects numeric REQUEST text before
+body, Notice or assignment. Return-header and ownership bounds remain;
+nullable scalar/ordered scalar-null singleton returns, formal unions and wider
+signatures/lifetimes remain partial at this cut.
+
+The singleton [nullable-return review](../../coverage/semantics/singleton-cv-nullable-scalar-return-producer-reference-notice-review.json)
+adds canonical nullable scalar and ordered scalar|null/null|scalar return headers.
+Named null|string results preserve REQUEST snapshots and private byte COW after
+the producer frame retires; strict bool|null return rejection precedes Notice,
+consumer and assignment. Raw/normalized authority, existing formal and ownership
+bounds remain. Formal unions and wider signatures/lifetimes remain partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

@@ -1,0 +1,84 @@
+{
+  "feature": "literal-string-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed and validated; full core remains partial",
+  "scope": "A shorthand ternary with raw string literal condition and fallback supplies its selected non-NUL INTERNED header before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler can replace the key or rebind its current name; the captured header/index still yields the original byte.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "commits": {
+    "source_cases": "7127ffefcdebf90ba27d5ab4bf4ca726d9f8c922",
+    "law": "78b195119fbb23f8735db4aa132aa1a392e511fc",
+    "author_fixture_and_driver": "39d122f35",
+    "make_two_commands": "e366699db",
+    "independent_fixture": "59fce175c",
+    "independent_preflight_correction": "7f812a7c7759f263607c880ef94bd8d71a09ae67"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_shorthand_conditional emits JMP_SET for the condition and QM_ASSIGN for the fallback. Zend/zend_vm_def.h ZEND_JMP_SET retains the truthy value; string truth treats empty and \"0\" as false. ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read select the container header and leading integer before Warning user code.",
+  "implementation": "One 13-line local425 raw_known_base arm authenticates raw NScalarString condition/ABSENT/fallback, exact indexed child reads and INTERNED identities, parent compiledEPS and the selected bytes through existing pure string truth. Existing literal/full-Boolean arms and KNOWN callers remain unchanged; no generic233, provider/root, schema, liveness/reference/backing or ownership law changes.",
+  "frontiers": "Before law, authentic A12 has 19 changed/136 initial fields and heap roots [1,0]. Independent B18 has 20 changed/135 initial fields, key/alias CELL0 and roots [1,0,0]. Both select KNOWN INTERNED abc without a base locator, object/table edge or debt. Exact raw shorthand nodes and child string reads coexist with parent compiledEPS and prelaw raw_known_base/raw_capture/raw_saved/source/plan rejection.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "9d45a62eed3c6475716b3c316fe53f8c6bd4e919a7ccb6b872481b148325ea0e",
+      "tested_revision": "a8441ee5a28cc82490d1521d89553646e2d4f674",
+      "source_credit": 0,
+      "passed": true,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-author-20261114/precode-a-sl-v1/report.json",
+      "sha256": "d62f8c95dfde458689483d7b77f3d1e4bcddf52502f9e3ce18bfe57ee6e48009",
+      "tested_revision": "a8441ee5a28cc82490d1521d89553646e2d4f674",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 44
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "5148bdbabc6e11784957080d50dad4f477cb95d2d16c156681f0b8de4667faf8",
+      "tested_revision": "38f172ad893ba6338b4f0ac46d34396ae57120ca",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 57
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "ae167686b3a1905b6d0ccf46791d5e19de77290224fcd938ba054dfcf924a228",
+      "tested_revision": "a8441ee5a28cc82490d1521d89553646e2d4f674",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "a287447b2bb55b384d9f565eb3c07720a0d64e845ad73738088a485e26b9442b",
+      "tested_revision": "78b195119fbb23f8735db4aa132aa1a392e511fc",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 206,
+      "derived_conditions": 104
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-shorthand-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "ede4d7371af3e2c1f84409ebeb1e43ef72fcfb2e7be451eb57a03cc5caa4df9c",
+      "tested_revision": "9e42b780b6d96b556e1d3155a0f6b20c340024bd",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 182,
+      "derived_conditions": 62
+    }
+  },
+  "validation": "Two native originals captured once; first postlaw production source2 exactly reuses those tuples. Its stable precommit a844 revision and 425 SHAaec4fc7c914d04c633a918e649554f6f1c4fcaf57f9ae1b32742ae3c0e3813f3 bind the later 78b law unchanged. Author A206/104-derived and independent B182/62-derived fixture-SL cuts remain source0. Real full155 captures, raw0 false fallback versus truthy condition, current2 versus old-reference Warning, source/read/byte/type/pool/parent-fold fences, borrowed ownership, exact dispatch/resume/output and budgets are checked. Existing source60/outer80/compiler120/state180 caps; all successful runs quiet, stable and fully reaped. No unique aggregate or historical campaign renewal is claimed.",
+  "review": "Independent law/source/A206/controller/Make2 CONTENT/FULLCLEAR and B182/62 execution FULLCLEAR; author reciprocal B fixture/frontier review CLEAR. Whole source/test READY sent directly to MAIN before this ledger.",
+  "failures": "No failed semantic execution occurred. Before FIRST fixture execution, source-path ABSENT expectations and the independent parent-read counterexample were corrected: origin_child appends a path, and a parent pool row requires READ=true to become a compiled read. Native baseline Unsupported2 remains source0, distinct from exact postlaw agreement.",
+  "remaining": "Other full/shorthand conditions, arm/base producers, REQUEST/NUL ingress, abrupt paths and wider handlers/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the external archives linked above. Tracked source cases/renderers and the two Makefile shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency.",
+  "integration": {
+    "revision": "89a20cfa15524ecc8741e8b57f86845f512a109f",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main40-shorthand-base-raw-leading-joined-508-v1/report.json",
+    "sha256": "c9f66f04bb4bc0cbf9f0937c421c3821db8329b78108f0b53885311082f0b229",
+    "elapsed_seconds": 16.28317856299691,
+    "source_credit": 0,
+    "scope": "Saved sole canonical production SL508 load, cap60, quiet true LF, stable inputs/HEAD and fully reaped; private cuts remain separate."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "feature": "startup-release-string-constants",
+  "target": "PHP 8.5.10 CLI, nondebug NTS, 64-bit; sole vendored oracle; ordinary C/UTC profile",
+  "decision": "Whole14 source/test packet independently FULLCLEAR and integrated at c1a1be31c. This ledger reuses accepted evidence and adds no execution credit.",
+  "implementation": {
+    "revision": "af6bb59ec42203639bc686ec45227c9a5079a5f5",
+    "values": {"PHP_VERSION": "8.5.10", "PHP_EXTRA_VERSION": ""},
+    "authority": "vendor/php-src/main/php_version.h fixes both bytes; main/main_arginfo.h::register_main_symbols registers STRING constants with CONST_PERSISTENT; Zend/zend_constants.c::zend_register_stringl_constant stores zend_string_init_interned values.",
+    "routing": "20 keeps raw PSTRING compiler values and projects runtime lookups through the existing interned-string helper; its declaration alone moves from30 to20. 33 normalizes actual folded ConstFetch only with matching compiled_read bytes and real precision. 45 records PVSTRING true for actual folded names;89 separates builtin string classes from nonstring scalars;400 admits authenticated INTERNED runtime constant results. Other scalar paths and ownership remain unchanged.",
+    "trust_boundary": "32 explicitly trusts installed compiler output rather than re-proving arbitrary fixture values. The new33 rule authenticates real source/read/precision within that boundary; it does not reject or authenticate every forged internal pool. Ordinary folded reads have no invented PCCLASS or CODENAME. Actual constant-declaration initializers supply PVSTRING true."
+  },
+  "raw_base": "../php-spec-evidence-archive/startup-release-string-constants",
+  "validation": [
+    {"report": "author/baseline-v1/report.json", "revision": "988688d3d717957409022cee449903e1db81858c", "mode": "production SL508", "scope": "Four native originals executed ONCE with exact expected outputs; current initialconstant Unsupported4 retains zero agreement credit."},
+    {"report": "author/compiler-before-sl-v1/report.json", "revision": "988688d3d717957409022cee449903e1db81858c", "mode": "fixture SL508", "scope": "77 authentic occurrence/compiler conditions (21 values,35 names,21 boundaries) firstPASS16.24631643295288s/source0 before the value law."},
+    {"report": "author/source-after-v4/report.json", "revision": "af6bb59ec42203639bc686ec45227c9a5079a5f5", "mode": "production SL508", "scope": "Four normal/exit0 originals exactly match saved native observations at unchanged bytes/path/CWD/profile, model90/process120: exact string tags/bytes, local shadow/FQN/import/fallback, case/relative Errors, runtime queries, const/CV copies, truth and repeated typed defaults."},
+    {"report": "author/compiler-after-sl-v1/report.json", "revision": "6706b5bd0522dac4c16f0c364e4401ea87c56f06", "mode": "fixture SL508", "scope": "The77 conditions firstPASS15.677764892578125s/source0, preserving folded raw PSTRING values versus late namespace descriptors."},
+    {"report": "review/state-sl-v2/report.json", "revision": "3a22cc17dcbd2f68f0ddb24eb8b3721b189c51e7", "mode": "independent fixture SL508", "scope": "137 conditions (77 compiler plus60 carrier/class/isolation, grouped53/51/33) PASS16.718296766281128s/source0: genuine initializer classes, ordinary/import pool facts, active ConstFetch INTERNED, runtime/fallback/API lookup and missing source/read/precision or mismatched helperargument controls."},
+    {"report": "review/model-controls-v1/report.json", "revision": "3a22cc17dcbd2f68f0ddb24eb8b3721b189c51e7", "mode": "production SL508 model-only", "scope": "Three independent controls firstPASS16.570955514907837/16.51332449913025/26.809123516082764s under90/120: missing import/relative/wrongcase Errors, differently typed local shadows versus exact global/imported strings, and runtime global versus explicitly qualified local queries. Native0/source0."}
+  ],
+  "preserved_outcomes": "Three author source-after-v1/v2/v3 values launches failed before frontend execution on constructor notation or forward function declarations; their raw model.stdout/model.exit.json remain zero-credit runner failures, followed by no other source selection in those cuts. Independent state-sl-v1 failed elaboration11.178s before assertions on two generated constructor parentheses; corrected v2 is separate. Original prelaw Unsupported outcomes retain0. No AL run or renewed historical campaign is claimed.",
+  "integration": {
+    "author": "ccef45721f86bb8dc0e57b07b59f7b2eacdaf707",
+    "peer": "3a22cc17dcbd2f68f0ddb24eb8b3721b189c51e7",
+    "source_revision": "c1a1be31c68df2737a1217ac1e8c4163a66ba359",
+    "actual_revision": "c1a1be31c68df2737a1217ac1e8c4163a66ba359",
+    "content": "Thirteen nonMake blobs equal the corrected author; exact4 Make lines register source/state-SL/review after Zend while preserving current checks. Author and independent actual-content/interaction CLEAR.",
+    "joined_report": "../php-spec-evidence-archive/resumed-main-20261112/main41-release-string-joined-508-v1/report.json",
+    "joined_sha256": "bd78e09f88eb3e53340e2de85d26ee329e9e6339ba61ed81984867a3ad6bbd08",
+    "joined_scope": "ONE unchanged canonical production-SL508/argv511/watched512 load PASS16.139159420039505s/cap60, quiet true LF, stable inputs/HEAD and fully reaped/source0. Private source and fixture cuts retain separate identities."
+  },
+  "remaining": "Only the two pinned release strings are added. Other startup values, wider string producers/consumers/lifetimes and complete core remain partial; exact holds remain. FLOAT NOT requires genuine runtime-expression certification because Zend defers double BOOL_NOT, including quiet values; no compiler-fold shortcut is claimed."
+}

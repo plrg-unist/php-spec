@@ -1,0 +1,102 @@
+{
+  "feature": "raw-string-full-ternary-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed and validated; full core remains partial",
+  "scope": "A full ternary with raw string literal condition and two raw string literal arms supplies its selected non-NUL INTERNED header before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index still yields the selected original byte.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "commits": {
+    "source_cases": [
+      "d33f4c1c15270790a36bab02cdd0e24bc7be3f81",
+      "7c6364f258b365b45556095ad22f304d7ee9e8c1"
+    ],
+    "law_and_author_fixture": "ad14c4b34bc673f4e0c08f04b4a71c1eb35d691b",
+    "independent_fixture": "14fd8b7fe9526a49ba6533fb38db794a94deba7f",
+    "controller_and_make": "111408beb5e34fed2d5db15019ac468064e4d994"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_conditional emits JMPZ and QM_ASSIGN for the selected arm. String truth treats empty and \"0\" as false. ZEND_FETCH_DIM_R and Zend/zend_execute.c zend_fetch_dimension_address_read select the container header and leading integer before Warning user code.",
+  "implementation": "One local17-line425 raw_known_base arm authenticates raw NScalarString condition and both arms, exact indexed compiled reads and INTERNED identities, parent compiledEPS and the selected arm bytes through existing pure string truth. Literal, Boolean-full and shorthand arms remain unchanged; no generic233, provider/root, schema, liveness/reference/backing or ownership law changes.",
+  "frontiers": "Before law, authentic A12 has 19 changed/136 initial fields and heap roots [1,0]. Independent B18 has 20 changed/135 initial fields, key/alias CELL0 and roots [1,0,0]. Both select KNOWN INTERNED abc without a base locator, object/table edge or debt. A yes/abc/XYZ and B0/XYZ/abc retain all three raw child reads/headers, parent compiledEPS and prelaw raw_known_base/raw_capture/raw_saved/source/plan refusal.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "d44cf1d5c05eaf9a92535a2d27d8f870b4284c908145d03565e364bbf544921b",
+      "tested_revision": "7c6364f258b365b45556095ad22f304d7ee9e8c1",
+      "source_credit": 0,
+      "passed": true,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v2/report.json",
+      "sha256": "ac3562b23045b5507e92ab6a05d0711380ebe62b7472c81285e8aa9fb7320616",
+      "tested_revision": "7c6364f258b365b45556095ad22f304d7ee9e8c1",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 58
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "20814455e9b44e5aa0ea1f2d9d8cf770d64750223daea7ed1f27c3d42cfa1db5",
+      "tested_revision": "081ad03b62d2fc201a65979f6dc5aeb45dd6daa0",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "a8f8dcb8878c5ffa70e91bfb2e1e95ce56bae45ddf6e974c6a231cd9672d2f74",
+      "tested_revision": "111408beb5e34fed2d5db15019ac468064e4d994",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "0cb55e1cfcd778cac72591b63c5e0207fa017f1fbcdc9c979f227857bd45e997",
+      "tested_revision": "111408beb5e34fed2d5db15019ac468064e4d994",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 162,
+      "derived_conditions": 58
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "b9ecd8a78b58a71833c962820ca242d9fde5414d6f0e9e827c19463444428b95",
+      "tested_revision": "2e496535bb33443c634817a04a85ca357fb32511",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 188,
+      "derived_conditions": 65
+    }
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main41-string-condition-base-joined-508-v1/report.json",
+    "sha256": "b4a3d1618c5b335cf815b6509fa2ac44f1b6b70dc5320c741ff11383d1553489",
+    "tested_revision": "4cab1e36c3bde64b904b2d459672eee1573ed95b",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.682653361931443,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Two corrected originals captured natively once and exactly matched by the first postlaw production-SL source2 run at111408. Separate A162/58-derived and B188/65-derived fixture-SL cuts retain source0. Actual full155 captures, truthy yes versus false0, condition-header versus selected-arm bytes, current2 versus old-reference Warning, source/read/type/pool/parent-fold fences, borrowed ownership, exact dispatch/resume/output and budgets are checked. Source60/outer80/compiler120/state180 caps remain; all successful runs quiet, stable and fully reaped. No unique aggregate or historical renewal is claimed.",
+  "review": "Independent whole five nonMake files plus two Make commands CONTENT/FULLCLEAR, saved-native source2 and A162 FULLCLEAR; author reciprocal B188/frontier review CLEAR. Whole source/test READY was sent directly to MAIN41 before this ledger.",
+  "failures": {
+    "author_prelaw_v1": {
+      "report": "../php-spec-evidence-archive/string-offset-string-conditional-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "b2f49c60bd1ef65b42f02c2d8c07f46b20501d47a0620976f734cdeb7a8ee0c0",
+      "tested_revision": "7c6364f258b365b45556095ad22f304d7ee9e8c1",
+      "source_credit": 0,
+      "passed": false,
+      "conditions": 58
+    },
+    "explanation": "The first A prelaw fixture failed on its RHS optional-cell annotation: cannot upcast value0 to nat?. Only that fixture was corrected to bind n_key_cell? before reuse, then A58 passed. No semantic/source edit or native rerun occurred. Baseline Unsupported2 stays source0; source cases before the yes-condition discrimination correction were unrun."
+  },
+  "remaining": "Other conditions, arm/base producers, REQUEST/NUL ingress, abrupt paths and wider handlers/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the external archives linked above. Tracked cases/renderers and the two Makefile string-conditional-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

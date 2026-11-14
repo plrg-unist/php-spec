@@ -1,0 +1,179 @@
+{
+  "milestone": "REF59",
+  "status": "integrated bounded addition; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "compiler": {
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "ocaml": "5.1.0",
+    "cache": false,
+    "encountered_determinism_checks": true
+  },
+  "implementation": {
+    "revision": "2d63e4208d14ba40fe98936f1af3c103e91bfca6",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "b65fa882fc4326398eed30a497d394623bd276a9bdb459734db967499ec59c2c",
+    "law": "Five added lines admit exactly one literal ordinary CV actual and one fixed required canonical scalar or nullable array/int/float/bool/string formal, using the existing finite raw/normalized/BYREF fold. Normalized eps and singleton ARRAY are excluded from the new arm; accepted old singleton alternatives remain literal.",
+    "unchanged": "Multiple-CV gate, return headers, caller-strict reception, callee-strict return verification, frame retirement, compiled CV line, and existing source/payload/backing/ownership/GC bounds. Ordinary parameter types add no persistent cell constraint.",
+    "source_symbols": [
+      "Zend/zend_vm_def.h: ZEND_RECV, ZEND_SEND_VAR_NO_REF",
+      "Zend/zend_execute.c: zend_verify_recv_arg_type, zend_check_type, zend_verify_scalar_type_hint",
+      "spec/semantics/95-typed-calls.watsup: typed_receive_valid, typed_parameter_conversion"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59",
+  "author_original_raw_root": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt",
+  "source_test_manifest": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/author/source-test-manifest.json",
+    "sha256": "7c7534769f84ba28431e31f741aa3e0c5efc3a074ff1af1dc59439104deeca57",
+    "scope": "Whole9 source/test only, independently FULLCLEAR before MAIN integration. Five Python files/two JSON catalogues/source4 hashes and one serial Make recipe reviewed statically; controller unexecuted. Accepted REF58 metadata excluded."
+  },
+  "counts": {
+    "current_native_originals_once": 4,
+    "physical_native_observations": 4,
+    "native_replays": 0,
+    "new_postlaw_notice_agreements": 3,
+    "separate_prelaw_parameter_priority_agreements": 1,
+    "historical_campaigns_renewed": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt/report.json",
+      "sha256": "f1d2989c445f24be4dc465540d2711eb718e0da0b384cdb64b9b5cb88408c6f6",
+      "revision": "44c0ee5cf5ceb56e056409702d87c09e77ee81ea",
+      "passed": true
+    },
+    {
+      "role": "peer native2 once",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/notice-native-v1/report.json",
+      "sha256": "c6fc130da92a19066182903fa1db40073c7504ade502447c19fd3915ea8dcd9b",
+      "revision": "4a27744803a2bf70542086f6784794e7b7f4025a",
+      "passed": true
+    },
+    {
+      "role": "expected Unsupported2/source0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt/baseline-zd13peeq/report.json",
+      "sha256": "061d399ffeb3bbb1b2397e72d910f5ccab922667a885074b8749f0b31475fe9e",
+      "revision": "3e8a9bbe3d5f0615630882a9f973e12f2b78bfe8",
+      "passed": true
+    },
+    {
+      "role": "author authentic prelaw161/source0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt/front-v2/report.json",
+      "sha256": "a81a2b05724469c810b666656e94b14320a875f64ff51ff12696c79cc1733520",
+      "revision": "7728b3752e5586ffe1ef5651768da4f9cc9be228",
+      "passed": true
+    },
+    {
+      "role": "independent authentic prelaw145/source0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/notice-front-v2/report.json",
+      "sha256": "23df98a8a6b8808695114fecf22febabf9bf63cdb9c08ec966efb8de1640b589",
+      "revision": "b6c0a36d8f210146cc0dcd2f3bd508bf28c23908",
+      "passed": true
+    },
+    {
+      "role": "separate prelaw strict INT/REQUEST parameter-priority NORMAL1",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/priority-source-v1/singleton-cv-typed-formal-producer-reference-review-source-wrl0dbq1/report.json",
+      "sha256": "2a8b3e6d2ba50a5437f290f3d29942132f44b5c9fef917de1dfe6fb973a05861",
+      "revision": "3d58246c3b26e757a5e3deb77620bcd363ee3ad1",
+      "passed": true
+    },
+    {
+      "role": "author full318=228 reached+90 derived/source0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt/state-v1/report.json",
+      "sha256": "aafca3569c574e8765dbfa1a6208a8fee6ab8d1be9418dfe9b6dde47dcc4640d",
+      "revision": "2d63e4208d14ba40fe98936f1af3c103e91bfca6",
+      "passed": true
+    },
+    {
+      "role": "independent full207=197 reached+10 derived/source0",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/notice-state-v1/report.json",
+      "sha256": "56d1d328813dff366dc47269b8b07f4567d32455e26cd55a6823d17adf603544",
+      "revision": "3d85297907c8fa6cb5d6c00915aae5d8fbdd6676",
+      "passed": true
+    },
+    {
+      "role": "postlaw Notice NORMAL2/savednative2",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/author/notice-source-v1/source-917trz4i/report.json",
+      "sha256": "241fca7276229402fdd0bdb7c248bc4abba2039adb4573fc184484f527f76c67",
+      "revision": "2d63e4208d14ba40fe98936f1af3c103e91bfca6",
+      "passed": true
+    },
+    {
+      "role": "postlaw Notice NORMAL1/savednative2",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/notice-source-v1/singleton-cv-typed-formal-producer-reference-review-source-s6h30ziq/report.json",
+      "sha256": "00b2c731f5e68af3aeb347d85c0482b757c450d3ea708ed84431bf734ca08a3f",
+      "revision": "3d85297907c8fa6cb5d6c00915aae5d8fbdd6676",
+      "passed": true
+    }
+  ],
+  "separate_cuts": {
+    "author_front": 161,
+    "peer_front": 145,
+    "author_full": {
+      "conditions": 318,
+      "reached": 228,
+      "derived": 90,
+      "seconds": 44.12116622924805
+    },
+    "peer_full": {
+      "conditions": 207,
+      "reached": 197,
+      "derived": 10,
+      "seconds": 43.02815
+    },
+    "fixture_modules": 507,
+    "fixture_cap_seconds": 1200,
+    "fixture_source_credit": 0,
+    "unique_aggregate_claim": false
+  },
+  "ownership": "Weak BYVAL INT reception preserves the caller REQUEST-string snapshot. Ordinary BYREF nullable INT reception coerces a shared alias, permits a later body-text write, and survives removal/recreation of the caller name. Producer frames retire before private Notice cells. Named nullable ARRAY reception/return preserves outside COW views and current prefix references; private cells may later hold other types. Strict INT rejects numeric REQUEST17 before body, Notice, consumer or assignment. Existing cell/table owners and cleanup remain authoritative.",
+  "preserved_failures": [
+    {
+      "role": "fixture elaboration failure/unrun0: observe caller value before binding REQUEST carrier identity",
+      "report": "/home/user/workspace/php-spec-evidence-archive/ref59-author-native-7wcmvynt/front-v1/report.json",
+      "sha256": "b1b1614e7876d90ec635e24643b71a80a400764017555581c0ca3f1f84af5792",
+      "revision": "990b064cb5bb08e2d501399761a3b3c9b1c739ca",
+      "passed": false
+    },
+    {
+      "role": "fixture premise failure/source0: raw RETURN_VALUE still contains a deferred VARIABLE",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/notice-front-v1/report.json",
+      "sha256": "d3a1d0f7b9338ccff5f454bcbca54cf898d38f379e8f1413fa8a11c27f1186ff",
+      "revision": "30dc745b99c4dc11cd293166b652665811bf93c9",
+      "passed": false
+    }
+  ],
+  "diagnostics_zero_credit": [
+    {
+      "role": "bounded prefix/case diagnostic/source0; real RETURN_VALUE requires resolve_at",
+      "report": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-typed-formal-producer-reference-notice-59/peer/front-prefix-diagnostic-v1/report.json",
+      "sha256": "bb5bf7597e25d82ff9fc7dc7a15fbb6cb5ce2c3119d19e0214c0bb279717f582",
+      "revision": "30dc745b99c4dc11cd293166b652665811bf93c9",
+      "passed": null
+    }
+  ],
+  "corrections": "Fixture-only binding/return-observation corrections change no source, native or runtime answers. Original failed fixtures and diagnostics remain at their original paths. No matching maintained old singleton predicate changed: rawARRAY/normalizedscalar and rawABSENT/normalizedscalar mismatches remain false.",
+  "actual_joined": {
+    "revision": "131dbfc7a2177bc80bce951d6e12589aa55ec5a0",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main40-singleton-formal-float-default-joined-508-v1/report.json",
+    "sha256": "da311d6d1467a5bb889a5443fecbd1bc94285d3d7a504f465da534c14ffe6451",
+    "module_count": 508,
+    "argument_count": 511,
+    "watched_inputs": 512,
+    "seconds": 15.689592933049425,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "composition": "Both authors read actual REF59+ENUM231 composition; no accepted source/native/state or canonical load replay."
+  },
+  "validation": "Fixed caps, exact raw streams, quiet tool stderr, stable HEAD/inputs and fully reaped groups bind accepted cuts. Author source/full fixtures share516 matching inputs; independent source/full share515. Source, fixture-SL and production-SL load evidence remain separate.",
+  "remaining_core_work": "Singleton nullable scalar/ordered scalar-null return headers, formal unions, mixed/object/class/wider formals, defaults/variadics/attributes, wider actual syntax and source/backing/history/GC/lifetime contexts remain partial at REF59. Owned-NUL remains held."
+}

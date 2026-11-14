@@ -499,6 +499,29 @@ actual508-module joined load. Singleton scalar/nullable formals, wider unions,
 defaults/variadics/attributes and lifetimes remain partial at this cut;
 Owned-NUL remains held.
 
+The same finite formal proof also admits a singleton literal ordinary CV with
+canonical int/float/bool/string or nullable ARRAY/int/float/bool/string type.
+The new arm excludes untyped and singleton ARRAY types, preserving those old
+alternatives. BYVAL coercion keeps the caller snapshot; ordinary BYREF aliases
+can change type in the body and survive caller-name removal. Existing return
+headers, caller-strict reception, frame retirement and private-cell ownership
+remain. Three postlaw Notice originals and one separate prelaw strict INT
+parameter-priority control agree with four native originals once. The
+[singleton formal review](../../coverage/semantics/singleton-cv-typed-formal-producer-reference-notice-review.json)
+keeps author318/independent207 fixture checks at separate507-module cuts and the
+actual508-module joined load separate. Singleton nullable scalar/ordered scalar-null
+returns, formal unions/defaults/variadics/attributes and wider lifetimes remain
+partial at this cut; Owned-NUL remains held.
+
+Singleton completed producers also admit canonical nullable int/float/bool/string
+and exactly ordered scalar|null/null|scalar return headers. Raw identifiers and
+normalized branches match pointwise; callee-strict verification and producer-frame
+retirement precede private Notice-cell creation. Three postlaw Notice originals
+and a separate prelaw strict bool|null return-priority original reuse four native
+observations once. The [nullable-return review](../../coverage/semantics/singleton-cv-nullable-scalar-return-producer-reference-notice-review.json)
+keeps author287/peer184 private507 fixtures and the sole actual508 load separate.
+Formal unions, broader headers and lifetimes remain partial; Owned-NUL stays held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

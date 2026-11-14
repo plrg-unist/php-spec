@@ -35,6 +35,17 @@ Eight registered UPLOAD_ERR constants supply pinned integers 0, 1, 2, 3, 4, 6,
 other startup values and complete core remain partial.
 [Upload-error constant review](coverage/semantics/startup-upload-constants-review.json).
 
+DEBUG_BACKTRACE_PROVIDE_OBJECT/IGNORE_ARGS supply integer flags 1/2;
+ZEND_THREAD_SAFE/ZEND_DEBUG_BUILD are Boolean false for the pinned nondebug NTS
+build. Trace/debug APIs, other startup values and complete core remain partial.
+[Zend startup review](coverage/semantics/startup-zend-constants-review.json).
+
+PHP_VERSION and PHP_EXTRA_VERSION supply the fixed strings "8.5.10" and "" through
+existing fold/import/fallback, runtime queries and repeated defaults. Actual
+source reads retain INTERNED identity and the existing compiler-pool trust boundary;
+other startup values and complete core remain partial.
+[Release-string review](coverage/semantics/startup-release-string-constants-review.json).
+
 
 [Reference-send Notices](docs/semantics/SOURCE-REFERENCE-PARAMETERS.md) retain
 real private cells in bounded named and positional user calls, with finite
@@ -156,6 +167,18 @@ lifetimes remain partial; Owned-NUL remains held.
 [scalar-formal review](coverage/semantics/multi-cv-scalar-formal-producer-reference-notice-review.json).
 
 Completed multiple-CV producers also admit matching fixed required nullable array/int/float/bool/string formals, preserving pointwise raw/normalized/BYREF proof and caller-strict reception. Existing return/frame/ownership bounds remain. [Nullable-formal review](coverage/semantics/multi-cv-nullable-formal-producer-reference-notice-review.json).
+
+Completed singleton producers with one literal ordinary CV also admit matching
+fixed required canonical scalar or nullable array/scalar formals, preserving
+raw/normalized/BYREF proof, caller-strict reception and existing return/frame/
+ownership bounds.
+[Singleton formal review](coverage/semantics/singleton-cv-typed-formal-producer-reference-notice-review.json).
+
+Singleton producers also admit canonical nullable scalar and ordered scalar|null/
+null|scalar return declarations. Callee-strict verification and producer-frame
+retirement precede private Notice cells; existing formal/source/payload/ownership
+bounds remain.
+[Singleton nullable-return review](coverage/semantics/singleton-cv-nullable-scalar-return-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -799,6 +822,14 @@ originals agree with native observations run once; precode14, lifecycle12 and
 independent12 fixtures retain separate source-zero cuts. Wider handlers, operands
 and lifetimes remain partial.
 [Selected left-Deprecated review](coverage/semantics/output-final-selected-left-deprecated-modulo-error-review.json).
+
+Selected quiet PINT-left/RHS precision Deprecated or both same-kind precision
+callbacks return NULL and retire two/four formal cells before FINAL MOD-zero
+Error, preserving the actual store and buffered AH/AHH. Sixteen originals reuse
+native observations once; precode17, lifecycle12 and peer16 remain separate
+source-zero cuts, and the initial fixture failure remains zero credit. Mixed
+notices/masks and wider handlers/operands/lifetimes and OB31 remain partial.
+[Selected precision review](coverage/semantics/output-final-selected-precision-modulo-error-review.json).
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
@@ -1476,6 +1507,20 @@ the frozen byte. Two saved-native agreements and separate A205/104-derived and
 B175/55-derived fixture-SL/source0 cuts remain distinct. Other producers,
 REQUEST/NUL and abrupt/wider histories remain partial.
 [Conditional-base raw-leading review](coverage/semantics/string-offset-conditional-base-initial-raw-leading-key-review.json).
+
+Raw string-literal shorthand ternaries also preserve their truth-selected non-NUL
+INTERNED base and initial raw leading-integer index through returning Warning
+handlers. Exact condition/fallback source, compiled reads and string identities
+distinguish a truthy condition from false "0" fallback. Wider producers,
+REQUEST/NUL ingress, abrupt paths and lifetimes remain partial.
+[Shorthand-base review](coverage/semantics/string-offset-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet full ternaries with raw string conditions also retain their selected
+non-NUL INTERNED header and frozen leading index through returning Warning
+handlers, authenticating the condition and both literal arms. Source2 and
+A162/B188 fixture-source-zero cuts remain separate; wider conditions/producers,
+REQUEST/NUL ingress, abrupt paths and lifetimes remain partial.
+[String-condition base review](coverage/semantics/string-offset-string-conditional-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
@@ -4135,6 +4180,14 @@ identity and existing physical storage and cleanup. Wider inheritance remains
 partial.
 [Parented own class-pair review](coverage/semantics/deprecated-reference-object-untyped-parented-class-pair-review.json).
 
+Own public untyped backed pairs also override same-name ordinary public fields
+on a genuine parentless source parent without traits. Canonical headers,
+SOURCE_PARENT and raw own Hook/Param/body/CODE/line authority remain. Physical
+storage keeps the already-backed child in declaration order and drops the old
+parent live slot; metadata order stays unchanged. Wider and sole-virtual/typed/
+byref allocation contexts remain partial.
+[Same-name parent class-pair review](coverage/semantics/deprecated-reference-object-untyped-same-name-parent-class-pair-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -5151,12 +5204,18 @@ pure truth and matching own/left raw Boolean pools, preserving complete
 source/no-DIM/ENV/Shared-cache authority and existing outer ternary redirects.
 [Lazy Boolean condition default review](coverage/semantics/lazy-boolean-condition-default-reception-review.json).
 [Platform-number default review](coverage/semantics/float-platform-default-reception-review.json).
+
+Quiet Numeric-only signed64 integers retain identity through explicit int casts
+and nonnull-left coalesce, including zero. Exact raw source/declaration ENV,
+no-DIM/name bindings and Shared-cache/receive/owner guards remain; wider
+producers, pruned syntax, private/Generator contexts and lifetimes remain partial.
+[Numeric integer-cast default review](coverage/semantics/numeric-integer-cast-default-reception-review.json).
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
 ordinary parameter checking. Named holes, supplied bypass and no-DIM/NaN/owner
-bounds remain. Other pruned syntax, nonnull-left coalesce for
-Numeric-only NINTs, unresolved names/namespaces and wider producers/entries/lifetimes
+bounds remain. Other pruned syntax, unresolved names/namespaces and wider
+producers/entries/lifetimes
 remain partial; private/Generator contexts remain partial.
 [Immutable integer default review](coverage/semantics/immutable-integer-default-reception-review.json),
 [integer-truth default review](coverage/semantics/immutable-integer-truth-default-reception-review.json).
@@ -8647,6 +8706,11 @@ receiver preserves the caller destination. Borrowed target IDs add no owner,
 and pending constructors remain excluded. Wider producers and lifetimes
 remain partial.
 [WeakReference quiet Get review](coverage/semantics/magic-property-weakreference-quiet-get-review.json).
+Authentic unscoped function-literal Closure Get results also cross quiet CV
+binary ??, private ??= and Empty with complete captures and the original
+shared cache stamp. Empty releases its result owner before its receiver; wider
+Closure producers, initialized static cells, binding and lifetimes remain partial.
+[Literal Closure quiet Get review](coverage/semantics/magic-property-realclosure-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).

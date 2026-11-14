@@ -842,9 +842,24 @@ originals reuse native4 once. Separate author fixture-SL175v3/181 and independen
 327v2/334 retain source0 cuts, including fresh CPP normal/error propagation,
 inherited anchor declaration, own versus physical layout, parent forgeries and
 first-write/cleanup resumption. Original setup, Unsupported and fixture failures
-retain0. Same-name parent fields, wider parents/owners/modifiers/signatures,
-virtual/byref pairs and lifetimes remain partial.
+retain0. At that cut, same-name parent fields and wider parent/owner/modifier/
+signature, virtual/byref-pair and lifetime contexts remained partial.
 [Parented own class pairs](../../coverage/semantics/deprecated-reference-object-untyped-parented-class-pair-review.json).
+
+Own public untyped backed pairs also override same-name ordinary public fields
+on a genuine parentless source parent without traits. Full plain layout,
+canonical headers, actual SOURCE_PARENT and raw own Hook/Param/body/CODE/line
+proofs remain. Physical merging drops the overwritten parent live slot and keeps
+the already-backed child in its declaration order; metadata order is unchanged.
+Positive ordinary-source/root proof and raw backed-pair guards exclude malformed,
+inherited-hook and sole-virtual activation. Four NORMAL originals reuse native4
+once through the reviewed narrow-guard bridge. Separate current fixture-SL194/200
+and369/376 cover parent99 versus child17/NULL, slot identity, header/virtual
+forgeries, cleanup order and first-write resumption, each source0. Original BAD2,
+Unsupported2 and the first elaboration failure retain0. The joined MAIN load is
+separate/source0. Wider parents/modifiers/signatures, virtual/byref pairs and
+owners/lifetimes remain partial.
+[Same-name parent class pairs](../../coverage/semantics/deprecated-reference-object-untyped-same-name-parent-class-pair-review.json).
 
 Wider physical vectors of plain declared DIRECT fields admit NULL/BOOL/INT pads
 and flat ordinary fieldless children. Existing full entry validation supplies

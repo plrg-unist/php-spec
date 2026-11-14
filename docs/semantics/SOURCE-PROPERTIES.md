@@ -1672,6 +1672,17 @@ checks remain. Four native-once originals and separate SL85/87/120/128 fixtures
 pass; wider producers and lifetimes remain partial.
 [WeakReference quiet Get review](../../coverage/semantics/magic-property-weakreference-quiet-get-review.json).
 
+Authentic unscoped, unbound nongenerator function literals also cross quiet CV
+binary ??, private ??= and Empty. Complete captures, no pending capture task
+or initialized static cells, and the exact original SOURCE-eps/shared cache
+stamp authenticate the result. Unused source static declarations are not
+blanket-rejected. Existing literal Empty already handles the throwing-capture
+control: last-owner capture disposal precedes receiver cleanup and preserves the caller
+destination on throw. Three changed-model source agreements and that retained
+prelaw control remain distinct; SL98/106/187/198 fixtures add no source credit.
+Arrow, fake, bound, cloned/private-cache and wider lifetimes remain partial.
+[Literal Closure quiet Get review](../../coverage/semantics/magic-property-realclosure-quiet-get-review.json).
+
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.
 The source receiver is an external CV, the property name is literal, and the RHS
