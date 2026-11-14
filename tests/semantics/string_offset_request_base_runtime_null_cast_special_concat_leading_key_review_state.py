@@ -94,7 +94,8 @@ def conditions(program, path, index):
             for value in ('PUNDEFINED', 'PSTRING ($ptascii("0"))',
                           'PARRAY 0', 'POBJECT 0', 'PINT 9223372036854775808', 'PINT $(-9223372036854775809)'):
                 guards += ['~$string_read_runtime_cast_quiet(' + operator + ', ' + value + ')']
-        for operator in ('CASTSTRING', 'CASTARRAY', 'CASTOBJECT'):
+        guards += ['$string_read_runtime_cast_quiet(CASTSTRING, PNULL)']
+        for operator in ('CASTARRAY', 'CASTOBJECT'):
             guards += ['~$string_read_runtime_cast_quiet(' + operator + ', PNULL)']
         for number, (name, fixture, original, target, node, expected) in enumerate(CONTROLS):
             state, origin = 'S_peer_null_cast_control_' + str(number), 'porigin_peer_null_cast_control_' + str(number)
@@ -134,7 +135,7 @@ if __name__ == '__main__':
         raw += [(cast + '_selected_true', '(' + cast + ')(' + truth + '?null:(1/0))', result),
                 (cast + '_nonnull_false', '(' + cast + ')(false??(1/0))', result)]
     raw += [
-        ('string_null', '(string)null', None), ('array_null', '(array)null', None), ('object_null', '(object)null', None),
+        ('string_null', '(string)null', 'PSTRING_CARRIER INTERNED_STRING eps'), ('array_null', '(array)null', None), ('object_null', '(object)null', None),
         ('bool_variable', '(bool)$missing', None), ('int_variable', '(int)$missing', None), ('float_variable', '(float)$missing', None),
         ('selected_variable', '(bool)(null??$missing)', None),
         ('selected_divzero', '(int)(null??(1/0))', None),
@@ -174,6 +175,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus demanded cast/producer source, CODE, emitted positive-line and equal captured-precision refusals; raw compiled NULL retains its existing line and compiler-output authority. Ignored own pools/stale RESULT cannot forge answers; full cast_apply equality preserves nonempty TODO/nondefault BASE and five nonnormal states remain unchanged/refuse certificates. ' + str(len(CONTROLS)) + ' checked-source controls retain actual BUDGET before derived NORMAL fixtures for all three primitive casts of raw/full/shorthand/coalesce NULL, nested casts and exact false/int0/float+0. FLOAT BYTE stays eps. Undefined/location, selected failures, raw/REQUEST STRING, ARRAY/OBJECT and range/type boundaries refuse. Exact canonical INTERNED strings now pass all three primitive cast helpers. The exact three corrected old PNULL helper positives are included, while its FLOAT-forged-PNULL control and old33/1792 evidence remain unchanged and unrenewed. REQUEST owners, supplied Throwable, fixed bounds, cleanup and inherited budget rejoining remain included. Fixture source0/native0; no compiler/cast/numeric/formatter/API/owner or held-boundary expansion.')
+    report['scope'] = ('Exact author prefixes plus demanded cast/producer source, CODE, emitted positive-line and equal captured-precision refusals; raw compiled NULL retains its existing line and compiler-output authority. Ignored own pools/stale RESULT cannot forge answers; full cast_apply equality preserves nonempty TODO/nondefault BASE and five nonnormal states remain unchanged/refuse certificates. ' + str(len(CONTROLS)) + ' checked-source controls retain actual BUDGET before derived NORMAL fixtures for all three primitive casts of raw/full/shorthand/coalesce NULL, nested casts, emitted NULL-to-empty-INTERNED STRING and exact false/int0/float+0. FLOAT BYTE stays eps. Undefined/location, selected failures, raw/REQUEST STRING, ARRAY/OBJECT and range/type boundaries refuse. Exact canonical INTERNED strings now pass all three primitive cast helpers. The exact three corrected old PNULL helper positives are included, while its FLOAT-forged-PNULL control and old33/1792 evidence remain unchanged and unrenewed. REQUEST owners, supplied Throwable, fixed bounds, cleanup and inherited budget rejoining remain included. Fixture source0/native0; no compiler/cast/numeric/formatter/API/owner or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

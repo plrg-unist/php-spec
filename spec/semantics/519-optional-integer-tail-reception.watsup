@@ -748,6 +748,17 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($nu
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue_right)
   -- if $coerce_number(pvalue_right) = COERCED pnumber_right false
   -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PFLOAT $num_float(pnumber))
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprCastDouble expression metadata)
+  -- if $plstyle(metadata) = 2
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED pnumber false
 def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($number_value($num_mul(NFLOAT n_bits, NINT $(-1))))
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprUnaryMinus expression metadata)

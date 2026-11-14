@@ -60,7 +60,8 @@ def conditions(program, path, index):
             for value in ('PSTRING ($ptascii("1"))', 'PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("1"))',
                           'PSTRING_CARRIER INTERNED_STRING ([256])', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("a") ++ [0] ++ $ptascii("b"))'):
                 guards += ['~$string_read_runtime_cast_quiet(' + operator + ', ' + value + ')']
-        for operator in ('CASTSTRING', 'CASTARRAY', 'CASTOBJECT'):
+        guards += ['$string_read_runtime_cast_quiet(CASTSTRING, PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))']
+        for operator in ('CASTARRAY', 'CASTOBJECT'):
             guards += ['~$string_read_runtime_cast_quiet(' + operator + ', PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))']
         for number, (name, fixture, original, target, node, expected) in enumerate(CONTROLS):
             state, origin = 'S_peer_string_cast_control_' + str(number), 'porigin_peer_string_cast_control_' + str(number)
@@ -102,7 +103,7 @@ if __name__ == '__main__':
            ('float_negative_zero', '(float)' + selected('-0tail'), 'PFLOAT 9223372036854775808'),
            ('float_nonnumeric', '(float)' + selected('junk'), 'PFLOAT 0'),
            ('float_fraction_prefix', '(float)' + selected('1.5tail'), 'PFLOAT 4609434218613702656'),
-           ('other_cast', '(string)' + selected('1'), None),
+           ('other_cast', '(string)' + selected('1'), 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))'),
            ('nul_cast', '(int)((!0.0)?"a\\0b":(1/0))', None),
            ('leading_arithmetic', '"1tail"+(+(!INF))', None),
            ('string_integer_binary', '"1"&(+(!0.0))', 'PINT 1')]
@@ -139,6 +140,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = ('Exact author histories plus independent demanded CAST/selected-ternary/literal source, CODE, precision, line and raw-pool authority, actual nonnormal completions and whole-state stale RESULT/TODO/BASE controls. Fifteen fresh checked-source controls cover the affected literal cast, Boolean empty/zero/double-zero truth, signed fractional truncation, both integer saturation bounds, FLOAT negative zero/nonnumeric/fractional prefixes, quiet mixed integer-binary consumption and other-cast/NUL/suppressed leading-arithmetic refusals. Canonical nonNUL INTERNED cast helpers admit only BOOL/INT/FLOAT casts; raw PSTRING, REQUEST, malformed bytes and NUL remain refused. FLOAT BYTE stays eps. Fixture source0/native0; no old campaign/native replay, primitive/compiler/formatter/owner change or held-boundary expansion.')
+    report['scope'] = ('Exact author histories plus independent demanded CAST/selected-ternary/literal source, CODE, precision, line and raw-pool authority, actual nonnormal completions and whole-state stale RESULT/TODO/BASE controls. Fifteen fresh checked-source controls cover the affected literal cast, Boolean empty/zero/double-zero truth, signed fractional truncation, both integer saturation bounds, FLOAT negative zero/nonnumeric/fractional prefixes, quiet mixed integer-binary consumption, immutable STRING identity and NUL/suppressed leading-arithmetic refusals. Canonical nonNUL INTERNED cast helpers admit BOOL/INT/FLOAT and immutable STRING casts; raw PSTRING, REQUEST, malformed bytes and NUL remain refused. FLOAT BYTE stays eps. Fixture source0/native0; no old campaign/native replay, primitive/compiler/formatter/owner change or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

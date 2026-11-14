@@ -86,7 +86,8 @@ def conditions(program, path, index):
         for operator in ('CASTBOOL', 'CASTINT', 'CASTFLOAT'):
             guards += ['$string_read_runtime_cast_quiet(' + operator + ', PNULL)',
                        '$string_read_runtime_cast_quiet(' + operator + ', PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))']
-        for operator in ('CASTSTRING', 'CASTARRAY', 'CASTOBJECT'):
+        guards += ['$string_read_runtime_cast_quiet(CASTSTRING, PBOOL true)']
+        for operator in ('CASTARRAY', 'CASTOBJECT'):
             guards += ['~$string_read_runtime_cast_quiet(' + operator + ', PBOOL true)']
         for number, (name, fixture, original, target, node, expected) in enumerate(CONTROLS):
             state, origin = 'S_peer_cast_control_' + str(number), 'porigin_peer_cast_control_' + str(number)
@@ -152,7 +153,7 @@ if __name__ == '__main__':
         ('quiet_string', "(int)('1.5'." + false + ')', None),
         ('warning_string', "(float)('1.5x'." + false + ')', None),
         ('variable', '(int)$missing', None),
-        ('string_cast', '(string)' + truth, None),
+        ('string_cast', '(string)' + truth, 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))'),
         ('array_cast', '(array)' + truth, None),
     ]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
@@ -189,6 +190,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent demanded cast/child source, CODE/line/precision, missing pools, ignored own nonfolded pools, stale RESULT and five nonnormal completion refusals. Genuine NaN/invalid/forged type and owning leaf substitutions refuse. Thirty-three checked-source controls retain their actual BUDGET state before explicitly derived NORMAL fixtures check all nine BOOL/INT/FLOAT combinations, signed zero, fractions, infinities, adjacent signed64 float limits, nested casts and excluded nonliteral string/variable/array producers. Exact canonical INTERNED strings now pass all three primitive cast helpers; raw PSTRING and REQUEST inputs stay refused. Suppressed infinity-to-int full-state equality still refuses the pure quiet certificate through its RANGEWARNING guard. Runtime FLOAT VALUE retains BYTE eps. Existing REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining are inherited unchanged. These fixtures add source0/native0, with no source/native replay, live-state normalization, formatter/compiler/schema/API/kernel/owner changes or held-boundary expansion.')
+    report['scope'] = ('Exact author prefixes plus independent demanded cast/child source, CODE/line/precision, missing pools, ignored own nonfolded pools, stale RESULT and five nonnormal completion refusals. Genuine NaN/invalid/forged type and owning leaf substitutions refuse. Thirty-three checked-source controls retain their actual BUDGET state before explicitly derived NORMAL fixtures check all nine BOOL/INT/FLOAT combinations, signed zero, fractions, infinities, adjacent signed64 float limits, nested casts, immutable BOOL-to-STRING and excluded nonliteral string/variable/array producers. Exact canonical INTERNED strings now pass all three primitive cast helpers; raw PSTRING and REQUEST inputs stay refused. Suppressed infinity-to-int full-state equality still refuses the pure quiet certificate through its RANGEWARNING guard. Runtime FLOAT VALUE retains BYTE eps. Existing REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining are inherited unchanged. These fixtures add source0/native0, with no source/native replay, live-state normalization, formatter/compiler/schema/API/kernel/owner changes or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

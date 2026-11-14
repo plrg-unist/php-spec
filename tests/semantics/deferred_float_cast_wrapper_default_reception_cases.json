@@ -1,0 +1,34 @@
+[
+  {
+    "id": "deferred-float-cast-wrapper-raw-phases",
+    "source": "<?php\nfunction rawCast255($plus = (float)(+(-(float)(+(E_WARNING === E_ERROR)))), $minus = (float)(-(+(-(float)(+(E_WARNING === E_ERROR))))), $arithmetic = (float)(+(-(float)(+(E_WARNING === E_ERROR))) * (E_ERROR - E_WARNING)), $folded = (float)(+((float)'-0.0')) * (E_WARNING - E_ERROR)) {\n    echo 'raw:', $plus, ':', $minus, ':', $arithmetic, ':', $folded, '|';\n}\nrawCast255();\nrawCast255();\n",
+    "source_sha256": "ce3aac9186432b055743e688ef330426a72a593cbf51edfcc66f74efc5f77d23",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical emitted FLOAT casts preserve actual Plus/Minus/arithmetic +0/-0/-0 through cold/warm raw caches, with a compile-folded -0 sibling."
+  },
+  {
+    "id": "deferred-float-cast-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace CastWrapper255;\nuse const E_WARNING as Base255;\nuse const E_ERROR as One255;\nfunction warning255($errno, $message, $file, $line) {\n    global $x255;\n    echo 'warning:', $message, '|';\n    defaults255(2);\n    $x255 = 3.5;\n}\nfunction defaults255(int $first, int &$zero = (float)(+(-(float)(+(Base255 === One255)))), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $last, '|';\n    $zero = 9;\n}\n\\set_error_handler('CastWrapper255\\\\warning255');\n$x255 = 1.5;\n$last255 = 8;\ndefaults255(last: $last255, first: $x255);\necho 'outer:x=', $x255, '|';\n",
+    "source_sha256": "b5e7ab11bfd85d6b7f8e8fe63bb576bbb83f53572b4d14e88dec46a6491a741f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical (float) of the phase-aware child caches PFLOAT+0, independently of projected -0, through imported ENV, named holes, warning reentry and private BYREF int reception."
+  },
+  {
+    "id": "deferred-float-cast-wrapper-int-parent-control",
+    "source": "<?php\nfunction warning255($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults255(int $first, int $later = (int)(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning255');\n$x255 = 1.5;\ndefaults255($x255);\n",
+    "source_sha256": "1743c03f3c4494af211dac1b6da9f42a1ee211d692b62b496ff23529283b9291",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "An enclosing phase-sensitive INT cast still lacks a recursive parent certificate; the FLOAT cast extension does not borrow compile-projected child bits."
+  },
+  {
+    "id": "deferred-float-arithmetic-wrapper-cast-parent-control",
+    "source": "<?php\nfunction warning254($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults254(int $first, int $later = (float)(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning254');\n$x254 = 1.5;\ndefaults254($x254);\n",
+    "source_sha256": "e3b9828cd19a400c64443cc31ef20e538f9a62e7f62f55ccb622b9a6e4b584df",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "As of255, canonical emitted (float) parents consume authenticated phase-aware numeric children. The byte-identical254 native is reused without replay; its prior Unsupported retains the original cut."
+  }
+]

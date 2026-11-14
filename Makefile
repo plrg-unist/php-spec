@@ -580,6 +580,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-float-cast-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-float-cast-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-float-cast-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_constant_int_cast_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_constant_int_cast_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-int-cast-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_constant_int_cast_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-int-cast-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_constant_int_cast_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-constant-int-cast-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -1288,6 +1292,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_literal_string_bytes_special_concat_leading_key_sources.py --output "$$request_runtime_literal_string_bytes_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_literal_string_bytes_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_literal_string_bytes_out/source/report.json" --output "$$request_runtime_literal_string_bytes_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_literal_string_bytes_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_literal_string_bytes_out/source/report.json" --output "$$request_runtime_literal_string_bytes_out/review-state"
+	@request_runtime_interned_string_cast_out=$$(mktemp -d .tools/runtime-interned-string-cast-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_sources.py --output "$$request_runtime_interned_string_cast_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_interned_string_cast_out/source/report.json" --output "$$request_runtime_interned_string_cast_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_interned_string_cast_out/source/report.json" --output "$$request_runtime_interned_string_cast_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
@@ -1570,6 +1578,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_float_arithmetic_wrapper_default_reception.py
 	python3 tests/semantics/deferred_float_arithmetic_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_float_arithmetic_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_float_cast_wrapper_default_reception.py
+	python3 tests/semantics/deferred_float_cast_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_float_cast_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
