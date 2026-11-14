@@ -1,0 +1,26 @@
+[
+  {
+    "id": "deferred-integer-bool-cast-wrapper-raw-phases",
+    "source": "<?php\nfunction rawBool259($zero = (bool)((int)(+(-(float)(+(E_WARNING === E_ERROR))))), $positive = (bool)((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5)), $negative = (bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))), $large = (bool)((int)(PHP_INT_MAX + (int)(+(-(float)(+(E_WARNING === E_ERROR))))))) {\n    echo 'raw:', $zero === false, ':', $positive === true, ':', $negative === true, ':', $large === true, '|';\n}\nrawBool259();\nrawBool259();\n",
+    "source_sha256": "aed3c7be1c5da9512a4506c1435210b7ac6f5e9b40d93cc051d1d015bd8510a9",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical emitted BOOL casts of actual PINT0/3/-3/MAX retain genuine PBOOL false/true values and cold/warm caches; negative-3 distinguishes nonzero from positive-only truth."
+  },
+  {
+    "id": "deferred-integer-bool-cast-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BoolIntWrapper259;\nuse const E_WARNING as Base259;\nuse const E_ERROR as One259;\nfunction warning259($errno, $message, $file, $line) {\n    global $x259;\n    echo 'warning:', $message, '|';\n    defaults259(2);\n    $x259 = 3.5;\n}\nfunction defaults259(int $first, int &$integer = 0 + (bool)((int)((+(-(float)(+(Base259 === One259)))) + 3.5)), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('BoolIntWrapper259\\\\warning259');\n$x259 = 1.5;\n$last259 = 8;\ndefaults259(last: $last259, first: $x259);\necho 'outer:x=', $x259, '|';\n",
+    "source_sha256": "6093df87b35849285421259f267349afd375fc180f55e56e3d40e441246ffcd3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Existing ADD consumes actual PBOOLtrue as quiet NINT1; imported named holes, warning reentry and private BYREF retain the distinct final raw PINT1 cache."
+  },
+  {
+    "id": "deferred-integer-bool-cast-wrapper-int-parent-control",
+    "source": "<?php\nfunction warning259($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults259(int $first, int $later = (int)((bool)(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning259');\n$x259 = 1.5;\ndefaults259($x259);\n",
+    "source_sha256": "59b107e0982c0fc9c1e879a2df2a478a60740869a7ce09a17f86db4d5d33034a",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Observed Unsupported at259: a real lossy first-CV reception demands the deferred certificate for canonical INT of new actual PBOOLtrue. No CASTINT-consuming-PBOOL arm is added; this control is distinct from native agreement and retains its exact original PHP bytes."
+  }
+]
