@@ -1,0 +1,92 @@
+{
+  "feature": "ENUM250 quiet computed-Boolean UnaryPlus Numeric-only default reception",
+  "status": "Independently reviewed bounded extension; calls.defaults remains partial",
+  "implementation": {
+    "base": "b6e9d57762e929a20179c1f45191bccf7dee9586",
+    "donor": "50d274c4866f18f322c5fa1d676c474cea28fa0f",
+    "tree": "f67680898838b35b8f42eca99fe4ef3c6d2c29c5",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "A separate Numeric UnaryPlus arm requires BooleanShape, child Numeric EPS, direct parent Default_in/FloatLiteral EPS and quiet_operand NINT0/1. Multiplication by1 preserves the exact integer result.",
+    "preserved": "Direct stored +(computed Boolean) retains Default_in EPS. Existing CASTINT consumes Numeric and can certify its own stored/composed integer domain, including prior constant/DIM contexts; deferred quiet_shape/no-DIM, actual source/declaration ENV, compiled pools, reception, Shared cache and owner bounds stay unchanged.",
+    "integration": "Three new Makefile recipes select source/author/reviewer; removing those exact lines reproduces every old recipe byte-for-byte.",
+    "compatibility": "Final50d adds only four reviewer fixture lines after source/author a9fc cuts. Semantics, catalogue and author inputs are unchanged; no accepted source/author/native rerun."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_try_ct_eval_unary_pm and zend_compile_unary_pm multiply child by +1",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner UnaryPlus adds integer0 to child",
+      "Zend/zend_operators.c: quiet Boolean coercion yields LONG0/1"
+    ],
+    "phase_boundary": "Both phase operations agree on this NINT0/1 domain. FLOAT signed-zero behavior is not closed by ENUM250."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-computed-boolean-unary-plus-default-reception-250",
+  "packet": {
+    "manifest": "actual-manifest.json",
+    "sha256": "e6484e8ad7d92481333c003ff79e2716a56b71315dd806d3ff7b12d2bfc3d39a",
+    "patch": "actual-increment.patch",
+    "patch_sha256": "d5f5b011c6c950d1666b797b4d07f7f4f29b9bd5832bd7cb63d84c5ca85fece6",
+    "paths": 9
+  },
+  "native_once": {
+    "combined_reference": "native-final.json",
+    "sha256": "2e5eb7fbc82a2ba114d85f4c8bad86c43f93f3b5bab2acc8d9223ef404302f15",
+    "fresh_originals": 7,
+    "saved_originals": 1,
+    "unchanged_replays": 0,
+    "saved_reference": "saved-native-reference.json",
+    "saved_sha256": "6fa465833503ba5d3b0b5fd4a725840b73bbce9def152131f2256dcda2bca8cb",
+    "scope": "The byte-identical249 computed-Boolean original preserves its native source/path/cwd/profile/streams/status; seven changed originals execute once with the pinned project-local runtime. No old native probe is replayed."
+  },
+  "source_evidence": {
+    "revision": "a9fc259259f5c3f2af39ff26559ec0b66fc8fcd0",
+    "report": "source-v1/report.json",
+    "sha256": "b600b27e7cca2114a7863ab1929569488b6706637b550b53453a84ccc2222fc3",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 4,
+    "unsupported_controls": 4,
+    "outer_seconds": 70.993781131,
+    "scope": "Three fresh positives and one promoted saved249 original; four explicit Unsupported controls remain separate. No source credit derives from fixtures."
+  },
+  "state_evidence": [
+    {
+      "revision": "a9fc259259f5c3f2af39ff26559ec0b66fc8fcd0",
+      "report": "author-v1/closure-call-protocol-1d9_088b/report.json",
+      "sha256": "509ebdd3be80d1c2c687cd693b34cbe31d4e5a93be5830d4c72c54e4b53c3cf6",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": 183,
+      "source_credit": 0,
+      "outer_seconds": 36.203836091
+    },
+    {
+      "revision": "50760314bd8ddeed85754d9bd61435ec4d1bcb8f",
+      "tree": "f67680898838b35b8f42eca99fe4ef3c6d2c29c5",
+      "report": "peer-v1/closure-call-protocol-_2u6fsls/report.json",
+      "sha256": "acd72db6141c6881d1f55207a3ddccf2362f3815d99f799431a3fe34427d428e",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        163,
+        113
+      ],
+      "source_credit": 0,
+      "outer_seconds": 52.221066411
+    }
+  ],
+  "validation_contract": "All250 campaigns passed first attempt, stable inputs/revision, quiet exit0 and fully reaped. Project-local PHP8.5.10 CLI,NTS,signed64,C/UTC baseline; source100000steps/360s, fixture300s and outer600s. Native normal agreements, explicit Unsupported controls and fixture source0 retain distinct cuts; historical failures/timeouts/unrun remain unchanged.",
+  "review": "recover12_enum_selected_unary_review FULLCLEARed exact whole9 donor50d274c48/treef676, then independently CLOSED actual source/composition and the sole SAME saved canonical read. Supplied accepted tuple is used here; no author duplicate read, accepted campaign replay or metadata-induced semantic rerun.",
+  "joined_load": {
+    "revision": "ca8094b75c1ac5545fffdebcd48233e9ac7a6b5c",
+    "tree": "354bce96def2d3e7d76490d942c3630d1229ec41",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main57-enum250-current-load-v1/report.json",
+    "sha256": "449c576cae2dd2688b28da8990eb3b07d013b129412ead240b38e36bd03a38ce",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 18.852258370956406,
+    "result": "true plus LF; stable HEAD/inputs,quiet exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Direct stored computed-Boolean, string and startup Boolean plus, FLOAT signed-zero phases, wider producers/contexts/lifetimes and all exact holds remain partial. No full-core, obligation-closure or Zend-equivalence claim."
+}
