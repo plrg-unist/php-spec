@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+"""Independent deferred unary-plus phase, cache and origin checks."""
+import hashlib
+import json
+from pathlib import Path
+
+import closure_call_protocol as protocol
+
+CATALOGUE = Path(__file__).with_name('deferred_float_unary_plus_default_reception_cases.json')
+ROWS = {row['id']: row for row in json.loads(CATALOGUE.read_text())}
+for row in ROWS.values():
+    assert hashlib.sha256(row['source'].encode()).hexdigest() == row['source_sha256']
+
+NEGATIVE_ZERO = 9223372036854775808
+
+raw_checks = [
+    'S.CURRENT = (pcallcontext)',
+    'pcallcontext.FUNCTION = porigin_function',
+    '$function_at(S.FUNCTIONS,porigin_function) = (pfunction)',
+    'pfunction.NAME = $ptascii("rawPhase251")',
+    'pfunction.SIGNATURE.PARAMETERS = [psparam_deferred,psparam_folded,psparam_pruned]',
+    '$default_at(pfunction.DEFAULTS,0) = (pdefault_deferred)',
+    '$default_at(pfunction.DEFAULTS,1) = (pdefault_folded)',
+    '$default_at(pfunction.DEFAULTS,2) = (pdefault_pruned)',
+    'pdefault_deferred.KIND = PDDEFERRED',
+    'pdefault_deferred.ORIGIN = PORIGIN n_unit pcpath_deferred',
+    'S.ORIGIN = (pdefault_deferred.ORIGIN)',
+    '$origin_node(S.SOURCES,pdefault_deferred.ORIGIN) = (NExprUnaryPlus expression_child metadata_root)',
+    '$origin_node(S.SOURCES,PORIGIN n_unit (pcpath_deferred ++ [PCFIELD 0])) = (expression_child)',
+    '$code_at(S.CODE,n_unit) = (pcode)',
+    '$code_expression(pcode.EXPRESSIONS,pcpath_deferred) = ((z_root,false))',
+    r'$pool_value(S.POOLS,pdefault_deferred.ORIGIN) = eps /\ $compiled_read(S,pdefault_deferred.ORIGIN) = eps',
+    '$compiled_redirect(S,pdefault_deferred.ORIGIN) = eps',
+    f'$lossy_optional_integer_numeric(pfunction.ENV,expression_child) = (NFLOAT {NEGATIVE_ZERO})',
+    f'$lossy_optional_integer_deferred_value(pfunction.ENV,NExprUnaryPlus expression_child metadata_root) = (PFLOAT {NEGATIVE_ZERO})',
+    '$lossy_optional_integer_phase_safe(S,pfunction.ENV,PORIGIN n_unit (pcpath_deferred ++ [PCFIELD 0]))',
+    '~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_deferred.ORIGIN)',
+    '$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_deferred.ORIGIN) = (PFLOAT 0)',
+    '$runtime_unary_apply(S,POSITIVE,PFLOAT 9223372036854775808,z) = S[.RESULT = KNOWN (PFLOAT 0)]',
+    '$unary_apply(S,POSITIVE,PFLOAT 9223372036854775808,z) = S',
+    'S_no_context = S[.CONSTCONTEXT = eps]',
+    '$runtime_unary_apply(S_no_context,POSITIVE,PFLOAT 9223372036854775808,z) = S_no_context',
+    'S_no_source = S[.SOURCES = eps]',
+    '$runtime_unary_apply(S_no_source,POSITIVE,PFLOAT 9223372036854775808,z) = S_no_source',
+    'S_outside = S[.ORIGIN = (PORIGIN n_unit ([PCINDEX 4,PCFIELD 0,PCINDEX 1]))]',
+    '$origin_node(S_outside.SOURCES,PORIGIN n_unit ([PCINDEX 4,PCFIELD 0,PCINDEX 1])) = (NExprUnaryPlus expression_ordinary metadata_ordinary)',
+    '$runtime_unary_apply(S_outside,POSITIVE,PFLOAT 9223372036854775808,z) = S_outside',
+    'S_wrong_declaration = S[.CONSTCONTEXT = (pconstantcontext[.ORIGIN = porigin_function])]',
+    '$runtime_unary_apply(S_wrong_declaration,POSITIVE,PFLOAT 9223372036854775808,z) = S_wrong_declaration',
+    '$runtime_unary_apply(S,POSITIVE,PFLOAT 0,z) = S[.RESULT = KNOWN (PFLOAT 0)]',
+    '$runtime_unary_apply(S,POSITIVE,PINT 0,z) = S[.RESULT = KNOWN (PINT 0)]',
+    '$runtime_unary_apply(S,POSITIVE,PFLOAT 9221120237041090560,z) = S[.RESULT = KNOWN (PFLOAT 9221120237041090560)]',
+    '$lossy_optional_integer_phase_value(pfunction.ENV,NScalarFloat (FLOAT "7ff8000000000000") eps,PFLOAT 9221120237041090560)',
+    '$runtime_unary_apply(S,NEGATIVE,PFLOAT 9223372036854775808,z) = $unary_apply(S,NEGATIVE,PFLOAT 9223372036854775808,z)',
+    '$coerce_number(PSTRING $ptascii("-0.0tail")) = COERCED (NFLOAT 9223372036854775808) true',
+    '$runtime_unary_apply(S,POSITIVE,PSTRING $ptascii("-0.0tail"),z) = $unary_apply(S,POSITIVE,PSTRING $ptascii("-0.0tail"),z)',
+    '$runtime_unary_apply(S,POSITIVE,PSTRING $ptascii("bad"),z) = $unary_apply(S,POSITIVE,PSTRING $ptascii("bad"),z)',
+    'S_entered = $save_frame(S)',
+    'S_entered.CONSTCONTEXT = eps',
+    'S_entered.FRAMES = pframe_saved :: pframe_tail*',
+    'pframe_saved.CONSTCONTEXT = S.CONSTCONTEXT',
+    '$runtime_unary_apply(S_entered,POSITIVE,PFLOAT 9223372036854775808,z) = S_entered[.RESULT = KNOWN (PFLOAT 9223372036854775808)]',
+    'pdefault_folded.ORIGIN = PORIGIN n_unit pcpath_folded',
+    'porigin_folded_plus = PORIGIN n_unit (pcpath_folded ++ [PCFIELD 0])',
+    '$origin_node(S.SOURCES,porigin_folded_plus) = (expression_folded_plus)',
+    '$compiled_read(S,porigin_folded_plus) = (PFLOAT 9223372036854775808)',
+    '$lossy_optional_integer_phase_safe(S,pfunction.ENV,porigin_folded_plus)',
+    'S_pool_exact = S[.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT (pcpath_folded ++ [PCFIELD 0]) (PFLOAT 9223372036854775808))])}]]',
+    '$lossy_optional_integer_phase_safe(S_pool_exact,pfunction.ENV,porigin_folded_plus)',
+    'S_pool_sign = S[.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT (pcpath_folded ++ [PCFIELD 0]) (PFLOAT 0))])}]]',
+    '$compiled_read(S_pool_sign,porigin_folded_plus) = (PFLOAT 0)',
+    '~$lossy_optional_integer_phase_safe(S_pool_sign,pfunction.ENV,porigin_folded_plus)',
+    'S_pool_tag = S[.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT (pcpath_folded ++ [PCFIELD 0]) (PINT 0))])}]]',
+    '$compiled_read(S_pool_tag,porigin_folded_plus) = (PINT 0)',
+    '~$lossy_optional_integer_phase_safe(S_pool_tag,pfunction.ENV,porigin_folded_plus)',
+    '$lossy_optional_integer_deferred_value_at(S[.CODE = eps],pfunction.ENV,pdefault_deferred.ORIGIN) = eps',
+    '$lossy_optional_integer_deferred_value_at(S[.SOURCES = eps],pfunction.ENV,pdefault_deferred.ORIGIN) = eps',
+    'S_root_pool = S[.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT pcpath_deferred (PFLOAT 0))])}]]',
+    '$lossy_optional_integer_deferred_value_at(S_root_pool,pfunction.ENV,pdefault_deferred.ORIGIN) = eps',
+    # Constructed source-zero selector: the old selector accepts the pooled
+    # false fact, but phase checking must inspect its unsafe unpooled condition.
+    'expression_unsafe = NExprUnaryPlus (NScalarFloat (FLOAT "8000000000000000") eps) eps',
+    'expression_selector = NExprTernary expression_unsafe (NScalarInt (INTEGER 1) eps) (NScalarInt (INTEGER 2) eps) eps',
+    'pcpath_selector = [PCINDEX 0,PCFIELD 0]',
+    'pcpath_condition = pcpath_selector ++ [PCFIELD 0]',
+    'pcpath_selected = pcpath_selector ++ [PCFIELD 2]',
+    'pcunit_selector = $pcsource(n_unit,PROGRAM ([(NStmtExpression expression_selector eps)]))',
+    'pcode_selector = pcode[.EXPRESSIONS = ([(CODEEXPR pcpath_selector z false),(CODEEXPR pcpath_condition z false),(CODEEXPR pcpath_selected z true)])][.REDIRECTS = ([(CODEREDIRECT pcpath_selector pcpath_selected false)])]',
+    'S_selector = S[.SOURCES = [pcunit_selector]][.POOLS = [{UNIT n_unit,CONSTANTS ([(PCONSTANT pcpath_condition (PBOOL false)),(PCONSTANT pcpath_selected (PINT 2))])}]][.CODE = [pcode_selector]]',
+    '$lossy_optional_integer_pruned_ternary(S_selector,pfunction.ENV,PORIGIN n_unit pcpath_selector) = ((PORIGIN n_unit pcpath_condition,PORIGIN n_unit pcpath_selected))',
+    '~$lossy_optional_integer_phase_safe(S_selector,pfunction.ENV,PORIGIN n_unit pcpath_condition)',
+    '$lossy_optional_integer_phase_safe(S_selector,pfunction.ENV,PORIGIN n_unit pcpath_selected)',
+    '~$lossy_optional_integer_phase_safe(S_selector,pfunction.ENV,PORIGIN n_unit pcpath_selector)',
+    'S_budget = $drive_steps(S,0)',
+    'S_budget = S[.COMPLETION = BUDGET]',
+    '$drive_steps(S_budget[.COMPLETION = NORMAL],1) = $drive_steps(S,1)',
+    'PhpStep: S ~> S_plus',
+    'S_plus = S[.TODO = ptask_tail*][.RESULT = KNOWN (PFLOAT 0)]',
+    'S_done = $drive_steps(S_plus,3000)',
+    r'S_done.COMPLETION = NORMAL /\ S_done.TODO = eps /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps /\ S_done.CONSTCONTEXT = eps',
+    '$default_cache_at(S_done.DEFAULTCACHE,pdefault_deferred.ORIGIN) = ({ORIGIN pdefault_deferred.ORIGIN,VALUE PFLOAT 0,CLASS PVSCALAR})',
+    '$default_cache_at(S_done.DEFAULTCACHE,pdefault_folded.ORIGIN) = ({ORIGIN pdefault_folded.ORIGIN,VALUE PFLOAT 9223372036854775808,CLASS PVSCALAR})',
+    '$default_cache_at(S_done.DEFAULTCACHE,pdefault_pruned.ORIGIN) = ({ORIGIN pdefault_pruned.ORIGIN,VALUE PFLOAT 9223372036854775808,CLASS PVSCALAR})',
+    'S_done.EVENTS = [' + ','.join('OUTPUT $ptascii(' + json.dumps(value) + ')' for value in
+                                 (('raw:', '0', ':', '-0', ':', '-0', '|') * 2
+                                  + ('ordinary:', '-0', '|'))) + ']',
+    r'$call_descriptors_valid(S_done) /\ $default_caches_valid(S_done,S_done.DEFAULTCACHE) /\ $heap_valid($heap_graph(S_done))',
+]
+
+named_checks = [
+    '$function_at(S.FUNCTIONS,porigin) = (pfunction)',
+    'pfunction.ENV.NAMESPACE = $ptascii("FloatPlusAlias251")',
+    'pfunction.ENV.CONSTANTS = [($ptascii("Base251"),$ptascii("E_WARNING")),($ptascii("One251"),$ptascii("E_ERROR"))]',
+    'pfunction.SIGNATURE.PARAMETERS = [psparam_first,psparam_zero,psparam_last]',
+    'S.CURRENT = (pcallcontext)',
+    'pcallcontext.FUNCTION = porigin',
+    r'pcallcontext.HOLES = [1] /\ pcallcontext.ARGC = 3',
+    '$default_at(pfunction.DEFAULTS,1) = (pdefault_zero)',
+    'pdefault_zero.ORIGIN = PORIGIN n_unit pcpath_zero',
+    'psparam_zero.DEFAULT = PSDEFAULT expression_zero "deferred"',
+    '$origin_node(S.SOURCES,pdefault_zero.ORIGIN) = (expression_zero)',
+    '$lossy_optional_integer_numeric(pfunction.ENV,expression_zero) = (NFLOAT 9223372036854775808)',
+    '~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_zero.ORIGIN)',
+    '$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_zero.ORIGIN) = (PFLOAT 0)',
+    '$default_current_cache(S,pdefault_zero.ORIGIN) = (pdefaultcache_zero)',
+    'pdefaultcache_zero = {ORIGIN pdefault_zero.ORIGIN,VALUE PFLOAT 0,CLASS PVSCALAR}',
+    '$lossy_optional_integer_deferred(S,pfunction,1)',
+    '$lossy_optional_integer_header(S,pfunction,pfunction.SIGNATURE.PARAMETERS,0)',
+    '$lossy_mixed_parameter_source_valid(S,ptask_resume)',
+    '$lookup(S.ENV,psparam_zero.NAME) = (n_zero)',
+    'S.STORE[n_zero] = DEFINED (PFLOAT 0)',
+    r'~(n_zero <- S.REFCELLS) /\ $heap_owners($heap_graph(S),HCELL n_zero) = 1',
+    '$lookup(S.ENV,psparam_last.NAME) = (n_last)',
+    'S.STORE[n_last] = DEFINED (PINT 8)',
+    'S_sign = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE,pdefaultcache_zero[.VALUE = PFLOAT 9223372036854775808])]',
+    '$default_caches_valid(S_sign,S_sign.DEFAULTCACHE)',
+    '~$lossy_optional_integer_deferred(S_sign,pfunction,1)',
+    '~$lossy_mixed_parameter_source_valid(S_sign,ptask_resume)',
+    'S_tag = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE,pdefaultcache_zero[.VALUE = PINT 0])]',
+    '$default_caches_valid(S_tag,S_tag.DEFAULTCACHE)',
+    '~$lossy_optional_integer_deferred(S_tag,pfunction,1)',
+    '~$lossy_mixed_parameter_source_valid(S_tag,ptask_resume)',
+    'plenv_wrong = pfunction.ENV[.CONSTANTS = [($ptascii("Base251"),$ptascii("E_ERROR")),($ptascii("One251"),$ptascii("E_ERROR"))]]',
+    '~$lossy_optional_integer_deferred(S,pfunction[.ENV = plenv_wrong],1)',
+    '~$lossy_optional_integer_deferred(S[.SOURCES = eps],pfunction,1)',
+    '~$lossy_optional_integer_deferred(S[.CODE = eps],pfunction,1)',
+    '~$lossy_optional_integer_deferred(S[.FUNCTIONS = eps],pfunction,1)',
+    'S_budget = $drive_steps(S,0)',
+    'S_budget = S[.COMPLETION = BUDGET]',
+    '$drive_steps(S_budget[.COMPLETION = NORMAL],1) = $drive_steps(S,1)',
+    'PhpStep: S ~> S_first',
+    r'S_first.TODO = [TYPE_RECEIVE porigin 1] /\ S_first.STORE[n_cell] = DEFINED (PINT 1)',
+    'PhpStep: S_first ~> S_zero',
+    r'S_zero.TODO = [TYPE_RECEIVE porigin 2] /\ S_zero.STORE[n_zero] = DEFINED (PINT 0)',
+    r'S_zero.EVENTS = S.EVENTS /\ S_zero.DEFAULTCACHE = S.DEFAULTCACHE',
+    'S_done = $drive_steps(S_zero,3000)',
+    r'S_done.COMPLETION = NORMAL /\ S_done.CURRENT = eps /\ S_done.FRAMES = eps /\ S_done.TODO = eps',
+    '$default_cache_at(S_done.DEFAULTCACHE,pdefault_zero.ORIGIN) = (pdefaultcache_zero)',
+    r'~((HCELL n_zero) <- S_done.ALLOCATIONS) /\ $heap_owners($heap_graph(S_done),HCELL n_zero) = 0',
+    r'$call_descriptors_valid(S_done) /\ $default_caches_valid(S_done,S_done.DEFAULTCACHE) /\ $heap_valid($heap_graph(S_done))',
+]
+
+CASES = {
+    'deferred-float-plus-raw-unary-origin': {
+        'source': ROWS['deferred-float-unary-plus-raw-phase-observer']['source'],
+        'stage': ('S.TODO = (UNARY POSITIVE z) :: ptask_tail* '
+                  '-- if S.RESULT = KNOWN (PFLOAT 9223372036854775808) '
+                  '-- if S.CONSTCONTEXT = (pconstantcontext)'),
+        'checks': raw_checks,
+    },
+    'deferred-float-plus-alias-named-cache': {
+        'source': ROWS['deferred-float-unary-plus-alias-named-reentry']['source'],
+        'stage': ('S.TODO = [LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z] '
+                  '-- if ptask_resume = LOSSY_MIXED_PARAMETER_RECEIVE porigin 0 n_cell n_bits i z'),
+        'checks': named_checks,
+    },
+}
+
+if __name__ == '__main__':
+    protocol.run(CASES, extra_inputs=(Path(__file__),CATALOGUE), runner_flags=('--sl',))

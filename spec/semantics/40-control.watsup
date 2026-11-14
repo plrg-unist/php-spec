@@ -262,6 +262,7 @@ rule PhpStep/binary-right-abrupt: S ~> S_right[.TODO = eps][.HELD = S.HELD]
   -- if S_left.COMPLETION = NORMAL
   -- if S_right = $resolve_at(S_left, S.RESULT, z)
   -- if S_right.COMPLETION =/= NORMAL
+dec $runtime_unary_apply(pstate, punary, pvalue, int) : pstate
 rule PhpStep/unary: S ~> S_out[.TODO = ptask_tail*]
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if $arithmetic_unary_plan(S) = eps
@@ -270,7 +271,7 @@ rule PhpStep/unary: S ~> S_out[.TODO = ptask_tail*]
   -- if S_read = $resolve_at(S, S.RESULT, z)
   -- if S_read.COMPLETION = NORMAL
   -- if S_read.RESULT = KNOWN pvalue
-  -- if S_out = $unary_apply(S_read, punary, pvalue, z)
+  -- if S_out = $runtime_unary_apply(S_read, punary, pvalue, z)
 rule PhpStep/unary-abrupt: S ~> S_read[.TODO = eps]
   -- if S.TODO = (UNARY punary z) :: ptask_tail*
   -- if $arithmetic_unary_plan(S) = eps

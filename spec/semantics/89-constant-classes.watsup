@@ -220,6 +220,16 @@ def $constant_expression_below(S, porigin_root, PORIGIN n pcpath) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
 def $constant_expression_below(S, porigin_decl, porigin) = false -- otherwise
 
+;; Surviving constant AST unary plus is ADD(0, child). Folded operands bypass
+;; EVAL; compiler folding and ordinary function bodies retain unary_apply.
+def $runtime_unary_apply(S, POSITIVE, pvalue, z) = $binary_apply(S, ADD, PINT 0, pvalue, z)
+  -- if S.CONSTCONTEXT = (pconstantcontext)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprUnaryPlus expression metadata)
+  -- if $constant_expression_below(S, pconstantcontext.ORIGIN, porigin)
+  -- if $coerce_number(pvalue) = COERCED pnumber false
+def $runtime_unary_apply(S, punary, pvalue, z) = $unary_apply(S, punary, pvalue, z) -- otherwise
+
 def $constant_facts_valid(S, porigin, eps) = true
 def $constant_facts_valid(S, porigin, pconstantfact :: pconstantfact_tail*) = ($constant_expression_below(S, porigin, pconstantfact.ORIGIN) /\ $constant_fact_value_valid(pconstantfact) /\ $constant_fact_carrier_valid(S, pconstantfact) /\ $constant_fact_pool_valid(S, pconstantfact) /\ $global_constant_fact_lookup_valid(S, porigin, pconstantfact) /\ $constant_fact_at(pconstantfact_tail*, pconstantfact.ORIGIN) = eps /\ $constant_facts_valid(S, porigin, pconstantfact_tail*))
 

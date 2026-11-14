@@ -1,0 +1,50 @@
+[
+  {
+    "id": "deferred-float-unary-plus-raw-phase-observer",
+    "source": "<?php\nfunction rawPhase251($deferred = +(-(float)(+(E_WARNING === E_ERROR))), $folded = +((float)'-0.0') * (E_WARNING - E_ERROR), $pruned = +(false ? NAN : (float)'-0.0') * (E_WARNING - E_ERROR)) {\n    echo 'raw:', $deferred, ':', $folded, ':', $pruned, '|';\n}\nrawPhase251();\nrawPhase251();\n$zero251 = -0.0;\necho 'ordinary:', +$zero251, '|';\n",
+    "source_sha256": "92acb56e268d85cd5e2db4306e2b6f4a1be699a74ec6ee479a58e3610ead4440",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Raw untyped defaults distinguish surviving AST add(0,-0)=+0 from literal-only/pruned compile-folded mul(-0,1)=-0 inside larger deferred E_* trees. Ordinary runtime unary plus retains -0; cold and warm cache output is observed without library instrumentation."
+  },
+  {
+    "id": "deferred-float-unary-plus-cold-warm-cache",
+    "source": "<?php\nfunction warningPhase251($errno, $message, $file, $line) {\n    global $xPhase251;\n    echo 'warning:', $message, '|';\n    $xPhase251 = 3.5;\n}\nfunction defaultsPhase251(int $first, int &$zero = +(-(float)(+(E_WARNING === E_ERROR))), int $folded = +((float)'-0.0') * (E_WARNING - E_ERROR)) {\n    echo 'body:', $first, ':', $zero, ':', $folded, '|';\n    $zero = 9;\n}\nset_error_handler('warningPhase251');\n$xPhase251 = 1.5;\ndefaultsPhase251($xPhase251);\necho 'cold:x=', $xPhase251, '|';\n$xPhase251 = 1.5;\ndefaultsPhase251($xPhase251);\necho 'warm:x=', $xPhase251, '|';\n",
+    "source_sha256": "520e2f19971e57ff68a9c3dbc43788bf1dcc4604d02b2dbca4203febcb0e4e76",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Root-only genuinely deferred FLOAT unary plus caches PFLOAT+0 while the literal-folded sibling caches PFLOAT-0 before separate integer reception. Supplied precision warning, cold/warm caches and private BYREF default mutation retain ordinary ownership."
+  },
+  {
+    "id": "deferred-float-unary-plus-alias-named-reentry",
+    "source": "<?php\nnamespace FloatPlusAlias251;\nuse const E_WARNING as Base251;\nuse const E_ERROR as One251;\nfunction warning251($errno, $message, $file, $line) {\n    global $xAlias251;\n    echo 'warning:', $message, '|';\n    defaults251(2);\n    $xAlias251 = 3.5;\n}\nfunction defaults251(int $first, int $zero = +(-(float)(+(Base251 === One251))), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('FloatPlusAlias251\\\\warning251');\n$xAlias251 = 1.5;\n$lastAlias251 = 8;\ndefaults251(last: $lastAlias251, first: $xAlias251);\necho 'outer:x=', $xAlias251, '|';\n",
+    "source_sha256": "76f8c3376fd5a50ef908419c73c51ed8e64fc7c3d826e8b98449cfa4a6f573f1",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Exact imported declaration ENV and named holes preserve PFLOAT+0 root cache through warning reentry; ordinary handler bodies and later supplied slots retain their own execution phase."
+  },
+  {
+    "id": "deferred-float-unary-plus-nested-wrapper-control",
+    "source": "<?php\nfunction warning251($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults251(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning251');\n$x251 = 1.5;\ndefaults251($x251);\n",
+    "source_sha256": "3072db42200b5ce22a1825bbf28a5a277111842e275ee3995683a12a1f2b0fff",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A phase-sensitive deferred plus below an enclosing minus is outside the root-only raw-cache correction. Its old pure Numeric sign cannot supply runtime cache authority."
+  },
+  {
+    "id": "deferred-float-unary-plus-skipped-dimension-control",
+    "source": "<?php\nfunction warning251($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults251(int $first, int $later = +(-(float)(+((E_WARNING === E_ERROR) && (int)'8'[0])))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning251');\n$x251 = 1.5;\ndefaults251($x251);\n",
+    "source_sha256": "8c05b4e4fd4da520e7ef29489f753701dbdbf2f87b18e46da9615327bcd50b8e",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Existing whole-tree runtime quiet_shape/no-DIM remains required even for an actually skipped DIM inside the zero-producing Boolean condition."
+  },
+  {
+    "id": "deferred-float-unary-plus-demanded-nan-truth-control",
+    "source": "<?php\nfunction warning251($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults251(int $first, int $later = +(-(float)(!(NAN + (E_WARNING - E_WARNING))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning251');\n$x251 = 1.5;\ndefaults251($x251);\n",
+    "source_sha256": "6edb268a3639b114832a9729c9a4de5f4524f44a1e5925c1111018fe320f6663",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Demanded NaN truth remains nonquiet and is not converted into a quiet phase certificate. This does not concern the separate Source47 DEFINE-name hold."
+  }
+]
