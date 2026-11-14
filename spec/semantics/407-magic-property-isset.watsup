@@ -171,6 +171,25 @@ def $property_magic_cv_namedclosure(S, n) = true
 def $property_magic_cv_namedclosure(S, n) = false -- otherwise
 ;; Original global static-method captures keep their declaring scope and cache.
 dec $function_cache_policy(pstate, porigin, nat) : pfncacheowner?
+;; Same-scope method clones retain immutable source/cache history after release.
+dec $property_magic_cv_static_method_clone_history(pstate, nat, porigin, porigin, porigin) : bool
+def $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_owner) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_owner pmethodcapture?
+  -- if pmethodcapture? = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps \/ $closure_scope_at(S.CLOSURESCOPES, n) = ({OBJECT n, LEXICAL porigin_owner, CALLED porigin_owner, RECEIVER eps, CREATION eps})
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.OBJECT = n /\ pclosurecache.FUNCTION = porigin_method
+  -- if pclosurecache.SOURCE = (n_source)
+  -- if pclosurecache.SCOPE = (BIND_CLASS porigin_owner) /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if $(n_source < n)
+  -- if S.OBJECTS[n_source] = METHODCLOSURE porigin_method porigin_site porigin_owner pmethodcapture_source?
+  -- if pmethodcapture_source? = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_source) = eps \/ $closure_scope_at(S.CLOSURESCOPES, n_source) = ({OBJECT n_source, LEXICAL porigin_owner, CALLED porigin_owner, RECEIVER eps, CREATION eps})
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
+  -- if ($closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) /\ $function_cache_policy(S, porigin_method, n_source) = (CACHE_SHARED)) \/ $property_magic_cv_static_method_clone_history(S, n_source, porigin_method, porigin_site, porigin_owner)
+def $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_owner) = false -- otherwise
 dec $property_magic_cv_static_methodclosure(pstate, nat) : bool
 def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -208,7 +227,7 @@ def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $closure_live_object_valid(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = ({OBJECT n, LEXICAL porigin_requested, CALLED porigin_requested, RECEIVER eps, CREATION eps})
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
-  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_requested), CACHE (CACHE_SHARED)})
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_requested), CACHE (CACHE_SHARED)}) \/ $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested)
   -- if $function_cache_policy(S, porigin_method, n) = (CACHE_SHARED)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_static_methodclosure(S, n) = false -- otherwise

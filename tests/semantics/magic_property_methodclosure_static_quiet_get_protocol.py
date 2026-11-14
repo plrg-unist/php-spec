@@ -83,7 +83,7 @@ S_constant = S[.OBJECTS[n_closure] = CONSTANTCLOSURE porigin_site S.OBJECTS[n_cl
 ~$property_magic_cv_static_methodclosure(S_constant,n_closure)
 S_clone = $clone_object(S,n_closure)
 S_clone.RESULT = KNOWN (POBJECT n_clone)
-~$property_magic_cv_static_methodclosure(S_clone,n_clone)
+$property_magic_cv_static_methodclosure(S_clone,n_clone)
 S_no_result = S[.RESULT = KNOWN PNULL]
 ~$property_empty_rv_kind(S_no_result,S.OBJECTS[n_closure])
 S_unallocated = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_closure)]

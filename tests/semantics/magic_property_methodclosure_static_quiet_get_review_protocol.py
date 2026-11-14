@@ -149,7 +149,7 @@ S_clone.OBJECTS[n_clone] = S.OBJECTS[n_closure]
 $closure_cache_at(S_clone.CLOSURECACHES,n_clone) = (pclosurecache_clone)
 pclosurecache_clone.SOURCE = (n_closure) /\ pclosurecache_clone.CACHE = (CACHE_SHARED)
 $closure_live_object_valid(S_clone,n_clone) /\ $closure_cache_records_valid(S_clone)
-~$property_magic_cv_static_methodclosure(S_clone,n_clone) /\ ~$property_empty_rv_kind(S_clone,S_clone.OBJECTS[n_clone])
+$property_magic_cv_static_methodclosure(S_clone,n_clone) /\ $property_empty_rv_kind(S_clone,S_clone.OBJECTS[n_clone])
 S_unallocated = S[.ALLOCATIONS = $destruction_node_delete(S.ALLOCATIONS,HOBJECT n_closure)]
 ~$property_magic_cv_static_methodclosure(S_unallocated,n_closure)
 ~$property_magic_cv_result_supported(S_unallocated,ppropertyempty.SITE,ppropertyempty.LINE,true,S.RESULT)
