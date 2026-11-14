@@ -148,7 +148,7 @@ $string_read_raw_known_base(S_shorthand_sign,porigin_base,pvalue_base)
         ('null_first_sign', ('UnaryPlus', 'PINT 0', null), False),
         ('false_first_sign', ('UnaryMinus', 'PINT 0', false), False),
         ('decimal_first_sign', ('UnaryPlus', 'PINT 1', string(b'1.0')), False),
-        ('bitnot_gate', ('BitwiseNot', 'PINT $(-4)', add), False),
+        ('bitnot_gate', ('BitwiseNot', 'PINT $(-4)', add), True),
         ('fraction', ('UnaryPlus', 'PINT 1', ('Div', 'PINT 1', string(b'3'), string(b'2'))), False),
         ('zero_divisor', ('UnaryPlus', 'PINT 0', ('Div', 'PINT 0', null, string(b'0'))), False),
         ('nested_zero', ('UnaryPlus', 'PINT 1', ('Plus', 'PINT 1', bad_legacy, false)), False),
