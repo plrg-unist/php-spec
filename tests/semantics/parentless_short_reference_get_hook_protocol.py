@@ -208,17 +208,46 @@ def fields(fixture, source, form, body='identifier', parented=False):
     return checks
 
 
+def distinct_parent_fields(checks, form):
+    namespace = 'Ns292ShortReference' + form.title() + chr(92)
+    replacements = {
+        quoted(namespace + 'Parent294'): quoted(namespace + 'Parent295'),
+        'ppropertydesc_parenttag.NAME = $ptascii("tag")': 'ppropertydesc_parenttag.NAME = $ptascii("base")',
+        '$property_hook_reference_plain_parent(S_front,ppropertydesc_parenttag,ppropertydesc_tag)': '~$property_hook_reference_plain_parent(S_front,ppropertydesc_parenttag,ppropertydesc_tag)',
+        '$property_hook_short_parent(S_front,ppropertydesc_tag) = (ppropertydesc_parenttag)': '$property_hook_short_parent(S_front,ppropertydesc_tag) = eps',
+        '$property_hook_child_own_slot(S_front,ppropertydesc_parenttag,ppropertydesc_tag)': '~$property_hook_child_own_slot(S_front,ppropertydesc_parenttag,ppropertydesc_tag)',
+        '$property_layout(S_front,porigin_root,|S_front.CLASSES|) = [ppropertydesc_middle,ppropertydesc_tag,ppropertydesc_tail]': '$property_layout(S_front,porigin_root,|S_front.CLASSES|) = [ppropertydesc_parenttag,ppropertydesc_middle,ppropertydesc_tag,ppropertydesc_tail]',
+        '[ppropertyslot_initialmiddle,ppropertyslot_initialtag,ppropertyslot_initialtail]': '[ppropertyslot_initialbase,ppropertyslot_initialmiddle,ppropertyslot_initialtag,ppropertyslot_initialtail]',
+        '[ppropertyslot_middle,ppropertyslot_tag,ppropertyslot_tail]': '[ppropertyslot_base,ppropertyslot_middle,ppropertyslot_tag,ppropertyslot_tail]',
+    }
+    for old, new in replacements.items():
+        assert any(old in check for check in checks), old
+        checks = [check.replace(old, new) if not check.startswith(('U = ', 'S_start = ')) else check for check in checks]
+    return checks + [
+        '$ppproperty_desc_at(pclassdesc_parent.PROPERTIES,$ptascii("tag")) = eps',
+        '$property_hook_pair_own_parented(S_front,ppropertydesc_tag)',
+        'ppropertyslot_initialbase.DECL = (ppropertydesc_parenttag.ORIGIN)',
+        'ppropertyslot_initialbase.STATE = PROP_VALUE (DIRECT (PINT (-17)))',
+        'ppropertyslot_base = ppropertyslot_initialbase',
+        '$property_slot_descriptor(S_raw,n_root,ppropertyslot_base) = (ppropertydesc_parenttag)',
+    ]
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--form', required=True, choices=['initialized', 'null'])
     parser.add_argument('--body', choices=['identifier', 'literal'], default='identifier')
     parser.add_argument('--parented', action='store_true')
+    parser.add_argument('--distinct-parent', action='store_true')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
-    assert not args.parented or args.body == 'identifier'
+    assert not (args.parented and args.distinct_parent)
+    assert not (args.parented or args.distinct_parent) or args.body == 'identifier'
     sources = SOURCES if args.body == 'identifier' else SOURCES.with_name('parentless_literal_short_reference_get_hook')
     if args.parented:
         sources = SOURCES.with_name('ordinary_parent_short_reference_get_hook')
+    if args.distinct_parent:
+        sources = SOURCES.with_name('distinct_parent_short_reference_get_hook')
     source = sources / ('short-reference-' + args.form + '.php')
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -229,7 +258,7 @@ def main():
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body, 'parented': args.parented,
+    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body, 'parented': args.parented, 'distinct_parent': args.distinct_parent,
               'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
@@ -242,9 +271,15 @@ def main():
         finally:
             try: adapter.close()
             finally: frontend.close()
-        checks = fields(checked['fixture'], source, args.form, args.body, args.parented); report['premises'] = len(checks)
+        checks = fields(checked['fixture'], source, args.form, args.body, args.parented or args.distinct_parent)
+        if args.distinct_parent:
+            checks = distinct_parent_fields(checks, args.form)
+        report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-        (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
+        prefix = PREFIX
+        if args.distinct_parent:
+            prefix = re.sub(r'(?<=pinstancestorage.NEXT = )[12](?![0-9])', lambda match: str(int(match[0]) + 1), prefix)
+        (out / 'protocol.watsup').write_text(prefix + '\ndec $main() : bool\ndef $main() = true\n'
                                            + ''.join('  -- if ' + check + '\n' for check in checks))
         report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                                       *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 240)

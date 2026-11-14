@@ -72,7 +72,7 @@ def $srgh_explicit(metadataEntry :: metadataEntry_tail*) = metadataEntry :: $srg
 '''
 
 
-def fields(fixture, source, form, body='identifier', parented=False):
+def fields(fixture, source, form, body='identifier', parented=False, distinct_parent=False, parent_hook_fixture=None):
     initial = 'PINT 17' if form == 'initialized' else 'PNULL'
     namespace = 'Ns292ShortReference' + form.title() + 'Peer' + chr(92)
     name_node = 'NScalarString' if body == 'literal' else 'NIdentifier'
@@ -379,6 +379,82 @@ def fields(fixture, source, form, body='identifier', parented=False):
             ]
         for label in ('marker', 'expression', 'line', 'read', 'unit'):
             checks += [f'~$property_hook_child_own_slot(S_{label},ppropertydesc_parentpad,ppropertydesc_pad)']
+    if distinct_parent:
+        assert parent_hook_fixture is not None
+        replacements = {
+            'pclassdesc_root.PARENT = eps':
+                'pclassdesc_root.PARENT = ($base64(' + quoted(namespace + 'Parent295') + '))',
+            '$objectprops_at(S_front.OBJECTPROPS,n_root) = ([ppropertyslot_initialmiddle,ppropertyslot_initialpad,ppropertyslot_initialtail])':
+                '$objectprops_at(S_front.OBJECTPROPS,n_root) = ([ppropertyslot_initialanchor,ppropertyslot_initialmiddle,ppropertyslot_initialpad,ppropertyslot_initialtail])',
+            '$property_layout(S_raw,porigin_root,|S_raw.CLASSES|) = [ppropertydesc_middle,ppropertydesc_pad,ppropertydesc_tail]':
+                '$property_layout(S_raw,porigin_root,|S_raw.CLASSES|) = [ppropertydesc_anchor,ppropertydesc_middle,ppropertydesc_pad,ppropertydesc_tail]',
+            '$objectprops_at(S_raw.OBJECTPROPS,n_root) = ([ppropertyslot_middle,ppropertyslot_pad,ppropertyslot_tail])':
+                '$objectprops_at(S_raw.OBJECTPROPS,n_root) = ([ppropertyslot_anchor,ppropertyslot_middle,ppropertyslot_pad,ppropertyslot_tail])',
+            '$property_hook_reference_expression_return(S_forged,ppropertyhook.HOOK,24) = (expression_get)':
+                '$property_hook_reference_expression_return(S_forged,ppropertyhook.HOOK,24) = eps',
+        }
+        assert set(replacements) <= set(checks)
+        checks = [replacements.get(check, check) for check in checks]
+        checks = [check if check.startswith(('U = ', 'S_start = ')) else
+                  re.sub(r'(?<![A-Za-z0-9_])24(?![A-Za-z0-9_])', '27',
+                         re.sub(r'(?<![A-Za-z0-9_])23(?![A-Za-z0-9_])', '26', check))
+                  for check in checks]
+        checks += [
+            'ppropertyslot_initialanchor.STATE = PROP_VALUE (DIRECT (PINT (-29)))',
+            'ppropertyslot_anchor.STATE = PROP_VALUE (DIRECT (PINT (-29)))',
+            '$class_link_at(S_front.LINKEDPARENTS,porigin_root) = (SOURCE_PARENT porigin_parent)',
+            '$class_at(S_front.CLASSES,porigin_parent) = (pclassdesc_parent)',
+            'pclassdesc_parent.NAME = $base64(' + quoted(namespace + 'Parent295') + ')',
+            'pclassdesc_parent.KIND = "class"', 'pclassdesc_parent.PARENT = eps',
+            '~pclassdesc_parent.READONLY', '$trait_plan(S_front,pclassdesc_parent).TRAITS = eps',
+            'pclassdesc_parent.PROPERTIES = [ppropertydesc_anchor]',
+            'ppropertydesc_anchor.ORIGIN = PORIGIN n_source pcpath_parentproperty',
+            '$property_declaring_class(S_front.CLASSES,PORIGIN n_source pcpath_parentproperty) = (porigin_parent)',
+            'ppropertydesc_anchor.NAME = $ptascii("anchor")',
+            'ppropertydesc_anchor.KEY = ppropertydesc_anchor.NAME', 'ppropertydesc_anchor.TYPE = eps',
+            '$property_default_state(S_front,ppropertydesc_anchor) = (PROP_VALUE (DIRECT (PINT (-29))))',
+            '$property_slot_descriptor(S_raw,n_root,ppropertyslot_anchor) = (ppropertydesc_anchor)',
+            'ppropertyslot_anchor.DECL = (ppropertydesc_anchor.ORIGIN)',
+            'ppropertyslot_anchor.NAME = ppropertydesc_anchor.KEY',
+            '$ppproperty_desc_at(pclassdesc_parent.PROPERTIES,ppropertydesc_pad.NAME) = eps',
+            '$property_hook_pair_plain_parent(S_front,pclassdesc_parent.PROPERTIES)',
+            '$property_hook_pair_source_headers(S_front,pclassdesc_root,pclassdesc_parent)',
+            '$property_hook_pair_own_parented(S_front,ppropertydesc_pad)',
+            '$property_hook_reference_ancestor(S_front,porigin_root,ppropertydesc_pad)',
+            '$property_hook_short_parent(S_front,ppropertydesc_pad) = eps',
+            '~$property_hook_child_own_slot(S_front,ppropertydesc_anchor,ppropertydesc_pad)',
+            '~$property_hook_child_append_slot(S_front,ppropertydesc_anchor,ppropertydesc_pad)',
+            'porigin_root = PORIGIN n_source pcpath_root',
+            '$origin_node(S_return.SOURCES,porigin_root) = (NStmtClass phpType14_root phpType24_root phpType3_root phpType44_root phpType42_root phpType23_root metadata_root)',
+            'phpType44_root = NName (BYTES text_parent) metadata_parent_name',
+            '$base64(text_parent) = $ptascii("Parent295")',
+            '$origin_node(S_return.SOURCES,porigin_parent) = (NStmtClass phpType14_parent phpType24_parent phpType3_parent ABSENT phpType42_parent phpType23_parent metadata_parent)',
+            'statement_noextends = NStmtClass phpType14_root phpType24_root phpType3_root ABSENT phpType42_root phpType23_root metadata_root',
+            'S_noextends = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_root statement_noextends) :: pcunit.OCCURRENCES]]]',
+            '~$property_hook_pair_own_parented(S_noextends,ppropertydesc_pad)',
+            '~$property_hook_reference_decl(S_noextends,ppropertydesc_pad)',
+            '~$reference_return_source(S_noextends,27)',
+        ]
+        for label, change in (
+            ('nolink', '[.LINKEDPARENTS = eps]'),
+            ('parentkind', '[.CLASSES = (pclassdesc_parent[.KIND = "trait"]) :: S_return.CLASSES]'),
+            ('grandparent', '[.CLASSES = (pclassdesc_parent[.PARENT = ($ptascii("OtherGrandparent"))]) :: S_return.CLASSES]'),
+        ):
+            checks += [f'S_{label} = S_return{change}']
+            checks += [
+                f'~$property_hook_pair_own_parented(S_{label},ppropertydesc_pad)',
+                f'~$property_hook_reference_decl(S_{label},ppropertydesc_pad)',
+                f'~$reference_return_source(S_{label},27)',
+            ]
+        checks += [
+            'S_parenthook = S_return[.SOURCES = [$pcsource(n_source,' + parent_hook_fixture + ')]]',
+            '$property_declaring_class(S_parenthook.CLASSES,PORIGIN n_source pcpath_property) = (porigin_root)',
+            '~$property_hook_pair_own_parented(S_parenthook,ppropertydesc_pad)',
+            '~$property_hook_reference_decl(S_parenthook,ppropertydesc_pad)',
+            '~$reference_return_source(S_parenthook,27)',
+            '$property_hook_pair_source_headers(S_parenthook,pclassdesc_root,pclassdesc_parent)',
+            '~$property_hook_pair_plain_parent(S_parenthook,pclassdesc_parent.PROPERTIES)',
+        ]
     return checks
 
 
@@ -399,13 +475,17 @@ def main():
     parser.add_argument('--form', required=True, choices=['initialized', 'null'])
     parser.add_argument('--body', choices=['identifier', 'literal'], default='identifier')
     parser.add_argument('--parented', action='store_true')
+    parser.add_argument('--distinct-parent', action='store_true')
     parser.add_argument('--budget-part', choices=['all', 'return', 'fetch', 'cleanup'], default='all')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
     assert not args.parented or args.body == 'literal'
+    assert not args.distinct_parent or (args.body == 'literal' and not args.parented)
     sources = SOURCES if args.body == 'identifier' else SOURCES.with_name('parentless_literal_short_reference_get_hook_review')
     if args.parented:
         sources = SOURCES.with_name('ordinary_parent_short_reference_get_hook_review')
+    if args.distinct_parent:
+        sources = SOURCES.with_name('distinct_parent_short_reference_get_hook_review')
     source = sources / ('short-reference-' + args.form + '-shared.php')
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
@@ -417,7 +497,7 @@ def main():
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body, 'parented': args.parented,
-              'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
+              'distinct_parent': args.distinct_parent, 'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
                            str(ROOT / 'frontend/worker.php')], out / 'frontend')
@@ -426,14 +506,34 @@ def main():
             parsed = frontend.request({'op': 'parse', 'source': base64.b64encode(source.read_bytes()).decode()})
             assert parsed['accepted'] and not parsed['diagnostics']
             checked = adapter.request({'op': 'check', 'ast': parsed['ast'], 'fixture': True}); assert checked['ok']
+            parent_hook_fixture = None
+            if args.distinct_parent:
+                original = source.read_bytes(); plain = b'public $anchor = -29;'
+                assert original.count(plain) == 1
+                control = original.replace(plain, b'public $anchor = -29 { get => $this->anchor; }')
+                control_path = out / 'parent-hook-control.php'; control_path.write_bytes(control)
+                report['parent_hook_control'] = {'source': str(control_path), 'sha256': sha(control_path),
+                                                 'kind': 'checked synthetic canonical source; fixture-only, no native execution'}
+                parsed_control = frontend.request({'op': 'parse', 'source': base64.b64encode(control).decode()})
+                assert parsed_control['accepted'] and not parsed_control['diagnostics']
+                checked_control = adapter.request({'op': 'check', 'ast': parsed_control['ast'], 'fixture': True})
+                assert checked_control['ok']; parent_hook_fixture = checked_control['fixture']
         finally:
             try: adapter.close()
             finally: frontend.close()
-        checks = fields(checked['fixture'], source, args.form, args.body, args.parented)
+        checks = fields(checked['fixture'], source, args.form, args.body, args.parented, args.distinct_parent, parent_hook_fixture)
         report['all_premises'] = len(checks); report['budget_part'] = args.budget_part
         checks = budget_part(checks, args.budget_part); report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
-        (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
+        prefix = PREFIX
+        if args.distinct_parent:
+            prefix = prefix.replace('pinstancestorage.OBJECT = n /\\ pinstancestorage.NEXT = 2',
+                                    'pinstancestorage.OBJECT = n /\\ pinstancestorage.NEXT = 3')
+            prefix = prefix.replace('pinstancestorage.OBJECT = n /\\ pinstancestorage.NEXT = 1',
+                                    'pinstancestorage.OBJECT = n /\\ pinstancestorage.NEXT = 2')
+            prefix = prefix.replace('-- if ~$srgh_phase(S,n_stage,n_object) /\\ $(n > 0)',
+                                    '-- if ~$srgh_phase(S,n_stage,n_object) /\\ $(n > 0) /\\ S.TODO =/= eps')
+        (out / 'protocol.watsup').write_text(prefix + '\ndec $main() : bool\ndef $main() = true\n'
                                            + ''.join('  -- if ' + check + '\n' for check in checks))
         report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl',
                                       *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 240)

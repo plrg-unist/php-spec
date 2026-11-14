@@ -1851,6 +1851,28 @@ def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $hook_parameter_facts(metadata_hook) = [false]
   -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+;; A plain root parent without this name leaves the new hook's own backing.
+def $property_hook_reference_decl(S, ppropertydesc) = true
+  -- if $property_hook_pair_own_parented(S, ppropertydesc)
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $property_declaring_class(S.CLASSES, PORIGIN n pcpath) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_owner) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps /\ ~pclassdesc_parent.READONLY
+  -- if $trait_plan(S, pclassdesc_parent).TRAITS = eps
+  -- if $ppproperty_desc_at(pclassdesc_parent.PROPERTIES, ppropertydesc.NAME) = eps
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook])) metadata)
+  -- if flags <- [0,1]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_parameter_facts(metadata_hook) = [false]
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
 def $property_hook_reference_decl(S, ppropertydesc) = false -- otherwise
 
 ;; The implicit return belongs to the authentic expression child, not a
