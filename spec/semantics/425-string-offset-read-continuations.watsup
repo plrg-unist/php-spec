@@ -787,6 +787,7 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
   -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $string_read_runtime_value(S, PORIGIN n pcpath) = eps
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
   -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
@@ -937,6 +938,30 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_
   -- if n_bytes* = $string_not([n_child])
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $bitnot_value(S, PSTRING_CARRIER INTERNED_STRING ([n_child]), z_line) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
+;; Runtime empty operands can preserve an existing interned CONCAT header.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if S.COMPLETION = NORMAL
+  -- if S.CONSTCONTEXT = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (PSTRING_CARRIER INTERNED_STRING n_left*)
+  -- if $string_read_runtime_value(S, porigin_right) = (PSTRING_CARRIER INTERNED_STRING n_right*)
+  -- if b_left = $concat_constant(S, (porigin_left))
+  -- if b_right = $concat_constant(S, (porigin_right))
+  -- if S_concat = $string_concat(S, PSTRING_CARRIER INTERNED_STRING n_left*, PSTRING_CARRIER INTERNED_STRING n_right*, b_left, b_right)
+  -- if S_concat.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if S_concat = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
 ;; Explicit primitive casts retain VALUE without widening FLOAT formatting.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if S.COMPLETION = NORMAL
