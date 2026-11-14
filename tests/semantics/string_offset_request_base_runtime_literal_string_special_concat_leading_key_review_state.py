@@ -130,7 +130,7 @@ if __name__ == '__main__':
         ('nul_literal', '"a\\0b"', None, '($ptascii("a") ++ [0] ++ $ptascii("b"))', True),
         ('leading_arithmetic', "'1x'+" + zero, None, 'eps', False),
         ('nonnumeric_arithmetic', "'foo'+" + zero, None, 'eps', False),
-        ('selected_string', "((!0.0)?'1':(1/0))", carrier('1'), 'eps', False),
+        ('selected_string', "((!0.0)?'1':(1/0))", carrier('1'), '($ptascii("1"))', False),
         ('string_cast', "(int)((!0.0)?'1':(1/0))", 'PINT 1', '($ptascii("1"))', False),
         ('string_integer_binary', "'1'&" + one, 'PINT 1', '($ptascii("1"))', False),
         ('string_power', "'2'**" + zero, 'PINT 1', '($ptascii("1"))', False),
@@ -169,6 +169,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = ('Exact author histories plus independent literal source/pool/decoded-byte/header authority, including same-numeric different-byte forgeries and nonraw pool types. A forged PFLOAT pool retains its prior compiled VALUE and actual literal BYTE without gaining INTERNED VALUE. Literal precision17 preserves its bytes but refuses a parent captured14; compiled-leaf values preserve existing completion behavior and whole-state typed parents retain nonempty TODO/BASE. Seventeen checked-source controls include fresh copies of the seven affected old literal-string controls, nonNUL empty/zero strings, NUL refusal despite valid raw/interned/unchanged BYTE facts, quiet FLOAT arithmetic with BYTEeps, selected STRING VALUE without BYTE, selected STRING CASTINT and quiet mixed integer-binary consumption, quiet POWER and exact zero-string truth. Suppressed leading-number conversion stays refused despite a matching quiet full-state numeric result. Fixture source0/native0; no old campaign/native replay, owner/formatter/compiler/numeric body change or held-boundary expansion.')
+    report['scope'] = ('Exact author histories plus independent literal source/pool/decoded-byte/header authority, including same-numeric different-byte forgeries and nonraw pool types. A forged PFLOAT pool retains its prior compiled VALUE and actual literal BYTE without gaining INTERNED VALUE. Literal precision17 preserves its bytes but refuses a parent captured14; compiled-leaf values preserve existing completion behavior and whole-state typed parents retain nonempty TODO/BASE. Seventeen checked-source controls include fresh copies of the seven affected old literal-string controls, nonNUL empty/zero strings, NUL refusal despite valid raw/interned/unchanged BYTE facts, quiet FLOAT arithmetic with BYTEeps, selected STRING VALUE and BYTE, selected STRING CASTINT and quiet mixed integer-binary consumption, quiet POWER and exact zero-string truth. Suppressed leading-number conversion stays refused despite a matching quiet full-state numeric result. Fixture source0/native0; no old campaign/native replay, owner/formatter/compiler/numeric body change or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

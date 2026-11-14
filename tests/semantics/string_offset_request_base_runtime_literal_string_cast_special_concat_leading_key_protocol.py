@@ -16,19 +16,7 @@ TREES = (
     ('POSITIVE', ('CAST', 'CASTBOOL', ('TERNARY', TRUTH, ('STRING', '0', None), True), 'PBOOL false'), 0),
     ('BITNOT', ('CAST', 'CASTINT', ('CAST', 'CASTFLOAT', ('TERNARY', TRUTH, ('STRING', '3.0tail', None), True), 'PFLOAT 4613937818241073152'), 'PINT 3'), -4),
 )
-base_value = prior.value
-
-
-def value(checks, tag, tree):
-    start = len(checks)
-    result, number = base_value(checks, tag, tree)
-    if tree[0] == 'TERNARY' and result.startswith('PSTRING_CARRIER INTERNED_STRING '):
-        old = '$string_read_runtime_bytes(S, porigin_' + tag + ') = ($echo_value(' + result + '))'
-        at = checks.index(old, start)
-        checks[at] = '$string_read_runtime_bytes(S, porigin_' + tag + ') = eps'
-    return result, number
-
-
+value = prior.value
 module = prior
 while module is not integers:
     module.value = value
@@ -55,6 +43,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four emitted CASTINT/CASTBOOL/CASTFLOAT trees consume certified nonNUL literal-INTERNED string values selected by genuine full ternaries. Exact NORMAL/source/CODEfalse/read-eps/equal captured precision and original typed full-state cast_apply retain quiet explicit numeric-prefix/nonnumeric casts, exact Boolean zero-string truth and fitting nested FLOAT-to-INT conversion. Selected STRING-result BYTE and emitted FLOAT BYTE remain eps. BUDGET plans refuse before fixture-only guarded discovery; unchanged key Warning, supplied Throwable, bounds, ownership, cleanup and budget rejoining preserve REQUEST keys1/-1/0/-4. Arithmetic leading-string Warnings, integer/string-bitwise consumers, REQUEST/raw PSTRING inputs, other casts, compiler/formatter/owner bodies and every exact hold gain no authority. Saved native originals reused once; fixture source0/native0.'
+    report['scope'] = 'Four emitted CASTINT/CASTBOOL/CASTFLOAT trees consume certified nonNUL literal-INTERNED string values selected by genuine full ternaries. Exact NORMAL/source/CODEfalse/read-eps/equal captured precision and original typed full-state cast_apply retain quiet explicit numeric-prefix/nonnumeric casts, exact Boolean zero-string truth and fitting nested FLOAT-to-INT conversion. Emitted FLOAT BYTE remains eps. BUDGET plans refuse before fixture-only guarded discovery; unchanged key Warning, supplied Throwable, bounds, ownership, cleanup and budget rejoining preserve REQUEST keys1/-1/0/-4. Arithmetic leading-string Warnings, integer/string-bitwise consumers, REQUEST/raw PSTRING inputs, other casts, compiler/formatter/owner bodies and every exact hold gain no authority. Saved native originals reused once; fixture source0/native0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
