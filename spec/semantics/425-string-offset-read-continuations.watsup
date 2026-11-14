@@ -265,6 +265,16 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+;; Literal integer zero takes the raw shorthand fallback through QM_ASSIGN.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarInt (INTEGER 0) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if n_bytes* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (PINT 0)
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 ;; COALESCE keeps a literal string, including the falsey string "0".
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata)
