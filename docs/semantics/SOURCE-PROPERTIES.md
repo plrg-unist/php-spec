@@ -1708,14 +1708,26 @@ Original raw named USER FCC wrappers also cross quiet CV binary ??, private
 ??= and literal/CV Empty. A registered nongenerator NStmtFunction, no binding
 or scope record, and the exact SOURCE-eps Unscoped/Shared cache stamp with
 whole-cache validity authenticate the live result. Literal Empty checks the
-actual result object ID through that same predicate, keeping named clones
-outside. The wrapper owns no function-static cells: shared static roots survive
+actual result object ID through that same predicate. The wrapper owns no
+function-static cells: shared static roots survive
 its weak notification and retirement. Empty retires the wrapper before its
 receiver, including a receiver throw that preserves the destination. Four
 changed-source agreements reuse four native originals once; separate SL
 fixtures check ownership, malformed histories and budget0/1/full rejoining.
 Wider named wrappers and lifetimes remain partial.
 [Named FCC quiet Get review](../../coverage/semantics/magic-property-namedclosure-quiet-get-review.json).
+
+Shared-cache named FCC clones now follow the same quiet consumers. The original
+SOURCE-eps guard remains explicit; a separate certificate checks every copied
+stamp through raw same-origin NAMED ancestors and strictly lower object IDs.
+Current stamp identity, function, SOURCE and Unscoped/Shared fields are checked
+explicitly. Retired ancestors add no roots and require no allocation or static
+reads; current source/live/binding and whole-cache order/uniqueness guards stay.
+Four new originals reuse native observations once at the final guard. Separate
+new and affected-old SL fixtures retain zero source credit. Two earlier executed
+private-cache counterfacts prompted the explicit field checks; earlier positive
+source observations retain their own cut. No cache/free/GC policy changes.
+[Named FCC clone quiet Get review](../../coverage/semantics/magic-property-namedclosure-clone-quiet-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

@@ -1,0 +1,84 @@
+{
+  "feature": "literal-integer-zero-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with a literal integer zero condition and raw string fallback supplies its non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index supplies the original byte. Decimal0 and hexadecimal0x0 originals authenticate the same integer-zero condition.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "e781b66cd61cb11529d2624e11ad0b83c0e9cd51",
+  "reviewed_peer_head": "aff21feefa94bff458870784341cbc3c92b3544c",
+  "implementation_sha256": "75bd5eb009781ba5a1222ccce7d36b5ce5e9c6bea6c69b7d44763be31999cf9a",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_expr_inner copies ZEND_AST_ZVAL constants; zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN. Zend/zend_operators.h i_zend_is_true treats IS_LONG zero as false. Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code. Zend/tests/ternary_operator_basic.phpt supplies read-only zero-shorthand provenance; it was not executed.",
+  "implementation": "One local10-line425 raw_known_base arm authenticates raw NScalarInt INTEGER0, ABSENT true arm, exact compiled PINT0 condition, raw string fallback at PCFIELD2 with matching compiled read/INTERNED identity, and parent compiledEPS. Existing NULL/FALSE and other arms, raw capture/saved-index, source and ownership guards remain. No name, nonzero, unary/computed, generic233, provider/root, schema, REQUEST/NUL, abrupt or held-boundary change.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "1b829a3f513b47b77d8e7f5e8d42843ea41ee8da8e0315bdf79a92ad2e4ddd8a",
+      "tested_revision": "5d136ec937c1eeeaba2555a2a3478d3e2e905681",
+      "passed": true,
+      "source_credit": 0,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "05aba8eb57e2033a041bf5cdbe48fe1f966f5285bed4ce47f255a75214411c68",
+      "tested_revision": "cd6f4974702cedd7ae1fc24457089243f33f0910",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 57
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "214dca7a94e911e58113fd23c35c9161622f11fd566bb4f6a1072f80caa60c30",
+      "tested_revision": "78d79cfc8f817283ba00338a67263af202a16fa5",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 53
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "6b16380d4ecd3b380459dfd216458a24e7b6b57a27961dd78326824fed12dd53",
+      "tested_revision": "e781b66cd61cb11529d2624e11ad0b83c0e9cd51",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "c914778cf06d36056e6a713b5a161651f2c3cf3a4e5cf9d1e67f230258cab6e1",
+      "tested_revision": "e781b66cd61cb11529d2624e11ad0b83c0e9cd51",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 168,
+      "derived_conditions": 65
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "3825fbfa7dea0f191c26f0525068681414a92dffd8e318bc60e6b05b7e41dcbc",
+      "tested_revision": "aff21feefa94bff458870784341cbc3c92b3544c",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 199,
+      "derived_conditions": 78
+    }
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main43-integer-binary-zero-shorthand-joined-508-v1/report.json",
+    "sha256": "093877c9ddc3fce2c077ef188452ae4d6d857e28fea7424f5539b3f5787d479f",
+    "tested_revision": "e98f35c57ea31d7f24381ae1532e4428d16fc8d2",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.932173192035407,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author168/65-derived and independent199/78-derived fixture-SL cuts retain source0. Genuine full155 prelaw captures retain A19 changed/136 initial fields and roots[1,0], B20 restored/135 initial fields and roots[1,0,0], with no edges or debts. Decimal/hexadecimal zero, exact PINT0 versus PNULL/PBOOLfalse/PINT1, ABSENT/no source child1, fallback bytes/identity, parent-fold refusal, key rebinding, unchanged owners, dispatch/resume/output and budgets are checked. Forged parent/child INTEGER1 with matching PINT0 pools is a source0 refusal control. Source60/outer80/compiler120/state180 caps remain; successful runs are quiet, stable and fully reaped. No unique aggregate or historical renewal is claimed.",
+  "review": "Independent whole six source/test files FULLCLEAR and source2/author168 FULLCLEAR preceded direct MAIN43 READY. Author reciprocal independent199 and genuine prelaw full155 review CLEAR. Both actual MAINe98f35c5 composition reads and its sole saved combined integer/binary load tuple are CLEAR. Separate accepted binary VALUE/BYTE additions and prior REQUEST runtime-key helpers retain their own cuts; this raw_known_base group and all four Python files/Make2 match the reviewed donor.",
+  "remaining": "FLOAT and other shorthand conditions, name/unary/computed conditions, wider fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the linked external archives. Tracked cases/renderers and the two Makefile integer-zero-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

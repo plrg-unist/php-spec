@@ -1288,6 +1288,8 @@ Quiet runtime FLOAT NOT keys now authenticate actual nonconstant CODE/read-eps f
 Quiet runtime unary +/- preserves fitting integer bytes from typed Boolean and integer results; existing NOT can consume the resulting integer. Exact emitted source, code and precision facts, quiet NINT conversion and full-state results retain the real REQUEST key and existing owners. Four source agreements reuse native originals once; authorSL731 and inclusive peerSL1231 remain separate from the sole fce0c4887 SL508 load (16.187261943006888s/source0). NaN warnings, wider producers/owners/lifetimes and complete core remain unfinished. [Runtime integer-sign review](coverage/semantics/string-offset-request-base-runtime-unary-integer-review.json).
 
 Quiet emitted ADD/SUB/MUL and PINT-only BITNOT retain actual source/CODE/read-eps/equal precision, quiet fitting NINT inputs and exact whole-state PINT results/decimal bytes. Runtime FLOAT bytes and wider operators, producers, ownership and lifetimes remain partial. [Runtime integer-operator review](coverage/semantics/string-offset-request-base-runtime-integer-operator-review.json).
+
+Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
 Coercive and wider operands remain partial.
@@ -1549,6 +1551,8 @@ Literal NULL full ternary bases also retain their selected non-NUL INTERNED head
 Literal NULL shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [NULL-shorthand review](coverage/semantics/string-offset-null-shorthand-base-initial-raw-leading-key-review.json).
 
 Literal false shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [FALSE-shorthand review](coverage/semantics/string-offset-false-shorthand-base-initial-raw-leading-key-review.json).
+
+Literal integer-zero shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact source and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [Integer-zero shorthand review](coverage/semantics/string-offset-integer-zero-shorthand-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
@@ -8764,9 +8768,13 @@ Closure producers, initialized static cells, binding and lifetimes remain partia
 [Shared-cache clone quiet Get review](coverage/semantics/magic-property-clone-quiet-get-review.json).
 Original unscoped named user-function FCC results also cross quiet CV ??,
 private ??= and literal/CV Empty. Their shared function statics remain separate
-roots when the wrapper retires; copied, bound and private-cache named wrappers
+roots when the wrapper retires; bound and private-cache named wrappers
 remain outside this increment.
 [Named FCC quiet Get review](coverage/semantics/magic-property-namedclosure-quiet-get-review.json).
+Shared-cache clones of those raw named wrappers also cross these quiet Get
+consumers through strictly descending, same-origin raw ancestry. Historical
+stamps own no function statics; wrapped and private-cache histories stay outside.
+[Named FCC clone quiet Get review](coverage/semantics/magic-property-namedclosure-clone-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
