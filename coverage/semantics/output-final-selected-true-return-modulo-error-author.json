@@ -1,0 +1,139 @@
+{
+  "feature": "Literal TRUE return after a selected FINAL MOD handler Echo (OB106)",
+  "target": "PHP 8.5.10 CLI NTS64; sole project-local .tools/php/bin/php and tests/semantics/profile.json; SL cache=false/det=true",
+  "cuts": {
+    "source_only": "97ad764d304a75538ee44803e28c8b31e142d4f6",
+    "prelaw": "db1abef213549cc9ba5e8de74cbde49b4e7b5bd9",
+    "runtime": "3b319c2cfec675ff0795ff9c9d2e9fe560dafdee",
+    "initial_ready": "e9ea484d0ff0ea5e6137f92a08968c1dafff189a",
+    "ready": "45433a805aa1af3cdb1e4eb09c9cab8f454857fe"
+  },
+  "files_at_ready": {
+    "spec/semantics/456-output-object-returns.watsup": "d75adba16e913ca0fbf6819864c9c63b66ba3c1ebf652e2826f10d9de7f5592f",
+    "Makefile": "68fe737c10f500993389e4c0ee5d09540c7a8e9e0b6ed66497c50bb0bb581d02",
+    "tests/semantics/output_final_selected_true_return_modulo_error_sources.py": "e2f8348334e7feee4d86f6d0898b84fffa99cda82b4ea631dd84f1254f635407",
+    "tests/semantics/output_final_selected_true_return_modulo_error_state.py": "938b053aa7841b1924229be13ff17cd7811a87c23dd23b787578c84fa1a66761",
+    "tests/semantics/output_final_selected_true_return_modulo_error_review_state.py": "973e06e333779cb44e703c5bece24d9ff809971f39d0c8e1af1d971d7288d8d1"
+  },
+  "scope": "Four originals retain the named mask8194 handler, two required untyped nonvariadic BYVAL formals and literal H Echo, followed by explicit return true or TRUE. Warning LEFT CONST and Deprecated BOTH CV pair are author representatives; Warning RIGHT CV pair and mixed Warning-to-Deprecated CONST/FLOAT are peer representatives. One/two actual calls retire two/four formal cells; AH/AHH remains buffered before FINAL reports the original MOD-zero Error.",
+  "rule": "Only ten additional pure helper lines authenticate one own raw Return(ConstFetch(Name true)) through case-insensitive spelling, ORIGIN, CODE.UNIT/BODY, exact own Return/child source, child CODEEXPR at its actual line with flag true and exact compiled PBOOLtrue read. Existing eps, explicit literal-NULL and bare-return arms and every selected-capture premise remain literal; only their comment changes. No schema, return kernel, owner, provider, numeric or evaluator-fallback change.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return compiles the explicit TRUE expression, then emits ordinary ZEND_RETURN. Zend/zend_vm_def.h::ZEND_RETURN leaves the genuine frame. Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE, so TRUE is consumed.",
+    "Existing80 return-value carries PBOOLtrue in RETURN_UNWIND while clearing RESULT/BASE to NULL; ordinary return supplies handler RESULT=true. Existing207 error-handler-handled and270 error_handler_finish consume true and restore only resumed NULL scratch. The checked compiler already records the own TRUE child/read/line and own Return statement line/false. No return or handler kernel changes."
+  ],
+  "history_boundary": "Current body authentication does not establish arbitrary past callback or retarget history. Actual next store, registrations, effects, owners and trace remain intact; source receipts add no owners.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-true-return-modulo-error-106",
+  "runs": {
+    "native_once": {
+      "report": "native-summary-01.json",
+      "sha256": "de4e4130437423433ab5f78e6f7eee1f025c1ca1bd6340dbc41cd6e39363818a",
+      "cut": "source_only",
+      "originals": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0,
+      "result": "Stable22each+HEAD; exact native P/full fatal255 at MOD lines6/8/8/6. Buffered H alone does not establish invocation."
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "e72ac7e86bc0cde1f55d5aff2acb5ab7efaebcb23ea7cfb628fbca6f0c1be934",
+      "cut": "source_only",
+      "mode": "production SL508",
+      "selection": [
+        1,
+        2
+      ],
+      "other_originals_unrun": 2,
+      "inner_outer_caps_seconds": [
+        90,
+        120
+      ],
+      "source_credit": 0,
+      "result": "Stable534+HEAD, complete collection, aggregate pass=false. Both pending-FINAL Unsupported/tool1, actual P/empty PHP stderr, quiet tool stderr/noDIAG/native_match=false. No replay."
+    },
+    "prelaw": {
+      "report": "front-all-01/report.json",
+      "sha256": "9548d77c5d081303fccaf9b3e482c0fd093394ca6782fb994a94f5f3459f777b",
+      "cut": "prelaw",
+      "mode": "fixture SL508",
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "front-launch-01.json",
+      "launch_sha256": "c457783dae69709c51ee8f76e73f8d0956eea72bc2a889872a0757dca0d972ce",
+      "result": "FIRSTPASS/quiet/exit0/stable575each+HEAD/reaped before law/SOURCE seed. Own raw TRUE Return/child/read, child line/true and statement line/false; PBOOLtrue unwind/handler result stay distinct from NULL scratch. Captureeps; later expected-capture promotion does not renew this cut."
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "e2b2d57c132b57ceeab48b69acbd5bae91276426a05bbc7e62fd802bd6a40c50",
+      "cut": "runtime",
+      "mode": "production SL508",
+      "originals": 4,
+      "source_credit": 4,
+      "inner_outer_caps_seconds": [
+        90,
+        120
+      ],
+      "result": "FIRSTPOSTLAW4 exact saved-native agreements: php_error/tool0/reasonNone/P/full fatal255, DivisionByZeroError lines6/8/8/6/noDIAG. Complete/pass/quiet/stable542+HEAD/reaped; native4 reused without replay."
+    },
+    "author_lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "16373984f605e54f6a0d7801449a3c5b0e01795f8ee11c892a7df15a500643aa",
+      "cut": "runtime",
+      "mode": "fixture SL508",
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "life-launch-01.json",
+      "launch_sha256": "6c6872a5abe6eb18f488e1e6ffa54b9697c8ed9a2b21dbbc870814c116a85fa3",
+      "result": "FIRSTPASS/quiet/exit0/stable575each+HEAD/reaped. Actual TRUE return and reset NULL scratch survive real formal/native-cell retirement, C0, fatal reporting and nonowning Error retirement."
+    },
+    "peer_syntax_failure": {
+      "report": "peer-all-01/report.json",
+      "sha256": "69c7b301f71f154d6595f4b778361fc322ff222ef20930e41c09cf7835c3fa79",
+      "cut": "initial_ready",
+      "mode": "fixture SL508",
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "whole_packet_credit": 0,
+      "other_originals_unrun": 1,
+      "result": "Preserved pre-evaluation DSL syntax failure: first Warning RIGHT fixture exits1 in0.545s with empty stdout, unexpected token at250.71-72; no Boolean array or application semantic evaluation. Second original was unrun0. Only the review fixture CONSTANTS/list expression was corrected."
+    },
+    "peer": {
+      "report": "peer-all-02/report.json",
+      "sha256": "763f4ab060df7c7f2da826cc58fa68ce0c16b290f5a0e421d04654adb322d33e",
+      "cut": "ready",
+      "mode": "fixture SL508",
+      "groups": [
+        9,
+        15
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "peer-launch-02.json",
+      "launch_sha256": "e23eedb2f8be52a6a4b32db4d03ea8f3c3d029ec123104b842b5172562949ba2",
+      "result": "Affected/unrun two-case packet PASS/quiet/exit0/stable576global+3case inputs each+HEAD/reaped; author raw-CLEAR. Actual upperTRUE returns/NULL scratch retain input/cursor/store/retirement guards. Pure refusals cover NULL/FALSE/bare/extra tails, wrong child CODEEXPR flag/line and UNIT/BODY, plus a constructed first-shadowing PNULL pool with genuine raw TRUE/CODE retained. No full-state validity or source credit is claimed for that projection."
+    }
+  },
+  "environment": "Native/source drivers explicitly record C/UTC. Author front/life outer launches and all fixture interpreter children explicitly record C/UTC; author launches have no extra outer cap beyond the existing per-fixture300-second cap. Peer outer C/UTC and660-second cap are recorded separately.",
+  "ready_bridge": "Runtime, source and authorstate bytes at3b319 are corrected-READY45433 exact. Only Make3 rows and the reviewer fixture were added afterward; its one-line CONSTANTS/list syntax correction changes no guard meaning or order. The failed initial peer packet remains preserved; only its affected first case and previously-unrun second case were run after correction. No accepted source/native/prelaw/lifecycle or old campaign was replayed.",
+  "validation": "Author whole-five READY and independent corrected FULLCLEAR reached MAIN45 before metadata. Source4, prelaw19 and authorlife13 passed their first semantic evaluations. The first peer launch failed during DSL parsing before application semantics; corrected peer24 passes at its own cut. All raw outcomes were independently reviewed. Fixtures and constructed guard projections carry source0, with no cumulative unique claim; the PNULL-pool projection does not claim full-state validity. Commands, inputs, original bytes, streams, checked programs, timings and recovery remain external.",
+  "independent_review": "coverage/semantics/output-final-selected-true-return-modulo-error-review.json",
+  "actual_main_join": {
+    "revision": "e1245c8cc02ceb76046d025251a48e4e8801f6d7",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-equality-true-return-joined-508-v1/report.json",
+    "sha256": "cf9b8c84ecc361a67d03a707ef030c89fe8a34eacf1744f60f421a5090e8591f",
+    "mode": "sole combined EQUALITY+106 production SL508",
+    "seconds": 15.287736607016996,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "Author bounded actual composition/result CLEAR: four non-Make paths corrected-donor45433 exact; exact5 changed paths over9f7 and Make3 additive/no deletion. Saved sole combined load PASS/true LF/quiet/exit0/no timeout/stable512+HEAD/511argv/fully reaped. Private and failed execution cuts retain their own credit."
+  },
+  "limits": "Only four new originals gain source credit. Other return bodies/values, FALSE/default-reporting, arbitrary PNULL/TRUE-producing expressions, wider signatures/handlers/retarget histories, owning operands and wider lifetimes remain partial. All exact holds, one-CV/cross-product limits and OB31 remain. Complete PHP core, Rocq interaction trees and BOLA/CRIS verification are unfinished. No engine bug or intentional divergence is established."
+}

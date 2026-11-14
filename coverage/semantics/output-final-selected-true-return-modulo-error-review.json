@@ -1,0 +1,113 @@
+{
+  "feature": "FINAL MOD zero Error after a selected literal Echo and TRUE return (OB106)",
+  "decision": "Corrected whole five-file source/test independently accepted; Output and complete core remain partial",
+  "reviewer": "/root/recover10_output_bare_return_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and recorded profile",
+  "cuts": {
+    "source_only": "97ad764d304a75538ee44803e28c8b31e142d4f6",
+    "precode": "db1abef213549cc9ba5e8de74cbde49b4e7b5bd9",
+    "runtime": "3b319c2cfec675ff0795ff9c9d2e9fe560dafdee",
+    "ready_uncorrected": "e9ea484d0ff0ea5e6137f92a08968c1dafff189a",
+    "ready": "45433a805aa1af3cdb1e4eb09c9cab8f454857fe"
+  },
+  "scope": "Four originals retain the named mask8194 handler, two required untyped nonvariadic BYVAL formals and literal H Echo, followed by one own literal true/TRUE Return. Warning LEFT CONST and Deprecated BOTH CV-pair use lower-case true; Warning RIGHT CV-pair and mixed Warning-to-Deprecated CONST/FLOAT use upper-case TRUE. One/two real calls retire two/four formal cells before FINAL MOD-zero Error; AH/AHH stays buffered.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return compiles the TRUE expression and emits ordinary ZEND_RETURN for this untyped non-BYREF function. Zend/zend_vm_def.h::ZEND_RETURN transfers its Boolean value through real frame retirement.",
+    "Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE; TRUE is consumed without a default diagnostic.",
+    "Spec78/94/33 compile the TRUE child at its own line with flag true/read PBOOLtrue, and the Return statement with flag false. Spec80 carries PBOOLtrue in RETURN_UNWIND while resetting return scratch to NULL; the real returned handler result is true before270/error_handler_finish restores resumed NULL scratch."
+  ],
+  "change": "A ten-line pure tail arm admits exactly one own raw NStmtReturn(NExprConstFetch(NName true)), case-insensitively. Function origin, CODE.UNIT/BODY, own Return/child, child CODEEXPR/source line/true flag and exact PBOOLtrue read remain mandatory. The eps, explicit-NULL and bare-return arms and every other selected-capture premise are unchanged. No return kernel, schema, ownership, provider, numeric or native-evaluation change.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-true-return-modulo-error-106",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "de4e4130437423433ab5f78e6f7eee1f025c1ca1bd6340dbc41cd6e39363818a",
+      "cut": "source_only",
+      "observations": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "e72ac7e86bc0cde1f55d5aff2acb5ab7efaebcb23ea7cfb628fbca6f0c1be934",
+      "cut": "source_only",
+      "mode": "production SL508/cache=false/det=true",
+      "selection": [1, 2],
+      "cap_seconds": [90, 120],
+      "collection_complete": true,
+      "aggregate_pass": false,
+      "source_credit": 0,
+      "other_originals_unrun": 2
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "9548d77c5d081303fccaf9b3e482c0fd093394ca6782fb994a94f5f3459f777b",
+      "cut": "precode",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [8, 11],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "front-launch-01.json",
+      "outer_launch_sha256": "c457783dae69709c51ee8f76e73f8d0956eea72bc2a889872a0757dca0d972ce"
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "e2b2d57c132b57ceeab48b69acbd5bae91276426a05bbc7e62fd802bd6a40c50",
+      "cut": "runtime",
+      "mode": "production SL508/cache=false/det=true",
+      "cap_seconds": [90, 120],
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "16373984f605e54f6a0d7801449a3c5b0e01795f8ee11c892a7df15a500643aa",
+      "cut": "runtime",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [6, 7],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "life-launch-01.json",
+      "outer_launch_sha256": "6c6872a5abe6eb18f488e1e6ffa54b9697c8ed9a2b21dbbc870814c116a85fa3"
+    },
+    "peer_parse_failure": {
+      "report": "peer-all-01/report.json",
+      "sha256": "69c7b301f71f154d6595f4b778361fc322ff222ef20930e41c09cf7835c3fa79",
+      "cut": "ready_uncorrected",
+      "mode": "fixture SL508; parsing stopped before application evaluation",
+      "observed_groups": 0,
+      "tool_exit": 1,
+      "other_originals_unrun": 1,
+      "source_credit": 0,
+      "fixture_credit": 0,
+      "reason": "The constructed pool CONSTANTS field lacked required parentheses at state.watsup250.71-72. Empty stdout and syntax-error stderr caused the recorder's JSONDecodeError. Original evidence remains unchanged; one fixture line alone was corrected."
+    },
+    "peer": {
+      "report": "peer-all-02/report.json",
+      "sha256": "763f4ab060df7c7f2da826cc58fa68ce0c16b290f5a0e421d04654adb322d33e",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [9, 15],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "peer-launch-02.json",
+      "outer_launch_sha256": "e23eedb2f8be52a6a4b32db4d03ea8f3c3d029ec123104b842b5172562949ba2",
+      "outer_cap_seconds": 660,
+      "outer_seconds": 213.2163148301188
+    }
+  },
+  "validation": "Source4 actual php_error/tool0/reasonNone, DivisionByZeroError lines6/8/8/6, exact saved-native P/full fatal255/no DIAGNOSTIC; native4 reused without replay. Baseline1/2 remain pending-FINAL Unsupported/tool1/P/empty PHP and tool stderr/no DIAGNOSTIC/native_match=false; other2 remain unrun0. Precode19 reaches actual TRUE RETURN_UNWIND before law, with captureeps/no source seed. Lifecycle13 separately authenticates the postlaw source-transition equality and retirement. Corrected peer24 covers only the syntax-affected first case and previously unrun second case; the earlier packet remains whole0. Stable watch counts are native22each, baseline534, precode575each, source542, lifecycle575each and peer576global+3case inputs each, with exact HEADs and source/checked/fixture hashes. Raw arrays, streams, exits, commands, modes and caps independently clear; all jobs fully reaped. No AL, cumulative-unique claim or accepted-campaign renewal.",
+  "environment": "Native/source drivers and authorfront/life launch records explicitly set C/UTC; every fixture interpreter command records LC_ALL=C,TZ=UTC,PATH=/usr/bin:/bin. Authorfront/life have cap300 per interpreter and no extra outer cap; their saved outer times are136.612310217s and235.239200589s. Corrected peer outer C/UTC/cap660 is recorded separately. No105 environment identity or execution credit is renewed.",
+  "controls": "Peer originals3/4 retain actual arguments/TRUE return/finish-to-NULL, exact conversion INPUT/cursors/full store, real formal/native-cell retirement, C0 and fatal Error retirement. New groups authenticate own upper-case TRUE child/read/type, real Boolean UNWIND/returned value versus NULL scratch, eps compatibility and raw NULL/FALSE/bare/extra-tail refusals. First-shadowing wrong child CODEEXPR flag/line and mismatched CODE.UNIT/BODY refuse admission. A constructed first same-unit PNULL pool retains the genuine source/CODE yet yields PNULL, and the TRUE tail refuses it; this is a guard projection, with no full-state validity or source-agreement claim. Earlier raw NULL/bare-source controls remain pointwise unchanged without reruns. Current-body refusals do not establish universal retarget-history exclusion.",
+  "integration": {
+    "tested_revision": "e1245c8cc02ceb76046d025251a48e4e8801f6d7",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-equality-true-return-joined-508-v1/report.json",
+    "sha256": "cf9b8c84ecc361a67d03a707ef030c89fe8a34eacf1744f60f421a5090e8591f",
+    "mode": "sole combined EQUALITY+106 production SL508;511argv/512watched;cap60",
+    "seconds": 15.287736607016996,
+    "source_credit": 0,
+    "result": "Independent actual composition CLEAR: exact five-path intake, four non-Make blobs corrected45433-exact, Make exactly3 additive with parent content retained, and disjoint425 parent retained. Runtime3b319 to corrected45433 adds only Make3 and the peer fixture; runtime/source/lifecycle inputs retain their identities. Sole saved combined result independently verified PASS/trueLF/quiet/exit0/no timeout/stable512+HEAD/fully reaped/C-UTC. Earlier failure and private execution credits are not renewed."
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-true-return-modulo-error-author.json",
+  "limits": "Only these four originals gain source agreement. Other return bodies/values/signatures, one-CV and wider handler/operand/lifetime contexts remain partial. Standing holds and 169/306 inventory status remain unchanged, with zero constructors and one obligation closed. OB31, complete core, Rocq interaction trees and BOLA/CRIS remain unfinished. No engine bug or deliberate divergence is established."
+}
