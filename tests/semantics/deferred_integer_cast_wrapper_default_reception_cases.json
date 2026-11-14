@@ -1,0 +1,26 @@
+[
+  {
+    "id": "deferred-integer-cast-wrapper-raw-phases",
+    "source": "<?php\nfunction rawInt256($zero = (int)(+(-(float)(+(E_WARNING === E_ERROR)))), $fraction = (int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5), $large = (int)(PHP_INT_MAX + (int)(+(-(float)(+(E_WARNING === E_ERROR)))))) {\n    echo 'raw:', $zero === 0, ':', $fraction === 3, ':', $large === PHP_INT_MAX, ':', $fraction, ':', $large, '|';\n}\nrawInt256();\nrawInt256();\n",
+    "source_sha256": "72f052c0f8ef7c9ab8a243eac3ca6d82cf620ba44b43c66dab1dbce9c143d9c5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical emitted INT casts preserve raw PINT0 and quiet fraction3.5 truncation to PINT3; nested outer INT over PHP_INT_MAX plus actual int0 preserves the exact large PINT without a lossy float roundtrip. Strict type/value comparisons and raw decimal MAX survive cold/warm caches."
+  },
+  {
+    "id": "deferred-integer-cast-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace IntCastWrapper256;\nuse const E_WARNING as Base256;\nuse const E_ERROR as One256;\nfunction warning256($errno, $message, $file, $line) {\n    global $x256;\n    echo 'warning:', $message, '|';\n    defaults256(2);\n    $x256 = 3.5;\n}\nfunction defaults256(int $first, int &$integer = (int)((+(-(float)(+(Base256 === One256)))) + 3.5), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('IntCastWrapper256\\\\warning256');\n$x256 = 1.5;\n$last256 = 8;\ndefaults256(last: $last256, first: $x256);\necho 'outer:x=', $x256, '|';\n",
+    "source_sha256": "a55886ea911bd95c06de12aac23c3ddc7e00f43710ee32a3ee49e660df073096",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical (int) of actual phase-aware fraction3.5 caches raw PINT3 through imported ENV, named holes, warning reentry and private BYREF reception; mutation leaves its raw cache unchanged."
+  },
+  {
+    "id": "deferred-float-cast-wrapper-int-parent-control",
+    "source": "<?php\nfunction warning255($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults255(int $first, int $later = (int)(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning255');\n$x255 = 1.5;\ndefaults255($x255);\n",
+    "source_sha256": "1743c03f3c4494af211dac1b6da9f42a1ee211d692b62b496ff23529283b9291",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "As of256, canonical emitted INT parents consume actual phase-aware numeric children with PINT identity or an intrinsically quiet FLOAT conversion. Its byte-identical255 native is reused without replay; prior Unsupported remains at its original cut."
+  }
+]
