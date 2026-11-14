@@ -308,6 +308,17 @@ def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
   -- if n_bytes* = $base64(text_bytes)
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+;; A folded one-byte string complement keeps its original string tag and byte.
+def $string_read_raw_truth(S, porigin, PSTRING ([n_byte])) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_child metadata)
+  -- if $compiled_read(S, porigin) = (PSTRING ([n_byte]))
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_read(S, porigin_child) = (PSTRING ([n_child]))
+  -- if [n_byte] = $string_not([n_child])
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_child, PSTRING ([n_child]))
+  -- if $bitnot_value(S_probe, PSTRING ([n_child]), 0) = S_probe[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([n_byte]))]
 def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $string_read_raw_unary_integer(S, porigin, i)
 ;; A quiet integer sign retains a certified integer, Boolean or null child.
