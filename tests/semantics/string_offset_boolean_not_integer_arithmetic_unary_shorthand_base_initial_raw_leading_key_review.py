@@ -173,7 +173,7 @@ pcunit.ID = n_unit /\ ppool.UNIT = n_unit /\ pcode.UNIT = n_unit
             ('add_zero','Plus','ADD',0,2,2,True),
             ('sub_zero','Minus','SUBTRACT',2,2,0,True),
             ('multiply','Mul','MULTIPLY',1,2,2,True),
-            ('divide','Div','DIVIDE',2,1,2,False),
+            ('divide','Div','DIVIDE',2,1,2,True),
             ('modulo','Mod','MODULO',3,2,1,False),
             ('shift','ShiftLeft','SHIFTLEFT',1,1,2,False),
             ('power','Pow','POWER',2,1,2,False),

@@ -226,7 +226,7 @@ $string_read_plan(S_{label}) = eps
             ('overflow_add', 'NExprBinaryOpPlus', maximum, 1, minimum, False),
             ('overflow_sub', 'NExprBinaryOpMinus', -maximum, 2, minimum, False),
             ('overflow_mul', 'NExprBinaryOpMul', maximum, 2, maximum, False),
-            ('divide', 'NExprBinaryOpDiv', 4, 2, 2, False),
+            ('divide', 'NExprBinaryOpDiv', 4, 2, 2, True),
             ('mod', 'NExprBinaryOpMod', 4, 3, 1, False),
             ('shift', 'NExprBinaryOpShiftLeft', 1, 1, 2, False),
             ('bitwise', 'NExprBinaryOpBitwiseOr', 1, 2, 3, False),
