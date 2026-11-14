@@ -47,10 +47,10 @@ def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_thi
 def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarString (BYTES text_name) metadata_name) metadata, ptbytes) = ($base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes)
 def $hook_short_reference_body(expression, ptbytes) = false -- otherwise
 
-;; An absent type or canonical scalar/nullable header keeps its raw type proof.
+;; An absent type or canonical array/scalar/nullable header keeps its raw type proof.
 dec $hook_short_reference_header(phpType18, ptbranch*) : bool
 def $hook_short_reference_header(ABSENT, eps) = true
-def $hook_short_reference_header(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["int","float","bool","string"] /\ $ptlc($base64(text_type)) = $ptascii(text))
+def $hook_short_reference_header(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["array","int","float","bool","string"] /\ $ptlc($base64(text_type)) = $ptascii(text))
 def $hook_short_reference_header(NNullableType phpType35 metadata, [ptbranch,(PTBRANCH ([PTBUILTIN "null"]))]) = $hook_short_reference_header(phpType35, [ptbranch])
 def $hook_short_reference_header(phpType18, ptbranch*) = false -- otherwise
 

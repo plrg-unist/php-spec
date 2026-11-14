@@ -102,7 +102,7 @@ def fields(fixture, source, form):
         ]
     checks += [
         '$hook_short_reference_header(ABSENT,eps)', '~$hook_short_reference_header(phpType18,eps)',
-        '~$hook_short_reference_header(phpType18_array,[(PTBRANCH ([PTBUILTIN "array"]))])',
+        '$hook_short_reference_header(phpType18_array,[(PTBRANCH ([PTBUILTIN "array"]))])',
         '~$hook_short_reference_header(phpType18_class,[(PTBRANCH ([PTCLASS ($ptascii("Box296"))]))])',
         '~$hook_short_reference_header(phpType18_union,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     ]
