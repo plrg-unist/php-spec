@@ -144,8 +144,8 @@ if __name__ == '__main__':
         ('condition_variable', '$missing?' + one + ':' + zero, None),
         ('condition_nan', '(NAN+' + one + ')?' + one + ':' + zero, None),
         ('condition_string', "('1'." + false + ')?' + one + ':' + zero, None),
-        ('shorthand_true', truth + '?:' + one, None),
-        ('shorthand_false', false + '?:' + one, None),
+        ('shorthand_true', truth + '?:' + one, 'PBOOL true'),
+        ('shorthand_false', false + '?:' + one, 'PINT 1'),
     ]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
     for name, expression, _ in raw:
@@ -180,6 +180,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent demanded parent/condition/selected source, CODE/line/precision and missing-pool refusals; own ignored pools and stale RESULT cannot forge answers. Skipped CODE/line/precision/NaN-pool changes preserve the authentic selected value, bytes and saved key, while mismatched skipped SOURCE refuses. Five nonnormal completions cannot use a stale selected RESULT. Thirty-three checked-source controls preserve actual BUDGET states before explicitly derived NORMAL fixtures test Boolean/integer/float truth, signed zero, infinities, typed selected values and nested full ternaries; skipped variable/NaN arms are not demanded, while selected variable/divzero/NaN, warningful or unsupported conditions and shorthand refuse. Exact module51 tasks, REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining retain the author evidence. Fixture source0/native0; no source/native replay or compiler/formatter/API/kernel/owner/held-boundary expansion.')
+    report['scope'] = ('Exact author prefixes plus independent demanded parent/condition/selected source, CODE/line/precision and missing-pool refusals; own ignored pools and stale RESULT cannot forge answers. Skipped CODE/line/precision/NaN-pool changes preserve the authentic selected value, bytes and saved key, while mismatched skipped SOURCE refuses. Five nonnormal completions cannot use a stale selected RESULT. Thirty-three checked-source controls preserve actual BUDGET states before explicitly derived NORMAL fixtures test Boolean/integer/float truth, signed zero, infinities, typed selected values and nested full ternaries; skipped variable/NaN arms are not demanded, while selected variable/divzero/NaN and warningful or unsupported conditions refuse. The two shorthand controls retain their original typed condition or fallback values. Exact module51 tasks, REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining retain the author evidence. Fixture source0/native0; no source/native replay or compiler/formatter/API/kernel/owner/held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
