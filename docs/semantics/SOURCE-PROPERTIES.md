@@ -1680,7 +1680,7 @@ blanket-rejected. Existing literal Empty already handles the throwing-capture
 control: last-owner capture disposal precedes receiver cleanup and preserves the caller
 destination on throw. Three changed-model source agreements and that retained
 prelaw control remain distinct; SL98/106/187/198 fixtures add no source credit.
-Fake, bound, cloned/private-cache and wider lifetimes remain partial.
+Fake, bound, other clone/private-cache modes and wider lifetimes remain partial.
 [Literal Closure quiet Get review](../../coverage/semantics/magic-property-realclosure-quiet-get-review.json).
 
 Genuine unscoped Arrow results follow those quiet consumers with the same
@@ -1693,6 +1693,16 @@ and existing live/cache checks remain. Three changed-source agreements and
 the retained prelaw literal control keep distinct cuts; SL115/127/207/216
 fixtures add no source credit. Wider producers and lifetimes remain partial.
 [Arrow quiet Get review](../../coverage/semantics/magic-property-arrow-quiet-get-review.json).
+
+Unscoped shared-cache clones of those raw function literals and Arrows also
+cross quiet CV binary ??, private ??= and Empty. A strictly descending SOURCE
+walk checks each immutable ancestor is a raw REALCLOSURE at the same origin
+with an exact Unscoped/Shared stamp, ending at an original SOURCE-eps record.
+It never reads retired ancestor captures, static cells or allocations. Whole
+cache validity still proves ordering and uniqueness; current source/capture/
+static/scope/binding and owner/cleanup checks remain. Wrapped/fake ancestors,
+private/scoped/unknown stamps and other clone/lifetime modes stay outside.
+[Shared-cache clone quiet Get review](../../coverage/semantics/magic-property-clone-quiet-get-review.json).
 
 Selected inherited private writes now call a public nonstatic, nonref
 `__set(string $name, $incoming): void`, with a required untyped value parameter.

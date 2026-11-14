@@ -8732,11 +8732,12 @@ and pending constructors remain excluded. Wider producers and lifetimes
 remain partial.
 [WeakReference quiet Get review](coverage/semantics/magic-property-weakreference-quiet-get-review.json).
 Authentic unscoped function-literal and Arrow Closure Get results cross quiet CV
-binary ??, private ??= and Empty with complete captures and the original
-shared cache stamp. Empty releases its result owner before its receiver; wider
+binary ??, private ??= and Empty with complete captures and authenticated
+original-or-clone shared cache history. Empty releases its result owner before its receiver; wider
 Closure producers, initialized static cells, binding and lifetimes remain partial.
 [Literal Closure quiet Get review](coverage/semantics/magic-property-realclosure-quiet-get-review.json).
 [Arrow quiet Get review](coverage/semantics/magic-property-arrow-quiet-get-review.json).
+[Shared-cache clone quiet Get review](coverage/semantics/magic-property-clone-quiet-get-review.json).
 [Owning quiet Get review](coverage/semantics/magic-property-owning-quiet-empty-get-review.json).
 [Owning coalesce Get review](coverage/semantics/magic-property-owning-quiet-coalesce-get-review.json).
 [Mixed quiet Get review](coverage/semantics/magic-property-mixed-quiet-get-review.json).
