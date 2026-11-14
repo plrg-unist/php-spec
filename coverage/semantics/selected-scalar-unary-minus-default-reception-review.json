@@ -1,0 +1,100 @@
+{
+  "feature": "ENUM244: selected quiet scalar UnaryMinus in guarded integer defaults",
+  "status": "Independently reviewed bounded extension; complete PHP core remains unfinished",
+  "implementation": {
+    "base": "45d73c23efdfae4b10d29eed8e40bad522084bdc",
+    "donor": "5b2559ca905e4d24b990f4fc28036336b3ae0532",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "One Numeric UnaryMinus arm requires actual selection_shape(child), Numeric(child)=eps, existing parent default/float-literal exclusions and quiet_operand(child). Existing cast_leaf strictly descends to a proper selected leaf; old unary arms remain unchanged.",
+    "preserved": "Exact raw source/declaration ENV/names, whole-tree no-DIM, conservative nonnull FLOAT coalesce witness, Shared-cache, ordinary receive and owner bounds remain."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c: zend_ast_evaluate_ex ZEND_AST_UNARY_MINUS multiplies by integer -1",
+      "Zend/zend_compile.c: zend_try_ct_eval_unary_pm and zend_compile_unary_pm use multiplication by -1",
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT preserves eligible raw constant-AST cache values before parameter verification"
+    ],
+    "phase_distinction": "UnaryPlus is excluded: deferred Zend AST adds integer0, while compile/runtime multiply by +1, which differs for signed zero. UnaryMinus consistently multiplies by -1."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-selected-scalar-unary-minus-default-reception-244",
+  "native_once": {
+    "report": "native-final.json",
+    "sha256": "6468b07c8a73138e3cb63f20f02b7e1f14859de1444f711840662c1e652f697d",
+    "runtime": "runtime.json",
+    "runtime_sha256": "bbba271e97be1ea0395919a5809c92d508da4286c0ccbc323f21baac29513f33",
+    "current_originals": 6,
+    "unchanged_original_replays": 0,
+    "scope": "Four unchanged native-v1 originals plus two corrected deferred-zero native-v2 originals, each executed once; original source paths/cwd/profile/streams/status are reused exactly."
+  },
+  "source_evidence": {
+    "revision": "add4b447e1f7398ed25f08d0dd2a423ea15c968c",
+    "report": "source-v1/report.json",
+    "sha256": "c289fbf7f43ca6922a8095a0fccdc5ff72dae1d8d59dd985f8906e9fd9b00b35",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "outer_seconds": 244.36941377492622,
+    "scope": "Cold/warm BYREF fractional defaults, imported named warning reentry and raw-MIN-string overflow TypeErrors, plus own precision throw/retry agree exactly. Leading data, effectful conditions and skipped DIM remain explicit Unsupported."
+  },
+  "state_evidence": [
+    {
+      "revision": "add4b447e1f7398ed25f08d0dd2a423ea15c968c",
+      "report": "author-v1/closure-call-protocol-pmqr58or/report.json",
+      "sha256": "58eee155983aaeeca13398891f1c6098a596e0a43daa42b020876fcc2a32886e",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        121,
+        97
+      ],
+      "source_credit": 0,
+      "outer_seconds": 247.94189924001694,
+      "scope": "Actual raw caches, saved fractional receipt, private BYREF cells, exact source/ENV/tag guards, strict-conversion refusal, budgets, throw/retry and real retirement."
+    },
+    {
+      "revision": "eae4e70835f52fee6d6a6ad38b6b0c618e8f39f8",
+      "report": "peer-v1/closure-call-protocol-_4f3cxns/report.json",
+      "sha256": "d1d8bac42fce2541cf23909b9d7581a26119cce80e526f1e69a61c74f2f250bb",
+      "mode": "fixture SL_mode,508 modules",
+      "named_conditions": 159,
+      "source_credit": 0,
+      "outer_seconds": 90.625346357,
+      "scope": "Only the named-front159 passes in this packet; its separate derived notation failure remains0. No passing full-packet aggregate is claimed."
+    },
+    {
+      "revision": "9b9e9ed89",
+      "report": "peer-derived-v2/closure-call-protocol-_73qgrk7/report.json",
+      "sha256": "6e541558970ccf4cfffe6f4c5edbcf4aa20db67d751c9fd7669462c0345b1808",
+      "mode": "fixture SL_mode,508 modules",
+      "derived_conditions": 56,
+      "source_credit": 0,
+      "outer_seconds": 16.533892573,
+      "scope": "Only the corrected derived fixture reruns: FLOAT zero signs versus bool/null/INT zero, fitting fractions, MIN overflow tags, string-versus-FLOAT coalesce witnesses, noisy operands and direct-scalar/UnaryPlus refusals."
+    }
+  ],
+  "compatibility": "Final source/catalogue/author inputs are add4-exact. Later changes correct only independent review test expectations/notation; successful source/author/named cuts retain original identities and no execution credit is renewed.",
+  "prior_zero_credit": [
+    "native-v1 cold/named literal-only coalesce FLOAT defaults were compile-rejected fixture originals; only those two changed sources execute in native-v2",
+    "The initial raw STRING-overflow coalesce expectation was corrected statically before execution",
+    "peer-v1 derived PSTRING list notation fails before boundary execution; corrected peer-derived-v2 alone earns56 conditions"
+  ],
+  "validation_contract": "Pinned PHP8.5.10 CLI,NTS,signed64, project-local oracle only, C/UTC baseline. Source360/100000steps and fixture300 retain outer600. Passing cuts bind exact stable inputs/revisions, honest modes/counts, quiet closures/exit0 and fully reaped groups. Native, normal agreement, Unsupported, failure and unrun credit remain separate.",
+  "review": "recover12_enum_selected_unary_review sent whole-six FULLCLEAR directly to MAIN52 for donor5b2559ca9/tree d6d92c37, manifest3afb9aff and patch79fc8cd6; all six source/test contents and native identities were independently matched.",
+  "joined_load": {
+    "revision": "4851e00c8569a7ada6a38d450ae6b24ad3c5e2e9",
+    "tree": "417e90cab078c5ad231332bb2514533b1cb6f207",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main52-selected-unary-minus-default-source-projection-v1.json",
+    "source_projection_sha256": "2656c9c95524f821b5703f13127682aae6e532429ae8845cb24e97d2d48cc6c8",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main52-selected-unary-minus-default-joined-508-v1/report.json",
+    "sha256": "f1bd1a5f547a792563a1d9fdbd083bdb34c37ebf2c48652f38e106b92ca78e21",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.243533064145595,
+    "result": "true plus LF; quiet/stable inputs and HEAD,exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Direct scalar and computed-Boolean unary operands, UnaryPlus phases, wider producers/entries/contexts and lifetimes remain partial. Every exact hold stays unchanged; no constructor/obligation closure or full-core/Zend-equivalence claim."
+}

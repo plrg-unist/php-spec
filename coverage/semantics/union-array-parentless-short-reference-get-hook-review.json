@@ -1,0 +1,159 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with exact ordered raw array|null or null|array headers and literal identifier/string same-field bodies. This remains a bounded partial-core slice.",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; sole oracle .tools/php/bin/php; baseline tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp298",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "3bd14ee3e3765bfd205646a4881922b51d05d750523b1374bf2413a4a98f5cbd",
+    "source_donor": "c7b6c9dd9bb902b5932d56a0d9fe6e6ce88b2396",
+    "change": "One three-line clause authenticates exactly two raw NIdentifier members against the same two ordered normalized builtin singleton branches, array/null in either order. Existing canonical and nullable clauses plus all source/body/return/owner guards are unchanged."
+  },
+  "source_contract": [
+    "spec/semantics/16-static-types.watsup::ptast preserves NUnionType child order; ptunionfold/ptunionchecked append normalized branches in that order. Raw order is authenticated pointwise rather than inferred from a type mask.",
+    "pttypename/ptaddnull render both orders as ?array for diagnostics. Matching raw class-name, duplicate/wider/scalar unions, wrong normalized order and reversed raw nullable order remain refused."
+  ],
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_property_hooks supplies the property return type and lowers short GET to RETURN.",
+    "vendor/php-src/Zend/zend_execute.c::zend_handle_fetch_obj_flags and zend_verify_ref_assignable_zval retain nullable initialization and the actual array/null reference constraint.",
+    "vendor/php-src/Zend/zend_compile.c::zend_type_to_string_resolved and Zend/zend_execute.c::zend_throw_ref_type_error_zval render either array/null order as ?array. Zend/zend_API.c::zend_zval_value_name names a rejected IS_TRUE value true.",
+    "vendor/php-src/Zend/zend_objects.c::zend_object_dtor_property removes the real type source during physical receiver retirement."
+  ],
+  "validated_behavior": [
+    "Both raw orders retain their opposite descriptor/function return orders while sharing the canonical ?array diagnostic spelling.",
+    "Omitted backing stays distinct before by-value NULL initialization. Array aliases retain real outer type sources through NULL, reinitialization and rejected scalar writes; ordinary embedded reference cells stay unconstrained.",
+    "Copied outer/nested arrays separate through COW with shared embedded reference edges. Quiet receiver retirement removes the property source before detached scalar writes. Reached raw/source/return/Hook/CODEARROW/owner controls and full-state 0/1-step joins preserve these effects."
+  ],
+  "sources": {
+    "mode": "production SL, exact original source/native stdout, stderr, completion and process status",
+    "author": {
+      "report": "author-source-v1/report.json",
+      "sha256": "7a225aad921ddcd66cbbf89a7471c96b3c23c58be740367f65d2d34269334db1",
+      "revision": "7069116bb5053bb2917b8f28892d8d9f0ba1ace7",
+      "agreements": 2
+    },
+    "independent": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "b38d0699d2b5713cfbd3027c387359ddc9fd8550106d936c36265fa23d769425",
+      "revision": "008b533797ba79025cba7a1d5210d19d9b31ffe1",
+      "agreements": 2
+    },
+    "oracle_observations": {
+      "distinct_original_byte_revisions_once": 5,
+      "author": {
+        "report": "author-native-v1/report.json",
+        "sha256": "aaaefe88b3752077b18991d9fd8c9460eb9391ff906f11f3a40ab9a4ecec4a91",
+        "revision": "817a7d2f009b694fd284912a95b7bd037577724f"
+      },
+      "independent_initial": {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "f1c9671abaec49496811c96106f34e1206c43513ab4e20ec6f726880234ef9aa",
+        "revision": "89bf85f9fcf3907bce82f20ce838de9da69086d2"
+      },
+      "independent_corrected_second_only": {
+        "report": "reviewer-corrected-native-v1/report.json",
+        "sha256": "7cca98efd28bb29ad7d53396ff3c2eb062d2928d0d88ce1ba56a29be938b562d",
+        "revision": "008b533797ba79025cba7a1d5210d19d9b31ffe1"
+      },
+      "reuse": "The unchanged first peer original retains its exact native path/bytes/binary/profile/environment. Only the changed second byte revision receives a new native observation under the explicit per-row bridge. The original bool-word observer failure earns no source credit."
+    },
+    "caps_seconds": {
+      "native": 15,
+      "model": 120,
+      "outer_recorder": 140
+    }
+  },
+  "fixture_cuts": [
+    {
+      "report": "author-array-null-protocol-v1/report.json",
+      "sha256": "4c1e495e36b4acddebbb54133d590e17944f1a6de4ee67808ba599475456a477",
+      "revision": "c7b6c9dd9bb902b5932d56a0d9fe6e6ce88b2396",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 157,
+      "elapsed_seconds": 49.190688371658325,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-null-array-protocol-v1/report.json",
+      "sha256": "042c39a3fb95f5a02b33e748c0dc2910fbbc2a217f6bc1e0d11c666ea772a84e",
+      "revision": "c7b6c9dd9bb902b5932d56a0d9fe6e6ce88b2396",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 156,
+      "elapsed_seconds": 48.37041187286377,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-array-null-protocol-v1/report.json",
+      "sha256": "fc1483daef435d80b97727f36dcdf94b0a8cf1b02d2edc7f1aa527b4195c5e39",
+      "revision": "008b533797ba79025cba7a1d5210d19d9b31ffe1",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 156,
+      "elapsed_seconds": 47.205111265182495,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-null-array-protocol-v1/report.json",
+      "sha256": "cd2eb4da0d9d27420aaf035573013fd5833ccb0d68c13be5599d9e334d02ac63",
+      "revision": "008b533797ba79025cba7a1d5210d19d9b31ffe1",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 154,
+      "elapsed_seconds": 43.013076066970825,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    }
+  ],
+  "compatibility": {
+    "manifest": "final-static-v1/report.json",
+    "sha256": "8b4cd07422d5d18b54cb1fa50b2d29fec42e2cac19bc57f73d0fb343d515f7a0",
+    "selected_source_paths": 16,
+    "source_agreement_credit": 0,
+    "checks": "All four complete author157/156 and peer156/154 tested DSLs stay byte-exact at the donor and original source paths. Only two matching raw array|null legacy helper refusals are promoted. Other old bytes and source/state/canonical cuts retain their identities; canonical array/?array and nonnullable Error behavior remain separate affected-old evidence. Make adds exactly six recipes; no accepted execution is renewed."
+  },
+  "preserved_zero_credit": [
+    {
+      "cut": {
+        "report": "author-prelaw-v1/report.json",
+        "sha256": "6f5cc5de8f7d3a5896e73f74419bb21c327aeda213bc4dd074a00d3d82b3d0c7",
+        "revision": "817a7d2f009b694fd284912a95b7bd037577724f"
+      },
+      "outcome": "The selected prelaw array-null original is Unsupported at the existing hook-body admission gate."
+    },
+    {
+      "cut": {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "f1c9671abaec49496811c96106f34e1206c43513ab4e20ec6f726880234ef9aa",
+        "revision": "89bf85f9fcf3907bce82f20ce838de9da69086d2"
+      },
+      "outcome": "The initial peer aggregate failed its second original observer: it expected Cannot assign bool, whereas the pinned engine reports Cannot assign true. The first native row is valid and unchanged. Both peer model rows were unrun before this correction; the changed second native byte revision was executed once and the current source2 cut uses exact pointwise provenance.",
+      "source_agreement_credit": 0
+    }
+  ],
+  "actual_integration": {
+    "revision": "bb1867cff4b19516cefc25668cdea37afb5e7c36",
+    "tree": "316e6e8f2f491107bd1d84653f34b582540eabc0",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main52-ordered-array-get-hook-source-projection-v1.json",
+    "source_projection_sha256": "175345140943b884f74808bcbbaa538f4b65b7170c4498cbcc1203d105cebc77",
+    "sole_saved_canonical": "../php-spec-evidence-archive/resumed-main-20261112/main52-ordered-array-get-hook-joined-508-v1/report.json",
+    "sha256": "d888ad8c13235851dae334bb3213e2d892582c65819e47c7e48d6a63d126a119",
+    "elapsed_seconds": 16.434753306908533,
+    "cap_seconds": 60,
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "result": "PASS; quiet true LF, stable inputs/HEAD, fully reaped",
+    "source_agreement_credit": 0
+  },
+  "independent_review": {
+    "private_source_and_state": "recover12_compiler_array_union_review: whole selected16 donor independently FULLCLEAR.",
+    "actual_source_and_same_saved_canonical": "recover12_compiler_array_union_review: independently CLEAR once; no semantic/native rerun or duplicate author actual receipt."
+  },
+  "remaining": "Canonical object/?object, class-name, scalar/null and wider unions/intersections, parented/Trait typed short hooks and wider bodies, consumers or lifetimes remain partial. Preserve narrow V110, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and every other exact hold.",
+  "engine_divergences": [],
+  "recovery": "Raw reports, original snapshots, exact commands/inputs and the failed native observer remain under artifact_root. Source and fixture records keep their original revisions; metadata descendants renew no execution credit."
+}
