@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "clone-cv-coalesce-literal-result-owner",
+      "source": "<?php\nclass QuietCloneCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietCloneCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = function() { echo \"CALL;\"; return 7; };\n$middle = clone $seed;\n$held = clone $middle;\n$seed = null;\n$middle = null;\n$watch = WeakReference::create($held);\n$reader = new QuietCloneCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietCloneCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 7 ? \"RESULT;\" : \"BAD_RESULT;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "c8297120d0d8b0f8230ff652d707082e4547e60c89eddfdd4aafad97fdc8afb4",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7Q0FMTDtSRVNVTFQ7Q0FQVFVSRTtSRVRJUkVEO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "clone-private-coalesce-assignment-implicit-captured-owner",
+      "source": "<?php\nclass QuietCloneAssignPayload {\n    public function __destruct() { global $watch; echo \"PAYLOAD;\"; echo $watch->get() === null ? \"CLOSURE_GONE;\" : \"BAD_CLOSURE;\"; }\n}\nclass QuietCloneAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(?string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietCloneAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$payload = new QuietCloneAssignPayload;\n$seed = fn() => $payload;\n$held = clone $seed;\n$seed = null;\n$payload = null;\n$watch = WeakReference::create($held);\n$reader = new QuietCloneAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietCloneAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() instanceof QuietCloneAssignPayload ? \"RESULT;\" : \"BAD_RESULT;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "647e302a99e09174b95b0871f2ec4b7a8cb422cdc59b6098304645924ef8f208",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "STtHO1JFQ0VJVkVSO1NBTUU7UkVTVUxUO0NBUFRVUkU7UEFZTE9BRDtDTE9TVVJFX0dPTkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    }
+  ]
+}

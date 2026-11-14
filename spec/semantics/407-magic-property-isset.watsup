@@ -93,6 +93,20 @@ def $property_magic_cv_weakmap(pobject) = false -- otherwise
 dec $property_magic_cv_weakreference(pobject) : bool
 def $property_magic_cv_weakreference(WEAKREFERENCE (n_target)) = true
 def $property_magic_cv_weakreference(pobject) = false -- otherwise
+;; Retired literal ancestors authenticate caches without owning captured cells.
+dec $closure_cache_at(pclosurecache*, nat) : pclosurecache?
+dec $property_magic_cv_literal_history(pstate, nat, porigin) : bool
+def $property_magic_cv_literal_history(S, n, porigin) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)})
+def $property_magic_cv_literal_history(S, n, porigin) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = REALCLOSURE porigin pitem* pstaticcell*
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin, SOURCE (n_source), SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)})
+  -- if $(n_source < n)
+  -- if $property_magic_cv_literal_history(S, n_source, porigin)
+def $property_magic_cv_literal_history(S, n, porigin) = false -- otherwise
 ;; Ordinary unscoped function literals retain complete captures and shared caches.
 dec $property_magic_cv_realclosure(pstate, nat) : bool
 def $property_magic_cv_realclosure(S, n) = true
@@ -106,7 +120,7 @@ def $property_magic_cv_realclosure(S, n) = true
   -- if $closure_live_object_valid(S, n)
   -- if $closure_source_class(S, porigin) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
-  -- if {OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)} <- S.CLOSURECACHES
+  -- if $property_magic_cv_literal_history(S, n, porigin)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_realclosure(S, n) = false -- otherwise
 ;; Arrow templates bind their implicit captures to the actual source expression.
@@ -126,7 +140,7 @@ def $property_magic_cv_arrow(S, n) = true
   -- if $closure_live_object_valid(S, n)
   -- if $closure_source_class(S, porigin) = eps
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
-  -- if {OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)} <- S.CLOSURECACHES
+  -- if $property_magic_cv_literal_history(S, n, porigin)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_arrow(S, n) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
