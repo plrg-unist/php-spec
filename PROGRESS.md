@@ -788,7 +788,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current combined source cut `85119af7d48eadff663a312d3d2a90a09b0e2ed7` (tree `bafcb3e2b71702d4c0ecf21b8bc4c2ab597b1ee3`) passes its saved 508-module production SL load in 16.591383731923997 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main60-enum256-current-load-v1/report.json` (SHA-256 `e584aff792d0be2cca6db1685f6e621cd640dbfe894e6f2dcc1a3315e3cac68d`). Separate family records retain DIV `706f6ebc`/`a8cf7968` and STRING `9c25bbed44`/`96bea409`.
+The current combined source cut `871aa5f5bd0b8a7a72a3246a1feff2916ce69c92` (tree `f4b973815c610416520475baf8f1e5dc8684c065`) passes its saved 508-module production SL load in 16.793771617114544 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main60-ref84-current-load-v1/report.json` (SHA-256 `e69464ad3c772a4d860366908e8865ac2857c8aa106cf420a76820e8133c7808`). Separate family records retain DIV `706f6ebc`/`a8cf7968` and STRING `9c25bbed44`/`96bea409`.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,

@@ -797,6 +797,19 @@ use fresh REF83 reached states without historical renewal. Controller/Make remai
 unexecuted/source0. Explicit unions, wider callable forms, contexts and lifetimes
 remain partial; every exact held dependency stays unchanged.
 
+Explicit `callable|null` and `null|callable` required formals and returns also
+retain exactly two raw Identifiers and normalized branches in the same order.
+Casefolding, actual NULL/name verification, ordinary BYREF body writes, producer
+retirement and separate private Notice-cell ownership keep their existing rules.
+The [ordered callable/null review](../../coverage/semantics/cv-union-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (four Notices and separate RECEIVE/RETURN priorities),
+author408/peer272 and genuine prelaw175/139 fixture-SL507 cuts separate from the
+sole actual `871aa5f5bd` production-SL508 load. Exact promotions in three old
+helper files use fresh REF84 states without historical renewal. Derived-control
+bindings were corrected before the first full run. Controller/Make remain
+unexecuted/source0. Other callable unions, forms, contexts and lifetimes remain
+partial; every exact held dependency stays unchanged.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
