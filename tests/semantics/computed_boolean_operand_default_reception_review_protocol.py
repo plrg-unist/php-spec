@@ -226,7 +226,7 @@ for selection in [node('NExprTernary', constant('true'), true, constant('Unknown
     checks.extend([
         f'$lossy_optional_integer_condition($plempty(false),{selection}) = (true)',
         f'~$lossy_optional_integer_boolean_shape({selection})',
-        f'$lossy_optional_integer_quiet_operand($plempty(false),{selection}) = eps',
+        f'$lossy_optional_integer_quiet_operand($plempty(false),{selection}) = (NINT 1)',
     ])
 for expression in [binary('Div', two, false),
                    binary('Pow', false, node('NExprUnaryMinus', one)),

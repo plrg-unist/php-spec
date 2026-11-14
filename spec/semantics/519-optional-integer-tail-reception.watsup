@@ -38,10 +38,15 @@ def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
   -- if $coerce_number(PSTRING n*) = COERCED pnumber false
 def $lossy_optional_integer_quiet_operand(plenv, expression) = (NINT i)
-  -- if $lossy_optional_integer_numeric(plenv, expression) = eps
   -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_numeric(plenv, expression) = eps
   -- if $lossy_optional_integer_condition(plenv, expression) = (b)
   -- if $coerce_number(PBOOL b) = COERCED (NINT i) false
+def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
+  -- if $lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_numeric(plenv, expression) = eps
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)
+  -- if $lossy_optional_integer_quiet_operand(plenv, expression_leaf) = (pnumber)
 def $lossy_optional_integer_quiet_operand(plenv, expression) = eps -- otherwise
 def $lossy_optional_integer_power_operand(plenv, expression) = $lossy_optional_integer_quiet_operand(plenv, expression)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
@@ -51,7 +56,31 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NINT i)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
-  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG"), $ptascii("PHP_MAJOR_VERSION"), $ptascii("PHP_MINOR_VERSION"), $ptascii("PHP_RELEASE_VERSION"), $ptascii("PHP_VERSION_ID"), $ptascii("E_ERROR"), $ptascii("E_WARNING"), $ptascii("E_PARSE"), $ptascii("E_NOTICE"), $ptascii("E_CORE_ERROR"), $ptascii("E_CORE_WARNING"), $ptascii("E_COMPILE_ERROR"), $ptascii("E_COMPILE_WARNING"), $ptascii("E_USER_ERROR"), $ptascii("E_USER_WARNING"), $ptascii("E_USER_NOTICE"), $ptascii("E_RECOVERABLE_ERROR"), $ptascii("E_DEPRECATED"), $ptascii("E_USER_DEPRECATED"), $ptascii("E_ALL")]
+  -- if pnreference.RESOLVED <- [
+    [80, 72, 80, 95, 73, 78, 84, 95, 77, 65, 88], ;; PHP_INT_MAX
+    [80, 72, 80, 95, 73, 78, 84, 95, 77, 73, 78], ;; PHP_INT_MIN
+    [80, 72, 80, 95, 73, 78, 84, 95, 83, 73, 90, 69], ;; PHP_INT_SIZE
+    [80, 72, 80, 95, 70, 76, 79, 65, 84, 95, 68, 73, 71], ;; PHP_FLOAT_DIG
+    [80, 72, 80, 95, 77, 65, 74, 79, 82, 95, 86, 69, 82, 83, 73, 79, 78], ;; PHP_MAJOR_VERSION
+    [80, 72, 80, 95, 77, 73, 78, 79, 82, 95, 86, 69, 82, 83, 73, 79, 78], ;; PHP_MINOR_VERSION
+    [80, 72, 80, 95, 82, 69, 76, 69, 65, 83, 69, 95, 86, 69, 82, 83, 73, 79, 78], ;; PHP_RELEASE_VERSION
+    [80, 72, 80, 95, 86, 69, 82, 83, 73, 79, 78, 95, 73, 68], ;; PHP_VERSION_ID
+    [69, 95, 69, 82, 82, 79, 82], ;; E_ERROR
+    [69, 95, 87, 65, 82, 78, 73, 78, 71], ;; E_WARNING
+    [69, 95, 80, 65, 82, 83, 69], ;; E_PARSE
+    [69, 95, 78, 79, 84, 73, 67, 69], ;; E_NOTICE
+    [69, 95, 67, 79, 82, 69, 95, 69, 82, 82, 79, 82], ;; E_CORE_ERROR
+    [69, 95, 67, 79, 82, 69, 95, 87, 65, 82, 78, 73, 78, 71], ;; E_CORE_WARNING
+    [69, 95, 67, 79, 77, 80, 73, 76, 69, 95, 69, 82, 82, 79, 82], ;; E_COMPILE_ERROR
+    [69, 95, 67, 79, 77, 80, 73, 76, 69, 95, 87, 65, 82, 78, 73, 78, 71], ;; E_COMPILE_WARNING
+    [69, 95, 85, 83, 69, 82, 95, 69, 82, 82, 79, 82], ;; E_USER_ERROR
+    [69, 95, 85, 83, 69, 82, 95, 87, 65, 82, 78, 73, 78, 71], ;; E_USER_WARNING
+    [69, 95, 85, 83, 69, 82, 95, 78, 79, 84, 73, 67, 69], ;; E_USER_NOTICE
+    [69, 95, 82, 69, 67, 79, 86, 69, 82, 65, 66, 76, 69, 95, 69, 82, 82, 79, 82], ;; E_RECOVERABLE_ERROR
+    [69, 95, 68, 69, 80, 82, 69, 67, 65, 84, 69, 68], ;; E_DEPRECATED
+    [69, 95, 85, 83, 69, 82, 95, 68, 69, 80, 82, 69, 67, 65, 84, 69, 68], ;; E_USER_DEPRECATED
+    [69, 95, 65, 76, 76] ;; E_ALL
+  ]
   -- if $builtin_value_bytes(pnreference.RESOLVED) = (PINT i)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
@@ -106,16 +135,16 @@ def $lossy_optional_integer_numeric(plenv, NExprUnaryMinus expression metadata) 
   -- if $lossy_optional_integer_float_literal(NExprUnaryMinus expression metadata) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
 def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
   -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
 def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = eps \/ $lossy_optional_integer_numeric(plenv, expression_right) = eps
   -- if $lossy_optional_integer_quiet_operand(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_quiet_operand(plenv, expression_right) = (pnumber_right)
@@ -123,17 +152,17 @@ def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
   -- if $power_warning_number($number_value(pnumber)) = (pnumber)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR, BITXOR]
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (NINT i_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (NINT i_right)
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if $integer_binary(pbin, i_left, i_right) = IRESULT i
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY POWER expression_left expression_right
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (NINT i_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (NINT i_right)
   -- if $long_range(i_left) /\ $long_range(i_right)
@@ -141,16 +170,16 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $power_prepare(NINT i_left, NINT i_right) = POWERDONE (NINT i) false
   -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY POWER expression_left expression_right
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
   -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left) /\ $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
   -- if (NFLOAT n, false) = $num_pow(pnumber_left, pnumber_right)
   -- if $(n < 18446744073709551616)
 def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
-  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY POWER expression_left expression_right
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = eps \/ $lossy_optional_integer_numeric(plenv, expression_right) = eps
   -- if $lossy_optional_integer_power_operand(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_power_operand(plenv, expression_right) = (pnumber_right)
@@ -529,16 +558,16 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
-  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_false, false, z))
 def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
-  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL true)
+  -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_true, false, z))
@@ -696,10 +725,10 @@ def $lossy_default_parameter_context(S, pfunction, n, n_bits, z) = true
   -- if psparam = pfunction.SIGNATURE.PARAMETERS[n]
   -- if psparam.NAME <- S.CVS /\ ~$environment_blocked(S, psparam.NAME)
   -- if ~$update_released_array_name(S, psparam.NAME)
-  -- if $lossy_optional_integer_header(S, pfunction, pfunction.SIGNATURE.PARAMETERS, 0)
-  -- if $lossy_optional_integer_deferred(S, pfunction, n)
   -- if $default_at(pfunction.DEFAULTS, n) = (pdefault)
   -- if $default_current_cache(S, pdefault.ORIGIN) = ({ORIGIN pdefault.ORIGIN, VALUE PFLOAT n_bits, CLASS PVSCALAR})
+  -- if $lossy_optional_integer_header(S, pfunction, pfunction.SIGNATURE.PARAMETERS, 0)
+  -- if psparam.DEFAULT = PSDEFAULT expression_default "deferred"
   -- if pcallcontext.CALLSITE = (porigin_call)
   -- if $origin_node(S.SOURCES, porigin_call) = (NExprFuncCall phpType19 (SEQUENCE phpType7*) metadata_call)
   -- if $lossy_positional_arguments(phpType7*) \/ $lossy_named_tail_arguments(phpType7*)
@@ -757,23 +786,23 @@ def $lossy_default_parameter_begin(S, pfunction, n, n_bits) = S[.COMPLETION = UN
 
 dec $lossy_default_parameter_source_valid(pstate, ptask) : bool
 def $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = true
+  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
   -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
   -- if $lossy_default_parameter_context(S, pfunction, n, n_bits, z)
   -- if S.ORIGIN = ($default_parameter_origin(S, porigin, n))
   -- if $lookup(S.ENV, pfunction.SIGNATURE.PARAMETERS[n].NAME) = (n_cell)
   -- if $(n_cell < |S.STORE|) /\ (HCELL n_cell) <- S.ALLOCATIONS
-  -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
 def $lossy_default_parameter_source_valid(S, ptask) = false -- otherwise
 def $call_task_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = (S.TODO = [LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z] /\ $lossy_default_parameter_source_valid(S, LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z))
 def $task_nodes(LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z) = eps
 
 def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.RESUME = LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z
-  -- if $lossy_default_parameter_source_valid(S, perrorcall.RESUME)
   -- if $lossy_parameter_snapshot(n_bits) = ((i, ptbytes))
-  -- if perrorcall.SITE = $default_parameter_origin(S, porigin, n)
   -- if perrorcall.LEVEL = 8192 /\ perrorcall.MESSAGE = ptbytes /\ perrorcall.LINE = z
   -- if perrorcall.EVENT = DIAGNOSTIC "Deprecated" ptbytes z
+  -- if $lossy_default_parameter_source_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = $default_parameter_origin(S, porigin, n)
 
 rule PhpStep/lossy-default-parameter-finish: S ~> $default_store(S, pfunction, n, PINT i)
   -- if S.TODO = [LOSSY_DEFAULT_PARAMETER_RECEIVE porigin n n_cell n_bits i z]

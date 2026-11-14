@@ -1,0 +1,50 @@
+[
+  {
+    "id": "selected-scalar-operand-default-cold-warm",
+    "source": "<?php\nfunction selectionWarning243($errno, $message, $file, $line) {\n    global $xSelection243;\n    echo 'warning:', $message, '|';\n    $xSelection243 = 3.5;\n}\nfunction selectionDefaults243(int $first, int $sum = ((E_WARNING > E_ERROR ? '2' : '3') + E_ERROR), int $falseLeft = (((E_WARNING > E_ERROR ? false : null) ?? '9') + E_WARNING), int $nullLeft = (((E_WARNING > E_ERROR ? null : false) ?? '2.0') * E_WARNING), int $power = (E_WARNING ** ((E_WARNING > E_ERROR) ?: '2')), int &$fraction = ((E_WARNING > E_ERROR ? '2.5' : false) + (E_ERROR - E_ERROR))) {\n    echo 'body:', $first, ':', $sum, ':', $falseLeft, ':', $nullLeft, ':', $power, ':', $fraction, '|';\n    $fraction = 9;\n}\nset_error_handler('selectionWarning243');\n$xSelection243 = 1.5;\nselectionDefaults243($xSelection243);\necho 'cold:x=', $xSelection243, '|';\n$xSelection243 = 1.5;\nselectionDefaults243($xSelection243);\necho 'warm:x=', $xSelection243, '|';\n",
+    "source_sha256": "808010c466c137cbeb5f653dae6f1391f28869f60562ef2065e2ac7a7dd41362",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Selected original string/Boolean/null values pass through the existing bounded cast_leaf descent before quiet operand conversion. False remains nonnull while null selects its RHS;shorthand retains its actual true Boolean condition. Raw PINT3/PINT2/PFLOAT4/PINT2/PFLOAT2.5 caches precede private reception,cold/warm BYREF mutation and own precision callbacks."
+  },
+  {
+    "id": "selected-scalar-operand-default-alias-named-reentry",
+    "source": "<?php\nnamespace SelectionAlias243;\nuse const E_WARNING as Base243;\nuse const E_ERROR as One243;\nfunction warning243($errno, $message, $file, $line) {\n    global $xAlias243;\n    echo 'warning:', $message, '|';\n    defaults243(2);\n    $xAlias243 = 3.5;\n}\nfunction defaults243(int $first, int $integer = ((Base243 > One243 ? ' 2 ' : false) + One243), int $zero = (((Base243 > One243 ? false : null) ?? '8') * Base243), int $floating = (((Base243 > One243 ? null : false) ?? '2.0') + One243), int $power = (Base243 ** ((Base243 > One243) ?: '2')), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $floating, ':', $power, ':', $last, '|';\n}\n\\set_error_handler('SelectionAlias243\\\\warning243');\n$xAlias243 = 1.5;\n$lastAlias243 = 8;\ndefaults243(last: $lastAlias243, first: $xAlias243);\necho 'outer:x=', $xAlias243, '|';\n",
+    "source_sha256": "d4aa1c62ff8cf8810ffc7db6b66216a73efcbe08c98c644b85a8e1442a18f443",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual imported-condition ternary/coalesce/shorthand leaves retain source/ENV/proper-descent and existing nonnull coalesce CASTINT witness authority. Named holes1..4,last8 and reentry preserve raw PINT3/PINT0/PFLOAT3/PINT2 caches before private PINTs,without granting generic Numeric identity to selected raw strings or Boolean values."
+  },
+  {
+    "id": "selected-scalar-operand-default-fractional-handler-throw-retry",
+    "source": "<?php\nfunction selectionThrowWarning243($errno, $message, $file, $line) {\n    global $xThrow243, $countThrow243;\n    $countThrow243 = $countThrow243 + 1;\n    echo 'warning:', $countThrow243, ':', $message, '|';\n    $xThrow243 = 4.5;\n    if ($countThrow243 === 2) { throw new Exception('selection243', 243); }\n}\nfunction selectionThrow243(int $first, int $later = ((E_WARNING > E_ERROR ? '5' : false) / E_WARNING)) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('selectionThrowWarning243');\n$countThrow243 = 0;\n$xThrow243 = 1.5;\n$result243 = 99;\ntry { $result243 = selectionThrow243($xThrow243); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result243, ':x=', $xThrow243, '|'; }\n$xThrow243 = 1.5;\n$result243 = selectionThrow243($xThrow243);\necho 'retry:', $result243, ':x=', $xThrow243, '|';\n",
+    "source_sha256": "b86bb3750d83270e23a7adad94b3032554952d02d95091c1a37fa333ebc93897",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The selected raw FULLNUM string5 becomes NINT5 only as an operand;division yields raw PFLOAT2.5. Its own later precision callback throws after caching;destination99 and raw-cache retry remain intact before private PINT2 reception and cleanup."
+  },
+  {
+    "id": "selected-scalar-operand-default-leading-selected-control",
+    "source": "<?php\nfunction warning243($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults243(int $first, int $later = ((E_WARNING > E_ERROR ? '2tail' : false) + E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning243');\n$x243 = 1.5;\ntry { defaults243($x243); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "63a07a0f7c4a90e54c623022803b677eb2dfbd9b410b11db0d43570348ff7c6f",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A selected leading-numeric string remains warningful;descent must preserve its raw bytes and reject nonquiet conversion."
+  },
+  {
+    "id": "selected-scalar-operand-default-deprecated-condition-control",
+    "source": "<?php\nfunction warning243($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults243(int $first, int $later = ((E_STRICT > E_ERROR ? '2' : false) + E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning243');\n$x243 = 1.5;\ntry { defaults243($x243); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "555f66000b997f20bca849dd3bdf66a161b1a6c4cdd518e0257ba580f6e77761",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "An effectful selected condition does not gain quiet truth/source authority merely because its selected leaf is a numeric string."
+  },
+  {
+    "id": "selected-scalar-operand-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning243($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults243(int $first, int $later = ((E_WARNING > E_ERROR ? '2' : (int)'8'[0]) + E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning243');\n$x243 = 1.5;\ntry { defaults243($x243); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "ffe75dabcf56cb462715e0b52a6039cf5daee773216098d845b37efb88adb40a",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Whole-tree no-DIM authority still rejects a skipped DIM despite a quiet selected string leaf and proper selected descent."
+  }
+]
