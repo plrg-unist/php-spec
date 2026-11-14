@@ -47,7 +47,7 @@ def conditions(program, path, index):
         if tree[0] != 'COMPILED':
             if result == 'PNULL':
                 guards += ['$compiled_read(S_after, ' + origin + ') = eps',
-                           '$string_read_runtime_bytes(S_after, ' + origin + ') = eps']
+                           '$string_read_runtime_bytes(S_after, ' + origin + ') = (eps)']
             continue
         target = 'pcpath_peer_primitive_' + tag
         guards.append(origin + ' = PORIGIN 0 ' + target)

@@ -114,7 +114,7 @@ def conditions(program, path, index):
                        normal + ' = ' + state + '[.COMPLETION = NORMAL]',
                        '$string_read_runtime_value(' + normal + ', ' + origin + ') = ' + output,
                        '$string_read_runtime_bytes(' + normal + ', ' + origin + ') = ' +
-                       ('($echo_value(' + expected + '))' if expected is not None and expected != 'PNULL' and not expected.startswith('PFLOAT ') else 'eps'),
+                       ('($echo_value(' + expected + '))' if expected is not None and not expected.startswith('PFLOAT ') else 'eps'),
                        '$string_read_runtime_value(' + normal + '[.RESULT = KNOWN (PINT 99)], ' + origin + ') = ' + output]
     return checks + guards, derived + len(guards)
 

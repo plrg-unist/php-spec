@@ -53,7 +53,7 @@ def value(checks, tag, tree):
         checks += ['$select_value(' + select + ', ABSENT, ' + expression + '_2, 5, 0, 5) = ' + select + '[.TODO = [$at_task((porigin_' + tag + '_2), EVAL ' + expression + '_2), VALUE_COPY 5] ++ ' + select + '.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]']
     checks += ['$string_read_runtime_value(S, ' + origin + ') = (' + result + ')',
                '$string_read_runtime_bytes(S, ' + origin + ') = ' +
-               ('eps' if result == 'PNULL' or result.startswith('PFLOAT ') else '($echo_value(' + result + '))')]
+               ('eps' if result.startswith('PFLOAT ') else '($echo_value(' + result + '))')]
     return result, number
 
 

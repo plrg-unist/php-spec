@@ -41,7 +41,7 @@ def value(checks, tag, tree):
                '$number_binary(DIVIDE, NINT 1, NINT 0) = DIVZERO',
                '$string_read_runtime_value(S, porigin_' + tag + '_' + str(skipped) + ') = eps',
                '$string_read_runtime_value(S, ' + origin + ') = (' + result + ')']
-    if result == 'PNULL' or result.startswith('PFLOAT '):
+    if result.startswith('PFLOAT '):
         checks += ['$string_read_runtime_bytes(S, ' + origin + ') = eps']
     else:
         checks += ['$string_read_runtime_bytes(S, ' + origin + ') = ($echo_value(' + result + '))']

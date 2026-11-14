@@ -61,7 +61,7 @@ def value(checks, tag, tree):
                        '$coalesce_result(' + select + ', ' + expression + '_1, 5, 5) = ' + select + '[.BASE = BASE_VALUE (KNOWN PNULL)]']
     checks += ['$string_read_runtime_value(S, ' + origin + ') = (' + result + ')',
                '$string_read_runtime_bytes(S, ' + origin + ') = ' +
-               ('eps' if result == 'PNULL' or result.startswith('PFLOAT ') else '($echo_value(' + result + '))')]
+               ('eps' if result.startswith('PFLOAT ') else '($echo_value(' + result + '))')]
     return result, number
 
 
@@ -81,6 +81,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = 'Four emitted coalesce trees retain NORMAL/parent CODEfalse/read-eps/positive line, exact left and fallback SOURCE identities, ordinary rather than quiet-location left operands and equal captured precision only for demanded values. Nonnull PBOOL false/PINT0/FLOAT-0 retain their original values without truth or fallback demand; selected PNULL requires the typed fallback. Actual module66 coalesce_result keeps the original nonnull result and resets BASE, or schedules exact fallback AT(EVAL)/VALUE_COPY while clearing RESULT/BASE. Full-ternary-selected NULL retains its actual skipped raw true source and module51 selection. FLOAT VALUE and emitted NULL keep BYTE eps. REQUEST keys1/-1/0/-4 retain captured14/live17 precision, Warning owners, supplied Throwable identity, fixed bounds, cleanup and budget rejoining. No compiler/schema/numeric/formatter/API/owner or quiet-location expansion; saved natives reused once and fixture source0/native0.'
+    report['scope'] = 'Four emitted coalesce trees retain NORMAL/parent CODEfalse/read-eps/positive line, exact left and fallback SOURCE identities, ordinary rather than quiet-location left operands and equal captured precision only for demanded values. Nonnull PBOOL false/PINT0/FLOAT-0 retain their original values without truth or fallback demand; selected PNULL requires the typed fallback. Actual module66 coalesce_result keeps the original nonnull result and resets BASE, or schedules exact fallback AT(EVAL)/VALUE_COPY while clearing RESULT/BASE. Full-ternary-selected NULL retains its actual skipped raw true source and module51 selection. FLOAT VALUE keeps BYTE eps; exact emitted NULL retains certified empty BYTE. REQUEST keys1/-1/0/-4 retain captured14/live17 precision, Warning owners, supplied Throwable identity, fixed bounds, cleanup and budget rejoining. No compiler/schema/numeric/formatter/API/owner or quiet-location expansion; saved natives reused once and fixture source0/native0.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
