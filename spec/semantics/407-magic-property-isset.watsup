@@ -216,6 +216,16 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NScalarString (B
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if ptbytes_raw = $base64(text)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
+def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NExprBinaryOpConcat (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata)
+  -- if $origin_child((porigin_name), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin_name), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (NScalarString (BYTES text_left) metadata_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (NScalarString (BYTES text_right) metadata_right)
+  -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
+  -- if ptbytes_raw = $base64(text_left) ++ $base64(text_right)
+  -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, phpType20, ptbytes) = false -- otherwise
 ;; Direct parent labels retain descriptor bytes before class-name lookup.
 dec $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) : bool
