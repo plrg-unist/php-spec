@@ -1,0 +1,111 @@
+{
+  "feature": "FINAL MOD zero Error after a selected literal Echo and explicit NULL return (OB104)",
+  "decision": "Whole five-file source/test independently accepted; Output and complete core remain partial",
+  "reviewer": "/root/recover9_output_eligibility_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole local .tools/php/bin/php and recorded profile",
+  "cuts": {
+    "source_only": "b82b5db83ed00b15c1ccfd2163a6456e3a26f411",
+    "precode": "8d7a0abd3ffa0021c995131a817ad36ec42231e0",
+    "runtime": "2a976d1e53875053583b19656499a6defe213f7f",
+    "ready": "9c8fe6fbd7d83b871950184a49e5ec46acb1738d"
+  },
+  "scope": "Four new originals: Warning LEFT CONST and Deprecated BOTH CV pair with return null; Warning RIGHT CV pair and mixed Warning-to-Deprecated CONST/FLOAT with return NULL. The same named handler has two required untyped nonvariadic BYVAL formals, literal H echo and mask8194. One/two real calls retire two/four formals before FINAL MOD-zero Error; AH/AHH stays buffered.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return compiles the explicit expression and emits ordinary ZEND_RETURN for this untyped non-BYREF function.",
+    "Zend/zend_vm_def.h::ZEND_RETURN copies CONST NULL into the caller return slot and enters zend_leave_helper; NULL adds no owner.",
+    "Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE; explicit NULL is consumed through the existing handler path."
+  ],
+  "change": "A13-line pure tail predicate retains eps=true and admits only one own raw NStmtReturn(NExprConstFetch(NName null)), case-insensitively. CODE.UNIT/BODY, own Return and NULL child/path, compiled expression/source line and PNULL read remain required. The existing Echo head binds its tail and calls that predicate; all other selected-capture premises are literal. No return kernel, schema, owner, provider, numeric or evaluator-fallback change.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-explicit-null-modulo-error-104",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "b760a006b1e0af72ec879e08783f66f0e0847748bf531e41866c3d4b234c445e",
+      "cut": "source_only",
+      "observations": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0,
+      "mode": "native PHP CLI; recorded C/UTC profile"
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "695cc71db3004e6dc9d5fe09c3fe43fc923e2f5a03d78a1e28e510ea33a7889f",
+      "cut": "source_only",
+      "mode": "production SL508/cache=false/det=true",
+      "selection": [
+        1,
+        2
+      ],
+      "cap_seconds": [
+        90,
+        120
+      ],
+      "source_credit": 0,
+      "other_originals_unrun": 2,
+      "collection_complete": true,
+      "aggregate_pass": false
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "05188a77d574643317dabfea3aaf1f4261a80412b1ffcd6dbe6386f0e473fd76",
+      "cut": "precode",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "6c56d8fcee7df53ed6caa223abeeaa814405e8526502a67d8628051be0f6b9f0",
+      "cut": "ready",
+      "mode": "production SL508/cache=false/det=true",
+      "source_agreements": 4,
+      "cap_seconds": [
+        90,
+        120
+      ],
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "4c424db11944862d00def65a34ebce729eac53a9ba19574a1bd55f5027d9fd16",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "1a311b17ee9c62a9796353e0df5db5132df827367696b8a5c6253fcfa76ed52b",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        8,
+        14
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0
+    }
+  },
+  "validation": "Every expected positive run passed first try. Source4 actual php_error/tool0/reasonNone, DivisionByZeroError lines6/8/8/6, exact saved-native P/full fatal255/no DIAGNOSTIC; native4 reused without replay. Baseline1/2 are pending-FINAL Unsupported/tool1/P/empty PHP and tool stderr/no DIAGNOSTIC/native_match=false; other2 remain unrun0. Precode19 reaches actual explicit Return, not FUNCTION fallthrough, before law/SOURCE seed; lifecycle13 and peer22 are separate fixture-SL/source0 cuts. All raw arrays/streams/exits, source/checked/fixture hashes, profiles/commands/caps, input and HEAD stability are independently clear and processes fully reaped. Outer/inner launches record C/UTC; all runners use cache=false/det=true. No AL, unique aggregate, old-control edit or accepted-campaign renewal.",
+  "controls": "New originals3/4 retain actual arguments/NULL finishes, explicit own Return/NULL proof, current conversion INPUT/cursors/full store, real formal/native-cell retirement, C0 and fatal Error retirement. Added pure tail checks cover eps compatibility, non-NULL, bare/extra Return tails and first-shadowing CODEEXPR line+1 while genuine read stays PNULL. The constructed bare-tail refusal uses actual Return(NULL) source; it is not a universal bare-return claim. Current-body controls do not establish a universal retarget-history exclusion.",
+  "integration": {
+    "tested_revision": "e84ee81ef567d9e9b12934c73d51375635f5f8de",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main43-nfloat-power238-ob104-joined-508-v1/report.json",
+    "sha256": "6e95b445c57b885f154b72a14e13e9ec7f0b8074c2bfec4bf63efa8ec7599c2c",
+    "mode": "sole combined production SL508;511argv/512watched;cap60",
+    "seconds": 15.989945726003498,
+    "source_credit": 0,
+    "result": "Independent actual composition CLEAR: exact five paths; four non-Make files donor9c8-exact, exact456 runtime delta and Make3 additive with parent rows retained. Sole saved combined238/104 result verified PASS/trueLF/quiet/exit0/no timeout/stable512+HEAD/fully reaped. Private execution credit is not renewed."
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-explicit-null-modulo-error-author.json",
+  "limits": "Only these four originals gain source credit. Bare returns, other values/bodies/signatures and wider handler/operand/lifetime forms retain prior limits; one-CV and mixed-kind precision variants get no new agreement. Standing holds and partial inventory statuses remain. OB31, full core, Rocq interaction trees and BOLA/CRIS work remain unfinished. No engine bug or deliberate divergence is established."
+}

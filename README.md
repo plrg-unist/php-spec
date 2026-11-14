@@ -5257,6 +5257,8 @@ Numeric-only signed64 AND/OR/XOR/NOT now compose deferred integer defaults, incl
 Quiet Numeric-only signed64 modulo and shifts now compose deferred integer defaults, including wrapped/signed/count64 results, MIN%-1, nonnull zero, cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; invalid divisor/count results, coercion, E_STRICT, wider powers and wider scope stay partial. [Review](coverage/semantics/numeric-integer-operator-default-reception-review.json).
 
 Quiet Numeric-only signed64 integer-result powers now compose deferred defaults, including exact (-2)**63, MIN/MAX identity, exponent-zero, odd negative bases, nested powers and nonnull zero through cold/warm BYREF caches and named warning reentry. Source/ENV/no-DIM/cache and owner guards remain; FLOAT/GENERAL, negative exponents, coercion, E_STRICT and wider scope stay partial. [Review](coverage/semantics/numeric-power-default-reception-review.json).
+
+Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining raw one and signed-zero cache bits before integer conversion and preserving NaN/nonfitting TypeErrors. Cold/warm BYREF defaults, named warning reentry and the saved-native overflow promotion keep source/ENV/no-DIM/cache/owner authority. GENERAL, power diagnostics, implicit coercion and wider scope stay partial. [FLOAT-power review](coverage/semantics/numeric-float-power-default-reception-review.json).
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through

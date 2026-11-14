@@ -1,0 +1,117 @@
+{
+  "feature": "Explicit literal NULL return after a selected FINAL MOD handler Echo (OB104)",
+  "target": "PHP 8.5.10 CLI NTS64; sole local .tools/php/bin/php and tests/semantics/profile.json; C/UTC; SL cache=false/det=true",
+  "source_only_revision": "b82b5db83ed00b15c1ccfd2163a6456e3a26f411",
+  "precode_revision": "8d7a0abd3ffa0021c995131a817ad36ec42231e0",
+  "runtime_revision": "2a976d1e53875053583b19656499a6defe213f7f",
+  "source_test_ready_revision": "9c8fe6fbd7d83b871950184a49e5ec46acb1738d",
+  "files_at_source_test_ready": {
+    "spec/semantics/456-output-object-returns.watsup": "5ba331595302dc9dcba74801d9721a437ed04427b0b6ff1dcd5c1e45ebb5dd29",
+    "Makefile": "58106ada4baf3637405f08f17c04581cf4b454dba2a972f831af04e5b6384570",
+    "tests/semantics/output_final_selected_explicit_null_modulo_error_sources.py": "32e7d21d1c7ca8204aa48d1404a714036aade6575a61520f9091d9c7e2ae97bf",
+    "tests/semantics/output_final_selected_explicit_null_modulo_error_state.py": "8c48baffdd1fc76d24f01e2e758da81cb95c0c549efe263c2e1e80924e2eb45d",
+    "tests/semantics/output_final_selected_explicit_null_modulo_error_review_state.py": "54b036e4a22cc9b016a4514ff33ce08f2d43e473628f70eed60f0fbd7c76579c"
+  },
+  "scope": "Four new originals retain the named, mask8194, two-required-untyped-nonvariadic-BYVAL handler and literal H Echo, then explicitly return null or NULL. Warning LEFT CONST and Deprecated BOTH CV-pair are author representatives; Warning RIGHT CV-pair and mixed Warning/Deprecated CONST-FLOAT are peer representatives. Real one/two calls retain own explicit Return sources, retire two/four formals and preserve buffered AH/AHH before FINAL MOD-zero Error.",
+  "rule": "A pure tail predicate retains eps=true and admits only one exact raw NStmtReturn(NExprConstFetch(NName null)), with own Return/NULL origin, CODE.UNIT/BODY/path, compiled expression source line and PNULL read. All other tails return false. The selected handler raw body changes only from a singleton Echo to Echo::tail plus that gate; all other signature, notice-vector/cursor, operand read/cache/pointer/rank, null scratch, raw/live Error and ownership guards remain literal. No schema, kernel, provider, owner or evaluator fallback changes.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return and Zend/zend_vm_def.h::ZEND_RETURN compile/copy the explicit CONST NULL result and leave the real function frame. Zend/zend.c::zend_error_zstr_at reports by default only for IS_FALSE; NULL is consumed.",
+    "Zend/zend_compile.c::zend_binary_op_produces_error/zend_try_ct_eval_binary_op retain these MOD errors at runtime; zend_operators.c::zendi_try_get_long/convert_op1_op2_long/mod_function preserve actual LEFT-before-RIGHT notices and the later zero-divisor Error. Existing authored80/156 and callback/retirement kernels remain unchanged."
+  ],
+  "history_boundary": "Current body authentication does not certify past callback history. Capture preserves the complete actual next store, effects, registrations, heap, owners and trace; source receipts add no owners.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-explicit-null-modulo-error-104",
+  "runs": {
+    "native_once": {
+      "report": "native-summary-01.json",
+      "sha256": "b760a006b1e0af72ec879e08783f66f0e0847748bf531e41866c3d4b234c445e",
+      "originals": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0,
+      "result": "Exact P/full native fatal255 at MOD lines6/8/8/6; stable original bytes/profile/HEAD. Buffered H alone does not prove invocation."
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "695cc71db3004e6dc9d5fe09c3fe43fc923e2f5a03d78a1e28e510ea33a7889f",
+      "revision": "b82b5db83ed00b15c1ccfd2163a6456e3a26f411",
+      "mode": "production SL508",
+      "source_credit": 0,
+      "selection": [
+        1,
+        2
+      ],
+      "other_originals_unrun": 2,
+      "inner_outer_caps": [
+        90,
+        120
+      ],
+      "result": "Complete/stable525+HEAD; actual pending-FINAL Unsupported/tool1/P/empty PHP+tool stderr/noDIAG/native_match=false; aggregate pass=false. No replay."
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "05188a77d574643317dabfea3aaf1f4261a80412b1ffcd6dbe6386f0e473fd76",
+      "revision": "8d7a0abd3ffa0021c995131a817ad36ec42231e0",
+      "mode": "fixture SL508",
+      "source_credit": 0,
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "result": "First-pass/quiet/stable572each+HEAD/reaped before law/SOURCE seed; genuine explicit Return differs from FUNCTION fallthrough, with own NULL compiled read/line. Captureeps, no replay after current expectation promotion."
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "6c56d8fcee7df53ed6caa223abeeaa814405e8526502a67d8628051be0f6b9f0",
+      "revision": "9c8fe6fbd7d83b871950184a49e5ec46acb1738d",
+      "mode": "production SL508",
+      "source_credit": 4,
+      "originals": 4,
+      "inner_outer_caps": [
+        90,
+        120
+      ],
+      "result": "All4 first post-rule runs match saved native P/fullfatal255, php_error/tool0/reasonNone/DivisionByZero6/8/8/6/noDIAG. Complete/pass/stable533+HEAD/quiet/reaped; native4 reused without replay."
+    },
+    "author_lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "4c424db11944862d00def65a34ebce729eac53a9ba19574a1bd55f5027d9fd16",
+      "revision": "9c8fe6fbd7d83b871950184a49e5ec46acb1738d",
+      "mode": "fixture SL508",
+      "source_credit": 0,
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "result": "First-pass/quiet/stable572each+HEAD/reaped. Own explicit Return authority, full actual store and retired formals survive real empty/two-native-cell release, C0, full fatal reporting and nonowning Error retirement."
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "1a311b17ee9c62a9796353e0df5db5132df827367696b8a5c6253fcfa76ed52b",
+      "revision": "9c8fe6fbd7d83b871950184a49e5ec46acb1738d",
+      "mode": "fixture SL508",
+      "source_credit": 0,
+      "groups": [
+        8,
+        14
+      ],
+      "cap_seconds": 300,
+      "result": "First-pass/quiet/stable573+3inputs each+HEAD/reaped; author independently raw-clear. New originals3/4 retain explicit Return proof and existing input/cursor/store/retirement controls; eps compatible, non-NULL/bare/extra tails and wrong compiled line refuse."
+    }
+  },
+  "validation": "Author whole-five READY and independent FULLCLEAR delivered directly to MAIN43 before metadata. All newly expected positive executions passed first try. No old controls changed, no old campaign replay, and no aggregate/AL/source credit from fixtures. Raw commands, environments, fingerprints, timings, checked programs and streams remain external.",
+  "independent_review": "coverage/semantics/output-final-selected-explicit-null-modulo-error-review.json",
+  "integration": "Actual MAIN composition/loading is a separate MAIN-owned cut; metadata does not renew private execution credit.",
+  "limits": "Only four new originals receive source credit. Bare/other statement tails, wider returns/signatures/handlers/retarget/throw histories, owning operands/lifetimes and OB31 remain partial. Existing one-CV/cross-product limits and all standing holds remain. Complete PHP core, Rocq interaction trees and BOLA/CRIS verification are unfinished; no engine bug or intentional divergence is established.",
+  "actual_main_join": {
+    "revision": "e84ee81ef567d9e9b12934c73d51375635f5f8de",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main43-nfloat-power238-ob104-joined-508-v1/report.json",
+    "sha256": "6e95b445c57b885f154b72a14e13e9ec7f0b8074c2bfec4bf63efa8ec7599c2c",
+    "mode": "sole combined238/104 production SL508",
+    "seconds": 15.989945726003498,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "Author actual bounded composition CLEAR: four non-Make files donor9c8-exact; Make exactly3 additions/no deletion. Saved sole combined load passes true LF/quiet/stable512+HEAD/511argv/fully reaped. No execution credit is renewed."
+  }
+}
