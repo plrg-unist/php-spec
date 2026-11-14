@@ -1,0 +1,88 @@
+{
+  "feature": "quiet-signed64-integer-bitnot-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and source-integrated; full core remains partial",
+  "scope": "BitwiseNot of an existing certified signed64 integer tree preserves selected literal INTERNED bases and frozen initial raw CV offsets through returning Warnings. Exact own and child source, typed PINT pools, ranges and recursive child authority remain required.",
+  "target": "PHP8.5.10 CLI NTS64; tests/semantics/profile.json; project-local oracle, pure watsup with no Zend evaluation fallback; productionSL508",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/source-manifest.json",
+    "sha256": "3d14095abc37cf9e85823919d5f1cd825ae817b7749b84faf3db0a9158f563f3",
+    "paths": 6
+  },
+  "source_basis": "Pinned Zend/zend_operators.c bitwise_not_function IS_LONG returns the long complement; Zend/zend_compile.c zend_compile_unary_op/zend_try_ct_eval_unary_op fold integer children. Existing pure long_not(i)=-i-1 and typed bitnot_value already implement this result.",
+  "implementation": "Eleven lines add a separate raw_unary_integer BitwiseNot rule. The full-state lower bitnot_value result is required, avoiding completion-gated bitnot_apply and cached-result vacuity under BUDGET. Compiler, numeric, runtime, provider, roots, schema and ownership are unchanged.",
+  "evidence": {
+    "baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/baseline/report.json",
+      "sha256": "ab55413b65dd94e3914f9552894d367df21b47fcae7ddb9e4fd8dfad6af97c63",
+      "native_once": 2,
+      "model_unsupported": 2,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/source-v1/report.json",
+      "sha256": "03cf099cc480e77845697ddbdf1c1c1502800b3cae9275598ff60cd738948925",
+      "agreements": 2,
+      "native_reused": true,
+      "source_credit": 2
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/postlaw-a-sl-v3/report.json",
+      "sha256": "09a4506421673cbb87c98458911ab100964cbd080fa32a9a5831d166f05e10d5",
+      "premises": 270,
+      "derived_conditions": 167,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-peer21-20261114/postlaw-b-sl-v2/report.json",
+      "sha256": "c60d1dc3a17ff59ab1739a662cb2fe42c27c49d075c681d92e3db746ad7363aa",
+      "premises": 332,
+      "derived_conditions": 196,
+      "source_credit": 0
+    }
+  },
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "8911ddd9b6a5235d7521d3b4f0be1890064b55db20c9f9a5303536542a8c5311",
+      "reason": "Overstrict standalone own-metadata expectation; enclosing parent base refusal remains required.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-author23-20261114/postlaw-a-sl-v2/report.json",
+      "sha256": "076d91e472b0564bb55bf26b8f9510eae95d3ea77de8d1776f2b9f9488711d77",
+      "reason": "Constructed projection label zero collided with actual zero leaf variable.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-peer21-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "665a05987aec8860fbd8c012a1281fb6a65f163d46e5f6a7fcaa9026536f6782",
+      "reason": "Unbound metadata for a constructed source-zero right leaf; compiler rejected before state execution.",
+      "source_credit": 0
+    }
+  ],
+  "validation": "Native2 once/source2 retain separate original true A~((~0)<<1) and false B~(-1) selections. Author270/167-derived and independent332/196-derived fixtures remain inclusive separate source-zero cuts, with actual Warning/reference-cell/heap/cleanup/budget paths, source/pool/metadata counterfeits, extrema, typed refusals and wrong cached-result controls. Standalone own-metadata certificates remain valid while enclosing parent source mismatch refuses; child metadata mismatch still refuses. Three original fixture failures remain0; no source/native rerun followed their repairs. Four affected old negative controls remain valid without replay.",
+  "source_integration": {
+    "parent_revision": "ca8094b75",
+    "actual_revision": "881f2b299e58443d93a8f7625023379db988d4e7",
+    "actual_tree": "8156a288b9cd24c7eccab2ac23d9a8407a9a5bf0",
+    "donor_implementation_sha256": "4cc7acda68f9666e3c44ba2641b087e57fcff4a7e96b0bcd9fa7f258cad76028",
+    "actual_implementation_sha256": "e01b600be52a3d3076b58807909fd65a7540d1ca25b522c582f03250cdd21414",
+    "composition": "Whole6 source/test integration preserves every newer parent byte; actual425 differs honestly from the donor. Peer21 independently cleared the sole actual composition and SAME saved canonical load; these source/report checks are closed."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main57-bitnot-current-load-v1/report.json",
+    "sha256": "78d9c0e11cc638514f61b1977a57250438c8c33740898172ca8f617c1440a4ec",
+    "elapsed_seconds": 16.23689854796976,
+    "passed": true,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "quiet": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "remaining": "Mixed/coercive operands, non-PINT children/results, wider producers and base/key/handler/ownership/lifetime histories remain partial. All exact PROGRESS holds and inventory closure counts remain unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact A/B renderers and the two Make recipes regenerate fixtures with inherited renderers watched. Original source/native observations, commands and raw reports remain in the external archives and are not build inputs."
+}
