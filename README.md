@@ -5305,6 +5305,8 @@ Quiet POWER-specific operands also admit decoded fully numeric strings and Boole
 
 Quiet ADD/SUB/MUL/DIV default operands also admit the existing fully numeric string and Boolean/null projections, preserving raw cache types before private reception, BYREF resume and own precision throw/retry. Source/ENV/no-DIM/cache/owner guards remain; conversion effects, division by zero and wider scope stay partial. [Scalar-arithmetic review](coverage/semantics/numeric-coercive-arithmetic-default-reception-review.json).
 
+Genuine computed Boolean children also supply quiet integer 0/1 operands for arithmetic and POWER defaults, retaining raw cache types before private reception, BYREF resume and own precision throw/retry. Source/ENV/no-DIM/cache/owner guards remain; noisy truth, selected effects, raw scalar selections and wider scope stay partial. [Boolean-operand review](coverage/semantics/computed-boolean-operand-default-reception-review.json).
+
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through

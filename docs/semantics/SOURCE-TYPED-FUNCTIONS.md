@@ -1246,6 +1246,15 @@ receives and own precision callbacks through BYREF resume, throw/retry and
 named reentry. Source/ENV/no-DIM/cache/owner guards remain. LEADNUM, BADNUMBER,
 DIVZERO, effectful constants and wider scope remain partial.
 
+[Computed Boolean default operands](../../coverage/semantics/computed-boolean-operand-default-reception-review.json)
+also pass through `quiet_operand` when their AST has a genuine Boolean shape,
+Numeric identity is absent and the existing condition proof is quiet. NOT,
+BOOL casts, short AND/OR, XOR and numeric predicates retain PBOOL meaning before
+conversion to NINT0/1 for arithmetic or POWER. Source/ENV/no-DIM/cache/owner
+guards remain; decisive skipped effects stay skipped. Raw caches still precede
+private integer reception, BYREF resume and own precision throw/retry. Noisy
+NaN truth, selected effects and raw scalar selections remain outside this arm.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
