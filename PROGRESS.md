@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Shared raw scalar truth now certifies zero/nonzero signed64 sign and ADD/SUBTRACT/MULTIPLY full-ternary conditions, preserving the selected INTERNED base and frozen raw CV offset through returning Warnings. Exact condition/name/arm source, both arm headers and quiet full-state truth remain required. Native2 once/source2, author424/297-derived, inclusive peer406/284-derived, six affected literal/TRUE cuts and corrected FLOAT417/271 retain separate identities; baseline Unsupported2 and the corrected fixture binding failure remain0. Actual07d9a42678/SL508 loads in16.53431509109214s/source0. Wider conditions/lifetimes and all exact holds remain partial. [Review](coverage/semantics/string-offset-raw-truth-conditional-base-initial-raw-leading-key-review.json).
+
 Quiet emitted shorthand ternaries require ABSENT true arms and exact source2/NORMAL/CODEfalse/read-eps/demanded precision/quiet full-state truth. Truthy returns the original BOOL/INT/FLOAT condition; falsey demands the fallback. Source4 reuse native4 once; authorSL1125/129-derived, inclusive peerSL1983/987-derived with31 explicit controls, and actuald767 sole SL508 load15.888855s/source0 retain separate cuts. The two old shorthand expectations and their scope sentence are updated; wider producers/owners/lifetimes and all exact holds remain partial. [Runtime shorthand-ternary review](coverage/semantics/string-offset-request-base-runtime-shorthand-ternary-review.json).
 
 Quiet emitted full ternaries preserve typed condition/selected VALUE through NORMAL/source/CODEfalse/read-eps/equal captured precision and exact full-state truth. Both present arm SOURCE identities are required; only the selected arm needs CODE/line/precision/value. Source4 reuse native4 once; author fixture SL1186/129-derived and inclusive independent SL2128/1071-derived with33 explicit source-zero controls remain separate. Actual6096251217 and sole SL508 load15.639037s/source0 pass; wider producers/owners/lifetimes and every exact hold remain partial. [Runtime full-ternary review](coverage/semantics/string-offset-request-base-runtime-full-ternary-review.json).
@@ -656,12 +658,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `bffc0d15a` passes its once-only 508-module production SL
-load in 15.839124860940501 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `545b96f90` passes its once-only 508-module production SL
+load in 16.49282610602677 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main50-typed-short-reference-get-comp296-joined-508-v1/report.json`
-(SHA-256 `e57bdf8b7c29c6f776df460b0fba5f6c3caf356e69a67c78aa178579eaefcaeb`).
+`../php-spec-evidence-archive/resumed-main-20261112/main51-compiled-primitive-ref73-negative-integer-joined-508-v1/report.json`
+(SHA-256 `c929f8cf42920f4ad03014a4e179f4cfdd41802fdb1bb10c095e6d34eb0882a0`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
