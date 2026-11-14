@@ -857,6 +857,42 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if $truth_value(S, pvalue_cond, z_line) = S[.RESULT = KNOWN (PBOOL false)]
   -- if $compiled_precision(S, (porigin_false)) = (z_precision)
   -- if $string_read_runtime_value(S, porigin_false) = (pvalue)
+;; Coalesce tests nullness and keeps an ordinary nonnull operand's exact type.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFCOALESCE expression_left expression_right
+  -- if ~$coalesce_quiet_operand(expression_left)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue)
+  -- if pvalue =/= PNULL
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFCOALESCE expression_left expression_right
+  -- if ~$coalesce_quiet_operand(expression_left)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (PNULL)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue)
 ;; Shorthand ternaries retain the original truthy value with no true arm.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if S.COMPLETION = NORMAL
