@@ -1693,6 +1693,8 @@ Certified signed64 integer complements now compose through literal string-offset
 
 Finite FLOAT arithmetic truth now composes through certified original integer/float children with exact typed results and normal-completion probe checks. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-review.json).
 
+Quiet original BOOL/NULL/raw numeric STRING partners now supply finite FLOAT ADD/SUB/MUL/DIV truth through exact source and typed children, intrinsically quiet numeric conversions and the same NORMAL recursive/full-state proof. Finite quotients from strings converting to infinity are admitted; original nonfinite PFLOAT children remain excluded. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-review.json).
+
 Finite FLOAT unary signs also admit certified integer children, including minimum-integer negation overflow, with exact source and quiet typed-result checks. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-numeric-unary-truth-base-initial-raw-leading-key-review.json).
 
 Finite FLOAT unary truth also admits certified raw numeric STRING children through exact literal/INTERNED source, intrinsically quiet numeric coercion and the same NORMAL child/full unary result proof. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-numeric-string-unary-truth-base-initial-raw-leading-key-review.json).

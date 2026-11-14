@@ -1,0 +1,71 @@
+{
+  "feature": "quiet-original-scalar-finite-float-arithmetic-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Finite PFLOAT ADD/SUBTRACT/MULTIPLY/DIVIDE results additionally accept existing certified original BOOL/NULL/raw fullynumeric PSTRING children alongside PINT/PFLOAT. Both original typed children, exact source/pools, quiet conversions and recursive authority retain literal INTERNED bases and frozen initial raw CV offsets through returning Warnings. Finite results include a quiet string-to-infinity denominator.",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-author24-20261114/source-manifest.json",
+    "sha256": "9802c28bfa6172c248b755b889eafdfd4305496e265a5772efc5cd68a29c33cf",
+    "paths": 8,
+    "source_patch_sha256": "de272cafefb5dcb2c8a0da8484159dc957e49c7f0111311634c46b8e605aa398"
+  },
+  "source_basis": "Pinned Zend _zendi_try_convert_scalar_to_number maps NULL/FALSE to LONG0, TRUE to LONG1 and full numeric strings to LONG/DOUBLE without trailing-data warnings. Ordinary add/mul/div/sub paths preserve result typing: fast_long_add_function promotes MAX+TRUE; mul_function_fast retains DOUBLE; div_function_base permits LONG0/DOUBLE infinity to finite +0; sub_function_fast keeps that DOUBLE zero.",
+  "implementation": "Only the existing finite PFLOAT arithmetic raw_truth branch changes. Both original-child type gates add bool/null/string and require explicit quiet COERCED-number false. Existing own finite bits, exact source/pools, SAME NORMAL recursive children and full binary_apply state remain. Scope is finite results, not finite converted inputs: quiet raw-string infinity quotients can succeed while original PFLOAT infinity remains outside its existing child certificate. Compiler, runtime, numeric, provider, roots, schema and ownership are unchanged.",
+  "evidence": {
+    "baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-author24-20261114/baseline/report.json",
+      "sha256": "e872ceefc49f1fa7ebdaa79a1de8c97b445f7ea490a443e38fc1eb56ba6e14c3",
+      "native_once": 2,
+      "model_unsupported": 2,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-author24-20261114/source-v1/report.json",
+      "sha256": "fb0142f85a02a65865c08dc0d0020423f853e3e708980ab1a3e41c060dc57d24",
+      "agreements": 2,
+      "native_reused": true,
+      "source_credit": 2
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-author24-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "ae4f5035be1fbe0933a1104fa8a6c64cb2eb455d6016826d9f7f2c0cd0e8a562",
+      "premises": 252,
+      "derived_conditions": 147,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-peer23-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "587df0dd80074ae5b73962efd5284a2f79790dfd0d4c36d49ea3ed59499b9608",
+      "premises": 621,
+      "derived_conditions": 464,
+      "source_credit": 0
+    }
+  },
+  "preserved_failures": [],
+  "current_expectation_maintenance": "Exactly five old helper expectations change: float_arithmetic_truth numeric_string and the four numeric_arithmetic_truth bool-left/bool-right/null-right/string projections become admitted. Fresh B covers all five without replaying old full source/native/fixture campaigns.",
+  "validation": "Native2 once/source2 cover all four operators, original BOOL/NULL/rawSTRING children, signed64 overflow to FLOAT and a finite quotient from a string that converts to infinity, with ordinary key replacement and initial-reference rebinding. Author252/147-derived and independent621/464-derived production-SL fixtures retain separate source-zero cuts. Exact PINT versus forged FLOAT, both-string and whitespace inputs, signed zero, +/-infinity-string finite quotients versus original PFLOAT infinity refusal, both-side leading/NUL/nonnumeric refusals, raw versus carrier authority, own nonfinite/NaN refusals, direct/nested zero-DIV under cached BUDGET, original source/pools/name descendants/metadata, shorthand/emitted NOT and real Warning/reference/heap/cleanup/budget paths pass.",
+  "source_integration": {
+    "author_revision": "9c9ec1b7cd6540fc0b7a2e326112f94f339860d7",
+    "author_tree": "ca28f67ef0aaa66e27355bec066566ad5c6dad4e",
+    "actual_revision": "9dab728e0d1b0a161a1cad4277aa2ad3651b172e",
+    "actual_tree": "ac35e96f31366f9c5a055a55ab2f5d98b1200cc7",
+    "composition": "Whole8 retains six donor-exact source/test files, two additive Make recipes and the narrow425 five-insert/three-delete arithmetic hunk, including its finite-result comment. Accepted parent7abd/BYTE/newGET/ENUM254/REF82 remains preserved; actual425 differs honestly from the donor. Peer23 independently cleared actual composition and the sole SAME saved canonical load; those source/report duties are closed.",
+    "test_cut_compatibility": "Source and author A retain the same 9c9ec1b7c implementation cut; baseline native observations retain their original prelaw1e223d583 identity and are reused. No current-family fixture failure, source/native replay or later semantic correction occurred."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main59-coercive-arithmetic-current-load-v1/report.json",
+    "sha256": "9e22a7eba53b76fb30c4bc4f1bbbd25298be313d9167ecd131bd8ce1496b1ee7",
+    "elapsed_seconds": 16.14042707090266,
+    "passed": true,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "quiet": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "remaining": "Coercive PINT-result arithmetic remains separate. Nonquiet/nonnumeric or owning/carrier producers, original nonfinite PFLOAT children, nonfinite results and wider base/key/handler/ownership/lifetime histories remain partial. Every exact PROGRESS hold and inventory closure count is unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact A/B renderers and two Make recipes regenerate fixtures; inherited float renderers and the imported numeric-arithmetic peer projection helper are watched. Original source/native observations, commands and raw reports remain in external family archives, not build inputs.",
+  "target": "PHP8.5.10 CLI NTS64; sole project-local oracle, tests/semantics/profile.json, pure watsup/no Zend evaluation fallback; productionSL508"
+}

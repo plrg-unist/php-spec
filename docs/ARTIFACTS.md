@@ -1567,3 +1567,5 @@ Finite numeric FLOAT arithmetic truth originals, native-once baseline and separa
 Finite numeric FLOAT unary truth originals, native-once baseline and separate fixtures: `../php-spec-evidence-archive/string-offset-numeric-unary-truth-base-initial-raw-leading-key-{author24,peer22}-20261114/`. Concise tuple and recovery: `coverage/semantics/string-offset-numeric-unary-truth-base-initial-raw-leading-key-review.json`.
 
 Numeric STRING FLOAT-unary truth originals, native-once baseline and separate author/peer fixtures: `../php-spec-evidence-archive/string-offset-numeric-string-unary-truth-base-initial-raw-leading-key-{author24,peer23}-20261114/`. Concise tuple and recovery: `coverage/semantics/string-offset-numeric-string-unary-truth-base-initial-raw-leading-key-review.json`.
+
+Scalar-coercive finite FLOAT arithmetic truth originals, native-once baseline and separate author/peer fixtures: `../php-spec-evidence-archive/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-{author24,peer23}-20261114/`. Concise tuple and recovery: `coverage/semantics/string-offset-coercive-arithmetic-truth-base-initial-raw-leading-key-review.json`.
