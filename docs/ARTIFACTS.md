@@ -8,6 +8,12 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Truthy emitted CASTSTRING shorthand originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-author32-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-review.json) retains their separate identities, zero-credit failures and accepted actual/SAME tuple.
+
+Direct emitted CASTSTRING base originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-base-initial-raw-leading-key-author32-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-base-initial-raw-leading-key-review.json) retains their separate identities, zero-credit failures and accepted actual/SAME tuple.
+
+Reserved-keyword BooleanNot selector originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-not-keyword-concat-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-not-keyword-concat-tree-quiet-get-review.json) retains their separate identities, zero-credit failures and accepted actual/SAME tuple.
+
 Quiet emitted CASTSTRING full-ternary originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-truth-base-initial-raw-leading-key-author31-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-truth-base-initial-raw-leading-key-review.json) retains their original identities, failures and accepted actual/SAME tuple.
 
 Quiet falsey emitted-cast shorthand originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-cast-falsey-shorthand-base-initial-raw-leading-key-author31-20261115/`; the [review](../coverage/semantics/string-offset-runtime-cast-falsey-shorthand-base-initial-raw-leading-key-review.json) retains their original identities, failures and accepted actual/SAME tuple.
@@ -49,6 +55,8 @@ FQN stdClass/callable producer originals and separate native-once, source, fixtu
 Folded one-byte STRING BitwiseNot native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-string-bitnot-truth-base-initial-raw-leading-key-{author29,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json) retains the original failure/unrun tail and accepted actual/SAME tuple.
 
 Completed POWER-NaN instanceof originals, native-once/prelaw, saved-native source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-power-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-power-nan-instanceof-review.json) preserves distinct cuts and the fresh controls for three affected older certificates.
+
+Canonical FLOAT-cast NaN instanceof originals, native-once/prelaw, saved-native source and separate author/peer fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-float-cast-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-float-cast-nan-instanceof-review.json) preserves their distinct cuts and sole actual/joined closure.
 
 Compiled-NaN instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-compiled-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-compiled-nan-instanceof-review.json) retains the original cuts, corrected fixture failure and accepted actual/SAME tuple.
 

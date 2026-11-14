@@ -1,0 +1,79 @@
+{
+  "family": "string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key",
+  "status": "accepted bounded semantics; wider forms and complete core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored watsup; production SL508",
+  "scope": "Truthy emitted CASTSTRING shorthand conditions retain their exact INTERNED base and frozen initial raw CV offset through returning Warnings.",
+  "invariants": [
+    "Exact shorthand and cast-child SOURCE identities, own and condition read-eps, and the existing runtime VALUE certificate under one NORMAL probe.",
+    "The same probe must return the exact INTERNED carrier and change only RESULT to Boolean true during truth conversion.",
+    "The literal fallback retains exact source, raw PSTRING pool and INTERNED header authority even when skipped; current-key replacement and initial-reference rebinding retain existing cleanup and owner bounds."
+  ],
+  "provenance": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_cast, zend_compile_shorthand_conditional",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_CAST, ZEND_JMP_SET"
+  ],
+  "source": {
+    "head": "8dd77715bb05e5fecb1d40381ff76c7ac8f0e6be",
+    "paths": 7,
+    "added": 264,
+    "removed": 3,
+    "tests": "tests/semantics/string_offset_runtime_string_cast_truthy_shorthand_base_initial_raw_leading_key_cases.py",
+    "execution_evidence": "Native/source/author/independent fixture cuts accepted at the frozen source milestone are inherited separately, without rerun or a new aggregate; this thin ledger records their independently closed MAIN projection."
+  },
+  "actual_main": {
+    "head": "13a71fbbf35ce79997aa6584a33fad49cb89566c",
+    "canonical_head": "f8f163323ea77188e17c359a7f10de646e79bc81",
+    "canonical_tree": "ed74bcbd261ead4763e8673ac3fcf54e1dbd95b1",
+    "composition": "Exact seven-path source milestone; sole 15-line JMP_SET clause in module425, whose removal restores the entire prior implementation.",
+    "prior_implementation_sha256": "935b3be66a635b25511197bba0135da137ac2042934dc4024a6597cae8e7956b",
+    "implementation_sha256": "85f7eeaca78d9ec8dd28f64c204db2393a818bbc694134d7d1f7f98053cc9657",
+    "same_report": "resumed-main-20261112/main68-truthy-string-integer-identity-current-load-v1/report.json",
+    "same_report_sha256": "5270949ca00e0c4f19e130c34a9ff1dc0becb39bdb9261f9caacaf1150680c19",
+    "load_seconds": 16.131720712175593,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "PASS trueLF/quiet/stable/reaped; actual composition and sole saved SAME report independently CLEAR by reviewer31, with one report read and no execution renewal."
+  },
+  "reviewer": "/root/recover31_dynamic_caststring_review",
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-author32-20261115",
+  "remaining": "Wider STRING producers/carriers, owned-NUL release and broader contexts/ownership/lifetimes remain partial. All exact held boundaries remain unchanged; no full-core obligation closes.",
+  "validation": {
+    "native_once_prelaw": {
+      "report": "baseline/report.json",
+      "sha256": "4fe0a545b4b356b1c21f86e542376adbaf6c64b06b17e893aa0bc79a08bfec21",
+      "native": 2,
+      "source_credit": 0
+    },
+    "saved_native_source": {
+      "report": "source-v1/report.json",
+      "sha256": "53597cbf46e8d9b4f242c6ab0a14508d6686e94237170771ff9b0b9769175221",
+      "agreements": 2,
+      "native_reexecutions": 0
+    },
+    "author_fixture": {
+      "report": "author-state-v1/report.json",
+      "sha256": "1d9768afc1eff7de7157ff0a871d0ef33a0858ce39388b09c64b4331e85d3ba9",
+      "conditions": 251,
+      "derived": 137,
+      "source_credit": 0
+    },
+    "affected_earlier_independent_fixture": {
+      "report": "affected-falsey-cast-peer-v1/report.json",
+      "sha256": "b73a4410c5ffb0ae2979ec2f872a8075cd44b4bdf97058c969b6bdbcfcf02326",
+      "conditions": 324,
+      "derived": 203,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "archive": "string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-peer30-20261115",
+      "report": "peer-state-v1/report.json",
+      "sha256": "265e799d6bd8cc2175e7b48f4c712a42e5d8dc15ff31fd6684b54490ebda7e7b",
+      "conditions": 347,
+      "derived": 226,
+      "source_credit": 0
+    }
+  }
+}

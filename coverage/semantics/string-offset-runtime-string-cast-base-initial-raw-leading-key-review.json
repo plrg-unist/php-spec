@@ -1,0 +1,81 @@
+{
+  "family": "string-offset-runtime-string-cast-base-initial-raw-leading-key",
+  "status": "accepted bounded semantics; wider forms and complete core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored watsup; production SL508",
+  "scope": "Direct emitted CASTSTRING bases preserve their exact INTERNED header and frozen initial raw CV offset through returning Warnings, including nested identity casts.",
+  "invariants": [
+    "Exact cast SOURCE and read-eps reuse the existing runtime VALUE certificate under one NORMAL probe; the result must be the same INTERNED carrier.",
+    "Current-key replacement and initial-reference key rebinding preserve the captured base/header/index, existing Warning cleanup and owner bounds. No runtime, compiler, formatter or ownership helper changes."
+  ],
+  "provenance": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_cast",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_CAST"
+  ],
+  "source": {
+    "base": "8dd77715bb05e5fecb1d40381ff76c7ac8f0e6be",
+    "head": "84e3b9a60e5c4e3fa58ce2b23694756533c72bfd",
+    "tree": "564a0460f87c0a53fe7a3c9a34bf483fb5b559c2",
+    "paths": 7,
+    "added": 260,
+    "removed": 4,
+    "patch_sha256": "44979a6aeea77572713734e632ae5f6ceace967bd16d9f8886298fb9bf20a272",
+    "tests": "tests/semantics/string_offset_runtime_string_cast_base_initial_raw_leading_key_cases.py"
+  },
+  "validation": {
+    "native_once_prelaw": {
+      "report": "baseline/report.json",
+      "sha256": "f8184662e7a9e119bee39a10be1f31caec1b492d2404a4b3c9484d4b5f0a1547",
+      "native": 2,
+      "unsupported": 2,
+      "source_credit": 0
+    },
+    "saved_native_source": {
+      "report": "source-v1/report.json",
+      "sha256": "713b6feb91f69b6abf79d6a7cfdb44d27cc355f18685f734f95d5af76cc2b356",
+      "agreements": 2,
+      "native_reexecutions": 0
+    },
+    "author_fixture": {
+      "report": "author-state-v1/report.json",
+      "sha256": "ca6f183ac7475d89333b2d1718f4bddf6ae806830cffacfba24d5aa861db7713",
+      "conditions": 215,
+      "derived": 114,
+      "source_credit": 0
+    },
+    "affected_truthy_fixture": {
+      "report": "affected-truthy-cast-author-v1/report.json",
+      "sha256": "0bd30d0a77119618e04def200a73a603f416f1ce10436abbd0c8e46245c851e6",
+      "conditions": 251,
+      "derived": 137,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "report": "peer-reviewer31-v1/report.json",
+      "sha256": "68bb62d4a2044f08716caac45d7875670ccf2aeab7d3d6af4b9a1fbe418661f2",
+      "conditions": 347,
+      "derived": 247,
+      "source_credit": 0
+    }
+  },
+  "actual_main": {
+    "head": "b7107439a5b28a249ece84aa7505831d0637ecc0",
+    "canonical_head": "d3958fb897973ceaa364f010f1131654197caf04",
+    "canonical_tree": "16b22129f274308ddfc481ed63aaa5955d108ea7",
+    "composition": "Exact seven-path source milestone; own six-line direct-cast clause preserved in the joined module alongside a disjoint 16-line CASTFLOAT NaN instanceof operand helper.",
+    "prior_implementation_sha256": "85f7eeaca78d9ec8dd28f64c204db2393a818bbc694134d7d1f7f98053cc9657",
+    "actual_implementation_sha256": "dc0b498f4d55f33e5b1462b8ea785d9320c7556932a219419d65c7c492e32ee0",
+    "implementation_sha256": "55525f1ee5d02514d0d538e04a0e3d0a678d013ffec571aafc777c8b7ca479b1",
+    "same_report": "resumed-main-20261112/main68-direct-string-not-float-cast-joined-current-load-v1/report.json",
+    "same_report_sha256": "09c4c74ee84cfb67f960c7430c74e96430c3e1209be66e5be8fb592a723fcef4",
+    "load_seconds": 16.681909007020295,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "PASS trueLF/quiet/stable/reaped; actual composition and sole saved SAME report independently CLEAR by reviewer31, with one report read and no execution renewal."
+  },
+  "reviewer": "/root/recover31_dynamic_caststring_review",
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-string-cast-base-initial-raw-leading-key-author32-20261115",
+  "remaining": "Wider STRING producers/carriers, owned-NUL release and broader contexts/ownership/lifetimes remain partial. Every exact held boundary remains unchanged; no full-core obligation closes."
+}
