@@ -123,6 +123,8 @@ Parentless public untyped sole short `&get => $this->sameField` now uses genuine
 
 Same-field short reference getters also accept literal-string field spellings, including an escaped-name witness. Four new originals reuse native once; author189/189 and independent340/340 fixture-SL cuts retain separate identities, malformed-name/body refusals and exact resumptions. Actual006fba302 and joined3196/SL508 canonical15.330673544202s add source0; wider parent/type/consumer/lifetime modes remain partial.
 
+Own public untyped sole short reference Get hooks retain their lexical child slot over a same-name ordinary public untyped field on a genuine trait-free root source parent. Raw canonical extends/SOURCE_PARENT and actual Hook/BODY/CODE/line authority preserve child defaults and existing ownership/cleanup guards. Four source agreements use native originals once; author212/212 and peer387/373/373 per form retain separate fixture cuts, with original failures/timeouts/unrun cases at zero credit. Actual `97f6f17d6`/SL508 loading passes separately (16.088962591s/source0). Wider parents, types, consumers and lifetimes remain partial. [Parented short-reference Get review](coverage/semantics/ordinary-parent-short-reference-get-hook-review.json).
+
 Existing DIRECT storage and cleanup remain. Live array/object Get results, selected
 canonical-int, Boolean, FLOAT, string and NULL quiet Get returns, nullable scalar
 and scalar-union quiet headers and supported unselected typed Get companions.
@@ -622,12 +624,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `97f6f17d6` passes its once-only 508-module production SL
-load in 16.08896259102039 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `f755c0b9b` passes its once-only 508-module production SL
+load in 15.63138233916834 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main48-ordinary-parent-short-reference-get-joined-508-v1/report.json`
-(SHA-256 `3e39ff54610109c715906a60c190f0f7d10dee4f261c8408a7f0e2b7f07f68a0`).
+`../php-spec-evidence-archive/resumed-main-20261112/main48-true-unary-shorthand-base-joined-508-v1/report.json`
+(SHA-256 `4d8882bcb4e56fa46a8bde8fa6033d6e78fd18bb418b3255dd68c4639bb38841`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
