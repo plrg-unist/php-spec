@@ -1,0 +1,25 @@
+[
+  {
+    "id": "named-singleton-null-return-nullable-array-formal-and-private-cow",
+    "source": "<?php\nnamespace ReviewNotice66\\Named;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$seed=17;$x=[$seed];$prefix=29;return true;}\nfunction make(?aRrAy $saved):nUlL{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$seed=19;$value=[$seed];$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice66\\\\Named\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$copyPrivate=$r;$r[0]=23;echo 'R:',$r[0],':',$copyPrivate[0],':',$alias[0],':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$copyPrivate[0],':',$x[0],':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$copyPrivate,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:1;H:{notice_line}:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "line_observation": "Capture the native Notice line once, then pin metadata without changing original source bytes.",
+    "source_sha256": "7846333940b5115a7fef1203eda17192eaaf46f7b5263cc7a4fda343f0a1fe15",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;"
+  },
+  {
+    "id": "weak-singleton-null-return-rejects-request-before-notice",
+    "source": "<?php\nnamespace ReviewNotice66\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):nUlL{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice66\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x==='17'),':',(int)($copy==='17'),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy==='17'),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:17;C:11:2:1:1;D:11:31:23:1;",
+    "source_sha256": "4ec4b6bf2e377f80e53daecf0b59b9d5bd2dbc7a8538739a5166e5efe60cd4d2",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]

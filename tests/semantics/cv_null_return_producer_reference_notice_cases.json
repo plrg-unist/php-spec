@@ -1,0 +1,47 @@
+[
+  {
+    "id": "singleton-null-return-retired-formal-and-rebound-source",
+    "source": "<?php\nnamespace SingletonNullReturn66 {\nfunction h($n,$m,$file,$line){global $alias;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($alias===null),';';$GLOBALS['x']=37;$alias=43;return true;}\nfunction make(?fLoAt &$changed):nUlL{echo 'M:',(int)($changed===null),':',(int)($GLOBALS['x']===null),';';unset($GLOBALS['x']);return $changed;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['tag'=>41];return $value;}\n$x=null;$snapshot=$x;$alias=&$x;set_error_handler('SingletonNullReturn66\\\\h',8);echo 'N;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$GLOBALS['x'],':',$alias,':',(int)($snapshot===null),';';unset($alias);$r=47;echo 'P:',$r,':',$GLOBALS['x'],':',(int)($snapshot===null),';';\n}\n",
+    "formal_kind": "float",
+    "formal_byref": true,
+    "formal_nullable": true,
+    "caller_strict": false,
+    "native_stdout_template": "N;M:1:1;H:{notice_line}:0:1;F:1;R:41:37:43:1;P:47:37:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "a1dfec31888c06af3193968f6cb244075d3033cdd2ceb6175035c4fd4deb7e8c",
+    "return_kind": "null",
+    "return_shape": "identifier",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_nullable_scalar_return_producer_reference_notice_cases.json",
+      "id": "singleton-nullable-float-return-null-alias-and-private-cell",
+      "source_sha256": "7c3c23dc88ab973da665bdf3cb1990d00fa2b9035a98612aa2b765a5fa79c869",
+      "edits": "Fresh namespace and canonical standalone null RETURN header; remaining original bytes retained."
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:1;H:8:0:1;F:1;R:41:37:43:1;P:47:37:1;"
+  },
+  {
+    "id": "multiple-cv-null-return-untyped-private-cell-and-live-prefix",
+    "source": "<?php\nnamespace MultiCvNullReturn66 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make($saved,&$changed):nUlL{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved===null),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value='null';$prefix=31;return $value;}\n$x=null;$snapshot=$x;$y=5;$yAlias=&$y;set_error_handler('MultiCvNullReturn66\\\\h',8);echo 'N;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r,':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===null),';';$r=41;echo 'P:',$r,';';unset($y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===null),';';\n}\n",
+    "source_sha256": "da5eba0d236d23fe1896638605d1e9753ea8201248fb4187c1be04039eff5fe6",
+    "native_stdout_template": "N;M:1:23:0;H:{notice_line}:0:23;F:29:1;R:null:31:37:1;P:41;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "null",
+    "return_shape": "identifier",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_nullable_array_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-nullable-array-return-null-value-and-unconstrained-private-cell",
+      "source_sha256": "4c3b6fcfd3a7cdcc3417df52b6f77028493cdb5925f467ee9338f112da8a8a2e",
+      "edits": "Fresh namespace and canonical standalone null RETURN header; remaining original bytes retained."
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "N;M:1:23:0;H:8:0:23;F:29:1;R:null:31:37:1;P:41;Q:41:37:43:1;"
+  }
+]
