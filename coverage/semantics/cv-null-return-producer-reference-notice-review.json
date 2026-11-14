@@ -1,0 +1,155 @@
+{
+  "milestone": "REF66",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "8d15f84480e46e8124d7ea653439d82abd1faa7b",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "98227c6f4edf16e941e111370ce2da8cf0a684c5eb26ce16454ec1d4c049912e",
+    "law": "Five added lines admit >0 actuals, canonical raw NIdentifier null and exactly normalized[null], then the unchanged argument proof with RETURNS=eps. All old clauses, actual verifier, frame, Notice-source and ownership laws remain literal. Null is not void; nonnull returns reject even weakly and the later private cell has no persistent return constraint.",
+    "source_symbols": [
+      "Zend/zend_compile.c: zend_compile_typename_ex, zend_emit_return_type_check",
+      "Zend/zend_execute.c: zend_check_type, zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF, ZEND_SEND_VAR_NO_REF_EX",
+      "Zend/tests/type_declarations/standalone_null.phpt, typed_return_null_without_value.phpt"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-null-return-producer-reference-notice-66",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "a2e1efd21a0f7bbc0a852e04574b48ef391cc2d9edaa697d9734e17420746629",
+    "files": 10,
+    "scope": "Whole10 author READY and independent FULLCLEAR preceded MAIN source placement and this metadata. Five fresh Python files, two catalogues, one serial Make recipe, five-line law and one affected current53 helper were checked. Combined controller UNEXECUTED; imported watches and saved-native forwarding have static review only."
+  },
+  "independent_review": {
+    "report": "peer/fullclear.json",
+    "sha256": "51fc8ef96bd1e6eb971fb1ad7335bcb429c3f128ea05cf0877bc6152d9dbe0e9",
+    "decision": "FULLCLEAR",
+    "scope": "Source semantics, counterexamples, source/native reliability and whole10 manifest. Actual MAIN207/Make composition and exact test blobs were independently read without execution."
+  },
+  "counts": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "new_postlaw_notice_agreements": 3,
+    "separate_prelaw_weak_return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "accepted_evidence": [
+    {
+      "role": "author native2 once",
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "c0690d20186f35348f2bb06ec6b61121a7f2e2a6caa2617d298bcbdae0d577b7",
+      "revision": "43407f88157017a2371f3f6917b5758cf878f534"
+    },
+    {
+      "role": "peer native2 once",
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "372be8bb76ad94e3313ee13a7bb4b879ec017c63078daedd4bc8a65e2c090333",
+      "revision": "e39d93d194008b03df8b6673e6cff648c8af838e"
+    },
+    {
+      "role": "author production SL Notice2; saved native",
+      "report": "author/postlaw-source-v1/source-i_jrlcfj/report.json",
+      "sha256": "de7ad9404370d97c68b6209f4650127be79f36f9529f115f71f16b70cfb23599",
+      "revision": "8d15f84480e46e8124d7ea653439d82abd1faa7b",
+      "process_cap_seconds": 195,
+      "elapsed_seconds": [
+        24.28103542327881,
+        25.263604879379272
+      ]
+    },
+    {
+      "role": "peer production SL named NULL/private ARRAY Notice1; saved native",
+      "report": "peer/postlaw-source-v1/source-mqdgzmrt/report.json",
+      "sha256": "91f929a7c5bb832ca4006987cc0c965b1419685a8c32ee0cd5631f27614c1955",
+      "revision": "501767535800c7d9997f31c585c03f413efae788",
+      "process_cap_seconds": 195,
+      "elapsed_seconds": 26.889121055603027
+    },
+    {
+      "role": "separate prelaw production SL weak RETURN-priority1",
+      "report": "peer/prelaw-priority-source-v1/source-te2mulcm/report.json",
+      "sha256": "f794f677c04428ed54f1c0ce6068c06744f148f081ec8a76533531c271cfe5a1",
+      "revision": "832bf622697b0cfafc5dba2d0c9c2456a42772cd",
+      "process_cap_seconds": 195,
+      "elapsed_seconds": 21.52182388305664
+    },
+    {
+      "role": "author fixture SL507 356=272 reached+84 derived/source0",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "fb3c3446de72e3dc6d6282b08f20a066d88bd6b4b110441db8e0db40855342b7",
+      "revision": "8d15f84480e46e8124d7ea653439d82abd1faa7b",
+      "process_cap_seconds": 1200,
+      "elapsed_seconds": 49.996708154678345
+    },
+    {
+      "role": "peer fixture SL507 193=179 reached+14 derived/source0",
+      "report": "peer/postlaw-state-v1/report.json",
+      "sha256": "a483b4b3f9bd711038aeb7dd91ce89d862f1b1499afd0c1c2d4ccfa223735be4",
+      "revision": "501767535800c7d9997f31c585c03f413efae788",
+      "process_cap_seconds": 1200,
+      "elapsed_seconds": 41.173834562301636
+    }
+  ],
+  "prelaw": {
+    "author_unsupported2": {
+      "report": "author/prelaw-baseline-summary.json",
+      "sha256": "f05a73fcae43a851de385e68c2aca36ea13b3340dc4f8662949b8cc419b45518",
+      "source_agreements": 0,
+      "disposition": "Both original comparison reports remain false/Unsupported: error-handler ingress requires a producer continuation. No native replay."
+    },
+    "author_front": {
+      "role": "actual front177/source0",
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "1b73beef7752d9d92a6a5fcf0f39a8966d616dce6f13835501e66896af740701",
+      "revision": "6bbc24c13e0362918b89f2ac26fdb5ed3044c288",
+      "process_cap_seconds": 1200,
+      "elapsed_seconds": 28.943920850753784
+    },
+    "peer_front": {
+      "role": "actual front127/source0",
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "a827b99b5fb01a71437c69960c8e87cb0154125908a026211ae981e8a4597df2",
+      "revision": "832bf622697b0cfafc5dba2d0c9c2456a42772cd",
+      "process_cap_seconds": 1200,
+      "elapsed_seconds": 27.351515293121338
+    }
+  },
+  "canonical_main": {
+    "tested_revision": "5adae8269e7becc580f18badb27831fd7259da8c",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main46-null-return-producer-joined-508-v1/report.json",
+    "sha256": "5c47d158edd67fc9b7ad1afd2d5ebf95e5025513bd972db740a675ac42213238",
+    "mode": "production SL/cache=false/det=true",
+    "module_count": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "process_cap_seconds": 60,
+    "elapsed_seconds": 15.839401619974524,
+    "source_agreements": 0,
+    "result": "PASS once: exit0, true LF, quiet stderr, stable HEAD/inputs, fully reaped."
+  },
+  "compatibility": {
+    "current53": "Exactly matching raw RETURN(array,null,bool)+normalized3 and raw RETURN(array,float)+normalized2 assertions change from refusal to acceptance, reflecting accepted64/65. Every other current53 condition remains literal. Fresh356 checks both positives and raw3/normalized2 refusal; historical53/64/65 reports remain unchanged and unrenewed.",
+    "helper_closure": "MAIN contains the exact existing singleton60 and multi52 author helpers. Reviewer501767 private provisioning of these files on its older base is excluded from the donor.",
+    "source_watches": [
+      {
+        "report": "author/postlaw-source-v1/manifest.json",
+        "sha256": "4def8f39fd3177e8fac4314e27d5a192935387b02324299ad2cd2db1d8674220"
+      },
+      {
+        "report": "peer/postlaw-source-v1/manifest.json",
+        "sha256": "8fbae9293c4479046cfb3fa2dc13efa172497eea11828253487cfbd5f4f9d919"
+      }
+    ],
+    "actual_main_read": {
+      "report": "author/actual-main-source-check.json",
+      "sha256": "8fe98f7e8dca555443416760e2c16a459a944f91add803eab8a520fa92cb106e",
+      "execution_credit": 0
+    }
+  },
+  "limits": "Only canonical standalone null RETURN headers and existing completed CV producer/formal/source/payload/owner guards are admitted. Broader types, defaults/variadics/attributes, producer contexts, ownership/lifetimes and full core remain unfinished. All current PROGRESS holds, especially Owned-NUL source-release, remain."
+}

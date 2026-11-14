@@ -567,6 +567,16 @@ triple control in the current two-member test suite accepts its normalized tripl
 its historical results retain their original identity. Wider types, signatures,
 owners and lifetimes remain partial; Owned-NUL stays held.
 
+Canonical standalone `null` return headers also use the completed singleton and
+multi-CV producer route. Exact raw/normalized proof reuses the argument guard;
+nonnull returns reject even in weak mode. Producer verification and frame
+retirement precede the fresh private Notice cell, which has no persistent return
+constraint and may later hold strings, arrays or integers. The
+[null-return review](../../coverage/semantics/cv-null-return-producer-reference-notice-review.json)
+keeps the native originals, new Notice agreements, weak RETURN-priority control,
+state fixtures and canonical load separate. Wider contexts remain partial;
+Owned-NUL stays held.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

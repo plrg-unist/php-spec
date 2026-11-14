@@ -212,6 +212,8 @@ Completed singleton and multi-CV producers admit distinct nonnull two-member arr
 
 Completed singleton and multi-CV producers admit three to six distinct ordered array/int/float/bool/string/null return members. Raw/normalized authentication preserves callee-strict verification before frame retirement and private Notice cells, with existing alias/snapshot/COW bounds. [Primitive return-union review](coverage/semantics/cv-primitive-union-return-producer-reference-notice-review.json).
 
+Completed singleton and multi-CV producers admit canonical standalone null return declarations. Return checking accepts only NULL even in weak mode; producer retirement precedes the fresh untyped private Notice cell, retaining existing alias and cleanup bounds. [Null return review](coverage/semantics/cv-null-return-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The

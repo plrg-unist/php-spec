@@ -219,6 +219,8 @@ Completed singleton and multi-CV producers admit distinct nonnull two-member arr
 
 Completed singleton and multi-CV producers admit three to six distinct ordered array/int/float/bool/string/null return members. Raw/normalized authentication preserves callee-strict verification before frame retirement and private Notice cells, with existing alias/snapshot/COW bounds. [Primitive return-union review](coverage/semantics/cv-primitive-union-return-producer-reference-notice-review.json).
 
+Completed singleton and multi-CV producers admit canonical standalone null return declarations. Return checking accepts only NULL even in weak mode; producer retirement precedes the fresh untyped private Notice cell, retaining existing alias and cleanup bounds. [Null return review](coverage/semantics/cv-null-return-producer-reference-notice-review.json).
+
 Exact CONCAT certificates now cover signed64 integer bitwise operations,
 modulo with a nonzero divisor, shifts with nonnegative counts, quiet
 integer-result powers, equality/spaceship and all four logical short-circuit forms.
@@ -600,12 +602,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `9d2af7d6e` passes its once-only 508-module production SL
-load in 16.392686638981104 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `5adae8269` passes its once-only 508-module production SL
+load in 15.839401619974524 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main44-pluszero-shorthand-joined-508-v1/report.json`
-(SHA-256 `54611cecaa230ca5a84c6d0927214b5b5dad1e2d9bfe4c931242a25e4813cf26`).
+`../php-spec-evidence-archive/resumed-main-20261112/main46-null-return-producer-joined-508-v1/report.json`
+(SHA-256 `5c47d158edd67fc9b7ad1afd2d5ebf95e5025513bd972db740a675ac42213238`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

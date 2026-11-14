@@ -166,6 +166,13 @@ prefix aliases and real-cell cleanup. Strict array|bool|float rejects numeric
 REQUEST text at RETURN before Notice, consumer or assignment; existing source,
 formal and ownership guards remain, with wider contexts still partial.
 
+The [null-return review](../../coverage/semantics/cv-null-return-producer-reference-notice-review.json)
+also admits canonical standalone `null` returns. Named NULL snapshots remain
+separate from handler-time caller rebinding, while the later untyped private cell
+supports dynamic ARRAY mutation, COW and retirement. A weak nonnull REQUEST return
+fails after its body marker and before Notice, consumer or assignment. Existing
+source, formal and ownership bounds remain; wider contexts stay partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later
