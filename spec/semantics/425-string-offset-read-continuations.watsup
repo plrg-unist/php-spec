@@ -291,47 +291,20 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if ($truth(S, PSTRING n_cond*) /\ n_bytes* = n_cond*) \/ (~$truth(S, PSTRING n_cond*) /\ n_bytes* = n_false*)
-;; NULL is false, so JMP_SET takes the literal fallback through QM_ASSIGN.
+;; Quiet falsey compiled scalars select the exact raw shorthand fallback.
+;; Strings retain their separate truthy/falsey literal-header proof above.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
-  -- if $ptlc($base64(text_cond)) = $ptascii("null")
-  -- if n_bytes* = $base64(text_false)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PNULL)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Literal false also reaches the raw shorthand fallback through QM_ASSIGN.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprConstFetch (NName (BYTES text_cond) metadata_name) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $ptlc($base64(text_cond)) = $ptascii("false")
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
+  -- if $compiled_read(S, porigin_cond) = (pvalue_cond)
+  -- if $type_bytes(pvalue_cond) =/= $ptascii("string")
+  -- if $string_read_raw_truth(S, porigin_cond, pvalue_cond)
+  -- if $truth_value(S, pvalue_cond, 0) = S[.RESULT = KNOWN (PBOOL false)]
   -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Literal integer zero takes the raw shorthand fallback through QM_ASSIGN.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarInt (INTEGER 0) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PINT 0)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Literal positive floating zero selects the raw shorthand fallback.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarFloat (FLOAT text_cond) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $hex_bits(text_cond, 0) = 0
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PFLOAT 0)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 ;; Unary minus preserves a literal zero's false truth through its signed bits.
@@ -362,8 +335,7 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; The actual NOT result selects the exact literal fallback through QM_ASSIGN.
-;; Floats keep their emitted source/CODE proof; older scalar folds keep their pool.
+;; FLOAT NOT retains its emitted source/CODE proof; folded NOT uses raw truth.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_child metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
@@ -375,7 +347,8 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_child) = (pvalue_child)
   -- if $string_read_raw_truth(S, porigin_child, pvalue_child)
   -- if $truth_value(S, pvalue_child, 0) = S[.RESULT = KNOWN (PBOOL true)]
-  -- if ($type_bytes(pvalue_child) =/= $ptascii("float") /\ $compiled_read(S, porigin_cond) = (PBOOL false)) \/ ($type_bytes(pvalue_child) = $ptascii("float") /\ $string_read_runtime_value(S, porigin_cond) = (PBOOL false))
+  -- if $type_bytes(pvalue_child) = $ptascii("float")
+  -- if $string_read_runtime_value(S, porigin_cond) = (PBOOL false)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
