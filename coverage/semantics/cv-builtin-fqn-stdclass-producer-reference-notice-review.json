@@ -1,0 +1,88 @@
+{
+  "milestone": "REF80",
+  "target": "PHP8.5.10 CLI NTS64; vendored engine34308a6666b2d489c509541ea9befea9e2b42348; ordinary profile tests/semantics/profile.json",
+  "scope": "Completed ordinary-CV producer required FORMAL/RETURN headers with exactly two ordered members: one raw fully qualified stdClass and one builtin array/int/float/bool/string/null/false/true. Exact decoded class bytes agree with the normalized branch before stdclass casefolding; builtin Identifier bytes casefold to the exact normalized tag. Existing fixed required/default/BYREF, source, quiet STDINSTANCE payload, owner and lifetime bounds remain unchanged.",
+  "implementation": "Four existing ordered FQN/null arms in spec/semantics/207-error-handler-runtime.watsup generalized directly; nullable and primitive folds, actual RECEIVE/RETURN conversion, frame retirement and private-cell ownership unchanged. One-line fiber_static_api_sources.py correction makes the mandatory primary runtime SHA lookup short-circuit its optional fallback.",
+  "engine_basis": [
+    "Zend/zend_compile.c:zend_compile_typename_ex (class/primitive unions and redundant object rejection)",
+    "Zend/zend_execute.c:zend_check_type, zend_check_type_slow (exact primitive/class matching before scalar fallback)",
+    "Zend/zend_execute.c:zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint (strict integer-to-float exception, weak preference and exact literal Booleans)"
+  ],
+  "source_selection": {
+    "base": "b2057092bb62bf2f89b5e53b666d2437dc3cc8d2",
+    "donor": "848dc09999a9c9aba8ff1338e2aed49a9b3a8947",
+    "tree": "788c35c62d4f3421b72c3193d636a047fc421c33",
+    "selection": "Only exact10-file delta:207, author3, peer3, combined controller, Makefile and one shared source-harness line; excludes separately integrated REF79 metadata ancestry.",
+    "peer_owned3": "Exactly prepared1fc1a519e12686ab34223388a100c4aff22609a0 files; no operational untracked canonical57 helper donor."
+  },
+  "evidence_base": "../php-spec-evidence-archive/cv-builtin-fqn-stdclass-producer-reference-notice-80",
+  "checks": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "86963d3e36d80b3e89e3fe8299bfe6ab147e30a0e4b9e0440b780a9d8646b384",
+      "revision": "c739c52cea54dc22414da2df1664992480794462",
+      "result": "4 native originals once, each Notice line8; source credit0"
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "b5c865a2246d8e07a361f072290055568726f9c448836b25e9dbb7a737a3e576",
+      "revision": "1fc1a519e12686ab34223388a100c4aff22609a0",
+      "result": "4 native originals once: Notice2, RECEIVE1, RETURN1; source credit0"
+    },
+    {
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "c2ff67ea1d941866ac040151a29ca418e995c44b6ef6f6f88e5bedb0eb75ee4a",
+      "revision": "c739c52cea54dc22414da2df1664992480794462",
+      "result": "genuine prelaw209 reached/0 derived, fixture-SL507; source credit0"
+    },
+    {
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "33cf93fe4c0416bc85fd50c5ff85e5ce3e28c138ce0691c12bb77c75c383a97d",
+      "revision": "1fc1a519e12686ab34223388a100c4aff22609a0",
+      "result": "genuine prelaw267 reached/0 derived, fixture-SL507; source credit0"
+    },
+    {
+      "report": "author/notice-source-v1-lx7t1fqy/report.json",
+      "sha256": "4546d086c07ccc08a886b7cffe208487330c9b94c553f45d371706022e8d4a57",
+      "revision": "848dc09999a9c9aba8ff1338e2aed49a9b3a8947",
+      "result": "production-SL source4 agreements: Notice4; saved native originals reused"
+    },
+    {
+      "report": "peer/postlaw-source-v1-for_wwii/report.json",
+      "sha256": "be9fe406ef6453c5dcebf33696123b684e44ae39f41ee4517a186cbcd7a7c1bb",
+      "revision": "3c8fdb09f886768b633ff6aa82c771467e3fd5ff",
+      "result": "production-SL source4 agreements: Notice2, RECEIVE1, RETURN1; saved native originals reused"
+    },
+    {
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "a088b4d8e98fc1397bf4daaff460175ca697541c1148785593f9f15d0a740742",
+      "revision": "848dc09999a9c9aba8ff1338e2aed49a9b3a8947",
+      "result": "fixture-SL507:461 conditions,295 reached+166 derived; source credit0"
+    },
+    {
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "b79f82810a0efca3f52f8c2164c7cd17432f869043029a5e4402b0793d99d029",
+      "revision": "3c8fdb09f886768b633ff6aa82c771467e3fd5ff",
+      "result": "fixture-SL507:770 conditions,378 reached+392 derived; source credit0"
+    }
+  ],
+  "agreements": {
+    "native_executions_once": 8,
+    "production_SL_source_agreements": 8,
+    "notice": 6,
+    "receive_priority": 1,
+    "return_priority": 1,
+    "fixture_note": "All fixtures cache=false/det=true/source0. Author461 and peer770 retain separate reached/derived cuts; no unique aggregate count is claimed."
+  },
+  "actual_composition": {
+    "revision": "79e3f78b48c7a686a02d4df909fa1543c3565231",
+    "tree": "81fdf37259856bb8c96c9282f62b8fe1dc3c0213",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main57-ref80-current-load-v1/report.json",
+    "sha256": "cd4b7115233958a0bab0c92e2e2bf886d42a1855fc7f09729cefc1738daabaaf",
+    "result": "PASS production-SL508/511 argv/512 watched, cache=false/det=true,16.035218625096604s/cap60, quiet stable/reaped; source credit0. Independent peer15 consumed the sole combined actual/SAME read and issued FULLCLEAR; no author duplicate."
+  },
+  "independent_review": "Peer15 whole10 FULLCLEAR: exact changed paths/modes/SHA, matching207/harness and peer3, author3/controller/Make semantics, private source/raw observations and fixture reliability. No duplicate native, source, state or canonical run.",
+  "preserved_failures": "author/notice-source-setup-failure-v1.txt preserves the first AttributeError before any source/native/model execution: eager optional runtime-dictionary fallback despite present runtime_sha256. The one-line short-circuit correction affects no PHP bytes/oracle input; native reports remain immutable and are reused. Zero credit for the failed setup. No other REF80 native/source/fixture failure, timeout or interrupted run; earlier failures keep their original identities.",
+  "unexecuted": "Combined controller and Make recipe are present but UNEXECUTED/source0. Their presence adds no campaign credit.",
+  "limits": "Larger class unions, plain/imported/other class names, wider signatures/payload/source/backing/history/GC/lifetimes and complete core remain partial. Callback-dependent Stringable remains visible. Historical unspecified V110 stdClass dependency stays held without a blanket ban or lifecycle widening. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension warnings, Source47 low-precision DEFINE-name NaN conversion, COMP88 Stringable supplied-throw crash, GC35/I106/COMP123/ATTR87/GC87 and every other exact hold stay untouched."
+}

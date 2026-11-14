@@ -741,6 +741,22 @@ sole batchcfb37f6ef SL508 load. Seven exact current78 header corrections use fre
 states without historical renewal. Controller/Make remain unexecuted/source0;
 wider class/builtin unions, plain/imported class forms and every exact hold stay partial.
 
+Two-member unions also pair fully qualified `\stdClass` with one of `array`,
+`int`, `float`, `bool`, `string`, `null`, `false` or `true`, in either source
+order. Raw and normalized branches retain exact order; decoded class-name bytes
+must agree before stdClass casefolding, while builtin Identifiers casefold to
+their exact normalized tag. Exact class/scalar membership precedes weak scalar
+conversion; strict integer-to-float promotion remains admitted. Actual reception
+and return verification, ordinary BYREF rebinding, producer retirement and the
+fresh untyped private Notice cell retain their existing rules. The
+[FQN/builtin review](../../coverage/semantics/cv-builtin-fqn-stdclass-producer-reference-notice-review.json)
+keeps eight native originals once/source8 (six Notices and separate RECEIVE/RETURN
+priorities), author461/peer770 and genuine prelaw209/267 fixture-SL507 cuts
+separate from the actual `79e3f78b48` production-SL508 load. The first source
+setup failure retains zero credit; controller/Make remain unexecuted/source0.
+Larger class unions, other class forms, Stringable callbacks, wider contexts and
+every exact held dependency remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
