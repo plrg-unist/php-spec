@@ -178,7 +178,7 @@ def normal(initial, case, front):
         conditions[at:] = COW + ['$mcvr_output(S_full.EVENTS) = $ptascii(' + json.dumps(case['native_stdout']) + ')']
         derived += [
             'phpType17_union = NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE ([NIdentifier (BYTES text_first_type) metadata_first_type, NIdentifier (BYTES "bnVsbA==") metadata_first_type])) metadata_first_nullable) (BOOLEAN false) (BOOLEAN false) phpType10_first ABSENT (SEQUENCE eps) metadata_first_parameter',
-            '~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_union, phpType17_last]), pfunction_producer.SIGNATURE[.RETURNS = eps])',
+            '$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_union, phpType17_last]), pfunction_producer.SIGNATURE[.RETURNS = eps])',
             '~$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([phpType17_first, phpType17_last]), pfunction_producer.SIGNATURE[.RETURNS = eps][.PARAMETERS = [psparam_first[.TYPE = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "bool"]))]], psparam_last]])']
     return conditions, derived
 
