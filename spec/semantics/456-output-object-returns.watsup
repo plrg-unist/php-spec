@@ -1533,9 +1533,29 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastInt (NSca
   -- if $float_long(n_child, false) = (i_cast, eps)
   -- if $long_range(i_cast)
   -- if $cast_apply(S, CASTINT, PFLOAT n_child, z_cast) = S[.RESULT = KNOWN (PINT i_cast)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastDouble (NScalarInt (INTEGER i) metadata_integer) metadata_cast) metadata_return]) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $plstyle(metadata_cast) = 2
+  -- if $long_range(i)
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprCastDouble (NScalarInt (INTEGER i) metadata_integer) metadata_cast) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_cast)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_cast) = (NExprCastDouble (NScalarInt (INTEGER i) metadata_integer) metadata_cast)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_cast) = ((z_cast, false))
+  -- if z_cast = $expression_line(NScalarInt (INTEGER i) metadata_integer)
+  -- if $origin_child((PORIGIN n_handler pcpath_cast), [PCFIELD 0]) = (PORIGIN n_handler pcpath_integer)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_integer) = (NScalarInt (INTEGER i) metadata_integer)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_integer) = ((z_integer, true))
+  -- if z_integer = $source_line(metadata_integer)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_cast) = eps
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_integer) = (PINT i)
+  -- if n_cast = $float_of_int(i)
+  -- if $cast_apply(S, CASTFLOAT, PINT i, z_cast) = S[.RESULT = KNOWN (PFLOAT n_cast)]
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or admitted emitted CASTINT return.
+;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or admitted emitted CASTINT/CASTFLOAT return.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
