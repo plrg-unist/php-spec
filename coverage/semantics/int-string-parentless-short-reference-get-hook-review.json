@@ -1,0 +1,99 @@
+{
+  "family": "ordered int|string and string|int in parentless same-field short reference Get",
+  "status": "bounded slice integrated; independent source, state and actual composition/SAME checks clear",
+  "target": "PHP8.5.10 CLI NTS64",
+  "oracle": {
+    "path": ".tools/php/bin/php",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json plus include_path=.:",
+    "environment": {"LC_ALL": "C", "TZ": "UTC"}
+  },
+  "scope": [
+    "Own ordinary parentless class, public nonstatic nonreadonly nonfinal property, no Trait or set visibility, sole short &get without an explicit parameter list.",
+    "Exact two-Identifier raw and normalized branch order authenticates both int|string and string|int, including implicit reference RETURNS and CODEARROW line authority. Diagnostic spelling is string|int in either order.",
+    "An omitted nonnullable slot throws on its first genuine by-value getter read, preserving the old saved copy and PROP_INITIAL. A subsequent ordinary backing write of 0 initializes the slot; later by-value and reference reads share its real type source.",
+    "Numeric string12 stays STRING. Weak exact float2.0 and booleans become INT; strict assignments reject and preserve INT17. Both modes reject NULL, arrays and plain stdClass. Copies remain independent and real source removal on quiet receiver release leaves aliases shared and later false uncoerced."
+  ],
+  "refusals": [
+    "Raw and normalized branch orders that disagree, duplicate types, other two-member families, three-member, class and mixed unions remain outside this added gate. Earlier singleton/nullable admission is unchanged.",
+    "Only one current pure int|string negative is promoted. Wider headers, owners, bodies, payloads and lifetimes remain partial; every exact held boundary is unchanged."
+  ],
+  "engine_pin": "vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348",
+  "source_routes": {
+    "Zend/zend_compile.c": ["zend_compile_property_hooks", "zend_compile_return", "zend_type_to_string_resolved"],
+    "Zend/zend_execute.c": ["zend_handle_fetch_obj_flags/ZEND_FETCH_REF", "i_zend_verify_type_assignable_zval", "zend_verify_weak_scalar_type_hint", "zend_throw_ref_type_error_zval"],
+    "Zend/zend_object_handlers.c": ["zend_std_write_property: backed property without SET uses ordinary typed write"],
+    "Zend/zend_objects.c": ["zend_object_dtor_property"]
+  },
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_header"],
+  "whole_source": {
+    "base": "bfdda012badae6ec25de79734a545e2fc36b4701",
+    "donor": "92a97a49365bd9b089486c8cc65e796e3a60d7d7",
+    "tree": "72135a03cd4a03dd89aaad2af92d279839a2764b",
+    "paths": 15,
+    "manifest": "source-ready.json",
+    "manifest_sha256": "effd139c1d2dbb55465a7fe9d6f430307ffea0d891a2dfec2720e065db2e00bc",
+    "excluded_separately_closed_metadata": [
+      "coverage/semantics/union-literal-boolean-parentless-short-reference-get-hook-review.json",
+      "coverage/semantics/null-parentless-short-reference-get-hook-review.json",
+      "coverage/semantics/mixed-parentless-short-reference-get-hook-review.json"
+    ]
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/comp306",
+  "source_mode": "production-SL508",
+  "source_cuts": [
+    {
+      "role": "author-weak", "head": "3653b7372d73608f93b590df041d3edea8921f9b",
+      "native_runs_once": 2, "source_agreements": 2,
+      "report": "author-source/report.json",
+      "sha256": "a0a3bb900969ddd1f25ba41fe8ecfacdd12cea43491b377b017e9010bfc5a082"
+    },
+    {
+      "role": "independent-strict", "head": "c9b33912072c49c23f7dcb55c50cdb3db128867a",
+      "native_runs_once": 2, "source_agreements": 2,
+      "report": "reviewer-source/report.json",
+      "sha256": "8a10dc3a2940f796b9bc354458692200ac9c8602cf8ac5d0c2cb77ff77310e0c"
+    }
+  ],
+  "fixture_mode": "fixture-SL508; zero source-agreement credit",
+  "fixture_cuts": [
+    {
+      "role": "author-int-string", "head": "3653b7372d73608f93b590df041d3edea8921f9b", "conditions": 250,
+      "report": "author-int-string-protocol/report.json",
+      "sha256": "793a50a343981c51561086e15ac496f60dd0ade4bf8c246aea5bc57c3c0058d6"
+    },
+    {
+      "role": "author-string-int", "head": "3653b7372d73608f93b590df041d3edea8921f9b", "conditions": 284,
+      "report": "author-string-int-protocol/report.json",
+      "sha256": "5b7d012126d9e20d793c6a596cf9c36237e97a73b57ad1dcc328084db0d324e6"
+    },
+    {
+      "role": "independent-int-string", "head": "c9b33912072c49c23f7dcb55c50cdb3db128867a", "conditions": 263,
+      "report": "reviewer-int-string-protocol/report.json",
+      "sha256": "5541c7706982b14417f70662b4312b3a93f9fbfdd20f9a83882ffa087c13d705"
+    },
+    {
+      "role": "independent-string-int", "head": "c9b33912072c49c23f7dcb55c50cdb3db128867a", "conditions": 298,
+      "report": "reviewer-string-int-protocol/report.json",
+      "sha256": "465dbec19975117e517da524cd40ea0b3307a38857a5f60325b74a1ae5f2f071"
+    }
+  ],
+  "compatibility": "The final six independently owned strict preparation paths were added after author campaigns; all author-watched inputs remain unchanged. Whole15 review binds the exact current source projection. Current helper guards are checked directly without replaying the prior union-scalar campaign.",
+  "controls": {
+    "author_prelaw": {"report": "author-prelaw/report.json", "unsupported": 2, "native_runs": 0, "source_agreements": 0},
+    "pre_execution_corrections": "Weak array classification is POSSIBLE before conversion rejection. Strict Boolean diagnostics use true/false, and the strict fixture captures the by-value result before the copy. All were corrected before observation; runtime was unchanged.",
+    "observed_failures": 0,
+    "make_commands": "wired; not replayed"
+  },
+  "actual_composition": {
+    "family_commit": "dcc7d3f1e93dd69c0f77bdd7ecbc5106970a8b27",
+    "family_tree": "6f0c495ab39cf572c3069cdf86917e3c6e1815e0",
+    "projection": "14 donor-exact paths plus the six additive Make commands; exactly15 family paths",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main60-comp306-current-load-v1/report.json",
+    "sha256": "fbdaae97c71e66fa277df01e9dd8833df5ec619d185c82c83d4b9e8a2d01b1be",
+    "mode": "production-SL", "modules": 508, "elapsed_seconds": 16.591092361835763,
+    "cap_seconds": 60, "source_agreements": 0, "passed": true,
+    "stable_quiet_reaped": true,
+    "review": "Independent actual15 composition and SAME saved canonical read clear once by retained reviewer16; no source/state renewal."
+  }
+}
