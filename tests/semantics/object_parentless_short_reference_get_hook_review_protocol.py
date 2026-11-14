@@ -69,7 +69,7 @@ def fields(fixture, source, form):
         '$property_hook_function(S_return,ppropertyhook[.OBJECT = |S_return.OBJECTS|]) = eps',
         '~$hook_short_reference_header(phpType18,eps)',
         '~$hook_short_reference_header(NName (BYTES "c3RkQ2xhc3M=") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "b2JqZWN0") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "b2JqZWN0") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "b2JqZWN0") metadata_group) metadata_group,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "object"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '$source_unit(S_return.SOURCES,n_source) = (pcunit)',

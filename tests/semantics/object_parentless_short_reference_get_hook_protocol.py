@@ -79,15 +79,16 @@ def fields(fixture, source, form):
         ('nullablemismatch', object_header if nullable else 'NNullableType (' + object_header + ') metadata_group'),
         ('union', 'NUnionType (SEQUENCE ([' + object_header + ',' + null_header + '])) metadata_group'),
     ):
+        negation = '' if label == 'union' and nullable else '~'
         checks += [
-            f'phpType18_{label} = {header}', f'~$hook_short_reference_header(phpType18_{label},ppropertydesc.TYPE)',
+            f'phpType18_{label} = {header}', f'{negation}$hook_short_reference_header(phpType18_{label},ppropertydesc.TYPE)',
             f'statement_{label} = NStmtProperty (SEQUENCE eps) (INTEGER 1) phpType18_{label} (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata_group',
             f'S_{label} = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group statement_{label}) :: pcunit.OCCURRENCES]]]',
-            f'~$property_hook_reference_decl(S_{label},ppropertydesc)', f'~$reference_return_source(S_{label},6)',
+            f'{negation}$property_hook_reference_decl(S_{label},ppropertydesc)', f'{negation}$reference_return_source(S_{label},6)',
         ]
     checks += [
         '~$hook_short_reference_header(NName (BYTES "Qm94Mjk5") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("Box299"))]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([' + object_header + ',' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([' + object_header + ',' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     ]
     if abrupt:
