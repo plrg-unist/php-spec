@@ -1,0 +1,165 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with canonical false/true and ?false/?true raw headers, matching normalized literal types and actual same-field identifier/literal-string bodies. Partial core.",
+  "target": "PHP8.5.10 CLI NTS64; pinned .tools/php/bin/php; profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp302",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "14c3cc57132f020a2853f3dba9e2ea106cf533d238d4c4fb21129be701d22080",
+    "source_donor": "0e60a32988ff577b9b0fd201ffe91c63d1a5001a",
+    "change": "Only canonical NIdentifier membership adds false/true; existing nullable recursion supplies ?false/?true. Explicit literal/null union guards and source/body/signature/ownership rules remain unchanged."
+  },
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_property_hooks supplies the implicit return type and short RETURN. Zend/zend_execute.c::i_zend_verify_type_assignable_zval and zend_verify_weak_scalar_type_hint require both Boolean bits for coercion, so a literal type accepts only its tag, plus NULL if nullable.",
+    "Zend/zend_execute.c::zend_handle_fetch_obj_flags rejects nonnullable uninitialized reference acquisition before binding or adding a type source. zend_throw_ref_type_error_zval calls zend_zval_value_name, retaining true/false diagnostic words."
+  ],
+  "behavior": "Weak and strict writes reject 0/1, opposite Boolean tags and other nonmatching values. Nullable fields initialize NULL and preserve independent copies. Failed uninitialized acquisition preserves all three old aliases; later false initialization and successful acquisition create a distinct genuine constrained cell. Real staged/quiet receiver cleanup detaches the source before free writes.",
+  "ownership_and_resumption": "Author cells lose owners from2 to1. Peer false cells with an extra alias lose3 to2, true cells2 to1; uninitialized old aliases retain3 through failure then2 after successful rebinding, while the new field loses2 to1 at cleanup. Author return/storage0 have exact0/1 full joins; peer return0/1 is a local comparison and cleanup has a full join.",
+  "source_agreements": {
+    "author": {
+      "report": "author-postlaw-v1/report.json",
+      "sha256": "931660f7f0cf6f60db524b87fe11b4222015b16afbae61220b6881811455d59c",
+      "head": "543b1892471e29fff295b28ef1e7a05160c8e6fd",
+      "module_count": 508,
+      "source_agreement_credit": 2
+    },
+    "independent": {
+      "report": "peer14-saved-native-source-v1/report.json",
+      "sha256": "d6fe89d6127304722a86fe22a569e3b7b929d3320660e0f5aa3e0df2aca43fa9",
+      "head": "958ace6c83ff9ec9fc1cd9dcf44a40ff87928a46",
+      "mode": "production-SL",
+      "module_count": 508,
+      "agreements": 3
+    },
+    "total": 5,
+    "current_originals_native_once": 5,
+    "total_native_byte_versions_executed": 6,
+    "native_replayed": false,
+    "native_reports": [
+      {
+        "report": "author-native-v2/report.json",
+        "sha256": "a6b2982a8ea374d7909664641945b844bd49122f1ec82b3e47535f06c772cfab",
+        "head": "01c2bb8350edc9e9b56ac14a6c8427cc24d48e24",
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "peer13-native-prelaw-v1/report.json",
+        "sha256": "dc642e8330b2eaaa30c6924178489001e31d93cdf1d9ce30446164e7677df3f1",
+        "head": "3eca3de646c23cfc4ab46855b40177b17e6118cf",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      }
+    ]
+  },
+  "fixture_cap_seconds": 240,
+  "fixture_cuts": [
+    {
+      "report": "author-canonical-protocol-v1/report.json",
+      "sha256": "cb6a8fc2ceed918b8d71f115950dfa22c7697da7b2a996f9e4a049d7069c37d8",
+      "head": "543b1892471e29fff295b28ef1e7a05160c8e6fd",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 174,
+      "source_agreement_credit": 0,
+      "seconds": 83.8558497428894
+    },
+    {
+      "report": "author-nullable-protocol-v1/report.json",
+      "sha256": "8c95c5875024ca15f7ec63bec070166ba1cb9fccf4829c5fbf798c24b9638be6",
+      "head": "543b1892471e29fff295b28ef1e7a05160c8e6fd",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 174,
+      "source_agreement_credit": 0,
+      "seconds": 83.7594256401062
+    },
+    {
+      "report": "peer14-canonical-protocol-v2/report.json",
+      "sha256": "781c59ed33e3d89e6e8b48397590f7c7b25a800c57dceefee2ed1c9649a1e474",
+      "head": "5482693a2afb276d9a6084756997f7af7aadad32",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 218,
+      "source_agreement_credit": 0,
+      "seconds": 34.65623688697815
+    },
+    {
+      "report": "peer14-nullable-protocol-v1/report.json",
+      "sha256": "3f1e37efb365773875ba921ca91bcb035adc4ee71bab6e15256ae75a593e852c",
+      "head": "5482693a2afb276d9a6084756997f7af7aadad32",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 219,
+      "source_agreement_credit": 0,
+      "seconds": 47.58290338516235
+    },
+    {
+      "report": "peer14-uninitialized-protocol-v2/report.json",
+      "sha256": "4e9c801b9f45cb9c01d3a68ba419caa3fd5e9eb537f33187923ed5defad19209",
+      "head": "b054566c30dfc0844c7fd4474f5b24894c315309",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 196,
+      "source_agreement_credit": 0,
+      "seconds": 28.58296012878418
+    }
+  ],
+  "prelaw": {
+    "author": {
+      "report": "author-prelaw-v1/report.json",
+      "sha256": "4caa16f9a6554fc284754e5627edee01932b930a560dbfc90ed23960bdd022d3",
+      "head": "01c2bb8350edc9e9b56ac14a6c8427cc24d48e24",
+      "module_count": 508,
+      "source_agreement_credit": 0
+    },
+    "independent_report": "peer13-native-prelaw-v1/report.json",
+    "selection": "Each canonical-only selected case is Unsupported/source0. Author nullable and peer nullable/uninitialized prelaw cases were unrun."
+  },
+  "preserved_failures": [
+    {
+      "report": "author-native-v1/report.json",
+      "sha256": "50f144c689e68a7d30c4fb231845533ac0c598130d947ec0c353ac438c015a63",
+      "head": "79c50b79cbf1c204cddd62093867eb0c15139d74",
+      "source_agreement_credit": 0,
+      "reason": "Old canonical source expected bool rather than true/false value names; preserved0. Old nullable byte version was unrun; corrected-byte originals ran once each."
+    },
+    {
+      "report": "peer14-canonical-protocol-v1/report.json",
+      "sha256": "85e4254f1aec29b52e3296230a7931545ed13600bc3acf0bb31c030665db429b",
+      "head": "fefc9c88d45173ec69cf4c92ceda9f6ef956e591",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 218,
+      "source_agreement_credit": 0,
+      "seconds": 11.315999984741211,
+      "reason": "Assignment checkpoint lhs domain failed DSL elaboration; preserved0."
+    },
+    {
+      "report": "peer14-uninitialized-protocol-v1/report.json",
+      "sha256": "1774d0ea0e17c10704cefa312ee434b53ed27a43e86e4d54b20f3a8e050f84c5",
+      "head": "5482693a2afb276d9a6084756997f7af7aadad32",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 196,
+      "source_agreement_credit": 0,
+      "seconds": 12.234009742736816,
+      "reason": "Same-stem list/scalar binder failed empty-iteration checking; preserved0. Only the affected uninitialized fixture repeated."
+    }
+  ],
+  "actual_composition": {
+    "head": "4eb91ff662b8be7616eaf0e2d157cae95aa523a2",
+    "tree": "696a83ac45290352972c09bb77556b020511b881",
+    "report": "../resumed-main-20261112/main56-comp302-current-load-v1/report.json",
+    "sha256": "c483f4dd24593209f68ee4bd3c06a96986c0f2749ab9b2b26a0f810fd67d12bb",
+    "seconds": 15.680690999841318,
+    "mode": "production-SL",
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "status": "One saved canonical report consumed by the independent reviewer; exact15 composition/SAME is quiet, stable and reaped. No author duplicate run/read."
+  },
+  "compatibility": "Manifestbf493d46 retains all five early weak paths and excludes only the separately closed COMP301 ledger. Canonical/nullable peer PREFIX and generated premises remain identical between their PASS548 cuts and the final uninitialized binder correction. Seven Make recipes are prepared; aggregate unrun. No old matching canonical false/true refusal was promoted; explicit literal/null controls remain negative.",
+  "remaining": "Explicit literal/null and wider unions, mixed/class/intersection headers, parented/Trait typed short hooks and broader bodies/consumers/lifetimes remain partial at this donor. COMP303 is separate work. Preserve narrow V110, COMP123 pendingException/recursiveError, exact COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and every standing hold.",
+  "engine_bug_or_intentional_divergence": null
+}
