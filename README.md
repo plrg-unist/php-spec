@@ -891,6 +891,8 @@ Own canonical (float) casts of raw signed64 integers return rounded PFLOAT value
 
 Own canonical (float) casts of raw FLOAT returns preserve exact child bits through real formal retirement and FINAL MOD-zero Error. Four original/history pairs retain AH/AHH without default diagnostics; exact emitted-root, child-pool, NORMAL and kind2 authority remain required. Local signed-zero, infinity and quiet/signaling-NaN identity controls add source0 and establish no unary-arithmetic or low-precision behavior. Wider children, handlers, histories, lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-float-float-cast-return-modulo-error-review.json).
 
+Own canonical (float) casts of simple-name Boolean/null constants return exact FLOAT1 or positive zero through real formal retirement and FINAL MOD-zero Error. Four original/history pairs retain AH/AHH without default diagnostics; case-folded keyword and strict child-tag authority, indexed NName source, canonical kind2, NORMAL and full quiet cast state remain required. FALSE and NULL retain distinct child authority despite equal positive zero; wider names, children, handlers, histories, lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-constant-float-cast-return-modulo-error-review.json).
+
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.

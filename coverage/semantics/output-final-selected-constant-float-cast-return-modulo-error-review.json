@@ -1,0 +1,176 @@
+{
+  "feature": "OUTPUT119: selected FINAL MOD handlers with Boolean/null FLOAT casts",
+  "status": "independently reviewed; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_revision": "64e8de58a3fe596d338c1c191adcf5eb0b18f681",
+  "reviewed_ready_revision": "bc73db9c1ea05676febf01e2d1e9fa96a06314aa",
+  "scope": "Own canonical (float) casts of simple NName true/false/null, case-insensitively, return PFLOAT1/+0 through mask8194 callbacks, real formal retirement and FINAL MOD-zero Error. Exact Return/root/ConstFetch/indexed-name source, CODE lines/flags, unit/body, strict keyword child, NORMAL and full quiet cast state remain required; names need no invented CODE/pool.",
+  "engine_basis": [
+    "Zend/zend_compile.c: zend_compile_const and zend_compile_cast",
+    "Zend/zend_operators.c: convert_to_double NULL/FALSE -> +0.0, TRUE -> 1.0",
+    "Authored spec/semantics/20-machine.watsup special_constant and 56-casts.watsup CASTFLOAT; no native evaluation fallback"
+  ],
+  "curated_manifest": [
+    {
+      "path": "Makefile",
+      "added_lines": 4,
+      "ready_sha256": "99460bc7a6c70ac8555627656f686fa3dcd4968016ca53e74cbb80aaaa708abd",
+      "owned_invocations": 4
+    },
+    {
+      "path": "spec/semantics/456-output-object-returns.watsup",
+      "added_lines": 22,
+      "ready_sha256": "7f5a8e1989e58e28bb66e329199eb4a924a791bcbdb9fb65f1b9be07f692e3f0"
+    },
+    {
+      "path": "tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_sources.py",
+      "added_lines": 17,
+      "ready_sha256": "ae14c66bc8d65d075bfda8113994790187a807a99c4c05486522e94f6d42f8a6"
+    },
+    {
+      "path": "tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_state.py",
+      "added_lines": 74,
+      "ready_sha256": "96e51f2fc0bdde66ebbb7264497ece5050eb3e19b32b797d80ca60d84d260bcd"
+    },
+    {
+      "path": "tests/semantics/output_final_selected_constant_float_cast_return_modulo_error_review_state.py",
+      "added_lines": 128,
+      "ready_sha256": "9804dfd1cfeb709f543bd85f000d70b046306bb676b185314d4b1cd0161bed40"
+    }
+  ],
+  "manifest_totals": {
+    "paths": 5,
+    "added_lines": 245,
+    "removed_lines": 0
+  },
+  "source_pairs_sha256": {
+    "warning-left-constant/true": "9c4f0aeab44866458773f9f96c620bcf0e0b4a5ce647b650ae5212170f86eda6",
+    "deprecated-both-cv-pair/false": "8efd50add77732e4313c1de4bd1252a6302764aa560ec42adb2f37fae9d85ee9",
+    "warning-right-cv-pair/null": "b9c4ffe1d3ba8813080cd75356b363ac4847c202c5b431a344e0d26976f46ed8",
+    "warning-deprecated-constant-float/TrUe": "6f2153414e4cba0a06355c9d3cfca5d232ebd3489414bc2f18ca37f374b96044"
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-constant-float-cast-return-modulo-error-author.json",
+  "accepted_author_cuts": {
+    "native": {
+      "revision": "1a443b183fe1dd056e091193bbe22baccaf8e5c8",
+      "originals_once": 4,
+      "watched_inputs_each": 27,
+      "observations": "Exact stdout P/full fatal stderr/exit255, lines6/8/8/6, no default diagnostics; same profile/source hashes as model. Standalone native credit0."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/model-first-01/report.json",
+      "sha256": "41a12286cb20c8023883de3700d251560e9bf270e9d48598dc224ca320468aec",
+      "watched_inputs": 536,
+      "unsupported": 2,
+      "tool_exit": 1,
+      "native_match": false,
+      "unrun_other_originals": 2,
+      "source_credit": 0
+    },
+    "prelaw": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/front-all-01/report.json",
+      "sha256": "9c37497011891997ea857abf58f847238a41feb88865e825a77cd6f217839b3c",
+      "conditions": [
+        8,
+        11
+      ],
+      "watched_inputs_each": 586,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/model-final-01/report.json",
+      "sha256": "68ba3a899daebb5c9b8bfe9a4e347adf1e75bc6b4d73d9feff9ec2853ec08f7d",
+      "module_count": 508,
+      "watched_inputs": 544,
+      "source_agreements": 4,
+      "native_replayed": false
+    },
+    "lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/life-all-01/report.json",
+      "sha256": "b942c15377f5ecab312860ef716bbca82cb988b1065eb5271c465af9fa9e23a2",
+      "conditions": [
+        6,
+        7
+      ],
+      "watched_inputs_each": 586,
+      "source_credit": 0
+    }
+  },
+  "independent_fixtures": {
+    "revision": "bc73db9c1ea05676febf01e2d1e9fa96a06314aa",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "module_count": 508,
+    "selection": [
+      "deprecated-both-cv-pair",
+      "warning-right-cv-pair",
+      "warning-deprecated-constant-float"
+    ],
+    "watched_inputs_each": 587,
+    "head_and_inputs_stable": true,
+    "outer_cap_seconds_each_campaign": 660,
+    "per_fixture_cap_seconds": 300,
+    "source_agreement_credit": 0,
+    "native_agreement_credit": 0,
+    "frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/peer-front-all-01/report.json",
+      "sha256": "8a1adcbd3d1dd315a46a9b6247ffec54ea0e7d0497d812b5b9938857f1487905",
+      "conditions": [
+        37,
+        34,
+        36
+      ],
+      "total": 107,
+      "seconds": [
+        87.07408581883647,
+        82.74395581497811,
+        83.89001281093806
+      ],
+      "launch_report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/peer-front-launch-01.json",
+      "launch_sha256": "66a0094b3e4f91593abe9890bc937197a9f6c1d99dd6d9b6a71e6c7f1a3e6907",
+      "launch_seconds": 254.2488317070529,
+      "explicit_frontier_flag": true
+    },
+    "lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/peer-life-all-01/report.json",
+      "sha256": "2cfa9e3a5a6b0ed9b1c8cfdd2356c93367e5c493baae2e99d237095ebaedae1a",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "total": 23,
+      "seconds": [
+        127.29451000411063,
+        122.68107140786014,
+        114.6518611679785
+      ],
+      "launch_report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-float-cast-return-modulo-error-119/peer-life-launch-01.json",
+      "launch_sha256": "ca75fb517301b6b771a7fe9c157e7fcaa78ae9294ccfdfaee52b699505c7a99a",
+      "launch_seconds": 365.159088763874
+    },
+    "results": "All conditions true, exit0, stderr empty, no timeout; controllers stable, reaped and process groups empty.",
+    "discriminating_controls": "FALSE<->NULL strict child pools despite identical +0 casts; wrong primitive tags; indexed-name absence and shadow; unknown/FQ/relative names; exact source/unit/body/CODE lines/flags; canonical kind; root read-eps. NORMAL counterfact carries the expected PFLOAT result so the abrupt cast is already an identical full-state no-op.",
+    "failures": 0
+  },
+  "actual_composition": {
+    "revision": "8bc04f260deafb9df338c43a5ec5a5e862a88012",
+    "tree": "3a1f03ff6b00021de30cbacb2c21c65ad77f4d81",
+    "projection": "456 plus all3 new test blobs equal READY exactly; all four Make invocations exact and unique. Combined Make has four unrelated STRING additions; logical OUTPUT5/+245 remains intact.",
+    "canonical_load_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main59-output119-integerstring-current-load-v1/report.json",
+    "report_sha256": "1ef897c14785745d283c45519dab4ed3074798054f8cc627ec78c3621a683b0e",
+    "mode": "production_SL",
+    "module_count": 508,
+    "ordered_command_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "seconds": 16.48289830284193,
+    "source_credit": 0,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable_head_and_inputs": true,
+    "reaped": true
+  },
+  "remaining": "Wider names/children/handlers/histories/lifetimes and OB31 remain partial. All exact holds remain unchanged. Native/source, prelaw, lifecycle, peer and composition cuts retain their own identities; metadata does not renew any semantic agreement."
+}
