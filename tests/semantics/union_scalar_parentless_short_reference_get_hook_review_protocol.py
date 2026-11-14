@@ -120,7 +120,7 @@ def fields(fixture, source, form):
         'S_missing = S_copies[.PROPREFS = $propref_detach(S_copies.PROPREFS,n_f,OBJECT_PROP_SOURCE n_root ($ptascii("f")) ppropertydesc_f.ORIGIN)]',
         '~$property_state_valid(S_missing)', '$property_state_valid(S_copies)', '$call_descriptors_valid(S_copies)',
         '$property_state_valid(S_detached)', '$call_descriptors_valid(S_detached)',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bWl4ZWQ=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "mixed"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NName (BYTES "TGVhZjMwMQ==") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTCLASS ($ptascii("Leaf301"))])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "string"]))])',

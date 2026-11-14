@@ -125,8 +125,8 @@ def fields(fixture, source, form):
         'S_missing = S_copies[.PROPREFS = $propref_detach(S_copies.PROPREFS,n_f,OBJECT_PROP_SOURCE n_root ($ptascii("f")) ppropertydesc_f.ORIGIN)]',
         '~$property_state_valid(S_missing)', '$property_state_valid(S_copies)', '$call_descriptors_valid(S_copies)',
         '$property_state_valid(S_retiring)', '$property_state_valid(S_detached)', '$call_descriptors_valid(S_detached)',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "dHJ1ZQ==") eps])) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "true"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "dHJ1ZQ==") eps])) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "true"]))])',
         '~$hook_short_reference_header(NIdentifier (BYTES "bWl4ZWQ=") eps,[(PTBRANCH ([PTBUILTIN "mixed"]))])',
     ]
     for label, state in (('return', 'S_return'), ('cleanup', 'S_retiring')):

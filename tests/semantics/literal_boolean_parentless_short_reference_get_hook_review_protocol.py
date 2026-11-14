@@ -125,8 +125,8 @@ def fields(fixture, source, form):
         '~$reference_return_source(S_wrongreturn,4)', '~$call_task_valid(S_wrongreturn,RETURN_REF_FETCH 4)',
         '~$hook_short_reference_header(NIdentifier (BYTES "Ym9vbA==") eps,ppropertydesc_f.TYPE)',
         '~$hook_short_reference_header(NIdentifier (BYTES "dHJ1ZQ==") eps,[(PTBRANCH ([PTBUILTIN "false"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "dHJ1ZQ==") eps])) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "true"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmFsc2U=") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "false"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "dHJ1ZQ==") eps])) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "true"]))])',
     ]
     if form == 'canonical':
         checks += [
