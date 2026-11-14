@@ -43,8 +43,8 @@
     "id": "numeric-float-power-default-string-coercion-control",
     "source": "<?php\nfunction warning238($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults238(int $first, int $later = ('2' ** (E_WARNING - E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning238');\n$x238 = 1.5;\ntry { defaults238($x238); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
     "source_sha256": "aa0e6c8c6296674f0887c1d76e5a0bcf125b9c4dee1cbc74c51707b369dbb3dd",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "A raw numeric string has no Numeric pnumber identity;even an exact integer native result does not admit arithmetic coercion."
+    "purpose": "ENUM240 promotes quiet FULLNUM string conversion only as a POWER operand,retaining raw NINT1 and ordinary reception. The exact ENUM238 original and saved native observation are reused;generic Numeric string identity remains absent."
   }
 ]

@@ -207,15 +207,15 @@ checks.extend([
     f'$lossy_optional_integer_condition($plempty(false),{nan_power}) = eps',
     f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, "NScalarInt (INTEGER 64) eps")}) = (NFLOAT 4895412794951729152)',
 ])
-for left, right in [
-        (zero, f'NExprUnaryMinus ({one}) eps'),
-        ('NScalarFloat (FLOAT "10000000000000000") eps', zero),
-        (base, 'NScalarFloat (FLOAT "10000000000000000") eps'),
-        (constant('E_STRICT'), zero),
-        ('NScalarString (BYTES "Mg==") eps', zero),
-        (constant('true'), zero), (constant('null'), zero),
+for left, right, expected in [
+        (zero, f'NExprUnaryMinus ({one}) eps', 'eps'),
+        ('NScalarFloat (FLOAT "10000000000000000") eps', zero, 'eps'),
+        (base, 'NScalarFloat (FLOAT "10000000000000000") eps', 'eps'),
+        (constant('E_STRICT'), zero, 'eps'),
+        ('NScalarString (BYTES "Mg==") eps', zero, '(NINT 1)'),
+        (constant('true'), zero, '(NINT 1)'), (constant('null'), zero, '(NINT 1)'),
 ]:
-    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = eps')
+    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = {expected}')
 
 CASES = {
     'numeric-float-power-alias-named-reentry': {

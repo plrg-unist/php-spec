@@ -27,9 +27,9 @@
     "id": "numeric-general-power-default-string-coercion-control",
     "source": "<?php\nfunction warning239($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults239(int $first, int $later = ('4' ** (E_ERROR / E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning239');\n$x239 = 1.5;\ntry { defaults239($x239); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
     "source_sha256": "3b339244bd6f0a1594c87b4dc1970af34665593eba66f76935fe08ee461faae6",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "A raw numeric string has no Numeric identity;implicit arithmetic coercion remains outside the general-power certificate."
+    "purpose": "ENUM240 promotes quiet FULLNUM string conversion only as a POWER operand,retaining GENERAL raw FLOAT2 before ordinary int reception. The exact ENUM239 original and saved native observation are reused;generic Numeric string identity remains absent."
   },
   {
     "id": "numeric-general-power-default-deprecated-control",

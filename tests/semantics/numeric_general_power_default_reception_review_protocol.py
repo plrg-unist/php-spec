@@ -187,17 +187,18 @@ for index, (left, exponent, factor, bits) in enumerate([
         f'$lossy_optional_integer_default_in($plempty(false),{expression}) = eps',
         f'$lossy_optional_integer_numeric($plempty(false),{expression}) = (NFLOAT {bits})',
     ])
-for left, right in [
-        (binary('Minus', one, one), negative_one),
-        ('NScalarFloat (FLOAT "10000000000000000") eps', one),
-        (one, 'NScalarFloat (FLOAT "10000000000000000") eps'),
-        ('NScalarInt (INTEGER 9223372036854775808) eps', one),
-        (one, 'NScalarInt (INTEGER 9223372036854775808) eps'),
-        ('NScalarString (BYTES "Mg==") eps', negative_one),
-        (constant('true'), negative_one), (constant('null'), negative_one),
-        (constant('E_STRICT'), one),
+for left, right, expected in [
+        (binary('Minus', one, one), negative_one, 'eps'),
+        ('NScalarFloat (FLOAT "10000000000000000") eps', one, 'eps'),
+        (one, 'NScalarFloat (FLOAT "10000000000000000") eps', 'eps'),
+        ('NScalarInt (INTEGER 9223372036854775808) eps', one, 'eps'),
+        (one, 'NScalarInt (INTEGER 9223372036854775808) eps', 'eps'),
+        ('NScalarString (BYTES "Mg==") eps', negative_one, '(NFLOAT 4602678819172646912)'),
+        (constant('true'), negative_one, '(NFLOAT 4607182418800017408)'),
+        (constant('null'), negative_one, 'eps'),
+        (constant('E_STRICT'), one, 'eps'),
 ]:
-    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = eps')
+    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = {expected}')
 
 CASES = {
     'numeric-general-power-alias-named-reentry': {

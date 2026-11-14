@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-coercive-power-default-cold-warm",
+    "source": "<?php\nfunction coercivePowerWarning240($errno, $message, $file, $line) {\n    global $xCoercivePower240;\n    echo 'warning:', $message, '|';\n    $xCoercivePower240 = 3.5;\n}\nfunction coercivePowerDefaults240(int $first, int &$root = ('4' ** (E_ERROR / E_WARNING)), int $integer = ('2' ** E_WARNING), int $boolean = (true ** E_WARNING), int $nullZero = (null ** (E_ERROR - E_ERROR))) {\n    echo 'body:', $first, ':', $root, ':', $integer, ':', $boolean, ':', $nullZero, '|';\n    $root = 9;\n}\nset_error_handler('coercivePowerWarning240');\n$xCoercivePower240 = 1.5;\ncoercivePowerDefaults240($xCoercivePower240);\necho 'cold:x=', $xCoercivePower240, '|';\n$xCoercivePower240 = 1.5;\ncoercivePowerDefaults240($xCoercivePower240);\necho 'warm:x=', $xCoercivePower240, '|';\n",
+    "source_sha256": "0d2ec09dd1c99ed184254eaa4b934f03e2fc9ba3d3cba073d0a55600c6aeb33b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A POWER-only quiet operand conversion admits raw FULLNUM string bases and Boolean/null values without making them generic Numeric leaves. Genuine GENERAL raw FLOAT2 and NINT4/1/1 retain typed Shared caches;fresh BYREF default mutation, cold/warm receives and saved first argument preserve source/ENV/no-DIM/cache/owner authority."
+  },
+  {
+    "id": "numeric-coercive-power-default-alias-named-reentry",
+    "source": "<?php\nnamespace CoercivePowerAlias240;\nuse const E_WARNING as Base240;\nuse const E_ERROR as One240;\nfunction warning240($errno, $message, $file, $line) {\n    global $xAlias240;\n    echo 'warning:', $message, '|';\n    defaults240(2);\n    $xAlias240 = 3.5;\n}\nfunction defaults240(int $first, int $integer = (' 2 ' ** Base240), int $root = ((Base240 + Base240) ** '0.5'), int $falseZero = (false ** (One240 - One240)), int $nullOne = (null ** One240), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $root, ':', $falseZero, ':', $nullOne, ':', $last, '|';\n}\n\\set_error_handler('CoercivePowerAlias240\\\\warning240');\n$xAlias240 = 1.5;\n$lastAlias240 = 8;\ndefaults240(last: $lastAlias240, first: $xAlias240);\necho 'outer:x=', $xAlias240, '|';\n",
+    "source_sha256": "02f7faed133de387482aa6fa976b22d7121be033e7a4e300c0f0d59d577c67d8",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A genuine RHS FULLNUM FLOAT string completes GENERAL root2;spaced FULLNUM integer strings,false exponent-zero and null base preserve distinct operand identities and typed raw caches. Named holes1..4,last8 and first-warning reentry retain actual declaration aliases/source/ENV/no-DIM/cache/owner authority."
+  },
+  {
+    "id": "numeric-coercive-power-default-fractional-handler-throw-retry",
+    "source": "<?php\nfunction coerciveThrowWarning240($errno, $message, $file, $line) {\n    global $xThrow240, $countThrow240;\n    $countThrow240 = $countThrow240 + 1;\n    echo 'warning:', $countThrow240, ':', $message, '|';\n    $xThrow240 = 4.5;\n    if ($countThrow240 === 2) { throw new Exception('coercive240', 240); }\n}\nfunction coerciveThrow240(int $first, int $later = ('0.25' ** (E_ERROR / E_WARNING))) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('coerciveThrowWarning240');\n$countThrow240 = 0;\n$xThrow240 = 1.5;\n$result240 = 99;\ntry { $result240 = coerciveThrow240($xThrow240); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result240, ':x=', $xThrow240, '|'; }\n$xThrow240 = 1.5;\n$result240 = coerciveThrow240($xThrow240);\necho 'retry:', $result240, ':x=', $xThrow240, '|';\n",
+    "source_sha256": "663c4ab019599ce1a6222edb74f00a923da8fbfe0d71b3d61455cf3c97fcecc5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet FULLNUM FLOAT operand coercion produces genuine GENERAL raw FLOAT0.5 with no arithmetic Warning. The later int receive has its own precision callback,which throws after caching;destination99,raw-cache retry and ordinary PINT0 receive/cleanup remain distinct."
+  },
+  {
+    "id": "numeric-coercive-power-default-leading-string-control",
+    "source": "<?php\nfunction warning240($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults240(int $first, int $later = ('2tail' ** E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning240');\n$x240 = 1.5;\ntry { defaults240($x240); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "4da4dace93053e8a838b765ebb2b01580f42780d25c34897ec79686f0a47033a",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "LEADNUM conversion requires its real Warning;COERCED(number,true) remains outside the quiet POWER operand certificate."
+  },
+  {
+    "id": "numeric-coercive-power-default-nonnumeric-string-control",
+    "source": "<?php\nfunction warning240($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults240(int $first, int $later = ('none' ** (E_WARNING - E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning240');\n$x240 = 1.5;\ntry { defaults240($x240); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "f91403b52419071109e0ab1e66372e07319b485f9fb73945233109f2de5ea62d",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A nonnumeric string is BADNUMBER even at exponent zero;no operand omission or quiet numeric stub is admitted."
+  },
+  {
+    "id": "numeric-coercive-power-default-zero-negative-control",
+    "source": "<?php\nfunction warning240($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults240(int $first, int $later = (null ** -E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning240');\n$x240 = 1.5;\ntry { defaults240($x240); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "28a7e92a3ed76ac9afdcfcde819cd193ebd37e04916d1327dc3fac8352fa0753",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "NULL converts quietly to NINT0 but zero-base negative exponent has a real power Deprecated callback;the false-effect guard still refuses it."
+  }
+]
