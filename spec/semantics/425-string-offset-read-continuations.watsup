@@ -444,7 +444,7 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [ADD, SUBTRACT, MULTIPLY]
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
@@ -461,6 +461,7 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $coerce_number(pvalue_left) = COERCED (NINT i_left) false
   -- if $coerce_number(pvalue_right) = COERCED (NINT i_right) false
   -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $number_binary(pbin, NINT i_left, NINT i_right) = NUM (NINT i)
   -- if S_binary = $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line)
   -- if S_binary.RESULT = KNOWN (PINT i)
   -- if $long_range(i)
