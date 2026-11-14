@@ -1,0 +1,126 @@
+{
+  "milestone": "REF78",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "de123b9590c0c9534fb2b040c011c81ab87dac5b",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "0ec55632c170ab6784ce10e67969aa551856ba63692c63c362e7a16f440c3763",
+    "law": "Thirteen additive207 lines add disjoint NNullableType(NNameFullyQualified raw) FORMAL and RETURN>0 arms. Decoded raw bytes exactly equal the first normalized PTCLASS bytes, followed by exactly one PTBUILTIN null branch in that order; class bytes casefold exactly stdclass. Required ordinary-CV/BYREF/default/variadic/count and all existing RECEIVE/RETURN, frame retirement, compiled line, separate private Notice cell, quiet STDINSTANCE/PNULL payload, source/owner/lifetime proofs stay literal. No runtime/compiler/schema/module change.",
+    "source_symbols": [
+      "Zend/zend_compile.c::zend_compile_single_typename, zend_compile_typename_ex, zend_resolve_class_name, zend_emit_return_type_check, zend_compile_args",
+      "Zend/zend_execute.c::zend_check_type, zend_check_type_slow, zend_verify_recv_arg_type",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "spec/semantics/16-static-types.watsup::ptast, ptresolve, ptsingle; 130-stdclass-runtime.watsup::typed_object_exact",
+      "spec/semantics/95-type-values.watsup::typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-nullable-fqn-stdclass-producer-reference-notice-78",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "c9123258b1bf31c47becb01ee0c19daf0fc89583ce0fc767343dfc74eb74719f",
+    "source_donor": "70ff70597815aa57905de69ccbf1415b8db1fba7",
+    "files": 10,
+    "scope": "Exact10/577 additions/1 deletion versusf0d85b925; whole READY and independent FULLCLEAR preceded integration. Two unchanged77 metadata ancestry paths were excluded."
+  },
+  "semantics": "zend_compile_single_typename/zend_resolve_class_name retain direct class spelling; zend_compile_typename_ex adds the null bit. zend_check_type accepts NULL or genuine matching object identity without weak scalar coercion. Other objects reject at RECEIVE or RETURN before Notice. Ordinary BYREF parameters add no persistent type source, allowing later scalar rebinding of their shared cell. RETURN verification and producer retirement precede the independent untyped Notice cell.",
+  "counts": {
+    "native_originals_once": 6,
+    "native_replays": 0,
+    "notice_agreements": 4,
+    "receive_priority_agreements": 1,
+    "return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "source_cuts": [
+    {
+      "role": "author source2 saved-native",
+      "report": "author/postlaw-source-v1-7gt_covc/report.json",
+      "sha256": "ea9ed0a781ae801d495d63a25b0639d64fd2d254c74e7aa4813a37fcb644f8d5",
+      "revision": "45d20e5cc1f33a4a53f3e0f92de868e5178ff3d7",
+      "passed": true,
+      "normal_agreements": 2,
+      "php_error_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true
+    },
+    {
+      "role": "peer source4 saved-native",
+      "report": "peer/postlaw-source-v1-gpns8fdi/report.json",
+      "sha256": "36160939edbfad6f4e61ef6125b34e1677a2f7948f3497b4e4481969aa35a8aa",
+      "revision": "b8ca4f39c00f9dbdda509d6718f6029dba32aaa1",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "normal_agreements": 4,
+      "php_error_agreements": 0
+    }
+  ],
+  "state_cuts": [
+    {
+      "role": "author corrected fixture403",
+      "report": "author/postlaw-state-v2/report.json",
+      "sha256": "acb86678964bea9c563ebf0856c8b9cda03b37685b962f8f99f0e6ed60b8b7e8",
+      "revision": "70ff70597815aa57905de69ccbf1415b8db1fba7",
+      "passed": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 403,
+      "reached_conditions": 207,
+      "derived_conditions": 196,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "elapsed_seconds": 54.64357352256775,
+      "cap_seconds": 1200,
+      "reaped": true
+    },
+    {
+      "role": "peer fixture303",
+      "report": "peer/postlaw-full-v1/report.json",
+      "sha256": "500c06a07e318f57cd5dd165e2858f51d095a09fb63a9c08be2026f7b8afe624",
+      "revision": "b8ca4f39c00f9dbdda509d6718f6029dba32aaa1",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 303,
+      "reached_conditions": 228,
+      "derived_conditions": 75,
+      "source_agreements": 0,
+      "elapsed_seconds": 60.980386496,
+      "cap_seconds": 1200,
+      "reaped": true
+    }
+  ],
+  "prelaw": "Genuine author145 and independent155 fixture-SL507 cuts retain their original source-zero identities, revisions and report hashes in the manifest.",
+  "independent_review": {
+    "source": "recover14 whole10 content/controller, exact hashes, source/native/state bindings and compatibility FULLCLEAR sent directly MAIN55.",
+    "actual": "recover14 ONE actualcc316d31b3/tree8f351149 owned10/composition plus SAME b6090b69 canonical comparison CLEAR sent directly MAIN55. No author duplicate read or execution."
+  },
+  "canonical_main": {
+    "source_revision": "cc316d31b3bd5afaa9925774378e6070b5e46598",
+    "tree": "8f351149e5a053507cb510bb2ff84cb9c7ad3103",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main55-ref78-current-load-v1/report.json",
+    "sha256": "b6090b69fca2aa40afcc57b7a1a992c78a8b997fedf0a0813aac408c24b8043d",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 15.639239244861528,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Source207 is literal independently reviewedde123b959 and independently source/fixture-testedb8ca4f39c. Author catalogue/wrapper remain accepted45d20e5cc; only constructed state metadata was grounded afterwards, with no source/native rerun. Current77 author helper changes one sign only, expanding six matching nullable-return HEADER expectations; all6 are directly selected from that imported/watched helper and executed on fresh78 reached states. No77 historical renewal. Both76 ownership helpers remain unchanged. Three peer files are imported literally from testedb8ca4f39c. Final import adds peer witnesses only.",
+  "preserved_failures": "Original author403 elaboration failure12.402340174s remains0; only synthetic nullable-parent/union metadata were grounded to reached metadata_function. No source/native replay. Peer preparation-only omissions and two overbroad legacy-route negatives were corrected before postlaw execution; RETURNS=eps argument-only and zero-actual helper bases remain unchanged. Combined controller and Make recipe remain UNEXECUTED/source0.",
+  "limits": "Explicit union/plain/imported class forms, other classes, wider signatures/payload/source/backing/history/GC/lifetimes and complete core remain partial. Historical V110 stdClass dependency remains held without a finer recovered operation; existing quiet STDINSTANCE/PNULL operations gain no lifecycle widening or held rerun. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension warnings, Source47 low-precision DEFINE-name NaN conversion, COMP88 Stringable supplied-throw crash, GC35/I106/COMP123/ATTR87/GC87 and every other exact hold stay untouched."
+}

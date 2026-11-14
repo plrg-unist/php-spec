@@ -1,0 +1,92 @@
+{
+  "feature": "ENUM247: fitting integer-string negation certificates for stored/composed defaults",
+  "status": "Independently reviewed bounded extension; complete PHP core remains unfinished",
+  "implementation": {
+    "base": "de764ee1953a6bb6028e4fd646d69f5665bbacde",
+    "donor": "a19000600ef57745e3cff565f42e1e7e1ee1d8f5",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "One Default_in UnaryMinus arm requires quiet_shape(child), existing StringIn, Numeric(child)=eps, quiet COERCED NINT child and signed64 negation result. It recurses only through children; the existing stored-tail compiled-PINT authority is unchanged.",
+    "domain_extension": "New integer certificates intentionally compose through existing CASTSTRING/arithmetic/nested and integer UnaryPlus wrappers, preserving already-certified Numeric result values. Direct string/FLOAT UnaryPlus phases remain outside this work.",
+    "preserved": "Decimal/exponent/FLOAT-zero strings and MIN overflow retain Numeric tags. Source/pool/ENV/name/ordinary receive/cache/owner policies stay unchanged; the new stored certificate and deferred runtime route both exclude DIM.",
+    "affected_tests": "Only the current246 stored-literal source expected_model/purpose and its two affected Default_in formulas promote. Source bytes/SHA and formula counts remain unchanged; historical246 cuts keep their original identities."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_try_ct_eval_unary_pm folds quiet fitting integer-string negation to a stored integer; multiplication by -1 preserves the PHP numeric type",
+      "Zend/zend_operators.c: full numeric integer strings coerce to LONG; decimal/exponent strings and MIN overflow retain DOUBLE classification",
+      "Zend/zend_vm_def.h: stored RECV_INIT integers are distinct from eligible raw constant-AST cache publication and subsequent parameter verification"
+    ],
+    "phase_distinction": "Integer UnaryPlus around a new NINT certificate is phase-consistent. Deferred direct string/FLOAT plus still requires separate add(0,child) versus compile/runtime multiplication-by-+1 analysis."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-integer-string-unary-minus-default-reception-247",
+  "native_once": {
+    "fresh_report": "native-v1/report.json",
+    "fresh_report_sha256": "9acc645fe5232136027aa38eb4a6749c024456bd458fd4ff2e580747572c7059",
+    "combined_reference": "native-final.json",
+    "combined_reference_sha256": "c36d1fdb8761c96fe20c35b1ce98abcc45e47778a97b42108575a61e883fc305",
+    "fresh_originals": 5,
+    "saved_originals": 1,
+    "unchanged_original_replays": 0,
+    "saved_reference": "saved-native-reference.json",
+    "saved_reference_sha256": "0d17662f2f9db3f428bc16f138b4fc8693968174c10c22f11754dfb8f4216f4d",
+    "runtime": "runtime.json",
+    "runtime_sha256": "bbba271e97be1ea0395919a5809c92d508da4286c0ccbc323f21baac29513f33",
+    "scope": "The promoted source retains its byte-identical246 native path/cwd/profile/streams/status. Runtime identity retains244 same binary/profile; fresh247 input hashes match it. No native rerun or ordinary-library semantic dependency."
+  },
+  "source_evidence": {
+    "revision": "a19000600ef57745e3cff565f42e1e7e1ee1d8f5",
+    "report": "source-v2/report.json",
+    "sha256": "6cb9cff39d42fac9c4e11c5528fa13c5ef54da9853078036758832129fa7f56b",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 3,
+    "fresh_positive_originals": 2,
+    "promoted_saved_originals": 1,
+    "unsupported_controls": 3,
+    "outer_seconds": 45.238369839964435,
+    "scope": "Stored literals, integer-zero/nested/integer-plus wrappers and imported named stored/deferred CASTSTRING composition agree exactly; the saved246 stored receipt is promoted separately. Leading/nonnumeric strings and stored DIM remain explicit Unsupported."
+  },
+  "state_evidence": [
+    {
+      "revision": "a19000600ef57745e3cff565f42e1e7e1ee1d8f5",
+      "report": "author-v1/closure-call-protocol-ftt7bxl3/report.json",
+      "sha256": "89027a6ccc10826087b3733f12cf511f39dc9cf9a4a2c5ad53372d6760715710",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": 111,
+      "source_credit": 0,
+      "outer_seconds": 23.691891002003103,
+      "scope": "Actual stored compiled PINT reads without cache entries, raw source and compiled authority refusals, private BYREF cells, budgets, cold/warm behavior and real retirement."
+    },
+    {
+      "revision": "39d6728faf10255164b067adb7830a5fe309ab3e",
+      "report": "peer-v1/closure-call-protocol-2heab1wi/report.json",
+      "sha256": "19cc66fa6fea57dbb52c25441d5810ee0ba5852a51483a0c2181e6ccfe3e57ea",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        146,
+        51
+      ],
+      "source_credit": 0,
+      "outer_seconds": 50.13945363694802,
+      "scope": "Independent stored compiled-PINT versus deferred raw-cache authority, pool value/type/source/kind and import/owner/budget/retirement challenges; fitting strings/composition, preserved FLOAT/MIN, direct plus refusal and no-DIM/NUL boundaries."
+    }
+  ],
+  "prior_zero_credit": "Initial source-v1/source-driver.exit.json retain the11.484513586-second undefined quiet_shape loader failure before semantic execution and its unrun tail. The fix moves only the existing declaration above use; rule/definition bodies remain unchanged, and all native observations are reused.",
+  "validation_contract": "Pinned PHP8.5.10 CLI,NTS,signed64, project-local oracle only, C/UTC baseline. Source360/100000steps and fixture300 retain outer600. Passing cuts bind exact stable inputs/revisions, honest modes/counts, quiet closures/exit0 and fully reaped groups. Normal agreements, Unsupported, runner failure and unrun credit remain separate.",
+  "review": "recover12_enum_selected_unary_review sent whole-eight FULLCLEAR directly MAIN55 for donora19000600/treec9c40051, manifest0ce16e60 and patchb4a61954, exact401 additions/5 deletions. All changed blobs and retained source/author/native identities match.",
+  "joined_load": {
+    "revision": "f1ca130d811e3e3a7771550595d02ba32a6dd63d",
+    "tree": "1a5b4e71a5e2b77b7cad3eecde2ed7122e7547b3",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main55-enum247-current-load-v1/report.json",
+    "sha256": "edd46bdec2c285f5dbae4fc5f9ceb686190b85dc2e5420df4a7c1b36aad0c2a6",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.23290250613354,
+    "result": "true plus LF; quiet/stable inputs and HEAD,exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Wider stored/default producers, contexts and lifetimes remain partial. Direct string/FLOAT UnaryPlus phases and all exact holds remain separate; NUL stays pure/source0 with no owning or release path. No constructor/obligation closure or full-core/Zend-equivalence claim."
+}

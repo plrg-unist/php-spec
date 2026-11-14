@@ -236,6 +236,8 @@ Completed ordinary-CV producers admit builtin `object`, `?object` and ordered bu
 
 Canonical fully qualified `\stdClass` required formals and returns also retain exact raw/normalized name bytes and existing quiet payload/private-cell ownership bounds. Five native originals ran once; independent source and fixture checks plus the sole actual SL508 load remain distinct. Nullable/plain/imported and wider class types and all exact holds stay partial. [FQN review](coverage/semantics/cv-fqn-stdclass-producer-reference-notice-review.json).
 
+Raw `?\stdClass` formals and returns also preserve exact class bytes and `[class,null]` order under the existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain separate evidence; explicit unions, plain/imported/wider classes and all exact holds remain partial. [Nullable FQN review](coverage/semantics/cv-nullable-fqn-stdclass-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The
@@ -5404,6 +5406,8 @@ Selected quiet scalar UnaryMinus defaults reuse proper selected descent while pr
 Admitted direct computed Booleans now supply UnaryMinus integer defaults through constructor-disjoint Boolean shape, absent Numeric certificates and unchanged quiet condition/NINT0-or-1 coercion. Exact source/declaration ENV/no-DIM/name/Shared-cache/owner guards remain; raw PINT0/-1 caches precede ordinary reception. Six native originals once, three source agreements/three Unsupported controls, author173 and independent derived82/corrected named157 retain separate identities from the actual6e520/SL508 load. UnaryPlus, direct scalar receipts and wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/computed-boolean-unary-minus-default-reception-review.json).
 
 Quiet produced strings now supply UnaryMinus deferred defaults through existing StringIn and quiet numeric coercion, preserving raw integer/FLOAT tags, signed zero, overflow and own precision throw/retry before reception. Exact source/declaration ENV/no-DIM/name/Shared-cache/owner guards remain. Seven native originals once, three source agreements/four Unsupported controls, author121/97, independent156/50 and the separate actual05427/SL508 load retain their identities. Literal-only stored receipts, wider contexts/lifetimes and UnaryPlus remain partial. [Review](coverage/semantics/produced-string-unary-minus-default-reception-review.json).
+
+Quiet fitting integer-string UnaryMinus now certifies stored compiled PINT defaults through the existing source/pool authority, and the integer certificate composes through casts, arithmetic and integer sign wrappers. FLOAT strings and MIN overflow retain their Numeric tags; the new child certificate requires quiet shape and excludes DIM. Five fresh native originals plus one saved246 original, three source agreements/three Unsupported controls, author111, independent146/51 and the separate actualf1ca/SL508 load retain distinct identities. Direct string/FLOAT UnaryPlus phases, wider stored producers, contexts and lifetimes remain partial. [Review](coverage/semantics/integer-string-unary-minus-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve

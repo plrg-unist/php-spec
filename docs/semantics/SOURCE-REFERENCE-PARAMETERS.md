@@ -716,6 +716,19 @@ failure and unexecuted controller/Make recipe retain zero credit. Nullable,
 union, plain/imported and wider class types, broader contexts and all exact held
 dependencies remain partial; V110 gains no lifecycle or operation coverage.
 
+Raw nullable fully qualified `?\stdClass` formals and returns also retain
+exact decoded class-name bytes and exactly `[class,null]` normalized order.
+Only NULL or the admitted real stdClass payload passes, without weak scalar
+coercion. Ordinary BYREF rebinding, actual entry/return verification, producer
+retirement and separate untyped Notice-cell ownership remain unchanged.
+The [nullable FQN review](../../coverage/semantics/cv-nullable-fqn-stdclass-producer-reference-notice-review.json)
+keeps native6 once/source6 (four Notice, one RECEIVE-priority and one RETURN-priority),
+author403/peer303 and prelaw145/155 fixture-SL507 cuts separate from the sole
+actualcc316d31b3 SL508 load. Six exact current77 header expectations are exercised
+on fresh78 reached states without historical renewal. The first403 elaboration
+failure and unexecuted controller/Make retain zero credit. Explicit unions,
+plain/imported or wider class types and all exact held dependencies stay partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
