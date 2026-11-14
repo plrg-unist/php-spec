@@ -1,0 +1,90 @@
+{
+  "feature": "OUTPUT125: selected FINAL MOD handlers with quiet literal-string integer/float casts",
+  "status": "independently reviewed and source-integrated; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local PHP; recorded baseline; pure authored semantics",
+  "reviewed_ready": "d6b21877c0733d0596df9a954810fbc6998572da",
+  "contract": "Own canonical INT kind1 and FLOAT kind2 casts authenticate exact Return/root/ScalarString SOURCE, handler UNIT/BODY and CODE lines/flags. The emitted root retains CODEfalse/read-eps; its child retains CODEtrue and exact raw non-NUL PSTRING bytes. Mandatory compiled_string_value authenticates the nonowning INTERNED carrier. NORMAL, the dedicated string_cast_integer/string_cast_float helper and full-state quiet carrier cast preserve exact PINT/PFLOAT results. Numeric zero suppresses fallback and remains distinct from strict Boolean FALSE. Actual handler RETURN and real formal/native-cell retirement precede FINAL MOD-zero Error.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_CAST selects zval_get_long/zval_get_double",
+    "vendor/php-src/Zend/zend_operators.c:zval_get_long_func IS_STRING uses is_numeric_string(...,true) then integer or saturating conversion; zval_get_double_func IS_STRING uses zend_strtod",
+    "vendor/php-src/Zend/zend_operators.h:zend_dval_to_lval_cap saturates finite overflow and returns0 for nonfinite input",
+    "spec/semantics/04-numeric-context.watsup:dedicated string_cast_integer/string_cast_float retain explicit-cast behavior separately from arithmetic notices",
+    "spec/semantics/33-runtime-compiler.watsup:raw pool versus mandatory INTERNED carrier;56-casts.watsup:quiet typed carrier conversion"
+  ],
+  "packet": {
+    "base": "25ef43771fab9ba2c96b005d8db35a3170613ebc",
+    "delta": "Five source paths,+300/0:Make4,45644,sources22,state89,review_state141. Closed124 twoJSON ancestry excluded.",
+    "runtime_sha256": "94555e6e8ce6a19cfe68e1c050d9b85b21c8d07f4738badc3c6e84598e096c81",
+    "peer_sha256": "7fce6b73862507f2dcc9c2539661f5239b54c76d9f1e49c4027b1e4b897578ef"
+  },
+  "validation": {
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/native-summary-01.json",
+      "sha256": "a636e7a33702dd878c9715bea63c4d7d5affa71ae1fc733b03140c36d8ef61b8",
+      "originals_once": 4,
+      "result": "At2a7a9881b; complete native observations reused without replay."
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/model-final-01/report.json",
+      "sha256": "70f963a4a05b09094340c71b891a978eb4b470b8e81dc9f6e307df357c353689",
+      "agreements": 4,
+      "result": "Production SL508/cache=false/det=true atd6b21877c. All complete php_error outcomes and raw observations match saved natives. Each original contains a silent strict type/value guard before P, observing PINT0/-4 and PFLOAT0/0.125 without changing successful events or line numbers."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/model-first-01/report.json",
+      "sha256": "4c837b1e1e6027e9aa9b5f3aa2a9741279e49117eca89f87eef2fa585914c777",
+      "result": "Two complete Unsupported outcomes at2a7a9881b; two other originals UNRUN; all retain source0."
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/front-all-01/report.json",
+      "sha256": "e3c786fcc81fd8c9bf1b1fbf7caa6c356827630539fd94c5eee39b2ffa8c199b",
+      "conditions": [
+        8,
+        8
+      ],
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/life-all-01/report.json",
+      "sha256": "d4b8e7b479e4b5d35be2c6f69df79779da47db16d30bf2378b633c09f9816fbd",
+      "conditions": [
+        6,
+        6
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/peer-front-all-01/report.json",
+      "sha256": "930ef3e0adc2c3dfb3ee93ce70a18b4c7db0e467089280afbdfa0bd437223be1",
+      "conditions": [
+        44,
+        41,
+        44
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/peer-life-all-01/report.json",
+      "sha256": "1048bb79864c538740380c2a8ec5ed67d2627b6fa358bca2c5e90d683ac673d9",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "source_credit": 0
+    },
+    "controls": "Fixed source0 results distinguish integer finite saturation/nonfinite0 from FLOAT casts, preserving fractional prefixes, negative-zero bits, exact1/8 and both infinities. Exact numeric return tags, raw/carrier pool identity, missing precision despite a matching quiet cast, SOURCE/CODE/unit/body/line/canonical kind, NORMAL no-op and folded-root forgeries are checked. Unread raw root pools are ignored. NUL is refused; actual retirement preserves typed numeric result, NULL scratch and final nonowning literal header.",
+    "reliability": "All postlaw cuts share READYd6b21877c and retain separate identities. Accepted launchers are quiet/stable/reaped with empty groups, fixed outer660/fixture300 caps; no preparation/semantic failures or timeouts. Current reports/launch hashes and source packet independently consumed once. Make recipes are wired, not claimed executed; no semantic rerun."
+  },
+  "actual_composition": {
+    "revision": "8eb74166f96cdc5abc6d7b39ee032328216b9aa2",
+    "tree": "63dc5b9a228afd9190218e8230bb06f824d21b0a",
+    "parent": "46ee3bd6f3721183d6b5b561819d5ffc22ff466f",
+    "projection": "Exact five-path +300/0 delta; all four nonMake blobs equal signedd6. Makefile adds exactly four signed recipes while retaining newer MAIN content;124 metadata excluded.",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main65-output125-string-numeric-cast-current-load-v1/report.json",
+    "sha256": "a9434aad7604d7a503c314730e16c86a0fa5459a943982c8ef6645b72d6de04c",
+    "result": "Sole production-SL508 load passes in16.133852377999574 seconds,cap60;511 ordered arguments/512 watches,exit0/true LF/empty stderr/no timeout,source0,stable/reaped. Actual composition and saved report independently consumed once; no author duplicate or renewed execution credit."
+  },
+  "remaining": "Wider producers/owners, CV/computed strings, NUL, signatures, histories/lifetimes and OB31 remain partial. Boundary/state controls add no original-source credit; no NUL release or held expansion. All exact holds remain unchanged; full PHP core, Rocq and BOLA verification are unfinished. Metadata does not renew execution credit."
+}

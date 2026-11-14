@@ -8,6 +8,18 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Deferred Boolean XOR originals and separate source/control/fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-xor-wrapper-default-reception-266/`; the [review](../coverage/semantics/deferred-boolean-xor-wrapper-default-reception-review.json) retains their original identities and accepted actual/SAME tuple.
+
+Integer UnaryPlus selector originals and separate SL507 source/fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get-review.json) retains their original identities and accepted actual/SAME tuple.
+
+Three-member int/float/bool Get originals and separate author/independent cuts remain in `../php-spec-evidence-archive/comp312/`; the [review](../coverage/semantics/int-float-bool-parentless-short-reference-get-hook-review.json) retains their original identities and accepted actual/SAME tuple.
+
+Builtin callable-union producer originals and separate source/fixture/prelaw cuts remain in `../php-spec-evidence-archive/cv-builtin-callable-union-producer-reference-notice-92/`; the [review](../coverage/semantics/cv-builtin-callable-union-producer-reference-notice-review.json) retains their original identities and accepted actual/SAME tuple.
+
+Deferred Boolean AND/OR originals and separate source/control/fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-short-wrapper-default-reception-265/`; the [review](../coverage/semantics/deferred-boolean-short-wrapper-default-reception-review.json) retains their original identities and accepted actual/SAME tuple.
+
+Literal-string numeric-cast handler originals and separate source/fixture cuts remain in `../php-spec-evidence-archive/new/output-final-selected-string-numeric-cast-return-modulo-error-125/`; the [review](../coverage/semantics/output-final-selected-string-numeric-cast-return-modulo-error-review.json) retains their original identities and accepted actual/SAME tuple.
+
 Resolved scalar instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-scalar-resolved-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-scalar-resolved-instanceof-review.json) retains the original cuts and accepted actual/SAME tuple.
 
 Folded Spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-folded-spaceship-truth-base-initial-raw-leading-key-{author28,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-folded-spaceship-truth-base-initial-raw-leading-key-review.json) retains the original cuts and accepted actual/SAME tuple.

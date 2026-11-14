@@ -1,0 +1,93 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored semantics; production SL",
+  "status": "partial",
+  "scope": "Six ordered int/float/bool public parentless short reference Get headers retain exact raw/normalized order, ordinary copies, real backing aliases, exact INT/FLOAT/BOOL returns, weak numeric-string preference, strict rejection and quiet type-source removal.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_symbols": [
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/zend_execute.c:i_zend_verify_type_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_weak_scalar_type_hint",
+    "Zend/zend_execute.c:zend_ref_del_type_source"
+  ],
+  "source_packet": {
+    "commit": "1e37039c0a7aff7a0ad3aed00bc37d4a5c8886b0",
+    "tree": "9cbda12bb8ee00a27422fdc4cadf6b5992cc6080",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/comp312/source-ready.json",
+    "sha256": "5d0e9b0a3aaaa3205aa4346f12481e7964d7656f64c77097ac659c5c7941e368",
+    "paths": 16,
+    "non_make_paths": 15,
+    "make_additions": 8
+  },
+  "author": {
+    "tested_cut": "24b19aa4621a9b2a0fca660d80f51c6a7c7e43e9",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_SL508_premises": [
+      757,
+      492,
+      457
+    ],
+    "fixture_source_credit": 0,
+    "disposition": "inherited accepted evidence; no replay",
+    "tested_tree": "3b0218666a7f52973d3838dccb0a652f9273fd1b",
+    "reports_under_comp312": {
+      "weak-sources/report.json": "5a3171059db82c519844d481f1de2169e47d8ea08c83b13ee04a6069192da256",
+      "weak-protocol-int-float-bool/report.json": "69bad519cb0d902dca0166b08545eb102188c20f2a78b9b88f16af89c459d290",
+      "weak-protocol-float-bool-int/report.json": "5d7bc28be0142fe6ee8332335b0fa88d37a9dca76c2e053598a412a6b895684c",
+      "weak-protocol-bool-int-float/report.json": "44e2de47812b7cb2ddd3d8195ea4e7bf9f19d821dec8948a63862d870f4d54aa"
+    }
+  },
+  "independent_peer": {
+    "tested_commit": "c373b55ea6b8ab8f43f02e7d1836a2df8384bee5",
+    "tested_tree": "f071cb853e9ade9b3d58dd530909e21c562a467d",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_SL508_premises": [
+      817,
+      467,
+      502
+    ],
+    "fixture_seconds": [
+      248.624,
+      245.351,
+      337.933
+    ],
+    "fixture_cap_seconds": 360,
+    "fixture_source_credit": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "reports_under_comp312": {
+      "strict-sources/report.json": "f1680120aeeb29ef1be5aeb79c1019f6929fcd9f6d5c298761e488191fefccc3",
+      "strict-protocol-int-bool-float/report.json": "3b7194782a82e0eb672b1f6f334f8cf93f14a2875d9c64a826ad9a84d3f8f27f",
+      "strict-protocol-float-int-bool/report.json": "c2eeab81f955c4b142fb21813a16315d13bc2582314567328d85074820af9a99",
+      "strict-protocol-bool-float-int/report.json": "5992ea87e8e1be0cb2914792c6bbe9fbe14df4d2cc201f0fe7d88ff2857ae4cc"
+    }
+  },
+  "prelaw": {
+    "tested_cut": "c39f1fb8e7051d0cc215fbf289abd1fc50df765d",
+    "expected_Unsupported": 3,
+    "native_execution_count": 0,
+    "source_agreement_credit": 0,
+    "report_under_comp312": "weak-prelaw/report.json",
+    "sha256": "89673a90326d67198d83b1c9a656951deca61aa465924a115492bdbdd0282465"
+  },
+  "actual_and_same": {
+    "commit": "7b865449b516be9a4513db0c41b592855bec2f0c",
+    "tree": "e2b3510a27b02e3af6d4c95156ca8ddb6c2f2de0",
+    "parent": "78dfb00b7453f4a2490e2e21f0cf6faf53e858c0",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main65-comp312-int-float-bool-current-load-v1/report.json",
+    "sha256": "0358dfe7114b9e3d93dba924a9cea17c344a78c54d15a49fec66371f3ffa41a7",
+    "seconds": 16.492567748064175,
+    "mode": "production SL508",
+    "argv": 511,
+    "equal_watches": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "result": "true+LF; quiet; stable; reaped; PASS",
+    "review": "retained peer independently checked exact 16-path composition and read the sole saved canonical report"
+  },
+  "limits": "Other triple headers, wider producers, headers, owners and lifetimes remain partial at this cut. Runtime modules 95/138 and all exact paused boundaries are unchanged."
+}

@@ -874,6 +874,17 @@ fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL5
 load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
 partial.
 
+Distinct ordered builtin unions of three through eight members also admit
+`callable` in required ordinary-CV producer formals and returns. Raw/normalized
+order, unique members and at most one Boolean kind remain required. Exact tags
+bypass callable lookup; registered USER names precede weak Boolean conversion.
+The [builtin-union review](../../coverage/semantics/cv-builtin-callable-union-producer-reference-notice-review.json)
+keeps native6 once/source6, author422/peer214, genuine prelaw247/102 and the first
+fixture's corrected bool-mask expectation separate. Twenty-six precise helper
+promotions use fresh92 states. Actual4c4678a5bdc and its sole production-SL508 load
+pass in16.138253193s/source0, independently closed. Controller/Make remain
+unexecuted/source0; wider contexts and every exact hold stay partial.
+
 Ordered `callable|object` and `object|callable` required formals and returns retain
 the same raw/normalized authority. Exact quiet stdClass values bypass callable
 lookup; registered USER names retain their callable route, while scalar mismatches
