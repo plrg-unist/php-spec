@@ -17,6 +17,7 @@ dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_request_saved(pstate, pstringread) : int?
 dec $string_read_request_base_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_literal_bytes(expression) : nat*?
+dec $string_read_runtime_bytes(pstate, porigin) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
 dec $string_read_plan(pstate) : pstringread?
@@ -310,6 +311,43 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
+;; Runtime FLOAT NOT is never a compiled constant at this PHP pin. Certify its
+;; quiet bytes from the real emitted expression and immutable folded child.
+def $string_read_runtime_bytes(S, porigin) = (n*)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_identity_value(S, porigin) = (pvalue)
+  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
+def $string_read_runtime_bytes(S, PORIGIN n pcpath) = ($echo_value(PBOOL (~b)))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBooleanNot expression metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $compiled_read(S, porigin_child) = (PFLOAT n_bits)
+  -- if $compiled_identity_value(S, porigin_child) = (PFLOAT n_bits)
+  -- if $number_bool(NFLOAT n_bits) = (b, false)
+  -- if $truth_value(S, PFLOAT n_bits, z_line) = S[.RESULT = KNOWN (PBOOL b)]
+def $string_read_runtime_bytes(S, PORIGIN n pcpath) = (n_left* ++ n_right*)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_bytes(S, porigin_left) = (n_left*)
+  -- if $string_read_runtime_bytes(S, porigin_right) = (n_right*)
+def $string_read_runtime_bytes(S, porigin) = eps -- otherwise
 def $string_read_request_base_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
   -- if pstringread.BASECELL = (n_base)
@@ -365,6 +403,21 @@ def $string_read_request_base_saved(S, pstringread) = (i)
   -- if $compiled_precision(S, (porigin_key)) = (z_precision)
   -- if $parser_literal_at(NExprBinaryOpConcat expression_1 expression_2 metadata, z_precision) = eps
   -- if $compiled_special_concat_bytes(S, porigin_key) = (n_key*)
+  -- if $string_read_request_base_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+;; Keep the actual runtime CONCAT carrier across Warning; do not invent an
+;; interned header or a compiled value for its deferred FLOAT NOT child.
+def $string_read_request_base_saved(S, pstringread) = (i)
+  -- if pstringread.READ.OWNERS = BASE_VALUE (VARIABLE n_base_name* z_base)
+  -- if pstringread.BASECELL = (n_base)
+  -- if pstringread.READ.INPUT = KNOWN (PSTRING_CARRIER pstringidentity n_key*)
+  -- if pstringread.READ.VALUE = PSTRING_CARRIER pstringidentity n_key*
+  -- if pstringread.KEYCELL = eps
+  -- if pstringread.READ.PHASE = KEY_NULL
+  -- if $string_carrier_valid(S, pstringread.READ.VALUE)
+  -- if $origin_child((pstringread.READ.SITE), [PCFIELD 1]) = (porigin_key)
+  -- if $origin_node(S.SOURCES, porigin_key) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $compiled_read(S, porigin_key) = eps
+  -- if $string_read_runtime_bytes(S, porigin_key) = (n_key*)
   -- if $string_read_request_base_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
 def $string_read_request_base_saved(S, pstringread) = eps -- otherwise
 def $string_read_phase(pvalue, pvalue_key) = (STRING_LEADING i)
