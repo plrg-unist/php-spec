@@ -484,6 +484,11 @@ def $lossy_optional_integer_default_in(plenv, NExprUnaryPlus expression metadata
   -- if $psnumber(NExprUnaryPlus expression metadata) = PSNONNUMERIC
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprUnaryPlus expression metadata) = (i)
+  -- if $lossy_optional_integer_quiet_shape(expression)
+  -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED (NINT i) false
+  -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadata) = (i)
   -- if $psnumber(NExprUnaryMinus expression metadata) = PSNONNUMERIC
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i_child)

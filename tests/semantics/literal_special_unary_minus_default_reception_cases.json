@@ -19,9 +19,9 @@
     "id": "literal-special-unary-minus-direct-plus-control",
     "source": "<?php\nfunction warning248($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults248(int $first, int $later = +true) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning248');\n$x248 = 1.5;\ntry { defaults248($x248); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
     "source_sha256": "98e8f68692451cad8233bc5eead3460bd6c14d0cb2c5732c5fe42539dccb4cdd",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "Direct literal Boolean UnaryPlus remains outside the new UnaryMinus arm. Integer UnaryPlus around an already-certified result is a separate admitted composition."
+    "purpose": "Promoted byte-identical248 literal+true source; authoritative249 validation reuses the existing native source/path/cwd/profile/streams/status and changes only the affected model expectation. Fresh local regression needs no archive."
   },
   {
     "id": "literal-special-unary-minus-startup-boolean-control",

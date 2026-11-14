@@ -180,11 +180,11 @@ derived.extend([
     f'$lossy_optional_integer_default_in($plempty(false),{node("NExprUnaryPlus", false_minus)}) = (0)',
     f'$lossy_optional_integer_default_in($plempty(false),{binary("Plus", true_minus, "NScalarInt (INTEGER 2) eps")}) = (1)',
 ])
-for spelling in ('true', 'false', 'null'):
+for spelling, integer in [('true', '1'), ('false', '0'), ('null', '0')]:
     plus = node('NExprUnaryPlus', constant(spelling))
     derived.extend([
-        f'$lossy_optional_integer_default_in($plempty(false),{plus}) = eps',
-        f'$lossy_optional_integer_numeric($plempty(false),{plus}) = eps',
+        f'$lossy_optional_integer_default_in($plempty(false),{plus}) = ({integer})',
+        f'$lossy_optional_integer_numeric($plempty(false),{plus}) = (NINT {integer})',
     ])
 for child in (constant('PHP_ZTS'), constant('PHP_DEBUG'), string('true')):
     derived.extend([
