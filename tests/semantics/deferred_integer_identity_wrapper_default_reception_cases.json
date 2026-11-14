@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-integer-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawIntegerIdentity272($same = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $different = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $notSame = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $notDifferent = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) {\n    echo 'raw:', $same === true, ':', $different === false, ':', $notSame === false, ':', $notDifferent === true, '|';\n    $same = 19;\n    $different = 20;\n    $notSame = 21;\n    $notDifferent = 22;\n}\nrawIntegerIdentity272();\nrawIntegerIdentity272();\n",
+    "expected_model": "normal",
+    "purpose": "Both strict integer identity operators retain exact true/false raw Boolean cache tags through cold/warm defaults and later local writes.",
+    "expected_normal_stdout": "raw:1:1:1:1|raw:1:1:1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "92a01bdcc668b8f905ce1ddaaf2c75fcc1c0ed9a8399be7b62180e5a0ec33f86"
+  },
+  {
+    "id": "deferred-integer-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace IntegerIdentity272;\nuse const E_WARNING as Base272;\nuse const E_ERROR as One272;\nfunction warning272($errno, $message, $file, $line) {\n    global $x272;\n    echo 'warning:', $message, '|';\n    defaults272(2);\n    $x272 = 3.5;\n}\nfunction defaults272(int $first, int &$same = (int)(((int)(!(+(-((float)(+(Base272 === One272))))))) === ((int)(!(+(-((float)(+(Base272 === One272)))))))), int &$different = (int)(((int)(!(+(-((float)(+(Base272 === One272))))))) === ((int)((bool)(+(-((float)(+(Base272 === One272)))))))), int &$notSame = (int)(((int)(!(+(-((float)(+(Base272 === One272))))))) !== ((int)(!(+(-((float)(+(Base272 === One272)))))))), int &$notDifferent = (int)(((int)(!(+(-((float)(+(Base272 === One272))))))) !== ((int)((bool)(+(-((float)(+(Base272 === One272)))))))), int $last = 7) {\n    echo 'body:', $first, ':', $same, ':', $different, ':', $notSame, ':', $notDifferent, ':', $last, '|';\n    $same = 19;\n    $different = 20;\n    $notSame = 21;\n    $notDifferent = 22;\n}\n\\set_error_handler('IntegerIdentity272\\\\warning272');\n$x272 = 1.5;\n$last272 = 8;\ndefaults272(last: $last272, first: $x272);\necho 'outer:x=', $x272, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Imported names, existing INT-cast parents, four BYREF named holes and Warning reentry retain exact private integer caches from actual integer identity.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:0:0:1:7|body:1:1:0:0:1:8|outer:x=3.5|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "7a89cbcb374b6aef319a0edf41f0e44ed09fdb400d3ecf737f0ee10b299c821f"
+  },
+  {
+    "id": "deferred-integer-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryIntegerIdentity272(int &$value = (int)(E_WARNING === E_ERROR)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryIntegerIdentity272();\n",
+    "expected_model": "normal",
+    "purpose": "Existing phase-safe identity under an INT parent remains an ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "51e12d40d4da472adddf20deeb9c97e440fea1ea9112817f0b85cb06a936b619"
+  }
+]
