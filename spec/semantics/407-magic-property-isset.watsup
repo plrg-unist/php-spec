@@ -207,6 +207,16 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NScalarStrin
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = false -- otherwise
+;; Literal method names retain their raw bytes without class-name normalization.
+dec $property_magic_cv_static_method_site_name(pstate, porigin, phpType20, ptbytes) : bool
+def $property_magic_cv_static_method_site_name(S, porigin_site, NIdentifier (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
+def $property_magic_cv_static_method_site_name(S, porigin_site, NScalarString (BYTES text) metadata, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NScalarString (BYTES text) metadata)
+  -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
+  -- if ptbytes_raw = $base64(text)
+  -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
+def $property_magic_cv_static_method_site_name(S, porigin_site, phpType20, ptbytes) = false -- otherwise
 ;; Direct parent labels retain descriptor bytes before class-name lookup.
 dec $property_magic_cv_static_method_parent_selector(phpType44, ptbytes) : bool
 def $property_magic_cv_static_method_parent_selector(NName (BYTES text) metadata, ptbytes) = ($base64(text) = ptbytes)
@@ -332,9 +342,9 @@ def $property_magic_cv_inherited_static_methodclosure(S, n) = true
   -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_requested)
   -- if $class_link_at(S.LINKEDPARENTS, porigin_requested) = (SOURCE_PARENT porigin_owner)
   -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector (NIdentifier (BYTES text_selected) metadata_selected) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector phpType20_method (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
   -- if $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19_selector, porigin_requested, pclassdesc_child.NAME)
-  -- if $ptlc($base64(text_selected)) = $ptlc(pmethoddesc.NAME)
+  -- if $property_magic_cv_static_method_site_name(S, porigin_site, phpType20_method, pmethoddesc.NAME)
   -- if ~$ppscoped_keyword(phpType19_selector)
   -- if $scoped_requested_site(S, porigin_site, phpType19_selector, porigin_requested, eps)
   -- if porigin_site = PORIGIN n_site pcpath_site
@@ -374,9 +384,9 @@ def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
   -- if pmethoddesc.NAME = $base64(text_method)
   -- if pmethoddesc.FUNCTION.BODY = pcpath_method ++ [PCFIELD 6]
-  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector (NIdentifier (BYTES text_selected) metadata_selected) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector phpType20_method (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
   -- if $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19_selector, porigin_requested, pclassdesc.NAME)
-  -- if $ptlc($base64(text_selected)) = $ptlc(pmethoddesc.NAME)
+  -- if $property_magic_cv_static_method_site_name(S, porigin_site, phpType20_method, pmethoddesc.NAME)
   -- if ~$ppscoped_keyword(phpType19_selector)
   -- if $scoped_requested_site(S, porigin_site, phpType19_selector, porigin_requested, eps)
   -- if porigin_site = PORIGIN n_site pcpath_site
