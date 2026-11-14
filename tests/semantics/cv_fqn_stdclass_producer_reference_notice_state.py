@@ -67,7 +67,7 @@ def controls(index, case):
         lines += ['~' + header + raw + ', ' + signature + '[.RETURNS = ' + class_type(different_case) + '])']
         for tag in ('NName', 'NIdentifier'):
             lines += ['~' + header + raw_class(spelling, tag) + ', ' + signature + '[.RETURNS = ' + normalized + '])']
-        lines += ['~' + header + 'NNullableType (' + raw + ') metadata_function, ' + signature + '[.RETURNS = ' + normalized[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]])',
+        lines += [header + 'NNullableType (' + raw + ') metadata_function, ' + signature + '[.RETURNS = ' + normalized[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]])',
             '~' + header + raw + ', ' + signature + '[.RETURNS = [(PTBRANCH ([PTBUILTIN "object"]))]])']
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         lines += ['~' + header + raw_class(name) + ', ' + signature + '[.RETURNS = ' + class_type(name) + '])']
