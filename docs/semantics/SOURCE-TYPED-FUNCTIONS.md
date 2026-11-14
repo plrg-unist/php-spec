@@ -1197,6 +1197,15 @@ or above64, `MIN % -1` and nonnull zero retain the same source/ENV/no-DIM/name,
 Shared-cache and receive/owner authority. FLOAT/string coercion, effectful
 `E_STRICT`, POWER and wider producers, entries and lifetimes remain partial.
 
+[Numeric integer power defaults](../../coverage/semantics/numeric-power-default-reception-review.json)
+retain proper signed64 `NINT` children, a nonnegative exponent and a fitting
+`POWERDONE (NINT i) false` result from the existing pure power preparation.
+Absent whole integer authority keeps the old path disjoint. Exact MIN/MAX,
+exponent-zero, odd negative bases, nested powers and nonnull zero preserve
+source/ENV/no-DIM/name, Shared-cache and receive/owner guards through cold/warm
+BYREF defaults and named warning reentry. FLOAT/GENERAL results, negative
+exponents, coercion, effectful `E_STRICT` and wider scope remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

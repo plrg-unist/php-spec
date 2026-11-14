@@ -103,6 +103,15 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if $integer_binary(pbin, i_left, i_right) = IRESULT i
   -- if $long_range(i)
+def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $pfshape(expression) = PFBINARY POWER expression_left expression_right
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (NINT i_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (NINT i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $(i_right >= 0)
+  -- if $power_prepare(NINT i_left, NINT i_right) = POWERDONE (NINT i) false
+  -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, NExprBitwiseNot expression metadata) = (NINT i)
   -- if $lossy_optional_integer_default_in(plenv, NExprBitwiseNot expression metadata) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i_child)

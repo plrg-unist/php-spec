@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-power-default-cold-warm",
+    "source": "<?php\nfunction powerWarning237($errno, $message, $file, $line) {\n    global $xPower237;\n    echo 'warning:', $message, '|';\n    $xPower237 = 3.5;\n}\nfunction powerDefaults237(int &$first, int $unit = (E_WARNING ** 0), int &$bottom = ((-E_WARNING) ** 63), int $minIdentity = (PHP_INT_MIN ** E_ERROR), int $maxIdentity = (PHP_INT_MAX ** E_ERROR), int $odd = ((-E_ERROR) ** PHP_INT_MAX), int $nested = (E_WARNING ** (E_WARNING ** E_WARNING)), int $zero = (((E_WARNING - E_WARNING) ** E_WARNING) ?? MISSING_ZERO237)) {\n    echo 'body:', $first, ':', $unit, ':', $bottom, ':', $minIdentity, ':', $maxIdentity, ':', $odd, ':', $nested, ':', $zero, '|';\n    $bottom = 9;\n    $first = $first + 1;\n}\nset_error_handler('powerWarning237');\n$xPower237 = 1.5;\npowerDefaults237($xPower237);\necho 'cold:x=', $xPower237, '|';\n$xPower237 = 1.5;\npowerDefaults237($xPower237);\necho 'warm:x=', $xPower237, '|';\n",
+    "source_sha256": "bbe114af55a192704e8cdd0e848e74402427dfb1179dc10718fb4690cfd464b2",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT powers retain exponent-zero1, exact (-2)**63 MIN, MIN/MAX identity, (-1)**MAX, nested16 and nonnull zero. Cold/warm Shared caches, a fresh BYREF MIN default and source/ENV/name/no-DIM/receive/owner authority remain."
+  },
+  {
+    "id": "numeric-power-default-alias-named-reentry",
+    "source": "<?php\nnamespace PowerAlias237;\nuse const E_WARNING as Base237;\nuse const E_ERROR as One237;\nuse const PHP_INT_MIN as Bottom237;\nfunction warning237($errno, $message, $file, $line) {\n    global $xAlias237;\n    echo 'warning:', $message, '|';\n    defaults237(2);\n    $xAlias237 = 3.5;\n}\nfunction defaults237(int $first, int $power = (Base237 ** \\E_WARNING), int $nested = ((Base237 ** Base237) ** One237), int $selected = ((Base237 ** 0) ? (Bottom237 ** One237) : MISSING_FALSE237), int $zero = (((Base237 - Base237) ** Base237) ?? MISSING_ZERO237), int $last = 7) {\n    echo 'body:', $first, ':', $power, ':', $nested, ':', $selected, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('PowerAlias237\\\\warning237');\n$xAlias237 = 1.5;\n$lastAlias237 = 8;\ndefaults237(last: $lastAlias237, first: $xAlias237);\necho 'outer:x=', $xAlias237, '|';\n",
+    "source_sha256": "adb87c1fd56a86d7a433c2c19cfe662820eedabc3ee3fffe34b6d48695013b72",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported and FQN Numeric NINT leaves compose exact powers, nested4, exponent-zero true selection of MIN and nonnull zero. Actual named holes[1,2,3,4], suppliedlast8 and warning reentry retain complete raw-name/source/declaration ENV and warmed-cache authority."
+  },
+  {
+    "id": "numeric-power-default-overflow-control",
+    "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = (E_WARNING ** 63)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "70262d3edaa4cfbcfce68a9af9da6ad75ea7531adb7c925b6faf90933ed75ee1",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A nonfitting power retains raw NFLOAT rather than receiving NINT authority or a pre-cast; native typed-default failure stays outside the quiet integer-result slice."
+  },
+  {
+    "id": "numeric-power-default-negative-exponent-control",
+    "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = (E_WARNING ** -E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "320197dcdf05acd5544cea5f2579884920214cdc0e2cd1807081248974b0b0b9",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A negative exponent takes the floating path and remains outside nonnegative integer-result authority."
+  },
+  {
+    "id": "numeric-power-default-deprecated-control",
+    "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = (E_STRICT ** E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "04ee701d8edc95755e91979c55a4e3c0773019a2b958a1383e97ba501135b65e",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The actual deprecated E_STRICT fetch remains effectful and outside quiet Numeric NINT producers."
+  },
+  {
+    "id": "numeric-power-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = ((E_WARNING ** E_WARNING) ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "3b228241b8c18143b69fbfd63d0cbf44c0d82c5bd8eb1ef0b0b347701af51f55",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A skipped coalesce DIM remains outside complete whole-tree no-DIM authority despite an exact nonnull power result."
+  }
+]
