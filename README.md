@@ -5291,7 +5291,9 @@ Quiet completed Numeric FLOAT powers now compose deferred defaults, retaining ra
 
 Quiet Numeric FLOAT power defaults also complete existing pure GENERAL plans, retaining raw caches before their own precision callbacks, throw/retry and integer reception. Exact source/ENV/no-DIM/cache/owner guards remain; quiet scalar operands extend below, while power diagnostics and wider scope stay partial. [GENERAL-power review](coverage/semantics/numeric-general-power-default-reception-review.json).
 
-Quiet POWER-specific operands also admit decoded fully numeric strings and Boolean/null values, preserving raw int/float cache types through private reception and its own precision throw/retry. Generic Numeric/Add/Mul rules and source/ENV/no-DIM/cache/owner guards remain; leading/nonnumeric effects, power diagnostics and wider scope stay partial. [Scalar-power review](coverage/semantics/numeric-coercive-power-default-reception-review.json).
+Quiet POWER-specific operands also admit decoded fully numeric strings and Boolean/null values, preserving raw int/float cache types through private reception and its own precision throw/retry. Raw Numeric identity and source/ENV/no-DIM/cache/owner guards remain; quiet binary arithmetic extends below, while leading/nonnumeric effects, power diagnostics and wider scope stay partial. [Scalar-power review](coverage/semantics/numeric-coercive-power-default-reception-review.json).
+
+Quiet ADD/SUB/MUL/DIV default operands also admit the existing fully numeric string and Boolean/null projections, preserving raw cache types before private reception, BYREF resume and own precision throw/retry. Source/ENV/no-DIM/cache/owner guards remain; conversion effects, division by zero and wider scope stay partial. [Scalar-arithmetic review](coverage/semantics/numeric-coercive-arithmetic-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve

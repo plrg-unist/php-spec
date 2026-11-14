@@ -1231,11 +1231,20 @@ extend below; power diagnostics, effectful `E_STRICT` and wider scope remain par
 use a dedicated POWER projection for existing Numeric values, Boolean/null and
 decoded FULLNUM strings whose conversion is quiet. The added arm requires a
 proper child without Numeric identity, exact operand bounds before pure power,
-a quiet power result and exact result bounds. Generic raw Numeric identity and
-ADD/MUL retain their rules. Raw PINT/PFLOAT cache tags precede private integer
-reception, including a fractional default's own throwing precision callback
-and retry. Source/ENV/no-DIM/cache/owner guards remain. LEADNUM, nonnumeric
-strings and zero-negative power diagnostics remain outside this certificate.
+a quiet power result and exact result bounds. Generic raw Numeric identity remains; quiet binary arithmetic extends below.
+Raw PINT/PFLOAT cache tags precede private integer reception, including a
+fractional default's own throwing precision callback and retry.
+Source/ENV/no-DIM/cache/owner guards remain. LEADNUM, nonnumeric strings and
+zero-negative power diagnostics remain outside this certificate.
+
+[Quiet scalar arithmetic default operands](../../coverage/semantics/numeric-coercive-arithmetic-default-reception-review.json)
+share that unchanged three-route projection through `quiet_operand`, retaining
+the POWER wrapper. A disjoint ADD/SUB/MUL/DIV arm requires a proper child without
+Numeric identity, exact input bounds before the existing pure kernel, a NUM
+result and exact output bounds. Raw int/float cache types precede private
+receives and own precision callbacks through BYREF resume, throw/retry and
+named reentry. Source/ENV/no-DIM/cache/owner guards remain. LEADNUM, BADNUMBER,
+DIVZERO, effectful constants and wider scope remain partial.
 
 ## Source metadata and resumed states
 

@@ -1,0 +1,127 @@
+{
+  "feature": "ENUM241: quiet scalar arithmetic default operands",
+  "status": "Bounded independently FULLCLEAR source/test slice integrated;full core remains unfinished.",
+  "target": "PHP8.5.10 CLI,NTS,signed64;sole project-local oracle;C/UTC baseline.",
+  "implementation": {
+    "donor": "9cde52e94b536e20dd61a4d48189c8ecef351563",
+    "source_commit": "3196dd2b78f4d1348594494d861778b5d3afe73c",
+    "runtime_revision": "8879066a5a0509ea3e077858956b7aa56de9d826",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "Move unchanged3-route Numeric/BOOL-NULL/decoded FULLNUM COERCED(false) body into quiet_operand;retain exact power_operand wrapper. Add disjoint ADD/SUB/MUL/DIV arm with whole default_in EPS,proper children,at least one Numeric-child EPS,input bounds BEFORE number_binary,NUM result and output bounds.",
+    "preserved": "Raw Numeric leaf identity,old arithmetic/power arms,kernels,native/compiler/state,source/declarationENV/name/no-DIM/selected-child/Shared-cache/receive/owner guards unchanged. Raw PINT/PFLOAT caches precede private reception and any own precision callback."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c:zend_ast_evaluate_inner binary children then get_binary_op",
+      "Zend/zend_operators.c:add/sub/mul_function_slow and div_function share zendi_try_convert_scalar_to_number",
+      "Zend/zend_operators.c:div_function_base preserves exact NINT versus fractional/NFLOAT and MIN/-1;zero divisors return DIV_BY_ZERO",
+      "Zend/zend_vm_def.h:ZEND_RECV_INIT caches quiet raw scalar before type verification"
+    ],
+    "reference": "Existing00 numeric kernels and35 COERCED(false)/number_binary pure .watsup;no native arithmetic fallback."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-coercive-arithmetic-default-reception-241",
+  "runtime_record": {
+    "report": "runtime.json",
+    "sha256": "49959993d3dcce898cf8656b01504e2b5548ac851b4f985f39ff9647bdf9262d",
+    "scope": "Unchanged240 project-local binary/profile checked by hash/profile;no identity execution."
+  },
+  "native_once": {
+    "report": "native-v1/report.json",
+    "sha256": "2b69be72203919bdabaf799acf3a6f3ff356de51a8625812e9736f6dbfbf9e61",
+    "revision": "c4a0974186e76257e9b158efa841983faeef652f",
+    "originals": 6,
+    "driver_seconds": 0.11628428800031543,
+    "native_reexecutions": 0
+  },
+  "baseline": {
+    "report": "current-v1/report.json",
+    "sha256": "1a7a7ec41ee518102f997adec25c142b1c874932d529eb95d427d0245c9dc512",
+    "revision": "c4a0974186e76257e9b158efa841983faeef652f",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 26.394944105064496,
+    "result": "6explicit Unsupported;0semantic agreement credit."
+  },
+  "source_evidence": {
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "f23a3cced7a1ac8a6acd171b7c72c44b9451c421fddb1ad5645f0957f37be2c6",
+    "revision": "8879066a5a0509ea3e077858956b7aa56de9d826",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 115.34489980712533,
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 3,
+    "scope": "Both operand positions across allfour operations;spaced integer/FLOAT strings,BOOL/NULL,exact versus fractional DIV,cold/warm BYREF,named reentry,own FLOAT2.5 precision throw/retry. LEADNUM,BADNUMBER even at MULzero,DIVZERO remain Unsupported,not agreements. No old source campaign or original promotion."
+  },
+  "state_evidence": [
+    {
+      "report": "author-v1/closure-call-protocol-o4986bvv/report.json",
+      "sha256": "c85270ef9e5b191b91e1b50fee0215a59e66588b514b68221330d9bb697738d6",
+      "revision": "558e19a677eb786990fe07a068242cf8241aee57",
+      "mode": "fixture SL_mode,508 modules",
+      "accepted_row": "numeric-coercive-arithmetic-fractional-throw-retry",
+      "assertions": 103,
+      "body": 97,
+      "setup": 6,
+      "source_credit": 0,
+      "whole_report_result": "fail",
+      "mixed_driver_seconds": 93.0023116231896,
+      "scope": "Only throw103 passes in mixed report;failed cold132 has0credit. Raw SUB2.5 cache/own callback/throw/retry/destination99/privatePINT2,source/cache/owner/budget/cleanup plus9 old author formulas execute freshly."
+    },
+    {
+      "report": "author-cold-v1/closure-call-protocol-q3tdxamj/report.json",
+      "sha256": "3f9a825bf8a0b5201dcbe42370889ac13120d10dc1977e6f6e5cec3ab5402904",
+      "revision": "6a44dbcef2137bca6f554a056d24371fa3b5e995",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 132,
+      "body": 126,
+      "setup": 6,
+      "source_credit": 0,
+      "driver_seconds": 83.15620903484523,
+      "scope": "Only corrected cold BYREF DIV2.5 fixture reruns:raw cache,proper exact/fractional operands,earlier PINT caches,own precision resume,budget,final-body entry,retirement. Throw103/source/modules unchanged and not replayed."
+    },
+    {
+      "report": "peer-v1/closure-call-protocol-zzwbxmkx/report.json",
+      "sha256": "bd4e6c48e00166d7ea05897a3952715db9838b17563068490d44768ff659b5a7",
+      "revision": "9f1e0b3862358956a873a49cddd5b22d5b968bfe",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 307,
+      "body": 301,
+      "setup": 6,
+      "source_credit": 0,
+      "driver_seconds": 40.65974133,
+      "scope": "Independent named raw PINT3/PFLOAT3/PINT2/PINT0 cache versus private PINT locals;source/ENV/tag/cache/owner/budget/retirement,MIN/-1,overflow,signedzero,quiet POWER wrapper and refusals. Exactly11 old peer formulas execute freshly. Validation-only bridges are not integrated;all508 loaded module hashes equal author887."
+    }
+  ],
+  "preserved_failures": [
+    {
+      "report": "author-static-counter-v1.json",
+      "sha256": "3773b7a6daaf845d789b1042013308e2a4a1682f27c839b1f934e3d58e1ec49b",
+      "credit": 0,
+      "scope": "Pre-runtime static generator comparison failed:constructor comparisons advanced metadata_index. Onlyselectors corrected887;old generated lengths/order/source/stages/metadata then exact with9 expected changes."
+    },
+    {
+      "report": "author-v1/closure-call-protocol-o4986bvv/report.json",
+      "row": "numeric-coercive-arithmetic-fractional-reference-resume",
+      "revision": "558e19a677eb786990fe07a068242cf8241aee57",
+      "assertions": 132,
+      "credit": 0,
+      "scope": "Wrong fixture expected TYPE_RECEIVE6 after final formal. Unchanged91/103 enter compiled body;onlythat expectation corrected6a44 and onlycold132 reran."
+    }
+  ],
+  "validation": "Successful cuts stable,quiet,exit0,fully reaped;fixtures trueLF. Source inner360/outer600,fixtures inner300/outer600. No timeout/unrun. Native6once;source/state/failure cuts remain separate,without AL,unique or family aggregate claims. Exactly20 historical helper expectations changed in place (author9/peer11),length/order/source/stage/metadata retained,and executed only in fresh241 fixtures.",
+  "review": "Peer7 whole15 FULLCLEAR;final six peer blobs exact877. Both actual MAIN3196 projections CLEAR:14 non-Make blobs exact9cde,Make3 approved additions once,00/06/09/35 kernels exact,retained POWER wrapper exact. Static composition renews no source/state credit.",
+  "actual_joined_load": {
+    "revision": "3196dd2b78f4d1348594494d861778b5d3afe73c",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-literal-ref-arithmetic-default-joined-508-v1/report.json",
+    "sha256": "2611c4bcf3731e9e6ded97a11d099bf62056b04d819bd4d32d69ab3a2c1ab0a8",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "seconds": 15.330673544202,
+    "source_credit": 0,
+    "result": "PASS,trueLF,quiet,stableHEAD/inputs,fully reaped;one combined COMP293+ENUM241 load,separate from source/state cuts."
+  },
+  "remaining": "LEADNUM/BADNUMBER conversion effects,DIVZERO,error/effectful E_STRICT,wider producers/entries/lifetimes remain partial. All exact holds preserved,especially Source47 low-precision DEFINE-name NaN. Inventory169constructors/306obligations unchanged,0constructors/1obligation closed;ITrees/Rocq/BOLA unfinished."
+}
