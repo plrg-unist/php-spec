@@ -110,7 +110,7 @@ def controls(case):
         atoms = ', '.join('NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_first' for kind in members)
         changed = 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_union_return'
         normalized = branches(members)
-        refused = '~' if len(members) != 2 or not (('string' in members or 'null' in members or 'int' in members) and len(set(members)) == 2) else ''
+        refused = '~' if len(members) != 2 or not (('string' in members or 'null' in members or 'int' in members or 'bool' in members) and len(set(members)) == 2) else ''
         parameters = '[psparam[.TYPE = ' + normalized + ']' + (', psparam_last' if case['multiple'] else '') + ']'
         result += [refused + header + changed + ', ' + signature + '[.RETURNS = ' + normalized + '])',
             refused + '$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + raw_parameter.replace('__TYPE__', changed) + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + parameters + '])']

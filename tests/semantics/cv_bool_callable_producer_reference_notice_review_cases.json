@@ -1,0 +1,56 @@
+[
+  {
+    "id": "weak-request-truthy-and-falsey-request-both-formals-bool-callable-private-cell",
+    "source": "<?php\nnamespace ReviewCallableBool88 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|BOOL $saved,BoOl|CaLlAbLe &$changed):BOOL|CALLABLE{echo 'M:',(int)($saved===true),':',(int)($changed===false),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===false),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)$value,':',(int)($value===true),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$tail='7';$x='1'.$tail;unset($tail);$snapshot=$x;$zero='0';$y=''.$zero;unset($zero);$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallableBool88\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';\n}\n",
+    "source_sha256": "5ee5c2932b6bdb47a066f1eb35e5f92d6e98366c132fa98fdf545bdcea7fecd4",
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:1:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_float_callable_producer_reference_notice_review_cases.json:independent-Boolean-truth-and-strict-priority-variants",
+    "formal_kinds": [
+      "bool",
+      "bool"
+    ],
+    "caller_strict": false,
+    "callable_name": "\\ReviewCallableBool88\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "formal_orders": [
+      [
+        "callable",
+        "bool"
+      ],
+      [
+        "bool",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "bool",
+      "callable"
+    ],
+    "carrier_basis": "REQUEST17 uses nonempty CONCAT. REQUEST0 uses a literal empty CONST on the left and a nonempty CV on the right: pinned ZEND_CONCAT only reuses an empty non-CONST operand; module30 preserves these compiled flags."
+  },
+  {
+    "id": "strict-request-numeric-string-bool-callable-receive-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableBool88\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|BOOL &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$tail='7';$x='1'.$tail;unset($tail);$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableBool88\\ReceivePriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "8e5c94fa1b4b66d0f9dc749bac24fd0204457fc6cf76cc6d1d89f434e4b185eb",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_float_callable_producer_reference_notice_review_cases.json:independent-Boolean-truth-and-strict-priority-variants"
+  },
+  {
+    "id": "strict-bool-callable-byref-numeric-string-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableBool88\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|BOOL &$saved):CALLABLE|BOOL{echo 'M;';$saved='19';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=true;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableBool88\\ReturnPriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "669821190fdf3c384bf0769bd300dbd4e555cc23c701e4f69504c72ac4f3f6ef",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_float_callable_producer_reference_notice_review_cases.json:independent-Boolean-truth-and-strict-priority-variants"
+  }
+]
