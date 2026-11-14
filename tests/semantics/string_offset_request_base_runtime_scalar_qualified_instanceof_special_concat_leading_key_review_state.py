@@ -50,11 +50,11 @@ if __name__ == '__main__':
         ('qualified_global', '', true, 'Missing\\Target', True),
         ('qualified_case', '', true, 'MiSsInG\\TaRgEt', True),
         ('fqn_namespace', 'namespace Ns;', true, '\\stdClass', True),
-        ('qualified_namespace', 'namespace Ns;', true, 'Missing\\Target', False),
-        ('relative_global', '', true, 'namespace\\Target', False),
-        ('relative_namespace', 'namespace Ns;', true, 'namespace\\Target', False),
-        ('renamed_import', 'namespace Ns;use Missing\\Target as Alias;', true, 'Alias', False),
-        ('renamed_prefix', 'namespace Ns;use Other as Missing;', true, 'Missing\\Target', False),
+        ('qualified_namespace', 'namespace Ns;', true, 'Missing\\Target', True),
+        ('relative_global', '', true, 'namespace\\Target', True),
+        ('relative_namespace', 'namespace Ns;', true, 'namespace\\Target', True),
+        ('renamed_import', 'namespace Ns;use Missing\\Target as Alias;', true, 'Alias', True),
+        ('renamed_prefix', 'namespace Ns;use Other as Missing;', true, 'Missing\\Target', True),
         ('identity_prefix', 'namespace Ns;use Missing as Missing;', true, 'Missing\\Target', True),
         ('fqn_bypasses_import', 'namespace Ns;use Other as Missing;', true, '\\Missing\\Target', True),
         ('fqn_null', '', selected('null'), '\\Missing', True),
@@ -96,6 +96,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = 'Fresh qualified/FQN current4 histories retain exact source/name/CODE/line/read/precision, scalar/nonNaN/full-state and owner guards through the maintained named reviewer. Only coherent qualified/FQN direct VALUE promotes; unmodified ancestor ASTs still refuse outer VALUE/BYTE/saved receipts. Sixteen new checked-source source0 controls cover global/nested/case-preserved names, namespace qualification, FQN namespace/import bypass, relative refusal even in the empty namespace, renamed simple/prefix imports, admitted same-byte prefix import, scalar NULL/FLOAT/STRING and owning-object refusal. Eight new coherent FQN-keyword/leading/trailing/doubled-separator/NUL controls refuse. No old source/native campaign replay, duplicate class-lookup rule, compiler/formatter/owner changes or exact held-boundary expansion.'
+    report['scope'] = 'Current4 histories retain exact source/name/CODE/line/read/precision, scalar/nonNaN/full-state and owner guards through the maintained named reviewer. Only coherent qualified/FQN direct VALUE promotes; unmodified ancestor ASTs still refuse outer VALUE/BYTE/saved receipts, and occurrence-only relative mutations remain refused. Sixteen checked-source source0 controls cover global/nested/case-preserved names, authenticated namespace/relative/simple/prefix-import resolution, FQN namespace/import bypass, admitted same-byte prefix import, scalar NULL/FLOAT/STRING and owning-object refusal. Eight coherent FQN-keyword/leading/trailing/doubled-separator/NUL controls refuse. No old source/native campaign replay, duplicate class-lookup rule, compiler/formatter/owner changes or exact held-boundary expansion.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

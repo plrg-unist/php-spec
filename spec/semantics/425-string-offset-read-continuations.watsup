@@ -20,6 +20,7 @@ dec $string_read_literal_bytes(expression) : nat*?
 dec $string_read_runtime_value(pstate, porigin) : pvalue?
 dec $string_read_runtime_cast_quiet(pcast, pvalue) : bool
 dec $string_read_runtime_integer_quiet(pvalue) : bool
+dec $string_read_runtime_named_target(pstate, porigin, name, preqbytes, int) : bool
 dec $string_read_runtime_bytes(pstate, porigin) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
@@ -647,6 +648,23 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
   -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; Raw equality keeps its compiler-output boundary; other names need lexical proof.
+def $string_read_runtime_named_target(S, porigin, name, preqbytes, z_line) = true
+  -- if $ptast(name) = PTNAME ptqual preqbytes
+  -- if ptqual <- [PTPLAIN, PTFULL]
+  -- if $ptvalidname(preqbytes, true)
+  -- if ~($ptlc(preqbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+def $string_read_runtime_named_target(S, PORIGIN n pcpath, name, preqbytes, z_line) = true
+  -- if $ptast(name) = PTNAME ptqual ptbytes_raw
+  -- if ptqual <- [PTPLAIN, PTRELATIVE]
+  -- if ptqual = PTRELATIVE \/ ptbytes_raw =/= preqbytes
+  -- if $(z_line > 0)
+  -- if $source_unit(S.SOURCES, n) = (pcunit)
+  -- if $plclasscontext(pcunit, pcpath, $call_sourcefile(S.FILES, PORIGIN n pcpath), $nabs(z_line)) = (ptcontext)
+  -- if plenv = $plempty(false)[.NAMESPACE = ptcontext.NAMESPACE][.CLASSES = ptcontext.IMPORTS]
+  -- if $pnclassresolve(plenv, name) = PNRESOLVED pnreference
+  -- if pnreference.RESOLVED = preqbytes /\ pnreference.FALLBACK = eps
+def $string_read_runtime_named_target(S, porigin, name, preqbytes, z_line) = false -- otherwise
 ;; A quiet scalar never performs class lookup for an ordinary named instanceof.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
   -- if S.COMPLETION = NORMAL
@@ -660,11 +678,8 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression)
   -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_name)
   -- if $origin_node(S.SOURCES, porigin_name) = (name)
-  -- if $ptast(name) = PTNAME ptqual preqbytes
-  -- if ptqual <- [PTPLAIN, PTFULL]
-  -- if $ptvalidname(preqbytes, true)
-  -- if ~($ptlc(preqbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
   -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $string_read_runtime_named_target(S, PORIGIN n pcpath, name, preqbytes, z_line)
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_child)) = (z_precision)
   -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
