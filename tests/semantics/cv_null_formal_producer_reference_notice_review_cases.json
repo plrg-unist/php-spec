@@ -1,0 +1,19 @@
+[
+  {
+    "id": "strict-singleton-null-byval-local-object-and-private-snapshot",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice69\\Strict;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=23;$prefix=29;return true;}\nfunction make(nUlL $saved):mIxEd{echo 'M:',(int)($saved===null),';';$saved=new \\stdClass;$saved->v=13;return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice69\\\\Strict\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r->v=23;echo 'R:',$r->v,':',$snapshot->v,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:23:1:31;D:41:23:23:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "f71a4c969650ed4724acf250ffcc7d444ca66da178b62ddf4c4a3bbe7fc72886"
+  },
+  {
+    "id": "weak-singleton-null-byref-rejects-request-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice69\\Priority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(nUlL &$saved):mIxEd{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice69\\\\Priority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x==='17'),':',(int)($copy==='17'),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy==='17'),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "655b037b562f5eaf3174a83288357c7b1c353ce0b39ebc1ccba5ceed31233e04"
+  }
+]
