@@ -1239,6 +1239,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_float_bitnot_special_concat_leading_key_sources.py --output "$$request_runtime_float_bitnot_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_float_bitnot_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_float_bitnot_out/source/report.json" --output "$$request_runtime_float_bitnot_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_float_bitnot_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_float_bitnot_out/source/report.json" --output "$$request_runtime_float_bitnot_out/review-state"
+	@request_runtime_integer_power_out=$$(mktemp -d .tools/runtime-integer-power-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_integer_power_special_concat_leading_key_sources.py --output "$$request_runtime_integer_power_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_integer_power_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_integer_power_out/source/report.json" --output "$$request_runtime_integer_power_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_integer_power_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_integer_power_out/source/report.json" --output "$$request_runtime_integer_power_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
