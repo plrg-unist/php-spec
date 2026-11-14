@@ -1693,6 +1693,8 @@ Finite FLOAT arithmetic truth now composes through certified original integer/fl
 
 Finite FLOAT unary signs also admit certified integer children, including minimum-integer negation overflow, with exact source and quiet typed-result checks. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-numeric-unary-truth-base-initial-raw-leading-key-review.json).
 
+Finite FLOAT unary truth also admits certified raw numeric STRING children through exact literal/INTERNED source, intrinsically quiet numeric coercion and the same NORMAL child/full unary result proof. Wider producers and full core remain partial. [Review](coverage/semantics/string-offset-numeric-string-unary-truth-base-initial-raw-leading-key-review.json).
+
 Quiet integer-result unary +/- chains rooted in raw numeric strings also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Actual source/child, literal string identity, quiet NINT classification and a signed64 PINT at every sign remain required; floating classification/overflow and wider producers/lifetimes stay partial.
 
 Integer-result unary +/- chains rooted in simple-name literal true also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact ConstFetch and indexed name authority, case folding, PBOOL true and signed64 PINT signs remain required; other name forms and broader producers/lifetimes stay partial. [Literal-true unary-chain review](coverage/semantics/string-offset-boolean-not-true-unary-shorthand-base-initial-raw-leading-key-review.json).
