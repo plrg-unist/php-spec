@@ -84,8 +84,8 @@ expression_cast_{label}_base = NExprTernary expression_cast_{label} expression_t
 S_cast_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_cast_{label}_base) :: (PCOCCURRENCE pcpath_left expression_cast_{label}) :: (PCOCCURRENCE pcpath_bool expression_cast_{label}_child) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_bool ({raw})) :: (PCCPRECISION pcpath_left 14) :: (PCCPRECISION pcpath_bool 14) :: ppool.CONSTANTS]]][.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_left 18 false) :: (CODEEXPR pcpath_bool 18 true) :: pcode.EXPRESSIONS]]]
 $compiled_read(S_cast_{label},porigin_left) = eps
 $string_read_runtime_value(S_cast_{label},porigin_left) = ({value})
-$string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_wrong) = {str(kind != 'String' and n == 1).lower()}
-$string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_base) = {str(kind != 'String' and n == 0).lower()}
+$string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_wrong) = {str(n == 1).lower()}
+$string_read_raw_known_base(S_cast_{label},porigin_base,pvalue_base) = {str(n == 0).lower()}
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + 2 + len(checks), derived + 2 + len(checks)
