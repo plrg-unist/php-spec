@@ -1,0 +1,83 @@
+{
+  "feature": "finite-float-arithmetic-scalar-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Finite PFLOAT-only ADD/SUBTRACT/MULTIPLY/DIVIDE trees certify both literal full-ternary selections, preserving the selected non-NUL INTERNED header and frozen initial raw CV offset through returning Warnings. Existing shorthand and emitted-NOT consumers compose through the shared certificate with explicit source-zero controls.",
+  "target": "PHP8.5.10 CLI NTS signed64; sole local .tools/php/bin/php oracle and tests/semantics/profile.json; pure authored .watsup; production SL508",
+  "reviewed_author_head": "ef71fb357b2998c7252369073faed3e1ccd34035",
+  "reviewed_peer_head": "cf546c6173c5d443e6e1ba32eef92eb091569f04",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "f9f5c3a6c32298a258a9b14962ddaf9ae53566ea3d9bd5bc4554c1764057e9ae"
+  },
+  "donor_implementation_sha256": "fa471b2f8a0a6e34defb2a6cb4705fda4070cf71ce48e34d14ccd1258d31de83",
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_binary_op/zend_try_ct_eval_binary_op fold constant numeric children; zend_binary_op_produces_error refuses DIV by either zero sign. Zend double ADD/SUB/MUL/div_function_base preserve FLOAT results, and i_zend_is_true treats both zero signs as false. Existing compiler45 pfbinary and pure binary_apply supply the quiet values. FLOAT NOT remains emitted; no compiler or numeric implementation change.",
+  "implementation": "Exactly16 new specification lines add a source-kind-disjoint PFBINARY PFLOAT raw_truth clause for exactly ADD/SUBTRACT/MULTIPLY/DIVIDE. It requires own FINITE pool, both exact indexed source/PFLOAT pools, recursive child certificates and full-state quiet binary_apply at0. Typed children exclude integer/mixed/coercive operands; zero division and nonfinite/overflow results fail the exact quiet finite proof. All other425 bytes and completion/CODE/precision/ownership contracts remain unchanged.",
+  "composition": "A separate clean normal merge2c036d adopted exact coherent actual21b source before fresh originals, retaining composed425a6f1 and newer NULL-cast/coalesce bytes. Actual source composition preserves the newer parent and OB115 co-batch: composed425fb847 differs from donorfa471. No stale whole-file replacement or historical/source/native/state/report replay.",
+  "evidence": [
+    {
+      "kind": "Fresh native2 once and coherent actual21b model Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "d18cd3045b2a763f484de5812940ad7e6e702a0f8dcfb39a8f8fdf97127f6898",
+      "tested_revision": "6ffca80d7928fef295acb691fa09300905a59567",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "Two final original-source production-SL exact agreements covering all4 operators; native originals reused",
+      "report": "../php-spec-evidence-archive/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "59ea3d8a2ae2ed94a93726e66eff524a6edad5ca69b034c4027658d556dc6a7c",
+      "tested_revision": "8198ad8103904037c4e8668d9803a0f7fa88574b",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "Inclusive author production-SL fixture: 179 retained after one inapplicable atom-hex check removed plus87 added; source0",
+      "report": "../php-spec-evidence-archive/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "9553aec789194b4c0382035d46ea42d2f5e3873b359271f8caff33b193145daf",
+      "tested_revision": "8198ad8103904037c4e8668d9803a0f7fa88574b",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 266,
+      "derived_conditions": 161
+    },
+    {
+      "kind": "Inclusive independent production-SL fixture: 200 retained plus13 actual-source facts and196 constructed controls; source0",
+      "report": "../php-spec-evidence-archive/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "f21ce6dccd8941dc9b8d9c728652c86315274fd31e66199bcf8ed473f3a675b6",
+      "tested_revision": "cf546c6173c5d443e6e1ba32eef92eb091569f04",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 409,
+      "derived_conditions": 273
+    }
+  ],
+  "preserved_failures": [],
+  "validation": "Native2 once/source2 exact agreements cover ADD/MUL/DIV in the truthy original and SUB in the falsey reference original. A266/161-derived and B409/273-derived retain separate inclusive cuts, no unique aggregate. Actual Warning/reference/heap/budget paths, exact bits/source/positions, signed zeros, typed/coercion/mixed/promotion refusals, forged division-zero/overflow/nonfinite own values and nonfinite children, POWER exclusion and shorthand/emitted-NOT source0 composition pass. Coherent baseline Unsupported2 stays0; no new campaign failures.",
+  "remaining": "Integer/mixed/coercive FLOAT arithmetic producers, POWER/nonfinite results, other raw producers, selected-NUL and Owned-NUL release, wider REQUEST/base/key/handler/ownership/lifetime histories and full core remain partial. Compiler45/spec233/numeric/provider/root/schema/ownership and all exact PROGRESS holds remain unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact author/peer renderers and two Make recipes regenerate checked fixtures with both inherited renderers watched. Raw originals/native-once observations, launchers and reports remain in linked external archives, which are not build dependencies.",
+  "source_integration": {
+    "projection": "../php-spec-evidence-archive/resumed-main-20261112/main54-output-float-arithmetic-source-projection-v1.json",
+    "sha256": "6d89119d3d838f4c4692e54b99705d7db16f3b7bfd3ffaa30ee486607a7754a5",
+    "actual_implementation_sha256": "fb847c9cc5445fbe4d0558ba9b61b27bfaacf20ce4f8157fb151d99897cf2b14",
+    "composition": "Own six-file projection within the ten-file OB115 co-batch: exact16-line425 addition over preserved newer parent, four donor-exact non-Make Python paths and exactly2 own additive Make recipes (5 total in batch)."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main54-output-float-arithmetic-joined-508-v1/report.json",
+    "sha256": "77937157bdcca93b6ea172146f0a1239fbc120c974fcdc52bb604834b6f7f14d",
+    "tested_revision": "a8bc04337dfc842850997119f227f8e4df0287eb",
+    "tested_tree": "96602eef9d48f86239b44d1ccee93be394535eea",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.989945564884692,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "review": "Whole-six author READY and independent FULLCLEAR preceded source-first integration. Peer20 independently cleared actual MAINa8bc04337/tree96602 and the SAME saved canonical report77937157 against projection6d89119d: exact own16-line425 patch preserving newer parent and co-batched OB115, four donor-exact Python paths and two own additive Make commands. Actual425fb847 is distinct from donorfa471. Ordered508 modules/511 arguments/complete512 watches bind the quiet, stable and fully reaped source-zero load. No author duplicate read, source rerun or extra receipt; source/report follow-up is closed."
+}

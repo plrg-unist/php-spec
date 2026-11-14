@@ -232,6 +232,8 @@ Completed ordinary-CV producers also admit two-member formals and returns pairin
 
 Completed ordinary-CV producers admit one literal Boolean within three-through-six-member ordered primitive FORMAL/RETURN unions. Exact raw/normalized order/count and one Boolean-kind guards preserve actual reception/return and separate private Notice cells. Native6 once/source6, author635/peer466 fixtures and the sole actual009eabd9 SL508 load retain separate cuts; wider object/class forms remain partial. [Review](coverage/semantics/cv-primitive-literal-bool-producer-reference-notice-review.json).
 
+Completed ordinary-CV producers admit builtin `object`, `?object` and ordered builtin FORMAL/RETURN unions containing object, with exact source/normalization and at most seven members sharing one Boolean kind. Existing quiet stdClass payload, reception/return and private Notice-cell ownership bounds remain. Native6 once/source6, author393/peer297 fixtures and the sole actual084e00dd49 SL508 load retain separate cuts; class-name types and wider contexts remain partial. [Review](coverage/semantics/cv-object-producer-reference-notice-review.json).
+
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
 swap-last diagnostic order and each surviving slot's real owner. The
@@ -1350,6 +1352,8 @@ Quiet emitted BOOL/INT/FLOAT casts also admit exact NULL operands under the exis
 
 Certified emitted NULL values now contribute empty bytes to concatenated string-offset keys while preserving actual REQUEST carriers and existing source/owner guards. Four source agreements reuse native originals once; separate author867/129-derived and independent1729/991-derived fixture cuts pass. FLOAT BYTE, formatting and every exact hold remain unchanged. [NULL-byte review](coverage/semantics/string-offset-request-base-runtime-null-bytes-review.json).
 
+Quiet emitted modulo, bitwise AND/OR/XOR and shifts also accept certified BOOL/NULL values through ordered quiet full-state integer coercions and original typed operands. New BOOL/NULL operands require NORMAL; prior PINT completion behavior is preserved. Four source agreements and separate author1529/129-derived and independent2649/1249-derived fixture cuts pass. Wider types and owners remain partial; formatting and exact holds are unchanged. [Primitive integer-binary review](coverage/semantics/string-offset-request-base-runtime-primitive-integer-binary-review.json).
+
 Quiet emitted full ternaries preserve the selected typed value through existing string-offset consumers. Wider producers remain partial. [Runtime full-ternary review](coverage/semantics/string-offset-request-base-runtime-full-ternary-review.json).
 
 Quiet emitted shorthand ternaries preserve the original typed truthy condition or the selected fallback through existing string-offset consumers. Wider producers and lifetimes remain partial. [Runtime shorthand-ternary review](coverage/semantics/string-offset-request-base-runtime-shorthand-ternary-review.json).
@@ -1646,6 +1650,8 @@ Folded non-FLOAT BooleanNot trees now authenticate literal full-ternary bases th
 Certified falsey scalar trees now authenticate literal shorthand fallback bases through returning Warnings. Shared exact source, compiled-value and quiet-truth proofs preserve the INTERNED header and frozen initial offset; emitted FLOAT NOT remains separate. Wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-raw-truth-shorthand-base-initial-raw-leading-key-review.json).
 
 Finite FLOAT sign chains now authenticate literal full-ternary bases through returning Warnings. Exact source, compiled bits and quiet typed signs retain the INTERNED header and frozen initial offset; the existing shorthand and emitted-NOT consumers compose through the shared certificate. Wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-float-unary-truth-base-initial-raw-leading-key-review.json).
+
+Finite FLOAT arithmetic trees now authenticate literal ternary bases through returning Warnings. Exact typed child/source/pool and quiet-result proofs retain the INTERNED header and frozen initial offset; shorthand and emitted-NOT compositions have separate state evidence. Integer/mixed/coercive arithmetic and wider producers remain partial. [Review](coverage/semantics/string-offset-float-arithmetic-truth-base-initial-raw-leading-key-review.json).
 
 Quiet integer-result unary +/- chains rooted in raw numeric strings also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Actual source/child, literal string identity, quiet NINT classification and a signed64 PINT at every sign remain required; floating classification/overflow and wider producers/lifetimes stay partial.
 
@@ -5388,6 +5394,8 @@ Selected scalar leaves now supply quiet operands to existing arithmetic/POWER de
 Selected quiet scalar UnaryMinus defaults reuse proper selected descent while preserving raw INT/FLOAT cache tags before private integer reception, own precision callbacks and overflow TypeErrors. Exact source/declaration ENV/no-DIM/name/Shared-cache/owner guards remain. Three source agreements and three Unsupported controls reuse six current native originals once; author121/97, independent named159 and corrected derived56, and the separate actual4851/SL508 load keep their own identities. UnaryPlus, direct scalar unary operands and wider contexts/lifetimes remain partial. [Review](coverage/semantics/selected-scalar-unary-minus-default-reception-review.json).
 
 Admitted direct computed Booleans now supply UnaryMinus integer defaults through constructor-disjoint Boolean shape, absent Numeric certificates and unchanged quiet condition/NINT0-or-1 coercion. Exact source/declaration ENV/no-DIM/name/Shared-cache/owner guards remain; raw PINT0/-1 caches precede ordinary reception. Six native originals once, three source agreements/three Unsupported controls, author173 and independent derived82/corrected named157 retain separate identities from the actual6e520/SL508 load. UnaryPlus, direct scalar receipts and wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/computed-boolean-unary-minus-default-reception-review.json).
+
+Quiet produced strings now supply UnaryMinus deferred defaults through existing StringIn and quiet numeric coercion, preserving raw integer/FLOAT tags, signed zero, overflow and own precision throw/retry before reception. Exact source/declaration ENV/no-DIM/name/Shared-cache/owner guards remain. Seven native originals once, three source agreements/four Unsupported controls, author121/97, independent156/50 and the separate actual05427/SL508 load retain their identities. Literal-only stored receipts, wider contexts/lifetimes and UnaryPlus remain partial. [Review](coverage/semantics/produced-string-unary-minus-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve

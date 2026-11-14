@@ -1,0 +1,90 @@
+{
+  "feature": "ENUM246: quiet produced-string UnaryMinus deferred defaults",
+  "status": "Independently reviewed bounded extension; complete PHP core remains unfinished",
+  "implementation": {
+    "base": "c505fad3bf2e8dc8d886a41ef5c65390daea4d1b",
+    "donor": "b9e4d6916238d475ef187a35746f44eea7f35e61",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "One separate Numeric UnaryMinus arm requires existing StringIn(child), Numeric(child)=eps, unchanged parent exclusions and COERCED number false. Existing pure multiplication by -1 preserves the numeric result tag and bits.",
+    "preserved": "StringIn/cast/numeric kernels, compiler and state policies remain unchanged. Exact raw source/declaration ENV/names, whole-tree no-DIM, Shared-cache, ordinary receive and owner guards remain.",
+    "affected_tests": "Current244 and245 each promote only the identical raw-string2.5 UnaryMinus helper expectation to NFLOAT-2.5, preserving counts and every historical evidence cut."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_ast.c: zend_ast_evaluate_ex ZEND_AST_UNARY_MINUS evaluates the produced string before multiplication by -1",
+      "Zend/zend_operators.c: scalar-to-number parses full numeric strings; leading data requires a distinct Warning before multiplication",
+      "Zend/zend_vm_def.h: ZEND_RECV_INIT publishes eligible raw scalar constant-AST cache values before parameter verification"
+    ],
+    "phase_distinction": "UnaryMinus consistently multiplies by -1. UnaryPlus is unchanged and remains separately bounded: deferred AST adds integer0 while compile/runtime multiply by +1, with signed-zero differences."
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-produced-string-unary-minus-default-reception-246",
+  "native_once": {
+    "revision": "b9e4d6916238d475ef187a35746f44eea7f35e61",
+    "report": "native-v1/report.json",
+    "sha256": "b3f5feaf044c4b8392be98d01b35b59aae2ca72463fc84d7799c652668a92af3",
+    "current_originals": 7,
+    "unchanged_original_replays": 0,
+    "runtime": "runtime.json",
+    "runtime_sha256": "bbba271e97be1ea0395919a5809c92d508da4286c0ccbc323f21baac29513f33",
+    "identity_bridge": "Retain244 same project-local binary/profile observation; fresh246 native input hashes match that binary identity and profile. No extra identity probe or ordinary-library semantic dependency."
+  },
+  "source_evidence": {
+    "revision": "b9e4d6916238d475ef187a35746f44eea7f35e61",
+    "report": "source-v1/report.json",
+    "sha256": "971ad84f34dbe0c6c2c20583bdebb609ef78a98ece3b03f54184d4e5a217904f",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 3,
+    "unsupported_controls": 4,
+    "outer_seconds": 106.18255119398236,
+    "scope": "Real E_*-dependent casts/concat produce integer, both FLOAT-zero signs, fraction and MIN-string overflow under cold/warm BYREF defaults, imported named reentry and handler throw/retry. Leading/nonnumeric strings, skipped DIM and the separate stored-literal receipt remain explicit Unsupported."
+  },
+  "state_evidence": [
+    {
+      "revision": "b9e4d6916238d475ef187a35746f44eea7f35e61",
+      "report": "author-v1/closure-call-protocol-51m38h1e/report.json",
+      "sha256": "8a6ec1eb857d9930a2bbeadbbc16a46a84b71cde1c0698f0ec6e3f3ac7f3f5b8",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        121,
+        97
+      ],
+      "source_credit": 0,
+      "outer_seconds": 101.64081041095778,
+      "scope": "Exact produced bytes/coercion, raw INT/FLOAT caches, signed zero, own saved fractional receipt, private BYREF cells, source/ENV/tag guards, budgets, throw/retry and real retirement."
+    },
+    {
+      "revision": "1cfa8d3c5c1d4fbb09652dba94fff3086129b56f",
+      "report": "peer-v1/closure-call-protocol-7zjjaqtf/report.json",
+      "sha256": "ae55f65a173aab3e55b41f021e595ec1fdf68cdc9f950f8a3699ebe01ea04651",
+      "mode": "fixture SL_mode,508 modules",
+      "conditions": [
+        156,
+        50
+      ],
+      "source_credit": 0,
+      "outer_seconds": 59.80234251101501,
+      "scope": "Independent actual named byte/cache/sign/source/name/ENV/owner/budget/retirement challenges and separate pure StringIn cast/concat/bitwise, fraction/MIN, raw-string, unchanged plus/special, stored/DIM controls. NUL stays pure coercion refusal only."
+    }
+  ],
+  "compatibility": "All new source/test inputs remain at the same frozenb9e4 cut, with no post-validation correction. StringIn roots are constructor-disjoint from selected/Boolean shapes; Numeric(child)=eps preserves the old typed arm. No244/245 native/source/author campaign or execution credit is renewed.",
+  "validation_contract": "Pinned PHP8.5.10 CLI,NTS,signed64, project-local oracle only, C/UTC baseline. Source360/100000steps and fixture300 retain outer600. Passing cuts bind exact stable inputs/revisions, honest modes/counts, quiet closures/exit0 and fully reaped groups. Normal agreements, Unsupported, failures and unrun credit remain separate; all new checks pass first try.",
+  "review": "recover12_enum_selected_unary_review sent whole-eight FULLCLEAR directly MAIN54 for donorb9e4d6916/treee7bd0b0f, manifest19f85cb1 and patchb390c148, exact412 additions/2 deletions; all changed blobs and retained input/report identities match.",
+  "joined_load": {
+    "revision": "05427f01008b96d2311ccf59aa902711f164349e",
+    "tree": "77e7d091114ac682d8b8e88e64d9074ca7a4dcbf",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main54-produced-string-minus-source-projection-v1.json",
+    "source_projection_sha256": "7c85fe2d83564e3efc1984f3167e3d7120b228917507c57ea8e5b814a68a9a9f",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main54-produced-string-minus-joined-508-v1/report.json",
+    "sha256": "755f1fc77fee78eb8cd54b91abf2c2538f6c32f30295f5bcacd9c5da6bc3e40e",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.881095650838688,
+    "result": "true plus LF; quiet/stable inputs and HEAD,exit0,fully reaped",
+    "source_credit": 0
+  },
+  "remaining": "Literal-only stored integer-string receipts, wider producers/contexts/lifetimes and UnaryPlus phases remain partial. NUL stays pure/source0 without owning or release paths; every exact hold remains. No constructor/obligation closure or full-core/Zend-equivalence claim."
+}

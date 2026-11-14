@@ -686,7 +686,22 @@ keeps native6 once/source6, author635 and independent466 fixture-SL507, separate
 prelaw184/276 and actual009eabd9 production-SL508 loading distinct. Two current
 helper files correct four matching larger-union expectations without historical
 campaign renewal. Unsupported2 and the first failed619 fixture retain zero credit.
-Object/class and wider types, signatures, source/ownership and lifetimes remain partial.
+The next increment extends builtin object declarations; class names, wider
+signatures, source/ownership and lifetimes remained partial at this cut.
+
+Completed ordinary-CV producers also admit canonical `object`, raw `?object` and
+ordered builtin unions containing object in their required formals and returns.
+Exact raw/normalized type authority, source order/count and one Boolean kind remain; six
+non-Boolean kinds plus one Boolean kind imply at most seven members. The existing
+quiet `stdClass` payload, actual reception/return, frame retirement and private-cell
+ownership proofs remain unchanged. BYREF reception permits later scalar rebinding;
+returned objects retain their separate physical owners. The
+[object-header review](../../coverage/semantics/cv-object-producer-reference-notice-review.json)
+keeps native6 once/source6, author393/peer297 fixtures, prelaw139/152 and the sole
+actual084e00dd49 production-SL508 load distinct. Two current helpers correct exact
+object-triple expectations without historical renewal. Preserved fixture and
+expectation failures remain zero credit. Class-name/callable/iterable types, wider
+contexts and all exact held dependencies, including V110, remain partial.
 
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
