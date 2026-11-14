@@ -1,0 +1,118 @@
+{
+  "feature": "FINAL MOD zero Error after own nonzero signed-long integer Returns (OB109)",
+  "decision": "Whole five-file source/test independently accepted; Output and complete core remain partial",
+  "reviewer": "/root/recover11_output_false_return_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and recorded profile",
+  "cuts": {
+    "source_only": "ea92e9efa6ad2542d159f0f457f7a6b4a55da402",
+    "precode": "ea92e9efa6ad2542d159f0f457f7a6b4a55da402",
+    "runtime": "12a204b135a51f5140faeeab30acc1aed211befa",
+    "ready": "c5bd58b2ebf0dd4bf0dfcf4febc8cca61955b4ab"
+  },
+  "scope": "One own raw NScalarInt(INTEGER i) Return after the named mask8194 handler's literal H Echo, with two required untyped nonvariadic BYVAL formals. The new arm admits nonzero signed64 i. Four positive originals use 1, 9223372036854775807, 0x4000_0000_0000_0001 and 0b101 across Warning LEFT CONST, Deprecated BOTH CV-pair, Warning RIGHT CV-pair and mixed Warning-to-Deprecated CONST/FLOAT. Two/four real formals retire before FINAL MOD-zero Error while AH/AHH stays buffered; the returned PINTi is non-FALSE and differs from resumed NULL scratch.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return and Zend/zend_vm_def.h::ZEND_RETURN transfer the nonref untyped integer result through actual frame retirement. Zend/zend.c::zend_error_zstr_at requests default reporting only for strict IS_FALSE retval, so these integers are consumed without default diagnostics.",
+    "Existing46 ppdispatch folds the own NScalarInt to PINTi; existing33 compiled_read requires its own true CODEEXPR. Existing80/207/270 retain the returned integer separately from cleared NULL scratch and restore the handler through the existing handled route.",
+    "Existing00 long_range is exactly -9223372036854775808 through 9223372036854775807. Ordinary negative PHP source syntax uses UnaryMinus; raw negative/minimum and out-of-range occurrence/pool projections below establish only local tail-guard behavior with source0."
+  ],
+  "change": "Ten pure tail-arm lines add long_range(i), i != 0 and exact function ORIGIN/CODE.UNIT/BODY, own Return/child, child CODEEXPR/source line/true flag and compiled PINTi authority. All old eps/NULL/bare/TRUE/zero/FALSE arms and every selected-capture premise remain literal. No return/error-handler kernel, schema, ownership, provider, numeric or native-evaluation change. Return-statement lines are observed for these originals; no general Return-start-line guard is introduced.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-integer-return-modulo-error-109",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "5067397529e80b5ef90bdf94125701a682308fa63d4b37a8d61606900f7b4abc",
+      "cut": "source_only",
+      "observations": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "1f03908b5d623a2f54463e2bb53e7d50e13200344adadbc47ed364e0b3a68dbb",
+      "cut": "source_only",
+      "mode": "production SL508/cache=false/det=true",
+      "selection": [
+        1,
+        2
+      ],
+      "cap_seconds": [
+        90,
+        120
+      ],
+      "collection_complete": true,
+      "aggregate_pass": false,
+      "source_credit": 0,
+      "other_originals_unrun": 2
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "bb06cedad430673b49557f5ecf1306458b65d5fc97227e97c3682c2ac8e70414",
+      "cut": "precode",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "front-launch-01.json",
+      "outer_launch_sha256": "c78e37cabb573dcdffb10a1d773ea1ef9387b663b464da7577b600c9d36b1f71"
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "ba2314312576d35bf2f36e0598dff8041ed00bb636a54a7afa1fa2c6346a86f6",
+      "cut": "runtime",
+      "mode": "production SL508/cache=false/det=true",
+      "cap_seconds": [
+        90,
+        120
+      ],
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "e8d04aadb1951710e1896498971278b9116bdaebc50050c2c7bea2e9df8c1e88",
+      "cut": "runtime",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "life-launch-01.json",
+      "outer_launch_sha256": "4d126dede866ce39592d94711628d3ae40afff3777c5a9499c1674f69340e589"
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "90344b5fa2d3de6ebf1194d061f09ab8b15c240fd0073c8b9d752ba172b27d92",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [
+        13,
+        19
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "peer-launch-01.json",
+      "outer_launch_sha256": "41f7f0ecec3c628f8070a2297267da96c5e8d9d412291dca580c750d0028a661",
+      "outer_cap_seconds": 660,
+      "outer_seconds": 248.46489807288162
+    }
+  },
+  "validation": "All positive OB109 campaigns passed first try. Four actual php_error/tool0/reasonNone/DivisionByZeroError outcomes at lines6/8/8/6 match exact saved-native P/full fatal255/no DIAGNOSTIC; native4 are reused once. Baseline1/2 stay pending-FINAL Unsupported/tool1/P/empty PHP and tool stderr/native_match=false; aggregate pass=false/source0 and other2unrun0 remain separate. Precode19 reaches exact own integer unwind/read/result before law with captureeps/no source seed. Lifecycle13 separately checks postlaw capture and real retirement. Peer32 covers independent originals3/4 and guard projections with source0. Stable watches are native24each, baseline536, precode578each, source544, lifecycle578each and peer579global plus3case inputs each, with exact HEAD/source/checked/fixture bindings. Raw arrays, streams, exits, modes and caps independently clear; all jobs fully reaped. No failure, replay, AL, cumulative-unique claim or renewal of earlier campaigns.",
+  "controls": "Peer originals3/4 retain exact INPUT/cursor/current source/full store, real formal/native-cell retirement, C0 and fatal Error retirement. Eight added groups check exact own raw integer/type/value, child line+true, UNIT/BODY and consumed integer/FALSE versus NULL scratch. A different nonzero integer and first-shadow PINT(i+1)/PBOOLfalse pools cannot authenticate this exact source. Non-NULL scratch retains current-call validity and the same raw MOD Error but fails capture. Four occurrence/pool projections replace only the first same-path Return occurrence and same-unit read, while retaining original AST/CODE: -1 and MININT admit the local tail; MAXINT+1 and MININT-1 refuse despite matching raw/read facts. These are explicit local guard projections with no whole-state validity, full-function source, UnaryMinus, PHP-source agreement or new budget-resumption claim. No arbitrary prior diagnostic/body/retarget-history exclusion is claimed.",
+  "environment": "All native/source and fixture launch records explicitly bind C/UTC; fixture commands record LC_ALL=C,TZ=UTC,PATH=/usr/bin:/bin. Authorfront/life use cap300 per interpreter without an additional outer cap, at137.645695699s and237.953477253s. Peer outer cap660 is separate, with exit0/quiet/no timeout/stable/full reap and an empty process group.",
+  "integration": {
+    "tested_revision": "40459b788e9db2813d3c6e47a180ca94647b458b",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main47-integer-return-modulo-joined-508-v1/report.json",
+    "sha256": "1ac41574c106baae0cbc2ea393cfd253404bbbfd8b8e4548615612b79d7b65f7",
+    "mode": "sole production SL508;511argv/512watched;cap60",
+    "seconds": 16.331940515898168,
+    "source_credit": 0,
+    "result": "Independent actual composition CLEAR: exact five-path intake overe9282723d, four non-Make blobs READYc5bd-exact, and Make exactly3 additive with all parent/disjoint recipes retained. Runtime12a to READYc5bd adds only Make3 and the peer fixture; tested runtime/source/lifecycle inputs retain their identities. Sole saved load independently verified PASS/trueLF/quiet/exit0/no timeout/stable512+HEAD/fully reaped/C-UTC; actual module order, fixture hash, raw streams and recorded456 blob bound. Private execution credits are not renewed."
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-integer-return-modulo-error-author.json",
+  "limits": "Only four positive originals gain source agreement. UnaryMinus/negative source syntax, overflow-float and other producers/return bodies/signatures/handlers/operand/lifetime/history contexts remain partial. Raw negative/minimum/overflow projections have only source0 local-tail credit. All standing holds and169/306 partial inventory status remain; OB31, complete PHP core, Rocq interaction trees and BOLA/CRIS verification are unfinished. No engine bug or intentional divergence is established."
+}
