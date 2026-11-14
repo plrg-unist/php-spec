@@ -8,6 +8,10 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+ENUM264 deferred FLOAT truth-wrapper native-once, source, corrected author and independent fixtures remain in `../php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/`. The [review](../coverage/semantics/deferred-float-truth-wrapper-default-reception-review.json) keeps the original elaboration failure at zero and the accepted actual/SAME tuple.
+
+Fully qualified keyword CONCAT Get sources and separate private-SL507 comparisons/fixtures remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get-review.json) preserves the wrong-catalogue preparation error at zero and the accepted actual/SAME tuple.
+
 REF90 array/callable producer originals and separate native-once, source, author/peer fixture and prelaw cuts remain in `../php-spec-evidence-archive/cv-array-callable-producer-reference-notice-90/`. The [review](../coverage/semantics/cv-array-callable-producer-reference-notice-review.json) retains the accepted actual/SAME tuple.
 
 OUTPUT124 literal-string Boolean-cast handler originals and separate source/author/peer cuts remain in `../php-spec-evidence-archive/new/output-final-selected-string-bool-cast-return-modulo-error-124/`. The [review](../coverage/semantics/output-final-selected-string-bool-cast-return-modulo-error-review.json) preserves the original fixture parse failure at zero and the accepted actual/SAME tuple.

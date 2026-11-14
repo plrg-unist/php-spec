@@ -5549,6 +5549,8 @@ Emitted canonical Boolean casts and logical NOT now consume actual phase-certifi
 
 Deferred NOT now consumes certified signed64 integer children, preserving raw Boolean complement before private integer reception. Exact emitted source, declaration ENV, Shared cache and owner guards remain; the earlier Boolean-cast arm and all held boundaries stay unchanged. Wider forms remain partial. [Review](coverage/semantics/deferred-integer-not-wrapper-default-reception-review.json).
 
+Canonical deferred Boolean casts and NOT now consume certified FLOAT children when intrinsic truth is quiet, retaining raw Boolean results before private integer reception. Signed zero, finite values and infinities preserve their truth; NaN stays refused. Source, declaration ENV, cache and owner guards remain. [Review](coverage/semantics/deferred-float-truth-wrapper-default-reception-review.json).
+
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
@@ -9148,6 +9150,8 @@ Recursive raw-string CONCAT class/method selectors authenticate every actual des
 Bounded own/inherited public static USER method Get captures now admit raw String/Integer CONCAT class and method selectors, retaining source, root-byte and cleanup authority; wider forms remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-integer-concat-tree-quiet-get-review.json).
 
 Simple-name TRUE/FALSE/NULL leaves now compose with raw String/Integer CONCAT selectors for bounded static USER method Get captures; exact source/name-child/root-PSTRING and cleanup authority remain. Wider forms and complete core stay partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-keyword-concat-tree-quiet-get-review.json).
+
+Fully qualified TRUE/FALSE/NULL leaves compose with raw selector CONCAT trees for bounded static USER method Get captures, preserving exact expression/name-child/root-PSTRING and cleanup authority. Wider forms and complete core remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get-review.json).
 
 A finite method-only child captures an inherited public static USER method at any genuine source index in its ordinary method-only root. Complete ordered raw-member/descriptor authority checks both classes; lookup must still select the parent method, so child shadows do not authenticate saved parent captures. Parent declaring/lexical/cache and child called/requested scopes, Shared clones, method-static roots and quiet cleanup remain. Unselected methods are not entered; wider inheritance stays partial. [Child-method review](coverage/semantics/magic-property-methodclosure-static-inherited-child-members-quiet-get-review.json), [root-method baseline](coverage/semantics/magic-property-methodclosure-static-inherited-members-quiet-get-review.json).
 

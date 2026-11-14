@@ -1,0 +1,88 @@
+{
+  "status": "independently reviewed, source/native validated and integrated; partial core",
+  "target": "PHP 8.5.10 CLI, NTS, signed64; pure authored watsup, production SL, no native fallback",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_authority": "Zend/zend_ast.c: zend_ast_evaluate_ex evaluates deferred unary/cast operations; Zend/zend_operators.h: i_zend_is_true tests FLOAT zero/nonzero and warns on NaN; Zend/zend_operators.c: boolean_not_function complements that truth.",
+  "contract": "Two phase-unsafe emitted arms certify canonical kind1 BoolCast and BooleanNot over recursively certified actual PFLOAT bits, requiring intrinsic number_bool(NFLOAT bits)=(b,false). Both signed zeros are false; finite nonzero, subnormal and signed infinity values are true. Every NaN is refused even with REPORTING0. Exact own/child SOURCE, false CODE, absent own pool/read/redirect, declaration ENV, Shared cache and private recipient bounds remain. Cast preserves BASE; NOT resets BASE. No NORMAL/helper/Numeric/compiler/runtime widening.",
+  "source_packet": {
+    "base": "90e22b6f61b25bb95dfd82bb335f03408cae1ec2",
+    "donor": "0cd2df1bcbf4ae413d0a2c0bae891bec375b38ce",
+    "tree": "cf08656f062a03ab1dc1651a7f235dff86b5baa1",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/source-manifest.json",
+    "manifest_sha256": "e6299ae95a728bf5a87b13928c4c0ffe4c272e282c17954cc43c4f64400cc4f7",
+    "patch_sha256": "9b09ec0a451805bf831add0842fc80c3fa3d3055ebabd20ab19395a27e6af5fe",
+    "files": 6,
+    "insertions": 396,
+    "deletions": 0,
+    "all_six_equal_tested_peer": "84b214b41c13bceb698d295af046db8965bdce41"
+  },
+  "source_validation": {
+    "tested_revision": "d37d3e724",
+    "mode": "production SL508",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/source-v1/report.json",
+    "report_sha256": "2b05c31f2e01cdee446fe6436535d46d9e576c58df70b25b72c985d0992c0de2",
+    "source_agreements": 2,
+    "seconds": [
+      22.662194743053988,
+      19.34406901220791
+    ],
+    "native_originals_fresh_once": 2,
+    "native_reference": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/native-final.json",
+    "native_sha256": "be25b0eb44af8c542d5a9f690adc6e39f561eacafe7d07c29188b327d446f67d",
+    "native_replay": 0,
+    "status": "PASS, stable and reaped; accepted tuples inherited without reread/replay"
+  },
+  "prelaw_baseline": {
+    "tested_revision": "f6a273937",
+    "unsupported": 1,
+    "source_credit": 0,
+    "report_sha256": "2e8269e1fe708f15368a36308152fc4fb80b6cb7f169eac541d893201dd69880"
+  },
+  "author_fixture": {
+    "tested_revision": "32ebd0367a9abc4536bb7899db872bd4585fc155",
+    "assertions": 136,
+    "source_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/author-v2/closure-call-protocol-bytu34zy/report.json",
+    "report_sha256": "eb3dab5ad802ac1d0899c9739f8fb7215dda0ac297fb19cdb19ef3623b5a38f4",
+    "selection_sha256": "ba696ca708d207088e3032afba700b909a4275a161af9861368680e7758922f5",
+    "status": "PASS, stable and reaped"
+  },
+  "original_author_failure": {
+    "kind": "elaboration: two fixture conjunction literals retained double backslashes",
+    "report_sha256": "1c3b0ee98baf9cb68933500bc8ad5d2609eadaee80d943616719598b62762cdb",
+    "source_credit": 0,
+    "correction": "Only two fixture literals changed; no runtime/PHP/compiler or source/native replay."
+  },
+  "independent_fixtures": {
+    "assertions": 373,
+    "derived_body_conditions": 343,
+    "seconds": 140.768628786,
+    "source_credit": 0,
+    "report_sha256": "bfdb3373772d7df905c3f67be328fa1c776d1b7459f38d850591e61f00ff7aa1",
+    "summary": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264/peer-validation.json",
+    "summary_sha256": "950257614340a87d84eb4a39cef887b09be739993feef4ed100484787a34105f",
+    "new_failures": 0,
+    "status": "PASS, stable, quiet and reaped; whole-source independent FULLCLEAR"
+  },
+  "actual_composition": {
+    "commit": "6a3414976d001521f871ab7385b82b6926c07da4",
+    "tree": "003089ac826ca50a3afbca2cc111a535cb12f8f2",
+    "parent": "8490ca0c888ec7af936023185c2134fefb64f55c",
+    "reviewer": "recover16_enum_boolint_review",
+    "same": "Exactly six files; five non-Make donor postimages match, approved Make3 preserves all parent bytes; 263 ledger excluded. Sole actual/SAME review closed; author did not read actual/canonical report."
+  },
+  "actual_load": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main64-enum264-float-truth-current-load-v1/report.json",
+    "report_sha256": "ae29b8d31e0fa54863ec661388cd5f584eb54fa1ea4ca07f54d1b394f96abfc8",
+    "status": "PASS, quiet true LF, equal maps, stable and reaped",
+    "seconds": 16.54156702104956,
+    "production_sl_modules": 508,
+    "argv": 511,
+    "watches": 512,
+    "cap_seconds": 60,
+    "source_credit": 0
+  },
+  "noncredit": "Prelaw Unsupported, fixture assertions, failed elaboration and actual loading retain zero source credit. Custody transfer and metadata introduce no semantic/native rerun.",
+  "raw_evidence": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-float-truth-wrapper-default-reception-264",
+  "remaining": "Warningful NaN truth, other operands/wrappers, wider producers, contexts, lifetimes and complete core remain partial; every exact held boundary stays held."
+}
