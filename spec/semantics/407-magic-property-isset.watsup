@@ -143,6 +143,19 @@ def $property_magic_cv_arrow(S, n) = true
   -- if $property_magic_cv_literal_history(S, n, porigin)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_arrow(S, n) = false -- otherwise
+;; Original named USER wrappers borrow their function's shared cache and statics.
+dec $property_magic_cv_namedclosure(pstate, nat) : bool
+def $property_magic_cv_namedclosure(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $function_at(S.FUNCTIONS, porigin) = (pfunction)
+  -- if $origin_node(S.SOURCES, porigin) = (NStmtFunction phpType14 phpType4 phpType11 phpType16 phpType18 (SEQUENCE statement*) metadata)
+  -- if ~$function_generator(S, pfunction)
+  -- if $closure_live_object_valid(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)})
+  -- if $closure_cache_records_valid(S)
+def $property_magic_cv_namedclosure(S, n) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
   -- if ~$property_magic_cv_source(S, porigin, z)
@@ -170,7 +183,7 @@ def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (PARRAY n)) =
 def $property_magic_cv_result_supported(S, porigin, z, true, KNOWN (POBJECT n)) = true
   -- if $property_magic_cv_empty_source(S, porigin, z) \/ $property_magic_cv_coalesce_source(S, porigin, z) \/ $property_magic_cv_coalesce_assign_source(S, porigin, z)
   -- if $(n < |S.OBJECTS|) /\ (HOBJECT n) <- S.ALLOCATIONS
-  -- if ($eager_property_class_valid(S, S.OBJECTS[n]) \/ $enum_case_object(S, n) =/= eps \/ $property_magic_cv_weakmap(S.OBJECTS[n]) \/ $property_magic_cv_weakreference(S.OBJECTS[n]) \/ $property_magic_cv_realclosure(S, n) \/ $property_magic_cv_arrow(S, n)) /\ ~$instance_storage_freeing(S, n)
+  -- if ($eager_property_class_valid(S, S.OBJECTS[n]) \/ $enum_case_object(S, n) =/= eps \/ $property_magic_cv_weakmap(S.OBJECTS[n]) \/ $property_magic_cv_weakreference(S.OBJECTS[n]) \/ $property_magic_cv_realclosure(S, n) \/ $property_magic_cv_arrow(S, n) \/ $property_magic_cv_namedclosure(S, n)) /\ ~$instance_storage_freeing(S, n)
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = false -- otherwise
 dec $property_isset_source(pstate, ppropertyisset) : bool
 def $property_isset_source(S, ppropertyisset) = true

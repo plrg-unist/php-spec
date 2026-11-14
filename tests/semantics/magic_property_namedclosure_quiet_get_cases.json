@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "namedclosure-cv-coalesce-shared-function-static",
+      "source": "<?php\nfunction quietNamedCoalesceTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\necho quietNamedCoalesceTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$held = quietNamedCoalesceTarget(...);\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietNamedCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho quietNamedCoalesceTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "a51240204e16df7eb6d594625c22ab9edf499c5f4f7db771d4e4c4be70dc1c9e",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "namedclosure-private-coalesce-assignment-from-callable",
+      "source": "<?php\nfunction quietNamedAssignTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\necho quietNamedAssignTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$held = Closure::fromCallable(\"quietNamedAssignTarget\");\n$watch = WeakReference::create($held);\n$reader = new QuietNamedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietNamedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho quietNamedAssignTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "9872020e7d0d663abbee6d364c841ae98bef9d34f491efb2a6c27a891fec23bf",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    }
+  ]
+}

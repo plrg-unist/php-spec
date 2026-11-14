@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "namedclosure-cv-empty-wrapper-before-receiver",
+      "source": "<?php\nfunction quietNamedCVTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\necho quietNamedCVTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$held = quietNamedCVTarget(...);\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho quietNamedCVTarget() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "a92f788aa0235db9121880a11695ca58e18b3d093b4c294ba8842313b28d51dc",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0ZBTFNFO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtTVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "namedclosure-literal-empty-receiver-throw",
+      "source": "<?php\nfunction quietNamedLiteralTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\necho quietNamedLiteralTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$held = quietNamedLiteralTarget(...);\n$watch = WeakReference::create($held);\n$reader = new QuietNamedLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho quietNamedLiteralTarget() === 2 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "caa5c1e705c84f42b913d7adc03358859330a2c08a3507f377798300f1dd2a52",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0NBVUdIVDtLRUVQO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtTVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": ""
+    }
+  ]
+}
