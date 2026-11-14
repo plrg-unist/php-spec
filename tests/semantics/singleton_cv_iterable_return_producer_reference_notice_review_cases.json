@@ -1,0 +1,57 @@
+[
+  {
+    "id": "nullable-array-formal-iterable-return-private-cell-cow",
+    "namespace": "ReviewNullableIterableReturn95",
+    "formal_kind": "array",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "array",
+      "null"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "source": "<?php\nnamespace ReviewNullableIterableReturn95;\nfunction h($n,$m,$file,$line){global $x;$x=['n'=>23];echo 'H;';return true;}\nfunction make(?array $saved):iterable{echo 'M:',(int)($saved===null),';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',(int)($value['n']===null),';';$value['n']=41;return $value;}\n$x=null;$copy=$x;set_error_handler('ReviewNullableIterableReturn95\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',(int)($copy===null),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:1;H;F:1;R:41:23:1;C:43:41;D:done:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b3b55513092ea304a8e3b4b7a4ab70c4527852ece592d69061ff7bbad0c7f98c",
+    "derived_from": "Independent core-only one-CV bare iterable return witnesses; existing nullable/union formal authentication, private Notice cell/COW and abrupt cleanup remain unchanged."
+  },
+  {
+    "id": "union-byref-formal-iterable-return-handler-throw-retirement",
+    "namespace": "ReviewUnionIterableReturn95",
+    "formal_kind": "array",
+    "formal_shape": "union",
+    "formal_members": [
+      "array",
+      "false"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "handler_throws": true,
+    "source": "<?php\nnamespace ReviewUnionIterableReturn95;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';throw new \\Exception('stop');}\nfunction make(array|false &$saved):iterable{$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x=false;$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewUnionIterableReturn95\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',(int)($copy===false),';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,';';\n",
+    "native_stdout": "A;M:5;H;T:11:23:1;Q:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "1ba62448d62c86c3a67a8af829700db8f64d1eead5461316ea7a4faf81bfbb9c",
+    "derived_from": "Independent core-only one-CV bare iterable return witnesses; existing nullable/union formal authentication, private Notice cell/COW and abrupt cleanup remain unchanged."
+  },
+  {
+    "id": "strict-int-formal-receive-error-precedes-iterable-producer-and-notice",
+    "namespace": "ReviewIterableReceivePriority95",
+    "formal_kind": "int",
+    "formal_shape": "singleton",
+    "formal_members": [
+      "int"
+    ],
+    "formal_byref": false,
+    "caller_strict": true,
+    "priority_control": true,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewIterableReceivePriority95;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int $saved):iterable{echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewIterableReceivePriority95\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ade65d1d6e3fa3495f44641ec6ee17f3f2fa4104597066cc9200e6d80e5b78cd",
+    "derived_from": "Independent core-only one-CV bare iterable return witnesses; existing nullable/union formal authentication, private Notice cell/COW and abrupt cleanup remain unchanged."
+  }
+]

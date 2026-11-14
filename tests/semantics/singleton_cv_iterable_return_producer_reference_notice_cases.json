@@ -1,0 +1,51 @@
+[
+  {
+    "id": "array-byref-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "CvArrayIterableReturn95",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace CvArrayIterableReturn95 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(aRrAy &$input):iTeRaBlE{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('CvArrayIterableReturn95\\\\h',8);echo 'A;';\n$r=&take(make($source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "array_return_producer_cv_reference_notice_cases.json first case: fresh namespace and canonical mixed-case iterable return only",
+    "source_sha256": "00307620a5db9a242ee50e8466983144243ac71102266fd8e27503df350c73e7"
+  },
+  {
+    "id": "untyped-byval-iterable-return-cow-and-private-cell",
+    "namespace": "CvUntypedIterableReturn95",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace CvUntypedIterableReturn95;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved):iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('CvUntypedIterableReturn95\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "Authored core-only ordinary one-CV producer with array COW before return, handler mutation and separate private-cell retyping",
+    "source_sha256": "7027832a5d489f673b2ba173313678330c24b9611fb901ed30287b7be2c2c123"
+  },
+  {
+    "id": "strict-int-byval-iterable-return-and-private-cell",
+    "namespace": "CvIntIterableReturn95",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CvIntIterableReturn95;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved):iterable{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=5;$copy=$x;set_error_handler('CvIntIterableReturn95\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "Authored core-only ordinary one-CV producer with an already admitted required int formal and fresh array return",
+    "source_sha256": "dbc33eab74e6dff33c61232fe36865c73d57629598633667bfce1b38cc3439b9"
+  },
+  {
+    "id": "iterable-return-type-error-precedes-outer-notice",
+    "namespace": "CvIterableReturnPriority95",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\nnamespace CvIterableReturnPriority95 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input):iterable{$input=17;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=[];$sourceAlias=&$source;$r='old';set_error_handler('CvIterableReturnPriority95\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "array_return_producer_cv_reference_notice_cases.json error control: fresh namespace and canonical iterable return only",
+    "source_sha256": "88bc99159f2ccc6dfe4ff6a051996d490f827de5342e783d35c4afcdc2ad9e38"
+  }
+]
