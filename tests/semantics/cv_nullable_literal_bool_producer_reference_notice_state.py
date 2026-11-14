@@ -76,7 +76,7 @@ def controls(index, case):
         '~' + header + node + ', ' + signature + ')',
         '~' + header + raw + ', ' + signature + '[.RETURNS = [(PTBRANCH ([PTBUILTIN "' + kind + '"]))]])',
         '~' + header + raw + ', ' + signature + '[.RETURNS = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "' + kind + '"]))]])',
-        '~' + header + 'NUnionType (SEQUENCE ([' + node + ', NIdentifier (BYTES "bnVsbA==") ' + meta + '])) ' + meta + ', ' + signature + ')']
+        header + 'NUnionType (SEQUENCE ([' + node + ', NIdentifier (BYTES "bnVsbA==") ' + meta + '])) ' + meta + ', ' + signature + ')']
     for other in ('false', 'true', 'array', 'int', 'float', 'bool', 'string', 'mixed'):
         if other != kind:
             lines += ['~' + header + raw + ', ' + signature + '[.RETURNS = ' + nullable(other) + '])']

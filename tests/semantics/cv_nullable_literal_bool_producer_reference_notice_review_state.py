@@ -74,11 +74,11 @@ def normal(initial, case, front):
         raw_identifier = 'NIdentifier (BYTES text_return) metadata_return'
         raw_union = 'NUnionType (SEQUENCE ([' + raw_identifier + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return'
         derived += ['~' + header.replace('phpType18,', raw_identifier + ','),
-            '~' + header.replace('phpType18,', raw_union + ','),
+            header.replace('phpType18,', raw_union + ','),
             '~' + header.replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.BYREF = true]]])'),
             '~$error_call_valid(S_notice, perrorcall[.LINE = 9])', '~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])']
         raw_parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw_union + ') (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-        derived += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + raw_parameter + ']), pfunction_producer.SIGNATURE[.RETURNS = eps])']
+        derived += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7]), SEQUENCE ([' + raw_parameter + ']), pfunction_producer.SIGNATURE[.RETURNS = eps])']
         for literal_kind in ('false', 'true'):
             for strict in ('false', 'true'):
                 for accepted in ('PNULL', 'PBOOL ' + literal_kind):

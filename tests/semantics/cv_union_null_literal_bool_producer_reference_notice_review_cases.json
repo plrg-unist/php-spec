@@ -1,0 +1,86 @@
+[
+  {
+    "id": "named-singleton-union-null-false-null-private-cow-and-source-rebind",
+    "source": "<?php\nnamespace ReviewNotice73\\FalseNamed;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$seed=17;$x=[$seed];$prefix=29;return true;}\nfunction make(NuLl|fAlSe $saved):FaLsE|nUlL{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$seed=19;$value=[$seed];$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice73\\\\FalseNamed\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$copyPrivate=$r;$r[0]=23;echo 'R:',$r[0],':',$copyPrivate[0],':',$alias[0],':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$copyPrivate[0],':',$x[0],':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$copyPrivate,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:1;H:{notice_line}:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "line_observation": "Capture the fresh REF73 native Notice line once without changing original source bytes.",
+    "source_sha256": "141601c6aa17993e94a0ef269c6b413d0729ede636442fdd7e2ddb533f30393e",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "return_kind": "false",
+    "derived_from": {
+      "catalogue": "cv_nullable_literal_bool_producer_reference_notice_review_cases.json",
+      "id": "named-singleton-nullable-false-null-private-cow-and-source-rebind",
+      "source_sha256": "b51bcd576fd2077dc48dd1c1afc60f74058dc4d382fe04c56d01eaef2a74e112",
+      "edits": "Fresh REF73 namespace and explicit ordered literal-Boolean/null union spellings; original physical lines, runtime CV values, aliases, COW and priority observers retained."
+    },
+    "input_value": "null",
+    "formal_null_first": true,
+    "return_null_first": false
+  },
+  {
+    "id": "named-singleton-union-null-true-true-private-cow-and-source-rebind",
+    "source": "<?php\nnamespace ReviewNotice73\\TrueNamed;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===true),':',$prefix,';';$seed=17;$x=[$seed];$prefix=29;return true;}\nfunction make(tRuE|NuLl $saved):nUlL|TrUe{echo 'M:',(int)($saved===true),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===true),';';$seed=19;$value=[$seed];$prefix=31;return $value;}\n$x=true;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice73\\\\TrueNamed\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$copyPrivate=$r;$r[0]=23;echo 'R:',$r[0],':',$copyPrivate[0],':',$alias[0],':',(int)($copy===true),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$copyPrivate[0],':',$x[0],':',(int)($copy===true),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$copyPrivate,$prefix,$prefixAlias);\n",
+    "native_stdout_template": "N;M:1;H:{notice_line}:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "notice_line_candidates": [
+      7,
+      8
+    ],
+    "line_observation": "Capture the fresh REF73 native Notice line once without changing original source bytes.",
+    "source_sha256": "344b6d882eb9c545284a1d666374d5514bf31b2f7336ba6500a298a7f5d45a86",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "return_kind": "true",
+    "derived_from": {
+      "catalogue": "cv_nullable_literal_bool_producer_reference_notice_review_cases.json",
+      "id": "named-singleton-nullable-true-true-private-cow-and-source-rebind",
+      "source_sha256": "a053733019d77006ae2928741cb43e2a126451ae0cc7ec3125dc0c56c6162e5e",
+      "edits": "Fresh REF73 namespace and explicit ordered literal-Boolean/null union spellings; original physical lines, runtime CV values, aliases, COW and priority observers retained."
+    },
+    "input_value": "true",
+    "formal_null_first": false,
+    "return_null_first": true
+  },
+  {
+    "id": "weak-union-null-false-byref-rejects-integer-0-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice73\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(NuLl|fAlSe &$saved):mIxEd{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice73\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===0),':',(int)($copy===0),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===0),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "10aae67803fc4be50437b184d77147321d25e0de638beb0a48e9b8b1ad88af87",
+    "return_kind": "mixed",
+    "input_integer": 0,
+    "derived_from": {
+      "catalogue": "cv_nullable_literal_bool_producer_reference_notice_review_cases.json",
+      "id": "weak-nullable-false-byref-rejects-integer-0-before-body-and-notice",
+      "source_sha256": "7eecd366cb46dda6f2cda0624e98b62829908efd91aa730741dcdd80734f6818",
+      "edits": "Fresh REF73 namespace and explicit ordered literal-Boolean/null union spellings; original physical lines, runtime CV values, aliases, COW and priority observers retained."
+    },
+    "formal_null_first": true
+  },
+  {
+    "id": "weak-union-null-true-return-rejects-integer-1-before-notice",
+    "source": "<?php\nnamespace ReviewNotice73\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):NuLl|tRuE{echo 'M:',$saved,';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=1;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice73\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===1),':',(int)($copy===1),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy===1),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M:1;C:11:2:1:1;D:11:31:23:1;",
+    "source_sha256": "7dbcf83e13532bf42ad42d5c1687a9bcd26f0b17d73995cebacf7f038ad48aac",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "true",
+    "input_integer": 1,
+    "derived_from": {
+      "catalogue": "cv_nullable_literal_bool_producer_reference_notice_review_cases.json",
+      "id": "weak-nullable-true-return-rejects-integer-1-before-notice",
+      "source_sha256": "5a8c4ef2aa113d04377267e0efff79beb685fb91d8c3d96ab5f8062166ce7199",
+      "edits": "Fresh REF73 namespace and explicit ordered literal-Boolean/null union spellings; original physical lines, runtime CV values, aliases, COW and priority observers retained."
+    },
+    "return_null_first": true
+  }
+]
