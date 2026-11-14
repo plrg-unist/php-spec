@@ -456,6 +456,8 @@ BooleanNot of raw nonzero signed64 integer literals preserves the non-NUL INTERN
 
 BooleanNot of finite +/- chains over raw integer literals preserves the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warnings, including key replacement and initial-reference rebinding. Exact source/child occurrences, signed64 PINT at every node, quiet full-state signs, final nonzero/ownNOTfalse and parentEPS/fallback2 remain required. Saved-native source2, separate author272/144 and peer425/277 fixture-SL/source0 cuts, and actual MAINf2c joined SL508 load16.382158543914557s/source0 pass. Raw MININT local fixtures earn0 source credit; FLOAT overflow, wider operands/lifetimes and all holds remain unchanged. [BooleanNot integer-unary shorthand review](coverage/semantics/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-review.json).
 
+BooleanNot of quiet integer-result +/- chains rooted in raw numeric strings now preserves the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warnings, including ordinary key replacement and initial-reference rebinding. Actual child/source, raw PSTRING and INTERNED authority, exact quiet NINT input and PINT at every sign retain final nonzero/NOTfalse, parentEPS and fallback2 guards. Saved-native source2, separate author373/239 and peer335/199 fixture-SL/source0, affected INTEGER272/144 and actual MAIN726 joined SL508 loading pass. FLOAT classification/overflow, wider producers/lifetimes and all holds remain unchanged.
+
 BooleanNot of truthy raw string literals preserves the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warnings, including key replacement and initial-reference rebinding. Exact parent/condition/leaf/fallback source, decoded truth, ownfalse/leafPSTRING+INTERNED pools and parentEPS remain required. All decoded byte strings except empty and exactly ASCII zero qualify, including a pooled NUL condition without owned release. Saved-native source2, separate author225/112 and corrected peer339/204 fixture-SL/source0 cuts, and actual MAINc694 SL508 load15.990419904934242s/source0 pass. The first peer binding failure and unrun state retain0. Wider operands/lifetimes remain partial and all holds stay unchanged. [BooleanNot string shorthand review](coverage/semantics/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-review.json).
 
 
@@ -614,12 +616,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `7266312e1` passes its once-only 508-module production SL
-load in 16.382309733889997 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `477ab7291` passes its once-only 508-module production SL
+load in 16.53241455811076 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main47-float-selector-numeric-string-joined-508-v1/report.json`
-(SHA-256 `1f6d9db7ee21dba58af5c62e4aac80454144d0b39c3a8d15afea2cfb74c59d81`).
+`../php-spec-evidence-archive/resumed-main-20261112/main47-mixed-formal-producer-joined-508-v1/report.json`
+(SHA-256 `38ab223c955ae172d7e5b1af9c6de7c33c792d36aa1ab466cda81dd3021f85dc`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

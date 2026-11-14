@@ -1,0 +1,108 @@
+{
+  "feature": "boolean-not-numeric-string-unary-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A quiet first unary +/- sign over one raw numeric string supplies a signed64 integer to the existing integer-result sign chain under BooleanNot. A final nonzero PINT selects the non-NUL INTERNED shorthand fallback and freezes an initial raw leading-integer CV offset through a returning Warning handler. Original whitespace-string/ordinary-key and exact-MIN-string/initial-reference-key cases retain current-name replacement and rebinding.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "9c91ec4eb365f1b98ec2307a2ed15019ebeac70e",
+  "reviewed_peer_head": "e165043dc2683593af87cd3d278b552361cfd5cb",
+  "implementation_sha256": "8c8e6d5ed999e294f3117ed25d914e1a98fc50f26a2b213c1e3a16dcc443cb5b",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "c85ea1e510d033e5b4e491dfb4324c7af4f7e426bdd47293a1ce9561ddddabad"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_pm and zend_try_ct_eval_unary_pm use multiplication by +/-1. Zend/zend_operators.c _zendi_try_convert_scalar_to_number and _is_numeric_string_ex preserve quiet LONG versus DOUBLE classification, including the 19-digit strcmp suffix behavior. Existing unary_apply/coerce_number/num_mul and pure02 numeric_string implement that distinction. No native answer or numeric helper correction was added; no PHPT was executed.",
+  "implementation": "One disjoint first-sign clause in string_read_raw_unary_integer authenticates the raw string occurrence/decoded non-NUL bytes, actual child equality, raw PSTRING pool, INTERNED identity, quiet COERCED NINT input/range, own PINT/range and full-state unary_apply. The compiler-fold input remains the raw PSTRING; the authenticated carrier has identical decoded-byte coercion. Existing integer recursion, final nonzero/NOTfalse, parentEPS, fallback2, provider and ownership guards are unchanged.",
+  "evidence": [
+    {
+      "kind": "fresh native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "212db70bba3f9d2eb9c1fdb0b1633a5c1b0bfa417e3af4da97de8065804f6083",
+      "tested_revision": "992509897c1a3f5f57986d5b5840b2028a239291",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; whitespace raw string, plus1/minus-1, NOTfalse and parentEPS refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "8b8afed0a83dbb47c82a7d4c1c272677a382d01e54688807bea10d2b6e8e6f1b",
+      "tested_revision": "c1aae157acbd028368dbf2d90a55113ef4a60cfa",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 83
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; exact raw MIN, quiet plusMIN, NOTfalse, old shared marked key and parentEPS refusal",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "219cc9f127bd72f42551e54e7b0af223826f319300f4417de3fca0fcddd7cb5d",
+      "tested_revision": "c611dd449316b2714016f73219a46b8ba4473065",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 80
+    },
+    {
+      "kind": "two original-source production-SL comparisons with the same saved native observations reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "3149e85a994d20c563d0ebb3d54b27d128ed645ec637958d4577bcb8395f0d42",
+      "tested_revision": "2d68d93ec5867eaeef595f78031cf85bc185c408",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "30845278f2a4e9e092470e50a32e942b3905c68af354a62462bc3f4b71b33b68",
+      "tested_revision": "2d68d93ec5867eaeef595f78031cf85bc185c408",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 373,
+      "derived_conditions": 239
+    },
+    {
+      "kind": "independent production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "522d0ebf8f1101cec6600363e6ed752d6bdd6567c4beb7052e1d89b681845ba0",
+      "tested_revision": "e165043dc2683593af87cd3d278b552361cfd5cb",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 335,
+      "derived_conditions": 199
+    },
+    {
+      "kind": "affected existing INTEGER-chain author production-SL fixture; separate source-zero cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-numeric-string-unary-shorthand-base-initial-raw-leading-key-author-20261114/affected-integer-a-sl-v1/report.json",
+      "sha256": "0a3da7127b0e763e55fdf15ede1a737014fe7c420313d08b825837e27831e8e7",
+      "tested_revision": "2d68d93ec5867eaeef595f78031cf85bc185c408",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 272,
+      "derived_conditions": 144
+    }
+  ],
+  "numeric_string_boundary": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-peer-20261114/numeric-string-boundary-native-v1/report.json",
+    "sha256": "4747c5c2040237b01f47751fd2764f4f949dc7a7908f0a0f0bea3db4772ba740",
+    "source_credit": 0,
+    "disposition": "Earlier native-only exact MIN=int versus trailing-space MIN=float classification observation is retained without replay. Newly executed A/B model conformance checks remain separate source-zero evidence; no engine bug or pure02 correction is claimed."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main47-float-selector-numeric-string-joined-508-v1/report.json",
+    "sha256": "1f6d9db7ee21dba58af5c62e4aac80454144d0b39c3a8d15afea2cfb74c59d81",
+    "tested_revision": "7266312e145d9346ac34453fab7651e2547ecb81",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.382309733889997,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 once/source2, genuine prelaw A83/B80 full155 and separate author373/239-derived, independent335/199-derived and affected INTEGER272/144-derived fixture cuts retain their own identities. Coherent tests cover first-sign NEGATIVE success, raw-MIN NEGATIVE overflow, later PINT MIN overflow, zero/floating/decimal/exponent/overflow/junk/NUL boundaries, forged source/pool/type/range/code facts, exact Warning dispatch/cleanup, reference rebinding and 0/1-step budget rejoining. All executed attempts are stable, quiet and fully reaped; failures/timeouts/unrun0. Final donor adds only the independently tested B renderer after source/A/affected checks; unchanged tested inputs are not rerun.",
+  "review": "Independent semantic/source/test whole-six-file FULLCLEAR and donor READY preceded source-first MAIN726 integration alongside the separate FLOAT-selector change. The independent bounded actual-source comparison confirms that removing only this local clause/comments recovers prior MAIN623 module425 byte-for-byte, with exact Make2 and donor-exact other4, preserving the joined FLOAT rules. The sole saved joined canonical load passed separately with source credit0.",
+  "remaining": "FLOAT coercions or any intermediate FLOAT result, zero final values, NUL/leading-junk inputs to this sign certificate, wider leaves/producers/handlers/ownership/lifetimes and complete core remain partial. All exact PROGRESS holds, including Owned-NUL source release, remain unchanged; no feature obligation closes.",
+  "recovery": "Raw originals, native-once observations, launchers and reports remain in the linked external archives. The tracked cases/renderers and two Makefile numeric-string-unary shorthand selections regenerate checked fixtures; external archives are not build dependencies."
+}
