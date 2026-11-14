@@ -1585,6 +1585,8 @@ BooleanNot of simple-name literal true also preserves its non-NUL INTERNED short
 
 BooleanNot of raw nonzero signed64 integer literals also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source, integer range and compiled facts remain required; unary-signed syntax and broader lifetimes stay partial. [BooleanNot integer shorthand review](coverage/semantics/string-offset-boolean-not-integer-shorthand-base-initial-raw-leading-key-review.json).
 
+BooleanNot of integer-only unary +/- chains also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Every actual leaf/sign retains exact source, signed64 PINT and quiet compiled results; zero, FLOAT overflow and broader producers/lifetimes stay partial. [BooleanNot integer-unary shorthand review](coverage/semantics/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-review.json).
+
 BooleanNot of truthy raw string literals also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source, decoded string truth and compiled facts remain required; a pooled NUL condition is admitted without broadening selected-NUL bases or owned release. Wider producers and lifetimes stay partial. [BooleanNot string shorthand review](coverage/semantics/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),

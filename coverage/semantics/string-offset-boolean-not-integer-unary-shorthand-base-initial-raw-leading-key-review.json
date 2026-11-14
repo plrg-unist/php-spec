@@ -1,0 +1,92 @@
+{
+  "feature": "boolean-not-integer-unary-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with BooleanNot of a finite unary +/- chain rooted in one raw NScalarInt INTEGER leaf preserves its non-NUL INTERNED fallback and initial raw leading-integer CV offset through a returning Warning handler. The leaf and every sign result must be signed64 PINT, at least one sign is required, and the final integer is nonzero. Originals !(-(+1)) and !(+(-(-9223372036854775807))) exercise ordinary key replacement and initial-reference current-name rebinding. Raw INTEGER MININT local fixtures earn zero source credit; real MININT negation overflows to FLOAT and is excluded.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "8adf539a6713d4747334bad8276e4a4854d927f6",
+  "reviewed_peer_head": "97e221b93f5fa4d90556484d7119a927894c673f",
+  "implementation_sha256": "0da36d66b45b16bef41da2da5e46d527b447e172ed4eaa9a9be5b663422fbd73",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "30b50a40c98eb4ef568220af6a60670702e247afc479c81a139b370041fe60db"
+  },
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_pm and zend_try_ct_eval_unary_pm implement signs through multiplication by +/-1; zend_compile_unary_op and zend_try_ct_eval_unary_op separately fold BooleanNot. Zend/zend_operators.c boolean_not_function and Zend/zend_operators.h i_zend_is_true give quiet nonzero integer truth. zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN, while zend_fetch_dimension_address_read freezes the header/index before Warning. Existing pfunary records each actual folded child/node; pure unary_apply/num_mul preserve PINT or promote MININT negation to PFLOAT. No PHPT was executed.",
+  "implementation": "A local18-line raw_unary_integer certificate authenticates the raw INTEGER leaf or each actual PFUNARY +/- source node, exact child occurrence, own/child compiled PINT and signed64 range, recursion and full-state quiet unary_apply equality. A separate18-line raw_known_base arm requires at least one sign, actual parent/NOT/root/fallback source, parentEPS, final nonzero/ownNOT PBOOLfalse, ABSENT true arm and fallback2 PSTRING/INTERNED identity. The accepted direct raw-integer NOT arm is disjoint. No compiler/numeric, generic233, provider/root, owner, schema, REQUEST/selected-NUL, nonfinite, wider producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and unchanged production-SL Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "bbf0ac43dfa8af66118573b1b5dab2a16102da0b22b26a73322d51f1dad79dce",
+      "tested_revision": "9ec6ae308a0060e48b61bb0a202d2f21271348a0",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; NOTfalse and minus/plus/leaf PINT -1/1/1, quiet full-state signs, roots[1,0], edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "93fe524c823e0edcd58967d2a40865b40d719fd28ab4ff5572bcc0eb7ca1bbfa",
+      "tested_revision": "9ec6ae308a0060e48b61bb0a202d2f21271348a0",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 77
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; NOTfalse and plus/outerminus/innerminus/leaf PINT MAX/MAX/-MAX/MAX, roots[1,0,0], edges/debts0",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "8c27f153a3f1fda1d5440ddcb194d5c34a4ecb6bcc38ddb7298f29fc83e561c8",
+      "tested_revision": "3ca5ecb1b87ee8aec18633ef979d1a00e50903a9",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 74
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "99c0e9f4b2dd26c5aedbd19604edc5fb869624b81272eba4e11e1f0544b330bb",
+      "tested_revision": "e28e115749d747a2b5ab8a5b84baa65ff8b594cc",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "e4bf4da01a242004ad5a7f6c4dba02a6aab127e63b9fbcf08d7c21189bd68bcd",
+      "tested_revision": "e28e115749d747a2b5ab8a5b84baa65ff8b594cc",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 272,
+      "derived_conditions": 144
+    },
+    {
+      "kind": "independent production-SL fixture; separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-boolean-not-integer-unary-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "6e35a0d50844930ceec286f3738ad2867dba61e1eb18d3f62699c5de277edced",
+      "tested_revision": "97e221b93f5fa4d90556484d7119a927894c673f",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 425,
+      "derived_conditions": 277
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main46-boolean-default-signed-not-joined-508-v1/report.json",
+    "sha256": "e02b1ff80d4ec10ec404733be291b9f2e739ee3183d14a861409302628660d88",
+    "tested_revision": "f2c6bd851eb275b13f76101aec0242da36da350b",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.382158543914557,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Native2 is captured once and reused by the first postlaw source2 comparisons. Separate author272/144-derived and independent425/277-derived fixture-SL cuts retain source0 without a unique aggregate. Genuine prelaw full155 states retain their own cuts. Checks cover exact nested source/pools and pure signs at every depth, stale tags/values/ranges, detached same-value nodes, coherent zero/nonzero/signed local guards, raw MININT plus versus overflow/forged wrapping, wider leaf/operator refusals, folded parent/fallback/header/source/CODE/pool and owner boundaries, real Warning dispatch/resume, reference rebinding and 0/1 budget rejoin. Final donor adds only the independent B renderer after source2/A; their tested inputs are unchanged and are not rerun. Source60/outer80/compiler120/state180 caps remain. All execution attempts are quiet, stable and fully reaped, with no failures/timeouts/unrun outcomes. Original Unsupported2 stays0 and no historical evidence is renewed.",
+  "review": "Independent whole6 semantic/source/test FULLCLEAR and donorREADY preceded source-first MAINf2c integration alongside the separate Enum242 change and prior StringNot/ANDOR composition. The independent bounded actual source comparison confirms the exact six-file task delta, four test/controller blobs, local42536 and Make2 additions. The single saved joined canonical load has separate source0 identity.",
+  "remaining": "Unary chains rooted in non-integer literals, names/casts/arithmetic children, other computed conditions or fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records and launchers are in the linked external archives. Tracked cases/renderers and the two Makefile boolean-not-integer-unary-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}
