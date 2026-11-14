@@ -77,6 +77,25 @@ def $property_layout_parent(S, ppropertydesc_parent :: ppropertydesc_tail*, ppro
   -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
   -- if ~$property_hook_child_own_slot(S, ppropertydesc_parent, ppropertydesc_child)
 
+;; Virtual children gain backing at the end, in the parent's hash order.
+dec $property_hook_child_append_slot(pstate, ppropertydesc, ppropertydesc) : bool
+dec $property_layout_without(ppropertydesc*, ppropertydesc) : ppropertydesc*
+def $property_layout_without(eps, ppropertydesc_child) = eps
+def $property_layout_without(ppropertydesc_current :: ppropertydesc_tail*, ppropertydesc_child) = ppropertydesc_tail*
+  -- if ppropertydesc_current.ORIGIN = ppropertydesc_child.ORIGIN
+def $property_layout_without(ppropertydesc_current :: ppropertydesc_tail*, ppropertydesc_child) = ppropertydesc_current :: $property_layout_without(ppropertydesc_tail*, ppropertydesc_child)
+  -- if ppropertydesc_current.ORIGIN =/= ppropertydesc_child.ORIGIN
+dec $property_layout_appended(pstate, ppropertydesc*, ppropertydesc*, ppropertydesc*) : ppropertydesc*
+def $property_layout_appended(S, eps, ppropertydesc_own*, ppropertydesc_layout*) = ppropertydesc_layout*
+def $property_layout_appended(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*, ppropertydesc_layout*) = $property_layout_appended(S, ppropertydesc_tail*, ppropertydesc_own*, $property_layout_without(ppropertydesc_layout*, ppropertydesc_child) ++ [ppropertydesc_child])
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if $property_hook_child_append_slot(S, ppropertydesc_parent, ppropertydesc_child)
+def $property_layout_appended(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*, ppropertydesc_layout*) = $property_layout_appended(S, ppropertydesc_tail*, ppropertydesc_own*, ppropertydesc_layout*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = eps
+def $property_layout_appended(S, ppropertydesc_parent :: ppropertydesc_tail*, ppropertydesc_own*, ppropertydesc_layout*) = $property_layout_appended(S, ppropertydesc_tail*, ppropertydesc_own*, ppropertydesc_layout*)
+  -- if $ppproperty_desc_at(ppropertydesc_own*, ppropertydesc_parent.NAME) = (ppropertydesc_child)
+  -- if ~$property_hook_child_append_slot(S, ppropertydesc_parent, ppropertydesc_child)
+
 dec $instance_declarations(ppropertydesc*) : ppropertydesc*
 def $instance_declarations(eps) = eps
 def $instance_declarations(ppropertydesc :: ppropertydesc_tail*) = $instance_declarations(ppropertydesc_tail*) -- if ppropertydesc.STATIC
@@ -91,7 +110,7 @@ def $property_layout(S, porigin, n) = $property_merge(eps, $instance_declaration
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (STDCLASS_PARENT)
-def $property_layout(S, porigin, n) = $property_merge($property_layout_parent(S, ppropertydesc_parent*, ppropertydesc_own*), ppropertydesc_own*)
+def $property_layout(S, porigin, n) = $property_layout_appended(S, ppropertydesc_parent*, ppropertydesc_own*, $property_merge($property_layout_parent(S, ppropertydesc_parent*, ppropertydesc_own*), ppropertydesc_own*))
   -- if $(n > 0)
   -- if $class_at(S.CLASSES, porigin) = (pclassdesc)
   -- if $class_link_at(S.LINKEDPARENTS, porigin) = (SOURCE_PARENT porigin_parent)
