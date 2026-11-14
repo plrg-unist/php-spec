@@ -188,9 +188,9 @@ for expression in [
         node('NExprTernary', unknown, string('2'), string('3')),
         binary('Coalesce', constant('INF'), unknown),
         binary('Coalesce', constant('NAN'), unknown),
-        string('2.5'),
 ]:
     derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", expression)}) = eps')
+derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", string("2.5"))}) = (NFLOAT 13836183955189006336)')
 derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", binary("Smaller", one, two))}) = (NINT $(-1))')
 for expression, expected in positive[:6]:
     derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryPlus", expression)}) = eps')

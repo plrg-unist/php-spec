@@ -1,0 +1,58 @@
+[
+  {
+    "id": "produced-string-unary-minus-cold-warm",
+    "source": "<?php\nfunction stringUnaryWarning246($errno, $message, $file, $line) {\n    global $xStringUnary246;\n    echo 'warning:', $message, '|';\n    $xStringUnary246 = 3.5;\n}\nfunction stringDefaults246(int $first, int $integer = -('2' . (string)(int)E_WARNING), int $zero = -('-0.' . (string)(int)(E_WARNING - E_WARNING)), int $floating = -('0.' . (string)(int)(E_WARNING - E_WARNING)), int &$fraction = -('-2.' . (string)(int)(E_WARNING + E_WARNING + E_ERROR))) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $floating, ':', $fraction, '|';\n    $fraction = 9;\n}\nset_error_handler('stringUnaryWarning246');\n$xStringUnary246 = 1.5;\nstringDefaults246($xStringUnary246);\necho 'cold:x=', $xStringUnary246, '|';\n$xStringUnary246 = 1.5;\nstringDefaults246($xStringUnary246);\necho 'warm:x=', $xStringUnary246, '|';\n",
+    "source_sha256": "69b6bd29470428f395ea7eb86f622e4c50e0a71f6713eac64ab80b6221e16a34",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Genuine deferred E_* dependencies pass only through existing CASTINT, CASTSTRING and CONCAT projections. Quiet full-numeric produced bytes become PINT-22, FLOAT+0, FLOAT-0 and FLOAT2.5 before int reception. Cold/warm private BYREF mutation and the fractional own callback preserve raw cache types/bits."
+  },
+  {
+    "id": "produced-string-unary-minus-alias-named-reentry",
+    "source": "<?php\nnamespace StringUnaryAlias246;\nuse const E_WARNING as Base246;\nuse const E_ERROR as One246;\nuse const E_NOTICE as Eight246;\nfunction warning246($errno, $message, $file, $line) {\n    global $xAlias246;\n    echo 'warning:', $message, '|';\n    defaults246(2);\n    $xAlias246 = 3.5;\n}\nfunction defaults246(int $first, int $integer = -('2' . (string)(int)Base246), int $zero = -('-0.' . (string)(int)(Base246 - One246 - One246)), int $floating = -('0.' . (string)(int)(Base246 - One246 - One246)), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $zero, ':', $floating, ':', $last, '|';\n}\nfunction overflow246(int $first, int $later = -('-922337203685477580' . (string)(int)Eight246)) { echo 'overflow-body|'; }\n\\set_error_handler('StringUnaryAlias246\\\\warning246');\n$xAlias246 = 1.5;\n$lastAlias246 = 8;\ndefaults246(last: $lastAlias246, first: $xAlias246);\necho 'outer:x=', $xAlias246, '|';\ntry { overflow246(2); }\ncatch (\\TypeError $e) { echo 'cold-overflow:', $e->getMessage(), '|'; }\ntry { overflow246(2); }\ncatch (\\TypeError $e) { echo 'warm-overflow:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "d27064ca957612ca28bd02d55c3ca1c16eeb91387e9188584441ed2f9704cfba",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV authenticates actual produced string bytes and named holes under warning reentry. Shared PINT-22/FLOAT+0/FLOAT-0 caches remain raw before ordinary int binding. Produced string MIN becomes PFLOAT2^63 before both cold/warm TypeErrors; no string/cast/compiler or cache policy is widened."
+  },
+  {
+    "id": "produced-string-unary-minus-fractional-handler-throw-retry",
+    "source": "<?php\nfunction stringThrowWarning246($errno, $message, $file, $line) {\n    global $xThrow246, $countThrow246;\n    $countThrow246 = $countThrow246 + 1;\n    echo 'warning:', $countThrow246, ':', $message, '|';\n    $xThrow246 = 4.5;\n    if ($countThrow246 === 2) { throw new Exception('string246', 246); }\n}\nfunction stringThrow246(int $first, int $later = -('-2.' . (string)(int)(E_WARNING + E_WARNING + E_ERROR))) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('stringThrowWarning246');\n$countThrow246 = 0;\n$xThrow246 = 1.5;\n$result246 = 99;\ntry { $result246 = stringThrow246($xThrow246); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result246, ':x=', $xThrow246, '|'; }\n$xThrow246 = 1.5;\n$result246 = stringThrow246($xThrow246);\necho 'retry:', $result246, ':x=', $xThrow246, '|';\n",
+    "source_sha256": "3149b2e5369d4809b2f6b5789bcd37d1d321be65574785ac67c5e961ae219a3f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Produced full-numeric bytes -2.5 negate to raw PFLOAT2.5. Its own later precision callback throws after cache publication, preserving destination99, original exception and raw-cache retry before private integer binding and cleanup."
+  },
+  {
+    "id": "produced-string-unary-minus-leading-produced-control",
+    "source": "<?php\nfunction warning246($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults246(int $first, int $later = -('2tail' . (string)(int)E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning246');\n$x246 = 1.5;\ntry { defaults246($x246); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "c0b22a1ca9ada021882bc502d4e85bce24eff5ca046fb2601491296b87977385",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Leading numeric data still requires a Warning and refuses quiet coercion."
+  },
+  {
+    "id": "produced-string-unary-minus-nonnumeric-produced-control",
+    "source": "<?php\nfunction warning246($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults246(int $first, int $later = -('bad' . (string)(int)E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning246');\n$x246 = 1.5;\ntry { defaults246($x246); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "228d32543ecfd2976c0aed884f5fd5832ddcdcbe5b5e648abd662f43d30f9fe6",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A produced nonnumeric string does not gain a stub numeric value or modeled TypeError through this bounded certificate."
+  },
+  {
+    "id": "produced-string-unary-minus-skipped-dimension-control",
+    "source": "<?php\nfunction warning246($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults246(int $first, int $later = -('2' . (string)(int)(E_WARNING > E_ERROR ? E_WARNING : (int)'2'[0]))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning246');\n$x246 = 1.5;\ntry { defaults246($x246); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "8df96521700fc9064191d73a694e663aa9913b9b1fe8dec715eb38bad87e5fd3",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A genuine deferred condition skips DIM while producing bytes22; production whole-tree no-DIM still rejects the raw default."
+  },
+  {
+    "id": "produced-string-unary-minus-stored-literal-receipt-control",
+    "source": "<?php\nfunction warning246($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults246(int $first, int $later = -('2' . '2')) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning246');\n$x246 = 1.5;\ntry { defaults246($x246); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "ee2c76440f82ef9c6a8152651561344e663791d64a5a1d67a5aec5c220df57ba",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A quiet literal-only integer default is compiled/stored; this deferred StringIn extension does not close its separate stored default receipt."
+  }
+]
