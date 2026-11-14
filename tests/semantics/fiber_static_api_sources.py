@@ -40,7 +40,7 @@ def main():
         path = path.resolve()
         report = json.loads(path.read_bytes())
         assert report['profile'] == profile and report['mode'] in ('native-only', 'native-first')
-        assert report.get('runtime_sha256', report.get('runtime', {}).get('binary_sha256')) == runtime['binary_sha256']
+        assert (report.get('runtime_sha256') or report.get('runtime', {}).get('binary_sha256')) == runtime['binary_sha256']
         if report['mode'] == 'native-first':
             assert report['passed'] and report['inputs_stable'] and report['head_stable']
         rows = report['records'] if report['mode'] == 'native-first' else report.get('rows', report.get('results', []))

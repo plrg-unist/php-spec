@@ -1,0 +1,76 @@
+[
+  {
+    "id": "weak-fqn-class-int-byval-bool-byref-entry-coercion",
+    "source": "<?php\nnamespace ReviewFqnBuiltin80 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(\\sTdClAsS|InT $saved,BoOl|\\sTdClAsS &$changed):\\stdClass|int{echo 'M:',(int)($saved===17),':',(int)($changed===false),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===false),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=(string)17;$snapshot=$x;$y=(string)0;$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewFqnBuiltin80\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';\n}\n",
+    "source_sha256": "acbc4cc41f8bc3a0b8f45268178270d89a55cd7bb82300f42c0f10b223e532b4",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "int",
+      "bool"
+    ],
+    "caller_strict": false,
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      true,
+      false
+    ],
+    "return_kind": "int",
+    "return_class_first": true,
+    "derived_from": "tests/semantics/multi_cv_scalar_formal_producer_reference_notice_cases.json"
+  },
+  {
+    "id": "weak-fqn-string-byval-float-byref-and-float-return-coercion",
+    "source": "<?php\nnamespace ReviewFqnBuiltinString80 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(sTrInG|\\sTdClAsS $saved,\\sTdClAsS|fLoAt &$changed):float|\\stdClass{echo 'M:',(int)($saved==='37'),':',(int)($changed===17.0),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===17.0),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewFqnBuiltinString80\\\\h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n}\n",
+    "source_sha256": "d25f339aa5de4a8244e8a0225642496fa6b2334bc0864e6170a0775536dc21d2",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "string",
+      "float"
+    ],
+    "caller_strict": false,
+    "observed_notice_line": 8,
+    "native_stdout": "S;M:1:1:1:1;H:8:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      false,
+      true
+    ],
+    "return_kind": "float",
+    "return_class_first": false,
+    "derived_from": "tests/semantics/multi_cv_scalar_formal_producer_reference_notice_cases.json"
+  },
+  {
+    "id": "weak-int-zero-false-class-receive-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewFqnBuiltin80\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(false|\\stdClass &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewFqnBuiltin80\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "c0c9c64fb72bb3e4263f5241e68520ee59109b951484955421bffcdc2ef8cee2",
+    "derived_from": "tests/semantics/cv_union_fqn_stdclass_producer_reference_notice_review_cases.json"
+  },
+  {
+    "id": "weak-int-zero-class-true-return-before-notice",
+    "source": "<?php\nnamespace ReviewFqnBuiltin80\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):\\stdClass|true{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewFqnBuiltin80\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "988a603837b0c14b8415728a9288072155bb45e91c0190e9880aa0ec1fb7019f",
+    "derived_from": "tests/semantics/cv_union_fqn_stdclass_producer_reference_notice_review_cases.json"
+  }
+]
