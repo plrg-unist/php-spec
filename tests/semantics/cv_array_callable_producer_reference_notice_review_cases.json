@@ -1,0 +1,55 @@
+[
+  {
+    "id": "exact-array-byval-callable-byref-two-formal-private-cell",
+    "source": "<?php\nnamespace ReviewCallableArray90 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|ArRaY $saved,ArRaY|CaLlAbLe &$changed):ArRaY|CALLABLE{echo 'M:',(int)($saved[0]===17),':',(int)($changed==='ReviewCallableArray90\\FiRsT'),':',(int)($GLOBALS['x'][0]===17),':',(int)($GLOBALS['y']==='ReviewCallableArray90\\FiRsT'),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],':',(int)($value[0]===17),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$leaf=17;$x=[$leaf];$snapshot=$x;$y='ReviewCallableArray90\\FiRsT';$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallableArray90\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot[0]===17),':',(int)($ySnapshot==='ReviewCallableArray90\\FiRsT'),';';$r=43;echo 'P:',$r,':',(int)($snapshot[0]===17),':',(int)($ySnapshot==='ReviewCallableArray90\\FiRsT'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot[0]===17),':',(int)($ySnapshot==='ReviewCallableArray90\\FiRsT'),';';\n}\n",
+    "source_sha256": "c7cbdb9f114aedbca8d3fb01bbce05afefd3a3075fda8d56a479836468b828f1",
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_literal_bool_callable_producer_reference_notice_review_cases.json:independent-array-callable-pair-and-scalar-priority-variants",
+    "formal_kinds": [
+      "array",
+      "array"
+    ],
+    "caller_strict": false,
+    "callable_name": "\\ReviewCallableArray90\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "formal_orders": [
+      [
+        "callable",
+        "array"
+      ],
+      [
+        "array",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "array",
+      "callable"
+    ]
+  },
+  {
+    "id": "weak-integer-array-callable-receive-priority",
+    "source": "<?php\nnamespace ReviewCallableArray90\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|ArRaY &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableArray90\\ReceivePriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "17bedd06f75ea07f3242579eb65ba11f273c53eab9c9e783a4b79342c00c0289",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_literal_bool_callable_producer_reference_notice_review_cases.json:independent-array-callable-pair-and-scalar-priority-variants"
+  },
+  {
+    "id": "strict-integer-array-callable-return-priority",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewCallableArray90\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(ArRaY|CaLlAbLe &$saved):CALLABLE|ArRaY{echo 'M;';$saved=17;return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=[17];$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableArray90\\ReturnPriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "a408ad6c76f7bb7b50328783ac59994ed89cba5b8cf58aba3f80a47c4a900832",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_literal_bool_callable_producer_reference_notice_review_cases.json:independent-array-callable-pair-and-scalar-priority-variants"
+  }
+]
