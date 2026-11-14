@@ -251,6 +251,17 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if n_bits = $hex_bits(text_float, 0)
   -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+;; Quiet finite FLOAT signs retain their exact typed child and result bits.
+def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+  -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_read(S, porigin_child) = (PFLOAT n_bits_child)
+  -- if $string_read_raw_truth(S, porigin_child, PFLOAT n_bits_child)
+  -- if $unary_apply(S, punary, PFLOAT n_bits_child, 0) = S[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_read_raw_truth(S, porigin, pvalue) = false -- otherwise
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
@@ -305,34 +316,6 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if n_bytes* = $base64(text_false)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Unary minus preserves a literal zero's false truth through its signed bits.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprUnaryMinus (NScalarFloat (FLOAT text_cond) metadata_leaf) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $hex_bits(text_cond, 0) = 0
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PFLOAT 9223372036854775808)
-  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_leaf)
-  -- if $origin_node(S.SOURCES, porigin_leaf) = (NScalarFloat (FLOAT text_cond) metadata_leaf)
-  -- if $compiled_read(S, porigin_leaf) = (PFLOAT 0)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
-  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Unary plus keeps the literal positive zero false and selects its fallback.
-def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprUnaryPlus (NScalarFloat (FLOAT text_cond) metadata_leaf) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
-  -- if $compiled_read(S, porigin) = eps
-  -- if $hex_bits(text_cond, 0) = 0
-  -- if n_bytes* = $base64(text_false)
-  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $compiled_read(S, porigin_cond) = (PFLOAT 0)
-  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_leaf)
-  -- if $origin_node(S.SOURCES, porigin_leaf) = (NScalarFloat (FLOAT text_cond) metadata_leaf)
-  -- if $compiled_read(S, porigin_leaf) = (PFLOAT 0)
-  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 ;; FLOAT NOT retains its emitted source/CODE proof; folded NOT uses raw truth.
