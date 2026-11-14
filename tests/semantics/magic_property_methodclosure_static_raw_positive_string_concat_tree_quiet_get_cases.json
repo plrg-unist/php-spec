@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-positive-string-concat-tree-own-namespaced-cv-coalesce",
+      "source": "<?php\nnamespace {\nclass QuietLiteralSelectorOwnCoalesceTarget01 { public static function coun0ter120() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietLiteralSelectorOwnCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorOwnCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietLiteralSelectorOwnCoalesceDecoy { public static function coun0ter120() { echo \"BAD_ALIAS;\"; return 9001; } }\n}\nnamespace LiteralSelectorPick {\nuse \\QuietLiteralSelectorOwnCoalesceDecoy as QuietLiteralSelectorOwnCoalesceTarget01;\n$held = (('qUIETlITERALsELECT' . '') . ('ORoWNcOALESCEtARGET' . ((+0) . (+' 0001 '))))::{'CoUn' . ((+' -000 ') . ('TeR' . ((+0xC) . (+\\NuLl))))}(...);\n}\nnamespace {\necho QuietLiteralSelectorOwnCoalesceTarget01::coun0ter120() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorOwnCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietLiteralSelectorOwnCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorOwnCoalesceTarget01::coun0ter120() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n}\n",
+      "source_sha256": "8d09adffd2c5715ae792b983ed5d7ab4a0194c8bce3e9b74bf8e3771a808c3f9",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_positive_keyword_concat_tree_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-positive-keyword-concat-tree-own-namespaced-cv-coalesce",
+        "source_sha256": "17f7587422deb7a947f0834d6b6b1c2b886ab6aebe2660f966aec4dcfd44ef23",
+        "change": "Replace two reserved UnaryPlus leaves with genuine raw numeric String children. Leading zeros, surrounding whitespace and signed zero must coerce quietly to NINT before pure integer text. Keep declared names, streams, existing +Integer/keyword leaves and cleanup contour. Fresh native-once/prelaw required; no old native reuse."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-positive-string-concat-tree-inherited-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietLiteralSelectorInheritedAssignBase { public static function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } private function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } public static function counter01() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietLiteralSelectorInheritedAssignTarget0012 extends qUIETlITERALsELECTORiNHERITEDaSSIGNbASE { private function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } final public static function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietLiteralSelectorInheritedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorInheritedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = ('\\\\qUIETlITERALsELECTORiNHERITEDaSSIGNtARGET' . (((+'+000') . (+\\fAlSe)) . ((+1_2) . '')))::{((\"CoUnTeR\" . '') . (+0)) . (+\"001\")}(...);\n$held = clone $seed;\nunset($seed);\necho QuietLiteralSelectorInheritedAssignBase::counter01() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorInheritedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietLiteralSelectorInheritedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorInheritedAssignTarget0012::counter01() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "76f75c7218e2eb2b1a22b21abbfe649b552101ec697b7919a929418ae5b1a1b2",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAwMTI7UkVTVUxUO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAwMTI7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7Rzs=",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_positive_keyword_concat_tree_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-positive-keyword-concat-tree-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "9956e6521aa59866f30aea6c9d86f3bf9b6609b08cc61d1faaae0627d63ff23c",
+        "change": "Replace two reserved UnaryPlus leaves with genuine raw numeric String children. Leading zeros, surrounding whitespace and signed zero must coerce quietly to NINT before pure integer text. Keep declared names, streams, existing +Integer/keyword leaves and cleanup contour. Fresh native-once/prelaw required; no old native reuse."
+      }
+    }
+  ]
+}
