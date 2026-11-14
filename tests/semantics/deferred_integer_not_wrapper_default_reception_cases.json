@@ -1,0 +1,19 @@
+[
+  {
+    "id": "deferred-integer-not-wrapper-raw-phases",
+    "source": "<?php\nfunction rawNot263($zero = !((int)(+(-(float)(+(E_WARNING === E_ERROR))))), $negative = !(-((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))), $positive = !((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5))) {\n    echo 'raw:', $zero === true, ':', $negative === false, ':', $positive === false, '|';\n}\nrawNot263();\nrawNot263();\n",
+    "source_sha256": "cfde5d738bd9270073f1c0ac280489928bcee3fb114bd3c595ebbb0f7ca0556f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Direct NOT of actual PINT0/-3/+3 yields distinct PBOOL values and genuine cold/warm caches.",
+    "expected_normal_stdout": "raw:1:1:1|raw:1:1:1|"
+  },
+  {
+    "id": "deferred-integer-not-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace IntNot263;\nuse const E_WARNING as Base263;\nuse const E_ERROR as One263;\nfunction warning263($errno, $message, $file, $line) {\n    global $x263;\n    echo 'warning:', $message, '|';\n    defaults263(2);\n    $x263 = 3.5;\n}\nfunction defaults263(int $first, int &$zero = (int)(!((int)(+(-(float)(+(Base263 === One263)))))), int &$nonzero = (int)(!(-((int)((+(-(float)(+(Base263 === One263)))) + 3.5)))), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $nonzero, ':', $last, '|';\n    $zero = 9;\n    $nonzero = 10;\n}\n\\set_error_handler('IntNot263\\\\warning263');\n$x263 = 1.5;\n$last263 = 8;\ndefaults263(last: $last263, first: $x263);\necho 'outer:x=', $x263, '|';\n",
+    "source_sha256": "cfa3baac3060a6fdc6a3e55d1317e6df2748e801188cbc840d48c0044d6df63f",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Existing INT parents consume direct integer-NOT Booleans through imported aliases, two named holes, Warning reentry and distinct private BYREF defaults."
+  }
+]
