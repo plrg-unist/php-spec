@@ -1,0 +1,34 @@
+[
+  {
+    "id": "version-integer-default-cold-warm",
+    "source": "<?php\nfunction versionWarning233($errno, $message, $file, $line) {\n    global $xVersion233;\n    echo 'warning:', $message, '|';\n    $xVersion233 = 3.5;\n}\nfunction versionDefaults233(int &$first, int $major = PHP_MAJOR_VERSION, int &$minor = PHP_MINOR_VERSION, int $release = PHP_RELEASE_VERSION, int $id = PHP_VERSION_ID, int $zero = ((PHP_MINOR_VERSION - 5) ?? MISSING_ZERO233)) {\n    echo 'body:', $first, ':', $major, ':', $minor, ':', $release, ':', $id, ':', $zero, '|';\n    $minor = 9;\n    $first = $first + 1;\n}\nset_error_handler('versionWarning233');\n$xVersion233 = 1.5;\nversionDefaults233($xVersion233);\necho 'cold:x=', $xVersion233, '|';\n$xVersion233 = 1.5;\nversionDefaults233($xVersion233);\necho 'warm:x=', $xVersion233, '|';\n",
+    "source_sha256": "097f268801dffffef282c8cb12af0a753de897399fdcaf99163e1e0d2075275b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "The four exact pinned release components supply raw deferred PINT8/5/10/80510. Cold/warm warning-time first-argument mutation, a fresh BYREF minor default and nonnull Numeric zero preserve declaration source/ENV/no-DIM/Shared-cache authority."
+  },
+  {
+    "id": "version-integer-default-alias-arithmetic-named",
+    "source": "<?php\nnamespace VersionAlias233;\nuse const PHP_MAJOR_VERSION as Major233;\nuse const PHP_MINOR_VERSION as Minor233;\nuse const PHP_RELEASE_VERSION as Patch233;\nuse const PHP_VERSION_ID as Version233;\nfunction warning233($errno, $message, $file, $line) {\n    global $xAlias233;\n    echo 'warning:', $message, '|';\n    defaults233(2);\n    $xAlias233 = 3.5;\n}\nfunction defaults233(int $first, int $id = Version233, int $assembled = ((Major233 * 10000) + (Minor233 * 100) + Patch233), int $selected = ((Patch233 - 10) ? MISSING_TRUE233 : (int)\\PHP_MAJOR_VERSION), int $last = 7) {\n    echo 'body:', $first, ':', $id, ':', $assembled, ':', $selected, ':', $last, '|';\n}\n\\set_error_handler('VersionAlias233\\\\warning233');\n$xAlias233 = 1.5;\n$lastAlias233 = 8;\ndefaults233(last: $lastAlias233, first: $xAlias233);\necho 'outer:x=', $xAlias233, '|';\n",
+    "source_sha256": "4c2b20f8668fa04b9289cb9d92dfc85eb6949b08410513fa44d45c4a1e4f7193",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Exact imported release components compose through existing pure arithmetic, a false Numeric condition and a selected FQN int cast. Actual name/source/ENV receipts, named holes, reentrant cache warming and saved first conversion remain required."
+  },
+  {
+    "id": "version-integer-default-lowercase-control",
+    "source": "<?php\nfunction warning233($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults233(int $first, int $later = php_version_id) { echo 'unexpected-body|'; }\nset_error_handler('warning233');\n$x233 = 1.5;\ntry { defaults233($x233); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "d6ed417f8b62d9d6bc6c5dec7cda6d47832fcef4a10d6841f81bcd566dc048f5",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A lowercase used name is outside the exact case-sensitive release-component producers and stays explicit Unsupported, rather than receiving a catalogue value."
+  },
+  {
+    "id": "version-integer-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning233($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults233(int $first, int $later = (PHP_VERSION_ID ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning233');\n$x233 = 1.5;\ndefaults233($x233);\n",
+    "source_sha256": "49e6a1bd0dc89819defd66cdfce79b378b0ab727c18ec31f664a886abc6fbe82",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A skipped coalesce RHS dimension remains outside the complete whole-tree no-DIM certificate even when the exact immutable VERSION_ID left value is nonnull."
+  }
+]

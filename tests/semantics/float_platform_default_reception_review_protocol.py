@@ -199,8 +199,9 @@ for index, label, bits in [(1, 'epsilon', 4372995238176751616),
                                ('PHP_FLOAT_MIN', 'NFLOAT 4503599627370496'),
                                ('PHP_FLOAT_MAX', 'NFLOAT 9218868437227405311')]:
             checks.append(f'$lossy_optional_integer_numeric($plempty(false),{constant(name, True)}) = ({expected})')
-        for name in ['php_float_epsilon', 'E_STRICT', 'PHP_VERSION_ID']:
+        for name in ['php_float_epsilon', 'E_STRICT']:
             checks.append(f'$lossy_optional_integer_numeric($plempty(false),{constant(name)}) = eps')
+        checks.append(f'$lossy_optional_integer_numeric($plempty(false),{constant("PHP_VERSION_ID")}) = (NINT 80510)')
         checks.extend([
             'plenv_fallback = $plempty(false)[.NAMESPACE = $ptascii("MissingPlatform231")]',
             f'$lossy_optional_integer_numeric(plenv_fallback,{constant("PHP_FLOAT_MIN")}) = eps',

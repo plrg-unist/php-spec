@@ -33,7 +33,7 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
   -- if $lossy_optional_integer_float_literal(expression) = (n)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NINT i)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
-  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG")]
+  -- if pnreference.RESOLVED <- [$ptascii("PHP_INT_MAX"), $ptascii("PHP_INT_MIN"), $ptascii("PHP_INT_SIZE"), $ptascii("PHP_FLOAT_DIG"), $ptascii("PHP_MAJOR_VERSION"), $ptascii("PHP_MINOR_VERSION"), $ptascii("PHP_RELEASE_VERSION"), $ptascii("PHP_VERSION_ID")]
   -- if $builtin_value_bytes(pnreference.RESOLVED) = (PINT i)
 def $lossy_optional_integer_numeric(plenv, NExprConstFetch name metadata) = (NFLOAT n)
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference
