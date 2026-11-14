@@ -1597,6 +1597,8 @@ BooleanNot of integer-only unary +/- chains also preserves its non-NUL INTERNED 
 
 Quiet integer-result unary +/- chains rooted in raw numeric strings also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Actual source/child, literal string identity, quiet NINT classification and a signed64 PINT at every sign remain required; floating classification/overflow and wider producers/lifetimes stay partial.
 
+Integer-result unary +/- chains rooted in simple-name literal true also preserve the non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact ConstFetch and indexed name authority, case folding, PBOOL true and signed64 PINT signs remain required; other name forms and broader producers/lifetimes stay partial. [Literal-true unary-chain review](coverage/semantics/string-offset-boolean-not-true-unary-shorthand-base-initial-raw-leading-key-review.json).
+
 BooleanNot of truthy raw string literals also preserves its non-NUL INTERNED shorthand fallback and frozen leading offset through returning Warning handlers. Exact nested source, decoded string truth and compiled facts remain required; a pooled NUL condition is admitted without broadening selected-NUL bases or owned release. Wider producers and lifetimes stay partial. [BooleanNot string shorthand review](coverage/semantics/string-offset-boolean-not-string-shorthand-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
