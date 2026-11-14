@@ -835,6 +835,19 @@ expectations using fresh states. The first author elaboration failure remains
 zero credit; controller/Make remain unexecuted/source0. Wider callable unions,
 forms, contexts, lifetimes and every exact held dependency remain partial.
 
+Ordered `callable|float` and `float|callable` required formals and returns retain
+that raw/normalized authority. Exact FLOATs bypass callable lookup; registered
+USER names precede weak numeric-string conversion, while strict integers retain
+PHP's FLOAT widening exception. Caller snapshots, transient ordinary BYREF writes,
+return checks, producer retirement and separate private Notice cells stay intact.
+The [float/callable review](../../coverage/semantics/cv-float-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (Notice4/strict RECEIVE1/RETURN1), author538/peer304 and
+genuine prelaw220/135 fixture-SL507 cuts separate from actual `7619c8d7c8` and its
+sole production-SL508 load. The precise peer86 helper promotions use fresh states;
+all REF87 runs pass first time. Controller/Make remain unexecuted/source0. Wider
+callable unions, forms, contexts, lifetimes and every exact held dependency remain
+partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

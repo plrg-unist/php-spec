@@ -1578,4 +1578,6 @@ Boolean/null unary PINT truth originals, saved-native baseline and separate fixt
 
 Coercive PINT binary truth originals, native-once baseline, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-{author26,peer24}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-coercive-integer-binary-truth-base-initial-raw-leading-key-review.json.
 
+Folded scalar comparison truth originals, native-once/prelaw baseline, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-folded-scalar-comparison-truth-base-initial-raw-leading-key-{author27,peer25}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-folded-scalar-comparison-truth-base-initial-raw-leading-key-review.json.
+
 Coercive integer BitwiseNot truth originals, saved-native baseline and separate author/peer fixtures: ../php-spec-evidence-archive/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-{author26,peer24}-20261114/. Concise tuples and recovery: coverage/semantics/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-review.json.

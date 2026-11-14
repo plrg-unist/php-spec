@@ -1,0 +1,90 @@
+{
+  "feature": "OUTPUT123: selected FINAL MOD handlers with Boolean/null keyword Boolean casts",
+  "status": "independently reviewed and source-integrated; bounded behavior only",
+  "target": "PHP 8.5.10 CLI NTS64, vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local PHP; recorded baseline; pure authored semantics",
+  "reviewed_ready": "0643f9ed4ea71579d7f7e3aead5eccb8a50c1e20",
+  "contract": "Own canonical kind1 (bool) casts of simple NName true/false/null authenticate exact Return/root/ConstFetch/indexed-name SOURCE, handler UNIT/BODY and CODE lines/flags. The emitted root retains CODEfalse/read-eps; its child retains CODEtrue and the exact typed special_constant value. The name requires neither invented CODE nor a pool. NORMAL, exact Boolean truth and full-state quiet CASTBOOL preserve PBOOL returns. FaLsE and NULL return strict FALSE and permit default diagnostics; true and TrUe return TRUE and suppress fallback. Two required untyped BYVAL formals, literal echo, actual handler RETURN, real cell retirement and FINAL MOD-zero Error retain existing guards.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_cast emits ZEND_BOOL; zend_compile_const/zend_try_ct_eval_const resolve special constants before namespaced lookup",
+    "vendor/php-src/Zend/zend_constants.c:_zend_get_special_const recognizes case variants of true/false/null",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_BOOL preserves TRUE and maps NULL/FALSE to FALSE",
+    "spec/semantics/20-machine.watsup:special_constant admits only exact case-folded PBOOL/PNULL, otherwise eps",
+    "spec/semantics/50-control-flow.watsup:truth and 56-casts.watsup:cast_apply retain Boolean/null truth and NORMAL/full-state behavior"
+  ],
+  "packet": {
+    "base": "147f79f4a3074d687d3fffc444dd3c16142ea508",
+    "delta": "Five source paths, +249/0: Make4,45622,sources17,state71,review_state135. Interleaved closed122 twoJSON are excluded.",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/milestone-summary-01.json",
+    "sha256": "889a28d2fb179b72ad23c935980c50c724df29f241792b28aadb9230a5f12737"
+  },
+  "validation": {
+    "raw_root": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123",
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/native-summary-01.json",
+      "sha256": "a36c0d665e4da42aee7f768e56472e4e8a3d6ece1011972a4bc53d463781b7df",
+      "originals_once": 4,
+      "result": "Complete saved native observations, reused without replay."
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/model-final-01/report.json",
+      "sha256": "0861ed176d93dc17b9f04ecceb32c93bd0bc7a888be9eaa149eba7e31f987be8",
+      "agreements": 4,
+      "result": "Production SL508/cache=false/det=true at reviewed READY; complete php_error outcomes, raw observations and exits match saved natives, preserving strict FALSE/default diagnostics and TRUE/suppression."
+    },
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/model-first-01/report.json",
+      "sha256": "c4e179aa86c0671df6bde731e6d288bb70043159f4503a7bdb386d065c070849",
+      "result": "Two complete Unsupported outcomes at7da40d476; two other originals UNRUN; all retain source0."
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/front-all-01/report.json",
+      "sha256": "572f67f13bcae87e0fe6e6da4a601720184c3115213fbc99b1bb8a8551509806",
+      "conditions": [
+        8,
+        11
+      ],
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/life-all-01/report.json",
+      "sha256": "f5c90c55fb43fb6181bb7b623ceb3cc5a232e7389f362bec6ac53b8260c35da1",
+      "conditions": [
+        6,
+        7
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/peer-front-all-01/report.json",
+      "sha256": "65cd0cb4630a04e76b483f80bd5fabb0195324a054346a5ad9157a6a6f743879",
+      "conditions": [
+        49,
+        46,
+        49
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-constant-bool-cast-return-modulo-error-123/peer-life-all-01/report.json",
+      "sha256": "6ef1748684f8fb956826da8e0dd17091aac9426786040fee3c7bbdb3f8422223",
+      "conditions": [
+        8,
+        7,
+        8
+      ],
+      "source_credit": 0
+    },
+    "controls": "Local case variants of all three keywords retain exact typed truth. Exchanging FALSE/NULL pool tags or substituting PINT1 refuses despite the same quiet PBOOL result. Missing/shadowed own Return/root/ConstFetch/indexed-name SOURCE, UNIT/BODY, CODE flags/lines, canonical kind, unknown/FQ/relative names, typed child pools and full-state BUDGET no-op forgeries refuse. An unread raw root pool is ignored; an actually folded root is refused. Actual Boolean return/formal/native-cell retirement remains distinct from resumed NULL scratch.",
+    "reliability": "All accepted postlaw cuts share READY0643f9ed4 and retain separate identities: author589/peer595 input watches; fixed outer660/fixture300 caps, quiet/stable/reaped, empty launcher groups. No prep/semantic failures or timeouts. Make recipes are wired, not claimed executed. Current results and packet were independently read once; no semantic rerun."
+  },
+  "actual_composition": {
+    "revision": "c9b5af4b9b300e3fb19717450678982313fc724a",
+    "tree": "2d2cc3ac8a116ba1babeab92f38fa3def75f58bb",
+    "parent": "98ddbc280cd6c155726fa47ca24ee0d628823845",
+    "projection": "Exact five-path +249/0 actual delta; all four nonMake blobs equal signed READY. Makefile applies the identical four recipe additions while retaining newer MAIN content;122 metadata is excluded.",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-output123-current-load-v1/report.json",
+    "sha256": "c42fd3fbc36753dcc1ec1e904381012973fb53f207bcaf17ebaded0e69922b99",
+    "result": "Sole production-SL508 load passes in16.492030767025426 seconds, cap60;511 ordered arguments/512 watches, exit0/true LF/empty stderr/no timeout, source0, stable/reaped. Actual composition and saved report independently consumed once; no duplicate author read or renewed execution credit."
+  },
+  "remaining": "Wider names/children/styles, handlers, retarget histories, lifetimes and OB31 remain partial. Local/synthetic controls add no original-source credit. Every exact hold remains unchanged; no full-core, Rocq or BOLA claim. Metadata changes do not renew execution credit."
+}

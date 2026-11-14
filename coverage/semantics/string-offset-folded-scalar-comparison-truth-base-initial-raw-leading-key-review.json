@@ -1,0 +1,82 @@
+{
+  "scope": "Quiet folded EQUAL/NOTEQUAL/IDENTICAL/NOTIDENTICAL/LESS/LESSEQUAL/GREATER/GREATEREQUAL over certified original INT/BOOL/NULL/raw STRING children retain literal INTERNED bases and frozen initial raw keys through returning Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS64; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "One new PBOOL comparison clause requires exact own PBOOL and both actual child source/pools with their original INT/BOOL/NULL/raw STRING tags.",
+    "The SAME NORMAL state recursively certifies both children and supplies the full original-tag binary_apply result. GREATER/GREATEREQUAL preserve the existing reversed comparison authority.",
+    "Quiet decimal/leading/nonnumeric strings follow comparison semantics, without imposing arithmetic NINT coercion. FLOAT/NaN, XOR/OR/AND, SPACESHIP, objects/arrays/carriers and wider producers remain outside this cut."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op, zend_compile_greater, zend_ct_eval_greater",
+    "spec/semantics/35-scalar-operations.watsup::$identity_apply; 52-comparison.watsup::$binary_apply; 45-constant-context.watsup::$pfbinary and $pfwarning_binary"
+  ],
+  "source_cases": [
+    "folded-scalar-comparison-truth-base-initial-raw-leading-current-key: nested coerced MODULO, LESS/EQUAL/IDENTICAL give PBOOLtrue; ordinary key replacement at line12",
+    "folded-scalar-comparison-truth-base-initial-raw-leading-reference-key: NOTEQUAL/GREATEREQUAL/LESSEQUAL/GREATER/NOTIDENTICAL give PBOOLfalse; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-folded-scalar-comparison-truth-base-initial-raw-leading-key-author27-20261114",
+  "baseline": {
+    "report": "baseline/report.json",
+    "sha256": "389d0d2036633127a4fa6c4259159bdc1238ab2243b372cc72e4d7b9f0717f26",
+    "cut": "808f0d576",
+    "native_originals_once": 2,
+    "expected_Unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json",
+    "sha256": "ef7d54b00f866d79421fe40aaefba6a70a45b0f9518ea76ad6ec17dcfe1c464f",
+    "cut": "e603ac9fe",
+    "mode": "production SL508",
+    "saved_native_agreements": 2,
+    "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json",
+    "sha256": "43898ad5069fdb74a835cae8aaba2650c35ebd3e0581e694a2cbae2a1ccab656",
+    "cut": "cebca6c56",
+    "mode": "production SL508 fixture",
+    "premises": 273,
+    "derived": 170,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-folded-scalar-comparison-truth-base-initial-raw-leading-key-peer25-20261114/peer-state-v2/report.json",
+    "sha256": "af9eef0aa5751079b338ec3ea66368d5b04349537635593dc779f8e7ea91bf90",
+    "cut": "e083e39628880f3e7f41cbbb76b7898d38636860",
+    "mode": "production SL508 fixture",
+    "premises": 611,
+    "derived": 422,
+    "source_credit": 0
+  },
+  "counterfacts": "Each operator true/false, strict/loose tag distinctions, reversed nonnumeric order, quiet decimal/leading strings, nested/NOT/sign parents and exact source/name/CODE/pool/bounds retain separate source-zero controls. NaN/FLOAT, SPACESHIP, arrays/objects/carriers and BUDGET-cached invalid DIV-zero or missing-child CODE are refused.",
+  "failures": "Independent v1 used two malformed NExprArray eps controls; compiler produced no def$main and execution was unrun. Reportc85662906510193c6b114cbca67e5cd65ba5fb71724fbe2060c766c99198bb99 remains source0; v2 corrects only those spellings to (SEQUENCE eps).",
+  "whole_source": {
+    "logical_commit": "47ac45386b896c983a45105624b7114a7c0a4025",
+    "tree": "0791b4cd107ec45bdb6247b7f3e2ac58ba2e628e",
+    "owned_paths": 6,
+    "manifest": "whole-source-manifest.json",
+    "sha256": "3134cc496a1ba6f28b70c8f6057ac84f5a73b986d27f4bf5e0b07f67474c604f",
+    "patch": "whole-source.patch",
+    "patch_sha256": "fed051910e4cc6674fb3f29ff598e1d5ec047177ab312a856d40f353ffba2ac3"
+  },
+  "actual_composition": {
+    "commit": "98ddbc280cd6c155726fa47ca24ee0d628823845",
+    "tree": "d14b0a910df1475e470196e157779fd1cf705eb4",
+    "parent": "a404e3ab497c2db80450940aa195152aa73a56d7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main62-hooks-booleans-comparison-current-load-v1/report.json",
+    "sha256": "da97d6c7b98d1927a14ca5373bdf710fa15626a131999e5d637f8b4bc210e7ba",
+    "mode": "production SL",
+    "modules": 508,
+    "ordered_argv": 511,
+    "stable_watches": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.7928822778631,
+    "source_credit": 0,
+    "compatibility": "Exact six-path delta(+319/-2): five non-Make blobs match donor47ac, exactly two Make recipes preserve the actual parent. Reviewer25 consumed the sole combined actual/load once and closed SAME; author did not read the report."
+  },
+  "validation": "Pinned runtime/profile, original bytes/paths/raw outputs and exact stable/reaped inputs remain in separate records. Native2 once/source2, author273/170-derived and independent611/422-derived retain separate cuts. Sourcee603/Acebca precede accepted CONCAT3line/207 guards; coherent0e91 carried these disjoint accepted deltas before independentB. No old campaign or semantic metadata rerun.",
+  "remaining": "Wider source producers, bases, owners/lifetimes and all exact held boundaries remain partial. No engine bug or intentional PHP divergence identified."
+}
