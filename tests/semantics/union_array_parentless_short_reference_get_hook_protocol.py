@@ -101,7 +101,7 @@ def fields(fixture, source, form):
         '~$hook_short_reference_header(phpType35_array,ppropertydesc.TYPE)',
         '~$hook_short_reference_header(NNullableType phpType35_array metadata_type,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "array"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([phpType35_array,phpType35_array])) metadata_type,[(PTBRANCH ([PTBUILTIN "array"])),(PTBRANCH ([PTBUILTIN "array"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([phpType35_int,phpType35_null])) metadata_type,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([phpType35_int,phpType35_null])) metadata_type,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([phpType35_array,phpType35_null,phpType35_int])) metadata_type,ppropertydesc.TYPE)',
         '~$hook_short_reference_header(phpType18,ppropertydesc.TYPE ++ [(PTBRANCH ([PTBUILTIN "int"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NName (BYTES "Qm94Mjk4") metadata_type,phpType35_null])) metadata_type,[(PTBRANCH ([PTCLASS ($ptascii("Box298"))])),(PTBRANCH ([PTBUILTIN "null"]))])',

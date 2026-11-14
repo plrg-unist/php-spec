@@ -71,7 +71,7 @@ def fields(fixture, source, form):
         '~$hook_short_reference_header(NName (BYTES "c3RkQ2xhc3M=") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))])',
         '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "b2JqZWN0") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "b2JqZWN0") metadata_group) metadata_group,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "object"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '$source_unit(S_return.SOURCES,n_source) = (pcunit)',
         'statement_wrongtype = NStmtProperty (SEQUENCE eps) (INTEGER 1) (NIdentifier (BYTES "YXJyYXk=") metadata_group) (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata_group',
         'S_wrongsource = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group statement_wrongtype) :: pcunit.OCCURRENCES]]]',

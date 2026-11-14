@@ -72,7 +72,7 @@ def fields(fixture, source, form):
         '~$hook_short_reference_header(NIdentifier (BYTES "b2JqZWN0") metadata_type,ppropertydesc.TYPE)',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "b2JqZWN0") metadata_type) metadata_type,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "object"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "b2JqZWN0") metadata_type,NIdentifier (BYTES "b2JqZWN0") metadata_type])) metadata_type,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "object"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_type,NIdentifier (BYTES "bnVsbA==") metadata_type])) metadata_type,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_type,NIdentifier (BYTES "bnVsbA==") metadata_type])) metadata_type,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NName (BYTES "Qm94MzAw") metadata_type,NIdentifier (BYTES "bnVsbA==") metadata_type])) metadata_type,[(PTBRANCH ([PTCLASS ($ptascii("Box300"))])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(phpType18,ppropertydesc.TYPE ++ [(PTBRANCH ([PTBUILTIN "array"]))])',
         'S_fetch = $srgh_seek(S_return,7,n_root,30000)', '$srgh_phase(S_fetch,7,n_root)',

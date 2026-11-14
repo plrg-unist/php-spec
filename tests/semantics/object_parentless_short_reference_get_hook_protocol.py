@@ -89,7 +89,7 @@ def fields(fixture, source, form):
     checks += [
         '~$hook_short_reference_header(NName (BYTES "Qm94Mjk5") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("Box299"))]))])',
         '$hook_short_reference_header(NUnionType (SEQUENCE ([' + object_header + ',' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "object"])),(PTBRANCH ([PTBUILTIN "null"]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_group,' + null_header + '])) metadata_group,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     ]
     if abrupt:
         message = '$base64(' + peer.quoted('Cannot access uninitialized non-nullable property Ns299UninitializedObjectShortReference\\Box299::$item by reference') + ')'

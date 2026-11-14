@@ -92,19 +92,21 @@ def fields(fixture, source, form):
         ('class', 'NName (BYTES "Qm94Mjk2") metadata_group'),
         ('union', 'NUnionType (SEQUENCE ([' + scalar + ',' + null + '])) metadata_group'),
     ):
+        promoted = label == 'union' and nullable
+        negation = '' if promoted else '~'
         checks += [
-            f'phpType18_{label} = {header}', f'~$hook_short_reference_header(phpType18_{label},ppropertydesc.TYPE)',
+            f'phpType18_{label} = {header}', f'{negation}$hook_short_reference_header(phpType18_{label},ppropertydesc.TYPE)',
             f'statement_{label} = NStmtProperty (SEQUENCE eps) (INTEGER 1) phpType18_{label} (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata_group',
             f'S_{label} = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group statement_{label}) :: pcunit.OCCURRENCES]]]',
-            f'~$property_hook_reference_decl(S_{label},ppropertydesc)',
-            f'$property_hook_reference_expression_return(S_{label},ppropertyhook.HOOK,7) = eps',
-            f'$property_current_line(S_{label}) = 0',
+            f'{negation}$property_hook_reference_decl(S_{label},ppropertydesc)',
+            f'$property_hook_reference_expression_return(S_{label},ppropertyhook.HOOK,7) = ' + ('(expression_get)' if promoted else 'eps'),
+            f'$property_current_line(S_{label}) = ' + ('7' if promoted else '0'),
         ]
     checks += [
         '$hook_short_reference_header(ABSENT,eps)', '~$hook_short_reference_header(phpType18,eps)',
         '$hook_short_reference_header(phpType18_array,[(PTBRANCH ([PTBUILTIN "array"]))])',
         '~$hook_short_reference_header(phpType18_class,[(PTBRANCH ([PTCLASS ($ptascii("Box296"))]))])',
-        '~$hook_short_reference_header(phpType18_union,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(phpType18_union,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     ]
     if abrupt:
         message = '$base64(' + peer.quoted('Cannot access uninitialized non-nullable property Ns296UninitializedShortReferencePeer\\Box296::$tag by reference') + ')'

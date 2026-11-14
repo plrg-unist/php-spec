@@ -80,7 +80,7 @@ def fields(fixture, source, form):
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([phpType69_first,phpType69_first])) metadata_union,[ptbranch_first,ptbranch_first])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([phpType69_first,phpType69_second,phpType69_first])) metadata_union,[ptbranch_first,ptbranch_second,ptbranch_first])',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NName (BYTES text_first) metadata_first,phpType69_second])) metadata_union,ppropertydesc.TYPE)',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_first,NIdentifier (BYTES "bnVsbA==") metadata_second])) metadata_union,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") metadata_first,NIdentifier (BYTES "bnVsbA==") metadata_second])) metadata_union,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "YXJyYXk=") metadata_first) metadata_union,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "array"]))])',
         '$source_unit(S_return.SOURCES,n_source) = (pcunit)',
         'statement_wrongorder = NStmtProperty (SEQUENCE eps) (INTEGER 1) (NUnionType (SEQUENCE ([phpType69_second,phpType69_first])) metadata_union) (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([phpType38])) metadata_group',
