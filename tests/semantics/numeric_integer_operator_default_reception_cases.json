@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-integer-operator-default-cold-warm",
+    "source": "<?php\nfunction operatorWarning236($errno, $message, $file, $line) {\n    global $xOperator236;\n    echo 'warning:', $message, '|';\n    $xOperator236 = 3.5;\n}\nfunction integerOperators236(int &$first, int $mod = (E_ALL % PHP_INT_SIZE), int &$left = (PHP_INT_MAX << E_ERROR), int $right = (PHP_INT_MIN >> 63), int $wideLeft = (PHP_INT_MAX << 64), int $wideRight = (PHP_INT_MIN >> 64), int $boundary = (PHP_INT_MIN % -E_ERROR), int $small = ((~E_WARNING) >> 1), int $zero = ((E_ALL % E_ALL) ?? MISSING_ZERO236)) {\n    echo 'body:', $first, ':', $mod, ':', $left, ':', $right, ':', $wideLeft, ':', $wideRight, ':', $boundary, ':', $small, ':', $zero, '|';\n    $left = 9;\n    $first = $first + 1;\n}\nset_error_handler('operatorWarning236');\n$xOperator236 = 1.5;\nintegerOperators236($xOperator236);\necho 'cold:x=', $xOperator236, '|';\n$xOperator236 = 1.5;\nintegerOperators236($xOperator236);\necho 'warm:x=', $xOperator236, '|';\n",
+    "source_sha256": "32db655729b18e73add70ef521bb56d78985156ce57a917e8075b93886bad3ad",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet Numeric NINT modulo and shifts preserve remainder7, signed wrap-2, sign-propagating right shifts, count64 results, MIN%-1 zero, negative-odd right shift-2 and nonnull modulo-zero. Cold/warm Shared caches, a fresh BYREF shifted default and source/ENV/name/no-DIM/receive/owner authority remain."
+  },
+  {
+    "id": "numeric-integer-operator-default-alias-named-reentry",
+    "source": "<?php\nnamespace IntOpsAlias236;\nuse const E_ALL as All236;\nuse const PHP_INT_SIZE as Word236;\nuse const E_WARNING as Flag236;\nfunction warning236($errno, $message, $file, $line) {\n    global $xAlias236;\n    echo 'warning:', $message, '|';\n    defaults236(2);\n    $xAlias236 = 3.5;\n}\nfunction defaults236(int $first, int $mod = (All236 % Word236), int $shifted = ((~Flag236) >> \\E_ERROR), int $selected = ((All236 % All236) ? MISSING_TRUE236 : (Word236 << Flag236)), int $zero = ((Word236 >> Word236) ?? MISSING_ZERO236), int $last = 7) {\n    echo 'body:', $first, ':', $mod, ':', $shifted, ':', $selected, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('IntOpsAlias236\\\\warning236');\n$xAlias236 = 1.5;\n$lastAlias236 = 8;\ndefaults236(last: $lastAlias236, first: $xAlias236);\necho 'outer:x=', $xAlias236, '|';\n",
+    "source_sha256": "80a1aa45d17946c8c775818e2b07098c71392d126343f92ef5209ed9f9c5977d",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported Numeric NINT leaves compose modulo7, negative-odd right shift-2, false-condition selected left shift32 and nonnull right-shift zero. Actual named holes[1,2,3,4],last8 and warning reentry retain complete raw-name/source/declaration ENV and warmed-cache authority."
+  },
+  {
+    "id": "numeric-integer-operator-default-zero-divisor-control",
+    "source": "<?php\nfunction warning236($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults236(int $first, int $later = (E_ALL % (PHP_INT_SIZE - PHP_INT_SIZE))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning236');\n$x236 = 1.5;\ntry { defaults236($x236); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "0e573abab98cbc446110110a7c6ae8128b4f3007ae4b7dc79590f42fb8f31de4",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A genuine zero divisor produces INTZERO outside the quiet IRESULT certificate; its native DivisionByZeroError is not approximated as a value."
+  },
+  {
+    "id": "numeric-integer-operator-default-negative-shift-control",
+    "source": "<?php\nfunction warning236($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults236(int $first, int $later = (PHP_INT_SIZE << (E_ERROR - E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning236');\n$x236 = 1.5;\ntry { defaults236($x236); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "696165d9375c34048ffd6a7263c10f30e488bf3513f5e8a62ddc150805094b7d",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A genuine negative shift count produces NEGSHIFT outside quiet IRESULT authority; its native ArithmeticError stays outside this value-only slice."
+  },
+  {
+    "id": "numeric-integer-operator-default-deprecated-control",
+    "source": "<?php\nfunction warning236($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults236(int $first, int $later = (E_STRICT >> E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning236');\n$x236 = 1.5;\ntry { defaults236($x236); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "25d804cb30fd03ffd9db6e11631c8e54873b065e2a991df96825b7b27dfb670d",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "The actual deprecated E_STRICT fetch remains effectful and outside quiet Numeric NINT producers."
+  },
+  {
+    "id": "numeric-integer-operator-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning236($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults236(int $first, int $later = ((PHP_INT_SIZE << E_ERROR) ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning236');\n$x236 = 1.5;\ntry { defaults236($x236); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "66bce292de30a5dd2ac8f58d79e2d736f1da1ef01af183a79bad231f5ad135fb",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A skipped coalesce DIM remains outside complete whole-tree no-DIM authority despite an exact nonnull shift result."
+  }
+]

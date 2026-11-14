@@ -1189,6 +1189,14 @@ guards remain required. Cold/warm BYREF defaults, named holes and warning reentr
 preserve masks, MIN/MAX and nonnull zero. FLOAT/string coercion, effectful
 `E_STRICT`, wider operators, entries and lifetimes remain partial.
 
+[Numeric modulo and shift defaults](../../coverage/semantics/numeric-integer-operator-default-reception-review.json)
+also use the existing integer dispatch with proper signed64 `NINT` children.
+Only `IRESULT` grants a quiet value: zero divisors and negative counts remain
+outside this certificate. Wrapping left shifts, signed right shifts, counts at
+or above64, `MIN % -1` and nonnull zero retain the same source/ENV/no-DIM/name,
+Shared-cache and receive/owner authority. FLOAT/string coercion, effectful
+`E_STRICT`, POWER and wider producers, entries and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

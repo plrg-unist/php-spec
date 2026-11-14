@@ -97,7 +97,7 @@ def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = eps
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [BITAND, BITOR, BITXOR]
+  -- if pbin <- [MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR, BITXOR]
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (NINT i_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (NINT i_right)
   -- if $long_range(i_left) /\ $long_range(i_right)
