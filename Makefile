@@ -227,6 +227,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --boolean-not-true-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-boolean-not-true-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --boolean-not-integer-shorthand-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-boolean-not-integer-shorthand-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --boolean-not-integer-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-boolean-not-integer-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --boolean-not-string-shorthand-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-boolean-not-string-shorthand-base-initial-raw-leading-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --boolean-not-string-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-boolean-not-string-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"

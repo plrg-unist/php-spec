@@ -346,6 +346,24 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+;; BooleanNot of a truthy raw string selects its exact shorthand fallback.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot (NScalarString (BYTES text_cond) metadata_leaf) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if n_cond* = $base64(text_cond)
+  -- if $truth(S, PSTRING n_cond*)
+  -- if n_bytes* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprBooleanNot (NScalarString (BYTES text_cond) metadata_leaf) metadata_cond)
+  -- if $compiled_read(S, porigin_cond) = (PBOOL false)
+  -- if $origin_child((porigin_cond), [PCFIELD 0]) = (porigin_leaf)
+  -- if $origin_node(S.SOURCES, porigin_leaf) = (NScalarString (BYTES text_cond) metadata_leaf)
+  -- if $compiled_read(S, porigin_leaf) = (PSTRING n_cond*)
+  -- if $compiled_string_value(S, porigin_leaf, PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 ;; COALESCE keeps a literal string, including the falsey string "0".
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata)
