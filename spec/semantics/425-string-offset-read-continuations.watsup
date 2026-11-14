@@ -193,6 +193,17 @@ def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $long_range(i_child)
   -- if $string_read_raw_unary_integer(S, porigin_child, i_child)
   -- if $unary_apply(S, punary, PINT i_child, 0) = S[.RESULT = KNOWN (PINT i)]
+;; Integer complement authenticates its actual integer child and full quiet state.
+def $string_read_raw_unary_integer(S, porigin, i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_child metadata)
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_read(S, porigin_child) = (PINT i_child)
+  -- if $long_range(i_child)
+  -- if $string_read_raw_unary_integer(S, porigin_child, i_child)
+  -- if $bitnot_value(S, PINT i_child, 0) = S[.RESULT = KNOWN (PINT i)]
 ;; Quiet integer arithmetic authenticates both actual children and its result.
 def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
