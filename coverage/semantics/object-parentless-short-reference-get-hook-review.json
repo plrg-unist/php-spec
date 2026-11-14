@@ -1,0 +1,178 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with exact canonical object and ?object headers and identifier/literal-string same-field bodies. This remains a bounded partial-core slice.",
+  "target": "PHP 8.5.10 CLI NTS64; sole project-local oracle .tools/php/bin/php; baseline tests/semantics/profile.json plus include_path=.:, LC_ALL=C and TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp299",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "2655e127a0f625511fa51c321a269c3f210322eee5947711ae3309896f9106a1",
+    "source_donor": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+    "change": "One whitelist addition admits only canonical NIdentifier object. Existing nullable recursion, ordered array/null unions and every raw class/explicit-object/scalar-union, Hook/body/CODEARROW/type-source/owner/cleanup bound remain unchanged."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_property_hooks lowers short GET to RETURN and supplies the exact property return type.",
+    "vendor/php-src/Zend/zend_execute.c::zend_handle_fetch_obj_flags and zend_verify_ref_assignable_zval retain nullable initialization, nonnullable uninitialized Error and the actual object/null reference constraint.",
+    "vendor/php-src/Zend/zend_objects.c::zend_object_dtor_property removes the real property type source during physical receiver retirement."
+  ],
+  "validated_behavior": [
+    "Ordinary copies share stdClass identity. Replacing the typed outer alias with another stdClass or a plain source-class instance changes the property cell while earlier copied objects retain their identity and mutations.",
+    "Uninitialized nullable by-value reads initialize NULL. Nonnullable acquisition fails at the actual implicit-return line without redirecting pre-existing aliases or adding type sources to their old cell.",
+    "Invalid scalar/NULL writes preserve the typed object alias as appropriate. Receiver retirement physically detaches the real source before later nonobject writes; exact source/return/CODEARROW/refusal and full-state budget joins remain required."
+  ],
+  "sources": {
+    "author": {
+      "report": "author-postlaw-v1/report.json",
+      "sha256": "ea757e1325331be87dcc4780f8e4e8d0ec3b2ac0375610b2038fb019c7ed76ba",
+      "head": "a51cb56d10e6e85d3386aa7f0828a843c3837c70",
+      "module_count": 508,
+      "source_agreement_credit": 3
+    },
+    "independent": {
+      "report": "reviewer-source-v1/report.json",
+      "sha256": "e2ce5041c2cf4aafd4233a4d65497b3dd6e09c4f6638624182bde3c463e83d59",
+      "head": "36f857c4d1ad15aa8ecfcbc857383d8d39fd2544",
+      "module_count": 508,
+      "source_agreement_credit": 3
+    },
+    "agreements": 6,
+    "oracle_original_byte_revisions_once": 6,
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "450c7ef9dee36c378a2ec910d70298d1ac696ffff9cd6f30ab5fcf197eae99f2",
+        "head": "15b1b5eba0b8671cadaadf95abdf99477c778d30",
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "ff6ea3b5ba8441557cac8532f1c18ee700963d7711a9de6aae429f9145051f11",
+        "head": "36f857c4d1ad15aa8ecfcbc857383d8d39fd2544",
+        "source_agreement_credit": 0
+      }
+    ],
+    "native_replayed": false,
+    "caps_seconds": {
+      "native": 15,
+      "model": 120,
+      "outer_recorder": 140
+    }
+  },
+  "fixture_cuts": [
+    {
+      "report": "author-object-protocol-v1/report.json",
+      "sha256": "92a8af3fe7746cd8801f2648798936271cf538e677b56a9756e1ba45231afa51",
+      "head": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 156,
+      "elapsed_seconds": 49.630029916763306,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-nullable-protocol-v1/report.json",
+      "sha256": "401fae2bd417f7cfe21142fa3a5f2642cd999067c8e2704621028f8a5d641fa2",
+      "head": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 156,
+      "elapsed_seconds": 56.61224722862244,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-uninitialized-protocol-v1/report.json",
+      "sha256": "63ea134a1aff3947a4eea4732cdb65b607acd4319cf801ebc375b69ab29f1a0f",
+      "head": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 177,
+      "elapsed_seconds": 57.41713881492615,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-object-protocol-v1/report.json",
+      "sha256": "53f03462a8cf8ac0df95e0347dfed91d09f6e3a2afb1acd3fd858625a590efa5",
+      "head": "36f857c4d1ad15aa8ecfcbc857383d8d39fd2544",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 148,
+      "elapsed_seconds": 33.30922031402588,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-nullable-protocol-v1/report.json",
+      "sha256": "77bf55d14d9a2ad92c59d69edc229423217e0c4aa8402fbffb21ddcc286d7355",
+      "head": "36f857c4d1ad15aa8ecfcbc857383d8d39fd2544",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 148,
+      "elapsed_seconds": 42.20409345626831,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "reviewer-uninitialized-protocol-v1/report.json",
+      "sha256": "62929328267df7512b54b8f7fc205fa9f33367a7bb7c50ba2d6b1ddf83470d23",
+      "head": "36f857c4d1ad15aa8ecfcbc857383d8d39fd2544",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 169,
+      "elapsed_seconds": 37.39704346656799,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-affected-array-null-protocol-v1/report.json",
+      "sha256": "567e2db67cfa8be2bc0c50f3256d8749fc6e02e2dd42143b37a50a56ab397057",
+      "head": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 157,
+      "elapsed_seconds": 50.403804779052734,
+      "source_agreement_credit": 0
+    }
+  ],
+  "compatibility": {
+    "manifest": "final-static-v1/report.json",
+    "sha256": "60695f14b8ad4c1e02fe34673680f7db9290bf1831690a64c84e34254340ee57",
+    "source_paths": 16,
+    "checks": "Exact whole16 donor bridge; all six passed new DSLs remain exact at their original paths, Make adds eight recipes, and no matching old object helper refusal is edited. The sole old array-null157 cut remains source0 and renews no historical native/source credit."
+  },
+  "preserved_zero_credit": [
+    {
+      "cut": {
+        "report": "author-prelaw-v1/report.json",
+        "sha256": "d5c419eed28e39e1843dd307129b4eaae36aebb724e87096f40c0c12a31a8b20",
+        "head": "15b1b5eba0b8671cadaadf95abdf99477c778d30",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      },
+      "outcome": "Only the selected author object-identity original has a prelaw cut: Unsupported at the old hook-body admission gate. Other prelaw selections remain unrun."
+    },
+    {
+      "report": "final-static-attempt-v1.json",
+      "sha256": "edaab70a996ef8aa754805920fc13f9e6bc45f0f44eac9cabb08e05fd0084231",
+      "outcome": "Static-manifest preparation compared the deliberately old prelaw382 digest against the postlaw donor. The corrected pointwise bridge retains the exact old baseline hash; no semantic/native run is repeated.",
+      "source_agreement_credit": 0
+    }
+  ],
+  "actual_integration": {
+    "revision": "bd52c111f7c90b352a6913665f1627593432f717",
+    "tree": "c004f4a94b32fbe3c5ad0f707c0246ad86bb88b6",
+    "source_projection": "../php-spec-evidence-archive/resumed-main-20261112/main53-object-get-hook-source-projection-v1.json",
+    "source_projection_sha256": "ddc4e79716b13c4f374e0634b5ed1a55a36c3b3dbd8a0a65b9a55becd34c2a65",
+    "sole_saved_canonical": "../php-spec-evidence-archive/resumed-main-20261112/main53-object-get-hook-joined-508-v1/report.json",
+    "sha256": "d770ca914419f0b91530b515a49abf6df266779d587b11862a80c56e0a3e62ee",
+    "elapsed_seconds": 16.531968675088137,
+    "cap_seconds": 60,
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "result": "PASS; quiet true LF, stable inputs/HEAD and fully reaped, as supplied by MAIN53.",
+    "source_agreement_credit": 0
+  },
+  "independent_review": {
+    "private_source_and_state": "recover12_compiler_array_union_review: exact whole16 independently FULLCLEAR.",
+    "actual_source_and_same_saved_canonical": "recover12_compiler_array_union_review: independently CLEAR once at actualbd52 after the retained bounded source/composition and SAME saved canonical read; no source/native replay or author duplicate."
+  },
+  "remaining": "At this donor, explicit object/null and scalar/null/wider unions/intersections, class names, parented/Trait typed short hooks and wider bodies/consumers/lifetimes remain partial. COMP300 is separate subsequent work. Preserve narrow V110, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and every exact hold.",
+  "engine_divergences": [],
+  "recovery": "Original bytes/paths/cwd, raw process records, fingerprints and preserved zero-credit attempts remain under artifact_root. Metadata descendants renew no semantic execution credit.",
+  "fixture_cap_seconds": 240
+}

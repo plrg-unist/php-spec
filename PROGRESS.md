@@ -183,6 +183,8 @@ Own public parentless sole short reference Get hooks accept canonical array and 
 
 Own public parentless sole short reference Get hooks admit exact array|null and null|array headers, matching both raw members pointwise to ordered normalized types while retaining canonical ?array diagnostic text. Existing typed outer sources preserve nullable initialization, COW with shared embedded references, rejected scalar writes and receiver/source cleanup. Four current originals agree with native; five byte revisions ran once, including the preserved bool-word observer failure at zero. Separate author157/156 and peer156/154 fixtures plus actualbb1867cff/SL508 pass with zero source credit. Two precise legacy helper controls are promoted; other accepted cuts and exact holds remain unchanged. Wider headers, parents, Trait, consumers and lifetimes remain partial. See coverage/semantics/union-array-parentless-short-reference-get-hook-review.json.
 
+Own public parentless sole short reference Get hooks admit canonical object/?object headers while retaining exact raw/normalized type, implicit reference-return, Hook/CODEARROW/owner and physical cleanup authority. Ordinary copies share object identity; outer alias replacement leaves earlier copies intact. Nullable reads initialize NULL, failed nonnullable binds leave old aliases free, and receiver retirement removes the real type source before nonobject writes. Six native-once originals agree; separate author156/156/177, peer148/148/169 and affected-old157 fixture-SL cuts retain source0. The selected prelaw Unsupported and corrected static-manifest preparation error remain0. Actualbd52c111f7c90b352a6913665f1627593432f717 and its sole canonical d770ca914419f0b91530b515a49abf6df266779d587b11862a80c56e0a3e62ee SL508 load pass separately in16.531968675088137s/source0, independently read once. Wider headers/parents/Trait/consumers/lifetimes and every exact hold remain partial. See coverage/semantics/object-parentless-short-reference-get-hook-review.json.
+
 Existing DIRECT storage and cleanup remain. Live array/object Get results, selected
 canonical-int, Boolean, FLOAT, string and NULL quiet Get returns, nullable scalar
 and scalar-union quiet headers and supported unselected typed Get companions.
@@ -694,7 +696,14 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `6e520b56bc` passes its once-only 508-module production SL
+The latest source cut `05427f0100` passes its once-only 508-module production SL
+load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,
+quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
+fully reaped processes. It adds zero source credit. Raw report:
+`../php-spec-evidence-archive/resumed-main-20261112/main54-produced-string-minus-joined-508-v1/report.json`
+(SHA-256 `755f1fc77fee78eb8cd54b91abf2c2538f6c32f30295f5bcacd9c5da6bc3e40e`).
+
+The preceding computed-Boolean-minus source cut `6e520b56bc` passes its once-only 508-module production SL
 load in 15.98580081993714 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
