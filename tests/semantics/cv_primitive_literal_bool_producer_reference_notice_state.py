@@ -100,8 +100,9 @@ def controls(index, case):
                 norm = normalized(members)
                 node = raw_union(members, meta)
                 parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (' + node + ') (BOOLEAN ' + byref + ') (BOOLEAN false) ' + variable + ' ABSENT (SEQUENCE eps) ' + parameter_meta
-                lines += ['~' + header + node + ', ' + signature + '[.RETURNS = ' + norm + '])',
-                    '~' + proof + parameter + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [' + slot + '[.TYPE = ' + norm + ']' + tail + ']])']
+                mark = '' if bad == 'object' else '~'
+                lines += [mark + header + node + ', ' + signature + '[.RETURNS = ' + norm + '])',
+                    mark + proof + parameter + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [' + slot + '[.TYPE = ' + norm + ']' + tail + ']])']
     for name in ('return', 'notice'):
         stage = 'S_' + name
         lines += ['S_zero_' + name + ' = $drive(' + stage + ', 0)',

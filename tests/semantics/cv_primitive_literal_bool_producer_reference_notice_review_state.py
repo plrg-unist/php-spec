@@ -74,7 +74,7 @@ def normal(initial, case, front):
             (['false', 'false', 'int'], False), (['bool', 'false', 'int'], False),
             (['true', 'false', 'array'], False),
             (['array', 'int', 'float', 'string', 'null', 'false', 'true'], False),
-            (['object', 'false', 'int'], False), (['mixed', 'false', 'int'], False)]
+            (['object', 'false', 'int'], True), (['mixed', 'false', 'int'], False)]
         for members, accepted in vectors:
             raw, normalized = raw_constants(members), branches(members)
             mark = '' if accepted else '~'

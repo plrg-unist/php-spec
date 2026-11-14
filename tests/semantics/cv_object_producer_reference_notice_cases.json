@@ -1,0 +1,52 @@
+[
+  {
+    "id": "strict-singleton-object-byval-and-canonical-object-return",
+    "source": "<?php declare(strict_types=1);\nnamespace SingletonObject76;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(oBjEcT $saved):ObJeCt{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('SingletonObject76\\\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "3bbd88470d1bc17cb7317e73010ce5a9c382787f6eb4c72a25571d820e839dcb",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "formal_members": [
+      [
+        "object"
+      ]
+    ],
+    "return_members": [
+      "object"
+    ],
+    "notice_line": 8
+  },
+  {
+    "id": "weak-multiple-nullable-object-and-seven-member-object-unions",
+    "source": "<?php\nnamespace MultiObject76;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make(?oBjEcT $left,null|array|int|float|string|false|oBjEcT &$right):object|true|array|int|float|string|null{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('MultiObject76\\\\h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "2436b002063cc81c3cbf34229163c33291501fa105f8a0712581e706208e5b4c",
+    "native_stdout": "N;M:1:5;H:8:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "formal_members": [
+      [
+        "object",
+        "null"
+      ],
+      [
+        "null",
+        "array",
+        "int",
+        "float",
+        "string",
+        "false",
+        "object"
+      ]
+    ],
+    "return_members": [
+      "object",
+      "true",
+      "array",
+      "int",
+      "float",
+      "string",
+      "null"
+    ],
+    "notice_line": 8
+  }
+]

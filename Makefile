@@ -922,6 +922,7 @@ test-semantics: build
 	python3 -B tests/semantics/cv_union_literal_bool_producer_reference_notice_run.py
 	python3 -B tests/semantics/cv_nonnull_literal_bool_producer_reference_notice_run.py
 	python3 -B tests/semantics/cv_primitive_literal_bool_producer_reference_notice_run.py
+	python3 -B tests/semantics/cv_object_producer_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
@@ -1218,6 +1219,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_null_bytes_special_concat_leading_key_sources.py --output "$$request_runtime_null_bytes_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_null_bytes_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_null_bytes_out/source/report.json" --output "$$request_runtime_null_bytes_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_null_bytes_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_null_bytes_out/source/report.json" --output "$$request_runtime_null_bytes_out/review-state"
+	@request_runtime_primitive_integer_out=$$(mktemp -d .tools/runtime-primitive-integer-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_primitive_integer_binary_special_concat_leading_key_sources.py --output "$$request_runtime_primitive_integer_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_primitive_integer_binary_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_primitive_integer_out/source/report.json" --output "$$request_runtime_primitive_integer_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_primitive_integer_binary_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_primitive_integer_out/source/report.json" --output "$$request_runtime_primitive_integer_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py

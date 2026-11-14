@@ -747,12 +747,21 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_left)) = (z_precision)
   -- if $compiled_precision(S, (porigin_right)) = (z_precision)
-  -- if $string_read_runtime_value(S, porigin_left) = (PINT i_left)
-  -- if $string_read_runtime_value(S, porigin_right) = (PINT i_right)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int")]
+  -- if S_left = $integer_coerce(S, pvalue_left, z_line)
+  -- if S_left.RESULT = KNOWN (PINT i_left)
+  -- if S_left = S[.RESULT = KNOWN (PINT i_left)]
+  -- if S_right = $integer_coerce(S_left, pvalue_right, z_line)
+  -- if S_right.RESULT = KNOWN (PINT i_right)
+  -- if S_right = S[.RESULT = KNOWN (PINT i_right)]
+  -- if (pvalue_left = PINT i_left /\ pvalue_right = PINT i_right) \/ S.COMPLETION = NORMAL
   -- if $long_range(i_left) /\ $long_range(i_right)
   -- if $integer_binary(pbin, i_left, i_right) = IRESULT i
   -- if $long_range(i)
-  -- if $binary_apply(S, pbin, PINT i_left, PINT i_right, z_line) = S[.RESULT = KNOWN (PINT i)]
+  -- if $binary_apply(S, pbin, pvalue_left, pvalue_right, z_line) = S[.RESULT = KNOWN (PINT i)]
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBitwiseNot expression_child metadata)
   -- if $code_at(S.CODE, n) = (pcode)
