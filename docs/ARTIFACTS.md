@@ -18,7 +18,7 @@ Reserved-keyword UnaryPlus selector originals and separate native-once, SL507 so
 
 Ordered int/float/string short reference Get originals, separate source/fixture cuts and preserved preparation failures remain in `../php-spec-evidence-archive/comp313/`; the [review](../coverage/semantics/int-float-string-parentless-short-reference-get-hook-review.json) retains their separate accepted cuts and actual/SAME tuple.
 
-Falsey computed-string shorthand originals, saved-native source and separate author/affected/peer fixture cuts, including the first determinism failure remain in `../php-spec-evidence-archive/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-author30-20261115/`; the [review](../coverage/semantics/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-review.json) retains their separate accepted cuts and actual/SAME tuple.
+Falsey computed-string shorthand originals, saved-native source and separate author/affected fixture cuts remain in `../php-spec-evidence-archive/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-author30-20261115/`; the [review](../coverage/semantics/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-review.json) links the first peer28 determinism failure, corrected peer29 fixtures and separately accepted actual/SAME tuple.
 
 Runtime iterable alias originals and separate native-once, prelaw, source and fixture cuts remain in `../php-spec-evidence-archive/runtime-iterable-alias-94/`; the [review](../coverage/semantics/runtime-iterable-alias-review.json) retains their separate accepted cuts and actual/SAME tuple.
 
