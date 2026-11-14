@@ -725,6 +725,26 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if S_unary.RESULT = KNOWN (PINT i)
   -- if $long_range(i)
   -- if S_unary = S[.RESULT = KNOWN (PINT i)]
+;; Quiet signs retain genuine FLOAT VALUE, including integer-negation overflow.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PFLOAT n_bits)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary <- [POSITIVE, NEGATIVE]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
+  -- if $coerce_number(pvalue_child) = COERCED pnumber_child false
+  -- if S_unary = $unary_apply(S, punary, pvalue_child, z_line)
+  -- if S_unary.RESULT = KNOWN (PFLOAT n_bits)
+  -- if $number_bool(NFLOAT n_bits) = (b, false)
+  -- if S_unary = S[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right

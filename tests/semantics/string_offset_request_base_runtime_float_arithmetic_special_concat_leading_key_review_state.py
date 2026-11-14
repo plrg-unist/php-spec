@@ -144,7 +144,7 @@ if __name__ == '__main__':
         ('null_child', 'null+' + runtime_float, None),
         ('compiled_integer', '1+' + runtime_float, None),
         ('variable_child', '$missing+' + runtime_float, None),
-        ('runtime_float_sign', '-(' + runtime_float + ')', None),
+        ('runtime_float_sign', '-(' + runtime_float + ')', 'PFLOAT 9223372036854775808'),
         ('runtime_power', '1.0**' + one, None),
     ]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
@@ -183,6 +183,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent recursive SOURCE/CODE/line/precision, stale RESULT and actual nonnormal-completion refusals. Runtime FLOAT pool injection without CODE folding is ignored; forged NaN/invalid/type leaves refuse the arithmetic value and saved key. Twenty-six genuine checked-source controls retain original BUDGET states before explicitly derived NORMAL fixtures cover fractional and overflow FLOAT, signed zero, infinity, equality/order/spaceship/XOR/OR consumers, exact PINT division, both zero divisors, all four NaN-producing arithmetic forms, NaN children, warningful/quiet strings, NULL/compiled-PINT/variable leaves and wider runtime FLOAT sign/POWER refusal. Full-state numeric results remain distinct from quiet coercions and NORMAL-gated throws. Each runtime FLOAT VALUE has BYTE eps. Fixture source0/native0; no source/native replay, live-state normalization, primitive/compiler/schema/API/kernel/owner change or held-boundary expansion.')
+    report['scope'] = ('Exact author prefixes plus independent recursive SOURCE/CODE/line/precision, stale RESULT and actual nonnormal-completion refusals. Runtime FLOAT pool injection without CODE folding is ignored; forged NaN/invalid/type leaves refuse the arithmetic value and saved key. Twenty-six genuine checked-source controls retain original BUDGET states before explicitly derived NORMAL fixtures cover fractional and overflow FLOAT, signed zero, infinity, equality/order/spaceship/XOR/OR consumers, exact PINT division, both zero divisors, all four NaN-producing arithmetic forms, NaN children, warningful/quiet strings, NULL/compiled-PINT/variable leaves, quiet runtime FLOAT sign and wider POWER refusal. Full-state numeric results remain distinct from quiet coercions and NORMAL-gated throws. Each runtime FLOAT VALUE has BYTE eps. Fixture source0/native0; no source/native replay, live-state normalization, primitive/compiler/schema/API/kernel/owner change or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
