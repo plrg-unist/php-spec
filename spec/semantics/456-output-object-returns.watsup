@@ -1706,6 +1706,50 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastBool (NSc
   -- if $compiled_string_value(S, PORIGIN n_handler pcpath_string, PSTRING n_string*) = PSTRING_CARRIER INTERNED_STRING n_string*
   -- if b_cast = $truth(S, PSTRING_CARRIER INTERNED_STRING n_string*)
   -- if $cast_apply(S, CASTBOOL, PSTRING_CARRIER INTERNED_STRING n_string*, z_cast) = S[.RESULT = KNOWN (PBOOL b_cast)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastInt (NScalarString (BYTES text_string) metadata_string) metadata_cast) metadata_return]) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $plstyle(metadata_cast) = 1
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprCastInt (NScalarString (BYTES text_string) metadata_string) metadata_cast) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_cast)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_cast) = (NExprCastInt (NScalarString (BYTES text_string) metadata_string) metadata_cast)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_cast) = ((z_cast, false))
+  -- if z_cast = $expression_line(NScalarString (BYTES text_string) metadata_string)
+  -- if $origin_child((PORIGIN n_handler pcpath_cast), [PCFIELD 0]) = (PORIGIN n_handler pcpath_string)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_string) = (NScalarString (BYTES text_string) metadata_string)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_string) = ((z_string, true))
+  -- if z_string = $source_line(metadata_string)
+  -- if $evaluate(NScalarString (BYTES text_string) metadata_string) = VALUE (PSTRING n_string*)
+  -- if ~(0 <- n_string*)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_cast) = eps
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_string) = (PSTRING n_string*)
+  -- if $compiled_string_value(S, PORIGIN n_handler pcpath_string, PSTRING n_string*) = PSTRING_CARRIER INTERNED_STRING n_string*
+  -- if i_cast = $string_cast_integer(n_string*)
+  -- if $cast_apply(S, CASTINT, PSTRING_CARRIER INTERNED_STRING n_string*, z_cast) = S[.RESULT = KNOWN (PINT i_cast)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastDouble (NScalarString (BYTES text_string) metadata_string) metadata_cast) metadata_return]) = true
+  -- if S.COMPLETION = NORMAL
+  -- if $plstyle(metadata_cast) = 2
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprCastDouble (NScalarString (BYTES text_string) metadata_string) metadata_cast) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_cast)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_cast) = (NExprCastDouble (NScalarString (BYTES text_string) metadata_string) metadata_cast)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_cast) = ((z_cast, false))
+  -- if z_cast = $expression_line(NScalarString (BYTES text_string) metadata_string)
+  -- if $origin_child((PORIGIN n_handler pcpath_cast), [PCFIELD 0]) = (PORIGIN n_handler pcpath_string)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_string) = (NScalarString (BYTES text_string) metadata_string)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_string) = ((z_string, true))
+  -- if z_string = $source_line(metadata_string)
+  -- if $evaluate(NScalarString (BYTES text_string) metadata_string) = VALUE (PSTRING n_string*)
+  -- if ~(0 <- n_string*)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_cast) = eps
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_string) = (PSTRING n_string*)
+  -- if $compiled_string_value(S, PORIGIN n_handler pcpath_string, PSTRING n_string*) = PSTRING_CARRIER INTERNED_STRING n_string*
+  -- if n_cast = $string_cast_float(n_string*)
+  -- if $cast_apply(S, CASTFLOAT, PSTRING_CARRIER INTERNED_STRING n_string*, z_cast) = S[.RESULT = KNOWN (PFLOAT n_cast)]
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
 ;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or admitted emitted CASTINT/CASTFLOAT/CASTBOOL return.
