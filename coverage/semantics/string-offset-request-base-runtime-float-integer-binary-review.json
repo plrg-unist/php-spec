@@ -1,0 +1,95 @@
+{
+  "scope": "Quiet emitted integer MODULO, bitwise AND/OR/XOR and shifts with certified fitting integral FLOAT operands; containers.string-offsets remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64; project-local oracle and unchanged baseline profile; pure authored semantics.",
+  "implementation": "Intrinsic predicate requires bits<2^64, float_long(bits,true)=(i,eps), and signed64 range. Exact source/CODEfalse/read-eps/line/equal precision, original typed ordered full-state integer coercions and binary_apply remain required. New non-PINT operands require NORMAL; old pure-PINT completion independence remains. Both signed zeros and +/-1 retain their bits before conversion. Emitted FLOAT BYTE remains eps; compiled leaves retain their existing literal byte routes.",
+  "source_basis": [
+    "vendor/php-src/Zend/zend_operators.c::zendi_try_get_long/bitwise_*_function/mod_function/shift_*_function",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_MOD/ZEND_BW_OR/ZEND_BW_AND/ZEND_BW_XOR/ZEND_SL/ZEND_SR",
+    "spec/semantics/54-binary-operators.watsup::$integer_coerce/$integer_binary/$binary_apply"
+  ],
+  "owned_source": {
+    "base": "57a848bda",
+    "head": "b877b98c2e8d66ff8ac2e5c05d9d9352f1c7241f",
+    "paths": 8,
+    "patch_sha256": "3d9ad295311790d99dc67c4528e1f67247c6d4034ee88ee17c4c4740b0cfe3ca",
+    "excluded": "Intervening primitive metadata 9ceef; accepted old campaigns are not replayed."
+  },
+  "actual": {
+    "revision": "9c25bbed44b6d9da52b0f26befe32edd7a5a8e0d",
+    "tree": "0a8cfbc7e169b8cdb388332af7219711e4c410ef",
+    "composed_425_sha256": "5ee91321a23c79c905b78e663707b5aadfd8c419ef58e8123a175255d7303f97",
+    "composition": "Owned8 plus parent raw DIV and PFLOAT arithmetic additions; one independent actual source/composition read cleared by recover20."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-float-integer-binary",
+  "native_once_prelaw": {
+    "revision": "91abefbfba1a044b5efcc236e7ed57c5a3d30046",
+    "report": "author/baseline-v1/report.json",
+    "sha256": "6f39130ebfbcb1267e97d527d60dcc903390734b8f714fac9286a91e50891589",
+    "native": 4,
+    "unsupported": 4,
+    "source_credit": 0
+  },
+  "source": {
+    "revision": "4a36dbf9fecd2da4ca0556d9d59d9b930006639b",
+    "report": "author/source-v1/report.json",
+    "sha256": "a9361d210af9324994c32b1e42dd08c14a06494b5c2668ae17e3bb559ae1952a",
+    "mode": "production SL",
+    "agreements": 4,
+    "saved_native_only": true,
+    "model_cap": 90,
+    "process_cap": 120
+  },
+  "author_fixture": {
+    "revision": "04b21b027453701208d563bfc0db04d187439561",
+    "report": "author/state-v2/report.json",
+    "sha256": "c68fc1076ae3bafcc85e667da26ee0784e62c9f8fc8a2f6982281589629a4353",
+    "mode": "fixture SL",
+    "assertions": 1532,
+    "derived": 129,
+    "rows": [
+      351,
+      387,
+      287,
+      507
+    ],
+    "cap": 180,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "reviewer": "recover20_string_integral_float_review",
+    "revision": "349edc72c282038a6ed0ac19d9504e8944e5cead",
+    "report": "peer/state-v1/report.json",
+    "sha256": "595ca0ab3ec68103eddb7d0dd65005f5393bd38b541f2435749e7cd1441e215f",
+    "mode": "fixture SL",
+    "assertions": 2538,
+    "derived": 1135,
+    "rows": [
+      1063,
+      485,
+      385,
+      605
+    ],
+    "checked_source_controls": 34,
+    "cap": 180,
+    "source_credit": 0
+  },
+  "canonical": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main55-integral-float-integer-binary-current-load-v1/report.json",
+    "sha256": "96bea409060124b476ee15d56ec3f36b164435f49ed2765cdc23d2ba4fd2de24",
+    "mode": "SL",
+    "canonical_files": 508,
+    "argv_files": 511,
+    "watched_files": 512,
+    "seconds": 24.23556875786744,
+    "cap": 60,
+    "source_credit": 0,
+    "independently_read_once": true
+  },
+  "preserved_zero_credit": [
+    "author/state-v1/report.json c7fe8e8a4b0b7618ff92d765c72f9b97384b9c0ef0b18a608872428c43cd06d2: first group false355, three unrun. Fixture wrongly required BYTEeps for compiled FLOAT leaves; protocol-only04b corrected it. Runtime425 and source/native observations unchanged.",
+    "author/fixture-preflight-v1: Python-only truth-INF lookup KeyError, corrected before execution; no PHP byte change."
+  ],
+  "compatibility": "After runtime4a36 only the author fixture assertion, Make4 and exact independently tested reviewer import changed. One actual composition retained parent additions. Metadata has no execution credit and requires no native/source/state/canonical rerun.",
+  "remaining": "Fractional/subnormal/nonfinite/out-of-range/malformed FLOAT, string/owning and wider producers/owners/lifetimes remain outside this certificate. Module387, compiler, numeric/cast/formatter/API/owner bodies and every exact paused boundary are unchanged.",
+  "review": "Source, fixtures, test reliability, whole8, actual composition and sole canonical read independently cleared by recover20; metadata content independently cleared by recover20."
+}
