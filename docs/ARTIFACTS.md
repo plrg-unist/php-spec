@@ -8,6 +8,22 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Deferred boolean ternary originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-ternary-wrapper-default-reception-267/`; the [review](../coverage/semantics/deferred-boolean-ternary-wrapper-default-reception-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Deferred nonnull coalesce originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-nonnull-coalesce-wrapper-default-reception-268/`; the [review](../coverage/semantics/deferred-nonnull-coalesce-wrapper-default-reception-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Deferred integer spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-integer-spaceship-wrapper-default-reception-269/`; the [review](../coverage/semantics/deferred-integer-spaceship-wrapper-default-reception-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Reserved-keyword UnaryPlus selector originals and separate native-once, SL507 source and fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-positive-keyword-concat-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-positive-keyword-concat-tree-quiet-get-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Ordered int/float/string short reference Get originals, separate source/fixture cuts and preserved preparation failures remain in `../php-spec-evidence-archive/comp313/`; the [review](../coverage/semantics/int-float-string-parentless-short-reference-get-hook-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Falsey computed-string shorthand originals, saved-native source and separate author/affected/peer fixture cuts, including the first determinism failure remain in `../php-spec-evidence-archive/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-author30-20261115/`; the [review](../coverage/semantics/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Runtime iterable alias originals and separate native-once, prelaw, source and fixture cuts remain in `../php-spec-evidence-archive/runtime-iterable-alias-94/`; the [review](../coverage/semantics/runtime-iterable-alias-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
+Quiet emitted BOOL/INT/FLOAT cast originals and separate native-once, saved-source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-cast-truth-base-initial-raw-leading-key-author30-20261115/`; the [review](../coverage/semantics/string-offset-runtime-cast-truth-base-initial-raw-leading-key-review.json) retains their separate accepted cuts and actual/SAME tuple.
+
 Folded one-byte STRING AND/OR/XOR originals and separate native-once, saved-source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-string-bitwise-truth-base-initial-raw-leading-key-author29-20261115/`. The [review](../coverage/semantics/string-offset-string-bitwise-truth-base-initial-raw-leading-key-review.json) retains the whole-source patch/manifest and accepted actual/SAME tuple.
 
 FQN stdClass/callable producer originals and separate native-once, source, fixture and prelaw cuts remain in `../php-spec-evidence-archive/cv-fqn-stdclass-callable-union-producer-reference-notice-93/`. The [review](../coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json) retains their original identities and accepted actual/SAME tuple.
@@ -15,6 +31,8 @@ FQN stdClass/callable producer originals and separate native-once, source, fixtu
 Folded one-byte STRING BitwiseNot native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-string-bitnot-truth-base-initial-raw-leading-key-{author29,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json) retains the original failure/unrun tail and accepted actual/SAME tuple.
 
 Compiled-NaN instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-compiled-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-compiled-nan-instanceof-review.json) retains the original cuts, corrected fixture failure and accepted actual/SAME tuple.
+
+Emitted arithmetic-NaN instanceof originals, native-once/prelaw, saved-native source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-arithmetic-nan-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-arithmetic-nan-instanceof-review.json) preserves their distinct cuts and fresh controls for the two affected older certificates.
 
 Deferred Boolean XOR originals and separate source/control/fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-boolean-xor-wrapper-default-reception-266/`; the [review](../coverage/semantics/deferred-boolean-xor-wrapper-default-reception-review.json) retains their original identities and accepted actual/SAME tuple.
 

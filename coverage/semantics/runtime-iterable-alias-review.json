@@ -1,0 +1,33 @@
+{
+  "status": "independently reviewed bounded increment; wider producer contexts and complete core remain partial",
+  "behavior": "Canonical iterable runtime parameters and returns accept arrays and modeled Traversable objects, including fresh named Generators and inherited USER Iterators. Nullable and ordered-union verification preserves identity and strictness. The compiler adds iterable to the supported-type whitelist; type and inheritance matching reuse the existing pointwise class view, mapping only a singleton iterable atom to Traversable. Array masks, scalar coercion, nominal class checks, intersections and ownership remain unchanged.",
+  "target": "PHP 8.5.10 CLI NTS64; pure authored semantics; production SL/cache=false/det=true",
+  "source_basis": "vendor/php-src/Zend/zend_compile.c zend_compile_single_typename transforms iterable into Traversable|array; Zend/zend_execute.c zend_check_type and zend_check_type_slow check exact tags before instanceof. No Iterator method or Generator body is invoked for these type checks.",
+  "source_ready": "14a2563b049e7f8bb80db7db191fbaa03c28f1eb",
+  "source_ready_tree": "e65f87d8eb718054027832ed15fdd694d47877c7",
+  "source_patch_sha256": "f65f327cfed0e9ef88b90fd35b84149112ff1b03d94678ec814db48c68c5e941",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/runtime-iterable-alias-94",
+  "selection": "Author native3 and independent native3 ran once each. Whole private source6 normal agreements reuse both manifests; the earlier author source3 remains its separate cut. Whole fixture-SL507: author253=124 reached+129 derived and independent251=131 reached+120 derived pass, source0. No fixture failures, timeouts or interrupted runs; assertion selections are not a unique aggregate.",
+  "native_author": {"report": "author/native-first-v1/report.json", "sha256": "aa8b549a1c23787ce95f3d7f1bfcdf2d44d4e1a83be78c52a172d2aa0e4e3824"},
+  "native_independent": {"report": "peer/native-first-v1/report.json", "sha256": "76551d0589a1b37b6d03d1d1da3845cd6c0dc3e1ddf10ce065e934c880e3977f"},
+  "prelaw": {
+    "initial_source": {"report": "author/prelaw-source-v1-179asfh3/report.json", "sha256": "f790fb294badf08227522c87f9d6ea9452b9af28dacf2e48296059b275805299", "result": "one Unsupported, other two unrun; zero agreement credit"},
+    "gate_only_source": {"report": "author/prelaw-source-v1-t1t1j4_4/report.json", "sha256": "74dcc63343d5d2aef3c81a9941371b09fcf34e145d88cb6c92e78ef89f71b988", "result": "one wrong NORMAL completion after TypeError, other two unrun; zero agreement credit"},
+    "author_state": {"report": "author/prelaw-runtime-v1/report.json", "sha256": "0d1820725f02c43ee27ee5835156a6fde28f0c930115a1d354236daf8f7b27a2", "conditions": 104, "source_agreements": 0},
+    "independent_state": {"report": "peer/prelaw-runtime-v1/report.json", "sha256": "689ec6baca34c1caae9b9a8865c157a393c2f4c526ab0b0bb4b15e913417baa4", "conditions": 102, "result": "arrays already accepted; Generator union and inherited Iterator wrongly reject", "source_agreements": 0}
+  },
+  "earlier_author": {
+    "source": {"report": "author/source-v1-t5gr_fy0/report.json", "sha256": "5822608495aa8fb70f87fbb52b80337bf632f3997cf7fb482b7b5e5cdab281f3", "normal_agreements": 3},
+    "state": {"report": "author/state-v1/report.json", "sha256": "8fe75d8adc84ddc4e8a0a624c348b6d7edd8c60f99113f50e9267c72165be728", "conditions": 253, "source_agreements": 0}
+  },
+  "whole_private": {
+    "revision": "511786cc1ef1799bdab4ab3c4337b954bdb8ef74", "tree": "5ff2d40fc0a649e15658f920acd5f395d459e71a",
+    "controller": {"report": "peer/whole-v1/controller.json", "sha256": "2e093ced7514e1a9190dfed7cf1de3ad1ffdb7212af4ea1f5672c7481c4cbbc4"},
+    "source": {"report": "peer/whole-v1/sources-1vy723ja/report.json", "sha256": "7d2b5ba2bfad5e5b4bb679c92aaa7ec11335e8b92912ed3d7eed6e91309211ef", "normal_agreements": 6},
+    "author_state": {"report": "peer/whole-v1/author-state/report.json", "sha256": "7ef0544406217afdcd6f1a91265a2531d98306e61c6b8032b3a275fb08fd1e5b", "conditions": 253, "reached": 124, "derived": 129, "seconds": 70.071588, "source_agreements": 0},
+    "independent_state": {"report": "peer/whole-v1/peer-state/report.json", "sha256": "7e93bdf2f870776d42daa9abdfaf8c0e1164ea664ccff4b701a331a6a6b6a40c", "conditions": 251, "reached": 131, "derived": 120, "seconds": 107.612722, "source_agreements": 0}
+  },
+  "actual": {"revision": "2a4c9b9270e8140c3532ff3217ea8a4ee87390a2", "tree": "7ceada301ac7678e252b4bb764771b9ebb626c1b", "parent": "544f0ed6492f97fff6dd2c9333b79522895dd560", "composition": "Exact11/+664/-3. Preserve actual module94 parent, including sixteen accepted method-diagnostic lines, and append only iterable to its whitelist. Make preserves its parent plus the sole94 controller after93; nine other postimages match donor14a256 exactly. REF93 metadata excluded."},
+  "canonical_load": {"report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main66-ref94-runtime-iterable-alias-current-load-v1/report.json", "sha256": "0c4b57f98389d561eb9d77f7fb2efe0fd939b1e5a3e4daab8eef368160e4a3ee", "modules": 508, "seconds": 16.59277963405475, "cap_seconds": 60, "source_agreements": 0, "result": "true LF; quiet, stable, same revision and reaped; independently read once"},
+  "remaining": "Completed Notice-producer iterable headers, wider producers, Iterator execution and lifetimes remain partial. Modules90/207/138, typed-call rules, defaults, variadics, ownership/GC and every exact held dependency are unchanged. The private controller packet passed; the Make target and joined source replay remain unexecuted. This metadata reuses accepted tuples without semantic reruns or new source credit."
+}

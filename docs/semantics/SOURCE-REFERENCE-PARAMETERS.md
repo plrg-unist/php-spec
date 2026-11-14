@@ -874,6 +874,19 @@ fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL5
 load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
 partial.
 
+Canonical runtime `iterable` parameters and returns now accept arrays and modeled
+Traversable objects, including fresh named Generators and inherited USER Iterators.
+Nullable and ordered-union checks preserve identity and strictness. The compiler
+whitelist and existing pointwise class view authenticate the alias without invoking
+Iterator methods or Generator bodies. The [runtime iterable review](../../coverage/semantics/runtime-iterable-alias-review.json)
+keeps native3+3 once/source6, author253/peer251 fixture-SL507 and prelaw104/102
+separate. Initial Unsupported and gate-only wrong NORMAL/TypeError cuts retain0.
+Actual2a4c9b927 and its sole production-SL508 load pass16.592779634s/source0,
+independently closed. Completed Notice-producer iterable headers, wider producers,
+protocol execution and lifetimes remain partial;90/207/138, typed calls, ownership
+and every exact hold are unchanged. The private controller packet passed; the Make
+target and joined source replay remain unexecuted. Metadata adds no source credit.
+
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
 case-folded stdClass identity, member order, unique builtins, one class and at

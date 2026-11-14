@@ -134,6 +134,8 @@ Distinct ordered builtin unions of three through eight members admit callable in
 
 Exact FQN stdClass/callable unions of two through eight members admit required ordinary-CV producer formals and returns. Exact raw/normalized class bytes, one class, ordered unique builtins, at most one Boolean kind and existing payload/ownership guards remain required. Wider spellings, contexts and lifetimes remain partial. [Review](coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json).
 
+Canonical runtime iterable parameters and returns admit arrays and modeled Traversable objects, preserving identity through nullable/ordered unions and strict checks. Wider producers, protocol execution and lifetimes remain partial; exact holds remain unchanged. [Review](coverage/semantics/runtime-iterable-alias-review.json).
+
 Completed one-CV producers with canonical `array` formals also admit `array`
 by-value returns before the Notice. Actual return verification and frame
 retirement preserve the returned table; the later private argument cell remains
@@ -1424,6 +1426,8 @@ Quiet scalar named instanceof authenticates namespace/import/relative targets th
 
 Named instanceof consumes authenticated compiled NaN operands through its own read/identity/precision certificate and returns false without truth conversion; general runtime VALUE/BYTE and warningful truth remain bounded. [Review](coverage/semantics/string-offset-request-base-runtime-compiled-nan-instanceof-review.json).
 
+Named instanceof admits quiet emitted ADD/SUBTRACT/MULTIPLY/DIVIDE NaN operands through exact NORMAL/source/CODE/read/precision, proper child certificates and unchanged full-state arithmetic. On this runtime operand route, general NaN VALUE/BYTE and warningful truth are unchanged; wider producers, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-request-base-runtime-arithmetic-nan-instanceof-review.json).
+
 Quiet emitted MODULO, shifts and mixed AND/OR/XOR now consume certified nonNUL literal-INTERNED STRING values through intrinsic STRINT i eps and ordered whole-state integer conversion. Integral strings, signed zero and quiet boundary saturation retain original operands and exact PINT results; nonempty intrinsic notice vectors refuse even under suppressed reporting. Native4 once/source4, author1489/129-derived and independent2215/855-derived fixture cuts pass separately. FLOAT BYTE, STRING bitwise results and wider producers/owners remain partial; numeric, compiler, formatter, owner bodies and exact holds stay unchanged. [Literal STRING integer review](coverage/semantics/string-offset-request-base-runtime-literal-string-integer-binary-review.json).
 
 Certified nonNUL INTERNED STRING values now supply exact bytes through emitted full/shorthand ternaries and ordinary coalesce. Read-eps and existing typed source, captured precision and quiet selector authority retain normal completion and the actual carrier; compiled-leaf BYTE remains disjoint. Native4 once/source4, author935/129-derived and independent1555/749-derived fixture cuts pass separately, including empty/nonnumeric bytes, skipped-arm authority and distinct raw-NUL versus selected-NUL behavior. FLOAT BYTE, explicit string casts and wider STRING producers/owners remain partial; no allocation, formatter, compiler, owner or exact held-boundary changes. [Selected STRING bytes review](coverage/semantics/string-offset-request-base-runtime-literal-string-bytes-review.json).
@@ -1756,6 +1760,10 @@ Shared scalar truth certifies folded Spaceship orders from exact original scalar
 Shared scalar truth certifies folded one-byte STRING complements through exact own/child source and raw typed pools, the complemented byte and SAME NORMAL recursive/full INTERNED results. Selected literal full-ternary bases and frozen raw keys survive returning Warnings. Native2 once/source2, author198/95-derived and corrected independent403/272-derived retain separate cuts; prelaw Unsupported2 and the first peer fixture failure/unrun tail stay0. Computed STRING shorthand, wider forms and all exact holds remain partial. [Review](coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json).
 
 Folded one-byte STRING AND/OR/XOR conditions preserve literal full-ternary bases and frozen raw offsets through returning Warnings; wider string producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-string-bitwise-truth-base-initial-raw-leading-key-review.json).
+
+Certified falsey one-byte computed STRING conditions preserve literal shorthand fallbacks and frozen raw offsets through returning Warnings; truthy computed headers and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-falsey-string-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet emitted BOOL/INT/FLOAT cast conditions preserve selected literal INTERNED full-ternary bases and frozen raw CV offsets through returning Warnings. Exact source/CODE/precision and whole-state cast/truth proofs retain existing type and ownership bounds. Wider producers and complete core remain partial. [Review](coverage/semantics/string-offset-runtime-cast-truth-base-initial-raw-leading-key-review.json).
 
 Shared scalar truth now admits BitwiseNot over certified signed64 PINT children, preserving the selected literal INTERNED base and frozen raw CV offset through returning Warnings. Exact own/child source, typed pools/ranges and one NORMAL recursive/full bitnot_value probe retain quiet result authority. Wider children and lifetimes remain partial. [Review](coverage/semantics/string-offset-coercive-integer-bitnot-truth-base-initial-raw-leading-key-review.json).
 
@@ -4477,6 +4485,8 @@ Ordered bool|string/string|bool public parentless short reference Get preserves 
 
 Ordered int|float|bool short reference Get headers retain exact raw order, INT/FLOAT/BOOL returns, independent copies, weak numeric-string preference, strict rejection and quiet type-source removal. Wider headers, producers, owners and lifetimes remain partial; all exact holds remain unchanged. [Review](coverage/semantics/int-float-bool-parentless-short-reference-get-hook-review.json).
 
+Ordered int|float|string short reference Get retains exact raw order, INT/FLOAT/STRING returns, unchanged numeric/plain/empty/zero STRING tags, independent copies, weak BOOL-to-INT conversion, strict BOOL rejection and quiet type-source removal. Wider headers/producers/owners/lifetimes remain partial; exact holds unchanged. [Review](coverage/semantics/int-float-string-parentless-short-reference-get-hook-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws
@@ -5572,6 +5582,12 @@ Canonical deferred Boolean casts and NOT now consume certified FLOAT children wh
 Deferred Boolean AND/OR defaults preserve actual Boolean results before private integer reception. Decisive left truth skips right value demands while both source identities and declaration bindings remain authenticated. Cold/warm caches, named holes and Warning reentry retain existing owner bounds. Wider operands and contexts remain partial. [Review](coverage/semantics/deferred-boolean-short-wrapper-default-reception-review.json).
 
 Deferred Boolean XOR defaults require both actual Boolean operands and preserve their raw result before private integer reception. Exact source, declaration bindings, Shared caches and recipient ownership remain authenticated through named holes and Warning reentry. Wider operands and contexts remain partial. [Review](coverage/semantics/deferred-boolean-xor-wrapper-default-reception-review.json).
+
+Emitted full and shorthand ternaries now retain the selected actual scalar value under recursively certified Boolean conditions, with exact source/CODE and declaration/cache/private-recipient authority. Wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/deferred-boolean-ternary-wrapper-default-reception-review.json).
+
+Emitted nonnull coalesce defaults preserve actual PBOOL/PINT/PFLOAT left values, including false and signed zero, while skipping only RHS value demand. Wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/deferred-nonnull-coalesce-wrapper-default-reception-review.json).
+
+Emitted deferred spaceship comparisons retain exact -1/0/+1 from two actual signed64 integers under the existing source/CODE/ENV/cache/private-recipient proof. Wider producers, contexts and lifetimes remain partial. [Review](coverage/semantics/deferred-integer-spaceship-wrapper-default-reception-review.json).
 
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
@@ -9176,6 +9192,8 @@ Simple-name TRUE/FALSE/NULL leaves now compose with raw String/Integer CONCAT se
 Fully qualified TRUE/FALSE/NULL leaves compose with raw selector CONCAT trees for bounded static USER method Get captures, preserving exact expression/name-child/root-PSTRING and cleanup authority. Wider forms and complete core remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get-review.json).
 
 UnaryPlus of raw signed64 Integer leaves composes with raw selector CONCAT trees for bounded static USER Get captures. Exact parent/child source, quiet identity, root PSTRING and cleanup authority remain. Wider forms and complete core remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get-review.json).
+
+Reserved TRUE/FALSE/NULL UnaryPlus leaves compose through raw selector CONCAT trees for bounded static USER method Get captures, preserving original typed/source/root-PSTRING and cleanup authority. Wider forms and complete core remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-positive-keyword-concat-tree-quiet-get-review.json).
 
 A finite method-only child captures an inherited public static USER method at any genuine source index in its ordinary method-only root. Complete ordered raw-member/descriptor authority checks both classes; lookup must still select the parent method, so child shadows do not authenticate saved parent captures. Parent declaring/lexical/cache and child called/requested scopes, Shared clones, method-static roots and quiet cleanup remain. Unselected methods are not entered; wider inheritance stays partial. [Child-method review](coverage/semantics/magic-property-methodclosure-static-inherited-child-members-quiet-get-review.json), [root-method baseline](coverage/semantics/magic-property-methodclosure-static-inherited-members-quiet-get-review.json).
 

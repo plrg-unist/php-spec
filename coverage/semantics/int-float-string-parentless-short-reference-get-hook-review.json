@@ -1,0 +1,102 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored semantics; production SL",
+  "status": "partial",
+  "scope": "Ordered int|float|string short reference Get retains exact raw order, INT/FLOAT/STRING returns, unchanged numeric/plain/empty/zero STRING tags, independent copies, weak BOOL-to-INT conversion, strict BOOL rejection and quiet type-source removal. Wider headers/producers/owners/lifetimes remain partial; exact holds unchanged.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_symbols": [
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/zend_execute.c:i_zend_verify_type_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_weak_scalar_type_hint",
+    "Zend/zend_execute.c:zend_ref_del_type_source"
+  ],
+  "source_packet": {
+    "commit": "6247e686423381a99d7cc41cea4632f8ab86b072",
+    "tree": "f2abd10e9850f894768be0cdc6873b3cdfbcd47b",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/comp313/source-ready.json",
+    "sha256": "d6d307ef23c43ad4d164add6d72bffd2651e34e6b13450dc205f9f904191bc35",
+    "paths": 18,
+    "non_make_paths": 17,
+    "make_additions": 8
+  },
+  "author": {
+    "disposition": "Inherited accepted author tuples; no report reread or execution replay.",
+    "source_tested_cut": "206e1bf068c15d437236c03b3308f071a62f091d",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_tested_cut": "6247e686423381a99d7cc41cea4632f8ab86b072",
+    "fixture_SL508_premises": [
+      778,
+      498,
+      463
+    ],
+    "fixture_seconds": [
+      191.27,
+      268.194,
+      191.463
+    ],
+    "fixture_cap_seconds": 360,
+    "fixture_source_credit": 0,
+    "result": "quiet; stable; reaped; PASS"
+  },
+  "independent_peer": {
+    "tested_commit": "6247e686423381a99d7cc41cea4632f8ab86b072",
+    "tested_tree": "f2abd10e9850f894768be0cdc6873b3cdfbcd47b",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_SL508_premises": [
+      847,
+      472,
+      507
+    ],
+    "fixture_seconds": [
+      210.529433,
+      192.249116,
+      299.741902
+    ],
+    "fixture_cap_seconds": 360,
+    "fixture_source_credit": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "result": "quiet; stable; reaped; FULLCLEAR",
+    "reports_under_comp313": {
+      "strict-sources/report.json": "9aa55caae523a19b3c080bc237a0d8f4a4b08a2690eff016087c5ee16908d77f",
+      "strict-protocol-int-string-float/report.json": "805d737c052255a2d99f92a225853577072a64952589af69af8e8f00a5a19460",
+      "strict-protocol-float-int-string/report.json": "05305ffb475207de611d6764ea2d460abf5d2b9fd21e419b391740bb9857d5f4",
+      "strict-protocol-string-float-int/report.json": "da57e86e9c7d466fe0569296efa2dce77906f63c6300d67543c69ce03b117cc8"
+    }
+  },
+  "preserved_non_agreements": {
+    "prelaw": {
+      "expected_Unsupported": 3,
+      "native_execution_count": 0,
+      "source_agreement_credit": 0,
+      "report_under_comp313": "author18-prelaw/report.json"
+    },
+    "original_pure_bank_failure": {
+      "premises": 778,
+      "exit": 1,
+      "timeout": false,
+      "source_agreement_credit": 0,
+      "correction": "Expected TYPEINTEGER(PBOOL), following unchanged module95 typed_apply."
+    }
+  },
+  "actual_and_same": {
+    "commit": "544f0ed6492f97fff6dd2c9333b79522895dd560",
+    "tree": "4372284bde91789a9af4ad38e532b4039dbc37da",
+    "parent": "3ebf943c8287d40cffaade3673e889ea536c7655",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main66-comp313-int-float-string-current-load-v1/report.json",
+    "sha256": "43da60b9ef5100cb763a086fc061aa600d3ed59421b31262e3d215aa66371003",
+    "seconds": 16.489938240032643,
+    "mode": "production SL508",
+    "argv": 511,
+    "equal_watches": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "result": "true+LF; quiet; stable; reaped; PASS",
+    "review": "Retained peer owns independent actual/SAME verification and sole saved canonical report read; author inherits the accepted tuple."
+  },
+  "limits": "Wider headers, producers, owners and lifetimes remain partial. Runtime modules94/95/134/138 and all exact held boundaries are unchanged."
+}
