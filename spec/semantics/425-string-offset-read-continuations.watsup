@@ -483,8 +483,22 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
-;; Quiet compiled FLOAT leaves and emitted scalar results enter this
+;; Quiet compiled primitive values and emitted scalar results enter this
 ;; typed certificate. Runtime nodes retain their actual source and code.
+def $string_read_runtime_value(S, porigin) = (pvalue)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_identity_value(S, porigin) = (pvalue)
+  -- if $type_bytes(pvalue) <- [$ptascii("bool"), $ptascii("null")]
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $parser_literal_at(expression, z_precision) = eps
+def $string_read_runtime_value(S, porigin) = (PINT i)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $compiled_identity_value(S, porigin) = (PINT i)
+  -- if $long_range(i)
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if ($parser_literal_at(expression, z_precision) = eps) \/ ($parser_literal_at(expression, z_precision) = (PINT i))
 def $string_read_runtime_value(S, porigin) = (PFLOAT n_bits)
   -- if $compiled_precision(S, (porigin)) = (z_precision)
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
@@ -884,8 +898,10 @@ def $string_read_runtime_bytes(S, porigin) = (n*)
   -- if $compiled_identity_value(S, porigin) = (pvalue)
   -- if $compiled_special_concat_bytes(S, porigin) = (n*)
 def $string_read_runtime_bytes(S, porigin) = ($echo_value(PBOOL b))
+  -- if $compiled_read(S, porigin) = eps
   -- if $string_read_runtime_value(S, porigin) = (PBOOL b)
 def $string_read_runtime_bytes(S, porigin) = ($ntsigned(i))
+  -- if $compiled_read(S, porigin) = eps
   -- if $string_read_runtime_value(S, porigin) = (PINT i)
 def $string_read_runtime_bytes(S, PORIGIN n pcpath) = (n_left* ++ n_right*)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
