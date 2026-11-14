@@ -231,6 +231,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --numeric-string-unary-truth-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-numeric-string-unary-truth-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --coercive-arithmetic-truth-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-coercive-arithmetic-truth-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --coercive-arithmetic-truth-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-coercive-arithmetic-truth-base-initial-raw-leading-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --coercive-integer-arithmetic-truth-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-coercive-integer-arithmetic-truth-base-initial-raw-leading-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --coercive-integer-arithmetic-truth-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-coercive-integer-arithmetic-truth-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-conditional-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-float-conditional-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-conditional-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-float-conditional-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --null-conditional-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-null-conditional-base-initial-raw-leading-key-state-XXXXXX)/run"
@@ -1297,6 +1299,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_sources.py --output "$$request_runtime_interned_string_cast_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_interned_string_cast_out/source/report.json" --output "$$request_runtime_interned_string_cast_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_interned_string_cast_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_interned_string_cast_out/source/report.json" --output "$$request_runtime_interned_string_cast_out/review-state"
+	@request_runtime_one_byte_string_bitwise_out=$$(mktemp -d .tools/runtime-one-byte-string-bitwise-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_one_byte_string_bitwise_special_concat_leading_key_sources.py --output "$$request_runtime_one_byte_string_bitwise_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_one_byte_string_bitwise_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_one_byte_string_bitwise_out/source/report.json" --output "$$request_runtime_one_byte_string_bitwise_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_one_byte_string_bitwise_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_one_byte_string_bitwise_out/source/report.json" --output "$$request_runtime_one_byte_string_bitwise_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py

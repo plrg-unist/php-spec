@@ -119,8 +119,8 @@ if __name__ == '__main__':
            ('leading_noise', selected('1tail') + '|' + zero, None),
            ('nonfinite_noise', selected('1e999') + '&' + one, None),
            ('nonnumeric_error', selected('junk') + '%' + one, None),
-           ('both_string_bits', selected('1') + '&' + selected('3'), None),
-           ('string_bitnot', '~' + selected('1'), None),
+           ('both_string_bits', selected('1') + '&' + selected('3'), carrier('1')),
+           ('string_bitnot', '~' + selected('1'), 'PSTRING_CARRIER INTERNED_STRING ([206])'),
            ('zero_divisor', selected('1') + '%' + zero, None),
            ('negative_shift', selected('1') + '<<(-' + one + ')', None),
            ('mixed_integral_float', selected('1') + '&(1.0+' + zero + ')', 'PINT 1'),
@@ -158,6 +158,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = ('Exact author histories plus independent recursive operator/selected-ternary/literal source, CODE, precision, line and raw-pool authority; nonnormal completions and stale RESULT/TODO/BASE remain distinct. Sixteen fresh checked-source controls include exact single/double-quoted affected controls, negative zero, both quiet saturation boundaries, both-STRING modulo, mixed integral FLOAT, intrinsic fractional/leading/nonfinite notices even under reporting0, nonnumeric/zero-divisor/negative-shift failures, bytewise STRING and STRING BITNOT type distinctions, and NUL refusal. Quiet helpers retain canonical nonNUL INTERNED headers and exact STRINT i eps; raw PSTRING, REQUEST and malformed bytes refuse. Fixture source0/native0; no old campaign/native replay, numeric/compiler/formatter/owner body or held-boundary change.')
+    report['scope'] = ('Exact author histories plus independent recursive operator/selected-ternary/literal source, CODE, precision, line and raw-pool authority; nonnormal completions and stale RESULT/TODO/BASE remain distinct. Sixteen fresh checked-source controls include exact single/double-quoted affected controls, negative zero, both quiet saturation boundaries, both-STRING modulo, mixed integral FLOAT, intrinsic fractional/leading/nonfinite notices even under reporting0, nonnumeric/zero-divisor/negative-shift failures, exact one-byte INTERNED STRING AND and STRING BITNOT results, and NUL refusal. Quiet helpers retain canonical nonNUL INTERNED headers and exact STRINT i eps; raw PSTRING, REQUEST and malformed bytes refuse. Fixture source0/native0; no old campaign/native replay, numeric/compiler/formatter/owner body or held-boundary change.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

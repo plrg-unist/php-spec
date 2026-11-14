@@ -254,7 +254,31 @@ def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
   -- if n_bytes* = $base64(text_bytes)
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-def $string_read_raw_truth(S, porigin, PINT i) = $string_read_raw_unary_integer(S, porigin, i)
+def $string_read_raw_truth(S, porigin, PINT i) = true
+  -- if $string_read_raw_unary_integer(S, porigin, i)
+;; Quiet integer-result coercion keeps both original scalar tags and children.
+def $string_read_raw_truth(S, porigin, PINT i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if ~$string_read_raw_unary_integer(S, porigin, i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $compiled_read(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $coerce_number(pvalue_left) = COERCED (NINT i_left) false
+  -- if $coerce_number(pvalue_right) = COERCED (NINT i_right) false
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
+  -- if $binary_apply(S_probe, pbin, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PINT i)]
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
   -- if |text_float| = 16
@@ -861,6 +885,43 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if i = $long_not(i_child)
   -- if $long_range(i)
   -- if $bitnot_value(S, pvalue_child, z_line) = S[.RESULT = KNOWN (PINT i)]
+;; Only the one-character bitwise fast paths preserve an interned result.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [BITAND, BITOR, BITXOR]
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_left) = (PSTRING_CARRIER INTERNED_STRING ([n_left]))
+  -- if $string_read_runtime_value(S, porigin_right) = (PSTRING_CARRIER INTERNED_STRING ([n_right]))
+  -- if n_bytes* = $byte_binary(pbin, [n_left], [n_right])
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $binary_apply(S, pbin, PSTRING_CARRIER INTERNED_STRING ([n_left]), PSTRING_CARRIER INTERNED_STRING ([n_right]), z_line) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBitwiseNot expression_child metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_child) = (PSTRING_CARRIER INTERNED_STRING ([n_child]))
+  -- if n_bytes* = $string_not([n_child])
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $bitnot_value(S, PSTRING_CARRIER INTERNED_STRING ([n_child]), z_line) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
 ;; Explicit primitive casts retain VALUE without widening FLOAT formatting.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if S.COMPLETION = NORMAL

@@ -101,6 +101,7 @@ $compiled_read(S_{label}_division,porigin_left) = (PINT {quotient})
             ('numeric_string', 'NExprBinaryOpDiv', 'NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))', 'NScalarInt (INTEGER 2)', 'PINT 2', 0, False),
             ('float_pair', 'NExprBinaryOpDiv', 'NScalarFloat (FLOAT "0000000000000000")', 'PFLOAT 0', 'NScalarFloat (FLOAT "4000000000000000")', 'PFLOAT 4611686018427387904', 0, False),
             ('power', 'NExprBinaryOpPow', 'NScalarInt (INTEGER 2)', 'PINT 2', 'NScalarInt (INTEGER 1)', 'PINT 1', 2, True)):
+        truth_admitted = admitted or label == 'numeric_string'
         checks += lines(f'''
 expression_{label}_numerator = {numerator} metadata_numerator
 expression_{label}_denominator = {denominator} metadata_denominator
@@ -111,11 +112,12 @@ $compiled_read(S_{label}_division,porigin_left) = (PINT {quotient})
 $string_read_raw_truth(S_{label}_division,porigin_numerator,{numerator_value})
 $string_read_raw_truth(S_{label}_division,porigin_denominator,{denominator_value})
 {'' if admitted else '~'}$string_read_raw_unary_integer(S_{label}_division,porigin_left,{quotient})
-{'' if admitted else '~'}$string_read_raw_truth(S_{label}_division,porigin_left,PINT {quotient})
+{'' if truth_admitted else '~'}$string_read_raw_truth(S_{label}_division,porigin_left,PINT {quotient})
 ''')
-        if admitted:
-            checks += [f'$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_wrong)',
-                       f'~$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_base)']
+        if truth_admitted:
+            selected, other = ('pvalue_base', 'pvalue_wrong') if quotient == 0 else ('pvalue_wrong', 'pvalue_base')
+            checks += [f'$string_read_raw_known_base(S_{label}_division,porigin_base,{selected})',
+                       f'~$string_read_raw_known_base(S_{label}_division,porigin_base,{other})']
         else:
             checks += [f'~$string_read_raw_known_base(S_{label}_division,porigin_base,{value})'
                        for value in ('pvalue_base', 'pvalue_wrong')]
