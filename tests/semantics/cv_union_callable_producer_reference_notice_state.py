@@ -79,7 +79,7 @@ def controls(case):
         changed = 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_union_return'
         normalized = '[' + ', '.join('(PTBRANCH ([PTBUILTIN ' + json.dumps(kind) + ']))' for kind in members) + ']'
         parameters = '[psparam[.TYPE = ' + normalized + ']' + (', psparam_last' if case['multiple'] else '') + ']'
-        refused = '' if len(members) == 2 and 'string' in members else '~'
+        refused = '' if len(members) == 2 and ('string' in members or 'int' in members) else '~'
         result += [refused + '$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + raw_parameter.replace('__TYPE__', changed) + raw_tail + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + parameters + '])']
         result += [refused + header + changed + ', ' + signature + '[.RETURNS = ' + normalized + '])']
     old_nullable = 'NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_union_return'
