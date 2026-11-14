@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-boolean-ternary-wrapper-raw-phases",
+    "source": "<?php\nfunction rawBooleanTernary267($a = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) ? Missing267 : !(+(-((float)(+(E_WARNING === E_ERROR)))))), $b = (!(+(-((float)(+(E_WARNING === E_ERROR))))) ? (bool)(+(-((float)(+(E_WARNING === E_ERROR))))) : Missing267), $c = (!(+(-((float)(+(E_WARNING === E_ERROR))))) ?: Missing267), $d = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) ?: E_WARNING), $e = (!(+(-((float)(+(E_WARNING === E_ERROR))))) ? (float)E_WARNING : Missing267), $f = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) ? Missing267 : E_WARNING)) {\n    echo 'raw:', $a === true, ':', $b === false, ':', $c === true, ':', $d === 2, ':', $e === 2.0, ':', $f === 2, '|';\n}\nrawBooleanTernary267();\nrawBooleanTernary267();\n",
+    "expected_model": "normal",
+    "purpose": "All four full/shorthand selections preserve actual Boolean conditions and selected PBOOL/PINT/PFLOAT tags through cold/warm caches; unchosen unresolved names are not evaluated.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1|raw:1:1:1:1:1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "c600d1c9a5fd7e213c6f3ffcb8f287bd1454f99841e129d42c2553f61b779689"
+  },
+  {
+    "id": "deferred-boolean-ternary-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanTernary267;\nuse const E_WARNING as Base267;\nuse const E_ERROR as One267;\nfunction warning267($errno, $message, $file, $line) {\n    global $x267;\n    echo 'warning:', $message, '|';\n    defaults267(2);\n    $x267 = 3.5;\n}\nfunction defaults267(int $first, int &$identity = (int)(!(+(-((float)(+(Base267 === One267))))) ? !(+(-((float)(+(Base267 === One267))))) : Missing267), int &$negated = (int)((bool)(+(-((float)(+(Base267 === One267))))) ? Missing267 : (bool)(+(-((float)(+(Base267 === One267)))))), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('BooleanTernary267\\\\warning267');\n$x267 = 1.5;\n$last267 = 8;\ndefaults267(last: $last267, first: $x267);\necho 'outer:x=', $x267, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Full true/false selections feed INT parents, imported aliases, two BYREF named holes and first-CV Warning reentry with raw PINT1/0 caches.",
+    "model_timeout_seconds": 360,
+    "source_sha256": "ba864bda6981610bb385de0d6579fb0abfb13565153b40358d2023096adf4445"
+  },
+  {
+    "id": "deferred-boolean-ternary-wrapper-float-condition-control",
+    "source": "<?php\nfunction ordinaryFloatTernary267(int &$value = (int)((+(-((float)(+(E_WARNING === E_ERROR))))) ?: 7)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryFloatTernary267();\n",
+    "expected_model": "normal",
+    "purpose": "Existing ordinary execution observes a phase-unsafe FLOAT condition outside the new PBOOL-only receipt; its new certificate must remain absent.",
+    "model_timeout_seconds": 360,
+    "source_sha256": "2c30dd24616197987b43cafcd688519d7efd6797002bac30e48391d43a283a21"
+  }
+]
