@@ -877,6 +877,8 @@ Own UnaryPlus of a raw signed64 integer also retains its identical PINT under fu
 
 Own UnaryPlus of a canonical non-NaN raw FLOAT also preserves its exact child/result bits under full pure unary state, including +0.0. Exact Return/root/child source, CODE/lines and both pools retain real formal retirement and FINAL MOD-zero Error in four new originals; NaNs, wider returns/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-positive-float-return-modulo-error-review.json).
 
+Own emitted (int) casts of raw signed64 integers also preserve the identical PINT through real formal retirement and FINAL MOD-zero Error in four new originals. Exact Return/root/child code and NORMAL/full cast state retain an emitted root without a folded-value certificate; wider casts/children/histories/lifetimes and OB31 remain partial. [Review](coverage/semantics/output-final-selected-integer-cast-return-modulo-error-review.json).
+
 The same quiet integer/string rejection boundary now covers both shifts and the
 three bitwise operators. [Integer operator evidence](coverage/semantics/output-final-integer-type-error-author.json)
 and [review](coverage/semantics/output-final-integer-type-error-review.json) retain per-operator source checks and the separate byte/numeric-shift routes.
