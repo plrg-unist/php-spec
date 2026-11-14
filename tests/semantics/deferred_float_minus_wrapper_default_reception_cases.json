@@ -1,0 +1,42 @@
+[
+  {
+    "id": "deferred-float-minus-wrapper-raw-chain",
+    "source": "<?php\nfunction rawMinus252($single = -(+(-(float)(+(E_WARNING === E_ERROR)))), $double = -(-(+(-(float)(+(E_WARNING === E_ERROR))))), $folded = -(+((float)'-0.0')) * (E_WARNING - E_ERROR)) {\n    echo 'raw:', $single, ':', $double, ':', $folded, '|';\n}\nfunction ordinaryMinus252($x) { return -(+$x); }\nrawMinus252();\nrawMinus252();\necho 'ordinary:', ordinaryMinus252(-0.0), '|';\n",
+    "source_sha256": "62cd46f50cf268b62d46f64386439bf0acf5db0135cb855bce17030cb717500b",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "One and two actual emitted Minus wrappers preserve certified deferred +0 as -0/+0. Cold/warm raw caches, compile-folded +0 sibling and ordinary call phase are distinguished through core echo."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace MinusWrapper252;\nuse const E_WARNING as Base252;\nuse const E_ERROR as One252;\nfunction warning252($errno, $message, $file, $line) {\n    global $x252;\n    echo 'warning:', $message, '|';\n    defaults252(2);\n    $x252 = 3.5;\n}\nfunction defaults252(int $first, int &$zero = -(+(-(float)(+(Base252 === One252)))), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $last, '|';\n    $zero = 9;\n}\n\\set_error_handler('MinusWrapper252\\\\warning252');\n$x252 = 1.5;\n$last252 = 8;\ndefaults252(last: $last252, first: $x252);\necho 'outer:x=', $x252, '|';\n",
+    "source_sha256": "4564865074bdda9631d96f4a159869ac893a42496a759a89b250acb7451858a3",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV and named-hole warning reentry retain raw PFLOAT-0 before int0 reception. Private BYREF mutation leaves the raw cache unchanged."
+  },
+  {
+    "id": "deferred-float-unary-plus-nested-wrapper-control",
+    "source": "<?php\nfunction warning251($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults251(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning251');\n$x251 = 1.5;\ndefaults251($x251);\n",
+    "source_sha256": "3072db42200b5ce22a1825bbf28a5a277111842e275ee3995683a12a1f2b0fff",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Promoted byte-identical251 nested Minus wrapper now consumes its certified raw child. Authoritative252 model comparison reuses the original251 native source/path/cwd/profile/streams/status without replay; previous251 Unsupported remains at its own cut."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-plus-parent-control",
+    "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = +(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
+    "source_sha256": "d73676bd2bd0bea55decfa7f5e659beb13c17c156b1b3e49f79ac585312b76ce",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "An enclosing phase-sensitive plus still lacks a phase-aware recursive parent certificate; extending Minus does not borrow old Numeric child bits."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-arithmetic-parent-control",
+    "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR)))) + (E_WARNING - E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
+    "source_sha256": "200f0cdef1dd4953927f740509a10ab0b3c37ae2e1cd33c89d37c0f82b99f48b",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Arithmetic enclosing a phase-sensitive child remains outside exact Minus-only recursion even when final numerical equality hides a different child sign."
+  }
+]
