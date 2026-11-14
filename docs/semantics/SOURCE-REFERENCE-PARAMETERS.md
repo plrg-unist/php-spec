@@ -810,6 +810,18 @@ bindings were corrected before the first full run. Controller/Make remain
 unexecuted/source0. Other callable unions, forms, contexts and lifetimes remain
 partial; every exact held dependency stays unchanged.
 
+Ordered `callable|string` and `string|callable` required formals and returns also
+retain exact raw/normalized order. Exact string membership bypasses callable
+lookup; weak integer returns create authenticated REQUEST strings before frame
+retirement and private Notice-cell allocation. Ordinary BYREF body writes remain
+unconstrained. The [string/callable review](../../coverage/semantics/cv-string-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (Notice4/RECEIVE1/RETURN1), author419/peer319 and
+genuine prelaw191/144 fixture-SL507 cuts separate from actual `258e1d27c7` and
+its sole production-SL508 load. Two REF84 helpers promote only exact string-pair
+expectations using fresh states. Two elaboration-only failures remain preserved
+at zero credit; controller/Make remain unexecuted/source0. Wider callable unions,
+forms, contexts, lifetimes and every exact held dependency remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
