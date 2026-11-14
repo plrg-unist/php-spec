@@ -195,6 +195,23 @@ dec $property_magic_cv_static_method_selector(phpType19, ptbytes) : bool
 def $property_magic_cv_static_method_selector(NName (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $property_magic_cv_static_method_selector(NNameFullyQualified (BYTES text) metadata, ptbytes) = ($ptlc($base64(text)) = $ptlc(ptbytes))
 def $property_magic_cv_static_method_selector(phpType19, ptbytes) = false -- otherwise
+;; An empty source parent leaves the own static method's scope and cache intact.
+dec $property_magic_cv_static_method_parent(pstate, pclassdesc, phpType44) : bool
+def $property_magic_cv_static_method_parent(S, pclassdesc, ABSENT) = true
+  -- if pclassdesc.PARENT = eps
+def $property_magic_cv_static_method_parent(S, pclassdesc, NName (BYTES text_parent) metadata_parent) = true
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $base64(text_parent) = ptbytes_parent
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, pclassdesc.ORIGIN) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.NAME = ptbytes_parent
+  -- if pclassdesc_parent.PARENT = eps /\ pclassdesc_parent.INTERFACES = eps
+  -- if pclassdesc_parent.PROPERTIES = eps /\ pclassdesc_parent.METHODS = eps /\ pclassdesc_parent.CONSTANTS = eps
+  -- if ~pclassdesc_parent.ABSTRACT /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
+  -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata_class)
+  -- if pclassdesc_parent.NAME = $base64(text_name)
+def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44) = false -- otherwise
 dec $property_magic_cv_static_methodclosure(pstate, nat) : bool
 def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -205,9 +222,10 @@ def $property_magic_cv_static_methodclosure(S, n) = true
   -- if ~$function_generator(S, pmethoddesc.FUNCTION)
   -- if pmethoddesc.OWNER = porigin_requested
   -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc)
-  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps
+  -- if pclassdesc.KIND = "class"
   -- if porigin_requested = PORIGIN n_unit pcpath_class
-  -- if $origin_node(S.SOURCES, porigin_requested) = (NStmtClass phpType14_class phpType24_class (NIdentifier (BYTES text_class) metadata_class_name) ABSENT phpType42 (SEQUENCE statement_class*) metadata_class)
+  -- if $origin_node(S.SOURCES, porigin_requested) = (NStmtClass phpType14_class phpType24_class (NIdentifier (BYTES text_class) metadata_class_name) phpType44_parent phpType42 (SEQUENCE statement_class*) metadata_class)
+  -- if $property_magic_cv_static_method_parent(S, pclassdesc, phpType44_parent)
   -- if pclassdesc.NAME = $base64(text_class)
   -- if ~$pptrait_body_uses(SEQUENCE statement_class*)
   -- if porigin_method = PORIGIN n_unit pcpath_method
