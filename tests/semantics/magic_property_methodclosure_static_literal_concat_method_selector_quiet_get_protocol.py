@@ -95,8 +95,10 @@ def checks(old):
             f'S_concat_{label} = S[.SOURCES = [pcunit[.OCCURRENCES = {occurrences}]]][.POOLS = [{{UNIT n_site,CONSTANTS ([PCONSTANT (pcpath_site ++ [PCFIELD 1]) (PSTRING {value})])}}]]',
             f'$origin_node(S_concat_{label}.SOURCES,porigin_name) = (expression_{label})',
             f'$compiled_read(S_concat_{label},porigin_name) = (PSTRING {value})',
-            f'~$property_magic_cv_static_method_site_name(S_concat_{label},porigin_site,expression_{label},' + (value if label == 'numeric' else 'pmethoddesc_method.NAME') + ')',
+            ('' if label == 'numeric' else '~') + f'$property_magic_cv_static_method_site_name(S_concat_{label},porigin_site,expression_{label},' + (value if label == 'numeric' else 'pmethoddesc_method.NAME') + ')',
         ]
+        if label == 'numeric':
+            result.append('~$property_magic_cv_static_methodclosure(S_concat_numeric,n_closure)')
     result += [
         '$parser_literal(expression_nested) = (PSTRING ptbytes_method)',
         '$parser_literal(expression_numeric) = (PSTRING $ptascii("CoUnTeR0"))',

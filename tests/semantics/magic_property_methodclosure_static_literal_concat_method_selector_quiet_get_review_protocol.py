@@ -146,7 +146,7 @@ def checks(old, index):
                    f'$origin_node(S_concat_{label}.SOURCES,porigin_name) = (phpType20_{label})',
                    f'$compiled_read(S_concat_{label},porigin_name) = (PSTRING {value})',
                    f'$scoped_source_method_origin(S_concat_{label},porigin_site,phpType20_{label},{value})',
-                   f'~$property_magic_cv_static_method_site_name(S_concat_{label},porigin_site,phpType20_{label},{value})',
+                   ('' if label == 'numeric' else '~') + f'$property_magic_cv_static_method_site_name(S_concat_{label},porigin_site,phpType20_{label},{value})',
                    f'~$property_magic_cv_static_methodclosure(S_concat_{label},n_closure)']
 
     raw_left = 'Co' if index == 0 else 'cOunt'
