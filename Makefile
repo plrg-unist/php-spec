@@ -219,6 +219,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --integer-zero-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-integer-zero-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-zero-shorthand-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-float-zero-shorthand-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-zero-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-float-zero-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --negative-zero-shorthand-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-negative-zero-shorthand-base-initial-raw-leading-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --negative-zero-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-negative-zero-shorthand-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --output "$$(mktemp -d .tools/string-current-array-cv-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --peer --output "$$(mktemp -d .tools/string-current-array-cv-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_array_cv_protocol.py --alias --output "$$(mktemp -d .tools/string-current-array-alias-cv-state-XXXXXX)/run"
