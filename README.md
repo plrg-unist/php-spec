@@ -1298,6 +1298,8 @@ Quiet emitted division retains exact integer bytes from genuinely typed Boolean/
 
 Quiet emitted ===/!== retain exact typed Boolean/integer/float operands, pure strict results and unchanged full-state evaluation through actual source, code, reads and captured precision. Equal bytes or truth do not erase types; wider leaves, NaN truth and runtime FLOAT producers remain partial. [Runtime identity review](coverage/semantics/string-offset-request-base-runtime-identity-review.json).
 
+Quiet emitted ==/!= preserve PHP's Boolean truth and numeric comparison for recursively certified Boolean/integer/float operands. Exact source, code, read and precision facts plus pure comparison and full-state checks retain existing keys and Warning cleanup; wider leaves and runtime FLOAT producers remain partial. [Runtime equality review](coverage/semantics/string-offset-request-base-runtime-equality-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
