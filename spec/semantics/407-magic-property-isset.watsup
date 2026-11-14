@@ -143,6 +143,19 @@ def $property_magic_cv_arrow(S, n) = true
   -- if $property_magic_cv_literal_history(S, n, porigin)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_arrow(S, n) = false -- otherwise
+;; Shared named clones authenticate immutable raw ancestors without static roots.
+dec $property_magic_cv_named_clone_history(pstate, nat, porigin) : bool
+def $property_magic_cv_named_clone_history(S, n, porigin) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = NAMEDCLOSURE porigin
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.OBJECT = n /\ pclosurecache.FUNCTION = porigin
+  -- if pclosurecache.SOURCE = (n_source)
+  -- if pclosurecache.SCOPE = (BIND_UNSCOPED) /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if $(n_source < n)
+  -- if S.OBJECTS[n_source] = NAMEDCLOSURE porigin
+  -- if $closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)}) \/ $property_magic_cv_named_clone_history(S, n_source, porigin)
+def $property_magic_cv_named_clone_history(S, n, porigin) = false -- otherwise
 ;; Original named USER wrappers borrow their function's shared cache and statics.
 dec $property_magic_cv_namedclosure(pstate, nat) : bool
 def $property_magic_cv_namedclosure(S, n) = true
@@ -153,7 +166,7 @@ def $property_magic_cv_namedclosure(S, n) = true
   -- if ~$function_generator(S, pfunction)
   -- if $closure_live_object_valid(S, n)
   -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps /\ $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
-  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)})
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin, SOURCE eps, SCOPE (BIND_UNSCOPED), CACHE (CACHE_SHARED)}) \/ $property_magic_cv_named_clone_history(S, n, porigin)
   -- if $closure_cache_records_valid(S)
 def $property_magic_cv_namedclosure(S, n) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool

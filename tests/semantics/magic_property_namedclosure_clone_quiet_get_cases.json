@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "namedclosure-clone-cv-coalesce-shared-function-static",
+      "source": "<?php\nfunction quietNamedCloneCoalesceTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCloneCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedCloneCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\necho quietNamedCloneCoalesceTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$seed = quietNamedCloneCoalesceTarget(...);\n$middle = clone $seed;\n$held = clone $middle;\n$seed = null;\n$middle = null;\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCloneCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietNamedCloneCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho quietNamedCloneCoalesceTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "2e1250a17b103584b491b21be417cdea3bda1c2be316f17c55727d56139764cd",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "namedclosure-clone-private-coalesce-assignment-from-callable",
+      "source": "<?php\nfunction quietNamedCloneAssignTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCloneAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietNamedCloneAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\necho quietNamedCloneAssignTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$seed = Closure::fromCallable(\"quietNamedCloneAssignTarget\");\n$held = clone $seed;\n$seed = null;\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCloneAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietNamedCloneAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho quietNamedCloneAssignTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "af1083546021d186a9c27783cb03189ee1320118515f0399115d32267ec55e20",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": ""
+    }
+  ]
+}

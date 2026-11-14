@@ -1,0 +1,37 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "namedclosure-clone-cv-empty-retired-chain",
+      "source": "<?php\nfunction quietNamedCloneCVTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCloneCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\necho quietNamedCloneCVTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$seed = quietNamedCloneCVTarget(...);\n$middle = clone $seed;\n$seed = null;\n$held = clone $middle;\n$middle = null;\necho $held() === 2 ? \"SHARED;\" : \"BAD_SHARED;\";\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCloneCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho quietNamedCloneCVTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "c647208d420acdfabdcc8b641cca9e74945c4143999992f7d2c372567a15f9bd",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtTSEFSRUQ7STtHO1JFQ0VJVkVSO1dSQVBQRVJfR09ORTtGQUxTRTtDQVBUVVJFO1JFQ0VJVkVSX0dPTkU7U1RBVElDO0RPTkU7",
+      "stderr_template_base64": ""
+    },
+    {
+      "id": "namedclosure-clone-literal-empty-receiver-throw",
+      "source": "<?php\nfunction quietNamedCloneLiteralTarget() { static $counter = 0; $counter = $counter + 1; return $counter; }\nclass QuietNamedCloneLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\necho quietNamedCloneLiteralTarget() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$seed = Closure::fromCallable(\"quietNamedCloneLiteralTarget\");\n$held = clone $seed;\n$seed = null;\necho $held() === 2 ? \"SHARED;\" : \"BAD_SHARED;\";\n$watch = WeakReference::create($held);\n$reader = new QuietNamedCloneLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho quietNamedCloneLiteralTarget() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "c0b2df749fd79a232b3c59b79329a2c22f7e84e76226d83b4fc7c33fa43ba564",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtTSEFSRUQ7STtHO1JFQ0VJVkVSO1dSQVBQRVJfR09ORTtDQVVHSFQ7S0VFUDtDQVBUVVJFO1JFQ0VJVkVSX0dPTkU7U1RBVElDO0RPTkU7",
+      "stderr_template_base64": ""
+    }
+  ]
+}
