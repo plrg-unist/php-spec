@@ -170,7 +170,7 @@ $string_read_raw_known_base(S_shorthand_numeric,porigin_base,pvalue_base)
             ('numeric_string', 'NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))', False)):
         child = (constructor, value)
         result = f'PFLOAT {one}' if value.startswith('PBOOL') else 'PFLOAT 0'
-        matrices.append((label, ('Plus', result, floating(0) if right else child, child if right else floating(0)), False))
+        matrices.append((label, ('Plus', result, floating(0) if right else child, child if right else floating(0)), True))
     for label, tree, accepted in matrices:
         checks += _projection(label, tree, accepted)
     checks += lines(r'''

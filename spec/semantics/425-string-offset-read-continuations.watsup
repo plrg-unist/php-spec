@@ -278,7 +278,7 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_raw_truth(S_probe, porigin_child, pvalue_child)
   -- if $unary_apply(S_probe, punary, pvalue_child, 0) = S_probe[.RESULT = KNOWN (PFLOAT n_bits)]
-;; Quiet finite numeric arithmetic authenticates both original typed children.
+;; Quiet finite results authenticate original scalar children and their coercions.
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
@@ -291,8 +291,10 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
   -- if $compiled_read(S, porigin_left) = (pvalue_left)
   -- if $compiled_read(S, porigin_right) = (pvalue_right)
-  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float")]
-  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("float")]
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $coerce_number(pvalue_left) = COERCED pnumber_left false
+  -- if $coerce_number(pvalue_right) = COERCED pnumber_right false
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
   -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)

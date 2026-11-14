@@ -79,7 +79,7 @@ S_source_{label} = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE {pa
             ('multiply_negative_zero', 'NExprBinaryOpMul', fnegativezero, ftwo, 9223372036854775808, True),
             ('divide_negative_zero', 'NExprBinaryOpDiv', fnegativezero, ftwo, 9223372036854775808, True),
             ('mixed_int', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 0)', 'PINT 0'), fzero, 0, True),
-            ('numeric_string', 'NExprBinaryOpPlus', ('NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))'), fzero, 0, False),
+            ('numeric_string', 'NExprBinaryOpPlus', ('NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))'), fzero, 0, True),
             ('leading_string', 'NExprBinaryOpPlus', ('NScalarString (BYTES "MHg=")', 'PSTRING ($ptascii("0x"))'), fzero, 0, False),
             ('integer_promotion', 'NExprBinaryOpPlus', ('NScalarInt (INTEGER 9223372036854775807)', 'PINT 9223372036854775807'), ('NScalarInt (INTEGER 1)', 'PINT 1'), 4890909195324358656, True),
             ('division_zero', 'NExprBinaryOpDiv', fhalf, fzero, 0, False),
