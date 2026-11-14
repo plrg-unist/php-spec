@@ -20,6 +20,7 @@ dec $string_read_literal_bytes(expression) : nat*?
 dec $string_read_runtime_value(pstate, porigin) : pvalue?
 dec $string_read_runtime_cast_quiet(pcast, pvalue) : bool
 dec $string_read_runtime_integer_quiet(pvalue) : bool
+dec $string_read_runtime_instanceof_operand(pstate, porigin) : pvalue?
 dec $string_read_runtime_named_target(pstate, porigin, name, preqbytes, int) : bool
 dec $string_read_runtime_bytes(pstate, porigin) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
@@ -676,6 +677,13 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
   -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; Instanceof consumes authenticated compiled NaNs without truth conversion.
+def $string_read_runtime_instanceof_operand(S, porigin) = (PFLOAT n_bits)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+  -- if $compiled_identity_value(S, porigin) = (PFLOAT n_bits)
+  -- if $pfcast_nan(PFLOAT n_bits)
+def $string_read_runtime_instanceof_operand(S, porigin) = $string_read_runtime_value(S, porigin) -- otherwise
 ;; Raw equality keeps its compiler-output boundary; other names need lexical proof.
 def $string_read_runtime_named_target(S, porigin, name, preqbytes, z_line) = true
   -- if $ptast(name) = PTNAME ptqual preqbytes
@@ -710,8 +718,7 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
   -- if $string_read_runtime_named_target(S, PORIGIN n pcpath, name, preqbytes, z_line)
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_child)) = (z_precision)
-  -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
-  -- if ~$pfcast_nan(pvalue_child)
+  -- if $string_read_runtime_instanceof_operand(S, porigin_child) = (pvalue_child)
   -- if $type_bytes(pvalue_child) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int"), $ptascii("float")] \/ ($type_bytes(pvalue_child) = $ptascii("string") /\ $string_read_runtime_cast_quiet(CASTSTRING, pvalue_child))
   -- if S_value = $resolve_at(S, KNOWN pvalue_child, z_line)
   -- if S_value = S[.RESULT = KNOWN pvalue_child]
