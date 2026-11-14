@@ -1,0 +1,69 @@
+{
+  "feature": "finite-float-full-ternary-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed and validated; full core remains partial",
+  "scope": "A full ternary with a finite raw float literal condition and two raw string literal arms supplies its selected non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index supplies the original byte. Nonzero 1.0 selects the true arm; 0.0 selects the false arm.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "fa3f51775d7f55c05d792deb7805f30e26b133c1",
+  "reviewed_peer_head": "eeb206158c9f6f79135cfd4316d21d379faf010e",
+  "implementation_sha256": "4c6880fc660ed281c651e30fb527029a4d5f422eaa59c5851e0748c6e259148e",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_conditional emits JMPZ and QM_ASSIGN. Zend/zend_operators.h i_zend_is_true uses nonzero finite double truth; NaN can warn and is excluded here. Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code.",
+  "implementation": "One local17-line425 raw_known_base arm authenticates NScalarFloat raw hex bits, exact PFLOAT condition and FINITE decode, both raw string arms and indexed compiled reads/INTERNED identities, parent compiledEPS and selected bytes through existing pure float truth. Existing raw capture/saved-index, source and ownership guards remain. No generic233, provider/root, schema, REQUEST/NUL, abrupt or held-boundary change.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "905830c72e6327eccaccc81ca1eed635967f9ea40104bb89c60f351aa3615bcf",
+      "tested_revision": "9e17a5296838eee86191032928f4e2bfcdd01579",
+      "passed": true,
+      "source_credit": 0,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "b3282512159d7fa30ceba545f109dfde6ac194593e4a8d8d7c59aaead95df63a",
+      "tested_revision": "9e17a5296838eee86191032928f4e2bfcdd01579",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 61
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "76fde21dd99d271cb0fd62a5ffd172c8850bd63496f416322c6a5e161906dd65",
+      "tested_revision": "8b3eec6adad66f0887f1df0306819474bb121331",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 62
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "6a539e61d3429a71133298c8ef6f81a85dbcc29cc0fd3b0c73f8bf70074bce24",
+      "tested_revision": "fa3f51775d7f55c05d792deb7805f30e26b133c1",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "30c2423dd1ae607c130bb3d26edd0b7f087389c7bdf1006aca02b6fc1bd433ac",
+      "tested_revision": "fa3f51775d7f55c05d792deb7805f30e26b133c1",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 180,
+      "derived_conditions": 74
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-float-conditional-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "5843ebc869a51703b3d4b79214f2c193745744ad4156bd59f847923d2f3426d5",
+      "tested_revision": "eeb206158c9f6f79135cfd4316d21d379faf010e",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 201,
+      "derived_conditions": 77
+    }
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author180/74-derived and independent201/77-derived fixture-SL cuts retain source0. Genuine full155 prelaw captures retain A19 changed/136 initial fields and roots[1,0], B20 changed/135 initial fields and roots[1,0,0], with no edges or debts. Nonzero versus zero, raw bits/type/value and both arms, parent-fold refusal, ordinary/current versus initial-reference rebinding, unchanged owners, dispatch/resume/output and budgets are checked. Matched raw parent/child occurrence and condition-pool INF/NaN negatives isolate the finite guard; those forged-source controls earn source0 and admit neither nonfinite producer. Source60/outer80/compiler120/state180 caps remain; all successful runs are quiet, stable and fully reaped. No unique aggregate or historical renewal is claimed.",
+  "review": "Independent whole five nonMake files and two Make commands CONTENT/FULLCLEAR; saved-native source2 and author180 FULLCLEAR; author reciprocal independent201 and genuine prelaw full155 review CLEAR. Whole READY and independent FULLCLEAR were sent directly to MAIN42 before this ledger. Canonical current composition is maintained by MAIN, separately from these private cuts.",
+  "remaining": "Other conditions, nonfinite, unary/computed and wider arm/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the external archives linked above. Tracked cases/renderers and the two Makefile float-conditional-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

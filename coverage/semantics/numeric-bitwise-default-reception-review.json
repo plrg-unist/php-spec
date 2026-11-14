@@ -1,0 +1,91 @@
+{
+  "feature": "ENUM235: Numeric-only signed64 bitwise default parents",
+  "target": "PHP 8.5.10 CLI,NTS,signed64;sole project-local .tools/php/bin/php;C/UTC baseline profile",
+  "status": "Bounded source/test slice integrated with independent whole-seven-file and actual-composition FULLCLEAR. Full core remains unfinished.",
+  "implementation": {
+    "donor": "9a6af58f92a340e3eac702f5ff20231b5e606f58",
+    "runtime_revision": "264689a3a52e4132f4863d042e462879b4fc4056",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "Two Numeric rules retain signed64 NINT results for AND/OR/XOR and unary NOT through existing pure integer_binary/long_not kernels. Both require absent whole default_in authority, proper typed NINT children and signed64 inputs/result. Existing integer-first rules remain unchanged; no compiler,state,cache,ENV,ownership or native changes.",
+    "preserved": "Exact raw source,declaration ENV,resolved names,complete whole-tree no-DIM/name bindings,selected-child proof,Shared-cache and ordinary receive/owner authority remain. FLOAT/string/coercion and effectful E_STRICT stay outside the new quiet domain."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_compile_params and zend_const_expr_to_zval preserve deferred constant AST defaults",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner evaluates actual binary/unary children before get_binary_op/get_unary_op dispatch",
+      "Zend/zend_operators.c: bitwise_and_function,bitwise_or_function,bitwise_xor_function IS_LONG arms return wordwise long results;bitwise_not_function IS_LONG returns complement"
+    ],
+    "reference_kernels": [
+      "spec/semantics/54-binary-operators.watsup: integer_binary BITAND/BITOR/BITXOR",
+      "spec/semantics/01-integer.watsup: long_and,long_or,long_xor signed64 word conversion and long_not=-i-1"
+    ]
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-bitwise-default-reception-235",
+  "native_once": {
+    "revision": "e11ac42ad64bf5252d76badab79da36a14a56b4d",
+    "report": "native-v1/report.json",
+    "sha256": "2ad11cc41aa5dbf398846ae07daf395d827030fbb8bfb21d0a9d1af99462f2a7",
+    "fresh_originals": 6,
+    "reuse": "Original bytes/path/cwd/profile/streams/status are reused by both model cuts;no native replay. E_STRICT actually invokes its deprecated-constant handler and is not quiet."
+  },
+  "baseline": {
+    "revision": "e11ac42ad64bf5252d76badab79da36a14a56b4d",
+    "report": "current-v1/report.json",
+    "sha256": "1af35cbc548e7355ff87dceb0ae97db72fe720342e17380c7759e195a38a79ad",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 26.445586679968983,
+    "result": "All six originals are explicit Unsupported at handler ingress;zero native-agreement credit."
+  },
+  "source_evidence": {
+    "revision": "264689a3a52e4132f4863d042e462879b4fc4056",
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "c6ab384127a3c7c822a55fa0e425975eefeac11e7400d90166b5d0ba0903db31",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 2,
+    "unsupported_controls": 4,
+    "driver_seconds": 68.44149822718464,
+    "scope": "Cold/warm defaults retain MIN&MAX0,mask8194,MAX^MAX0,~MAX MIN,~MIN MAX,MIN|2 MIN+2 and nonnull xor-zero. Imported/FQN nested bitwise parents retain mask8194,combined30711,selectedMAX and nonnull AND-zero through named holes[1,2,3,4],last8 and warning reentry. FLOAT,raw-string,E_STRICT and skipped-DIM controls stay Unsupported0."
+  },
+  "state_evidence": [
+    {
+      "revision": "642ae4716d28d25f898520ac8eb61d70c98e00a6",
+      "report": "author-v1/closure-call-protocol-ufo7jssj/report.json",
+      "sha256": "3b4d8715ea406e96b6b2b90e30f2492809f7e99ac5b80079fcaf0a24d9cecadc",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 179,
+      "body": 173,
+      "setup": 6,
+      "driver_seconds": 38.97111777286045,
+      "scope": "Authentic cold DEFAULT_BIND2,all seven raw values/caches,proper NINT children,old literal INT path,source/ENV/name/value/tag/range controls,fresh unmarked BYREF mask local,one-step resume,warm cache preservation and real local retirement."
+    },
+    {
+      "revision": "1243c650a30900a1277f06dabc689092ad378d5d",
+      "report": "peer-v1/closure-call-protocol-z_jymvoo/report.json",
+      "sha256": "6b6d47cc2c054ace72f7cfa73dfe19b88cc2982404a6697fa944e2cfb2ba8717",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 202,
+      "body": 196,
+      "setup": 6,
+      "driver_seconds": 58.14882324705832,
+      "scope": "Independent authentic named holes[1,2,3,4],nested proper children,raw warmed caches,privatefirst/global split,last8 versus default7,source/ENV/name/cache/HOLES/readiness/no-DIM controls,budgets,four receives and real retirement. Separate pure FLOAT/string/bool/null/overflow/E_STRICT refusals retain zero source credit."
+    }
+  ],
+  "state_accounting": "Two fixtures at separate revisions pass first evaluation:381 physical conditions=369 body+12 setup,source0. Focused oldhelper search found no affected Numeric-only NINT bitwise EPS expectation;no old campaign reruns or promotions.",
+  "validation_contract": "Source360s/100000steps and fixture300s retain outer driver600s. Passing cuts have stable HEAD/inputs,quiet tool stderr,exit0 and fully reaped jobs. Unsupported/failures/timeouts/unrun checks retain zero credit;metadata does not renew evidence.",
+  "review": "Independent recover4_enum_version_review FULLCLEAR covers source,law,all tests,three exact Make entries and bounded family paragraph. Author reads peer196body. Both read actual MAIN3160f2aa9 composition:complete519 and four test/source files donor-exact;Make3 unique/contiguous/ordered and family paragraph exact. Shared compiler/name/cache/storage/ownership interfaces are unchanged.",
+  "joined_load": {
+    "revision": "3160f2aa9cc6abfecd5632c2cca33af83de06157",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main42-numeric-bitwise235-joined-508-v1/report.json",
+    "sha256": "e9027ab0d0ccbeb0747cfcf89c042d3892580b9e296fd182b95d937e876e0304",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.440185571089387,
+    "result": "true plus LF;quiet,stable inputs/HEAD,exit0,fully reaped;Numeric bitwise default interface load",
+    "source_agreement_credit": 0
+  },
+  "remaining": "Other startup/default producers,quiet Numeric MOD/shift/power,coercions,effectful E_STRICT,unresolved used names/namespaces,pruned syntax and wider entries/owners/lifetimes remain partial. Exact holds and inventory169/306/0 constructors closed/1 obligation closed remain. No full-core or equivalence claim."
+}

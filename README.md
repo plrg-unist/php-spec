@@ -179,6 +179,8 @@ null|scalar return declarations. Callee-strict verification and producer-frame
 retirement precede private Notice cells; existing formal/source/payload/ownership
 bounds remain.
 [Singleton nullable-return review](coverage/semantics/singleton-cv-nullable-scalar-return-producer-reference-notice-review.json).
+
+Completed singleton and multi-CV producers also admit ordered array/int/float/bool/string with null formal unions, preserving pointwise raw/normalized/BYREF proof, caller-strict reception and existing return/frame/ownership bounds. [Union-null formal review](coverage/semantics/cv-union-null-formal-producer-reference-notice-review.json).
 The same one-CV route also accepts canonical `?array`, `null` and `int` returns,
 and ordered `array|null`/`null|array` declarations. Return verification precedes the
 separate Notice/private-cell continuation; wider producers remain partial.
@@ -1276,6 +1278,8 @@ actual source/read/precision facts and skipped-RHS behavior. Unary FLOAT NOT
 remains unfolded.
 [Identity review](coverage/semantics/string-offset-request-base-identity-special-concat-leading-key-review.json),
 [XOR review](coverage/semantics/string-offset-request-base-xor-special-concat-leading-key-review.json).
+
+Quiet runtime FLOAT NOT keys now authenticate actual nonconstant CODE/read-eps facts, genuine folded FLOAT values, quiet truth and real CONCAT bytes/carriers. Saved index, current owners, supplied Throwable and fixed-bounds cleanup retain existing laws; warningful NaN truth and wider producers/owners remain partial. Source4, author645 and inclusive peer1029 fixture-source-zero cuts remain separate. [Runtime FLOAT-NOT review](coverage/semantics/string-offset-request-base-float-boolnot-runtime-review.json). Quiet runtime double/triple NOT also retains genuine typed PFLOAT/PBOOL links through actual emitted source/CODE/read-eps, equal precision and full-state truth. [Nested FLOAT-NOT review](coverage/semantics/string-offset-request-base-nested-float-boolnot-runtime-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
 Coercive and wider operands remain partial.
@@ -1527,6 +1531,10 @@ header and frozen leading index through returning Warning handlers. Exact raw
 source, child reads and string/null identities preserve nullness selection;
 wider producers, REQUEST/NUL ingress, abrupt paths and lifetimes remain partial.
 [Coalesce-base review](coverage/semantics/string-offset-coalesce-base-initial-raw-leading-key-review.json).
+
+Literal integer full ternaries also retain the selected non-NUL INTERNED header and frozen leading index through returning Warning handlers, including initial-reference key rebinding. Exact condition and both arm pools authenticate selection; source2 and A161/B188 fixture-source-zero cuts remain separate. Wider producers, REQUEST/NUL ingress, abrupt paths and lifetimes remain partial. [Integer-condition review](coverage/semantics/string-offset-integer-conditional-base-initial-raw-leading-key-review.json).
+
+Finite raw float full ternaries also retain the selected non-NUL INTERNED header and frozen leading index through returning Warning handlers. Exact raw condition bits, finite decode and both arm pools authenticate selection; source2 and A180/B201 fixture-source-zero cuts remain separate. Nonfinite/unary/computed conditions, REQUEST/NUL ingress, abrupt paths and lifetimes remain partial. [Float-condition review](coverage/semantics/string-offset-float-conditional-base-initial-raw-leading-key-review.json).
 
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
@@ -5223,6 +5231,10 @@ through existing arithmetic/casts/selection and named warning reentry. Exact
 source/declaration ENV, no-DIM/name/cache/receive/owner guards remain; wider
 producers, pruned syntax, entries and lifetimes stay partial.
 [Version integer-default review](coverage/semantics/version-integer-default-reception-review.json).
+
+Registered nondeprecated E_* constants also supply deferred integer defaults, including E_ALL=30719, through existing arithmetic/casts/selection and named warning reentry. Exact source/declaration ENV, no-DIM/name/Shared-cache/receive/owner guards remain; E_STRICT, wider producers, entries and lifetimes stay partial. [Diagnostic integer-default review](coverage/semantics/diagnostic-integer-default-reception-review.json).
+
+Numeric-only signed64 AND/OR/XOR/NOT now compose deferred integer defaults, including cold/warm BYREF caches, named holes, warning reentry, MIN/MAX and nonnull zero. Exact source/ENV/no-DIM/cache and owner guards remain; coercion, effectful E_STRICT and wider operators/lifetimes stay partial. [Numeric bitwise default review](coverage/semantics/numeric-bitwise-default-reception-review.json).
 Raw deferred FLOATs cache before local conversion. Own precision callbacks
 borrow a private formal, resume the saved PINT on normal return and preserve
 handler-throw cleanup/retry plus registry replacement/reentry. Overflow retains its raw PFLOAT tag through
