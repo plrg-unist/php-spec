@@ -45,6 +45,15 @@ def authority(name, fixture, path):
         'pcunit_cast_projection.ID = n_cast_handler',
         'S_raw_root = S[.SOURCES = [pcunit_cast_projection[.OCCURRENCES = (PCOCCURRENCE pcpath_cast expression_cast_other_kind) :: pcunit_cast_projection.OCCURRENCES]]]',
         'S_raw_child = S[.SOURCES = [pcunit_cast_projection[.OCCURRENCES = (PCOCCURRENCE pcpath_float (NScalarFloat (FLOAT text_float_other) metadata_float)) :: pcunit_cast_projection.OCCURRENCES]]]']
+    bindings += [
+        'metadata_cast = (MendFilePos z_cast_end_file) :: (MendLine z_cast_end_line) :: (MendTokenPos z_cast_end_token) :: (Mkind 1) :: metadata_cast_positions',
+        'metadata_cast_missing = [(MendFilePos z_cast_end_file), (MendLine z_cast_end_line), (MendTokenPos z_cast_end_token)] ++ metadata_cast_positions',
+        'metadata_cast_alias = [(MendFilePos z_cast_end_file), (MendLine z_cast_end_line), (MendTokenPos z_cast_end_token), (Mkind 2)] ++ metadata_cast_positions']
+    for style in ['alias', 'missing']:
+        bindings += [
+            'expression_style_' + style + ' = NExprCastInt (NScalarFloat (FLOAT text_float) metadata_float) metadata_cast_' + style,
+            'statement_style_' + style + ' = NStmtReturn expression_style_' + style + ' metadata_cast_return',
+            'S_style_' + style + ' = S[.SOURCES = [pcunit_cast_projection[.OCCURRENCES = [(PCOCCURRENCE pcpath_cast_return statement_style_' + style + '), (PCOCCURRENCE pcpath_cast expression_style_' + style + ')] ++ pcunit_cast_projection.OCCURRENCES]]]']
     for part, codepath, line in [('root', 'pcpath_cast', 'z_cast'),
                                  ('child', 'pcpath_float', 'z_float')]:
         expected, wrong = ('false', 'true') if part == 'root' else ('true', 'false')
@@ -174,6 +183,22 @@ def authority(name, fixture, path):
         r'$float_long(n_local_positive_range_child, false) = (i_local_positive_range_return, [RANGEWARNING]) /\ '
         r'$cast_apply(S_suppressed, CASTINT, PFLOAT n_local_positive_range_child, z_cast) = S_suppressed[.RESULT = KNOWN (PINT i_local_positive_range_return)] /\ '
         r'~$ob_object_error_handler_tail(S_suppressed, pfunction_handler, [statement_local_positive_range])')]
+    checks += [('canonical cast keyword: own kind1 remains admitted',
+        r'$plstyle(metadata_cast) = 1 /\ '
+        r'$compiled_read(S, porigin_cast) = eps /\ '
+        r'$compiled_read(S, porigin_float) = (PFLOAT n_child) /\ '
+        r'$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_return])')]
+    for style, kind in [('alias', 2), ('missing', 0)]:
+        state = 'S_style_' + style
+        checks += [('canonical cast keyword: ' + style + ' metadata refuses locally',
+            '$plstyle(metadata_cast_' + style + ') = ' + str(kind) + r' /\ '
+            + state + r'.CODE = S.CODE /\ ' + state + r'.POOLS = S.POOLS /\ '
+            + state + r'.SOURCES[0].AST = pcunit_cast_projection.AST /\ '
+            '$origin_node(' + state + '.SOURCES, porigin_cast_return) = (statement_style_' + style + r') /\ '
+            '$origin_node(' + state + '.SOURCES, porigin_cast) = (expression_style_' + style + r') /\ '
+            '$compiled_read(' + state + r', porigin_cast) = eps /\ '
+            '$compiled_read(' + state + r', porigin_float) = (PFLOAT n_child) /\ '
+            '~$ob_object_error_handler_tail(' + state + ', pfunction_handler, [statement_style_' + style + '])')]
     return bindings, checks
 
 
