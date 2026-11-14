@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-mixed-spaceship-wrapper-raw-orderings",
+    "source": "<?php\nfunction rawMixedSpaceship271($p0 = ((PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) <=> (((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = ((((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) <=> (-(+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((-(+(-((float)(+(E_WARNING === E_ERROR)))))) <=> ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $positiveInfinity = (INF <=> ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $negativeInfinity = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) <=> -INF)) {\n    echo 'raw:', $p0, ':', $p1, ':', $p2, ':', $p3, ':', $positiveInfinity, ':', $negativeInfinity, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n}\nrawMixedSpaceship271();\nrawMixedSpaceship271();\n",
+    "expected_model": "normal",
+    "purpose": "Actual signed64 integers compare with nonNaN floats in both orientations; MAX rounding produces equal0, ordinary/signed-zero/infinity orders and cold/warm caches remain exact.",
+    "expected_normal_stdout": "raw:0:0:1:-1:1:1|raw:0:0:1:-1:1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "29a6fb678efb8fe8613f283f3b829c3711758b44e3b264643e0f58bd1e64a747"
+  },
+  {
+    "id": "deferred-mixed-spaceship-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace MixedSpaceship271;\nuse const E_WARNING as Base271;\nuse const E_ERROR as One271;\nuse const PHP_INT_MAX as Max271;\nfunction warning271($errno, $message, $file, $line) {\n    global $x271;\n    echo 'warning:', $message, '|';\n    defaults271(2);\n    $x271 = 3.5;\n}\nfunction defaults271(int $first, int &$forward = ((Max271 + ((int)((bool)(+(-((float)(+(Base271 === One271)))))))) <=> (((float)Max271) + (+(-((float)(+(Base271 === One271))))))), int &$reverse = ((((float)Max271) + (+(-((float)(+(Base271 === One271)))))) <=> (Max271 + ((int)((bool)(+(-((float)(+(Base271 === One271))))))))), int &$positive = (((int)(!(+(-((float)(+(Base271 === One271))))))) <=> (-(+(-((float)(+(Base271 === One271))))))), int &$negative = ((-(+(-((float)(+(Base271 === One271)))))) <=> ((int)(!(+(-((float)(+(Base271 === One271)))))))), int $last = 7) {\n    echo 'body:', $first, ':', $forward, ':', $reverse, ':', $positive, ':', $negative, ':', $last, '|';\n    $forward = 19;\n    $reverse = 20;\n    $positive = 21;\n    $negative = 22;\n}\n\\set_error_handler('MixedSpaceship271\\\\warning271');\n$x271 = 1.5;\n$last271 = 8;\ndefaults271(last: $last271, first: $x271);\necho 'outer:x=', $x271, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Imported MAX/Base/One aliases, four BYREF named holes, Warning reentry and raw private PINT caches retain mixed comparison and binary64 rounding.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:0:1:-1:7|body:1:0:0:1:-1:8|outer:x=3.5|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "d67c6727a9d94a717b0a2f4e90e35397f300072e228beb88b0eed8f1576bf45b"
+  },
+  {
+    "id": "deferred-mixed-spaceship-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryMixedSpaceship271(int &$value = (PHP_INT_MAX <=> (float)PHP_INT_MAX)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryMixedSpaceship271();\n",
+    "expected_model": "normal",
+    "purpose": "Existing phase-safe mixed numeric spaceship keeps MAX-to-float equality as a separate ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "b11d94c14e4f84e2c068e8657e811b1ee08f8f5526fb376064cf153f8e015e4f"
+  }
+]

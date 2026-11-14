@@ -101,6 +101,8 @@ refused = [
     '|pfunction.SIGNATURE.PARAMETERS| = 4',
 ]
 for index, (_, _, left, right) in enumerate(refused_pairs):
+    # ENUM271 admits these mixed numeric pairs; Boolean pairs stay refused.
+    expected = {1: '(PINT $(-1))', 3: '(PINT 1)'}.get(index, 'eps')
     refused += [
         f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
         f'pdefault_{index}.ORIGIN = PORIGIN n_unit pcpath_{index}',
@@ -108,8 +110,8 @@ for index, (_, _, left, right) in enumerate(refused_pairs):
         f'~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_{index}.ORIGIN)',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 0])) = ({left})',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 1])) = ({right})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = {expected}',
+        f'{"~" if expected == "eps" else ""}$lossy_optional_integer_deferred(S,pfunction,{index})',
     ]
 
 CASES = {
