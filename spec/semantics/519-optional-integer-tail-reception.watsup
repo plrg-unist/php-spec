@@ -497,6 +497,12 @@ def $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadat
   -- if $coerce_number(PSTRING n*) = COERCED (NINT i_child) false
   -- if i = $(-i_child)
   -- if $long_range(i)
+def $lossy_optional_integer_default_in(plenv, NExprUnaryMinus expression metadata) = (i)
+  -- if $lossy_optional_integer_quiet_shape(expression)
+  -- if $lossy_optional_integer_special(plenv, expression) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED (NINT i_child) false
+  -- if i = $(-i_child)
+  -- if $long_range(i)
 def $lossy_optional_integer_default_in(plenv, NExprTernary expression_cond expression_true expression_false metadata) = (i)
   -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
   -- if $lossy_optional_integer_default_in(plenv, expression_true) = (i)

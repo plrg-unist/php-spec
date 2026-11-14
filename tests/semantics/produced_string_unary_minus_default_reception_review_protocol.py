@@ -170,9 +170,10 @@ for expression, result in produced:
     ])
 for expression in [binary('Concat', string('2tail'), textcast(intcast(zero))),
                    binary('Concat', string('bad'), textcast(intcast(base))),
-                   textcast(binary('Identical', base, one)),
-                   constant('true'), constant('false'), constant('null')]:
+                   textcast(binary('Identical', base, one))]:
     derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", expression)}) = eps')
+for name, integer in [('true', '$(-1)'), ('false', '0'), ('null', '0')]:
+    derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryMinus", constant(name))}) = (NINT {integer})')
 for expression, _ in produced[:6]:
     derived.append(f'$lossy_optional_integer_numeric($plempty(false),{node("NExprUnaryPlus", expression)}) = eps')
 literal = node('NExprUnaryMinus', string('2.5'))

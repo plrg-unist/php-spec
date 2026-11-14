@@ -183,8 +183,10 @@ for child, number in [(string('2.0'), 'NFLOAT $hex_bits("c000000000000000",0)'),
         f'$lossy_optional_integer_default_in($plempty(false),{parent}) = eps',
         f'$lossy_optional_integer_numeric($plempty(false),{parent}) = ({number})',
     ])
-for child in [string('2tail'), string('bad'), string(''), constant('true'), constant('null')]:
+for child in [string('2tail'), string('bad'), string('')]:
     derived.append(f'$lossy_optional_integer_default_in($plempty(false),{negate(child)}) = eps')
+for name, integer in [('true', '$(-1)'), ('null', '0')]:
+    derived.append(f'$lossy_optional_integer_default_in($plempty(false),{negate(constant(name))}) = ({integer})')
 inner = negate(string('2'))
 cast_inner = node('NExprCastString', inner)
 concat = binary('Concat', cast_inner, string('1'))

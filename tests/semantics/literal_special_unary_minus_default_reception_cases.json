@@ -1,0 +1,34 @@
+[
+  {
+    "id": "literal-special-unary-minus-stored-cold-warm",
+    "source": "<?php\nfunction storedSpecialWarning248($errno, $message, $file, $line) {\n    global $xStored248;\n    echo 'warning:', $message, '|';\n    $xStored248 = 3.5;\n}\nfunction storedSpecialDefaults248(int $first, int &$truth = -TrUe, int $falsity = -FALSE, int $nullish = -null, int $nested = -(-true), int $wrapped = +(-false)) {\n    echo 'body:', $first, ':', $truth, ':', $falsity, ':', $nullish, ':', $nested, ':', $wrapped, '|';\n    $truth = 9;\n}\nset_error_handler('storedSpecialWarning248');\n$xStored248 = 1.5;\nstoredSpecialDefaults248($xStored248);\necho 'cold:x=', $xStored248, '|';\n$xStored248 = 1.5;\nstoredSpecialDefaults248($xStored248);\necho 'warm:x=', $xStored248, '|';\n",
+    "source_sha256": "34b052a20281ea3c788dd69cc80fed1579d1ad9bdac924994c0f134826a6f4d5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Quiet true/false/null negation supplies actual stored PINT-1/0 defaults through case-folded literal names and nested/integer-plus compositions. Cold/warm omitted BYREF cells remain private through a preceding supplied precision callback; immutable stored defaults acquire no runtime cache."
+  },
+  {
+    "id": "literal-special-unary-minus-alias-composition-reentry",
+    "source": "<?php\nnamespace StoredSpecialAlias248;\nuse const E_WARNING as Base248;\nuse const E_ERROR as One248;\nfunction warning248($errno, $message, $file, $line) {\n    global $xAlias248;\n    echo 'warning:', $message, '|';\n    defaults248(2);\n    $xAlias248 = 3.5;\n}\nfunction defaults248(int $first, int &$truth = -true, int $joined = (int)((string)(-true) . (string)(int)(Base248 - One248)), int $nullish = -null, int $last = 7) {\n    echo 'body:', $first, ':', $truth, ':', $joined, ':', $nullish, ':', $last, '|';\n    $truth = 9;\n}\n\\set_error_handler('StoredSpecialAlias248\\\\warning248');\n$xAlias248 = 1.5;\n$lastAlias248 = 8;\ndefaults248(last: $lastAlias248, first: $xAlias248);\necho 'outer:x=', $xAlias248, '|';\n",
+    "source_sha256": "4fa404ed8775f64b531ab735be8decdafad2d3dadaa9924f9509d12291cb6b99",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV and named warning reentry retain separate stored compiled PINT-1/0 and deferred raw PINT-11 cache authority. The new integer certificate intentionally composes through CASTSTRING/CONCAT/CASTINT; wrong source, pool type or ENV cannot substitute authority."
+  },
+  {
+    "id": "literal-special-unary-minus-direct-plus-control",
+    "source": "<?php\nfunction warning248($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults248(int $first, int $later = +true) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning248');\n$x248 = 1.5;\ntry { defaults248($x248); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "98e8f68692451cad8233bc5eead3460bd6c14d0cb2c5732c5fe42539dccb4cdd",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Direct literal Boolean UnaryPlus remains outside the new UnaryMinus arm. Integer UnaryPlus around an already-certified result is a separate admitted composition."
+  },
+  {
+    "id": "literal-special-unary-minus-startup-boolean-control",
+    "source": "<?php\nfunction warning248($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults248(int $first, int $later = -PHP_ZTS) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning248');\n$x248 = 1.5;\ntry { defaults248($x248); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "3705d8078d58adec1011e98eed5c5343c09f0e6bcfffdb3133b2f28ddbb906f5",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A registered startup Boolean is not the literal-name special helper. Its deferred numeric certification remains partial rather than being silently extended from true/false/null."
+  }
+]
