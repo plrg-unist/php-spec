@@ -87,8 +87,8 @@ $string_read_raw_known_base(S_shorthand_integer,porigin_base,pvalue_base)
 S_bad_integer_read = S_capture[.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_integer_string 18 false) :: pcode.EXPRESSIONS]]]
 ~$string_read_raw_truth(S_bad_integer_read,porigin_left,PINT 0)
 S_unary_integer = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base (NExprTernary (NExprUnaryPlus expression_integer_left metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_right) metadata_right) metadata)) :: (PCOCCURRENCE pcpath_left (NExprUnaryPlus expression_integer_left metadata_cond)) :: pcunit.OCCURRENCES]]]
-~$string_read_raw_truth(S_unary_integer,porigin_left,PINT 0)
-~$string_read_raw_known_base(S_unary_integer,porigin_base,pvalue_base)
+$string_read_raw_truth(S_unary_integer,porigin_left,PINT 0)
+$string_read_raw_known_base(S_unary_integer,porigin_base,pvalue_base)
 ''')
     def string(raw):
         return 'NScalarString (BYTES "' + base64.b64encode(raw).decode() + '")', 'PSTRING ([' + ','.join(map(str, raw)) + '])'
