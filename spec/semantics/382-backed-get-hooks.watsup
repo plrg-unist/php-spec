@@ -41,6 +41,11 @@ def $hook_body_backed(SEQUENCE statement*, ptbytes) = (~$generator_statements(st
 def $hook_body_backed(expression, ptbytes) = (~$generator_syntax(expression) /\ $hook_uses_node(expression, ptbytes))
 def $hook_body_backed(phpType39, ptbytes) = false -- otherwise
 
+;; This short reference producer returns only its actual literal backing field.
+dec $hook_short_reference_body(expression, ptbytes) : bool
+def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = ($base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes)
+def $hook_short_reference_body(expression, ptbytes) = false -- otherwise
+
 dec $hook_name(ptbytes) : ptbytes
 def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
 dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
@@ -476,6 +481,14 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF false})[.RETURNREF = false][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, true, metadata, pchheader)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if ppropertydesc.TYPE = eps /\ pchheader.KIND = "class" /\ pchheader.PARENT = eps /\ ~pchheader.READONLY
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+  -- if $hook_parameter_facts(metadata) = [false]
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF true})[.RETURNREF = true][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $pphook_body_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, b, metadata, pchheader) = P_body
@@ -496,6 +509,13 @@ def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction[.ORIGIN = $origi
   -- if $origin_node(S.SOURCES, pfunction.ORIGIN) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN false) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata)
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+
+dec $property_hook_reference_expression_return(pstate, porigin, int) : expression?
+def $function_body_tasks(S, pfunction) = $arrow_tasks(pfunction, expression, z)
+  -- if $function_at(S.FUNCTIONS, pfunction.ORIGIN) = (pfunction)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF true}
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+  -- if $property_hook_reference_expression_return(S, pfunction.ORIGIN, z) = (expression)
 
 ;; Source-derived hook identity is separate from ordinary methods and __get.
 dec $hook_property_at(ppropertydesc*, porigin) : ppropertydesc?
@@ -1757,6 +1777,26 @@ def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
   -- if $ptlc($base64(text_get)) = $ptascii("get")
   -- if $hook_body_backed(SEQUENCE statement*, ppropertydesc.NAME)
+;; Short reference getters currently use a raw parentless untyped declaration.
+def $property_hook_reference_decl(S, ppropertydesc) = true
+  -- if ppropertydesc.TYPE = eps
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ pclassdesc.PARENT = eps /\ ~pclassdesc.READONLY
+  -- if $origin_node(S.SOURCES, pclassdesc.ORIGIN) = (NStmtClass phpType14_owner phpType24_owner phpType3_owner ABSENT phpType42_owner phpType23_owner metadata_owner)
+  -- if $trait_plan(S, pclassdesc).TRAITS = eps
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook])) metadata)
+  -- if flags <- [0,1]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_parameter_facts(metadata_hook) = [false]
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
 def $property_hook_reference_decl(S, ppropertydesc) = false -- otherwise
 
 ;; The implicit return belongs to the authentic expression child, not a
@@ -1800,6 +1840,58 @@ def $typed_return_task_valid(S, z) = true
   -- if $property_hook_expression_return(S, ppropertyhook.HOOK, z) = (expression)
 def $typed_return_source(S, porigin, z) = true
   -- if $property_hook_expression_return(S, porigin, z) = (expression)
+
+;; A hook's implicit reference return owns its real source and compiler marker.
+def $property_hook_reference_expression_return(S, PORIGIN n pcpath_hook, z) = (expression)
+  -- if $(|pcpath_hook| >= 2)
+  -- if pcpath_group = pcpath_hook[0:$nabs($( |pcpath_hook| - 2))]
+  -- if pcpath_hook = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
+  -- if porigin_property = PORIGIN n (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $property_declaring_class(S.CLASSES, porigin_property) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if $hook_property_at(pclassdesc.PROPERTIES, porigin_property) = (ppropertydesc)
+  -- if $property_hook_reference_decl(S, ppropertydesc)
+  -- if $property_hook_origin(S, ppropertydesc) = (PORIGIN n pcpath_hook)
+  -- if $function_at(S.FUNCTIONS, PORIGIN n pcpath_hook) = (pfunction)
+  -- if pfunction.NAME = pclassdesc.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF true}
+  -- if pfunction.DEFAULTS = eps /\ ~pfunction.EARLY
+  -- if pfunction.BODY = pcpath_hook ++ [PCFIELD 5] /\ pfunction.CODE.UNIT = n
+  -- if $origin_node(S.SOURCES, PORIGIN n pfunction.BODY) = (expression)
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_hook) = (NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook)
+  -- if $ptlc($base64(text_get)) = $ptascii("get") /\ $hook_parameter_facts(metadata_hook) = [false]
+  -- if $(z > 0 /\ z >= $source_line(metadata_hook) /\ z <= $source_end_line(metadata_hook))
+  -- if pfunction.LINE = $nabs($source_line(metadata_hook)) /\ pfunction.ENDLINE = $nabs($source_end_line(metadata_hook))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = ((z, false))
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+def $property_hook_reference_expression_return(S, porigin, z) = eps -- otherwise
+
+def $reference_return_source(S, z) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if pcallcontext.TARGET = PROPERTY_HOOK_TARGET ppropertyhook
+  -- if pcallcontext.FUNCTION = ppropertyhook.HOOK /\ S.ORIGIN = (ppropertyhook.HOOK)
+  -- if $property_hook_function(S, ppropertyhook) = (pfunction)
+  -- if pfunction.SIGNATURE = {PARAMETERS eps, RETURNS eps, BYREF true}
+  -- if $property_hook_reference_expression_return(S, ppropertyhook.HOOK, z) = (expression)
+def $reference_return_fetch_valid(S, z) = true
+  -- if $reference_return_source(S, z)
+  -- if S.CURRENT = (pcallcontext)
+  -- if $property_hook_reference_expression_return(S, pcallcontext.FUNCTION, z) = (expression)
+  -- if $call_reference_variable(expression)
+def $arrow_context(S) = true
+  -- if S.CURRENT = (pcallcontext)
+  -- if S.ORIGIN = (pcallcontext.FUNCTION)
+  -- if $function_at(S.FUNCTIONS, pcallcontext.FUNCTION) = (pfunction)
+  -- if $arrow_line(pfunction.CODE.EXPRESSIONS, pfunction.BODY) = (z)
+  -- if $property_hook_reference_expression_return(S, pcallcontext.FUNCTION, z) = (expression)
+  -- if $reference_return_source(S, z)
+def $reference_return_notice(S, poperand) = false
+  -- if $property_hook_expression_context(S) /\ $arrow_context(S)
+def $reference_arrow_boundary(S, porigin, z) = true
+  -- if $reference_returning(S) /\ $call_current_valid(S)
+  -- if $reference_return_source(S[.ORIGIN = (porigin)], z)
+  -- if $property_hook_reference_expression_return(S, porigin, z) = (expression)
 
 ;; The site is the actual read; the result tail certifies this internal call.
 dec $property_hook_literal_site(pstate, porigin) : bool
