@@ -1,0 +1,55 @@
+[
+  {
+    "id": "weak-request-numeric-strings-both-formals-float-callable-private-cell",
+    "source": "<?php\nnamespace ReviewCallableFloat87 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|FLOAT $saved,FlOaT|CaLlAbLe &$changed):FLOAT|CALLABLE{echo 'M:',(int)($saved===17.0),':',(int)($changed===19.0),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===19.0),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$tail='7';$x='1'.$tail;unset($tail);$snapshot=$x;$tail='9';$y='1'.$tail;unset($tail);$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallableFloat87\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='19'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='19'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='19'),';';\n}\n",
+    "source_sha256": "d2b31d915b4a938dc95d0c151d9c77da2693c2fce32ef9ad5a7d21b880c48f1a",
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_int_callable_producer_reference_notice_review_cases.json:independent-float-union-quiet-coercion-and-priority-variants",
+    "formal_kinds": [
+      "float",
+      "float"
+    ],
+    "caller_strict": false,
+    "callable_name": "\\ReviewCallableFloat87\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "formal_orders": [
+      [
+        "callable",
+        "float"
+      ],
+      [
+        "float",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "float",
+      "callable"
+    ]
+  },
+  {
+    "id": "strict-request-numeric-string-float-callable-receive-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableFloat87\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|FLOAT &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$tail='7';$x='1'.$tail;unset($tail);$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableFloat87\\ReceivePriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "f6e3c694be37726b05b34350222ac317189fca776c30d525305c047547f01c3f",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_int_callable_producer_reference_notice_review_cases.json:independent-float-union-quiet-coercion-and-priority-variants"
+  },
+  {
+    "id": "strict-float-callable-byref-numeric-string-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallableFloat87\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|FLOAT &$saved):FLOAT|CALLABLE{echo 'M;';$saved='19';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=19.0;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallableFloat87\\ReturnPriority\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "632c00c4f410d09519d86df7670a9c6f16c9fe09538a889c8529464a94796d2e",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": "tests/semantics/cv_int_callable_producer_reference_notice_review_cases.json:independent-float-union-quiet-coercion-and-priority-variants"
+  }
+]
