@@ -79,12 +79,13 @@ def conditions(program, path, index):
                        '$string_read_runtime_value(' + state + ', porigin_operator) = eps',
                        '$string_read_request_base_saved(' + state + ', pstringread) = eps']
     if index == 0:
-        for value in ('PUNDEFINED', 'PSTRING ($ptascii("1"))', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))',
+        for value in ('PUNDEFINED', 'PSTRING ($ptascii("1"))',
                       'PARRAY 0', 'POBJECT 0', 'PINT 9223372036854775808', 'PINT $(-9223372036854775809)'):
             for operator in ('CASTBOOL', 'CASTINT', 'CASTFLOAT'):
                 guards += ['~$string_read_runtime_cast_quiet(' + operator + ', ' + value + ')']
         for operator in ('CASTBOOL', 'CASTINT', 'CASTFLOAT'):
-            guards += ['$string_read_runtime_cast_quiet(' + operator + ', PNULL)']
+            guards += ['$string_read_runtime_cast_quiet(' + operator + ', PNULL)',
+                       '$string_read_runtime_cast_quiet(' + operator + ', PSTRING_CARRIER INTERNED_STRING ($ptascii("1")))']
         for operator in ('CASTSTRING', 'CASTARRAY', 'CASTOBJECT'):
             guards += ['~$string_read_runtime_cast_quiet(' + operator + ', PBOOL true)']
         for number, (name, fixture, original, target, node, expected) in enumerate(CONTROLS):
@@ -188,6 +189,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent demanded cast/child source, CODE/line/precision, missing pools, ignored own nonfolded pools, stale RESULT and five nonnormal completion refusals. Genuine NaN/invalid/forged type and owning leaf substitutions refuse. Thirty-three checked-source controls retain their actual BUDGET state before explicitly derived NORMAL fixtures check all nine BOOL/INT/FLOAT combinations, signed zero, fractions, infinities, adjacent signed64 float limits, nested casts and excluded string/variable/array producers. Suppressed infinity-to-int full-state equality still refuses the pure quiet certificate through its RANGEWARNING guard. Runtime FLOAT VALUE retains BYTE eps. Existing REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining are inherited unchanged. These fixtures add source0/native0, with no source/native replay, live-state normalization, formatter/compiler/schema/API/kernel/owner changes or held-boundary expansion.')
+    report['scope'] = ('Exact author prefixes plus independent demanded cast/child source, CODE/line/precision, missing pools, ignored own nonfolded pools, stale RESULT and five nonnormal completion refusals. Genuine NaN/invalid/forged type and owning leaf substitutions refuse. Thirty-three checked-source controls retain their actual BUDGET state before explicitly derived NORMAL fixtures check all nine BOOL/INT/FLOAT combinations, signed zero, fractions, infinities, adjacent signed64 float limits, nested casts and excluded nonliteral string/variable/array producers. Exact canonical INTERNED strings now pass all three primitive cast helpers; raw PSTRING and REQUEST inputs stay refused. Suppressed infinity-to-int full-state equality still refuses the pure quiet certificate through its RANGEWARNING guard. Runtime FLOAT VALUE retains BYTE eps. Existing REQUEST owners, supplied Throwable, bounds, cleanup and budget rejoining are inherited unchanged. These fixtures add source0/native0, with no source/native replay, live-state normalization, formatter/compiler/schema/API/kernel/owner changes or held-boundary expansion.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

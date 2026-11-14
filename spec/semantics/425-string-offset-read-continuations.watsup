@@ -1001,6 +1001,9 @@ def $string_read_runtime_cast_quiet(pcast, PFLOAT n_bits) = true
   -- if pcast <- [CASTBOOL, CASTFLOAT]
 def $string_read_runtime_cast_quiet(CASTINT, PFLOAT n_bits) = true
   -- if $float_long(n_bits, false) = (i, eps)
+def $string_read_runtime_cast_quiet(pcast, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT]
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
 def $string_read_runtime_cast_quiet(pcast, pvalue) = false -- otherwise
 def $string_read_runtime_integer_quiet(PNULL) = true
 def $string_read_runtime_integer_quiet(PBOOL b) = true
