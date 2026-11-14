@@ -1,0 +1,34 @@
+[
+  {
+    "id": "deferred-float-plus-wrapper-raw-chain",
+    "source": "<?php\nfunction rawPlus253($double = +(+(-(float)(+(E_WARNING === E_ERROR)))), $mixed = -(+(+(-(float)(+(E_WARNING === E_ERROR))))), $outer = +(-(+(+(-(float)(+(E_WARNING === E_ERROR)))))), $folded = +((float)'-0.0') * (E_WARNING - E_ERROR)) {\n    echo 'raw:', $double, ':', $mixed, ':', $outer, ':', $folded, '|';\n}\nfunction ordinaryPlus253($x) { return +$x; }\nrawPlus253();\nrawPlus253();\necho 'ordinary:', ordinaryPlus253(-0.0), '|';\n",
+    "source_sha256": "f2de620c1db601e5c46cf5e63c030ba51b361589e143937a4d5d3f9eb3ece32d",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Two Plus and mixed Minus/Plus chains preserve actual deferred +0/-0/+0 through cold/warm raw caches. Folded -0 and ordinary runtime +(-0) retain their separate phase."
+  },
+  {
+    "id": "deferred-float-plus-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace PlusWrapper253;\nuse const E_WARNING as Base253;\nuse const E_ERROR as One253;\nfunction warning253($errno, $message, $file, $line) {\n    global $x253;\n    echo 'warning:', $message, '|';\n    defaults253(2);\n    $x253 = 3.5;\n}\nfunction defaults253(int $first, int &$zero = +(+(-(float)(+(Base253 === One253)))), int $last = 7) {\n    echo 'body:', $first, ':', $zero, ':', $last, '|';\n    $zero = 9;\n}\n\\set_error_handler('PlusWrapper253\\\\warning253');\n$x253 = 1.5;\n$last253 = 8;\ndefaults253(last: $last253, first: $x253);\necho 'outer:x=', $x253, '|';\n",
+    "source_sha256": "44a425d92d417a8b290ce6ca63d626ee3e02d267c0da9088803dea04e36b03a4",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported declaration ENV and named-hole warning reentry retain raw PFLOAT+0 before private BYREF int0 reception; mutation leaves the raw cache unchanged."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-plus-parent-control",
+    "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = +(+(-(float)(+(E_WARNING === E_ERROR))))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
+    "source_sha256": "d73676bd2bd0bea55decfa7f5e659beb13c17c156b1b3e49f79ac585312b76ce",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "As of253, an enclosing emitted Plus consumes authenticated phase-aware PFLOAT children. Its byte-identical252 native is reused without replay; prior252 Unsupported retains its historical cut."
+  },
+  {
+    "id": "deferred-float-minus-wrapper-arithmetic-parent-control",
+    "source": "<?php\nfunction warning252($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults252(int $first, int $later = -(+(-(float)(+(E_WARNING === E_ERROR)))) + (E_WARNING - E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning252');\n$x252 = 1.5;\ndefaults252($x252);\n",
+    "source_sha256": "200f0cdef1dd4953927f740509a10ab0b3c37ae2e1cd33c89d37c0f82b99f48b",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Arithmetic enclosing a phase-sensitive child remains outside exact Minus-only recursion even when final numerical equality hides a different child sign."
+  }
+]
