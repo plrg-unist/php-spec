@@ -109,7 +109,7 @@ if __name__ == '__main__':
         ('compiled_integer', '1===' + one, None),
         ('compiled_boolean', 'true===' + one, None),
         ('null', 'null===' + one, None),
-        ('string', "'1'===" + one, None),
+        ('string', "'1'===" + one, False),
         ('array', '[]===' + one, None),
         ('object', '(new stdClass())===' + one, None),
         ('nan', 'NAN===' + one, None),
@@ -150,6 +150,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET Boolean-result controls. Fourteen genuine checked-source states distinguish equal string bytes or truth from strict scalar identity, reverse operand types and nested NOT/identity; compiled PINT/PBOOL, NULL/string/array/object, NaN and runtime FLOAT producers retain refusal. Signed-zero PFLOAT substitution stays admitted at the existing compiler-output boundary. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
+    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET Boolean-result controls. Fourteen genuine checked-source states distinguish equal string bytes or truth from strict scalar identity, reverse operand types and nested NOT/identity; compiled PINT/PBOOL, NULL/array/object, NaN and runtime FLOAT producers retain refusal; the exact literal-string comparison is admitted. Signed-zero PFLOAT substitution stays admitted at the existing compiler-output boundary. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

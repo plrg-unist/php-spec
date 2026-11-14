@@ -130,7 +130,7 @@ if __name__ == '__main__':
         ('compiled_integer', '1 xor ' + one, None),
         ('compiled_boolean', 'true xor ' + one, None),
         ('null', 'null xor ' + one, None),
-        ('string', "'1' xor " + zero, None),
+        ('string', "'1' xor " + zero, 'PBOOL true'),
         ('array', '[] xor ' + one, None),
         ('object', '(new stdClass()) xor ' + zero, None),
         ('nan_left', 'NAN xor ' + one, None),
@@ -171,6 +171,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, typed/invalid/NaN leaf and stale-result controls. Every XOR tree refuses BUDGET/Unsupported/source-pending/exited certificates, including the RHSfalse coincidence where the unchanged51 binary_apply returns only left truth. Twenty-four checked-source compiled states retain BUDGET refusal before explicitly derived NORMAL fixture states check16 admitted truth/type/nesting results and8 refused wider leaves/producers; no live state is normalized. All four Boolean truth pairs, signed zero/infinity, both mixed-type directions and nested XOR/NOT/greater/spaceship remain distinct. Signed-zero substitution retains the compiler-pool trust boundary. Fixture source0/native0; no51/compiler/schema/API/387/kernel/owner changes or source/native replay.')
+    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, typed/invalid/NaN leaf and stale-result controls. Every XOR tree refuses BUDGET/Unsupported/source-pending/exited certificates, including the RHSfalse coincidence where the unchanged51 binary_apply returns only left truth. Twenty-four checked-source compiled states retain BUDGET refusal before explicitly derived NORMAL fixture states check17 admitted truth/type/nesting results and7 refused wider leaves/producers; no live state is normalized. All four Boolean truth pairs, signed zero/infinity, both mixed-type directions and nested XOR/NOT/greater/spaceship remain distinct. Signed-zero substitution retains the compiler-pool trust boundary. Fixture source0/native0; no51/compiler/schema/API/387/kernel/owner changes or source/native replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

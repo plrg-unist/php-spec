@@ -135,7 +135,7 @@ if __name__ == '__main__':
         ('compiled_integer', '1<(+' + one + ')', None),
         ('compiled_boolean', 'true<=' + one, None),
         ('null', 'null<=' + one, None),
-        ('string', "'1'>" + zero, None),
+        ('string', "'1'>" + zero, 'PBOOL true'),
         ('array', '[]<=>' + one, None),
         ('object', '(new stdClass())>' + zero, None),
         ('nan', 'NAN<=>' + one, None),
@@ -176,6 +176,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET result controls. Twenty-nine genuine checked-source states distinguish all five ordering operators, both operand directions, Boolean truth versus numeric order, signed zero/infinities, integer-to-double rounding near2^53, exact integer order and nested spaceship results. Compiled PINT/PBOOL, NULL/string/array/object, NaN and runtime FLOAT producers retain refusal. Signed-zero PFLOAT substitution stays admitted at the existing compiler-output boundary. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
+    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET result controls. Twenty-nine genuine checked-source states distinguish all five ordering operators, both operand directions, Boolean truth versus numeric order, signed zero/infinities, integer-to-double rounding near2^53, exact integer order and nested spaceship results. Compiled PINT/PBOOL, NULL/array/object, NaN and runtime FLOAT producers retain refusal; the exact literal-string comparison is admitted. Signed-zero PFLOAT substitution stays admitted at the existing compiler-output boundary. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

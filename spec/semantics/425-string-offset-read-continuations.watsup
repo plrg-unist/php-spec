@@ -501,6 +501,16 @@ def $string_read_runtime_value(S, porigin) = (PFLOAT n_bits)
   -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
   -- if $compiled_identity_value(S, porigin) = (PFLOAT n_bits)
   -- if $number_bool(NFLOAT n_bits) = (b, false)
+;; Literal string operands retain their authenticated interned header.
+def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
+  -- if n_bytes* = $base64(text)
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
+  -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL (~b))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBooleanNot expression metadata)
   -- if $code_at(S.CODE, n) = (pcode)

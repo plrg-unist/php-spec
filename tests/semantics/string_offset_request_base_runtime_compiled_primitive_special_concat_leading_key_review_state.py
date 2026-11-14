@@ -163,7 +163,7 @@ if __name__ == '__main__':
                    for path, node in occurrences.expected(statement, [('INDEX', index)]) if node['node'].startswith(('Expr_', 'Scalar_'))]
         target, node = min(targets, key=lambda item: len(item[0]))
         CONTROLS.append((name, checked[name]['fixture'], paths[name], target, node, expected,
-                         None if name == 'raw_string' else expected, name.endswith('_null')))
+                         'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))' if name == 'raw_string' else expected, name.endswith('_null')))
     watched = {Path(module.__file__).resolve() for module in tuple(sys.modules.values()) if getattr(module, '__file__', None)
                and Path(module.__file__).resolve().parent == Path(__file__).resolve().parent} | set(paths.values())
     before = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}

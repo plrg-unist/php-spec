@@ -48,6 +48,7 @@ def conditions(program, path, index):
         for number, control in enumerate(CONTROLS):
             name, fixture, path, target, node, result, left, right, left_number, right_number, kernel, output = control
             state, origin = 'S_peer_div_control_' + str(number), 'porigin_peer_div_control_' + str(number)
+            actual_left = 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))' if name == 'string' else left
             guards += [state + ' = $php_run(' + fixture + ', 0, ' + json.dumps(base64.b64encode(bytes(path)).decode()) + ')',
                        state + '.COMPLETION = BUDGET', origin + ' = PORIGIN 0 ' + occurrences.path_term(target),
                        '$origin_node(' + state + '.SOURCES, ' + origin + ') = (' + occurrences.node_term(node) + ')',
@@ -56,7 +57,7 @@ def conditions(program, path, index):
                        '$code_expression(pcode_peer_div_control_' + str(number) + '.EXPRESSIONS, pcpath_peer_div_control_' + str(number) + ') = ((1, false))',
                        '$compiled_read(' + state + ', ' + origin + ') = eps',
                        '$compiled_precision(' + state + ', (' + origin + ')) = (14)',
-                       '$coerce_number(' + left + ') = COERCED (' + left_number + ') false',
+                       '$coerce_number(' + actual_left + ') = COERCED (' + left_number + ') false',
                        '$coerce_number(' + right + ') = COERCED (' + right_number + ') false',
                        '$number_binary(DIVIDE, ' + left_number + ', ' + right_number + ') = ' + kernel,
                        '$string_read_runtime_value(' + state + ', ' + origin + ') = ' +
@@ -64,7 +65,7 @@ def conditions(program, path, index):
                        '$string_read_runtime_bytes(' + state + ', ' + origin + ') = ' +
                        ('eps' if result is None else '($ptascii(' + json.dumps(str(result)) + '))'),
                        state + '_result99 = ' + state + '[.RESULT = KNOWN (PINT 99)]',
-                       '$binary_apply(' + state + '_result99, DIVIDE, ' + left + ', ' + right + ', 1) = ' +
+                       '$binary_apply(' + state + '_result99, DIVIDE, ' + actual_left + ', ' + right + ', 1) = ' +
                        state + '_result99' + ('' if name == 'zero' else '[.RESULT = KNOWN (' + output + ')]'),
                        '$string_read_runtime_value(' + state + '_result99, ' + origin + ') = ' +
                        ('eps' if result is None else '(PINT ' + integer(result) + ')')]
@@ -78,7 +79,7 @@ def conditions(program, path, index):
                 guards += ['$origin_child((' + origin + '), [PCFIELD 0]) = (' + child + ')',
                            '$compiled_read(' + state + ', ' + child + ') = (' + left + ')',
                            '$string_read_runtime_value(' + state + ', ' + child + ') = ' +
-                           ('(PFLOAT 0)' if name == 'float' else 'eps')]
+                           ('(PFLOAT 0)' if name == 'float' else '(' + actual_left + ')' if name == 'string' else 'eps')]
     return checks + guards, derived + len(guards)
 
 
@@ -98,7 +99,7 @@ if __name__ == '__main__':
         ('float', '0.0/' + one, None, 'PFLOAT 0', 'PBOOL true', 'NFLOAT 0', 'NINT 1', 'NUM (NFLOAT 0)', 'PFLOAT 0'),
         ('compiled', '1/' + one, None, 'PINT 1', 'PBOOL true', 'NINT 1', 'NINT 1', 'NUM (NINT 1)', 'PINT 1'),
         ('null', 'null/' + one, None, 'PNULL', 'PBOOL true', 'NINT 0', 'NINT 1', 'NUM (NINT 0)', 'PINT 0'),
-        ('string', "'1'/" + one, None, 'PSTRING ($ptascii("1"))', 'PBOOL true', 'NINT 1', 'NINT 1', 'NUM (NINT 1)', 'PINT 1'),
+        ('string', "'1'/" + one, 1, 'PSTRING ($ptascii("1"))', 'PBOOL true', 'NINT 1', 'NINT 1', 'NUM (NINT 1)', 'PINT 1'),
         ('minimum', minimum + '/' + one, -9223372036854775808, min_value, 'PBOOL true', min_number, 'NINT 1', 'NUM (' + min_number + ')', min_value),
         ('minimum_identity', minimum + '/' + minimum, 1, min_value, min_value, min_number, min_number, 'NUM (NINT 1)', 'PINT 1'),
         ('integer_zero', '(-' + zero + ')/' + one, 0, 'PINT 0', 'PBOOL true', 'NINT 0', 'NINT 1', 'NUM (NINT 0)', 'PINT 0'),
@@ -136,6 +137,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent emitted-source/CODE/precision and BUDGET RESULT99 controls. Ten genuine checked-source states cover stale nonnormal zero-divisor refusal, fractional/MIN-overflow FLOAT, FLOAT/compiled-PINT/NULL/string leaf refusal, exact MIN identity and integer zero. Pure numeric results remain distinct from NORMAL-gated throw no-ops; source0/native0, no compiler/schema/API/owner/387 change or accepted replay.')
+    report['scope'] = ('Exact author prefixes plus independent emitted-source/CODE/precision and BUDGET RESULT99 controls. Ten genuine checked-source states cover stale nonnormal zero-divisor refusal, fractional/MIN-overflow FLOAT, FLOAT/compiled-PINT/NULL leaf refusal, literal-INTERNED string division, exact MIN identity and integer zero. Pure numeric results remain distinct from NORMAL-gated throw no-ops; source0/native0, no compiler/schema/API/owner/387 change or accepted replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
