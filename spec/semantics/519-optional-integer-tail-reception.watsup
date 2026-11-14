@@ -931,6 +931,18 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b_left)
   -- if b_left =/= b_or
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL (b_left =/= b_right))
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY LOGICALXOR expression_left expression_right
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b_left)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = eps -- otherwise
 
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool

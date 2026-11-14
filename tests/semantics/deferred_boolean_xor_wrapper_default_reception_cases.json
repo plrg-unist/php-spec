@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-boolean-xor-wrapper-raw-phases",
+    "source": "<?php\nfunction rawBooleanXor266($a = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) xor (bool)(+(-((float)(+(E_WARNING === E_ERROR)))))), $b = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) xor !(+(-((float)(+(E_WARNING === E_ERROR)))))), $c = (!(+(-((float)(+(E_WARNING === E_ERROR))))) xor (bool)(+(-((float)(+(E_WARNING === E_ERROR)))))), $d = (!(+(-((float)(+(E_WARNING === E_ERROR))))) xor !(+(-((float)(+(E_WARNING === E_ERROR))))))) {\n    echo 'raw:', $a === false, ':', $b === true, ':', $c === true, ':', $d === false, '|';\n}\nrawBooleanXor266();\nrawBooleanXor266();\n",
+    "expected_model": "normal",
+    "purpose": "Actual Boolean XOR covers all four truth-table combinations through cold/warm raw caches.",
+    "expected_normal_stdout": "raw:1:1:1:1|raw:1:1:1:1|",
+    "source_sha256": "61b0292479645ccfa50ee285af3d69b123d1a3b191a3d49e030ce86de0c7bfe8",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "deferred-boolean-xor-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanXor266;\nuse const E_WARNING as Base266;\nuse const E_ERROR as One266;\nfunction warning266($errno, $message, $file, $line) {\n    global $x266;\n    echo 'warning:', $message, '|';\n    defaults266(2);\n    $x266 = 3.5;\n}\nfunction defaults266(int $first, int &$identity = (int)(!(+(-((float)(+(Base266 === One266))))) xor (bool)(+(-((float)(+(Base266 === One266)))))), int &$negated = (int)(!(+(-((float)(+(Base266 === One266))))) xor !(+(-((float)(+(Base266 === One266)))))), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('BooleanXor266\\\\warning266');\n$x266 = 1.5;\n$last266 = 8;\ndefaults266(last: $last266, first: $x266);\necho 'outer:x=', $x266, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Both demanded actual Boolean children feed outer INT parents, imported aliases, two BYREF named holes and first-CV Warning reentry with raw PINT1/0 caches.",
+    "source_sha256": "d05a70a0db7c9819a5f021aa88bdba9a88e8d42b74a08aa288b30ca624b6441d",
+    "model_timeout_seconds": 360
+  },
+  {
+    "id": "deferred-boolean-xor-wrapper-demanded-integer-control",
+    "source": "<?php\nfunction demandedIntegerXor266(int &$value = (int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) xor 7)) {\n    echo 'ordinary:', $value, '|';\n}\ndemandedIntegerXor266();\n",
+    "expected_model": "normal",
+    "purpose": "Existing ordinary execution supports integer XOR truth; this normal control must retain an absent PBOOL-only deferred receipt.",
+    "source_sha256": "68f2df83daa1140a46533700da8be9ff0cdfaa2fd9e22d256f5c6af0cb09fce8",
+    "model_timeout_seconds": 360
+  }
+]
