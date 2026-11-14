@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Folded one-byte STRING AND/OR/XOR originals and separate native-once, saved-source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-string-bitwise-truth-base-initial-raw-leading-key-author29-20261115/`. The [review](../coverage/semantics/string-offset-string-bitwise-truth-base-initial-raw-leading-key-review.json) retains the whole-source patch/manifest and accepted actual/SAME tuple.
+
 FQN stdClass/callable producer originals and separate native-once, source, fixture and prelaw cuts remain in `../php-spec-evidence-archive/cv-fqn-stdclass-callable-union-producer-reference-notice-93/`. The [review](../coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json) retains their original identities and accepted actual/SAME tuple.
 
 Folded one-byte STRING BitwiseNot native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-string-bitnot-truth-base-initial-raw-leading-key-{author29,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-string-bitnot-truth-base-initial-raw-leading-key-review.json) retains the original failure/unrun tail and accepted actual/SAME tuple.

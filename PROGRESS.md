@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Folded one-byte STRING AND/OR/XOR truth preserves selected INTERNED full-ternary bases and frozen raw CV keys through returning Warnings. Native2 once/source2, author214/111-derived and peer523/373-derived retain separate cuts; baseline Unsupported2 remains0 and no new failures. Actual6532e88f/treeb915dd4d and sole canonical96094c0d SL508 load16.341742573s/source0 are independently closed. Wider operands/producers/lifetimes and every exact hold remain partial. [Review](coverage/semantics/string-offset-string-bitwise-truth-base-initial-raw-leading-key-review.json).
+
 Exact FQN stdClass/callable unions of two through eight members admit required ordinary-CV producer formals and returns. Exact raw/normalized class bytes, one class, ordered unique builtins, at most one Boolean kind and existing payload/ownership guards remain required. Wider spellings, contexts and lifetimes remain partial. [Review](coverage/semantics/cv-fqn-stdclass-callable-union-producer-reference-notice-review.json).
 
 Raw Integer UnaryPlus selectors: native4 once/prelaw Unsupported4 before edit; separate privateSL507 source2+2 and173/173+244/244 pass. Stable literal-v1 fixture path failure remains0, one tuple corrected with exact CV/source bridge. Actual78dfb00b/tree5b7db2c4 and sole SL50816.691157202s/source0 independently clear. All exact held boundaries remain unchanged. [Review](coverage/semantics/magic-property-methodclosure-static-raw-positive-integer-concat-tree-quiet-get-review.json).
