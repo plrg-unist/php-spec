@@ -8,6 +8,10 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Resolved scalar instanceof native-once/prelaw, source and separate fixtures remain in `../php-spec-evidence-archive/string-offset-runtime-scalar-resolved-instanceof/`; the [review](../coverage/semantics/string-offset-request-base-runtime-scalar-resolved-instanceof-review.json) retains the original cuts and accepted actual/SAME tuple.
+
+Folded Spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-folded-spaceship-truth-base-initial-raw-leading-key-{author28,peer27}-20261115/`; the [review](../coverage/semantics/string-offset-folded-spaceship-truth-base-initial-raw-leading-key-review.json) retains the original cuts and accepted actual/SAME tuple.
+
 REF91 object/callable producer originals and separate native-once, source, author/peer fixture and prelaw cuts remain in `../php-spec-evidence-archive/cv-object-callable-producer-reference-notice-91/`. The [review](../coverage/semantics/cv-object-callable-producer-reference-notice-review.json) retains the accepted actual/SAME tuple and zero-credit preparation correction.
 
 Completed finite FLOAT power originals, native-once/prelaw, saved-native source and separate fixtures: ../php-spec-evidence-archive/string-offset-completed-float-power-truth-base-initial-raw-leading-key-{author28,peer26}-20261114/. Concise cuts and recovery: coverage/semantics/string-offset-completed-float-power-truth-base-initial-raw-leading-key-review.json.
