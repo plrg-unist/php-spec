@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-inherited-members-cv-empty-retired-sources",
+      "source": "<?php\nclass QuietMethodStaticInheritedCVBase { final protected static function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public function unusedMiddle(): int { echo \"BAD_MIDDLE;\"; return 8; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVTarget extends qUIETmETHODsTATICiNHERITEDcvbASE {}\nclass QuietMethodStaticInheritedCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$original = \\qUIETmETHODsTATICiNHERITEDcvtARGET::counter(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedCVBase::counter() === 3 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedCVTarget::counter() === 4 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "6784466cbab5674360261343e0cf503bf1bd141aa7acc4b7865ecb7f39cd123b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVkJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDtGSVJTVDtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWVGFyZ2V0O0NMT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlO1dBUk07U09VUkNFU19HT05FO0k7RztSRUNFSVZFUjtXUkFQUEVSX0dPTkU7RkFMU0U7Q0FQVFVSRTtSRUNFSVZFUl9HT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZUYXJnZXQ7U1RBVElDO0RPTkU7",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_inherited_quiet_get_review_cases.json",
+        "id": "methodclosure-static-inherited-cv-empty-retired-sources",
+        "source_sha256": "c024c644caf877cbaf3fb67351ca6f5ac8f0575c1f1cedf2d5b3d52cc10ba7b8",
+        "change": "Insert two genuine unselected method declarations around the selected counter in the same ordinary global root; selected index 2 of three. Unselected static/instance, visibility and final tags are distinct and no unselected body runs. Preserve exact original/Shared-chain scope, static-root, Empty/receiver-throw observations and line8. Preparation only; no execution yet."
+      }
+    },
+    {
+      "id": "methodclosure-static-inherited-members-literal-empty-retired-sources-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticInheritedLiteralBase { private function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } final public static function unusedAfter(): int { echo \"BAD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralTarget extends \\qUIETmETHODsTATICiNHERITEDlITERALbASE {}\nclass QuietMethodStaticInheritedLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$original = qUIETmETHODsTATICiNHERITEDlITERALtARGET::counter(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedLiteralBase::counter() === 3 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedLiteralTarget::counter() === 4 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "449c54bf71430479a58545177bbe7acd89083e17d5f99269502d646be3e7977b",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ7RklSU1Q7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ7Q0xPTkU7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxCYXNlO1dBUk07U09VUkNFU19HT05FO0k7RztSRUNFSVZFUjtXUkFQUEVSX0dPTkU7Q0FVR0hUO0tFRVA7Q0FQVFVSRTtSRUNFSVZFUl9HT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbEJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsVGFyZ2V0O1NUQVRJQztET05FOw==",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_inherited_quiet_get_review_cases.json",
+        "id": "methodclosure-static-inherited-literal-empty-retired-sources-receiver-throw",
+        "source_sha256": "322674ac4933f02df541b19f31666a61cf42da36f59b9c978cd88543819e4842",
+        "change": "Insert two genuine unselected method declarations around the selected counter in the same ordinary global root; selected index 1 of three. Unselected static/instance, visibility and final tags are distinct and no unselected body runs. Preserve exact original/Shared-chain scope, static-root, Empty/receiver-throw observations and line8. Preparation only; no execution yet."
+      }
+    }
+  ]
+}

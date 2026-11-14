@@ -237,7 +237,23 @@ def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_metho
   -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
   -- if ($closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) /\ $function_cache_policy(S, porigin_method, n_source) = (CACHE_SHARED)) \/ $property_magic_cv_inherited_static_method_clone_history(S, n_source, porigin_method, porigin_site, porigin_requested, porigin_owner)
 def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested, porigin_owner) = false -- otherwise
-;; A singleton-method root supplies the method of its genuine empty child.
+;; Method-only roots authenticate every descriptor at its real source index.
+dec $property_magic_cv_static_method_members(pstate, porigin, nat, statement*, pmethoddesc*) : bool
+def $property_magic_cv_static_method_members(S, porigin_owner, n, eps, eps) = true
+def $property_magic_cv_static_method_members(S, porigin_owner, n, statement_method :: statement_tail*, pmethoddesc :: pmethoddesc_tail*) = true
+  -- if porigin_owner = PORIGIN n_unit pcpath_owner
+  -- if statement_method = NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text_method) metadata_name) phpType16 phpType18 (SEQUENCE statement*) metadata_method
+  -- if $ppmethod_flags(flags, "class") /\ ~$ppproperty_flag(flags, 16)
+  -- if pmethoddesc.OWNER = porigin_owner /\ pmethoddesc.NAME = $base64(text_method)
+  -- if pmethoddesc.FUNCTION.ORIGIN = PORIGIN n_unit (pcpath_owner ++ [PCFIELD 5, PCINDEX n])
+  -- if pmethoddesc.FUNCTION.BODY = pcpath_owner ++ [PCFIELD 5, PCINDEX n, PCFIELD 6]
+  -- if $origin_node(S.SOURCES, pmethoddesc.FUNCTION.ORIGIN) = (statement_method)
+  -- if pmethoddesc.VISIBILITY = $ppmethod_visibility(flags)
+  -- if pmethoddesc.STATIC = $ppproperty_flag(flags, 8) /\ pmethoddesc.FINAL = $ppproperty_flag(flags, 32) /\ ~pmethoddesc.ABSTRACT
+  -- if ~$ppmethod_at(pmethoddesc_tail*, pmethoddesc.NAME)
+  -- if $property_magic_cv_static_method_members(S, porigin_owner, $(n + 1), statement_tail*, pmethoddesc_tail*)
+def $property_magic_cv_static_method_members(S, porigin_owner, n, statement*, pmethoddesc*) = false -- otherwise
+;; The selected inherited method retains its declaring scope and Shared cache.
 dec $property_magic_cv_inherited_static_methodclosure(pstate, nat) : bool
 def $property_magic_cv_inherited_static_methodclosure(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -250,14 +266,19 @@ def $property_magic_cv_inherited_static_methodclosure(S, n) = true
   -- if porigin_owner =/= porigin_requested
   -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
   -- if pclassdesc_owner.KIND = "class" /\ pclassdesc_owner.PARENT = eps /\ pclassdesc_owner.INTERFACES = eps
-  -- if pclassdesc_owner.PROPERTIES = eps /\ pclassdesc_owner.METHODS = [pmethoddesc] /\ pclassdesc_owner.CONSTANTS = eps
+  -- if pclassdesc_owner.PROPERTIES = eps /\ pclassdesc_owner.CONSTANTS = eps
   -- if ~pclassdesc_owner.ABSTRACT /\ ~pclassdesc_owner.FINAL /\ ~pclassdesc_owner.READONLY
   -- if porigin_owner = PORIGIN n_unit pcpath_owner
-  -- if $origin_node(S.SOURCES, porigin_owner) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_owner) metadata_owner_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_owner)
+  -- if $origin_node(S.SOURCES, porigin_owner) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_owner) metadata_owner_name) ABSENT (SEQUENCE eps) (SEQUENCE statement_owner*) metadata_owner)
   -- if pclassdesc_owner.NAME = $base64(text_owner)
+  -- if $property_magic_cv_static_method_members(S, porigin_owner, 0, statement_owner*, pclassdesc_owner.METHODS)
   -- if porigin_method = PORIGIN n_unit pcpath_method
-  -- if pcpath_method = pcpath_owner ++ [PCFIELD 5, PCINDEX 0]
+  -- if $(|pcpath_method| = |pcpath_owner| + 2)
+  -- if PCINDEX n_method = pcpath_method[$nabs($( |pcpath_method| - 1))]
+  -- if pcpath_method = pcpath_owner ++ [PCFIELD 5, PCINDEX n_method]
+  -- if $(n_method < |statement_owner*|)
   -- if $origin_node(S.SOURCES, porigin_method) = (statement_method)
+  -- if statement_owner*[n_method] = statement_method
   -- if statement_method = NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text_method) metadata_method_name) phpType16 phpType18 (SEQUENCE statement*) metadata_method
   -- if $ppmethod_flags(flags, "class") /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC
   -- if $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
