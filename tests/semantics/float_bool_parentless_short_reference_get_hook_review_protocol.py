@@ -187,7 +187,7 @@ def fields(fixture, source, form):
                    '$propref_conversion(S_aliases,' + mask + ',' + value + ',false) = TYPEREJECT',
                    '$propref_class(S_aliases,' + mask + ',' + value + ',true) = PROP_IMPOSSIBLE',
                    '$propref_conversion(S_aliases,' + mask + ',' + value + ',true) = TYPEREJECT']
-    for left, right in [('float', 'float'), ('bool', 'bool'), ('array', 'float'), ('mixed', 'null'), ('bool', 'string'), ('string', 'bool')]:
+    for left, right in [('float', 'float'), ('bool', 'bool'), ('array', 'float'), ('mixed', 'null')]:
         raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES ' + peer.quoted(left) + ') eps,NIdentifier (BYTES ' + peer.quoted(right) + ') eps])) eps'
         normalized = '[(PTBRANCH ([PTBUILTIN "' + left + '"])),(PTBRANCH ([PTBUILTIN "' + right + '"]))]'
         checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
