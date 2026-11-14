@@ -1508,9 +1508,32 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastInt (NSca
   -- if $compiled_read(S, PORIGIN n_handler pcpath_cast) = eps
   -- if $compiled_read(S, PORIGIN n_handler pcpath_integer) = (PINT i)
   -- if $cast_apply(S, CASTINT, PINT i, z_cast) = S[.RESULT = KNOWN (PINT i)]
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprCastInt (NScalarFloat (FLOAT text_float) metadata_float) metadata_cast) metadata_return]) = true
+  -- if S.COMPLETION = NORMAL
+  -- if |text_float| = 16
+  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (porigin_return)
+  -- if $origin_node(S.SOURCES, porigin_return) = (NStmtReturn (NExprCastInt (NScalarFloat (FLOAT text_float) metadata_float) metadata_cast) metadata_return)
+  -- if $origin_child((porigin_return), [PCFIELD 0]) = (PORIGIN n_handler pcpath_cast)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_cast) = (NExprCastInt (NScalarFloat (FLOAT text_float) metadata_float) metadata_cast)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_cast) = ((z_cast, false))
+  -- if z_cast = $expression_line(NScalarFloat (FLOAT text_float) metadata_float)
+  -- if $origin_child((PORIGIN n_handler pcpath_cast), [PCFIELD 0]) = (PORIGIN n_handler pcpath_float)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_float) = (NScalarFloat (FLOAT text_float) metadata_float)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_float) = ((z_float, true))
+  -- if z_float = $source_line(metadata_float)
+  -- if $evaluate(NScalarFloat (FLOAT text_float) metadata_float) = VALUE (PFLOAT n_child)
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_cast) = eps
+  -- if $compiled_read(S, PORIGIN n_handler pcpath_float) = (PFLOAT n_child)
+  -- if $float_long(n_child, false) = (i_cast, eps)
+  -- if $long_range(i_cast)
+  -- if $cast_apply(S, CASTINT, PFLOAT n_child, z_cast) = S[.RESULT = KNOWN (PINT i_cast)]
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or emitted CASTINT of a raw signed-long integer return.
+;; a named, untyped two-parameter handler with a literal echo and implicit, NULL, bare, TRUE, signed-long integer, FALSE, canonical FLOAT, bounded raw FLOAT/integer unary-minus/plus or admitted emitted CASTINT return.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*
