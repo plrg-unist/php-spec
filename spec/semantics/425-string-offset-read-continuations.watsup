@@ -191,6 +191,23 @@ def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $long_range(i_child)
   -- if $string_read_raw_unary_integer(S, porigin_child, i_child)
   -- if $unary_apply(S, punary, PINT i_child, 0) = S[.RESULT = KNOWN (PINT i)]
+;; Quiet integer arithmetic authenticates both actual children and its result.
+def $string_read_raw_unary_integer(S, porigin, i) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY]
+  -- if $long_range(i)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (PINT i_left)
+  -- if $compiled_read(S, porigin_right) = (PINT i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $string_read_raw_unary_integer(S, porigin_left, i_left)
+  -- if $string_read_raw_unary_integer(S, porigin_right, i_right)
+  -- if $binary_apply(S, pbin, PINT i_left, PINT i_right, 0) = S[.RESULT = KNOWN (PINT i)]
 def $string_read_raw_unary_integer(S, porigin, i) = false -- otherwise
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
