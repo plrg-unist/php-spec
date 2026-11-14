@@ -1,0 +1,18 @@
+[
+  {
+    "id": "deferred-integer-plus-wrapper-raw-phases",
+    "source": "<?php\nfunction rawPlus257($zero = +((int)(+(-(float)(+(E_WARNING === E_ERROR))))), $fraction = +((int)((+(-(float)(+(E_WARNING === E_ERROR)))) + 3.5)), $large = +((int)(PHP_INT_MAX + (int)(+(-(float)(+(E_WARNING === E_ERROR))))))) {\n    echo 'raw:', $zero === 0, ':', $fraction === 3, ':', $large === PHP_INT_MAX, ':', $fraction, ':', $large, '|';\n}\nrawPlus257();\nrawPlus257();\n",
+    "source_sha256": "77954895d8c66982d13890b2d13b6085b7fd9c4ba4422c2e1b6a265071b73d27",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Emitted UnaryPlus over actual deferred PINT0, truncated PINT3 and exact PHP_INT_MAX retains PINT type and value through cold/warm caches without float roundtrip."
+  },
+  {
+    "id": "deferred-integer-plus-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace PlusIntWrapper257;\nuse const E_WARNING as Base257;\nuse const E_ERROR as One257;\nfunction warning257($errno, $message, $file, $line) {\n    global $x257;\n    echo 'warning:', $message, '|';\n    defaults257(2);\n    $x257 = 3.5;\n}\nfunction defaults257(int $first, int &$integer = +((int)((+(-(float)(+(Base257 === One257)))) + 3.5)), int $last = 7) {\n    echo 'body:', $first, ':', $integer, ':', $last, '|';\n    $integer = 9;\n}\n\\set_error_handler('PlusIntWrapper257\\\\warning257');\n$x257 = 1.5;\n$last257 = 8;\ndefaults257(last: $last257, first: $x257);\necho 'outer:x=', $x257, '|';\n",
+    "source_sha256": "8db6f34e573993ac4de55f1c643b46be1e4bbdc792d97ed3cb151cba192851f7",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported actual PINT3 passes emitted UnaryPlus before named holes, warning reentry and private BYREF reception; body mutation preserves its raw PINT3 cache."
+  }
+]
