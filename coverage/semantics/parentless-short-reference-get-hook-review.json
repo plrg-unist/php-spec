@@ -1,0 +1,201 @@
+{
+  "scope": "Public parentless direct class, sole untyped backed short &get => $this->sameField; literal ordinary-CV reference fetch and ordinary copy, initialized or omitted default, real backing-cell and child-slot retirement.",
+  "status": "partial; independently reviewed, source/test integrated at14242d2406f7cc48fac229aa9e4460ad8f3e3886",
+  "target": "PHP8.5.10 CLI NTS signed64; vendored engine34308a6666b2d489c509541ea9befea9e2b42348; project-only oracle SHA b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json plus include_path=.:; LC_ALL=C; TZ=UTC; original bytes/path/cwd retained. Production model120/process140 seconds,100000 steps. Fixture-SL cap240 seconds.",
+  "implementation": {
+    "selected": "18531b4791f9daa0180d736933925219ba3cbaca",
+    "base": "5517b09b3",
+    "module": "spec/semantics/382-backed-get-hooks.watsup",
+    "module_sha256": "5e598272312d9ecdf916eae9179b938b3b5e81ce97ce1250c14029d16d0b6b66",
+    "semantic_delta": "92 additions, zero removals, only382. Existing by-value/block/slot,95/99/118/156/379, goto, storage and ownership rules remain literal."
+  },
+  "authority": [
+    "Zend/zend_compile.c::zend_compile_property_hooks rewrites a short GET body to RETURN and inherits the property return type; explicit GET parameter lists are rejected.",
+    "Zend/zend_compile.c::zend_compile_return selects BP_VAR_W and RETURN_BY_REF for variable expressions. Zend/zend_vm_def.h::ZEND_RETURN_BY_REF preserves the real reference; this backing-field expression emits no nonvariable/null Notice.",
+    "Zend/zend_object_handlers.c::zend_call_get_hook holds the receiver across the real source call."
+  ],
+  "invariants": "Actual raw declaration, parentless/no-Trait owner, Hook/BODY/CODE.UNIT/CODEEXPR/CODEARROW and signature/line bounds certify the return. The implicit expression is not fallthrough NULL. Exact current and supplied source origins distinguish genuine short returns from forged ordinary Return occurrences. Protected replay remains refused.",
+  "source_validation": {
+    "unique_original_agreements": 4,
+    "oracle_originals_executed_once": 4,
+    "author": {
+      "report": "author-source-v4/report.json",
+      "sha256": "91f4884cd17ed04c5d1308c35b0800443f3a2d6256fb35bb0de91670074b5837",
+      "head": "30403830ca9222a10c89578c48afdfa70358cd32",
+      "mode": "production-SL",
+      "modules": 508,
+      "unique_originals": 2,
+      "elapsed_seconds": [
+        24.43233013153076,
+        24.51661491394043
+      ],
+      "native_replayed": false
+    },
+    "peer": {
+      "report": "reviewer-source-v3/report.json",
+      "sha256": "4f26ef33099aae8e5259e18fb5031a4d24a5c786b44d0027e0ef16b17f43b761",
+      "head": "16d716561c7543c220d75cbd9d026423853fea1c",
+      "mode": "production-SL",
+      "modules": 508,
+      "unique_originals": 2,
+      "elapsed_seconds": [
+        32.5832085609436,
+        33.039870262145996
+      ],
+      "native_replayed": false
+    },
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "d2e9b9097efac3ce55a0d089fa0546ce3ebe5e3e2b2e64288dd71d2369a9562d"
+      },
+      {
+        "report": "reviewer-native-v1/report.json",
+        "sha256": "38648d93d584cff34bd306aa2cf8620c38b0865002ee2699f7ddc486a46b8b60"
+      }
+    ],
+    "prelaw_unsupported_controls": {
+      "count": 4,
+      "credit": 0,
+      "reports": [
+        {
+          "report": "author-precompile-v1/report.json",
+          "sha256": "adea36b9942c1ff97a62745556d07cee74028d3e9bf28c4687598e5269c1bfb6"
+        },
+        {
+          "report": "reviewer-precompile-v1/report.json",
+          "sha256": "471c951339010e808c828bdfb4c687ee8c0212d960da38baaad29ecf347ae59a"
+        }
+      ]
+    }
+  },
+  "state_validation": {
+    "author_initialized": {
+      "report": "author-initialized-protocol-v6/report.json",
+      "sha256": "1cb9bd1d4cc925fb63d08dc3348adf1a944ddf66b2ef9053805fa92a1c94f374",
+      "head": "30403830ca9222a10c89578c48afdfa70358cd32",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 189,
+      "elapsed_seconds": 58.85577082633972,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    "author_null": {
+      "report": "author-null-protocol-v1/report.json",
+      "sha256": "9fa8e3d142b9665281f4bc575abc92d228562435d0c7427bd11758133b06cd74",
+      "head": "30403830ca9222a10c89578c48afdfa70358cd32",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 189,
+      "elapsed_seconds": 60.04348611831665,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    "peer_initialized": {
+      "report": "reviewer-initialized-protocol-v2/report.json",
+      "sha256": "7bb3bb29266e706afff6315562ba85b4753a3d6030db6f610734fd500e7cdee2",
+      "head": "16d716561c7543c220d75cbd9d026423853fea1c",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 305,
+      "elapsed_seconds": 106.62849950790405,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    "peer_null": {
+      "report": "reviewer-null-protocol-v1/report.json",
+      "sha256": "2f31d092f9c5643954424dd6251c3fa6156d203f7230596eb177d8f86de61c85",
+      "head": "16d716561c7543c220d75cbd9d026423853fea1c",
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 305,
+      "elapsed_seconds": 102.27356386184692,
+      "cap_seconds": 240,
+      "source_agreement_credit": 0
+    },
+    "coverage": "Authentic source functions and markers, pending-base resolution, three prefetch receiver roots, genuine reference cell/independent copy, alias and physical child/cell cleanup, malformed declaration/cache/source controls, exact0/1-step full-state return/fetch/cleanup resumptions. Each fixture retains its own premises/cut; no aggregate equivalence or unique-condition claim.",
+    "author_helper_bridge": {
+      "report": "author-fixture-bridge-v1/report.json",
+      "sha256": "7e28335b8b6db68fa842dd78211dff721395317888f6701b25fb714d3856ac4c"
+    }
+  },
+  "retained_zero_credit_failures": [
+    {
+      "name": "author-source-v1",
+      "reason": "RunnerFailure on unbound compiled return-line binder; null original unrun at this revision."
+    },
+    {
+      "name": "author-initialized-protocol-v1",
+      "reason": "SpecTec structuring rejected a non-pure filter fallback; null unrun."
+    },
+    {
+      "name": "author-initialized-protocol-v2",
+      "reason": "Fixture expected materialized BASE instead of reached pending property base; null unrun."
+    },
+    {
+      "name": "author-initialized-protocol-v3",
+      "reason": "Fixture omitted the receiver owned by pending BASE (three owners, not two); null unrun."
+    },
+    {
+      "name": "author-initialized-protocol-v4",
+      "reason": "Last one-step full-state return-resumption equality failed; null unrun."
+    },
+    {
+      "name": "author-initialized-protocol-v5",
+      "reason": "New boundary/task checks passed, but aggregate call-entry validation failed on mandatory Notice classification; null unrun."
+    },
+    {
+      "name": "author-resume-diagnostic-v1",
+      "reason": "Direct-unwind assumption rejected because real one-step state has destructor bookkeeping first."
+    },
+    {
+      "name": "author-resume-diagnostic-v4",
+      "reason": "Diagnostic structuring rejected a non-pure fallback."
+    },
+    {
+      "name": "reviewer-initialized-protocol-v1",
+      "reason": "Malformed negative Param metadata lacked constructor-argument parentheses; no state execution, null unrun."
+    }
+  ],
+  "retained_separate_cuts": {
+    "earlier_source_reports": [
+      "author-source-v2/report.json",
+      "author-source-v3/report.json",
+      "reviewer-source-v1/report.json",
+      "reviewer-source-v2/report.json"
+    ],
+    "reached_state_extractions": [
+      "author-resume-diagnostic-v2/report.json",
+      "author-resume-diagnostic-v3/report.json",
+      "author-resume-diagnostic-v5/report.json",
+      "author-resume-diagnostic-v6/report.json"
+    ],
+    "credit": "Earlier passing source cuts keep their own heads and do not add unique originals. Extraction successes are diagnostic only, source0. Failed/unrun prefixes stay failed/unrun; no90/91-line law execution, native replay or timeout-to-pass reclassification."
+  },
+  "integration": {
+    "actual": "14242d2406f7cc48fac229aa9e4460ad8f3e3886",
+    "bounded_actual_read": {
+      "report": "main-actual-read-v1/report.json",
+      "sha256": "3230d3f343d04a581c38b5615994afd51670e12cd8850abe43596fd19b834fe4"
+    },
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-short-ref-get-joined-508-v1/report.json",
+      "sha256": "892b87acb4de16fe1f7404e5bf49e1c2d320c793431bad98728544cae031395a",
+      "mode": "SL",
+      "modules": 508,
+      "elapsed_seconds": 15.587678412906826,
+      "cap_seconds": 60,
+      "source_agreement_credit": 0
+    },
+    "make_registration": {
+      "report": "make-v1/report.json",
+      "sha256": "bb43d2e89eada7716bb240b5a2cef357d1bf9598c778b1a71051f5c361c01d3d"
+    },
+    "review": "recover8_compiler_short_ref_review whole14 FULLCLEAR; exact13 non-Make donor files and six recipes verified after actual composition. Metadata does not renew execution credit."
+  },
+  "remaining": "Typed, inherited/Trait, SET/paired, attributed/nonpublic and wider short-reference bodies/consumers/lifetimes remain partial. No constructor or obligation closes. All exact holds remain held; complete core, ITrees/Rocq and BOLA/CRIS work remain unfinished.",
+  "recovery": "Raw originals, profiles, processes, fixtures, input fingerprints and all earlier failures are external under ../php-spec-evidence-archive/comp292/. Reports retain tested heads/caps and raw streams; no external archive is an operational build input.",
+  "archive": "../php-spec-evidence-archive/comp292/; unqualified report paths are relative to this archive."
+}
