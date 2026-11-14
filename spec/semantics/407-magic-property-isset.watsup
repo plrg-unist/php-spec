@@ -206,6 +206,17 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NScalarStrin
   -- if ptbytes_raw = $base64(text)
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata, porigin_requested, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
+  -- if $origin_node(S.SOURCES, porigin_selector) = (NExprBinaryOpConcat (NScalarString (BYTES text_left) metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata)
+  -- if $origin_child((porigin_selector), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin_selector), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (NScalarString (BYTES text_left) metadata_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (NScalarString (BYTES text_right) metadata_right)
+  -- if $compiled_read(S, porigin_selector) = (PSTRING ptbytes_raw)
+  -- if ptbytes_raw = $base64(text_left) ++ $base64(text_right)
+  -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = false -- otherwise
 ;; Literal method names retain their raw bytes without class-name normalization.
 dec $property_magic_cv_static_method_site_name(pstate, porigin, phpType20, ptbytes) : bool
