@@ -1,0 +1,95 @@
+{
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored semantics; production SL",
+  "status": "partial",
+  "scope": "Ordered int|bool|string short reference Get retains exact raw order, INT/BOOL/STRING returns, exact Boolean and numeric/plain/empty/zero STRING tags, independent copies, weak quiet integral-FLOAT-to-INT conversion, strict FLOAT rejection and quiet type-source removal. Wider headers/producers/owners/lifetimes remain partial; exact holds unchanged.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_symbols": [
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/zend_execute.c:i_zend_verify_type_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_weak_scalar_type_hint",
+    "Zend/zend_execute.c:zend_ref_del_type_source"
+  ],
+  "source_packet": {
+    "commit": "7732e4ab5cad88cde019ef0f2c733e00ec917efa",
+    "tree": "dffba81c5af0204347ddabc15137215f6e42a3af",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/comp314/source-ready.json",
+    "sha256": "99f0e7dff131f34c805cbaea7a0a10049eab93c5c9706ceb6ddc477adbdf43e8",
+    "paths": 18,
+    "non_make_paths": 17,
+    "make_additions": 8
+  },
+  "author": {
+    "tested_cut": "7732e4ab5cad88cde019ef0f2c733e00ec917efa",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_SL508_premises": [
+      778,
+      498,
+      463
+    ],
+    "fixture_seconds": [
+      198.97928643226624,
+      275.93936467170715,
+      196.79030919075012
+    ],
+    "fixture_cap_seconds": 360,
+    "fixture_source_credit": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "result": "quiet; stable; reaped; PASS"
+  },
+  "independent_peer": {
+    "tested_commit": "7732e4ab5cad88cde019ef0f2c733e00ec917efa",
+    "tested_tree": "dffba81c5af0204347ddabc15137215f6e42a3af",
+    "native_originals_once": 3,
+    "source_agreements": 3,
+    "fixture_SL508_premises": [
+      847,
+      472,
+      507
+    ],
+    "fixture_seconds": [
+      204.9231255054474,
+      193.25361227989197,
+      284.0496304035187
+    ],
+    "fixture_cap_seconds": 360,
+    "fixture_source_credit": 0,
+    "failures": 0,
+    "timeouts": 0,
+    "result": "quiet; stable; reaped; FULLCLEAR",
+    "reports_under_comp314": {
+      "strict-sources/report.json": "97ed7bd58d0c973d7aa9633946986b217ebbd1c969a9a0d4cde75aa88809d455",
+      "strict-protocol-int-string-bool/report.json": "503671bbb9a02a8321fb9852beaf6197f367f6a3aa559bd2ae015aebccb62fc9",
+      "strict-protocol-bool-int-string/report.json": "58fa27f5a49a0f1da3beb33a45eab5071f23beff686135e645b75eedac6951e4",
+      "strict-protocol-string-bool-int/report.json": "9ca65ebe9cf0c33dde912ae92df79d0fa31350b08e951c2d5014aad32ee9e898"
+    }
+  },
+  "prelaw": {
+    "tested_cut": "b4be17bbb86d4f2d35fbc5d6f33edf553a4ac750",
+    "expected_Unsupported": 3,
+    "native_execution_count": 0,
+    "source_agreement_credit": 0,
+    "report_under_comp314": "author19-prelaw/report.json",
+    "sha256": "a1670f8549be616e173ad58bfbd2d9f83dbdc5b033720066f885ee158257d7c0"
+  },
+  "actual_and_same": {
+    "commit": "046d2ef9a487739411081a395b68d5545f745fce",
+    "tree": "65185499340b0f2d985b3880697d1f590b1d9bb0",
+    "parent": "298054dfa60c8426c481a79aa225c868825e9df7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main67-power-cast-hook-joined-current-load-v1/report.json",
+    "sha256": "375b288187a088ae173c4afa504885d1157aa3415dfe05ade5086e2ffdf6d356",
+    "seconds": 16.63188667409122,
+    "mode": "production SL508",
+    "argv": 511,
+    "equal_watches": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "result": "true+LF; quiet; stable; reaped; PASS",
+    "review": "Retained peer independently checked actual/SAME and read the sole saved canonical report; author copied its accepted tuple without report reread."
+  },
+  "limits": "Wider headers, producers, owners and lifetimes remain partial. Runtime modules94/95/134/138 and all exact held boundaries are unchanged."
+}
