@@ -181,6 +181,23 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if ($truth(S, PINT i) /\ n_bytes* = n_true*) \/ (~$truth(S, PINT i) /\ n_bytes* = n_false*)
+;; A finite literal float condition selects an arm through its exact raw bits.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarFloat (FLOAT text_cond) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if n_cond = $hex_bits(text_cond, 0)
+  -- if $float_decode(n_cond) = FINITE n_sign n_num n_den
+  -- if n_true* = $base64(text_true)
+  -- if n_false* = $base64(text_false)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $compiled_read(S, porigin_cond) = (PFLOAT n_cond)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $compiled_read(S, porigin_true) = (PSTRING n_true*)
+  -- if $compiled_string_value(S, porigin_true, PSTRING n_true*) = PSTRING_CARRIER INTERNED_STRING n_true*
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
+  -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
+  -- if ($truth(S, PFLOAT n_cond) /\ n_bytes* = n_true*) \/ (~$truth(S, PFLOAT n_cond) /\ n_bytes* = n_false*)
 ;; A raw string condition selects an arm; its own header is only the condition.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
