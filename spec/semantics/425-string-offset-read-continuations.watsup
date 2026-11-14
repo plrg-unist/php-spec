@@ -230,6 +230,24 @@ def $string_read_raw_truth(S, porigin, PBOOL b) = true
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)
   -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_name) metadata_name)
   -- if $compiled_read(S, porigin) = (PBOOL b)
+;; Folded scalar comparisons retain both original typed children and quiet state.
+def $string_read_raw_truth(S, porigin, PBOOL b) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL]
+  -- if $compiled_read(S, porigin) = (PBOOL b)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $compiled_read(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
+  -- if $binary_apply(S_probe, pbin, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PBOOL b)]
 ;; Only non-FLOAT NOT is folded; every link keeps its exact quiet complement.
 def $string_read_raw_truth(S, porigin, PBOOL b) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBooleanNot expression_child metadata)
