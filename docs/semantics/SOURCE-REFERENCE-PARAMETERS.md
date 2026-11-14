@@ -784,6 +784,19 @@ diagnostics retain zero credit; controller/Make remain unexecuted/source0.
 Nullable/union headers, wider callable forms, contexts and lifetimes remain
 partial at this cut; every exact held dependency stays unchanged.
 
+Raw `?callable` required formals and returns retain exactly `[callable,null]`
+normalized order and Identifier casefolding. NULL passes directly; the existing
+registered USER-name string checks retain authenticated carriers without target
+invocation. Ordinary BYREF body writes, actual reception/return checks, producer
+retirement and the separate untyped private Notice cell keep their existing rules.
+The [nullable callable review](../../coverage/semantics/cv-nullable-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (four Notices and separate RECEIVE/RETURN priorities),
+author366/peer252 and genuine prelaw169/136 fixture-SL507 cuts separate from the
+sole actual `6baec57dcf` production-SL508 load. Two exact REF82 helper promotions
+use fresh REF83 reached states without historical renewal. Controller/Make remain
+unexecuted/source0. Explicit unions, wider callable forms, contexts and lifetimes
+remain partial; every exact held dependency stays unchanged.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
