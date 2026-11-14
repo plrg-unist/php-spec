@@ -215,6 +215,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --integer-conditional-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-integer-conditional-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-unary-truth-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-float-unary-truth-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-unary-truth-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-float-unary-truth-base-initial-raw-leading-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-arithmetic-truth-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-float-arithmetic-truth-base-initial-raw-leading-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-arithmetic-truth-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-float-arithmetic-truth-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-conditional-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-float-conditional-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --float-conditional-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-float-conditional-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --null-conditional-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-null-conditional-base-initial-raw-leading-key-state-XXXXXX)/run"
@@ -548,6 +550,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_sources.py
 	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-float-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-float-return-modulo-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_selected_integer_cast_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_integer_cast_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-cast-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_integer_cast_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-cast-return-modulo-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py

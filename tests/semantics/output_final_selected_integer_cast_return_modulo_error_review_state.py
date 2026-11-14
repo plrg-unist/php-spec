@@ -1,0 +1,155 @@
+#!/usr/bin/env python3
+"""Own emitted integer casts bind root and child; local projections retain source0."""
+import output_final_selected_integer_cast_return_modulo_error_state as author
+import output_final_selected_both_mask_modulo_error_review_state as homogeneous
+import output_final_selected_mixed_modulo_error_review_state as mixed
+
+runner = homogeneous.runner
+PREFIX = author.PREFIX
+BASES = {'warning-right-cv-pair': homogeneous,
+         'warning-deprecated-constant-float': mixed}
+CASES = {name: author.sources.CASES['native-selected-integer-cast-return-modulo-error-' + name]
+         for name in BASES}
+LOCAL = {'minus_one': ('$(-1)', '$(-1)'),
+         'minimum': ('$(-9223372036854775808)', '$(-9223372036854775808)'),
+         'above': ('9223372036854775808', '9223372036854775808'),
+         'below': ('$(-9223372036854775809)', '$(-9223372036854775809)')}
+
+
+def authority(name, fixture, path):
+    bindings, checks = BASES[name].authority(name, fixture, path)
+    bindings += author.return_bindings(name)
+    bindings += [
+        'i_integer_other = 1',
+        'statement_cast_other = NStmtReturn (NExprCastInt (NScalarInt (INTEGER i_integer_other) metadata_integer) metadata_cast) metadata_cast_return',
+        'expression_cast_other_kind = NExprCastDouble (NScalarInt (INTEGER i_child) metadata_integer) metadata_cast',
+        'statement_cast_other_kind = NStmtReturn expression_cast_other_kind metadata_cast_return',
+        'statement_cast_raw = NStmtReturn (NScalarInt (INTEGER i_child) metadata_integer) metadata_cast_return',
+        'statement_cast_float = NStmtReturn (NExprCastInt (NScalarFloat (FLOAT "0000000000000000") metadata_integer) metadata_cast) metadata_cast_return',
+        'statement_cast_bare = NStmtReturn ABSENT metadata_cast_return',
+        'pfunction_cast_unit = pfunction_handler[.CODE = pfunction_handler.CODE[.UNIT = $(n_cast_handler + 1)]]',
+        'pfunction_cast_body = pfunction_handler[.BODY = pcpath_cast_handler]',
+        'S_cast_scratch = S[.RESULT = KNOWN (PINT i_return)]',
+        'S_false_scratch = S[.RESULT = KNOWN (PBOOL false)]',
+        'S.SOURCES = [pcunit_cast_projection]',
+        'pcunit_cast_projection.ID = n_cast_handler',
+        'S_raw_root = S[.SOURCES = [pcunit_cast_projection[.OCCURRENCES = (PCOCCURRENCE pcpath_cast expression_cast_other_kind) :: pcunit_cast_projection.OCCURRENCES]]]',
+        'S_raw_child = S[.SOURCES = [pcunit_cast_projection[.OCCURRENCES = (PCOCCURRENCE pcpath_integer (NScalarInt (INTEGER i_integer_other) metadata_integer)) :: pcunit_cast_projection.OCCURRENCES]]]']
+    for part, codepath, line in [('root', 'pcpath_cast', 'z_cast'),
+                                 ('child', 'pcpath_integer', 'z_integer')]:
+        expected, wrong = ('false', 'true') if part == 'root' else ('true', 'false')
+        bindings += [
+            'z_' + part + '_bad = $(' + line + ' + 1)',
+            'pfunction_' + part + '_flag = pfunction_handler[.CODE = pfunction_handler.CODE[.EXPRESSIONS = (CODEEXPR ' + codepath + ' ' + line + ' ' + wrong + ') :: pfunction_handler.CODE.EXPRESSIONS]]',
+            'pfunction_' + part + '_line = pfunction_handler[.CODE = pfunction_handler.CODE[.EXPRESSIONS = (CODEEXPR ' + codepath + ' z_' + part + '_bad ' + expected + ') :: pfunction_handler.CODE.EXPRESSIONS]]']
+    for suffix, value in [('child_other', 'PINT i_integer_other'),
+                          ('child_false', 'PBOOL false'), ('child_float', 'PFLOAT 0')]:
+        bindings += ['S_' + suffix + '_read = S[.POOLS = [{UNIT n_cast_handler, CONSTANTS ([(PCONSTANT pcpath_integer (' + value + '))])}] ++ S.POOLS]']
+    bindings += [
+        '$code_at(S.CODE, n_cast_handler) = (pcode_cast)',
+        'pcode_cast_folded = pcode_cast[.EXPRESSIONS = (CODEEXPR pcpath_cast z_cast true) :: pcode_cast.EXPRESSIONS]',
+        'S_root_folded = S[.CODE = pcode_cast_folded :: S.CODE][.POOLS = [{UNIT n_cast_handler, CONSTANTS ([(PCONSTANT pcpath_cast (PINT i_child)), (PCONSTANT pcpath_integer (PINT i_child))])}] ++ S.POOLS]',
+        'S_root_unread = S[.POOLS = [{UNIT n_cast_handler, CONSTANTS ([(PCONSTANT pcpath_cast (PBOOL false)), (PCONSTANT pcpath_integer (PINT i_child))])}] ++ S.POOLS]',
+        'S_non_normal = S[.COMPLETION = BUDGET][.RESULT = KNOWN (PINT i_child)]']
+    for suffix, (child, result) in LOCAL.items():
+        bindings += [
+            'i_local_' + suffix + '_child = ' + child,
+            'i_local_' + suffix + '_return = ' + result,
+            'expression_local_' + suffix + ' = NExprCastInt (NScalarInt (INTEGER i_local_' + suffix + '_child) metadata_integer) metadata_cast',
+            'statement_local_' + suffix + ' = NStmtReturn expression_local_' + suffix + ' metadata_cast_return',
+            'pcunit_local_' + suffix + ' = pcunit_cast_projection[.OCCURRENCES = [(PCOCCURRENCE pcpath_cast_return statement_local_' + suffix + '), (PCOCCURRENCE pcpath_cast expression_local_' + suffix + '), (PCOCCURRENCE pcpath_integer (NScalarInt (INTEGER i_local_' + suffix + '_child) metadata_integer))] ++ pcunit_cast_projection.OCCURRENCES]',
+            'S_local_' + suffix + ' = S[.SOURCES = [pcunit_local_' + suffix + ']][.POOLS = [{UNIT n_cast_handler, CONSTANTS ([(PCONSTANT pcpath_integer (PINT i_local_' + suffix + '_child))])}] ++ S.POOLS]']
+    checks = [(label.replace('NULL finish', 'handled cast-integer finish'), author.converted(condition))
+              for label, condition in checks]
+    checks += [
+        ('the own emitted cast root and pooled integer child retain the exact result and NULL scratch',
+         author.return_proof(name) + r' /\ '
+         r'$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_return])'),
+        ('different integer, cast kind, raw integer, FLOAT and bare or extra Returns cannot replace the body',
+         r'i_integer_other =/= i_child /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_other]) /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_other_kind]) /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_raw]) /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_float]) /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_bare]) /\ '
+         r'~$ob_object_error_handler_tail(S, pfunction_handler, [statement_cast_return, statement_cast_return])'),
+        ('local root and child occurrence shadows refuse despite unchanged Return and compiled reads',
+         r'S_raw_root.CODE = S.CODE /\ S_raw_child.CODE = S.CODE /\ '
+         r'S_raw_root.SOURCES[0].AST = pcunit_cast_projection.AST /\ '
+         r'S_raw_child.SOURCES[0].AST = pcunit_cast_projection.AST /\ '
+         r'$origin_node(S_raw_root.SOURCES, porigin_cast_return) = (statement_cast_return) /\ '
+         r'$origin_node(S_raw_child.SOURCES, porigin_cast_return) = (statement_cast_return) /\ '
+         r'$compiled_read(S_raw_root, porigin_cast) = eps /\ '
+         r'$compiled_read(S_raw_child, porigin_integer) = (PINT i_child) /\ '
+         r'~$ob_object_error_handler_tail(S_raw_root, pfunction_handler, [statement_cast_return]) /\ '
+         r'~$ob_object_error_handler_tail(S_raw_child, pfunction_handler, [statement_cast_return])')]
+    for part, codepath, line in [('root', 'pcpath_cast', 'z_cast'),
+                                 ('child', 'pcpath_integer', 'z_integer')]:
+        expected, wrong = ('false', 'true') if part == 'root' else ('true', 'false')
+        checks += [('each own ' + part + ' CODE record retains its actual line and emitted or folded flag',
+            '$code_expression(pfunction_' + part + '_flag.CODE.EXPRESSIONS, ' + codepath + ') = ((' + line + ', ' + wrong + r')) /\ '
+            '$code_expression(pfunction_' + part + '_line.CODE.EXPRESSIONS, ' + codepath + ') = ((z_' + part + '_bad, ' + expected + r')) /\ '
+            'z_' + part + '_bad =/= ' + line + r' /\ '
+            '~$ob_object_error_handler_tail(S, pfunction_' + part + r'_flag, [statement_cast_return]) /\ '
+            '~$ob_object_error_handler_tail(S, pfunction_' + part + '_line, [statement_cast_return])')]
+    for suffix, value, label in [
+            ('child_other', 'PINT i_integer_other', 'a distinct wrong integer cannot replace the raw child pool'),
+            ('child_false', 'PBOOL false', 'Boolean FALSE cannot replace the exact integer child pool'),
+            ('child_float', 'PFLOAT 0', 'FLOAT zero cannot replace the exact integer child pool')]:
+        state = 'S_' + suffix + '_read'
+        checks += [(label, r'i_integer_other =/= i_child /\ '
+            '$compiled_read(' + state + r', porigin_cast) = eps /\ '
+            '$compiled_read(' + state + ', porigin_integer) = (' + value + r') /\ '
+            '~$ob_object_error_handler_tail(' + state + ', pfunction_handler, [statement_cast_return])')]
+    checks += [
+        ('a locally folded root refuses even with matching integer source and both populated values',
+         r'$compiled_read(S_root_folded, porigin_cast) = (PINT i_child) /\ '
+         r'$compiled_read(S_root_folded, porigin_integer) = (PINT i_child) /\ '
+         r'~$ob_object_error_handler_tail(S_root_folded, pfunction_handler, [statement_cast_return])'),
+        ('a local unread root pool is not authority and cannot supply its Boolean FALSE value',
+         r'$compiled_read(S_root_unread, porigin_cast) = eps /\ '
+         r'$compiled_read(S_root_unread, porigin_integer) = (PINT i_child) /\ '
+         r'$ob_object_error_handler_tail(S_root_unread, pfunction_handler, [statement_cast_return])'),
+        ('NORMAL is required even when a non-NORMAL no-op satisfies a tautological result update',
+         r'S_non_normal.COMPLETION =/= NORMAL /\ S_non_normal.RESULT = KNOWN (PINT i_child) /\ '
+         r'$cast_apply(S_non_normal, CASTINT, PINT i_child, z_cast) = S_non_normal /\ '
+         r'$cast_apply(S_non_normal, CASTINT, PINT i_child, z_cast) = S_non_normal[.RESULT = KNOWN (PINT i_child)] /\ '
+         r'~$ob_object_error_handler_tail(S_non_normal, pfunction_handler, [statement_cast_return])')]
+    checks += [('the own emitted cast Return retains its function unit and body',
+        r'pfunction_cast_unit.CODE.UNIT =/= n_cast_handler /\ '
+        r'pfunction_cast_body.BODY =/= pfunction_handler.BODY /\ '
+        r'~$ob_object_error_handler_tail(S, pfunction_cast_unit, [statement_cast_return]) /\ '
+        r'~$ob_object_error_handler_tail(S, pfunction_cast_body, [statement_cast_return])')]
+    conditions = []
+    for state in ['S_cast_scratch', 'S_false_scratch']:
+        conditions += ['$call_current_valid(' + state + ')', '$dz_raw(' + state + ') = S_request',
+                       '$ob_object_division_error_capture(' + state + ', S_generated) = eps']
+    checks += [('consumed integer result and FALSE cannot replace resumed NULL scratch', r' /\ '.join(conditions))]
+    for suffixes, admitted, label in [
+            (['minus_one', 'minimum'], True,
+             'local raw negative and MIN children admit only their identical quiet signed64 cast results'),
+            (['above', 'below'], False,
+             'local out-of-range children and results refuse despite matching raw and pool facts')]:
+        conditions = []
+        for suffix in suffixes:
+            state, child, result, statement = ('S_local_' + suffix, 'i_local_' + suffix + '_child',
+                'i_local_' + suffix + '_return', 'statement_local_' + suffix)
+            conditions += [state + '.CODE = S.CODE', state + '.SOURCES[0].AST = pcunit_cast_projection.AST',
+                '$origin_node(' + state + '.SOURCES, porigin_cast_return) = (' + statement + ')',
+                '$origin_node(' + state + '.SOURCES, porigin_cast) = (expression_local_' + suffix + ')',
+                '$origin_node(' + state + '.SOURCES, porigin_integer) = (NScalarInt (INTEGER ' + child + ') metadata_integer)',
+                '$compiled_read(' + state + ', porigin_cast) = eps',
+                '$compiled_read(' + state + ', porigin_integer) = (PINT ' + child + ')']
+            if admitted:
+                conditions += ['$long_range(' + child + ')', '$long_range(' + result + ')',
+                    '$cast_apply(' + state + ', CASTINT, PINT ' + child + ', z_cast) = ' + state + '[.RESULT = KNOWN (PINT ' + result + ')]']
+            else:
+                conditions += ['~($long_range(' + child + r') /\ $long_range(' + result + '))']
+            conditions += [('' if admitted else '~') + '$ob_object_error_handler_tail(' + state + ', pfunction_handler, [' + statement + '])']
+        checks += [(label, r' /\ '.join(conditions))]
+    return bindings, checks
+
+
+if __name__ == '__main__':
+    runner.CASES, runner.PREFIX, runner.authority = CASES, PREFIX, authority
+    runner.main()
