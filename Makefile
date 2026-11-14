@@ -543,6 +543,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_positive_integer_return_modulo_error_sources.py
 	python3 tests/semantics/output_final_selected_positive_integer_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-integer-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_positive_integer_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-integer-return-modulo-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-float-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_positive_float_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-positive-float-return-modulo-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
