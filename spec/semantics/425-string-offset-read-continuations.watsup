@@ -363,6 +363,23 @@ def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
   -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
   -- if $binary_apply(S_probe, pbin, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PINT i)]
+;; Scalar spaceship retains its integer order without arithmetic coercion.
+def $string_read_raw_truth(S, porigin, PINT i) = true
+  -- if $long_range(i)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpSpaceship expression_left expression_right metadata)
+  -- if $compiled_read(S, porigin) = (PINT i)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $compiled_read(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
+  -- if $binary_apply(S_probe, SPACESHIP, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PINT i)]
 def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
   -- if |text_float| = 16
