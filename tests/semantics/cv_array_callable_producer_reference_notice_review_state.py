@@ -52,7 +52,7 @@ def controls(case):
         lines += promoted
     for kinds in (('callable', 'array'), ('array', 'callable'), ('callable', 'object'), ('callable', 'array', 'null'), ('callable', 'callable')):
         raw, normalized = raw_types.union(kinds)
-        refusal = '' if len(kinds) == 2 and 'array' in kinds else '~'
+        refusal = '' if len(kinds) == 2 and 'array' in kinds or kinds == ('callable', 'object') else '~'
         lines += [refusal + '$reference_notice_producer_header(' + args + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])']
         raw_param = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw + ') (BOOLEAN false) (BOOLEAN false) phpType10_first ABSENT (SEQUENCE eps) metadata_first_parameter'
         lines += [refusal + '$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([' + raw_param + ', phpType17_last]), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam_first[.TYPE = ' + normalized + '], psparam_last]])']

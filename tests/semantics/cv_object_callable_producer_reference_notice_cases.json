@@ -1,0 +1,80 @@
+[
+  {
+    "id": "object-union-singleton-byval-direct-property-private-cell",
+    "namespace": "CallableSingletonByval91",
+    "source": "<?php\nnamespace CallableSingletonByval91;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(CaLlAbLe|ObJeCt $saved):oBjEcT|cAlLaBlE{echo 'M:',(int)($saved->value===17),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->value===17),';';$value=23;return $value;}\n$x=new \\stdClass;$x->value=17;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval91\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy->value===17),';';$r=41;echo 'P:',$r,':',(int)($copy->value===17),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "f520f682861a0f9fa4c09a8431b1e6108dbeaf5a874f779b014047f5227a21f8",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "POBJECT",
+    "line_observation": "Native-first executes each exact original once; exact quiet stdClass or registered USER-callable verification precedes producer retirement and a separate unconstrained private Notice cell.",
+    "formal_members": [
+      "callable",
+      "object"
+    ],
+    "return_members": [
+      "object",
+      "callable"
+    ],
+    "value_kind": "object",
+    "integer": 17,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_array_callable_producer_reference_notice_cases.json:object-union-and-quiet-stdClass-variants"
+  },
+  {
+    "id": "object-union-singleton-byref-strict-transient-scalar-write",
+    "namespace": "CallableSingletonByref91",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref91;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x->value===17),';';$x=37;return true;}\nfunction make(ObJeCt|CaLlAbLe &$saved):cAlLaBlE|oBjEcT{$kept=$saved;$saved=23;echo 'M:',(int)($saved===23),';';$saved=$kept;unset($kept);return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->value===17),';';$value=23;return $value;}\n$x=new \\stdClass;$x->value=17;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref91\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy->value===17),';';$r=41;echo 'P:',$r,':',(int)($copy->value===17),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "1e8decbf8c11ee01cf2ab3f31d5dfaf1b64b5bcf0fa396a3e5a06282a219d29d",
+    "native_stdout": "N;M:1;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "POBJECT",
+    "line_observation": "Native-first executes each exact original once; exact quiet stdClass or registered USER-callable verification precedes producer retirement and a separate unconstrained private Notice cell.",
+    "formal_members": [
+      "object",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "object"
+    ],
+    "value_kind": "object",
+    "integer": 17,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_array_callable_producer_reference_notice_cases.json:object-union-and-quiet-stdClass-variants"
+  },
+  {
+    "id": "object-union-multi-cv-request-callable-private-cell",
+    "namespace": "CallableMulti91",
+    "source": "<?php\nnamespace CallableMulti91;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(CaLlAbLe|ObJeCt $saved,&$changed):ObJeCt|cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti91\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti91\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti91\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti91\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti91\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti91\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "2159c0402f953409342e08d516de24d5960a5e5b2efee7608bd7bb9c353809ea",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first executes each exact original once; exact quiet stdClass or registered USER-callable verification precedes producer retirement and a separate unconstrained private Notice cell.",
+    "formal_members": [
+      "callable",
+      "object"
+    ],
+    "return_members": [
+      "object",
+      "callable"
+    ],
+    "value_kind": "callable",
+    "integer": null,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_array_callable_producer_reference_notice_cases.json:object-union-and-quiet-stdClass-variants"
+  }
+]

@@ -45,7 +45,7 @@ def controls(case):
     admitted = (('callable', 'true'), ('true', 'callable'), ('callable', 'false'), ('false', 'callable'), ('callable', 'bool'), ('bool', 'callable'))
     for kinds in admitted + (('array', 'callable'), ('callable', 'object'), ('callable', 'true', 'false'), ('callable', 'bool', 'string'), ('callable', 'callable')):
         raw, normalized = raw_types.union(kinds)
-        refused = '' if kinds in admitted or kinds == ('array', 'callable') else '~'
+        refused = '' if kinds in admitted or kinds == ('array', 'callable') or kinds == ('callable', 'object') else '~'
         lines += [refused + '$reference_notice_producer_header(' + args + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])']
         raw_param = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw + ') (BOOLEAN false) (BOOLEAN false) phpType10_first ABSENT (SEQUENCE eps) metadata_first_parameter'
         lines += [refused + '$reference_notice_producer_arguments(SEQUENCE ([phpType7_first, phpType7_last]), SEQUENCE ([' + raw_param + ', phpType17_last]), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam_first[.TYPE = ' + normalized + '], psparam_last]])']
