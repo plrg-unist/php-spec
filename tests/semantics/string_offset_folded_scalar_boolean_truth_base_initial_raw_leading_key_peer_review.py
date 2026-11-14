@@ -117,7 +117,7 @@ S_bad_boolean_code = S_capture[.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_bo
         ('nan_xor', ('LogicalXor', 'PBOOL true', nan, false), False), ('infinite_xor', ('LogicalXor', 'PBOOL true', infinity, false), False),
         ('negative_infinite_xor', ('LogicalXor', 'PBOOL true', floating(18442240474082181120), false), False),
         ('float_payload_mismatch', ('Equal', 'PBOOL true', ('NScalarFloat (FLOAT "3ff8000000000000")', 'PFLOAT 4607182418800017408'), one), False),
-        ('or_gate', ('LogicalOr', 'PBOOL true', one, false), False), ('and_gate', ('LogicalAnd', 'PBOOL false', one, false), False),
+        ('or_gate', ('LogicalOr', 'PBOOL true', one, false), True), ('and_gate', ('LogicalAnd', 'PBOOL false', one, false), True),
         ('spaceship', ('Spaceship', 'PBOOL false', one, one), False),
         ('cached_division', ('LogicalXor', 'PBOOL true', bad_division, false), False),
     ]

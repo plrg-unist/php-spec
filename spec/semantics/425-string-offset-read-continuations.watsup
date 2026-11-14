@@ -248,6 +248,41 @@ def $string_read_raw_truth(S, porigin, PBOOL b) = true
   -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
   -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
   -- if $binary_apply(S_probe, pbin, pvalue_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PBOOL b)]
+;; Decisive folded short-circuit truth never demands a right value.
+def $string_read_raw_truth(S, porigin, PBOOL b_or) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $compiled_read(S, porigin) = (PBOOL b_or)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if $truth_value(S_probe, pvalue_left, 0) = S_probe[.RESULT = KNOWN (PBOOL b_or)]
+;; A required right operand retains its original tag and ordered quiet truth.
+def $string_read_raw_truth(S, porigin, PBOOL b_right) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $compiled_read(S, porigin) = (PBOOL b_right)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (pvalue_left)
+  -- if $type_bytes(pvalue_left) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, pvalue_left)
+  -- if S_left = $truth_value(S_probe, pvalue_left, 0)
+  -- if S_left.RESULT = KNOWN (PBOOL b_left)
+  -- if S_left = S_probe[.RESULT = KNOWN (PBOOL b_left)]
+  -- if b_left =/= b_or
+  -- if $compiled_read(S, porigin_right) = (pvalue_right)
+  -- if $type_bytes(pvalue_right) <- [$ptascii("int"), $ptascii("float"), $ptascii("bool"), $ptascii("null"), $ptascii("string")]
+  -- if $string_read_raw_truth(S_probe, porigin_right, pvalue_right)
+  -- if $truth_value(S_left, pvalue_right, 0) = S_probe[.RESULT = KNOWN (PBOOL b_right)]
 ;; Only non-FLOAT NOT is folded; every link keeps its exact quiet complement.
 def $string_read_raw_truth(S, porigin, PBOOL b) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBooleanNot expression_child metadata)
