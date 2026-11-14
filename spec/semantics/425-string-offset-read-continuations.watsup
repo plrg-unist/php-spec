@@ -17,6 +17,7 @@ dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_request_saved(pstate, pstringread) : int?
 dec $string_read_request_base_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_literal_bytes(expression) : nat*?
+dec $string_read_runtime_value(pstate, porigin) : pvalue?
 dec $string_read_runtime_bytes(pstate, porigin) : nat*?
 dec $string_read_request_base_saved(pstate, pstringread) : int?
 dec $string_read_phase(pvalue, pvalue) : pstringreadphase?
@@ -326,14 +327,14 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
-;; Runtime FLOAT NOT is never a compiled constant at this PHP pin. Certify its
-;; quiet bytes from the real emitted expression and immutable folded child.
-def $string_read_runtime_bytes(S, porigin) = (n*)
+;; Only quiet compiled FLOAT leaves and emitted NOT Boolean results enter this
+;; typed certificate. Every NOT remains a real runtime expression.
+def $string_read_runtime_value(S, porigin) = (PFLOAT n_bits)
   -- if $compiled_precision(S, (porigin)) = (z_precision)
-  -- if $compiled_read(S, porigin) = (pvalue)
-  -- if $compiled_identity_value(S, porigin) = (pvalue)
-  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
-def $string_read_runtime_bytes(S, PORIGIN n pcpath) = ($echo_value(PBOOL (~b)))
+  -- if $compiled_read(S, porigin) = (PFLOAT n_bits)
+  -- if $compiled_identity_value(S, porigin) = (PFLOAT n_bits)
+  -- if $number_bool(NFLOAT n_bits) = (b, false)
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL (~b))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBooleanNot expression metadata)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
@@ -343,10 +344,17 @@ def $string_read_runtime_bytes(S, PORIGIN n pcpath) = ($echo_value(PBOOL (~b)))
   -- if $origin_node(S.SOURCES, porigin_child) = (expression)
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_child)) = (z_precision)
-  -- if $compiled_read(S, porigin_child) = (PFLOAT n_bits)
-  -- if $compiled_identity_value(S, porigin_child) = (PFLOAT n_bits)
-  -- if $number_bool(NFLOAT n_bits) = (b, false)
-  -- if $truth_value(S, PFLOAT n_bits, z_line) = S[.RESULT = KNOWN (PBOOL b)]
+  -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
+  -- if b = $truth(S, pvalue_child)
+  -- if $truth_value(S, pvalue_child, z_line) = S[.RESULT = KNOWN (PBOOL b)]
+def $string_read_runtime_value(S, porigin) = eps -- otherwise
+def $string_read_runtime_bytes(S, porigin) = (n*)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $compiled_identity_value(S, porigin) = (pvalue)
+  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
+def $string_read_runtime_bytes(S, porigin) = ($echo_value(PBOOL b))
+  -- if $string_read_runtime_value(S, porigin) = (PBOOL b)
 def $string_read_runtime_bytes(S, PORIGIN n pcpath) = (n_left* ++ n_right*)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $code_at(S.CODE, n) = (pcode)

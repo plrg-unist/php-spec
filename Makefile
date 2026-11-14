@@ -1044,6 +1044,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_float_boolnot_special_concat_leading_key_sources.py --output "$$request_float_boolnot_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_float_boolnot_special_concat_leading_key_protocol.py --sl --source-report "$$request_float_boolnot_out/source/report.json" --output "$$request_float_boolnot_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_float_boolnot_special_concat_leading_key_review_state.py --sl --source-report "$$request_float_boolnot_out/source/report.json" --output "$$request_float_boolnot_out/review-state"
+	@request_nested_float_boolnot_out=$$(mktemp -d .tools/nested-float-boolnot-runtime-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_nested_float_boolnot_special_concat_leading_key_sources.py --output "$$request_nested_float_boolnot_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_nested_float_boolnot_special_concat_leading_key_protocol.py --sl --source-report "$$request_nested_float_boolnot_out/source/report.json" --output "$$request_nested_float_boolnot_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_nested_float_boolnot_special_concat_leading_key_review_state.py --sl --source-report "$$request_nested_float_boolnot_out/source/report.json" --output "$$request_nested_float_boolnot_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
