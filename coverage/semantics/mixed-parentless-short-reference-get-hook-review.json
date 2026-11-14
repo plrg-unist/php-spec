@@ -1,0 +1,103 @@
+{
+  "family": "canonical standalone mixed in parentless same-field short reference Get",
+  "status": "bounded slice integrated; independent source, state and actual composition/SAME checks clear",
+  "target": "PHP8.5.10 CLI NTS64",
+  "oracle": {
+    "path": ".tools/php/bin/php",
+    "sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json plus include_path=.:",
+    "environment": {"LC_ALL": "C", "TZ": "UTC"}
+  },
+  "scope": [
+    "Own ordinary parentless class, public nonstatic nonreadonly nonfinal property, no Trait or set visibility, sole short &get without an explicit parameter list.",
+    "Canonical singleton mixed retains its nonempty property type and authentic implicit RETURNS. Module99 reference_verifies remains false; mixed is not TYPEeps.",
+    "The first by-value read acquires the real backing reference, initializing an omitted slot to NULL. Independent copies and two aliases preserve exact scalar tags, flat-array COW and plain stdClass identity.",
+    "The actual mixed property source remains attached across all value changes. Scalar37 precedes quiet receiver removal; real detach leaves the two aliases shared and copies independent. The unchanged literal array remains a compiled POOLS root after CV cleanup."
+  ],
+  "refusals": [
+    "Nullable mixed/null bases, mixed|null, null|mixed, duplicate null|null and raw/normalized type mismatches remain refused. The ordered union whitelist is unchanged.",
+    "Only three current pure canonical-mixed negatives are promoted. Wider headers, owners, bodies, payloads and lifetimes remain partial; every exact held boundary is unchanged."
+  ],
+  "engine_pin": "vendor/php-src release34308a6666b2d489c509541ea9befea9e2b42348",
+  "source_routes": {
+    "Zend/zend_compile.c": ["zend_compile_property_hooks", "zend_compile_return", "zend_emit_return_type_check"],
+    "Zend/zend_execute.c": ["zend_handle_fetch_obj_flags/ZEND_FETCH_REF", "i_zend_verify_type_assignable_zval"],
+    "Zend/zend_objects.c": ["zend_object_dtor_property"]
+  },
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_header"],
+  "whole_source": {
+    "base": "ed9827656abe6c37c4e0b0390ea666ad19f09164",
+    "donor": "bfdda012badae6ec25de79734a545e2fc36b4701",
+    "tree": "77d1b5cd7f35b07a2176cfa4a50b069d6e26d01f",
+    "paths": 17,
+    "manifest": "source-ready-v2.json",
+    "manifest_sha256": "dd80b4d84b6dce7a4cc312dc02cffe03be9e69f0f505a5ee5becc0236cd6fe4e",
+    "excluded_separately_closed_metadata": [
+      "coverage/semantics/union-literal-boolean-parentless-short-reference-get-hook-review.json",
+      "coverage/semantics/null-parentless-short-reference-get-hook-review.json"
+    ]
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/comp305",
+  "source_mode": "production-SL508",
+  "source_cuts": [
+    {
+      "role": "author-weak", "head": "23a51438e1bf1aa0c5d328007c2514a4330b2602",
+      "native_runs_once": 2, "source_agreements": 2,
+      "report": "author-source/report.json",
+      "sha256": "b16d79406eb333eb706d02383fc3396ece28114f081586c3e459f6f1e7742ab3"
+    },
+    {
+      "role": "independent-strict", "head": "9633a311203e0acbcda29922ce93e2a5bf4f3d46",
+      "native_runs_once": 2, "source_agreements": 2,
+      "report": "peer15-source-v1/report.json",
+      "sha256": "7ff9002212ea8c75d8ce766e7ac17ca8d4dc2da6e779d2bec8899d45a5f3c9bd"
+    }
+  ],
+  "fixture_mode": "fixture-SL508; zero source-agreement credit",
+  "fixture_cuts": [
+    {
+      "role": "author-initialized", "head": "23a51438e1bf1aa0c5d328007c2514a4330b2602", "conditions": 269,
+      "report": "author-initialized-protocol/report.json",
+      "sha256": "940422868c684117458597d37ec810391efbe66c9b7dc293a11c20805902f08e"
+    },
+    {
+      "role": "author-omitted", "head": "23a51438e1bf1aa0c5d328007c2514a4330b2602", "conditions": 270,
+      "report": "author-omitted-protocol/report.json",
+      "sha256": "e439929c1421623a955c35492a313e00e555f8e977d8651b500468f13b1ce3be"
+    },
+    {
+      "role": "independent-initialized", "head": "5ed123d4724d8ea27e8537219a363a6084db337b", "conditions": 277,
+      "report": "peer15-initialized-protocol-v2/report.json",
+      "sha256": "1856d7d77f9489adfdaa8b4a0bc2e14da923b49ef2a82d39520678f4d40d0293"
+    },
+    {
+      "role": "independent-omitted", "head": "5ed123d4724d8ea27e8537219a363a6084db337b", "conditions": 278,
+      "report": "peer15-omitted-protocol-v1/report.json",
+      "sha256": "ed7050ff4f8198e123e43e2d1f647b9177d286668c07a63e2883c84328c86252"
+    }
+  ],
+  "compatibility": "The source cuts share525 identical runtime/frontend hashes, profile and environment. The sole later source-projection change corrects an independently owned fixture expectation: PHP-Parser canonicalizes source MiXeD to checked mixed, while a separate pure helper check retains MiXeD acceptance. PHP/runtime and all author-watched inputs remain unchanged. Existing inactive prior.fields/PREFIX bridges retain their accepted scope without historical renewal.",
+  "controls": {
+    "author_prelaw": {"report": "author-prelaw/report.json", "unsupported": 2, "native_runs": 0, "source_agreements": 0},
+    "independent_prelaw": {"report": "peer15-prelaw-v1/report.json", "unsupported": 1, "native_runs": 0, "source_agreements": 0},
+    "preserved_fixture_failure": {
+      "report": "peer15-initialized-protocol-v1/report.json",
+      "sha256": "c8db6327247ab5afcb941c3f3901f6a379026d9479c6b84633cda75ca4124358",
+      "cause": "Checked builtin Identifier spelling expectation; corrected before repeating only the affected fixture.",
+      "source_agreements": 0
+    },
+    "native_source_failures": 0,
+    "make_commands": "wired; not replayed"
+  },
+  "actual_composition": {
+    "family_commit": "dd5b799192d4426df184f61790fa6c956f3de5bd",
+    "family_tree": "53bf6f597d281f157ee027536d0571392cda1f49",
+    "projection": "16 donor-exact paths plus the six additive Make commands; exactly17 family paths",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main59-comp305-current-load-v1/report.json",
+    "sha256": "56be074ee6098d7fbc54f8f5b17e28a41544dd06a5cdb91e7b177b868e9d62c4",
+    "mode": "production-SL", "modules": 508, "elapsed_seconds": 15.890351175097749,
+    "cap_seconds": 60, "source_agreements": 0, "passed": true,
+    "stable_quiet_reaped": true,
+    "review": "Independent actual17 composition and SAME saved canonical read clear once by retained peer15; no source/state renewal."
+  }
+}

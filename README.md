@@ -4397,6 +4397,8 @@ Own public parentless sole short reference Get hooks admit ordered false|null/nu
 
 Own public parentless same-field short reference Get also admits canonical `null`. The first by-value read invokes the real reference getter and may initialize omitted backing to NULL. Copies stay independent while field aliases reject non-NULL values with `type null`, then lose their property source on quiet receiver removal. Short-header checks keep malformed `?null` and `null|null` refused; broader headers and contexts remain partial. [Null reference-Get review](coverage/semantics/null-parentless-short-reference-get-hook-review.json).
 
+Canonical standalone mixed own parentless same-field short &get retains its real nonempty property source and exact implicit RETURNS while reference_verifies stays false. First by-value acquisition initializes omitted NULL; exact scalar tags, flat COW, stdClass identity and quiet detach pass four native-once source agreements and separate 269/270/277/278 fixture cuts. Three prelaw Unsupported and one corrected checked-spelling fixture failure remain source0; sole actual dd5b SL508 load 15.890351175s/source0 is independently clear. Wider headers/owners/lifetimes and exact holds remain partial. [Review](coverage/semantics/mixed-parentless-short-reference-get-hook-review.json).
+
 Named public class and interface constants also admit a single noarg `#[Deprecated]`. Fixed-name
 fetches warn before acquiring the value, including warm inherited reads; recursive
 reads of the same declaration suppress only the nested notice. Handler throws

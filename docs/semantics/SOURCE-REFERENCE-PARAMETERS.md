@@ -770,6 +770,20 @@ sole actual `7ff30694c0` production-SL508 load. Controller/Make remain unexecute
 with source credit zero. Other class forms, Stringable callbacks, wider contexts
 and every exact held dependency, including V110, remain partial.
 
+Canonical standalone `callable` formals and returns also admit existing registered
+USER-function name strings, preserving casefolding and an optional leading
+backslash without invoking the target. Ordinary BYREF reception adds no persistent
+cell constraint. Actual type verification, producer retirement, authentic
+non-NUL INTERNED/REQUEST carriers and separate private Notice-cell owners retain
+their existing rules. The
+[callable review](../../coverage/semantics/cv-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (four Notices and separate RECEIVE/RETURN priorities),
+author366/peer249 and genuine prelaw182/138 fixture-SL507 cuts separate from the
+sole actual `7abd726dd5` production-SL508 load. Original fixture failures and
+diagnostics retain zero credit; controller/Make remain unexecuted/source0.
+Nullable/union headers, wider callable forms, contexts and lifetimes remain
+partial at this cut; every exact held dependency stays unchanged.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object

@@ -247,6 +247,8 @@ Own public parentless sole short reference Get hooks admit ordered false|null/nu
 
 Canonical `null` now follows the own parentless same-field short reference Get route. First by-value reads initialize omitted backing through the actual reference return; copies stay separate and NULL-only aliases retain their source until quiet receiver removal. Native4 once/source4 and separate author153/154 and independent179/180 fixture-SL508 cuts pass. Family9c21 composes unchanged into tested269d88; one SL508 load16.040785808s and independent SAME stay source0. Malformed nullable/duplicate-null refusals and wider boundaries remain. [Review](coverage/semantics/null-parentless-short-reference-get-hook-review.json).
 
+Canonical standalone mixed own parentless same-field short &get retains its real nonempty property source and exact implicit RETURNS while reference_verifies stays false. First by-value acquisition initializes omitted NULL; exact scalar tags, flat COW, stdClass identity and quiet detach pass four native-once source agreements and separate 269/270/277/278 fixture cuts. Three prelaw Unsupported and one corrected checked-spelling fixture failure remain source0; sole actual dd5b SL508 load 15.890351175s/source0 is independently clear. Wider headers/owners/lifetimes and exact holds remain partial. [Review](coverage/semantics/mixed-parentless-short-reference-get-hook-review.json).
+
 Existing DIRECT storage and cleanup remain. Live array/object Get results, selected
 canonical-int, Boolean, FLOAT, string and NULL quiet Get returns, nullable scalar
 and scalar-union quiet headers and supported unselected typed Get companions.
@@ -770,7 +772,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current combined source cut `dd5b799192d4426df184f61790fa6c956f3de5bd` (tree `53bf6f597d281f157ee027536d0571392cda1f49`) passes its saved 508-module production SL load in 15.890351175097749 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main59-comp305-current-load-v1/report.json` (SHA-256 `56be074ee6098d7fbc54f8f5b17e28a41544dd06a5cdb91e7b177b868e9d62c4`). Separate family records retain DIV `706f6ebc`/`a8cf7968` and STRING `9c25bbed44`/`96bea409`.
+The current combined source cut `d8c13e64893e5fc102e56059dc2cd6d54d08580e` (tree `b3e0992e976f9cf6bc08cf7d8d6505018413905b`) passes its saved 508-module production SL load in 15.989282481838018 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main60-output120-stringcast-enum255-current-load-v1/report.json` (SHA-256 `6d4933f761ad49ace7b6bcb5dff4ef534898a97097b3ef5bce57357f71611341`). Separate family records retain DIV `706f6ebc`/`a8cf7968` and STRING `9c25bbed44`/`96bea409`.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,
