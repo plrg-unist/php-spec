@@ -1353,9 +1353,16 @@ def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn (NExprConstFetch (N
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_null) = ((z_null, b_null))
   -- if z_null = $source_line(metadata_null)
   -- if $compiled_read(S, PORIGIN n_handler pcpath_null) = (PNULL)
+def $ob_object_error_handler_tail(S, pfunction, [NStmtReturn ABSENT metadata_return]) = true
+  -- if pfunction.ORIGIN = PORIGIN n_handler pcpath_handler
+  -- if pfunction.CODE.UNIT = n_handler /\ pfunction.BODY = pcpath_handler ++ [PCFIELD 5]
+  -- if $origin_child((pfunction.ORIGIN), [PCFIELD 5, PCINDEX 1]) = (PORIGIN n_handler pcpath_return)
+  -- if $origin_node(S.SOURCES, PORIGIN n_handler pcpath_return) = (NStmtReturn ABSENT metadata_return)
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_return) = ((z_return, false))
+  -- if z_return = $source_line(metadata_return)
 def $ob_object_error_handler_tail(S, pfunction, statement*) = false -- otherwise
 ;; Completed selected operand Warnings or precision Deprecated calls admit
-;; a named, untyped two-parameter handler with a literal echo and implicit or literal NULL.
+;; a named, untyped two-parameter handler with a literal echo and implicit, literal NULL or bare return.
 ;; Current operands and the consumed conversion snapshot remain authoritative.
 def $ob_object_division_error_capture(S, S_next) = ((pobobjectreturn, pobreturnerror))
   -- if S.TODO = (INTEGER_OPERATOR_WARNING pintegeroperation (INTEGER_RIGHT i_left) pintegerconversion n) :: ptask_tail*

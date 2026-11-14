@@ -488,6 +488,9 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_explicit_null_modulo_error_sources.py
 	python3 tests/semantics/output_final_selected_explicit_null_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-explicit-null-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_explicit_null_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-explicit-null-modulo-error.XXXXXXXX)/peer"
+	python3 tests/semantics/output_final_selected_bare_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_bare_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-bare-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_bare_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-bare-return-modulo-error.XXXXXXXX)/peer"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
