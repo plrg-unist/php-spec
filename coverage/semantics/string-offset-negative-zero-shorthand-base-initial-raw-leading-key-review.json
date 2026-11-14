@@ -1,0 +1,88 @@
+{
+  "feature": "unary-minus-zero-float-shorthand-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "A shorthand ternary with actual unary minus of a positive-zero float literal and raw string fallback supplies its non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index supplies the original byte. -0.0 and -(0e0) originals authenticate compiled negative-zero bits at the unary expression and positive-zero bits at its nested literal.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "5a03d86f822fb369cdcfa20a13167c45516ffa46",
+  "reviewed_peer_head": "949674eba56cbbac5a69e742863f247345032cae",
+  "implementation_sha256": "cd1fbbd610bff9546e91571fa1dd1fc7378ab7ad67085fdf4004063c0590a127",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_unary_pm and zend_try_ct_eval_unary_pm fold a constant operand through multiplication by signed -1, before zend_compile_shorthand_conditional emits JMP_SET and fallback QM_ASSIGN. Zend/zend_operators.h i_zend_is_true treats negative floating zero as false; Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code. Existing pure compiler/numeric rules supply the two exact PFLOAT pools; no PHPT was executed.",
+  "implementation": "One local14-line425 raw_known_base arm authenticates actual NExprUnaryMinus over NScalarFloat raw bits0, its matching nested leaf occurrence/compiledPFLOAT0, compiled unary PFLOAT9223372036854775808, ABSENT true arm, raw string fallback at PCFIELD2 with matching compiled read/INTERNED identity, and parent compiledEPS. Existing raw capture, saved index, source and ownership guards remain. No numeric/compiler, generic233, provider/root, schema, REQUEST/NUL, raw-negative-zero/nonfinite scalar, wider computed producer, abrupt or held-boundary change.",
+  "evidence": [
+    {
+      "kind": "native2 once and current production-SL Unsupported2, zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "eb6353f5ae1791bf095877fa9229ed2b65a187c2dace792fe5b926a6f689e82f",
+      "tested_revision": "c833cccc54ee2a9b38082676da065fea9803593d",
+      "source_credit": 0,
+      "passed": true,
+      "agreements": 0
+    },
+    {
+      "kind": "genuine ordinary-key A full155:19 changed/136 initial; both actual compiled pool observations exported, roots[1,0],edges0,debts0",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "1b2b8182526032fa934a738d34f459721553f0903e4bbed582c3593cd741490d",
+      "tested_revision": "c833cccc54ee2a9b38082676da065fea9803593d",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 59
+    },
+    {
+      "kind": "genuine reference-key B full155:20 changed/135 initial; nested actual source and both exact PFLOAT pools, roots[1,0,0],edges0,debts0",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "7b7509774054f4d73dded55d38059aa29b58cf8ad1a4ad7748e7196b3951e4e8",
+      "tested_revision": "3d062b505ed7825e87454e27b6663ac5c48f53c8",
+      "source_credit": 0,
+      "passed": true,
+      "conditions": 60
+    },
+    {
+      "kind": "two original-source production-SL comparisons with saved native2 reused once",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "7616dfbf80a7ff57ac0bd968a24037818ebed73802a6d55c6e36e25794c2daeb",
+      "tested_revision": "e7cc7da6fc9bb12d4790dc171050b92f5ce6dcae",
+      "source_credit": 2,
+      "passed": true,
+      "agreements": 2
+    },
+    {
+      "kind": "author production-SL fixture, separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "5071c1872fb6a694d308a1681317c4a6c9209b8cc24be92fad5a7eac35137019",
+      "tested_revision": "e7cc7da6fc9bb12d4790dc171050b92f5ce6dcae",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 183,
+      "derived_conditions": 76
+    },
+    {
+      "kind": "independent production-SL fixture, separate source0 cut",
+      "report": "../php-spec-evidence-archive/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "bce82f928dfb4d29143968fecc3fd73d4da7ae65645d731bed5c08302661792d",
+      "tested_revision": "949674eba56cbbac5a69e742863f247345032cae",
+      "source_credit": 0,
+      "passed": true,
+      "premises": 239,
+      "derived_conditions": 114
+    }
+  ],
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main44-negativezero-shorthand-joined-508-v1/report.json",
+    "sha256": "74f57c5fba8b1905e6eb7985e4df51b68dab39fe5161272ea262b90e56f6cac7",
+    "tested_revision": "1e86e3dc1b7f01fb9e82a359fc6d02665a50e40c",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.03118209494278,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author183/76-derived and independent239/114-derived fixture-SL cuts retain source0. Genuine full155 prelaw states retain their own cuts and owner graphs. Exact nested UnaryMinus/raw FLOAT0/compiled childPFLOAT0 and unaryPFLOAT2^63, ABSENT/no source child1, fallback bytes/identity, parent-fold refusal, wrong unary or child sign/type/value pools, simultaneous raw nonzero/negative-zero leaves versus unchanged exact pools, direct raw-negative-zero source refusal, key rebinding, unchanged owners, dispatch/resume/output and budgets are checked. Source60/outer80/compiler120/state180 caps remain. Successful runs are quiet, stable and fully reaped; prelaw Unsupported retains0. No unique aggregate or historical renewal.",
+  "review": "Independent whole six source/test files, source2 and author183 FULLCLEAR preceded direct MAIN44 READY. Author reciprocal independent239 and genuine prelaw full155 reads are CLEAR. Actual MAIN1e86e3dc1 source/controller/Make2 and complete raw_known_base group match the reviewed donor; separately accepted runtime-key DIVIDE changes remain byte-identical and retain their own evidence. Both actual composition reads and the sole saved combined load are CLEAR, separately from source agreements.",
+  "remaining": "Unary-plus and wider computed conditions, raw negative-zero/nonfinite scalar conditions, wider fallback/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the linked external archives. Tracked cases/renderers and the two Makefile negative-zero-shorthand-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

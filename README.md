@@ -1561,6 +1561,8 @@ Literal integer-zero shorthand bases also retain their selected non-NUL INTERNED
 
 Literal positive-zero float shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact raw binary64-zero and compiled condition/fallback facts remain required; broader producers and lifetimes stay partial. [Positive-zero FLOAT shorthand review](coverage/semantics/string-offset-float-zero-shorthand-base-initial-raw-leading-key-review.json).
 
+Actual unary-minus float-zero shorthand bases also retain their selected non-NUL INTERNED fallback header and frozen leading offset through returning Warning handlers. Exact nested literal source, positive-zero child and negative-zero unary compiled facts remain required; broader producers and lifetimes stay partial. [Unary-minus FLOAT-zero shorthand review](coverage/semantics/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-review.json).
+
 [Marked REQUEST review](coverage/semantics/string-offset-request-callback-marked-request-key-review.json),
 [marked INTERNED review](coverage/semantics/string-offset-request-callback-marked-interned-key-review.json).
 [REQUEST-key review](coverage/semantics/string-offset-request-callback-request-key-review.json),

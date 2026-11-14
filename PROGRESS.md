@@ -417,6 +417,8 @@ Literal integer-zero shorthand bases retain their non-NUL INTERNED fallback head
 
 Literal positive-zero float shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact raw FLOAT bits0/compiledPFLOAT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS source facts remain required. Saved-native source2 and separate author169/65 and peer215/93 fixture-SL/source0 cuts pass; actual MAIN14002d6ef has one combined SL508 load15.739573478000239s/source0. Negative/computed/nonfinite conditions, wider producers, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Positive-zero FLOAT shorthand review](coverage/semantics/string-offset-float-zero-shorthand-base-initial-raw-leading-key-review.json).
 
+Actual unary-minus float-zero shorthand bases retain their non-NUL INTERNED fallback header and initial raw leading-integer index through returning Warning handlers, including ordinary key replacement and initial-reference rebinding. Exact UnaryMinus/raw-positive-zero leaf source, compiled unaryPFLOAT2^63/leafPFLOAT0, ABSENT true arm, raw fallback2/INTERNED identity and parent-EPS facts remain required. Saved-native source2 and separate author183/76 and peer239/114 fixture-SL/source0 cuts pass; actual MAIN1e86e3dc1 has one combined SL508 load16.03118209494278s/source0. Wider conditions/producers, direct raw negative-zero or nonfinite scalars, selected NUL/REQUEST bases, abrupt paths and existing holds remain partial. [Unary-minus FLOAT-zero shorthand review](coverage/semantics/string-offset-negative-zero-shorthand-base-initial-raw-leading-key-review.json).
+
 
 Integer-default reception includes guarded integer casts and truth of computed FLOAT
 trees, plus typed selected FLOAT leaves and explicit FLOAT casts inside numeric
@@ -567,12 +569,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `be48fce13` passes its once-only 508-module production SL
-load in 15.689459902001545 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `37cc3f22c` passes its once-only 508-module production SL
+load in 15.881875016028062 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main44-output-bare-return-joined-508-v1/report.json`
-(SHA-256 `bd68d09c9e67582022af0bed74611ec9b0c16baff832f2bc139b2537afeb4313`).
+`../php-spec-evidence-archive/resumed-main-20261112/main44-distinct-nonnull-union-reference-joined-508-v1/report.json`
+(SHA-256 `022653c564318744b6e2d3980fb83771e970dd4b0cd731d2ba44487aa65cd399`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 
