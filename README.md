@@ -1328,6 +1328,8 @@ Quiet emitted FLOAT unary +/- values now compose through existing typed consumer
 
 Quiet emitted bool/int/float casts retain exact typed values through existing string-offset consumers, with explicit quiet float-to-int bounds. Runtime FLOAT bytes and wider producers remain partial. [Runtime primitive-cast review](coverage/semantics/string-offset-request-base-runtime-scalar-cast-review.json).
 
+Quiet emitted full ternaries preserve the selected typed value through existing string-offset consumers. Runtime shorthand and wider producers remain partial. [Runtime full-ternary review](coverage/semantics/string-offset-request-base-runtime-full-ternary-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
@@ -8915,7 +8917,7 @@ Same-scope Shared clones and finite chains of those raw method captures also cro
 
 Direct global static-method Get captures and their Shared clones also accept fully qualified and case-insensitive class labels, preserving exact source/scope/cache authority. [Review](coverage/semantics/magic-property-methodclosure-static-named-selector-quiet-get-review.json).
 
-Own public static USER method Get captures also accept a child of a genuine empty ordinary global source parent. Exact child/parent source and SOURCE_PARENT authority preserve own child scope, shared method statics and existing quiet consumer cleanup. Wider ancestry remains partial. [Review](coverage/semantics/magic-property-methodclosure-static-empty-parent-quiet-get-review.json).
+Own public static USER method Get captures also accept a child of a genuine empty ordinary global source parent, including direct fully qualified and mixed-case extends labels. Raw child.PARENT bytes and the canonical raw parent declaration remain exact; only fetched-parent identity folds case. Own child scope, shared method statics and quiet cleanup remain. Wider ancestry stays partial. [Parent review](coverage/semantics/magic-property-methodclosure-static-empty-parent-quiet-get-review.json), [parent-label review](coverage/semantics/magic-property-methodclosure-static-empty-parent-selector-quiet-get-review.json).
 
 Declared public int properties now invoke that unsetter only after becoming UNSET;
 INITIAL bypasses it; initialized VALUE deletes ordinarily. Same-name recursion is
