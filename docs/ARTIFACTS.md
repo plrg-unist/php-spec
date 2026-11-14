@@ -1535,3 +1535,5 @@ direct raw has no final fingerprint report and is supplemental only. Original
 FILE/cwd/profile, streams/exits, fixtures and input maps stay external.
 
 Static-method FCC quiet Get raw originals, native-once observations, prelaw Unsupported results, separate source/fixture cuts and two fixture preparation failures are under `/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-quiet-get/{author,independent}`. [Review](../coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json) records exact hashes and the sole MAIN48c joined load.
+
+Static-method FCC clone raw originals, native-once observations, prelaw and overstrict-candidate Unsupported cuts, source/state results, patch and fixture preparation failure are under `/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-clone-quiet-get/{author,independent}`. [Review](../coverage/semantics/magic-property-methodclosure-static-clone-quiet-get-review.json) also locates the source-reached diagnostic, affected-old cuts and sole MAINdc319 joined load.

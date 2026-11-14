@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Shared-cache clones and finite clone chains of the fixed global own public static USER method capture now cross quiet CV ??, private ??= and literal/CV Empty. Descending raw ancestry and immutable owner/cache stamps authenticate retired sources; absent historical scope rows are expected. Original Shared birth and current source/live/consumer fences remain. Four new native-once source agreements and separate new/affected-old fixtures pass; earlier Unsupported and preparation failures retain zero credit. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-clone-quiet-get-review.json).
+
 Original direct global public static USER method captures now cross quiet CV ??, private ??= and literal/CV Empty through exact own-method/source/scope/cache/birth authority. Shared method statics survive wrapper retirement. Four native-once source agreements and separate lifetime/source-counterfeit fixtures pass; wider METHOD producers, wrappers and lifetimes remain partial. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json).
 
 Shared-cache clones of raw named USER FCC Get results now cross quiet CV ??,
