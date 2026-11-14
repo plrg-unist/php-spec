@@ -1,0 +1,107 @@
+{
+  "feature": "exact-signed64-integer-division-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Exact signed64 PINT/PINT division joins the existing raw integer-tree certificate for literal full-ternary bases, preserving the selected non-NUL INTERNED header and frozen initial raw CV offset through returning Warnings. Existing falsey shorthand, folded NOT and UnaryPlus-to-NOT shorthand compose with explicit source-zero controls.",
+  "target": "PHP8.5.10 CLI NTS signed64; sole local .tools/php/bin/php oracle and tests/semantics/profile.json; pure authored .watsup; production SL508",
+  "reviewed_author_head": "2a46ad6dbb687ba289893bc56e098e238ceff26f",
+  "reviewed_peer_head": "6e2aa1def747a92da7e76f26c085f7509dbeb6c7",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-author-20261114/source-manifest.json",
+    "sha256": "e78ca8f017e9b1e04825369cf6046f661993ba1d609c20655544f27364c491db"
+  },
+  "donor_implementation_sha256": "a6681ceb2845a9ce68fee707ce7babc974ae8ccfac05f54f3bf9fd3f5781dc32",
+  "source_basis": "Pinned Zend/zend_compile.c zend_compile_binary_op/zend_try_ct_eval_binary_op fold constant children; zend_binary_op_produces_error refuses zero RHS. Zend/zend_operators.c div_function_base LONG/LONG returns LONG only for exact quotients, promotes MIN/-1 before remainder, and returns DOUBLE for nonexact quotients. Existing compiler45 pfbinary and pure binary_apply already preserve these types.",
+  "implementation": "Only DIVIDE is added to raw_unary_integer's existing arithmetic gate. Every own/child exact source/PINT pool, signed64 range, recursive integer certificate and full-state quiet binary_apply premise stays literal. Zero division, fractions, MIN/-1 promotion, FLOAT/mixed/coercive operands and POWER remain outside this exact-PINT proof. No compiler, numeric, runtime, provider, root, schema or ownership rule changes.",
+  "current_expectation_maintenance": {
+    "files": [
+      "tests/semantics/string_offset_boolean_not_integer_arithmetic_shorthand_base_initial_raw_leading_key_peer_review.py",
+      "tests/semantics/string_offset_boolean_not_integer_arithmetic_unary_shorthand_base_initial_raw_leading_key_review.py",
+      "tests/semantics/string_offset_boolean_not_integer_arithmetic_unary_shorthand_base_initial_raw_leading_key_peer_review.py"
+    ],
+    "change": "Only three explicit current DIVIDE(2,1)=2 or DIVIDE(4,2)=2 helper flags change False to True; POWER stays False. New exact-input and UnaryPlus/DIV/NOT/shorthand controls cover those promotions at source0. Old source/native/full-fixture campaigns retain their historical identities and are not replayed."
+  },
+  "composition": "Separate clean normal merge55d91 adopted exact coherent actuala8bc source before fresh originals; only the predecessor ledger differed. Actual parent1e7 has an additional disjoint emitted runtime MOD/bit/shift null/bool/int coercion route under CODEfalse/read-eps/precision/runtime-child/NORMAL guards. The staged/actual module is byte-exact parent plus the same single DIVIDE gate replacement; actual425fd162 differs from donora668 and preserves every newer parent byte. No stale whole-file replacement.",
+  "evidence": [
+    {
+      "kind": "Fresh native2 once and coherent actuala8bc model Unsupported2; zero agreements",
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "18eed15cbef2b91e28ab9a6f5b3d32ce236037c0ce8a59c17786985225e82f0b",
+      "tested_revision": "14af3a016e7c440bd7f598caad363d36a5f148b9",
+      "passed": true,
+      "source_credit": 0,
+      "agreements": 0
+    },
+    {
+      "kind": "Two final original-source production-SL exact agreements; native originals reused",
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "0156908adf21ac97d167dc73d32a8f2c89cda655f54b4af233efdfe0dbf778b0",
+      "tested_revision": "3d1a7cfd3f56e5b3081255b88d8cc0a61a357590",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2
+    },
+    {
+      "kind": "Inclusive author production-SL fixture with the corrected source-unit binding; source0",
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v2/report.json",
+      "sha256": "d78a2f3b375a0b0ff2a24b9e4b4e3bd6ac71517057d12c7513913f7df51cb28e",
+      "tested_revision": "7bc12bf46df6caf77ff746521c0498ac62e14034",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 297,
+      "derived_conditions": 194
+    },
+    {
+      "kind": "Inclusive independent production-SL fixture with corrected sign-expression binding; source0",
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v2/report.json",
+      "sha256": "a8430c5136ed929a663e1f525cbbd59285492cc165257181e477db251cca9d7f",
+      "tested_revision": "6e2aa1def747a92da7e76f26c085f7509dbeb6c7",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 446,
+      "derived_conditions": 312
+    }
+  ],
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-author-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "039d80b0067300c99333846946747bbdd9e07f08a077fbc09f236f82bdcf3e19",
+      "tested_revision": "3d1a7cfd3f56e5b3081255b88d8cc0a61a357590",
+      "passed": false,
+      "source_credit": 0,
+      "reason": "Fixture compiler rejected unbound pcunit at a counterfact dot access; no state execution. Two actual source-unit bindings repaired only the fixture."
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-integer-division-truth-base-initial-raw-leading-key-peer-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "7b68936e0135619f0147aea8a1202b5124bf3f3f47d212b5ac6721a857551e09",
+      "tested_revision": "398c1bb82c3a4e709cb07eee774c723b88edf6b5",
+      "passed": false,
+      "source_credit": 0,
+      "reason": "Fixture state rejected a reused positive-case/sign-expression identifier. Three references were renamed only in the new peer fixture."
+    }
+  ],
+  "validation": "Native2 once/source2 final agreements, A297/194-derived and B446/312-derived retain separate inclusive identities, no unique aggregate. Actual ordinary/reference Warning/heap/budget paths, source/PINT/range/quotient authority, signed extrema, zero/fraction/MIN-overflow and typed/coercive refusals, POWER exclusion and transitive shorthand/NOT controls pass. Constructed raw negative/MIN leaves earn0 source credit. Coherent baseline Unsupported2 and both original fixture failures remain0; source/native observations were not renewed after fixture-only fixes.",
+  "remaining": "Other PINT binary producers, nonexact/promoted or mixed/coercive FLOAT-result division, other raw producers, selected-NUL and Owned-NUL release, wider REQUEST/base/key/handler/ownership/lifetime histories and full core remain partial. All exact PROGRESS holds and inventory closure counts stay unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact author/peer renderers and two Make recipes regenerate checked fixtures with both inherited renderers watched. Raw originals/native-once observations, launchers and reports remain in linked external archives, which are not build dependencies.",
+  "source_integration": {
+    "parent_revision": "1e7ec939d",
+    "actual_implementation_sha256": "fd162fbc8d2bee96a8fbd3a4f36cd91b2296f3d9714e95b3e6add0c077af0f9f",
+    "projection": "Direct actual706/parent1e7 Git comparison against signed whole9 manifeste78ca8f0; seven donor-exact non-Make/non425 files, two additive Make recipes and one-item425 patch. No separate projection artifact or new receipt was created."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main55-pint-division-current-load-v1/report.json",
+    "sha256": "a8cf7968c11236b0feb2de99752ec7c506d7a74a4b17e74c05de82f81bfc77fc",
+    "tested_revision": "706f6ebc2969576252f58cde63364a5af5e91d63",
+    "tested_tree": "98278cbba20d836dd85af796ff44bcb0ad749a6c",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.58632477885112,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "review": "Whole9 author READY and independent FULLCLEAR preceded source-first integration. Peer20 independently cleared actual706/tree98278 over1e7 and the SAME saved canonical reporta8cf using the signed source manifest. Actual425fd162 preserves the separate emitted parent route and differs from donora668. Ordered508 modules/511 arguments/complete512 watches bind the quiet, stable and fully reaped source-zero load. No author duplicate actual/report read, semantic rerun or extra receipt; source/report follow-up is closed. The latest global pointer is separate from this immutable family tuple."
+}
