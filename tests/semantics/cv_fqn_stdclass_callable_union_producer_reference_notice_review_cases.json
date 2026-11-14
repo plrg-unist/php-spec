@@ -1,0 +1,85 @@
+[
+  {
+    "id": "fqn-stdclass-callable-three-weak-callable-before-bool-private-cell",
+    "namespace": "FqnStdclassCallablePeer93",
+    "source": "<?php\nnamespace FqnStdclassCallablePeer93;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(\\sTdClAsS|BoOl|CaLlAbLe $saved):cAlLaBlE|bOoL|\\StDcLaSs{echo 'M:',(int)($saved==='FqnStdclassCallablePeer93\\f17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='FqnStdclassCallablePeer93\\f17'),';';$value=23;return $value;}\n$x='FqnStdclassCallablePeer93\\f'.(string)17;$copy=$x;$alias=&$x;set_error_handler('FqnStdclassCallablePeer93\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='FqnStdclassCallablePeer93\\f17'),';';$r=41;echo 'P:',$r,':',(int)($copy==='FqnStdclassCallablePeer93\\f17'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "3bc4f25688d40ca9820545da7855d7cb75360f98afd90ec0a4624571b40ef971",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "REQUEST_STRING",
+    "formal_members": [
+      "\\sTdClAsS",
+      "bool",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "bool",
+      "\\StDcLaSs"
+    ],
+    "value_kind": "callable",
+    "integer": null,
+    "weak_receive": false,
+    "outcome": "NOTICE",
+    "line_observation": "Independent exact original; FQN stdClass/callable unions preserve registered USER callable before weak Boolean conversion and strict scalar RECEIVE/RETURN errors before Notice and sink.",
+    "derived_from": "tests/semantics/cv_builtin_callable_union_producer_reference_notice_review_cases.json:93 FQN stdClass/callable variants; changed namespace and exact raw/normalized class members."
+  },
+  {
+    "id": "fqn-stdclass-callable-three-strict-receive-before-notice",
+    "namespace": "FqnStdclassCallableReceivePeer93",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace FqnStdclassCallableReceivePeer93;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(BoOl|CaLlAbLe|\\sTdClAsS $saved):\\StDcLaSs|cAlLaBlE|bOoL{echo 'BADM;';return $saved;}\nfunction &take(&$value){echo 'BADF;';return $value;}\n$x=17;$copy=$x;set_error_handler('FqnStdclassCallableReceivePeer93\\h',8);echo 'N;';\ntry{$r=&take(make(\n    $x\n));}catch(\\TypeError $e){echo 'T;';}\necho 'Z:',(int)($x===17),':',(int)($copy===17),';';\n",
+    "source_sha256": "9f2662469837ffb6f1a21d2d49b24e4a92d5192c58713ebc4cf429143f573dce",
+    "native_stdout": "N;T;Z:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PINT",
+    "formal_members": [
+      "bool",
+      "callable",
+      "\\sTdClAsS"
+    ],
+    "return_members": [
+      "\\StDcLaSs",
+      "callable",
+      "bool"
+    ],
+    "value_kind": "integer",
+    "integer": 17,
+    "weak_receive": false,
+    "outcome": "RECEIVE",
+    "line_observation": "Independent exact original; FQN stdClass/callable unions preserve registered USER callable before weak Boolean conversion and strict scalar RECEIVE/RETURN errors before Notice and sink.",
+    "derived_from": "tests/semantics/cv_builtin_callable_union_producer_reference_notice_review_cases.json:93 FQN stdClass/callable variants; changed namespace and exact raw/normalized class members."
+  },
+  {
+    "id": "fqn-stdclass-callable-three-strict-return-before-notice",
+    "namespace": "FqnStdclassCallableReturnPeer93",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace FqnStdclassCallableReturnPeer93;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):bOoL|\\StDcLaSs|cAlLaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'BADF;';return $value;}\n$x=17;$copy=$x;set_error_handler('FqnStdclassCallableReturnPeer93\\h',8);echo 'N;';\ntry{$r=&take(make(\n    $x\n));}catch(\\TypeError $e){echo 'T;';}\necho 'Z:',(int)($x===17),':',(int)($copy===17),';';\n",
+    "source_sha256": "116fc0063851981a091ca4e4dc996744fb1d6a6567844d4b29b32b43deed9684",
+    "native_stdout": "N;M;T;Z:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PINT",
+    "formal_members": [],
+    "return_members": [
+      "bool",
+      "\\StDcLaSs",
+      "callable"
+    ],
+    "value_kind": "integer",
+    "integer": 17,
+    "weak_receive": false,
+    "outcome": "RETURN",
+    "line_observation": "Independent exact original; FQN stdClass/callable unions preserve registered USER callable before weak Boolean conversion and strict scalar RECEIVE/RETURN errors before Notice and sink.",
+    "derived_from": "tests/semantics/cv_builtin_callable_union_producer_reference_notice_review_cases.json:93 FQN stdClass/callable variants; changed namespace and exact raw/normalized class members."
+  }
+]

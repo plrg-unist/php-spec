@@ -1,0 +1,94 @@
+[
+  {
+    "id": "fqn-stdclass-callable-two-singleton-exact-object-private-cell",
+    "namespace": "CallableSingletonByval93",
+    "source": "<?php\nnamespace CallableSingletonByval93;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(\\sTdClAsS|CaLlAbLe $saved):cAlLaBlE|\\StDcLaSs{echo 'M:',(int)($saved->value===17),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->value===17),';';$value=23;return $value;}\n$x=new \\stdClass;$x->value=17;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval93\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy->value===17),';';$r=41;echo 'P:',$r,':',(int)($copy->value===17),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "a74f8bb06e9c2ff687c25e8ed3cc165d6523f4d97dac046a9cdb8e11c9a7e87d",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "POBJECT",
+    "line_observation": "Native-first executes each exact original once; exact FQN stdClass/callable unions retain ordinary reception, class-byte authority, real producer retirement and separate unconstrained private Notice cells.",
+    "formal_members": [
+      "\\sTdClAsS",
+      "callable"
+    ],
+    "return_members": [
+      "callable",
+      "\\StDcLaSs"
+    ],
+    "value_kind": "object",
+    "integer": 17,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_object_callable_producer_reference_notice_cases.json:exact-FQN-class-callable-variants"
+  },
+  {
+    "id": "fqn-stdclass-callable-three-strict-byref-transient-write",
+    "namespace": "CallableSingletonByref93",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref93;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x->value===17),';';$x=37;return true;}\nfunction make(ArRaY|CaLlAbLe|\\sTdClAsS &$saved):\\StDcLaSs|cAlLaBlE|aRrAy{$kept=$saved;$saved=23;echo 'M:',(int)($saved===23),';';$saved=$kept;unset($kept);return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->value===17),';';$value=23;return $value;}\n$x=new \\stdClass;$x->value=17;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref93\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy->value===17),';';$r=41;echo 'P:',$r,':',(int)($copy->value===17),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "da90bbca823d906371caa74a3b8d7c71ef4190b5ede504b8142994e90bfe6316",
+    "native_stdout": "N;M:1;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "POBJECT",
+    "line_observation": "Native-first executes each exact original once; exact FQN stdClass/callable unions retain ordinary reception, class-byte authority, real producer retirement and separate unconstrained private Notice cells.",
+    "formal_members": [
+      "array",
+      "callable",
+      "\\sTdClAsS"
+    ],
+    "return_members": [
+      "\\StDcLaSs",
+      "callable",
+      "array"
+    ],
+    "value_kind": "object",
+    "integer": 17,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_object_callable_producer_reference_notice_cases.json:exact-FQN-class-callable-variants"
+  },
+  {
+    "id": "fqn-stdclass-callable-eight-multi-cv-exact-request-string",
+    "namespace": "CallableMulti93",
+    "source": "<?php\nnamespace CallableMulti93;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(\\sTdClAsS|CaLlAbLe|ArRaY|InT|FlOaT|StRiNg|NuLl|FaLsE $saved,&$changed):fAlSe|nUlL|sTrInG|fLoAt|iNt|aRrAy|cAlLaBlE|\\StDcLaSs{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti93\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti93\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti93\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti93\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti93\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti93\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "ac0ebaf41d33017df3914de3f4cdb2c4d713502f5a162b2acd8967fffc178959",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first executes each exact original once; exact FQN stdClass/callable unions retain ordinary reception, class-byte authority, real producer retirement and separate unconstrained private Notice cells.",
+    "formal_members": [
+      "\\sTdClAsS",
+      "callable",
+      "array",
+      "int",
+      "float",
+      "string",
+      "null",
+      "false"
+    ],
+    "return_members": [
+      "false",
+      "null",
+      "string",
+      "float",
+      "int",
+      "array",
+      "callable",
+      "\\StDcLaSs"
+    ],
+    "value_kind": "string",
+    "integer": null,
+    "weak_receive": false,
+    "derived_from": "tests/semantics/cv_builtin_callable_union_producer_reference_notice_cases.json:maximal-FQN-class-callable-variant"
+  }
+]

@@ -755,7 +755,7 @@ def $reference_notice_producer_stdclass_union_members(eps, eps, b_class, text_se
 def $reference_notice_producer_stdclass_union_members((NNameFullyQualified (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTCLASS preqbytes_type])) :: ptbranch*, false, text_seen*) = $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, true, text_seen*)
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
 def $reference_notice_producer_stdclass_union_members((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTBUILTIN text_kind])) :: ptbranch*, b_class, text_seen*) = $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, b_class, text_kind :: text_seen*)
-  -- if text_kind <- ["array", "int", "float", "bool", "string", "null", "false", "true"]
+  -- if text_kind <- ["array", "int", "float", "bool", "string", "null", "false", "true", "callable"]
   -- if ~(text_kind <- text_seen*)
   -- if ~(text_kind <- ["bool", "false", "true"]) \/ ~("bool" <- text_seen* \/ "false" <- text_seen* \/ "true" <- text_seen*)
   -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
@@ -807,7 +807,7 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
   -- if psparam.TYPE = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN text_builtin_type]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
+  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true", "callable"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE ([NIdentifier (BYTES text_builtin) metadata_builtin, NNameFullyQualified (BYTES text_type) metadata_type])) metadata_union) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
   -- if expression = NExprVariable (BYTES text_name) metadata_value
@@ -816,7 +816,7 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
   -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_builtin_type])), (PTBRANCH ([PTCLASS preqbytes_type]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
+  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true", "callable"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) (NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
   -- if expression = NExprVariable (BYTES text_name) metadata_value
@@ -926,13 +926,13 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $(|phpType7*| > 0)
   -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN text_builtin_type]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
+  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true", "callable"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_builtin) metadata_builtin, NNameFullyQualified (BYTES text_type) metadata_type])) metadata_union, pssignature) = true
   -- if $(|phpType7*| > 0)
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_builtin_type])), (PTBRANCH ([PTCLASS preqbytes_type]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
+  -- if text_builtin_type <- ["array", "int", "float", "bool", "string", "null", "false", "true", "callable"] /\ $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
   -- if |phpType7*| = 1

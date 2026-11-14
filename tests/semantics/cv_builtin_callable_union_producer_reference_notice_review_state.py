@@ -92,7 +92,7 @@ def controls(case):
         lines += ['~$reference_notice_producer_union_members(' + changed + ', ' + branches(kinds) + ', eps)']
     class_raw = atoms(['stdClass', 'callable', 'null']).replace('NIdentifier', 'NNameFullyQualified', 1)
     class_types = '[(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN "callable"])), (PTBRANCH ([PTBUILTIN "null"]))]'
-    lines += ['~$reference_notice_producer_stdclass_union_members(' + class_raw + ', ' + class_types + ', false, eps)']
+    lines += ['$reference_notice_producer_stdclass_union_members(' + class_raw + ', ' + class_types + ', false, eps)']
     # All affected old selectors are checked here, without replaying their campaigns.
     promoted = [('callable', 'int', 'string')] * 2
     promoted += [('callable', 'null', 'int'), ('callable', 'int', 'string')] * 3

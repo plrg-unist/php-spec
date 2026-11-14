@@ -71,7 +71,7 @@ def normal(initial, case, index, front):
         for kind in ('object', 'mixed', 'void', 'never', 'callable', 'iterable'):
             encoded = '"' + base64.b64encode(kind.encode()).decode() + '"'
             raw = raw_union(encoded, 'first', first, class_text='"c1RkQ2xBc1M="')
-            derived += ['~' + header + raw + ', pfunction_producer.SIGNATURE[.RETURNS = ' + ordered(kind, first) + '])']
+            derived += [('' if kind == 'callable' else '~') + header + raw + ', pfunction_producer.SIGNATURE[.RETURNS = ' + ordered(kind, first) + '])']
         for kind, value in (('false', 'PINT 0'), ('true', 'PBOOL false'), ('array', 'PINT 1'), ('null', 'PINT 0')):
             for strict in ('false', 'true'):
                 derived += ['$typed_conversion_at(S_return, ' + ordered(kind, first) + ', ' + value + ', ' + strict + ') = TYPEREJECT']

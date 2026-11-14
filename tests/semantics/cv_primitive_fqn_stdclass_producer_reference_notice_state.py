@@ -129,7 +129,7 @@ def controls(index, case):
             lines += [header + raw + ', ' + signature + '[.RETURNS = ' + norm + '])', proof,
                 '~' + header + raw + ', ' + signature + '[.RETURNS = ' + normalized(members[::-1]) + '])']
         for members in (['stdClass', 'stdClass', 'int'], ['stdClass', 'bool', 'false'], ['false', 'stdClass', 'true'], ['stdClass', 'int', 'int'], ['stdClass', 'object', 'int'], ['stdClass', 'callable', 'int'], ['stdClass', 'mixed', 'null'], ['stdClass', 'void', 'null'], ['stdClass', 'never', 'null'], ['stdClass', 'iterable', 'null']):
-            lines += ['~' + header + raw_union(members) + ', ' + signature + '[.RETURNS = ' + normalized(members) + '])']
+            lines += [('' if members == ['stdClass', 'callable', 'int'] else '~') + header + raw_union(members) + ', ' + signature + '[.RETURNS = ' + normalized(members) + '])']
         members = ['int', 'stdClass', 'float']
         for tag in ('NName', 'NNameRelative', 'NIdentifier'):
             lines += ['~' + header + raw_union(members, class_tag=tag) + ', ' + signature + '[.RETURNS = ' + normalized(members) + '])']
