@@ -10,6 +10,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 Shared-cache clones and finite clone chains of the fixed global own public static USER method capture now cross quiet CV ??, private ??= and literal/CV Empty. Descending raw ancestry and immutable owner/cache stamps authenticate retired sources; absent historical scope rows are expected. Original Shared birth and current source/live/consumer fences remain. Four new native-once source agreements and separate new/affected-old fixtures pass; earlier Unsupported and preparation failures retain zero credit. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-clone-quiet-get-review.json).
 
+Direct NName and NNameFullyQualified static-method capture labels now match their genuine global class names case-insensitively through quiet CV ??, private ??= and literal/CV Empty, including authenticated Shared clones. Raw own-method/source/CODE.NAMES/scope/cache/birth and existing cleanup fences stay exact. Four native-once source agreements and separate fixture-SL129/130/292/232 plus affected-old231 pass; four prelaw Unsupported cuts retain0. Sole joined726/SL508 loading adds source0. Wider forms and exact holds remain. [Review](coverage/semantics/magic-property-methodclosure-static-named-selector-quiet-get-review.json).
+
 Original direct global public static USER method captures now cross quiet CV ??, private ??= and literal/CV Empty through exact own-method/source/scope/cache/birth authority. Shared method statics survive wrapper retirement. Four native-once source agreements and separate lifetime/source-counterfeit fixtures pass; wider METHOD producers, wrappers and lifetimes remain partial. No policy or exact held-boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-quiet-get-review.json).
 
 Shared-cache clones of raw named USER FCC Get results now cross quiet CV ??,
@@ -616,12 +618,12 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest source cut `477ab7291` passes its once-only 508-module production SL
-load in 16.53241455811076 s under the unchanged 60-second cap, with `true` plus LF,
+The latest source cut `40459b788` passes its once-only 508-module production SL
+load in 16.331940515898168 s under the unchanged 60-second cap, with `true` plus LF,
 quiet stderr, stable HEAD and all 512 watched inputs, 511 ordered arguments and
 fully reaped processes. It adds zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main47-mixed-formal-producer-joined-508-v1/report.json`
-(SHA-256 `38ab223c955ae172d7e5b1af9c6de7c33c792d36aa1ab466cda81dd3021f85dc`).
+`../php-spec-evidence-archive/resumed-main-20261112/main47-integer-return-modulo-joined-508-v1/report.json`
+(SHA-256 `1ac41574c106baae0cbc2ea393cfd253404bbbfd8b8e4548615612b79d7b65f7`).
 Earlier joined loads and private source/native/state evidence keep their original
 identities and credit. Metadata descendants do not renew execution credit.
 

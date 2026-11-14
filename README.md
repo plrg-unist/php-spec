@@ -8893,6 +8893,8 @@ cleanup; [magic unset review](coverage/semantics/magic-unset-review.json).
 
 Same-scope Shared clones and finite chains of those raw method captures also cross quiet Get consumers after original/intermediate wrappers retire. Immutable cache ancestry preserves the original Shared birth; method statics remain separate roots. [Static-method FCC clone review](coverage/semantics/magic-property-methodclosure-static-clone-quiet-get-review.json).
 
+Direct global static-method Get captures and their Shared clones also accept fully qualified and case-insensitive class labels, preserving exact source/scope/cache authority. [Review](coverage/semantics/magic-property-methodclosure-static-named-selector-quiet-get-review.json).
+
 Declared public int properties now invoke that unsetter only after becoming UNSET;
 INITIAL bypasses it; initialized VALUE deletes ordinarily. Same-name recursion is
 suppressed through compiled-local destructor cleanup, with guard reset before
