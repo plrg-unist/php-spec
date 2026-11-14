@@ -37,6 +37,11 @@ def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
 def $lossy_optional_integer_quiet_operand(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_string_in(plenv, expression) = (n*)
   -- if $coerce_number(PSTRING n*) = COERCED pnumber false
+def $lossy_optional_integer_quiet_operand(plenv, expression) = (NINT i)
+  -- if $lossy_optional_integer_numeric(plenv, expression) = eps
+  -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (b)
+  -- if $coerce_number(PBOOL b) = COERCED (NINT i) false
 def $lossy_optional_integer_quiet_operand(plenv, expression) = eps -- otherwise
 def $lossy_optional_integer_power_operand(plenv, expression) = $lossy_optional_integer_quiet_operand(plenv, expression)
 def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)

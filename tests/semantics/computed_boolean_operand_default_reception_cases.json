@@ -1,0 +1,50 @@
+[
+  {
+    "id": "computed-boolean-operand-default-cold-warm",
+    "source": "<?php\nfunction booleanOperandWarning242($errno, $message, $file, $line) {\n    global $xBooleanOperand242;\n    echo 'warning:', $message, '|';\n    $xBooleanOperand242 = 3.5;\n}\nfunction booleanDefaults242(int $first, int $comparison = ((E_ERROR === E_WARNING) + E_WARNING), int $negation = (!(E_WARNING - E_WARNING) + E_WARNING), int $castPower = (E_WARNING ** (bool)(E_ERROR - E_ERROR)), int $conjunction = (((E_ERROR < E_WARNING) && (E_WARNING > E_ERROR)) * E_WARNING), int &$fraction = ('2.5' + (E_ERROR === E_WARNING))) {\n    echo 'body:', $first, ':', $comparison, ':', $negation, ':', $castPower, ':', $conjunction, ':', $fraction, '|';\n    $fraction = 9;\n}\nset_error_handler('booleanOperandWarning242');\n$xBooleanOperand242 = 1.5;\nbooleanDefaults242($xBooleanOperand242);\necho 'cold:x=', $xBooleanOperand242, '|';\n$xBooleanOperand242 = 1.5;\nbooleanDefaults242($xBooleanOperand242);\necho 'warm:x=', $xBooleanOperand242, '|';\n",
+    "source_sha256": "b7e05cb3bef9a68a9aa1128f5d5ec3e36529338e08196b450e32caebc841b731",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Genuine comparison/NOT/BOOL-cast/AND children retain PBOOL identity before quiet NINT0/1 operand conversion in arithmetic and POWER. Raw PINT2/3/1/2 and PFLOAT2.5 caches precede private reception;the fractional BYREF default has its own precision callback and fresh mutation across cold/warm calls,without generic Numeric Boolean identity."
+  },
+  {
+    "id": "computed-boolean-operand-default-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanOperandAlias242;\nuse const E_WARNING as Base242;\nuse const E_ERROR as One242;\nfunction warning242($errno, $message, $file, $line) {\n    global $xAlias242;\n    echo 'warning:', $message, '|';\n    defaults242(2);\n    $xAlias242 = 3.5;\n}\nfunction defaults242(int $first, int $sum = ((Base242 > One242) + Base242), int $power = ((One242 !== Base242) ** Base242), int $xor = (((bool)Base242 xor (bool)One242) + Base242), int $disjunction = (((Base242 > One242) || \\E_STRICT) + Base242), int $last = 7) {\n    echo 'body:', $first, ':', $sum, ':', $power, ':', $xor, ':', $disjunction, ':', $last, '|';\n}\n\\set_error_handler('BooleanOperandAlias242\\\\warning242');\n$xAlias242 = 1.5;\n$lastAlias242 = 8;\ndefaults242(last: $lastAlias242, first: $xAlias242);\necho 'outer:x=', $xAlias242, '|';\n",
+    "source_sha256": "9d446d008dc5240c1bc080d4ee07f75140ea8b6b0a4cce5effbe7020ea70105e",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported predicate/identity/XOR/decisive OR children yield genuine PBOOL values before arithmetic/POWER NINT operands. The true OR left skips the real E_STRICT effect;named holes1..4,last8 and warning reentry preserve PINT3/1/2/3 raw caches,source/ENV/no-DIM/pruned-child/cache/owner authority."
+  },
+  {
+    "id": "computed-boolean-operand-default-fractional-handler-throw-retry",
+    "source": "<?php\nfunction booleanThrowWarning242($errno, $message, $file, $line) {\n    global $xThrow242, $countThrow242;\n    $countThrow242 = $countThrow242 + 1;\n    echo 'warning:', $countThrow242, ':', $message, '|';\n    $xThrow242 = 4.5;\n    if ($countThrow242 === 2) { throw new Exception('boolean242', 242); }\n}\nfunction booleanThrow242(int $first, int $later = ('1.5' + (E_ERROR == E_ERROR))) {\n    echo 'body:', $first, ':', $later, '|';\n    return $later;\n}\nset_error_handler('booleanThrowWarning242');\n$countThrow242 = 0;\n$xThrow242 = 1.5;\n$result242 = 99;\ntry { $result242 = booleanThrow242($xThrow242); }\ncatch (Exception $e) { echo 'caught:', $e->getCode(), ':', $e->getMessage(), ':', ($e->getPrevious() === null ? 1 : 0), ':result=', $result242, ':x=', $xThrow242, '|'; }\n$xThrow242 = 1.5;\n$result242 = booleanThrow242($xThrow242);\necho 'retry:', $result242, ':x=', $xThrow242, '|';\n",
+    "source_sha256": "44ad63de9c27424fb87bff6377aaae58f1fcfa91694c00f91a1e2dab0c841c98",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A genuine computed PBOOLtrue becomes NINT1 only as a quiet operand,producing raw PFLOAT2.5. Its later int receive still has an own precision callback;throw preserves cache and destination99,while retry receives PINT2 with ordinary cleanup and unchanged source/ENV/owner guards."
+  },
+  {
+    "id": "computed-boolean-operand-default-nan-truth-control",
+    "source": "<?php\nfunction warning242($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults242(int $first, int $later = ((bool)((-E_WARNING) ** 0.5) + E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning242');\n$x242 = 1.5;\ntry { defaults242($x242); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "a8c6ee2f52f722f8ae534443123702b6faf6edabee51c29cc645c71708bf7d03",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A quiet NaN-producing power still has a real Warning when cast to BOOL;the Boolean-shaped projection requires quiet condition evidence and refuses this effect. This is not DEFINE-name conversion."
+  },
+  {
+    "id": "computed-boolean-operand-default-leading-condition-control",
+    "source": "<?php\nfunction warning242($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults242(int $first, int $later = ((('2tail' + E_ERROR) > E_WARNING) + E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning242');\n$x242 = 1.5;\ntry { defaults242($x242); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "f7f3b20f429453ead3e805a8506070f377364cd25596025534cedd889049ad34",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "Leading-numeric arithmetic inside a comparison requires its actual Warning;the outer genuine Boolean shape does not hide effectful children."
+  },
+  {
+    "id": "computed-boolean-operand-default-deprecated-condition-control",
+    "source": "<?php\nfunction warning242($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults242(int $first, int $later = ((E_STRICT > E_ERROR) + E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning242');\n$x242 = 1.5;\ntry { defaults242($x242); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "de2352cb3f5f0b6963890f061f587d0542ae970a5a381574530071e1a79f0685",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A selected E_STRICT fetch remains effectful even when its comparison yields a genuine Boolean;quiet condition/source authority still refuses the producer."
+  }
+]
