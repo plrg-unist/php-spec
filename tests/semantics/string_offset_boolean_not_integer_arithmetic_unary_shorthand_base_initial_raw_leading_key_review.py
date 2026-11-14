@@ -174,9 +174,9 @@ pcunit.ID = n_unit /\ ppool.UNIT = n_unit /\ pcode.UNIT = n_unit
             ('sub_zero','Minus','SUBTRACT',2,2,0,True),
             ('multiply','Mul','MULTIPLY',1,2,2,True),
             ('divide','Div','DIVIDE',2,1,2,True),
-            ('modulo','Mod','MODULO',3,2,1,False),
-            ('shift','ShiftLeft','SHIFTLEFT',1,1,2,False),
-            ('power','Pow','POWER',2,1,2,False),
+            ('modulo','Mod','MODULO',3,2,1,True),
+            ('shift','ShiftLeft','SHIFTLEFT',1,1,2,True),
+            ('power','Pow','POWER',2,1,2,True),
             ('add_overflow','Plus','ADD',9223372036854775807,1,2,False),
             ('mul_overflow','Mul','MULTIPLY',9223372036854775807,2,2,False)):
         state = f'S_tree_{label}'

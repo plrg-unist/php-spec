@@ -227,10 +227,10 @@ $string_read_plan(S_{label}) = eps
             ('overflow_sub', 'NExprBinaryOpMinus', -maximum, 2, minimum, False),
             ('overflow_mul', 'NExprBinaryOpMul', maximum, 2, maximum, False),
             ('divide', 'NExprBinaryOpDiv', 4, 2, 2, True),
-            ('mod', 'NExprBinaryOpMod', 4, 3, 1, False),
-            ('shift', 'NExprBinaryOpShiftLeft', 1, 1, 2, False),
-            ('bitwise', 'NExprBinaryOpBitwiseOr', 1, 2, 3, False),
-            ('power', 'NExprBinaryOpPow', 2, 2, 4, False)):
+            ('mod', 'NExprBinaryOpMod', 4, 3, 1, True),
+            ('shift', 'NExprBinaryOpShiftLeft', 1, 1, 2, True),
+            ('bitwise', 'NExprBinaryOpBitwiseOr', 1, 2, 3, True),
+            ('power', 'NExprBinaryOpPow', 2, 2, 4, True)):
         l, r, value = map(integer, (left, right, result))
         left_expression = f'NScalarInt (INTEGER {l}) metadata_inner'
         source_extra = pool_extra = ''

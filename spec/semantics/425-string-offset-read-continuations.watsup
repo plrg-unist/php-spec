@@ -197,7 +197,7 @@ def $string_read_raw_unary_integer(S, porigin, i) = true
 def $string_read_raw_unary_integer(S, porigin, i) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE, MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR, BITXOR, POWER]
   -- if $long_range(i)
   -- if $compiled_read(S, porigin) = (PINT i)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)

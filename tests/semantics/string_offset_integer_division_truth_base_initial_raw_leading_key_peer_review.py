@@ -97,10 +97,10 @@ $compiled_read(S_{label}_division,porigin_left) = (PINT {quotient})
         else:
             checks += [f'~$string_read_raw_known_base(S_{label}_division,porigin_base,{value})'
                        for value in ('pvalue_base', 'pvalue_wrong')]
-    for label, constructor, numerator, numerator_value, denominator, denominator_value, quotient in (
-            ('numeric_string', 'NExprBinaryOpDiv', 'NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))', 'NScalarInt (INTEGER 2)', 'PINT 2', 0),
-            ('float_pair', 'NExprBinaryOpDiv', 'NScalarFloat (FLOAT "0000000000000000")', 'PFLOAT 0', 'NScalarFloat (FLOAT "4000000000000000")', 'PFLOAT 4611686018427387904', 0),
-            ('power', 'NExprBinaryOpPow', 'NScalarInt (INTEGER 2)', 'PINT 2', 'NScalarInt (INTEGER 1)', 'PINT 1', 2)):
+    for label, constructor, numerator, numerator_value, denominator, denominator_value, quotient, admitted in (
+            ('numeric_string', 'NExprBinaryOpDiv', 'NScalarString (BYTES "MA==")', 'PSTRING ($ptascii("0"))', 'NScalarInt (INTEGER 2)', 'PINT 2', 0, False),
+            ('float_pair', 'NExprBinaryOpDiv', 'NScalarFloat (FLOAT "0000000000000000")', 'PFLOAT 0', 'NScalarFloat (FLOAT "4000000000000000")', 'PFLOAT 4611686018427387904', 0, False),
+            ('power', 'NExprBinaryOpPow', 'NScalarInt (INTEGER 2)', 'PINT 2', 'NScalarInt (INTEGER 1)', 'PINT 1', 2, True)):
         checks += lines(f'''
 expression_{label}_numerator = {numerator} metadata_numerator
 expression_{label}_denominator = {denominator} metadata_denominator
@@ -110,11 +110,15 @@ S_{label}_division = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE p
 $compiled_read(S_{label}_division,porigin_left) = (PINT {quotient})
 $string_read_raw_truth(S_{label}_division,porigin_numerator,{numerator_value})
 $string_read_raw_truth(S_{label}_division,porigin_denominator,{denominator_value})
-~$string_read_raw_unary_integer(S_{label}_division,porigin_left,{quotient})
-~$string_read_raw_truth(S_{label}_division,porigin_left,PINT {quotient})
-~$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_base)
-~$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_wrong)
+{'' if admitted else '~'}$string_read_raw_unary_integer(S_{label}_division,porigin_left,{quotient})
+{'' if admitted else '~'}$string_read_raw_truth(S_{label}_division,porigin_left,PINT {quotient})
 ''')
+        if admitted:
+            checks += [f'$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_wrong)',
+                       f'~$string_read_raw_known_base(S_{label}_division,porigin_base,pvalue_base)']
+        else:
+            checks += [f'~$string_read_raw_known_base(S_{label}_division,porigin_base,{value})'
+                       for value in ('pvalue_base', 'pvalue_wrong')]
     checks += lines(r'''
 $binary_apply(S_fraction_division,DIVIDE,PINT 1,PINT 2,0) = S_fraction_division[.RESULT = KNOWN (PFLOAT 4602678819172646912)]
 $binary_apply(S_overflow_division,DIVIDE,PINT $(-9223372036854775808),PINT $(-1),0) = S_overflow_division[.RESULT = KNOWN (PFLOAT 4890909195324358656)]
