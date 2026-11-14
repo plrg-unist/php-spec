@@ -1338,6 +1338,8 @@ Quiet emitted full ternaries preserve the selected typed value through existing 
 
 Quiet emitted shorthand ternaries preserve the original typed truthy condition or the selected fallback through existing string-offset consumers. Wider producers and lifetimes remain partial. [Runtime shorthand-ternary review](coverage/semantics/string-offset-request-base-runtime-shorthand-ternary-review.json).
 
+Certified compiled Boolean/null/signed64 integer values compose through emitted string-offset key parents, retaining raw literal type/value agreement and the existing nonliteral compiler-output trust boundary; compiled and emitted BYTE routes remain disjoint. [Review](coverage/semantics/string-offset-request-base-runtime-compiled-primitive-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
