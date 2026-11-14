@@ -1,0 +1,88 @@
+{
+  "feature": "finite-original-typed-numeric-float-arithmetic-truth-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed, validated and integrated; full core remains partial",
+  "scope": "Finite PFLOAT results of ADD/SUBTRACT/MULTIPLY/DIVIDE accept existing certified original PINT/PFLOAT children, preserving selected literal INTERNED bases and frozen initial raw CV offsets through returning Warnings. Exact own/child source, typed pools and recursive child authority remain required.",
+  "target": "PHP8.5.10 CLI NTS64; sole project-local oracle, tests/semantics/profile.json, pure watsup/no Zend evaluation fallback; productionSL508",
+  "source_manifest": {
+    "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-author23-20261114/source-manifest.json",
+    "sha256": "447f507525eddd24e16ed661517fcb344b931c4c72b2ff158648f51497c69506",
+    "paths": 7
+  },
+  "source_basis": "Pinned Zend add/sub/mul fast paths retain LONG/DOUBLE operand dispatch and overflow promotion; div_function_base distinguishes exact LONG quotients, nonexact DOUBLE results and MIN/-1 promotion. Existing compiler folding and pure arithmetic already preserve these types.",
+  "implementation": "Only the existing finite PFLOAT arithmetic raw_truth branch changes. Original child values pass explicit int/float gates; the SAME NORMAL-completion probe authenticates both recursive children and the full binary_apply state. This preserves valid budget certificates while rejecting direct or nested zero-DIV hidden by cached results. Compiler, numeric, runtime, provider, roots, schema and ownership are unchanged.",
+  "evidence": {
+    "baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-author23-20261114/baseline/report.json",
+      "sha256": "1584d8666a35f554baf1e0f04dbfeb662e6c6057e6bb9aeff0f941acc766c3b2",
+      "native_once": 2,
+      "model_unsupported": 2,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-author23-20261114/source-v1/report.json",
+      "sha256": "2e315151bddd92edc3e3474572f36ba5fbf098b776a66a9395f9f0e0290d67b1",
+      "agreements": 2,
+      "native_reused": true,
+      "source_credit": 2
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-author23-20261114/postlaw-a-sl-v2/report.json",
+      "sha256": "0ec1ef1028192753b0ea2e77d4128ba090cfdf28127ad90949fa3bbabe3779ca",
+      "premises": 264,
+      "derived_conditions": 159,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-peer22-20261114/postlaw-b-sl-v3/report.json",
+      "sha256": "42bd4ac9d90d697f223bf2e0918abd6d2baee2f7d0ef625d6b5f0fe230ed70bb",
+      "premises": 554,
+      "derived_conditions": 396,
+      "source_credit": 0
+    }
+  },
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-author23-20261114/postlaw-a-sl-v1/report.json",
+      "sha256": "3275bd951dd116e68ad2d0e2ffd81979bc492cae1e8d7326afd727b78fcbd9bd",
+      "reason": "Nested constructed zero-divisor leaf was unbound before its parent equality; compiler rejected before state execution.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-peer22-20261114/postlaw-b-sl-v1/report.json",
+      "sha256": "ee779cd64fb7f05b7a3fb8d69df356601d8264f5f62bd143e086e0d6891ad0b3",
+      "reason": "Negative constructed raw integers required DSL $(negative) spelling; compiler rejected before state execution.",
+      "source_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-peer22-20261114/postlaw-b-sl-v2/report.json",
+      "sha256": "4547a4befe85675320940cc560ea34345264e90da3974864fb0cf841fffa3213",
+      "reason": "Captured source parent decompositions were needed before leaf bindings; compiler rejected before state execution.",
+      "source_credit": 0
+    }
+  ],
+  "current_expectation_maintenance": "Exactly three old float_arithmetic_truth peer lines change: mixed_int and integer_promotion become admitted, and integer_promotion selects the truthy base. Fresh B projections cover both; historical source/native/full-fixture campaigns retain their identities without replay.",
+  "validation": "Native2 once/source2 cover true overflow promotion and false fractional cancellation, including all four operators and both mixed operand directions. Author264/159-derived and independent554/396-derived fixtures remain inclusive separate source-zero cuts. Exact result tags, signed zero, extrema, strict type/finite and source/pool/metadata guards, direct/nested zero-DIV under cached BUDGET, emitted NOT/shorthand and real Warning/reference-cell/heap/cleanup/budget paths pass. All three original compiler-fixture failures remain0 with state execution absent; no source/native rerun followed their fixture-only repairs.",
+  "source_integration": {
+    "parent_revision": "7ff30694c",
+    "actual_revision": "f07827153a998f26f27874f2b429a2eae00c6a3f",
+    "actual_tree": "5bc4ad07e68bd62091fe5f5ca62225e747d14a2b",
+    "donor_implementation_sha256": "0a19182ff9a9ae49e69444d59ce58909148eef2c5c1c15da3e7a8d5bed310f60",
+    "composition": "Whole7 integration retains five donor-exact source/test files, two additive Make recipes and the narrow425 nine-insert/six-delete hunk. Actual425 preserves the newer literal STRING VALUE ten-line route and seven runtime-review corrections, so it differs honestly from the donor. Peer22 independently cleared actual composition and the sole SAME saved canonical load; those source/report duties are closed."
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main58-mixednumeric-current-load-v1/report.json",
+    "sha256": "9f64cd6512bec85fcc196ec41ac5ea25dd9fc5624c0a4788099fe085a816adef",
+    "elapsed_seconds": 16.18312850804068,
+    "passed": true,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "quiet": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "remaining": "BOOL/NULL/string and other direct child types, nonfinite results, wider producers and base/key/handler/ownership/lifetime histories remain partial. Every exact PROGRESS hold and inventory closure count is unchanged; no obligation closes.",
+  "recovery": "Tracked CASES, compact A/B renderers and two Make recipes regenerate fixtures with inherited float renderers watched. Original source/native observations, commands and raw reports remain in the external family archives, not build inputs."
+}

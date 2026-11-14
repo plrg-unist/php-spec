@@ -1557,3 +1557,5 @@ Quoted method-name static Get originals, native observations, prelaw/source resu
 Quiet signed64 binary integer truth originals, native-once baselines and separate author/peer fixture evidence: `../php-spec-evidence-archive/string-offset-integer-binary-truth-base-initial-raw-leading-key-{author,peer21}-20261114/`; concise tuple and recovery in `coverage/semantics/string-offset-integer-binary-truth-base-initial-raw-leading-key-review.json`.
 
 Integer BitwiseNot truth originals, native-once baseline and separate fixtures: `../php-spec-evidence-archive/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-{author23,peer21}-20261114/`. The concise tuple and recovery are in `coverage/semantics/string-offset-integer-bitnot-truth-base-initial-raw-leading-key-review.json`.
+
+Finite numeric FLOAT arithmetic truth originals, native-once baseline and separate fixtures: `../php-spec-evidence-archive/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-{author23,peer22}-20261114/`. Concise tuple and recovery: `coverage/semantics/string-offset-numeric-arithmetic-truth-base-initial-raw-leading-key-review.json`.
