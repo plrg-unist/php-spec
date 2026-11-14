@@ -106,8 +106,10 @@ def checks(old, index):
             f'S_class_concat_{label} = S[.SOURCES = [pcunit[.OCCURRENCES = {occurrences}]]]',
             f'$origin_node(S_class_concat_{label}.SOURCES,porigin_selector) = (expression_class_{label})',
             f'$compiled_read(S_class_concat_{label},porigin_selector) = (PSTRING ptbytes_raw)',
-            f'~$property_magic_cv_static_method_site_selector(S_class_concat_{label},porigin_site,expression_class_{label},porigin_requested,pclassdesc_requested.NAME)',
+            ('' if label == 'nested' else '~') + f'$property_magic_cv_static_method_site_selector(S_class_concat_{label},porigin_site,expression_class_{label},porigin_requested,pclassdesc_requested.NAME)',
         ]
+        if label == 'nested':
+            result += ['~$property_magic_cv_static_methodclosure(S_class_concat_nested,n_closure)']
     result += ['$parser_literal(expression_class_nested) = (PSTRING ptbytes_raw)']
     return result
 

@@ -1,0 +1,49 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-string-concat-tree-cv-empty-own-child-retired-sources",
+      "source": "<?php\nclass QuietMethodStaticInheritedCVBase { final protected static function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public function unusedMiddle(): int { echo \"BAD_MIDDLE;\"; return 8; } public static function counter() { static $counter = 100; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVTarget extends qUIETmETHODsTATICiNHERITEDcvbASE { public function childUnused(): int { echo \"BAD_CHILD;\"; return 6; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietMethodStaticInheritedCVEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\";  }\n}\n$original = (('\\\\qUIET' . 'mETHODsTATICiN') . ('HERITEDcv' . 'tARGET'))::{('Co' . '') . ('Un' . 'TeR')}(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedCVBase::counter() === 101 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedCVEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\n$destination = empty($reader->$selector);\necho $destination === false ? \"FALSE;\" : \"BAD_EMPTY;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedCVTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho QuietMethodStaticInheritedCVBase::counter() === 102 ? \"PARENT_STATIC;\" : \"BAD_PARENT_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "4ca195a0ef9354ba14061cc5d0119f0260384817b9e0af702853e8fcbef22e77",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldD5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWVGFyZ2V0O0ZJUlNUO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZUYXJnZXQ+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRDVlRhcmdldDtDTE9ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWQmFzZTtXQVJNO1NPVVJDRVNfR09ORTtJO0c7UkVDRUlWRVI7V1JBUFBFUl9HT05FO0ZBTFNFO0NBUFRVUkU7UkVDRUlWRVJfR09ORTtRdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZENWVGFyZ2V0PlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZUYXJnZXQ7U1RBVElDO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlPlF1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkQ1ZCYXNlO1BBUkVOVF9TVEFUSUM7RE9ORTs=",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_review_cases.json",
+        "id": "methodclosure-static-literal-concat-class-selector-cv-empty-own-child-retired-sources",
+        "source_sha256": "a592c414b8bf6a81ef0928941d5df0cdc1cfe0bca41a83eeb89a9785a94ee4f7",
+        "change": "Replace only the initial CLASS and METHOD selectors by raw-string CONCAT trees. Own-child uses balanced class/method roots; inherited uses empty class subtrees and a right-deep method tree retaining escaped raw-string bytes. Decoded names, profile, Shared ancestry, statics, Empty and receiver cleanup/throw observations remain identical."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-string-concat-tree-literal-empty-inherited-retired-sources-receiver-throw",
+      "source": "<?php\nclass QuietMethodStaticInheritedLiteralBase { private function unusedBefore(): int { echo \"BAD_BEFORE;\"; return 7; } public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } final public static function unusedAfter(): int { echo \"BAD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralTarget extends \\qUIETmETHODsTATICiNHERITEDlITERALbASE { private static function childBefore(): int { echo \"BAD_CHILD_BEFORE;\"; return 6; } protected function childMiddle(): int { echo \"BAD_CHILD_MIDDLE;\"; return 7; } final public static function childAfter(): int { echo \"BAD_CHILD_AFTER;\"; return 8; } }\nclass QuietMethodStaticInheritedLiteralEmptyGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { global $watch; echo \"RECEIVER;\"; echo $watch->get() === null ? \"WRAPPER_GONE;\" : \"BAD_WRAPPER;\"; throw new Exception(\"receiver\"); }\n}\n$original = (('qUIETmETHODsTATICiNHERITEDlITERALtARGET' . '') . ('' . ('' . '')))::{\"c\" . (\"O\" . (\"un\\x74\" . (\"e\" . \"r\")))}(...);\necho $original() === 1 ? \"FIRST;\" : \"BAD_FIRST;\";\n$intermediate = clone $original;\n$held = clone $intermediate;\necho $held() === 2 ? \"CLONE;\" : \"BAD_CLONE;\";\n$sourceWeak = WeakReference::create($original);\n$intermediateWeak = WeakReference::create($intermediate);\n$original = null;\n$intermediate = null;\necho QuietMethodStaticInheritedLiteralBase::counter() === 3 ? \"WARM;\" : \"BAD_WARM;\";\necho $sourceWeak->get() === null && $intermediateWeak->get() === null ? \"SOURCES_GONE;\" : \"BAD_SOURCE;\";\n$watch = WeakReference::create($held);\n$reader = new QuietMethodStaticInheritedLiteralEmptyGet;\n$readerWeak = WeakReference::create($reader);\n$selector = \"value\";\n$destination = 42;\ntry { $destination = empty($reader->value); echo \"BAD_DELIVERY;\"; }\ncatch (Exception $failure) { echo \"CAUGHT;\"; }\necho $destination === 42 ? \"KEEP;\" : \"BAD_DESTINATION;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\necho $readerWeak->get() === null ? \"RECEIVER_GONE;\" : \"BAD_OWNER;\";\necho QuietMethodStaticInheritedLiteralTarget::counter() === 4 ? \"STATIC;\" : \"BAD_STATIC;\";\n$watch = null;\n$readerWeak = null;\n$sourceWeak = null;\n$intermediateWeak = null;\necho \"DONE;\";\n",
+      "source_sha256": "07c93a8e09b312afe10f7c860c50035ff49ec1c89b93d15246ae28ac48252b5c",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ7RklSU1Q7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxUYXJnZXQ7Q0xPTkU7UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsQmFzZT5RdWlldE1ldGhvZFN0YXRpY0luaGVyaXRlZExpdGVyYWxCYXNlO1dBUk07U09VUkNFU19HT05FO0k7RztSRUNFSVZFUjtXUkFQUEVSX0dPTkU7Q0FVR0hUO0tFRVA7Q0FQVFVSRTtSRUNFSVZFUl9HT05FO1F1aWV0TWV0aG9kU3RhdGljSW5oZXJpdGVkTGl0ZXJhbEJhc2U+UXVpZXRNZXRob2RTdGF0aWNJbmhlcml0ZWRMaXRlcmFsVGFyZ2V0O1NUQVRJQztET05FOw==",
+      "stderr_template_base64": "",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_review_cases.json",
+        "id": "methodclosure-static-literal-concat-class-selector-literal-empty-inherited-retired-sources-receiver-throw",
+        "source_sha256": "5c8e8bbba319234708c68ada1c3b85aba78c1c0f371c8e7bf833afaa7d4dd17e",
+        "change": "Replace only the initial CLASS and METHOD selectors by raw-string CONCAT trees. Own-child uses balanced class/method roots; inherited uses empty class subtrees and a right-deep method tree retaining escaped raw-string bytes. Decoded names, profile, Shared ancestry, statics, Empty and receiver cleanup/throw observations remain identical."
+      }
+    }
+  ]
+}
