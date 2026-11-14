@@ -1304,6 +1304,8 @@ Quiet emitted ==/!= preserve PHP's Boolean truth and numeric comparison for recu
 
 Quiet emitted <, <=, >, >= and <=> retain typed Boolean/integer/float operands, PHP truth/numeric order and greater-operand reversal through exact source, code, read, precision and full-state checks. Wider leaves, runtime FLOAT producers, ownership and lifetimes remain partial. [Runtime order review](coverage/semantics/string-offset-request-base-runtime-order-review.json).
 
+Quiet emitted XOR preserves recursive Boolean/integer/float truth through exact source, code, read and precision facts, actual NORMAL state and sequential full-state conversions. Genuine Boolean results retain existing keys and cleanup; wider producers, NaN truth, owners and lifetimes remain partial. [Runtime XOR review](coverage/semantics/string-offset-request-base-runtime-xor-review.json).
+
 Quiet runtime modulo, bitwise AND/OR/XOR and shifts retain exact integer bytes from recursively certified PINT children. Matching emitted source, code, read and precision facts, IRESULT and full-state checks preserve the existing key and ownership rules; wider types, operators, producers and lifetimes remain partial. [Strict integer-binary review](coverage/semantics/string-offset-request-base-runtime-integer-binary-review.json).
 Typed, in-range integer children also support relational comparisons and bitwise
 NOT through actual source/read/precision facts and existing pure integer rules.
