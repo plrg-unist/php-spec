@@ -1,0 +1,65 @@
+{
+  "feature": "Quiet emitted one-byte STRING bitwise VALUE in string-offset key certificates",
+  "status": "Bounded implementation, original-source agreement and independent review complete; wider core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local .tools/php/bin/php and matching profile; pure authored watsup, no Zend evaluation fallback.",
+  "behavior": "Separate typed STRING branches admit BITAND/BITOR/BITXOR with two certified one-byte nonNUL INTERNED operands and BITNOT with one such operand. NORMAL, exact own/child source, CODEfalse/read-eps, positive line, equal captured precision, pure byte result and exact unchanged whole-state binary_apply/bitnot_value retain the real nonNUL INTERNED header. Numeric and mixed dispatch rules remain unchanged.",
+  "source_authority": [
+    "vendor/php-src/Zend/zend_operators.c bitwise_not_function1650: length1 uses ZVAL_CHAR; wider strings allocate.",
+    "vendor/php-src/Zend/zend_operators.c bitwise_or_function1698, bitwise_and_function1780 and bitwise_xor_function1862: both lengths1 use ZVAL_CHAR; other string lengths allocate.",
+    "ZVAL_CHAR in Zend/zend_API.h uses ZSTR_CHAR; Zend/zend_string.c initializes all256 permanent interned character headers. Existing30/54/57, compiler, formatter and ownership bodies remain unchanged."
+  ],
+  "source_packet": {
+    "base": "219d945d65940503af9dd3cb45ed639062fb7d4b",
+    "head": "cc64a17f16f3cc3d4dd518f051d60071b074ec8e",
+    "tree": "1707d4cdcb33bcb10211a2b8c1d1ce970fb670b6",
+    "manifest": "7 files, 345 insertions/3 deletions: Makefile4;425+37;affected literal-string-integer reviewer+3/-3;new cases24/protocol80/reviewer171/sources26.",
+    "reviewer_sha256": "506548dc949df5fdfbf30ebfff6663f5d378d61ff9905f245b1cda67b1ec8be3"
+  },
+  "source_tests": "Four new original-byte witnesses retain keys1/-1/0/-4: strict identity of selected STRING1 AND STRING3 with STRING1 before INT1; selected STRING0 OR STRING0 before INT0/~−1; NOT selected STRING1 gives byte206 before explicit INT0; selected STRINGp XOR STRINGC gives STRING3 before INT3/~−4. Existing Warning/Throwable, bounds, cleanup and budget histories remain.",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-one-byte-string-bitwise/",
+  "validation": [
+    {
+      "report": "author/baseline-v1/report.json",
+      "sha256": "305d7eb67bdad1dc2fecf9f671a2da56fb9e7fa575e5d35e6df89bab4beeffe8",
+      "revision": "568b1be3cd91be46a1fbac7420262bd3f1cb0c08",
+      "result": "Native4 once; prelaw Unsupported4 assertions pass; source0."
+    },
+    {
+      "report": "author/source-v2/report.json",
+      "sha256": "725f313b00751383405a78f121d4989b01219a3b193b3daff100b3ee1eef675a",
+      "revision": "66f446862993a131ee52960cd44ca3acdf83a3c1",
+      "result": "Production-SL source4 exact agreements, saved native observations only; model90/process120, elapsed25.093779/24.840986/27.188605/33.468942s."
+    },
+    {
+      "report": "author/state-v1/report.json",
+      "sha256": "4644deef8b5a86fa938623a61d98d6e9543507ebd890e924c2bc9e352966f6ca",
+      "revision": "bded5c9c8e7906729aeb05f58da66b4e57ff4600",
+      "result": "Separate explicit-SL fixture1042/129-derived, rows267/257/238/280 pass38.292229/34.220675/33.511486/43.162617s with fixed180 cap; source0/native0."
+    },
+    {
+      "report": "peer/state-v1/report.json",
+      "sha256": "fd5656ba26d21aa4e55eda45d7e5778d54b90a577c35b11abb98b6d63ae1b07c",
+      "revision": "cedc6228716bb388c68626e9d334cd4c633a8bf0",
+      "tree": "1707d4cdcb33bcb10211a2b8c1d1ce970fb670b6",
+      "result": "Independent explicit-SL fixture1849/936-derived with27 fresh controls, rows760/370/326/393 pass49.659907/37.928898/33.952238/47.589439s with fixed180 cap; source0/native0."
+    }
+  ],
+  "preserved_failure": {
+    "raw": "author/source-v1/string-offset-request-base-runtime-one-byte-string-and-leading-key/model.stdout",
+    "sha256": "fc03270aac928d2f94b247bd190e745fc7757f3691b1d458004ad5e6bad1bdc6",
+    "revision": "1ce637b3fa49d8474a325f261ac66a2eeafeacd1",
+    "classification": "First source-v1 model failed DSL elaboration at425:549 for an ungrouped carrier payload, then the unchanged wrapper raised KeyError(frontend); source0/native0, other3 unrun0. Grouping correction changes no PHP bytes. Raw model stdout/stderr/process/exit records remain; source-v2 reuses the original native observations."
+  },
+  "independent_review": "Reviewer23 independently cleared native/baseline/source/author evidence once, the original elaboration failure, the37-line law and two precise current expectation promotions. Fresh controls distinguish typed results, high bytes/nesting/orientation, lower INTERNED NUL result versus certificate refusal, allocation on empty/multibyte inputs, raw/REQUEST forgery, mixed dispatch, nonnormal completion, provenance/precision/line and stale RESULT. Whole7 FULLCLEAR preceded metadata; author imported only final171-line reviewer to the identical tested tree.",
+  "integration": {
+    "actual": "3d5ddbbcc2fe1a1f903c9a08fc1fce440488b9e4",
+    "tree": "6426534a4703f51054a97cdc4122293b2c423d4e",
+    "parent": "6baec57dc",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main60-onebyte-dynamicpint-current-load-v1/report.json",
+    "canonical_sha256": "524a3cae06c537b8b9739091e1f22439026b289f5c9ad8fab41d002039f7c3f3",
+    "result": "Reviewer23 sole actual/composition and SAME saved-report read CLEAR: signed7/345+/3-, own37-line runtime block exact amid separate DYNAMIC raw_truth delta, five test blobs exact and Make4 each once. Production-SL508/511argv/512equalwatches passes16.336514329072088s, cap60, source0, trueLF, quiet/stable/reaped."
+  },
+  "accounting": "Native4 once/source4, author1042/129-derived, peer1849/936-derived and sole actual SL508 loading retain separate identities. All accepted groups and workers are closed/reaped with empty stderr and no timeout. Preserved first source failure and unrun cases earn zero; no peer failures/timeouts/unrun. Two current literal-string-integer controls now expect exact INTERNED1/[206] and corresponding bytes without replaying their old campaign.",
+  "remaining": "NUL results, empty/multibyte or raw/REQUEST inputs, wider producers/owners/lifetimes, allocation/formatting expansion and complete core remain partial. Literal INTERNED NUL is not blanket held; the new certificate retains its nonNUL bound. No ordinary-library, interaction-tree/Rocq or BOLA claim.",
+  "holds": "OP12 dimension increment/decrement warnings; Source47 low-precision DEFINE-name NaN; Owned-NUL source release; undefined by-reference LIST keys; COMP88 supplied-throw Stringable crash; V110/GC35/I106/COMP123; ATTR87/GC87. I140/GC84 remain unstarted pending exact user scope."
+}

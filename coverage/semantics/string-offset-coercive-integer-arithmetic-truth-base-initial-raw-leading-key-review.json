@@ -1,0 +1,61 @@
+{
+  "scope": "Quiet signed64 integer-result scalar ADD/SUBTRACT/MULTIPLY/DIVIDE truth selects literal INTERNED full-ternary bases before returning initial raw-key Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src tag 34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "Guarded old PINT delegation and its final false fallback preserve the existing integer-helper outcomes. The new four-op PINT branch is disjoint through a negative old-helper guard on the original state.",
+    "Own and both actual child occurrences retain exact source and typed pools. Both original scalar children must quietly coerce to fitting NINT values; the result must be the exact fitting PINT.",
+    "One shared NORMAL probe authenticates recursive children and the full binary_apply result using the original operand tags, rejecting paused cached-result DIV-zero and nested forgeries.",
+    "Existing all-PINT helper, MOD/shift/bitwise/POWER and FLOAT branches remain unchanged. Integral decimal strings retain NFLOAT classification and cannot forge a PINT result."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_operators.c::_zendi_try_convert_scalar_to_number and zendi_try_convert_scalar_to_number",
+    "vendor/php-src/Zend/zend_operators.c::add_function_fast/add_function_slow, sub_function_fast/sub_function_slow, mul_function_fast/mul_function_slow, div_function_base/div_function"
+  ],
+  "source_cases": [
+    "coercive-integer-arithmetic-truth-base-initial-raw-leading-current-key: ((\"2\"+true)*\"1\") gives PINT3; ordinary key replacement at line12",
+    "coercive-integer-arithmetic-truth-base-initial-raw-leading-reference-key: ((null/\"2\")-false) gives PINT0; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-arithmetic-truth-base-initial-raw-leading-key-author25-20261114",
+  "baseline": {
+    "report": "baseline/report.json", "sha256": "d04e24f10d7f2af923ed4d256819938acddbba41e5b689c05c05c85ddca487d8",
+    "cut": "a0598692f7933cc34b31d5b383c8bb94fe129cfa", "native_originals_once": 2, "expected_Unsupported": 2, "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json", "sha256": "beb728c83c5219f983b5aecd113e83effe2600b87fa35548cf3445e0f80b8718",
+    "cut": "8b6e7045641ccdbebc148d055d270d882eba369f", "production_modules": 508, "saved_native_agreements": 2, "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json", "sha256": "4577dc2facaed1b03bf24eea8fec9d8d2f9c28a86e3af5a8bdfc9b115259983d",
+    "cut": "8b6e7045641ccdbebc148d055d270d882eba369f", "mode": "production SL fixture", "premises": 242, "derived": 139, "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-arithmetic-truth-base-initial-raw-leading-key-peer23-20261114/postlaw-b-sl-v2/report.json",
+    "sha256": "ca19fdfaae5769cf2fc87adfdc59e65c576866229709309ccb6428bc6eab27df",
+    "cut": "2a9a25fe849ae9bd838d34f88480124f33ec65f4", "mode": "production SL fixture", "premises": 589, "derived": 431, "source_credit": 0
+  },
+  "counterfacts": "Exact results, source/child/name/CODE/pool identity, original BOOL/NULL/STRING tags, fitting NINT versus NFLOAT, fractions, overflow, leading/nonnumeric/NUL strings, carrier forgeries, direct/nested cached-BUDGET DIV-zero and unchanged broader-op/unary bounds. Genuine selected NUL headers certify the base but refuse raw-leading capture. Folded NOT/shorthand and a new PINT child under the unchanged FLOAT parent are source-zero compositions.",
+  "affected_old_expectation": "Only the old numeric-string 0/2 truth/selected-base admission promotes; raw_unary_integer still refuses. Fresh B covers that exact contour without replaying the old campaign.",
+  "preserved_failure": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-coercive-integer-arithmetic-truth-base-initial-raw-leading-key-peer23-20261114/postlaw-b-sl-v1/report.json",
+    "sha256": "aefb46e992ad6eca9ee0cad0ac18c897a8132065c67b16b4e45422289c6c5a33",
+    "premises": 581, "derived": 423, "compiler_exit": 0, "SL_exit": 1, "source_credit": 0,
+    "cause": "The reused FLOAT helper emitted NOT over PINT without an own folded BOOL pool. The model correctly refused that base route. B-v2 preserves the emitted counterfeit refusal and adds genuine own-PBOOLfalse/CODEtrue folding; only B was rerun."
+  },
+  "whole_source": {
+    "logical_commit": "b8a3966c631a8d606c3c3c7b5dc3d49033a0a535", "tree": "bad46b801dfc509ce3ed073fd74eae83451181fc", "owned_paths": 7,
+    "manifest": "whole-source-v2-manifest.json", "sha256": "b38a7665916dffa823b6b378b6709a4148741ab9a88cfe8f03d987a33de4a527",
+    "compatibility": "Later commits change only the independent fixture. Source/native/A retain their original cuts without renewed execution."
+  },
+  "actual_composition": {
+    "commit": "3d5ddbbcc2fe1a1f903c9a08fc1fce440488b9e4", "tree": "6426534a4703f51054a97cdc4122293b2c423d4e",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main60-onebyte-dynamicpint-current-load-v1/report.json",
+    "sha256": "524a3cae06c537b8b9739091e1f22439026b289f5c9ad8fab41d002039f7c3f3",
+    "mode": "production SL", "modules": 508, "ordered_argv": 511, "stable_watches": 512, "cap_seconds": 60, "elapsed_seconds": 16.336514329072088, "source_credit": 0,
+    "review": "Peer23 independently closed whole-source review and the sole actual composition/SAME saved-read; author did not reread the actual report.",
+    "compatibility": "Own seven-file projection is exact in the twelve-file union: five donor-exact test files, the PINT proof block and two Make recipes. Separate ONEBYTE runtime-value additions preserve that proof and prior parent bytes."
+  },
+  "validation": "Passing cuts are quiet, stable and reaped with recorded commands, runtime/profile/environment, original bytes and raw outputs in the external archives. Native observations ran once and were reused. Counts are separate and are not a unique aggregate.",
+  "remaining": "Wider unary producers, nonquiet conversions, wider bases/ownership/lifetimes and all exact held boundaries remain partial. The integer-result gate continues to refuse NFLOAT children. No engine bug or intentional PHP divergence identified."
+}
