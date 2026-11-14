@@ -201,21 +201,24 @@ for left, right, value in [
         f'$lossy_optional_integer_default_in($plempty(false),{expression}) = eps',
         f'$lossy_optional_integer_numeric($plempty(false),{expression}) = (NINT {integer})',
     ])
-for left, right in [
-        (base, negative_one), (zero, negative_one), (negative_one, negative_one),
-        (base, 'NScalarInt (INTEGER 63) eps'), (minimum, base),
-        (base, binary('Pow', base, 'NScalarInt (INTEGER 63) eps')),
-        ('NScalarInt (INTEGER 9223372036854775808) eps', one),
-        (base, 'NScalarInt (INTEGER 9223372036854775808) eps'),
+for left, right, expected in [
+        (base, negative_one, 'eps'), (zero, negative_one, 'eps'),
+        (negative_one, negative_one, 'eps'),
+        (base, 'NScalarInt (INTEGER 63) eps', '(NFLOAT 4890909195324358656)'),
+        (minimum, base, 'eps'),
+        (base, binary('Pow', base, 'NScalarInt (INTEGER 63) eps'), '(NFLOAT 9218868437227405312)'),
+        ('NScalarInt (INTEGER 9223372036854775808) eps', one, 'eps'),
+        (base, 'NScalarInt (INTEGER 9223372036854775808) eps', 'eps'),
 ]:
-    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = eps')
+    checks.append(f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", left, right)}) = {expected}')
 for child in ['NScalarFloat (FLOAT "4000000000000000") eps',
               'NScalarString (BYTES "Mg==") eps', constant('true'), constant('null'),
               constant('E_STRICT'),
               binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps')]:
+    expected_right = '(NFLOAT 9218868437227405312)' if child == binary('Plus', maximum, 'NScalarInt (INTEGER 1) eps') else 'eps'
     checks.extend([
         f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", child, one)}) = eps',
-        f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, child)}) = eps',
+        f'$lossy_optional_integer_numeric($plempty(false),{binary("Pow", base, child)}) = {expected_right}',
     ])
 
 CASES = {

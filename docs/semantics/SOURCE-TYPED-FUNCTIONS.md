@@ -1206,6 +1206,15 @@ source/ENV/no-DIM/name, Shared-cache and receive/owner guards through cold/warm
 BYREF defaults and named warning reentry. FLOAT/GENERAL results, negative
 exponents, coercion, effectful `E_STRICT` and wider scope remain partial.
 
+[Completed Numeric FLOAT power defaults](../../coverage/semantics/numeric-float-power-default-reception-review.json)
+also retain proper signed64/binary64 Numeric children and quiet
+`POWERDONE (NFLOAT n) false` preparation. Raw FLOAT tags and signed-zero bits
+remain in Shared caches before private integer reception; nonfitting and NaN
+results reach the ordinary TypeError. Source/ENV/no-DIM/name and owner guards
+remain through cold/warm BYREF defaults and named warning reentry. The affected
+earlier overflow source reuses its saved native observation. GENERAL, power
+diagnostics, implicit coercion, effectful `E_STRICT` and wider scope remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

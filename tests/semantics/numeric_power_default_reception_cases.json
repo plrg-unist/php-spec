@@ -19,9 +19,9 @@
     "id": "numeric-power-default-overflow-control",
     "source": "<?php\nfunction warning237($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults237(int $first, int $later = (E_WARNING ** 63)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning237');\n$x237 = 1.5;\ntry { defaults237($x237); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
     "source_sha256": "70262d3edaa4cfbcfce68a9af9da6ad75ea7531adb7c925b6faf90933ed75ee1",
-    "expected_model": "unsupported",
+    "expected_model": "normal",
     "model_timeout_seconds": 360,
-    "purpose": "A nonfitting power retains raw NFLOAT rather than receiving NINT authority or a pre-cast; native typed-default failure stays outside the quiet integer-result slice."
+    "purpose": "The nonfitting power retains raw NFLOAT and raises the ordinary int default TypeError. Unsupported at ENUM237; ENUM238 promotes this exact source using its saved original native observation, with no native replay or pre-cast."
   },
   {
     "id": "numeric-power-default-negative-exponent-control",

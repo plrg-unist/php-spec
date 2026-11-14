@@ -112,6 +112,14 @@ def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
   -- if $(i_right >= 0)
   -- if $power_prepare(NINT i_left, NINT i_right) = POWERDONE (NINT i) false
   -- if $long_range(i)
+def $lossy_optional_integer_numeric(plenv, expression) = (NFLOAT n)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $pfshape(expression) = PFBINARY POWER expression_left expression_right
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
+  -- if $power_warning_number($number_value(pnumber_left)) = (pnumber_left) /\ $power_warning_number($number_value(pnumber_right)) = (pnumber_right)
+  -- if $power_prepare(pnumber_left, pnumber_right) = POWERDONE (NFLOAT n) false
+  -- if $(n < 18446744073709551616)
 def $lossy_optional_integer_numeric(plenv, NExprBitwiseNot expression metadata) = (NINT i)
   -- if $lossy_optional_integer_default_in(plenv, NExprBitwiseNot expression metadata) = eps
   -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i_child)

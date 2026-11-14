@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-float-power-default-cold-warm",
+    "source": "<?php\nfunction floatPowerWarning238($errno, $message, $file, $line) {\n    global $xFloatPower238;\n    echo 'warning:', $message, '|';\n    $xFloatPower238 = 3.5;\n}\nfunction floatPowerDefaults238(int &$first, int $unit = (NAN ** (E_ERROR - E_ERROR)), int &$negativeZero = ((-0.0) ** E_ERROR), int $zero = (INF ** -E_ERROR), int $nested = ((NAN ** (E_ERROR - E_ERROR)) ** (E_WARNING - E_WARNING)), int $positiveZero = (0.0 ** E_WARNING)) {\n    echo 'body:', $first, ':', $unit, ':', $negativeZero, ':', $zero, ':', $nested, ':', $positiveZero, '|';\n    $negativeZero = 9;\n    $first = $first + 1;\n}\nset_error_handler('floatPowerWarning238');\n$xFloatPower238 = 1.5;\nfloatPowerDefaults238($xFloatPower238);\necho 'cold:x=', $xFloatPower238, '|';\n$xFloatPower238 = 1.5;\nfloatPowerDefaults238($xFloatPower238);\necho 'warm:x=', $xFloatPower238, '|';\n",
+    "source_sha256": "7b38568c8d75108a25eb14f7f86a04da58a3a96c42cc116c48fae3df894b0388",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Completed quiet Numeric FLOAT powers keep raw one,signed zero,zero and nested results in Shared caches before ordinary int conversion. Cold/warm fresh BYREF defaults preserve raw FLOAT tags/bits,source/declaration ENV/no-DIM/name/receive/owner authority and earlier-handler saved-int writeback."
+  },
+  {
+    "id": "numeric-float-power-default-alias-named-reentry",
+    "source": "<?php\nnamespace FloatPowerAlias238;\nuse const INF as Infinite238;\nuse const NAN as Nan238;\nuse const E_ERROR as One238;\nfunction warning238($errno, $message, $file, $line) {\n    global $xAlias238;\n    echo 'warning:', $message, '|';\n    defaults238(2);\n    $xAlias238 = 3.5;\n}\nfunction defaults238(int $first, int $unit = (Nan238 ** (One238 - One238)), int $zero = (Infinite238 ** -One238), int $selected = ((Nan238 ** (One238 - One238)) ? ((-0.0) ** One238) : MISSING_FALSE238), int $nonnull = ((0.0 ** One238) ?? MISSING_ZERO238), int $last = 7) {\n    echo 'body:', $first, ':', $unit, ':', $zero, ':', $selected, ':', $nonnull, ':', $last, '|';\n}\n\\set_error_handler('FloatPowerAlias238\\\\warning238');\n$xAlias238 = 1.5;\n$lastAlias238 = 8;\ndefaults238(last: $lastAlias238, first: $xAlias238);\necho 'outer:x=', $xAlias238, '|';\n",
+    "source_sha256": "ce4dbb83890fa8fea5692f1e143b53f19f336be3bc4cdffe4df1d3f6408b5252",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported quiet Numeric FLOAT powers supply raw one/zero/negative-zero values through named holes[1,2,3,4],true power condition,nonnull FLOAT zero and warning reentry. Warm caches retain raw bits while private locals receive PINTs;last8 and source/ENV/binding/cache/owner authority remain."
+  },
+  {
+    "id": "numeric-float-power-default-nan-type-error",
+    "source": "<?php\nfunction warning238($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults238(int $first, int $later = ((-E_WARNING) ** 0.5)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning238');\n$x238 = 1.5;\ntry { defaults238($x238); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "b14c1665950d252c5332d0463e723f46623f05eddebd9ea0f0cb5ac36e227e62",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "A completed quiet domain-error power retains its raw NaN FLOAT result/cache until the ordinary int default TypeError;it is not pre-cast or replaced by zero."
+  },
+  {
+    "id": "numeric-float-power-default-general-control",
+    "source": "<?php\nfunction warning238($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults238(int $first, int $later = (E_WARNING ** 64)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning238');\n$x238 = 1.5;\ntry { defaults238($x238); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "5f2d9b631d29b5fe20d968cad077fd720168719d883bd36ab83b6ff6cebf3c95",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "POWERGENERAL remains outside this completed-result certificate;pure log/exp completion is not silently admitted."
+  },
+  {
+    "id": "numeric-float-power-default-zero-negative-exponent-control",
+    "source": "<?php\nfunction warning238($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults238(int $first, int $later = ((E_WARNING - E_WARNING) ** -E_ERROR)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning238');\n$x238 = 1.5;\ntry { defaults238($x238); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "4aefdd0b5168c3feba30661fc4035ea8cc8b59d8297e28caa6e166ce944ad78f",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A zero base and negative exponent requires the actual power Deprecated callback;POWERDONE true remains outside quiet authority."
+  },
+  {
+    "id": "numeric-float-power-default-string-coercion-control",
+    "source": "<?php\nfunction warning238($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults238(int $first, int $later = ('2' ** (E_WARNING - E_WARNING))) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning238');\n$x238 = 1.5;\ntry { defaults238($x238); }\ncatch (Error $e) { echo 'caught:', $e->getMessage(), '|'; }\n",
+    "source_sha256": "aa0e6c8c6296674f0887c1d76e5a0bcf125b9c4dee1cbc74c51707b369dbb3dd",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A raw numeric string has no Numeric pnumber identity;even an exact integer native result does not admit arithmetic coercion."
+  }
+]
