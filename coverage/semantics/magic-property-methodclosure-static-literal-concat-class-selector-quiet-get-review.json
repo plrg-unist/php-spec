@@ -1,0 +1,204 @@
+{
+  "feature": "magic-property-methodclosure-static-literal-concat-class-selector-quiet-get",
+  "status": "Implemented and independently reviewed bounded source slice; complete PHP core remains partial.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "integer_bytes": 8,
+    "zts": 0,
+    "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "configuration": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    }
+  },
+  "scope": "Exactly two raw NScalarString class-selector operands for bounded own/inherited public static USER method Closure Get results through quiet CV coalesce, private coalesce-assignment and CV/literal Empty, composing accepted flat method-name concatenation.",
+  "authority": "Actual PCFIELD0 concat root and both actual scalar child occurrences including metadata. Compiled ROOT PSTRING equals decoded-left++right exactly, before existing one-optional-leading-class-backslash normalization, casefold and class_named requested identity. Child compiled pools may be absent. Namespace/import aliases do not select raw literal targets.",
+  "preserved": "Identifier/Scalar/flat-concat method-name arms, direct/Scalar class-selector arms and all source/member/scope/cache/history/consumer/cleanup rules remain literal; no compiler/cache/free/GC policy change.",
+  "primary_sources": [
+    {
+      "path": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": [
+        "zend_compile_class_ref",
+        "zend_compile_static_call",
+        "zend_compile_binary_op",
+        "zend_try_ct_eval_binary_op"
+      ]
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_execute_API.c",
+      "symbol": "zend_lookup_class_ex"
+    },
+    {
+      "path": "spec/semantics/20-machine.watsup",
+      "symbol": "parser_literal_at"
+    },
+    {
+      "path": "spec/semantics/46-source-compiler.watsup",
+      "symbol": "ppdispatch PFSCALAR concat"
+    },
+    {
+      "path": "spec/semantics/141-method-compiler.watsup",
+      "symbol": "ppscoped_class"
+    },
+    {
+      "path": "spec/semantics/142-method-runtime.watsup",
+      "symbols": [
+        "scoped_class_literal",
+        "scoped_requested_site"
+      ]
+    }
+  ],
+  "implementation": {
+    "path": "spec/semantics/407-magic-property-isset.watsup",
+    "blob": "6abe3b90a56ddb0c51c0485579d63a533819371e",
+    "sha256": "f532fea6e20ab8004e5b7ae469bb6331ba4564f871589018483ce9a0f8b83176",
+    "delta": "One disjoint eleven-line class site-selector arm; accepted4073af3 remainder byte-identical."
+  },
+  "originals": [
+    {
+      "side": "author",
+      "catalogue": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/tests/semantics/magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_cases.json",
+      "id": "methodclosure-static-literal-concat-class-selector-own-namespaced-cv-coalesce",
+      "source_sha256": "31b52c686d6a1226cf57c302eb6981f5eb4b86e47cc55fd63af2c943f9868ce2",
+      "source_bytes": 1609
+    },
+    {
+      "side": "author",
+      "catalogue": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/tests/semantics/magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_cases.json",
+      "id": "methodclosure-static-literal-concat-class-selector-inherited-clone-private-coalesce-assignment",
+      "source_sha256": "530a56ed127bfce87190a11544b24ce24596ab0d2bfb5a29324c44e721177635",
+      "source_bytes": 1978
+    },
+    {
+      "side": "independent",
+      "catalogue": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/tests/semantics/magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_review_cases.json",
+      "id": "methodclosure-static-literal-concat-class-selector-cv-empty-own-child-retired-sources",
+      "source_sha256": "a592c414b8bf6a81ef0928941d5df0cdc1cfe0bca41a83eeb89a9785a94ee4f7",
+      "source_bytes": 2447
+    },
+    {
+      "side": "independent",
+      "catalogue": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/tests/semantics/magic_property_methodclosure_static_literal_concat_class_selector_quiet_get_review_cases.json",
+      "id": "methodclosure-static-literal-concat-class-selector-literal-empty-inherited-retired-sources-receiver-throw",
+      "source_sha256": "5c8e8bbba319234708c68ada1c3b85aba78c1c0f371c8e7bf833afaa7d4dd17e",
+      "source_bytes": 2509
+    }
+  ],
+  "native": {
+    "executions": 4,
+    "policy": "Each changed original PHP byte revision ran exactly once; model observations reuse identical original bytes/path/cwd/profile and binary. Native observations alone add no source agreement credit."
+  },
+  "source": {
+    "mode": "production SL_mode",
+    "modules": 507,
+    "source_credit": 4,
+    "author": {
+      "agreements": 2,
+      "seconds": [
+        41.61402092897333,
+        50.49849187186919
+      ],
+      "reports": "author/source-v1/*/report.json"
+    },
+    "independent": {
+      "agreements": 2,
+      "seconds": [
+        125.642783342,
+        86.754133031
+      ],
+      "reports": "independent/source-v1/*/report.json"
+    },
+    "all_stable_reaped": true
+  },
+  "prelaw": {
+    "result": "Four expected Unsupported Get-result controls across CV coalesce/coalesce-assignment and CV/literal Empty, complete/reaped before407 edit.",
+    "source_credit": 0,
+    "author_seconds": [
+      32.74327273806557,
+      37.71703649498522
+    ],
+    "independent_seconds": [
+      101.854403926,
+      63.04191377
+    ],
+    "implementation_sha256": "3af3eb58cd2b34e136b8175468d180e03edad6eb98f09ef8780d83e7314a0bdb",
+    "reports": "{author,independent}/baseline-v1/*/report.json"
+  },
+  "fixtures": {
+    "mode": "fixture SL_mode",
+    "modules": 507,
+    "source_credit": 0,
+    "author": [
+      {
+        "assertions": 380,
+        "seconds": 56.524771865224466,
+        "report": "author/protocol-own-v1/launch.json"
+      },
+      {
+        "assertions": 465,
+        "seconds": 73.51676019397564,
+        "report": "author/protocol-inherited-v1/launch.json"
+      }
+    ],
+    "independent": [
+      {
+        "assertions": 724,
+        "seconds": 212.139760937,
+        "report": "independent/protocol-cv-v1/launch.json"
+      },
+      {
+        "assertions": 711,
+        "seconds": 166.101204645,
+        "report": "independent/protocol-literal-v1/launch.json"
+      }
+    ],
+    "all_pass_stable_reaped": true,
+    "coverage": "Root-only class/method pools; missing/type/case/prefix/wrong-slot/child-only reads with method and generic class-scope proofs intact; root/both child value/metadata/kind/missing occurrence controls; nested/numeric/CV and two-leading-class-slash refusals; retained member/cache/Shared ancestry/statics/ownership/throw/resumption assertions."
+  },
+  "preserved_failures": [],
+  "whole_source": {
+    "source_donor": "7ae851f172717d0bdbbcf0043ee1dffac997d0e2",
+    "whole_donor": "a636a1f30058ada0cec780b5d42af752b106368e",
+    "donor_tree": "b7273d15adc70bb04802e92318d83574dae639d7",
+    "owned_paths": 6,
+    "independent_fullclear": true,
+    "logical_commit": "d15b055ba05e25d457886b7bb733f47fe447f8a4",
+    "logical_parent": "ffcf8d58a3e98cf520913585a1eeedad45c8e3e7",
+    "joined_commit": "7abd726dd540864a225e636c3d4af73a42bb6761",
+    "joined_tree": "3ff298ca8dc877651379bd1f6d13698839298bc6",
+    "actual_projection": "Exactly GET family6: five owned bodies donor-exact; four Makefile recipes present once. Joined source also contains independently reviewed ENUM254 and REF82."
+  },
+  "actual_same": {
+    "mode": "production SL_mode",
+    "modules": 508,
+    "source_credit": 0,
+    "tested_revision": "7abd726dd540864a225e636c3d4af73a42bb6761",
+    "seconds": 16.593385570915416,
+    "cap_seconds": 60,
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main59-getclassconcat-enum254-ref82-current-load-v1/report.json",
+    "report_sha256": "4ef088639180b3e4b18c0fa172ec84f3869cf35eb52fd826970e8ce4456a6d2e",
+    "result": "true LF, quiet, stable, pass and reaped; actual revision equal before/after.",
+    "independent_review": "Peer15 inspected actual source/SAME together exactly once. Author used this supplied tuple without duplicate read, receipt or execution."
+  },
+  "remaining": "Nested/numeric/CV/computed/keyword selectors and wider producers/classes/consumers/lifetimes remain partial. Every exact hold is unchanged; no Zend fallback, intentional engine divergence or engine bug claim.",
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-literal-concat-class-selector-quiet-get",
+  "recovery": "Raw originals/native/prelaw/source/fixture results stay outside Git under author/independent. Curated source/metadata manifests remain in the retained author tools ready directory; concise review and actual source are in Git."
+}
