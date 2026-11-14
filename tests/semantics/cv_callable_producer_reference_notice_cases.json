@@ -1,0 +1,44 @@
+[
+  {
+    "id": "singleton-byval-casefold-leading-slash-private-cell",
+    "namespace": "CallableSingletonByval82",
+    "source": "<?php\nnamespace CallableSingletonByval82;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(CaLlAbLe $saved):cAlLaBlE{echo 'M:',(int)($saved==='\\CallableSingletonByval82\\TaRgEt'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='\\CallableSingletonByval82\\TaRgEt'),';';$value=23;return $value;}\n$x='\\CallableSingletonByval82\\TaRgEt';$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval82\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='\\CallableSingletonByval82\\TaRgEt'),';';$r=41;echo 'P:',$r,':',(int)($copy==='\\CallableSingletonByval82\\TaRgEt'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "99c367c39e279574bcf56a8827cedc6e26a6a81e1ad1251baf6401cb40f45fc2",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "INTERNED_STRING",
+    "line_observation": "Native-first observes each unchanged original once; a current typed registered named function is admitted without invocation."
+  },
+  {
+    "id": "singleton-byref-strict-noncallable-rebind-and-return",
+    "namespace": "CallableSingletonByref82",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref82;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='CallableSingletonByref82\\TaRgEt'),';';$x=37;return true;}\nfunction make(CaLlAbLe &$saved):cAlLaBlE{$saved=17;echo 'M:',$saved,';';$saved='CallableSingletonByref82\\TaRgEt';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='CallableSingletonByref82\\TaRgEt'),';';$value=23;return $value;}\n$x='CallableSingletonByref82\\TaRgEt';$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref82\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy==='CallableSingletonByref82\\TaRgEt'),';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableSingletonByref82\\TaRgEt'),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "032e4f278314227e3f889183d8935c10bd73b7695cb479d46be714180d6be889",
+    "native_stdout": "N;M:17;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "INTERNED_STRING",
+    "line_observation": "Native-first observes each unchanged original once; a current typed registered named function is admitted without invocation."
+  },
+  {
+    "id": "multi-cv-request-name-byval-snapshot-and-private-cell",
+    "namespace": "CallableMulti82",
+    "source": "<?php\nnamespace CallableMulti82;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(CaLlAbLe $saved,&$changed):cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti82\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti82\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti82\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti82\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti82\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti82\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "a0aefe84d33bd79f42d029c55c1ecba028b762ad241056eb0f32d6fb68eecadf",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first observes each unchanged original once; a current typed registered named function is admitted without invocation."
+  }
+]

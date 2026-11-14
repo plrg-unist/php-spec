@@ -1,0 +1,44 @@
+[
+  {
+    "id": "two-required-callable-cv-formals-preserve-string-tags-and-private-cell",
+    "source": "<?php\nnamespace ReviewCallable82 {function FiRsT(){echo 'BADCB1;';}function SeCoNd(){echo 'BADCB2;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE $saved,CaLlAbLe &$changed):CALLABLE{echo 'M:',(int)($saved==='\\\\ReviewCallable82\\\\fIrSt'),':',(int)($changed==='reviewcallable82\\\\sEcOnD'),':',(int)($GLOBALS['x']==='\\\\ReviewCallable82\\\\fIrSt'),':',(int)($GLOBALS['y']==='reviewcallable82\\\\sEcOnD'),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value==='\\\\ReviewCallable82\\\\fIrSt'),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x='\\\\ReviewCallable82\\\\fIrSt';$snapshot=$x;$seed='sEcOnD';$y='reviewcallable82\\\\'.$seed;unset($seed);$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewCallable82\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='\\\\ReviewCallable82\\\\fIrSt'),':',(int)($ySnapshot==='reviewcallable82\\\\sEcOnD'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='\\\\ReviewCallable82\\\\fIrSt'),':',(int)($ySnapshot==='reviewcallable82\\\\sEcOnD'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='\\\\ReviewCallable82\\\\fIrSt'),':',(int)($ySnapshot==='reviewcallable82\\\\sEcOnD'),';';\n}\n",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:\\ReviewCallable82\\fIrSt:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:\\ReviewCallable82\\fIrSt:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Observe native Notice line once on these frozen bytes; no callback target may execute.",
+    "expected_notice_line": 8,
+    "formal_kinds": [
+      "callable",
+      "callable"
+    ],
+    "caller_strict": false,
+    "value_name": "\\ReviewCallable82\\fIrSt",
+    "changed_name": "reviewcallable82\\sEcOnD",
+    "derived_from": "tests/semantics/multi_cv_scalar_formal_producer_reference_notice_review_cases.json:positional-scalar-cell-pattern",
+    "source_sha256": "db83472481209e57edda25b11081a5de6fde4833acec1254648f5676ee042a40"
+  },
+  {
+    "id": "weak-nonexistent-user-name-callable-receive-priority",
+    "source": "<?php\nnamespace ReviewCallable82\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(cAlLaBlE &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x='ReviewCallable82\\\\doesNotExist';$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallable82\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "a71b7434d233bd8255ffff82a0cf6530bc8195212c41420f251ecdcaf52b267c",
+    "derived_from": "tests/semantics/cv_builtin_fqn_stdclass_producer_reference_notice_review_cases.json:receive-priority"
+  },
+  {
+    "id": "strict-int-callable-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewCallable82\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):CALLABLE{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewCallable82\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "68a2926e593074f8108f0c3b30e75480527317d228b741e0cca3cd587dc621cc",
+    "derived_from": "tests/semantics/cv_builtin_fqn_stdclass_producer_reference_notice_review_cases.json:return-priority"
+  }
+]
