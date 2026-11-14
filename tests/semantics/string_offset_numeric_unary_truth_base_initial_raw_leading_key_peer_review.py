@@ -132,7 +132,7 @@ $string_read_raw_known_base(S_shorthand_numeric,porigin_base,pvalue_base)
             ('flip_negative_zero', 'Minus', floating(9223372036854775808), 'PFLOAT 9223372036854775808', 0, True),
             ('wrong_zero_sign', 'Plus', floating(9223372036854775808), 'PFLOAT 9223372036854775808', 0, False),
             ('float_large', 'Minus', floating(4890909195324358656), 'PFLOAT 4890909195324358656', 14114281232179134464, True),
-            ('string_half', 'Plus', 'NScalarString (BYTES "MC41")', 'PSTRING ($ptascii("0.5"))', 4602678819172646912, False),
+            ('string_half', 'Plus', 'NScalarString (BYTES "MC41")', 'PSTRING ($ptascii("0.5"))', 4602678819172646912, True),
             ('bool', 'Plus', 'NExprConstFetch (NName (BYTES "dHJ1ZQ==") metadata_cond)', 'PBOOL true', 4607182418800017408, False),
             ('null', 'Minus', 'NExprConstFetch (NName (BYTES "bnVsbA==") metadata_cond)', 'PNULL', 0, False),
             ('undefined', 'Plus', one, 'PUNDEFINED', 0, False),

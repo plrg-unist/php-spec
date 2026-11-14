@@ -112,8 +112,8 @@ expression_string_sign = NExprUnaryPlus expression_string_child metadata_cond
 expression_string_base = NExprTernary expression_string_sign (NScalarString (BYTES text_true) metadata_true) expression_fallback metadata
 S_string = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_string_base) :: (PCOCCURRENCE pcpath_left expression_string_sign) :: (PCOCCURRENCE pcpath_inner expression_string_child) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_left (PFLOAT 4607182418800017408)) :: (PCONSTANT pcpath_inner (PSTRING ($ptascii("1.0")))) :: ppool.CONSTANTS]]]
 $unary_apply(S_string,POSITIVE,PSTRING ($ptascii("1.0")),0) = S_string[.RESULT = KNOWN (PFLOAT 4607182418800017408)]
-~$string_read_raw_truth(S_string,porigin_left,PFLOAT 4607182418800017408)
-~$string_read_raw_known_base(S_string,porigin_base,pvalue_wrong)
+$string_read_raw_truth(S_string,porigin_left,PFLOAT 4607182418800017408)
+$string_read_raw_known_base(S_string,porigin_base,pvalue_wrong)
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)

@@ -273,7 +273,8 @@ def $string_read_raw_truth(S, porigin, PFLOAT n_bits) = true
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
   -- if $compiled_read(S, porigin_child) = (pvalue_child)
-  -- if $type_bytes(pvalue_child) <- [$ptascii("int"), $ptascii("float")]
+  -- if $type_bytes(pvalue_child) <- [$ptascii("int"), $ptascii("float"), $ptascii("string")]
+  -- if $coerce_number(pvalue_child) = COERCED pnumber_child false
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_raw_truth(S_probe, porigin_child, pvalue_child)
   -- if $unary_apply(S_probe, punary, pvalue_child, 0) = S_probe[.RESULT = KNOWN (PFLOAT n_bits)]
