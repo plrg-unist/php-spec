@@ -1,0 +1,19 @@
+[
+  {
+    "id": "deferred-float-truth-wrapper-raw-phases",
+    "source": "<?php\nfunction rawFloatTruth264($falseCast = (bool)(-(+(-((float)(+(E_WARNING === E_ERROR)))))), $trueCast = (bool)(-((+(-((float)(+(E_WARNING === E_ERROR))))) + 3.5)), $notFalse = !(+(-((float)(+(E_WARNING === E_ERROR))))), $notTrue = !((+(-((float)(+(E_WARNING === E_ERROR))))) + 3.5)) {\n    echo 'raw:', $falseCast === false, ':', $trueCast === true, ':', $notFalse === true, ':', $notTrue === false, '|';\n}\nrawFloatTruth264();\nrawFloatTruth264();\n",
+    "source_sha256": "a1ae80e66f3a2a8028d2df01242178400f2f75675bbab851dd4da880d6273593",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Actual PFLOAT negative-zero, negative3.5, positive-zero and positive3.5 produce Boolean cast/NOT caches through cold/warm calls.",
+    "expected_normal_stdout": "raw:1:1:1:1|raw:1:1:1:1|"
+  },
+  {
+    "id": "deferred-float-truth-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FloatTruth264;\nuse const E_WARNING as Base264;\nuse const E_ERROR as One264;\nfunction warning264($errno, $message, $file, $line) {\n    global $x264;\n    echo 'warning:', $message, '|';\n    defaults264(2);\n    $x264 = 3.5;\n}\nfunction defaults264(int $first, int &$identity = (int)((bool)(-((+(-((float)(+(Base264 === One264))))) + 3.5))), int &$negated = (int)(!(-((+(-((float)(+(Base264 === One264))))) + 3.5))), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('FloatTruth264\\\\warning264');\n$x264 = 1.5;\n$last264 = 8;\ndefaults264(last: $last264, first: $x264);\necho 'outer:x=', $x264, '|';\n",
+    "source_sha256": "97fee6c18399b58807be82d6ef7a4eec0a8c0206beb34a8686fde48e63bb1bd5",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Canonical Boolean cast/NOT of actual PFLOATnegative3.5 feed existing INT parents, imported aliases, two named BYREF holes and Warning reentry with distinct private caches."
+  }
+]
