@@ -256,7 +256,7 @@ def $string_read_raw_truth(S, porigin, PSTRING n_bytes*) = true
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
 def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $string_read_raw_unary_integer(S, porigin, i)
-;; A quiet integer sign may consume a recursively certified integer child.
+;; A quiet integer sign retains a certified integer, Boolean or null child.
 def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
@@ -266,11 +266,13 @@ def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if ~$string_read_raw_unary_integer(S, porigin, i)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
-  -- if $compiled_read(S, porigin_child) = (PINT i_child)
+  -- if $compiled_read(S, porigin_child) = (pvalue_child)
+  -- if $type_bytes(pvalue_child) <- [$ptascii("int"), $ptascii("bool"), $ptascii("null")]
+  -- if $coerce_number(pvalue_child) = COERCED (NINT i_child) false
   -- if $long_range(i_child)
   -- if S_probe = S[.COMPLETION = NORMAL]
-  -- if $string_read_raw_truth(S_probe, porigin_child, PINT i_child)
-  -- if $unary_apply(S_probe, punary, PINT i_child, 0) = S_probe[.RESULT = KNOWN (PINT i)]
+  -- if $string_read_raw_truth(S_probe, porigin_child, pvalue_child)
+  -- if $unary_apply(S_probe, punary, pvalue_child, 0) = S_probe[.RESULT = KNOWN (PINT i)]
 ;; Integer complement may consume the same recursively certified integer child.
 def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_child metadata)
