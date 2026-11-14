@@ -99,7 +99,7 @@ def fields(fixture, source, form):
         '~$property_hook_reference_decl(S_front,ppropertydesc_v[.KEY = $ptascii("other")])',
         '$hook_short_reference_header(NIdentifier (BYTES "TlVsbA==") eps,' + mask + ')',
         '~$hook_short_reference_header(NIdentifier (BYTES "bnVsbA==") eps,[(PTBRANCH ([PTBUILTIN "false"]))])',
-        '~$hook_short_reference_header(NIdentifier (BYTES "bWl4ZWQ=") eps,[(PTBRANCH ([PTBUILTIN "mixed"]))])',
+        '$hook_short_reference_header(NIdentifier (BYTES "bWl4ZWQ=") eps,[(PTBRANCH ([PTBUILTIN "mixed"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "bnVsbA==") eps) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "bnVsbA==") eps) eps,' + mask + ')',
         '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "null"]))])',

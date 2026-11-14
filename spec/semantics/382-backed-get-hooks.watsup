@@ -50,9 +50,9 @@ def $hook_short_reference_body(expression, ptbytes) = false -- otherwise
 ;; Canonical headers retain raw type proof; admitted null unions retain raw order.
 dec $hook_short_reference_header(phpType18, ptbranch*) : bool
 def $hook_short_reference_header(ABSENT, eps) = true
-def $hook_short_reference_header(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["array","object","int","float","bool","string","false","true","null"] /\ $ptlc($base64(text_type)) = $ptascii(text))
+def $hook_short_reference_header(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["array","object","int","float","bool","string","false","true","null","mixed"] /\ $ptlc($base64(text_type)) = $ptascii(text))
 def $hook_short_reference_header(NNullableType phpType35 metadata, [ptbranch,(PTBRANCH ([PTBUILTIN "null"]))]) = $hook_short_reference_header(phpType35, [ptbranch])
-  -- if ptbranch =/= (PTBRANCH ([PTBUILTIN "null"]))
+  -- if ptbranch =/= (PTBRANCH ([PTBUILTIN "null"])) /\ ptbranch =/= (PTBRANCH ([PTBUILTIN "mixed"]))
 def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2]))]) = true
   -- if (text_1 <- ["array","object","int","float","bool","string","false","true"] /\ text_2 = "null") \/ (text_1 = "null" /\ text_2 <- ["array","object","int","float","bool","string","false","true"])
   -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2)
