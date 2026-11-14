@@ -1,0 +1,100 @@
+{
+  "feature": "FINAL MOD zero Error after a selected literal Echo and integer-zero return (OB107)",
+  "decision": "Whole five-file source/test independently accepted; Output and complete core remain partial",
+  "reviewer": "/root/recover10_output_bare_return_review",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and recorded profile",
+  "cuts": {
+    "source_only": "091ed540b97af524ea6a72f94ede018ca796fc5e",
+    "precode": "3719bc2da7cc894569ec3082cc9bb2d20f4dfa9a",
+    "runtime": "94a424a02fd27bcab4cd6509612b7802ae6897e9",
+    "ready": "39b0aca079af21c0fad7473e219211c0d243757d"
+  },
+  "scope": "Four originals retain the named mask8194 handler, two required untyped nonvariadic BYVAL formals and literal H Echo, followed by one own literal integer-zero Return. Warning LEFT CONST, Deprecated BOTH CV-pair, Warning RIGHT CV-pair and mixed Warning-to-Deprecated CONST/FLOAT retire two/four real formals before FINAL MOD-zero Error; AH/AHH stays buffered. The returned PINT0 is distinct from Boolean FALSE and resumed NULL scratch.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return compiles the integer-zero expression and emits ordinary ZEND_RETURN for this untyped non-BYREF function. Zend/zend_vm_def.h::ZEND_RETURN transfers the integer through real frame retirement.",
+    "Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE; integer zero is consumed without a default diagnostic.",
+    "Existing80 carries PINT0 in RETURN_UNWIND while clearing return scratch to NULL; ordinary return supplies handler RESULT=PINT0. Existing207/270 consume that non-FALSE result and restore resumed NULL scratch. The compiler already records the own integer-zero child/read/line/true flag. No return or handler kernel changes."
+  ],
+  "change": "A nine-line pure tail arm admits exactly one own raw NStmtReturn(NScalarInt(INTEGER0)). Function origin, CODE.UNIT/BODY, own Return/child, child CODEEXPR/source line/true flag and exact PINT0 read remain mandatory. The eps, explicit-NULL, bare-return and TRUE arms and every other selected-capture premise are unchanged. No return kernel, schema, ownership, provider, numeric or native-evaluation change. No Return start-line guard is added: expression compilation determines the emitted Return line.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-zero-return-modulo-error-107",
+  "runs": {
+    "native": {
+      "report": "native-summary-01.json",
+      "sha256": "217aae21b62eeaa4804132116837abc3472c8f82e58672f0d47e78abc6b27c8e",
+      "cut": "source_only",
+      "observations": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "7c3af907aeeee75c325a692fe3e7b2bbe8f688d941077a4ae70bbc2d0f969c69",
+      "cut": "source_only",
+      "mode": "production SL508/cache=false/det=true",
+      "selection": [1, 2],
+      "cap_seconds": [90, 120],
+      "collection_complete": true,
+      "aggregate_pass": false,
+      "source_credit": 0,
+      "other_originals_unrun": 2
+    },
+    "precode": {
+      "report": "front-all-01/report.json",
+      "sha256": "082adb3ede1b1f84c39bf7da280e6ba8660500da729ccb5c6d103ea67ee5b05d",
+      "cut": "precode",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [8, 11],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "front-launch-01.json",
+      "outer_launch_sha256": "0dd65cdd588b7feda6ffb730aad707d6d7d63ce4e98937c87a4890b49e657805"
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "0f35fafe4d4c146e2d6d836cca1e97324f56c1facf22ac618c29e1405635f6bc",
+      "cut": "runtime",
+      "mode": "production SL508/cache=false/det=true",
+      "cap_seconds": [90, 120],
+      "source_credit": 4
+    },
+    "lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "9a585dde8e78cc319920bd578019f4bf75c08ddae2bd589f9c64df8c73d30ed2",
+      "cut": "runtime",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [6, 7],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "life-launch-01.json",
+      "outer_launch_sha256": "714bfec9906e238e137151cb34a574650ec4058755a87faf8d9fbbb4ced8c521"
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "4d73038b08936a321ffce85fad99a765a09579fe9ef3755ff03c2c8ed89cb5af",
+      "cut": "ready",
+      "mode": "fixture SL508/cache=false/det=true",
+      "groups": [9, 15],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "outer_launch": "peer-launch-01.json",
+      "outer_launch_sha256": "a420d07885ead889aadd4b358a44c6c7858dd1f99a702ae72b324c0ccbb30cd3",
+      "outer_cap_seconds": 660,
+      "outer_seconds": 229.4372702029068
+    }
+  },
+  "validation": "Positive OB107 campaigns passed first try. Source4 actual php_error/tool0/reasonNone, DivisionByZeroError lines6/8/8/6, exact saved-native P/full fatal255/no DIAGNOSTIC; native4 reused without replay. Baseline1/2 remain pending-FINAL Unsupported/tool1/P/empty PHP and tool stderr/no DIAGNOSTIC/native_match=false; other2 baseline cases remain unrun0. Precode19 reaches actual PINT0 RETURN_UNWIND before law, with captureeps/no source seed and real handled raw steps. Lifecycle13 separately authenticates the postlaw source-transition equality and retirement. Peer24 checks independent originals3/4 and guard projections, without source credit. Stable watch counts are native23each, baseline535, precode576each, source543, lifecycle576each and peer577global+3case inputs each, with exact HEADs and source/checked/fixture hashes. Raw arrays, streams, exits, commands, modes and caps independently clear; all jobs fully reaped. No fixture/tool failure or postlaw mismatch; no AL, cumulative-unique claim or accepted-campaign renewal.",
+  "environment": "Native/source drivers and authorfront/life launch records explicitly set C/UTC; every fixture interpreter command records LC_ALL=C,TZ=UTC,PATH=/usr/bin:/bin. Authorfront/life have cap300 per interpreter and no extra outer cap; their saved outer times are132.539533101s and234.489586755s. Peer outer C/UTC/cap660 is recorded separately.",
+  "controls": "Peer originals3/4 retain actual PINT0 return and normal handled raw steps without DIAGNOSTIC, exact conversion INPUT/cursors/full store, real formal/native-cell retirement, C0 and fatal Error retirement. New groups authenticate own raw zero/child/read/type, distinguish Boolean FALSE and NULL scratch, retain eps compatibility and refuse mismatched one/FALSE/bare/extra tails against raw-zero source. First-shadowing wrong child CODEEXPR flag/line and mismatched CODE.UNIT/BODY refuse admission. A constructed first same-unit Boolean-FALSE pool retains source/CODE yet cannot authenticate PINT0. A nonowning PINT0 scratch projection retains current-call validity and the same raw MOD Error but fails capture because scratch must be NULL. These are guard projections with no full-state validity, source-agreement or new budget-resumption claim. Current-body refusals do not establish universal retarget-history exclusion.",
+  "integration": {
+    "tested_revision": "86fe272adec96400a781bf1d90f1d388dba4be63",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-zero-return-modulo-joined-508-v1/report.json",
+    "sha256": "2d87f1abdb739da04d885c6b6d8cbb8cb7b7bf71f7223b69e933ba95f75c4a51",
+    "mode": "sole production SL508;511argv/512watched;cap60",
+    "seconds": 16.14109334209934,
+    "source_credit": 0,
+    "result": "Independent actual composition CLEAR: exact five-path intake, four non-Make blobs READY39-exact, Make exactly3 additive with parent content retained, and disjoint382/519 parents retained. Runtime94a424 to READY39 adds only Make3 and the peer fixture; runtime/source/lifecycle inputs retain their identities. Sole saved combined result independently verified PASS/trueLF/quiet/exit0/no timeout/stable512+HEAD/fully reaped/C-UTC. Private execution credits are not renewed."
+  },
+  "author_ledger": "coverage/semantics/output-final-selected-zero-return-modulo-error-author.json",
+  "limits": "Only these four originals gain source agreement. Other return bodies/values/signatures, FALSE/default-reporting, arbitrary PINT0-producing expressions, one-CV and wider handler/operand/lifetime contexts remain partial. Standing holds and the existing 169/306 inventory, including partial Output status, remain unchanged; OB107 closes no constructor or family obligation. OB31, complete core, Rocq interaction trees and BOLA/CRIS remain unfinished. No engine bug or deliberate divergence is established."
+}

@@ -1,0 +1,127 @@
+{
+  "feature": "Literal integer-zero return after a selected FINAL MOD handler Echo (OB107)",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348; sole project-local .tools/php/bin/php and tests/semantics/profile.json; SL cache=false/det=true",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "cuts": {
+    "source_only": "091ed540b97af524ea6a72f94ede018ca796fc5e",
+    "prelaw": "3719bc2da7cc894569ec3082cc9bb2d20f4dfa9a",
+    "runtime": "94a424a02fd27bcab4cd6509612b7802ae6897e9",
+    "ready": "39b0aca079af21c0fad7473e219211c0d243757d"
+  },
+  "files_at_ready": {
+    "spec/semantics/456-output-object-returns.watsup": "70e79eed4042a7f4b3f925b1be8884665f13c2479bf8811d99a07f211519c034",
+    "Makefile": "eedb958a4cda3369bcc05c2fb56f6c279969488532af769fe84ded81a6ef954a",
+    "tests/semantics/output_final_selected_zero_return_modulo_error_sources.py": "4ac0ef30f9cdcc79157715112013291a02e91846a31087f9ef740bd3d7629b38",
+    "tests/semantics/output_final_selected_zero_return_modulo_error_state.py": "1ade5fe97db5b02e2fda81d2479257b04a641405f7f32f7d666578532f3153b1",
+    "tests/semantics/output_final_selected_zero_return_modulo_error_review_state.py": "ac625fa09e04fbaee5b550d928583f34bf0da1ddbdadcb9cab4e989cd07dbc39"
+  },
+  "scope": "Four originals retain the named mask8194 handler, two required untyped nonvariadic BYVAL formals and literal H Echo, followed by own raw return 0. Warning LEFT CONST and Deprecated BOTH CV pair are author representatives; Warning RIGHT CV pair and mixed Warning-to-Deprecated CONST/FLOAT are peer representatives. One/two actual calls retire two/four real formal cells; AH/AHH stays buffered before the original MOD-zero Error.",
+  "rule": "Exactly nine new pure tail-arm lines authenticate one own raw Return(NScalarInt(INTEGER0)) through function ORIGIN, CODE.UNIT/BODY, own Return/child, child CODEEXPR at its actual line with flag true and exact compiled PINT0 read. Existing eps/NULL/bare/TRUE arms and all selected-capture premises are literal; only their comment changes. No return kernel, schema, ownership, provider, numeric or native-evaluation change.",
+  "source_basis": [
+    "Zend/zend_compile.c::zend_compile_return compiles the explicit integer-zero expression then emits ordinary ZEND_RETURN; Zend/zend_vm_def.h::ZEND_RETURN copies its value and leaves the genuine frame. Zend/zend.c::zend_error_zstr_at defaults only for IS_FALSE, so integer0 is consumed.",
+    "Existing80 return-value carries PINT0 in RETURN_UNWIND while clearing RESULT/BASE to NULL. Existing207 error-handler-handled consumes PINT0 because it differs from PBOOLfalse; existing270 error_handler_finish restores resumed NULL scratch. No handler kernel change. Own Return statement-line/false facts are observed for these one-line bodies, not a new general Return-start-line guard."
+  ],
+  "history_boundary": "Current-body authentication does not establish arbitrary prior callback or retarget history. Actual next store, registrations, effects, owners and trace remain intact; source receipts add no owners.",
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-zero-return-modulo-error-107",
+  "runs": {
+    "native_once": {
+      "report": "native-summary-01.json",
+      "sha256": "217aae21b62eeaa4804132116837abc3472c8f82e58672f0d47e78abc6b27c8e",
+      "cut": "source_only",
+      "originals": 4,
+      "replays": 0,
+      "cap_seconds": 10,
+      "source_credit": 0,
+      "result": "Stable23each+HEAD; exact P/full fatal255 at MOD lines6/8/8/6, no default diagnostic. Buffered H alone does not establish invocation."
+    },
+    "baseline": {
+      "report": "model-first-01/report.json",
+      "sha256": "7c3af907aeeee75c325a692fe3e7b2bbe8f688d941077a4ae70bbc2d0f969c69",
+      "cut": "source_only",
+      "mode": "production SL508",
+      "selection": [
+        1,
+        2
+      ],
+      "other_originals_unrun": 2,
+      "inner_outer_caps_seconds": [
+        90,
+        120
+      ],
+      "source_credit": 0,
+      "result": "Stable535+HEAD/complete collection/aggregate pass=false; both pending-FINAL Unsupported/tool1, actual P/empty PHP stderr/quiet tool stderr/noDIAG/native_match=false. No replay."
+    },
+    "prelaw": {
+      "report": "front-all-01/report.json",
+      "sha256": "082adb3ede1b1f84c39bf7da280e6ba8660500da729ccb5c6d103ea67ee5b05d",
+      "cut": "prelaw",
+      "mode": "fixture SL508",
+      "groups": [
+        8,
+        11
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "front-launch-01.json",
+      "launch_sha256": "0dd65cdd588b7feda6ffb730aad707d6d7d63ce4e98937c87a4890b49e657805",
+      "result": "FIRSTPASS/quiet/exit0/stable576each+HEAD/reaped before law/SOURCE seed. Own raw zero Return/child/read, child line/true and statement line/false; actual PINT0 unwind/result and handled raw steps stay distinct from FALSE and NULL scratch. Captureeps; later expected-capture promotion does not renew this cut."
+    },
+    "source": {
+      "report": "model-final-01/report.json",
+      "sha256": "0f35fafe4d4c146e2d6d836cca1e97324f56c1facf22ac618c29e1405635f6bc",
+      "cut": "runtime",
+      "mode": "production SL508",
+      "originals": 4,
+      "source_credit": 4,
+      "inner_outer_caps_seconds": [
+        90,
+        120
+      ],
+      "result": "FIRSTPOSTLAW4 exact saved-native agreements: php_error/tool0/reasonNone/P/full fatal255/DivisionByZeroError lines6/8/8/6/noDIAG. Complete/pass/quiet/stable543+HEAD/reaped; native4 reused without replay."
+    },
+    "author_lifecycle": {
+      "report": "life-all-01/report.json",
+      "sha256": "9a585dde8e78cc319920bd578019f4bf75c08ddae2bd589f9c64df8c73d30ed2",
+      "cut": "runtime",
+      "mode": "fixture SL508",
+      "groups": [
+        6,
+        7
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "life-launch-01.json",
+      "launch_sha256": "714bfec9906e238e137151cb34a574650ec4058755a87faf8d9fbbb4ced8c521",
+      "result": "FIRSTPASS/quiet/exit0/stable576each+HEAD/reaped. Actual zero returns and reset NULL scratch survive full-store capture, real formal/native-cell retirement, zero budgets, C0/fatal reporting and nonowning Error retirement."
+    },
+    "peer": {
+      "report": "peer-all-01/report.json",
+      "sha256": "4d73038b08936a321ffce85fad99a765a09579fe9ef3755ff03c2c8ed89cb5af",
+      "cut": "ready",
+      "mode": "fixture SL508",
+      "groups": [
+        9,
+        15
+      ],
+      "cap_seconds": 300,
+      "source_credit": 0,
+      "launch_report": "peer-launch-01.json",
+      "launch_sha256": "a420d07885ead889aadd4b358a44c6c7858dd1f99a702ae72b324c0ccbb30cd3",
+      "result": "FIRSTPASS/quiet/exit0/stable577global+3case inputs each+HEAD/reaped; author raw-CLEAR. Actual zero-return/NULL-scratch, INPUT/cursor/store/retirement guards plus nonzero/FALSE/bare/extra tails, child CODEEXPR flag/line and UNIT/BODY refusals. Constructed first-shadow PBOOLfalse read preserves raw zero/SOURCES/CODE but refuses tail; nonowning PINT0 scratch preserves current-call validity/raw same MOD Error but refuses capture. Projections claim no full-state validity or source credit; no new peer budget credit."
+    }
+  },
+  "environment": "Native/source drivers and author front/life outer launches explicitly record C/UTC; all fixture children inherit that environment. Author launches have no additional outer cap beyond the existing per-fixture300-second cap. Peer outer C/UTC and660-second cap are separate.",
+  "ready_bridge": "Runtime, source and authorstate bytes at94a424 are READY39b0 exact. Only Make3 additive rows and the independently authored reviewer fixture were added afterward. Prelaw, first post-law source, author lifecycle and peer checks passed their first evaluations; baseline retains pass=false/source0. No old campaign or native observation was replayed. Fixture groups keep separate source-zero identities without a cumulative unique claim.",
+  "independent_review": "coverage/semantics/output-final-selected-zero-return-modulo-error-review.json",
+  "actual_main_join": {
+    "revision": "86fe272adec96400a781bf1d90f1d388dba4be63",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main45-zero-return-modulo-joined-508-v1/report.json",
+    "sha256": "2d87f1abdb739da04d885c6b6d8cbb8cb7b7bf71f7223b69e933ba95f75c4a51",
+    "mode": "sole actual MAIN24 production SL508",
+    "seconds": 16.14109334209934,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "Bounded actual composition/result CLEAR:456 and new3 READY39b0 exact, exact5 changed paths over3196/177add1del/Make3 additive/no deletion. Saved sole load PASS/true LF/quiet/exit0/no timeout/stable512+HEAD/511argv/fully reaped; all private cuts retain their own identities."
+  },
+  "limits": "Only four new originals gain source credit. Other return values/bodies, strict-FALSE/default-reporting, arbitrary PINT0-producing expressions, wider signatures/handlers/retarget histories, owning operands and wider lifetimes remain partial. All exact holds, one-CV/cross-product limits, OB31 and169/306 partial inventory status remain. Complete PHP core, Rocq interaction trees and BOLA/CRIS verification remain unfinished. No engine bug or intentional divergence is established."
+}
