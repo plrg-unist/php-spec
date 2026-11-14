@@ -904,6 +904,8 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if $compiled_precision(S, (porigin_false)) = (z_precision)
   -- if $string_read_runtime_value(S, porigin_false) = (pvalue)
 def $string_read_runtime_value(S, porigin) = eps -- otherwise
+def $string_read_runtime_cast_quiet(pcast, PNULL) = true
+  -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT]
 def $string_read_runtime_cast_quiet(pcast, PBOOL b) = true
   -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT]
 def $string_read_runtime_cast_quiet(pcast, PINT i) = true

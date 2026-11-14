@@ -79,10 +79,12 @@ def conditions(program, path, index):
                        '$string_read_runtime_value(' + state + ', porigin_operator) = eps',
                        '$string_read_request_base_saved(' + state + ', pstringread) = eps']
     if index == 0:
-        for value in ('PNULL', 'PUNDEFINED', 'PSTRING ($ptascii("1"))', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))',
+        for value in ('PUNDEFINED', 'PSTRING ($ptascii("1"))', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("1"))',
                       'PARRAY 0', 'POBJECT 0', 'PINT 9223372036854775808', 'PINT $(-9223372036854775809)'):
             for operator in ('CASTBOOL', 'CASTINT', 'CASTFLOAT'):
                 guards += ['~$string_read_runtime_cast_quiet(' + operator + ', ' + value + ')']
+        for operator in ('CASTBOOL', 'CASTINT', 'CASTFLOAT'):
+            guards += ['$string_read_runtime_cast_quiet(' + operator + ', PNULL)']
         for operator in ('CASTSTRING', 'CASTARRAY', 'CASTOBJECT'):
             guards += ['~$string_read_runtime_cast_quiet(' + operator + ', PBOOL true)']
         for number, (name, fixture, original, target, node, expected) in enumerate(CONTROLS):
