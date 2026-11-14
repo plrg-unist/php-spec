@@ -1,0 +1,60 @@
+[
+  {
+    "id": "nonnull-float-int-return-coerces-request-before-private-notice",
+    "source": "<?php\nnamespace DistinctBuiltinUnionIntReturn64 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(sTrInG $saved):float|InT{echo 'M:',(int)($saved==='17'),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('DistinctBuiltinUnionIntReturn64\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "string",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "e06eb272c2b72086d1a6621fc92e986478dd1277ebc60aee02798b4c669193fd",
+    "return_kind": "int",
+    "return_members": [
+      "float",
+      "int"
+    ],
+    "argument_count": 1,
+    "consumer_index": 0,
+    "formal_kinds": [
+      "string"
+    ],
+    "formal_nullable": [
+      false
+    ],
+    "formal_byrefs": [
+      false
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;"
+  },
+  {
+    "id": "nonnull-bool-string-return-coerces-int-and-private-byte-cow",
+    "source": "<?php\nnamespace DistinctBuiltinUnionStringReturn64 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT $saved,?BoOl &$changed):bool|sTrInG{echo 'M:',(int)($saved===37),':',(int)($changed===null),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===null),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){$local=$value;$value[0]='X';echo 'F:',$prefix,':',(int)($local==='37'),':',(int)($value==='X7'),';';$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=null;$ySnapshot=$y;$yAlias=&$y;set_error_handler('DistinctBuiltinUnionStringReturn64\\\\h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',(int)($r==='X7'),':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===null),';';$r[1]='Y';echo 'D:',(int)($r==='XY'),':',$yAlias,';';$r=47;unset($y);$yAlias=53;echo 'P:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===null),';';\n}\n",
+    "formal_kinds": [
+      "int",
+      "bool"
+    ],
+    "formal_nullable": [
+      false,
+      true
+    ],
+    "formal_byrefs": [
+      false,
+      true
+    ],
+    "caller_strict": false,
+    "return_members": [
+      "bool",
+      "string"
+    ],
+    "argument_count": 2,
+    "consumer_index": 1,
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:1:1;R:1:31:37:1:1;D:1:31;P:47:37:53:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "bb3ec8c93b9e153b3b89d67a1eb1719729d1e9a9aed880598c38e9e71458a242",
+    "observed_notice_line": 8,
+    "native_stdout": "S;M:1:1:1:1;H:8:0:body;F:29:1:1;R:1:31:37:1:1;D:1:31;P:47:37:53:1:1;"
+  }
+]
