@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-nonnull-coalesce-wrapper-raw-phases",
+    "source": "<?php\nfunction rawNonnullCoalesce268($a = ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))) ?? Missing268), $b = (!(+(-((float)(+(E_WARNING === E_ERROR))))) ?? Missing268), $c = ((+(-((float)(+(E_WARNING === E_ERROR))))) ?? Missing268), $d = (-(+(-((float)(+(E_WARNING === E_ERROR))))) ?? Missing268), $e = ((int)(+(-((float)(+(E_WARNING === E_ERROR))))) ?? Missing268)) {\n    echo 'raw:', $a === false, ':', $b === true, ':', $c === 0.0, ':', $d === 0.0, ':', $e === 0, '|';\n}\nrawNonnullCoalesce268();\nrawNonnullCoalesce268();\n",
+    "expected_model": "normal",
+    "purpose": "Nonnull actual PBOOL/PINT/PFLOAT left values survive cold/warm caches unchanged, including false and both signed zeros; unresolved right names are skipped.",
+    "expected_normal_stdout": "raw:1:1:1:1:1|raw:1:1:1:1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "c86498a615af8460906915ef4c8a1c94d03341c85b8584dd355a35a70641f0c4"
+  },
+  {
+    "id": "deferred-nonnull-coalesce-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NonnullCoalesce268;\nuse const E_WARNING as Base268;\nuse const E_ERROR as One268;\nfunction warning268($errno, $message, $file, $line) {\n    global $x268;\n    echo 'warning:', $message, '|';\n    defaults268(2);\n    $x268 = 3.5;\n}\nfunction defaults268(int $first, int &$identity = (int)(!(+(-((float)(+(Base268 === One268))))) ?? Missing268), int &$negated = (int)((bool)(+(-((float)(+(Base268 === One268))))) ?? Missing268), int $last = 7) {\n    echo 'body:', $first, ':', $identity, ':', $negated, ':', $last, '|';\n    $identity = 9;\n    $negated = 10;\n}\n\\set_error_handler('NonnullCoalesce268\\\\warning268');\n$x268 = 1.5;\n$last268 = 8;\ndefaults268(last: $last268, first: $x268);\necho 'outer:x=', $x268, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Nonnull false/true results feed INT parents, imported aliases, two BYREF named holes and first-CV Warning reentry with raw PINT1/0 caches.",
+    "model_timeout_seconds": 360,
+    "source_sha256": "7d6dd333c906b0eae9bafda4be14c9897cbfa00d8e2ed0cd682f3c5c3a82605d"
+  },
+  {
+    "id": "deferred-nonnull-coalesce-wrapper-null-left-control",
+    "source": "<?php\nfunction ordinaryNullCoalesce268(int &$value = (int)(null ?? (int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryNullCoalesce268();\n",
+    "expected_model": "normal",
+    "purpose": "The existing ordinary null-left redirected path remains outside the new emitted nonnull-left receipt; observe its actual source outcome.",
+    "model_timeout_seconds": 360,
+    "source_sha256": "f719fa06c2e6e612bb880fbd2559a02fb5eaabae53154bf39ab5146bbb3a7399"
+  }
+]
