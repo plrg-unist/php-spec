@@ -1,0 +1,91 @@
+{
+  "feature": "ENUM236: quiet Numeric-only signed64 modulo and shift default parents",
+  "target": "PHP 8.5.10 CLI,NTS,signed64;sole project-local .tools/php/bin/php;C/UTC baseline profile",
+  "status": "Bounded source/test slice integrated with independent whole-seven-file and actual-composition FULLCLEAR. Full core remains unfinished.",
+  "implementation": {
+    "donor": "29fab388b4be5eb1019ae3da1cafdb51fed8ee59",
+    "runtime_revision": "18f69fd13f8c99439492a5741cfc7bc3547307fe",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "Add only MODULO/SHIFTLEFT/SHIFTRIGHT to the existing Numeric NINT binary dispatcher. Whole default_in=EPS,proper typed NINT children,signed64 inputs/result and IRESULT guards remain exact. Existing INT/bitwise paths and primitive/compiler/state/cache/ENV/ownership/native code remain unchanged.",
+    "preserved": "Exact raw source,declaration ENV,resolved names,complete whole-tree no-DIM/name bindings,selected-child proof,Shared-cache and ordinary receive/owner authority remain. INTZERO/NEGSHIFT,FLOAT/string/coercion and effectful E_STRICT stay outside this quiet value domain."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_compile_params and zend_const_expr_to_zval preserve deferred constant AST defaults",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner evaluates actual binary children before get_binary_op dispatch",
+      "Zend/zend_operators.c: mod_function preserves dividend remainder sign,handles MIN%-1=0 and errors on divisor0;shift_left_function uses unsigned wrapping and count>=64 zero;shift_right_function preserves signed right shifts and count>=64 sign;both reject negative counts"
+    ],
+    "reference_kernels": [
+      "spec/semantics/54-binary-operators.watsup: integer_binary MODULO/SHIFTLEFT/SHIFTRIGHT",
+      "spec/semantics/01-integer.watsup: long_mod,long_shl,long_shr;IRESULT versus INTZERO/NEGSHIFT"
+    ]
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-integer-operator-default-reception-236",
+  "native_once": {
+    "revision": "19ebbe068066d4bbb6590545c2636a0b01b06498",
+    "report": "native-v1/report.json",
+    "sha256": "e51742874180c4ce30219a3a67fd671b9cbb9a9b537d48d3746b0c52697d9f2a",
+    "fresh_originals": 6,
+    "reuse": "Original bytes/path/cwd/profile/streams/status are reused by both model cuts;no native replay. Controls retain actual caught Modulo by zero/negative-shift errors and the effectful E_STRICT handler;these are not modeled agreements."
+  },
+  "baseline": {
+    "revision": "19ebbe068066d4bbb6590545c2636a0b01b06498",
+    "report": "current-v1/report.json",
+    "sha256": "d8c02ae7c90fb4a1f8bd6ba9b8206f2dc065a59c3cbdee0436070337953d9568",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 26.744673883076757,
+    "result": "All six originals are explicit Unsupported at handler ingress;zero native-agreement credit."
+  },
+  "source_evidence": {
+    "revision": "18f69fd13f8c99439492a5741cfc7bc3547307fe",
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "2f92eb2885c34256fdc2a4de40e134ce31fcc92a05a78986331fa6a4a41a3ed3",
+    "mode": "production SL_mode,508 modules",
+    "exact_normal_agreements": 2,
+    "unsupported_controls": 4,
+    "driver_seconds": 77.31017910107039,
+    "scope": "Cold/warm defaults retain remainder7,MAX<<1=-2,MIN>>63=-1,count64 left0/right-1,MIN%-1=0,negative-odd -3>>1=-2 and nonnull modulo-zero. Imported/FQN modulo/shift parents retain7/-2/selected32/zero0 through named holes[1,2,3,4],last8 and warning reentry. Divisor0,negative shift count,E_STRICT and skipped-DIM controls stay Unsupported0."
+  },
+  "state_evidence": [
+    {
+      "revision": "ec564b04796b177c406022a1abc3e9d66c03208b",
+      "report": "author-v1/closure-call-protocol-1nefi69p/report.json",
+      "sha256": "a1e4aa65a0565af2ba69c9e8ed28394d98f7b830327b51dd01125a13e2e094d2",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 219,
+      "body": 213,
+      "setup": 6,
+      "driver_seconds": 45.86978335096501,
+      "scope": "Authentic cold DEFAULT_BIND2,all eight raw values/caches,proper NINT children,source/ENV/name/value/tag/range controls,fresh unmarked BYREF -2 local,one-step resume,warm cache preservation and real local retirement. Separate old literal paths and peroperator FLOAT/string/Boolean/null/out-of-range/overflow/error-result refusals have source0."
+    },
+    {
+      "revision": "05c592cc806b2bd9491f6b66cd17e1017580b952",
+      "report": "peer-v1/closure-call-protocol-wzb4awb6/report.json",
+      "sha256": "2b6aa893119b1c20f7dbea8f066c2c7b751a6982690c56c829ea2940047b0c1c",
+      "mode": "fixture SL_mode,508 modules",
+      "assertions": 236,
+      "body": 230,
+      "setup": 6,
+      "driver_seconds": 61.08500976487994,
+      "scope": "Independent authentic named holes[1,2,3,4],nested proper children,raw warmed caches7/-2/32/0,privatefirst/global split,last8 versus default7,source/ENV/name/cache/HOLES/readiness/no-DIM controls,budgets,four receives and real retirement. Separate signed remainder/wrap/count64/identity and error/coercion/refusal controls have source0."
+    }
+  ],
+  "state_accounting": "Two fixtures at separate revisions pass first evaluation:455 physical conditions=443 body+12 setup,source0. Focused oldhelper search found no affected Numeric-only NINT MOD/shift EPS expectation;no old campaign reruns or promotions.",
+  "validation_contract": "Source360s/100000steps and fixture300s retain outer driver600s. Passing cuts have stable HEAD/inputs,quiet tool stderr,exit0 and fully reaped jobs. Unsupported/failures/timeouts/unrun checks retain zero credit;metadata does not renew evidence.",
+  "review": "Independent recover5_enum_shift_review FULLCLEAR covers source,law,all tests,three exact Make entries and bounded family paragraph. Author reads peer230body. Both read actual MAIN05b1676ba composition:complete519 and four test/source files donor-exact;Make3 unique/contiguous/ordered and family paragraph exact. Parent COMP290 module382 only authenticates child GET property/class storage and has no producer in these Numeric function-default sources;shared compiler/name/cache/storage/ownership interfaces remain unchanged.",
+  "joined_load": {
+    "revision": "05b1676ba138f2b81d9a247aead833e407661f09",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main42-parent-slot290-enum236-joined-508-v1/report.json",
+    "sha256": "ab0fef624a30423ac09c4a7728f26a72e8db032bef1f8916a55e423c9af0f611",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.831950096879154,
+    "result": "true plus LF;quiet,stable inputs/HEAD,exit0,fully reaped;sole combined COMP290/Numeric modulo-shift default interface load",
+    "source_agreement_credit": 0
+  },
+  "remaining": "Other startup/default producers,quiet Numeric POWER,coercions,effectful E_STRICT,unresolved used names/namespaces,pruned syntax and wider entries/owners/lifetimes remain partial. Error-result handling is outside this quiet certificate. Exact holds and inventory169/306/0 constructors closed/1 obligation closed remain. No full-core or equivalence claim."
+}

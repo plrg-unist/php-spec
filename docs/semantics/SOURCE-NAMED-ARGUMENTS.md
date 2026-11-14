@@ -138,6 +138,13 @@ outside copy through producer/private COW, while named prefix references follow
 current handler writes. Strict bool|null rejects INT before body or Notice.
 Existing return/ownership guards remain; broader unions and lifetimes stay partial.
 
+The [distinct-union review](../../coverage/semantics/cv-distinct-builtin-union-formal-producer-reference-notice-review.json)
+admits exactly two distinct array/int/float/bool/string/null formal members.
+Singleton array|string reception retains dynamic outside copies through producer
+and private COW; strict string|array rejects INT before body or Notice. Numeric
+classification, STRING preference and ordinary alias entry conversion retain the
+existing caller-strict, return/frame and ownership bounds. Larger unions remain partial.
+
 The [root REQUEST-string review](../../coverage/semantics/request-string-return-producer-cv-reference-notice-review.json)
 checks preserved returned/prior-sent snapshots, independent byte writes and
 producer array-formal/table retirement. The later

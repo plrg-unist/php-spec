@@ -1,0 +1,84 @@
+{
+  "feature": "literal-null-full-ternary-interned-base-initial-raw-leading-key",
+  "status": "bounded implemented, independently reviewed and validated; full core remains partial",
+  "scope": "A full ternary with a simple-name literal null condition and two raw string literal arms supplies its false-arm non-NUL INTERNED base before an ordinary or initial-reference raw leading-integer CV key raises a Warning. A returning handler may replace the key or rebind its current name; the captured header/index supplies the original byte. Raw null and NuLl spellings authenticate the same NULL condition.",
+  "target": "PHP 8.5.10 CLI NTS signed64; sole project-local .tools/php/bin/php oracle; tests/semantics/profile.json; production SL508; full pstate155",
+  "reviewed_author_head": "8683554ad5f999508659bb10cca85ecb8a27b289",
+  "reviewed_peer_head": "f0c6d6219708084aeee0e3aee635d6d2f243f19e",
+  "implementation_sha256": "f6358ba45a2ac7bedeb521f5d3b6388f71a3eb47d4a8b6d1c0e88be22e70083d",
+  "source_basis": "Pinned vendor/php-src/Zend/zend_compile.c zend_compile_const/zend_try_ct_eval_const substitute special NULL; zend_compile_conditional emits JMPZ and QM_ASSIGN. Zend/zend_operators.h i_zend_is_true treats NULL as false. Zend/zend_execute.c zend_fetch_dimension_address_read fixes the string header and leading integer before Warning user code.",
+  "implementation": "One local15-line425 raw_known_base arm authenticates raw NExprConstFetch with a simple NName casefolded to null, exact compiled PNULL condition, both raw string arms and indexed compiled reads/INTERNED identities, parent compiledEPS and false-arm bytes. Existing raw capture/saved-index, source and ownership guards remain. No broader constant lookup, generic233, provider/root, schema, REQUEST/NUL, abrupt or held-boundary change.",
+  "evidence": {
+    "native_and_unchanged_baseline": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-author-20261114/baseline/report.json",
+      "sha256": "36d1a35451c0d588700774c084507e8be1bbc95e7611381ecc4c4bee9c651a0b",
+      "tested_revision": "06225e71bb208e059daafc0901ca22b4796a68bb",
+      "passed": true,
+      "source_credit": 0,
+      "native_originals": 2,
+      "unchanged_unsupported_outcomes": 2
+    },
+    "author_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-author-20261114/prelaw-a-sl-v1/report.json",
+      "sha256": "cceb9f02634a6881d73f09ba66a122bd7d79e767923551cd43e97c20f0839f8a",
+      "tested_revision": "06225e71bb208e059daafc0901ca22b4796a68bb",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 59
+    },
+    "independent_prelaw_frontier": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-peer-20261114/prelaw-b-sl-v1/report.json",
+      "sha256": "3fbd5aa9791538133dbe7fba9d657f01d2ce69d89401fd10736c2cec6184c06c",
+      "tested_revision": "bf1a8ca3c1d2fedc80ffad1be11d1797d23c3936",
+      "passed": true,
+      "source_credit": 0,
+      "conditions": 62
+    },
+    "source_agreements": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-author-20261114/source-v1/report.json",
+      "sha256": "0dc9697773074eb902f785cd71b1a2cab27bc25491c8f81e68c217a4bc4f6bc6",
+      "tested_revision": "8683554ad5f999508659bb10cca85ecb8a27b289",
+      "passed": true,
+      "source_credit": 2,
+      "agreements": 2,
+      "native_reused_once": true
+    },
+    "author_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-author-20261114/author-state-sl-v1/report.json",
+      "sha256": "7573b3984599ff5332059d99a03af28d1311819ca6257ff5ab3ae53851d3e7c2",
+      "tested_revision": "8683554ad5f999508659bb10cca85ecb8a27b289",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 174,
+      "derived_conditions": 70
+    },
+    "independent_fixture": {
+      "report": "../php-spec-evidence-archive/string-offset-null-conditional-base-initial-raw-leading-key-peer-20261114/state-b-v1/report.json",
+      "sha256": "dcb0ed0f872abe6a29b3dfd9a8837802474fba6fb5d12110c616414f151b4720",
+      "tested_revision": "f0c6d6219708084aeee0e3aee635d6d2f243f19e",
+      "passed": true,
+      "source_credit": 0,
+      "premises": 201,
+      "derived_conditions": 77
+    }
+  },
+  "combined_current_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main42-null-condition-joined-508-v1/report.json",
+    "sha256": "11f7095986b96778127c8eb73378acec94273aad88c208725c81cafebbdb43b2",
+    "tested_revision": "8c719050e30d5670f6ebe702cae752f443c41694",
+    "passed": true,
+    "source_credit": 0,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.13996399892494,
+    "quiet_true_lf": true,
+    "stable": true,
+    "fully_reaped": true
+  },
+  "validation": "Saved native observations are reused once for two exact production-SL source agreements. Separate author174/70-derived and independent201/77-derived fixture-SL cuts retain source0. Genuine full155 prelaw captures retain A19 changed/136 initial fields and roots[1,0], B20 changed/135 initial fields and roots[1,0,0], with no edges or debts. Lower/mixed-case simple names, exact PNULL type, both arms, false-arm selection, parent-fold refusal, ordinary/current versus initial-reference rebinding, unchanged owners, dispatch/resume/output and budgets are checked. OTHER-name and fully-qualified-name parent/child occurrences with matching PNULL pools are forged-source refusal controls only and retain source0. Source60/outer80/compiler120/state180 caps remain; all successful runs are quiet, stable and fully reaped. No unique aggregate or historical renewal is claimed.",
+  "review": "Independent whole five nonMake files and two Make commands CONTENT/FULLCLEAR; saved-native source2 and author174 FULLCLEAR; author reciprocal independent201 and genuine prelaw full155 review CLEAR. Whole READY and independent FULLCLEAR were sent directly to MAIN42 before this ledger. Canonical current composition is maintained by MAIN, separately from these private cuts.",
+  "remaining": "Shorthand, qualified/other constant names, computed and wider arm/base producers, selected NUL or REQUEST bases, abrupt paths and broader handlers/ownership/lifetimes remain partial. All standing named PROGRESS holds remain unchanged; no constructor or obligation closes.",
+  "recovery": "Raw records are in the external archives linked above. Tracked cases/renderers and the two Makefile null-conditional-base-initial-raw-leading-key selections regenerate checked fixtures; external evidence is not an operational build dependency."
+}

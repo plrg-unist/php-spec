@@ -1,0 +1,93 @@
+{
+  "feature": "ENUM237: quiet Numeric-only signed64 integer-result power default parents",
+  "target": "PHP 8.5.10 CLI,NTS,signed64;sole project-local .tools/php/bin/php;C/UTC baseline profile",
+  "status": "Bounded source/test slice integrated with independent whole-seven-file and actual-composition FULLCLEAR. Full core remains unfinished.",
+  "implementation": {
+    "donor": "8d391ad655a8d0167396270dd69b761886b90f36",
+    "runtime_revision": "7e44ae0b594375e56121365c11a5630bdf96818e",
+    "source": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "change": "Add only a Numeric POWER arm with whole default_in=EPS,proper typed NINT children,signed64 inputs/result,nonnegative exponent and power_prepare=POWERDONE(NINT i)false. Existing INT path,power kernel,compiler,state,cache,ENV,ownership and native code remain unchanged.",
+    "preserved": "Exact raw source,declaration ENV,resolved names,complete whole-tree no-DIM/name bindings,selected-child proof,Shared-cache and ordinary receive/owner authority remain. NFLOAT/GENERAL results,negative exponents,FLOAT/string/Boolean/null coercion and effectful E_STRICT stay outside this quiet value domain."
+  },
+  "engine_authority": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c: zend_compile_params disables constant substitution for defaults before zend_const_expr_to_zval,retaining deferred constant ASTs",
+      "Zend/zend_ast.c: zend_ast_evaluate_inner evaluates actual binary children before get_binary_op dispatch",
+      "Zend/zend_operators.c: pow_function_base uses integer multiplication/squaring for nonnegative LONG exponents,returns LONG1 for exponent0/LONG0 for positive powers of zero,and promotes immediately on multiplication overflow;negative exponents and DOUBLE children use safe_pow"
+    ],
+    "reference_kernel": "spec/semantics/06-power-prepare.watsup: power_int_loop and power_prepare retain integer/float promotion and POWERDONE versus POWERGENERAL;the older519 default_in POWER rule remains disjoint through absent whole authority"
+  },
+  "raw_root": "../php-spec-evidence-archive/enum-numeric-power-default-reception-237",
+  "runtime_record": {
+    "report": "runtime.json",
+    "sha256": "e3b3ebddef6435144c9237579de8566ccb93bdd674b934981b71ffe06149f3f0",
+    "profile": "tests/semantics/profile.json"
+  },
+  "native_once": {
+    "revision": "00bb27fb74b543fd2c4f20e688041bebf812ef69",
+    "report": "native-v1/report.json",
+    "sha256": "b8be295468d81311e1bc3a6eb8b598c5dc20f74d4051a06d6705c4ba4270f938",
+    "fresh_originals": 6,
+    "reuse": "Original bytes/path/cwd/profile/streams/status are reused by both model cuts;no native replay. Controls retain raw FLOAT overflow TypeError,negative-exponent precision conversion,E_STRICT diagnostic and skipped-DIM observations;these are not modeled agreements."
+  },
+  "baseline": {
+    "revision": "00bb27fb74b543fd2c4f20e688041bebf812ef69",
+    "report": "current-v1/report.json",
+    "sha256": "740395f8e7d36dfc2e7c499638852c1b87154b5a4fa7737a5989d0a01444f0c6",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 26.94560202304274,
+    "result": "All six originals are explicit Unsupported at handler ingress;zero native-agreement credit."
+  },
+  "source_evidence": {
+    "revision": "7e44ae0b594375e56121365c11a5630bdf96818e",
+    "report": "source-postlaw-v1/report.json",
+    "sha256": "c018f62b52df51f09991d35b69e55270213a2b282ab7525dce20ca368a631630",
+    "mode": "production SL_mode,508 modules",
+    "driver_seconds": 71.34342322591692,
+    "exact_normal_agreements": 2,
+    "unsupported_controls": 4,
+    "scope": "Cold/warm defaults retain exponent-zero1,(-2)**63=MIN,MIN/MAX**1,(-1)**MAX,nested16 and nonnull power-zero. Imported/FQN nested powers retain4/4/selectedMIN/zero0 through named holes[1,2,3,4],last8 and warning reentry. Overflow NFLOAT,negative exponent,E_STRICT and skipped-DIM controls stay Unsupported0."
+  },
+  "state_evidence": [
+    {
+      "revision": "eac2708ef02202528871c86cfb7cd18d4906fd4b",
+      "report": "author-v1/closure-call-protocol-fcx41du6/report.json",
+      "sha256": "fa3a4457a9f247e18b41e38913d569a8f34ae9f860254cbfce9d64bdf403ae0c",
+      "mode": "fixture SL_mode,508 modules",
+      "driver_seconds": 44.16819516685791,
+      "assertions": 188,
+      "body": 182,
+      "setup": 6,
+      "scope": "Authentic cold DEFAULT_BIND2,all seven values/caches,proper NINT children and integer-result boundaries,source/ENV/name/value/tag/range controls,fresh unmarked BYREF MIN local,one-step resume,warm cache preservation and real local retirement. Separate old literal path and overflow/negative/FLOAT/string/E_STRICT/out-of-range refusals have source0."
+    },
+    {
+      "revision": "fc0a008bc0e5927892653d4116ddb07befdb29e4",
+      "report": "peer-v1/closure-call-protocol-t6vvte7x/report.json",
+      "sha256": "2075e755e7e01679f99b530272a61b824f585332cad7ffaeea0b233be42f9b58",
+      "mode": "fixture SL_mode,508 modules",
+      "driver_seconds": 52.448909213067964,
+      "assertions": 240,
+      "body": 234,
+      "setup": 6,
+      "scope": "Independent authentic named holes[1,2,3,4],proper nested children,true exponent-zero selection,raw warmed caches4/4/MIN/0,privatefirst/global split,last8 versus default7,source/ENV/name/cache/HOLES/readiness/no-DIM controls,budgets,four receives and real retirement. Separate signed boundaries,0**0,negative exponent,overflow and coercion/effect refusals have source0."
+    }
+  ],
+  "state_accounting": "Author188 and peer240 are separate first-pass source-derived fixture cuts,each source0. Focused old-helper search found no affected Numeric-only POWER EPS expectation;no old campaign reruns or promotions.",
+  "validation_contract": "Source360s/100000steps and fixture300s retain outer driver600s. Passing cuts have stable HEAD/inputs,quiet tool stderr,exit0 and fully reaped jobs. No failures,timeouts or unrun checks arose in these cuts;Unsupported controls retain zero agreement. Metadata does not renew evidence.",
+  "review": "Independent recover5_enum_shift_review FULLCLEAR covers source,law,all tests,three exact Make entries and bounded family paragraph. Author reads peer234body. Both read actual MAINc44ea668ba composition:complete519 and four test/source files donor-exact;Make3 unique/contiguous/ordered and family paragraph exact. Parent OB103 module456 only changes ob_object_division_error_capture notice/eligible-mask guards with MOD-zero/selected-output-handler/FINAL authority;no producer occurs in these quiet POWER/default originals. Shared compiler/name/cache/storage/ownership interfaces remain unchanged.",
+  "joined_load": {
+    "revision": "c44ea668ba75186e22b7ef8d2d47a2e085da2aaf",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main42-enum237-joined-508-v1/report.json",
+    "sha256": "a95ddf486c014d8ee5f266d5ff04e4e32872f1550c742f9faeea29230933d438",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 15.531141875078902,
+    "result": "true plus LF;quiet,stable inputs/HEAD,exit0,fully reaped;sole canonical combined interface load",
+    "source_agreement_credit": 0
+  },
+  "remaining": "Other startup/default producers,FLOAT/GENERAL powers,negative exponents,coercions,effectful E_STRICT,unresolved used names/namespaces,pruned syntax and wider entries/owners/lifetimes remain partial. Exact holds and inventory169/306/0 constructors closed/1 obligation closed remain. No full-core or equivalence claim."
+}
