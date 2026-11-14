@@ -71,9 +71,10 @@ def $srgh_explicit(metadataEntry :: metadataEntry_tail*) = metadataEntry :: $srg
 '''
 
 
-def fields(fixture, source, form):
+def fields(fixture, source, form, body='identifier'):
     initial = 'PINT 17' if form == 'initialized' else 'PNULL'
     namespace = 'Ns292ShortReference' + form.title() + 'Peer' + chr(92)
+    name_node = 'NScalarString' if body == 'literal' else 'NIdentifier'
     checks = [
         'U = ' + fixture, 'S_start = $php_run(U,0,' + quoted(str(source)) + ')',
         'S_front = $srgh_seek(S_start,5,0,30000)', '$srgh_phase(S_front,5,0)',
@@ -104,7 +105,7 @@ def fields(fixture, source, form):
         '$base64(text_pad) = $ptascii("pad")',
         'phpType38_get = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) phpType11_get (SEQUENCE eps) expression_get metadata_get',
         '$hook_parameter_facts(metadata_get) = [false]',
-        'expression_get = NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_field) metadata_field) metadata_expression',
+        'expression_get = NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (' + name_node + ' (BYTES text_field) metadata_field) metadata_expression',
         '$base64(text_this) = $ptascii("this")', '$base64(text_field) = $ptascii("pad")',
         '$origin_node(S_front.SOURCES,PORIGIN n_source pfunction_get.BODY) = (expression_get)',
         '$source_line(metadata_get) = 23', '$source_line(metadata_expression) = 24',
@@ -282,13 +283,22 @@ def fields(fixture, source, form):
         '~$reference_arrow_boundary(S_hookvalue,ppropertyhook.HOOK,24)',
         '~$arrow_context(S_hookvalue)',
     ]
-    for label, body, metadata in (
+    body_controls = [
         ('param', 'expression_get', '([MhookParameterList true])'),
-        ('otherfield', 'NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES "b3RoZXI=") metadata_field) metadata_expression', 'metadata_get'),
+        ('otherfield', 'NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (' + name_node + ' (BYTES "b3RoZXI=") metadata_field) metadata_expression', 'metadata_get'),
         ('nested', 'NExprArrowFunction (SEQUENCE eps) (BOOLEAN false) (BOOLEAN false) (SEQUENCE eps) ABSENT expression_get eps', 'metadata_get'),
-    ):
+    ]
+    if body == 'literal':
+        body_controls += [
+            ('casefield', 'NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarString (BYTES "UGFk") metadata_field) metadata_expression', 'metadata_get'),
+            ('dynamicfield', 'NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NExprVariable (BYTES "ZmllbGQ=") metadata_field) metadata_expression', 'metadata_get'),
+            ('integerfield', 'NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarInt (INTEGER 0) metadata_field) metadata_expression', 'metadata_get'),
+            ('nullsafe', 'NExprNullsafePropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarString (BYTES text_field) metadata_field) metadata_expression', 'metadata_get'),
+            ('otherreceiver', 'NExprPropertyFetch (NExprVariable (BYTES "b3RoZXI=") metadata_this) (NScalarString (BYTES text_field) metadata_field) metadata_expression', 'metadata_get'),
+        ]
+    for label, body_control, metadata in body_controls:
         checks += [
-            f'phpType38_{label} = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) phpType11_get (SEQUENCE eps) ({body}) {metadata}',
+            f'phpType38_{label} = NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) phpType11_get (SEQUENCE eps) ({body_control}) {metadata}',
             f'statement_{label} = NStmtProperty (SEQUENCE eps) (INTEGER 1) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_pad) metadata_pad) phpType5_default metadata_item])) (SEQUENCE ([phpType38_{label}])) metadata_group',
             f'S_{label} = S_return[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_group statement_{label}) :: pcunit.OCCURRENCES]]]',
             f'~$property_hook_reference_decl(S_{label},ppropertydesc_pad)',
@@ -313,9 +323,11 @@ def fields(fixture, source, form):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--form', required=True, choices=['initialized', 'null'])
+    parser.add_argument('--body', choices=['identifier', 'literal'], default='identifier')
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
-    source = SOURCES / ('short-reference-' + args.form + '-shared.php')
+    sources = SOURCES if args.body == 'identifier' else SOURCES.with_name('parentless_literal_short_reference_get_hook_review')
+    source = sources / ('short-reference-' + args.form + '-shared.php')
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     paths = [Path(__file__), source, *modules, *(ROOT / p for p in (
@@ -325,7 +337,7 @@ def main():
         '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
     before = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form,
+    report = {'head': head, 'inputs': before, 'module_count': len(modules), 'form': args.form, 'body': args.body,
               'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'),
@@ -338,7 +350,7 @@ def main():
         finally:
             try: adapter.close()
             finally: frontend.close()
-        checks = fields(checked['fixture'], source, args.form); report['premises'] = len(checks)
+        checks = fields(checked['fixture'], source, args.form, args.body); report['premises'] = len(checks)
         (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
         (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n'
                                            + ''.join('  -- if ' + check + '\n' for check in checks))

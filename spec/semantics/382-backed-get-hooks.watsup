@@ -44,6 +44,7 @@ def $hook_body_backed(phpType39, ptbytes) = false -- otherwise
 ;; This short reference producer returns only its actual literal backing field.
 dec $hook_short_reference_body(expression, ptbytes) : bool
 def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NIdentifier (BYTES text_name) metadata_name) metadata, ptbytes) = ($base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes)
+def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarString (BYTES text_name) metadata_name) metadata, ptbytes) = ($base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes)
 def $hook_short_reference_body(expression, ptbytes) = false -- otherwise
 
 dec $hook_name(ptbytes) : ptbytes
