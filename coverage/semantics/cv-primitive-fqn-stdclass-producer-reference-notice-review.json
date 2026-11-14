@@ -1,0 +1,87 @@
+{
+  "milestone": "REF81",
+  "target": "PHP8.5.10 CLI NTS64; vendored engine34308a6666b2d489c509541ea9befea9e2b42348; ordinary profile tests/semantics/profile.json",
+  "scope": "Completed ordinary-CV producer required FORMAL/RETURN unions with3..7 ordered members: exactly one raw fully qualified stdClass and2..6 distinct array/int/float/bool/string/null/false/true members, with one Boolean kind. Exact raw/normalized order/count and decoded class bytes before stdclass casefolding remain required. Actual RECEIVE/RETURN, fixed required/default/BYREF, source, quiet STDINSTANCE payload, frame/private-cell, owner and lifetime bounds remain unchanged.",
+  "implementation": "Eleven-line ordered stdClass/primitive fold in module207, selected only by OR at the existing >2 FORMAL/RETURN predicates. The older primitive fold and REF80 exact-two-member rules remain literal; no runtime/ownership change.",
+  "engine_basis": [
+    "Zend/zend_compile.c:zend_compile_typename_ex (ordered class/primitive unions and redundant object rejection)",
+    "Zend/zend_execute.c:zend_check_type, zend_check_type_slow (exact primitive/class matching before scalar fallback)",
+    "Zend/zend_execute.c:zend_verify_scalar_type_hint, zend_verify_weak_scalar_type_hint (strict integer-to-float exception, weak preference and exact literal Booleans)"
+  ],
+  "source_selection": {
+    "base": "fb3df5a17366a60e41135270b45535a25ddcefd9",
+    "donor": "eb7d25b3752550d8a6cf781c0d96dbfaff649a51",
+    "tree": "741d8b7ffe455e62eb5a4e2b6b265905f4d0177f",
+    "selection": "Only exact9-file delta: Makefile, module207, author3/peer3/controller with cv_primitive_fqn_stdclass_producer_reference_notice prefix. Operational canonical57/62 helpers excluded."
+  },
+  "evidence_base": "../php-spec-evidence-archive/cv-primitive-fqn-stdclass-producer-reference-notice-81",
+  "checks": [
+    {
+      "report": "author/notice-native-v1/report.json",
+      "sha256": "0014a8a60bb4cc098575b32f09db7b9f0381d873d1001c178cd06622527fa106",
+      "revision": "c7d83466e",
+      "result": "native4 once: object/array max7 and NULL/TRUE originals, each Notice line8; source credit0"
+    },
+    {
+      "report": "peer/notice-native-v1/report.json",
+      "sha256": "fc6fc77b9df9e5c77526a8fac6be9ef38a4ee6b3d927be5cd202fa1cb89ca948",
+      "revision": "6a05642b7",
+      "result": "native4 once: Notice2 with numeric REQUEST17/17.5 and exact STRING17, RECEIVE1, RETURN1; source credit0"
+    },
+    {
+      "report": "author/prelaw-front-v1/report.json",
+      "sha256": "45a33d170908cfc2ea77109053c85460595098ea4b7ccf4ddb36f526c4997935",
+      "revision": "34d74819c76c32c92ffe2c8d03c9460acd335e4e",
+      "result": "genuine prelaw201 reached/0 derived, fixture-SL507,29.7758s; source credit0"
+    },
+    {
+      "report": "peer/prelaw-front-v1/report.json",
+      "sha256": "6765b8c66572a5ebbf67fbaee2970d7a8bc2c6ae26e7778947b6738d3ce0ec42",
+      "revision": "94356f9f49337119db3076505c30f50480b7c4e5",
+      "result": "genuine prelaw273 reached/0 derived, fixture-SL507,40.3434s; source credit0"
+    },
+    {
+      "report": "author/notice-source-v1-ff9y2ib4/report.json",
+      "sha256": "59139a70c44fa6846d625ee567f8ee1ee377b563f8999d845f93196f22efa493",
+      "revision": "eb7d25b3752550d8a6cf781c0d96dbfaff649a51",
+      "result": "production-SL source4 Notice agreements; saved native originals reused"
+    },
+    {
+      "report": "peer/notice-source-v1-4odf8n9j/report.json",
+      "sha256": "3d370418fb94b6793c4ad541aca0f41cbb4919bfc3d2f4c7f62afe1c3ea64d16",
+      "revision": "9d56ced5503d6fc398e7a8c4a52d419c0c18d386",
+      "result": "production-SL source4 agreements: Notice2, RECEIVE1, RETURN1; saved native originals reused"
+    },
+    {
+      "report": "author/notice-state-v1/report.json",
+      "sha256": "02f5677dc8a0b766ca7c9b8017c46d0d15f376d046d70abb408ccea59ac9e208",
+      "revision": "eb7d25b3752550d8a6cf781c0d96dbfaff649a51",
+      "result": "fixture-SL507:501 conditions,307 reached+194 derived,60.26956749s; source credit0"
+    },
+    {
+      "report": "peer/notice-state-v1/report.json",
+      "sha256": "62caf367aec93530af3d6aa293c28cd278bb6b08274838f87a15fbecef95c9e9",
+      "revision": "9d56ced5503d6fc398e7a8c4a52d419c0c18d386",
+      "result": "fixture-SL507:869 conditions,387 reached+482 derived,88.488059282s; source credit0"
+    }
+  ],
+  "agreements": {
+    "native_executions_once": 8,
+    "production_SL_source_agreements": 8,
+    "notice": 6,
+    "receive_priority": 1,
+    "return_priority": 1,
+    "fixture_note": "Separate fixture-SL507/cache=false/det=true/source0 author501 and peer869 cuts; no unique aggregate count. All reports stable HEAD/inputs, quiet exit0/groups[]."
+  },
+  "actual_composition": {
+    "revision": "7ff30694c0f63b1607120d26de61f0b73e373f1c",
+    "tree": "15b3beb584d7a49aaf3ac5d700acdd87aec267ea",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main58-ref81-current-load-v1/report.json",
+    "sha256": "4d9eda4fa2489f59ea6b784782a0bc1c795d9330678916d33ecb57961c0c8db5",
+    "result": "PASS production-SL508/511 argv/512 watches,cap60/source0,16.58498654398136s,true LF/quiet/stable/reaped. Exact9 retained:207+7 donor-exact, Make1 additive, patch36bde7f1. Independent peer16 alone consumed the sole actual composition/SAME read and issued FULLCLEAR; no author duplicate."
+  },
+  "independent_review": "Author13 READY and peer16 whole9 independent FULLCLEAR, including source semantics, original native observations, actual RECEIVE/RETURN priorities, discriminating fixture controls, controller/Make provenance and exact composition. Metadata prepared from their supplied accepted facts without reopening reports or rerunning checks.",
+  "preserved_failures": "No REF81 failure, timeout, interruption or replay. Earlier failures retain their original identities and zero credit.",
+  "unexecuted": "Combined controller and Make recipe UNEXECUTED/source0; presence adds no execution credit.",
+  "limits": "Other plain/imported/general class forms, larger unions, Stringable callbacks, wider signatures/payload/source/backing/history/GC/lifetimes and complete core remain partial. Historical unspecified V110 dependency stays held without a blanket class ban or lifecycle widening. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension warnings, Source47 low-precision DEFINE-name NaN conversion, COMP88 Stringable supplied-throw crash, GC35/I106/COMP123/ATTR87/GC87 and every exact hold remain untouched."
+}

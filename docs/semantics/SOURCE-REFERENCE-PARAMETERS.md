@@ -757,6 +757,19 @@ setup failure retains zero credit; controller/Make remain unexecuted/source0.
 Larger class unions, other class forms, Stringable callbacks, wider contexts and
 every exact held dependency remain partial.
 
+Ordered FORMAL/RETURN unions of three through seven members also admit exactly
+one raw fully qualified `\stdClass` and two through six distinct members from
+`array`, `int`, `float`, `bool`, `string`, `null`, `false` and `true`. Only one
+Boolean kind is allowed. Exact raw/normalized order and decoded class bytes remain
+required; actual reception/return, frame retirement, private-cell, payload and
+owner/lifetime rules stay unchanged. The
+[larger FQN/primitive review](../../coverage/semantics/cv-primitive-fqn-stdclass-producer-reference-notice-review.json)
+keeps native8 once/source8 (six Notices and separate RECEIVE/RETURN priorities),
+author501/peer869 and genuine prelaw201/273 fixture-SL507 cuts separate from the
+sole actual `7ff30694c0` production-SL508 load. Controller/Make remain unexecuted
+with source credit zero. Other class forms, Stringable callbacks, wider contexts
+and every exact held dependency, including V110, remain partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
