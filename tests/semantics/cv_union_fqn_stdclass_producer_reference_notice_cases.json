@@ -1,0 +1,41 @@
+[
+  {
+    "id": "strict-singleton-union-fqn-stdclass-byval-and-ordered-class-null-return",
+    "source": "<?php declare(strict_types=1);\nnamespace SingletonUnionFqnStdClass79;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS|null $saved):\\StDcLaSs|null{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('SingletonUnionFqnStdClass79\\\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "ee042c0a12fe17adfb19851ef6e3f536127d7c726d88c013c80b11107f74f7ff",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "path": "tests/semantics/cv_nullable_fqn_stdclass_producer_reference_notice_cases.json",
+      "source_sha256": "fb5f98efe630f50caa1fc63da905b2d39474b19000e9f20b92cc15c64e00f0d8",
+      "edits": "Fresh namespaces and explicit ordered FQN stdClass/null formal and return declarations. Singleton is class-first, multi is null-first with mixed-case nUlL; runtime statements, values, ownership mutations, observers and physical lines remain unchanged."
+    },
+    "class_first": true
+  },
+  {
+    "id": "weak-multiple-untyped-and-union-fqn-stdclass-byref-ordered-class-null-return",
+    "source": "<?php\nnamespace MultiUnionFqnStdClass79;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,nUlL|\\sTdClAsS &$right):nUlL|\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('MultiUnionFqnStdClass79\\\\h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "fc4e9fd57c0f7ef6434b8cf74a3881130609daef00ceea641ea58351e34aa092",
+    "native_stdout": "N;M:1:5;H:8:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "path": "tests/semantics/cv_nullable_fqn_stdclass_producer_reference_notice_cases.json",
+      "source_sha256": "57e8a7ff6e2732ae6e6e9b79bb465ebfef53011d4b5f7555c2fdd51b3a42f61a",
+      "edits": "Fresh namespaces and explicit ordered FQN stdClass/null formal and return declarations. Singleton is class-first, multi is null-first with mixed-case nUlL; runtime statements, values, ownership mutations, observers and physical lines remain unchanged."
+    },
+    "class_first": false
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "named-null-class-union-fqn-stdclass-byref-and-class-null-return",
+    "source": "<?php\nnamespace ReviewNotice79\\ObjectNamed;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(null|\\sTdClAsS &$saved):\\stdClass|null{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice79\\\\ObjectNamed\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "d2845c404c72976e8e12d9d73e65b01cb448c0cbc069f41d46a4aca4b7b3eb3c"
+  },
+  {
+    "id": "named-class-null-union-fqn-stdclass-null-byval-and-null-class-return",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewNotice79\\NullNamed;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\sTdClAsS|null $saved):null|\\stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('ReviewNotice79\\\\NullNamed\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "c9bd75a0dcb0d563049e44791aa2240c781898cbc50268bfbd64e3e6f30d3ed9",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8
+  },
+  {
+    "id": "wrong-class-null-class-union-fqn-stdclass-receive-before-body-and-notice",
+    "source": "<?php\nnamespace ReviewNotice79\\ReceivePriority;\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(null|\\stdClass &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice79\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "4fa8738a120b21b17035f3c07854205a9803b669f9574e3b5d41d872d80d7f88"
+  },
+  {
+    "id": "wrong-class-null-class-union-fqn-stdclass-return-before-notice",
+    "source": "<?php\nnamespace ReviewNotice79\\ReturnPriority;\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):null|\\stdClass{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewNotice79\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f195965bf5cc5e3b72d2dff44c2c8477b55fa72a4d7832b4045953f8f1b5e511"
+  }
+]

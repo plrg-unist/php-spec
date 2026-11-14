@@ -70,7 +70,7 @@ def normal(initial, case, index, front):
             derived += ['~' + header.replace('phpType18,', 'NNullableType (' + syntax + ') metadata_nullable,')]
         raw_name = 'NNameFullyQualified (BYTES text_return) metadata_return'
         raw_union = 'NUnionType (SEQUENCE ([' + raw_name + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return'
-        derived += ['~' + header.replace('phpType18,', raw_name + ','), '~' + header.replace('phpType18,', raw_union + ',')]
+        derived += ['~' + header.replace('phpType18,', raw_name + ','), header.replace('phpType18,', raw_union + ',')]
         for syntax in ('NName (BYTES text_formal) metadata_formal', 'NIdentifier (BYTES text_formal) metadata_formal',
                 'NNameRelative (BYTES text_formal) metadata_formal', 'NNameFullyQualified (BYTES "T3RoZXI=") metadata_formal'):
             parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (NNullableType (' + syntax + ') metadata_nullable) (BOOLEAN true) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'

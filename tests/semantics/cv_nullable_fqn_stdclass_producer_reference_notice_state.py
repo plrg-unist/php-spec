@@ -86,7 +86,7 @@ def controls(index, case):
         for tag in ('NName', 'NIdentifier'):
             lines += ['~' + header + raw_nullable(spelling, tag) + ', ' + signature + '[.RETURNS = ' + normalized + '])']
         union = 'NUnionType (SEQUENCE ([' + raw_class(spelling) + ', NIdentifier (BYTES "bnVsbA==") metadata_function])) metadata_function'
-        lines += ['~' + header + union + ', ' + signature + '[.RETURNS = ' + normalized + '])',
+        lines += [header + union + ', ' + signature + '[.RETURNS = ' + normalized + '])',
             '~' + header + raw_class(spelling) + ', ' + signature + '[.RETURNS = ' + normalized + '])']
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         lines += ['~' + header + raw_nullable(name) + ', ' + signature + '[.RETURNS = ' + nullable_type(name) + '])']
