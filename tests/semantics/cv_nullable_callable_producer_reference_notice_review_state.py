@@ -55,7 +55,7 @@ def controls(case):
     for kinds in (('callable', 'null'), ('null', 'callable'), ('callable', 'int', 'string')):
         atoms = ', '.join('NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return' for kind in kinds)
         normalized = '[' + ', '.join('(PTBRANCH ([PTBUILTIN ' + json.dumps(kind) + ']))' for kind in kinds) + ']'
-        lines += ['~$reference_notice_producer_header(' + args + 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_return, ' + signature + '[.RETURNS = ' + normalized + '])']
+        lines += [('~' if len(kinds) > 2 else '') + '$reference_notice_producer_header(' + args + 'NUnionType (SEQUENCE ([' + atoms + '])) metadata_return, ' + signature + '[.RETURNS = ' + normalized + '])']
     for update in ('[.BYREF = true]', '[.VARIADIC = true]', '[.REQUIRED = false]'):
         lines += ['~' + formal + signature + '[.RETURNS = eps][.PARAMETERS = [psparam_first' + update + ', psparam_last]])']
     lines += [

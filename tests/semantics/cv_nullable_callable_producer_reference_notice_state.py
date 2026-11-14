@@ -65,9 +65,9 @@ def controls(case):
             CALLABLE[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'):
         lines += ['~' + header + 'phpType18, ' + signature + '[.RETURNS = ' + normalized + '])']
     for raw in ('NIdentifier (BYTES text_return) metadata_return',
-            'NNullableType (NNameFullyQualified (BYTES text_return) metadata_return) metadata_nullable_return',
-            'NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return'):
+            'NNullableType (NNameFullyQualified (BYTES text_return) metadata_return) metadata_nullable_return'):
         lines += ['~' + header + raw + ', ' + signature + ')']
+    lines += [header + 'NUnionType (SEQUENCE ([NIdentifier (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return, ' + signature + ')']
     params = '[psparam, psparam_last]' if case['multiple'] else '[psparam]'
     for update in ('.TYPE = [(PTBRANCH ([PTBUILTIN "callable"]))]',
             '.TYPE = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "callable"]))]',

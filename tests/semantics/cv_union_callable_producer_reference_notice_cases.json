@@ -1,0 +1,53 @@
+[
+  {
+    "id": "ordered-union-null-singleton-byval-and-private-cell",
+    "namespace": "CallableSingletonByval84",
+    "source": "<?php\nnamespace CallableSingletonByval84;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,';';$x=37;return true;}\nfunction make(CaLlAbLe|NuLl $saved):cAlLaBlE|nUlL{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=23;return $value;}\n$x=null;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByval84\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===null),';';$r=41;echo 'P:',$r,':',(int)($copy===null),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "226fc959329a902b9fdc92ee532a4090d74c679ccc1e4a723954f40b27a812a3",
+    "native_stdout": "N;M:1;H:9;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": false,
+    "carrier": "PNULL",
+    "line_observation": "Native-first observes each new ordered callable/null union original once; NULL and registered USER-name checks do not invoke the target.",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_cases.json",
+    "formal_null_first": false,
+    "return_null_first": false
+  },
+  {
+    "id": "ordered-union-null-singleton-byref-strict-rebind-and-return",
+    "namespace": "CallableSingletonByref84",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CallableSingletonByref84;\nfunction target(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===null),';';$x=37;return true;}\nfunction make(NuLl|CaLlAbLe &$saved):nUlL|cAlLaBlE{$saved=17;echo 'M:',$saved,';';$saved=null;return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=23;return $value;}\n$x=null;$copy=$x;$alias=&$x;set_error_handler('CallableSingletonByref84\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r,':',$x,':',(int)($copy===null),';';$r=41;echo 'P:',$r,':',(int)($copy===null),';';unset($x,$copy,$alias);\n",
+    "source_sha256": "fcc4c3c14695d4317557974015d14583435394d7bed648e25a99501f1861f953",
+    "native_stdout": "N;M:17;H:10:1;F:1;R:23:37:1;P:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 10,
+    "byref": true,
+    "multiple": false,
+    "carrier": "PNULL",
+    "line_observation": "Native-first observes each new ordered callable/null union original once; NULL and registered USER-name checks do not invoke the target.",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_cases.json",
+    "formal_null_first": true,
+    "return_null_first": true
+  },
+  {
+    "id": "ordered-union-request-name-multi-cv-snapshot-and-private-cell",
+    "namespace": "CallableMulti84",
+    "source": "<?php\nnamespace CallableMulti84;\nfunction f17(){echo 'BAD;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(CaLlAbLe|NuLl $saved,&$changed):nUlL|cAlLaBlE{$changed=23;unset($GLOBALS['x']);echo 'M:',(int)($saved==='CallableMulti84\\f17'),':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value==='CallableMulti84\\f17'),';';$value=23;$prefix=31;return $value;}\n$x='CallableMulti84\\f'.(string)17;$copy=$x;$y=5;$yAlias=&$y;set_error_handler('CallableMulti84\\h',8);echo 'N;';\n$r=&take($y,make(\n    $x,\n    $y\n));\necho 'R:',$r,':',(int)($copy==='CallableMulti84\\f17'),':',$yAlias,':',$GLOBALS['x'],';';$r=41;echo 'P:',$r,':',(int)($copy==='CallableMulti84\\f17'),';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,';';\n",
+    "source_sha256": "c612b4491d811a931c4d4fe03f0ca59fc46d95ff3a53851e33f565fccf6fdb95",
+    "native_stdout": "N;M:1:23:0;H:9:0:23;F:29:1;R:23:1:31:37;P:41:1;Q:41:37:43;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "byref": false,
+    "multiple": true,
+    "carrier": "REQUEST_STRING",
+    "line_observation": "Native-first observes each new ordered callable/null union original once; NULL and registered USER-name checks do not invoke the target.",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_cases.json",
+    "formal_null_first": false,
+    "return_null_first": true
+  }
+]

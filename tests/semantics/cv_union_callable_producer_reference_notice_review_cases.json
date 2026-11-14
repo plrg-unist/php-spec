@@ -1,0 +1,55 @@
+[
+  {
+    "id": "strict-name-and-null-ordered-union-callable-cv-formals-private-cell",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewUnionCallable84 {function FiRsT(){echo 'BADCB1;';}\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',(int)($y===null),';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(cAlLaBlE|null $saved,NULL|CaLlAbLe &$changed):null|CALLABLE{echo 'M:',(int)($saved==='\\\\ReviewUnionCallable84\\\\fIrSt'),':',(int)($changed===null),':',(int)($GLOBALS['x']==='\\\\ReviewUnionCallable84\\\\fIrSt'),':',(int)($GLOBALS['y']===null),';';$changed=17;echo 'W:',(int)($GLOBALS['y']===17),';';$changed=null;unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value==='\\\\ReviewUnionCallable84\\\\fIrSt'),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x='\\\\ReviewUnionCallable84\\\\fIrSt';$snapshot=$x;$y=null;$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewUnionCallable84\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='\\\\ReviewUnionCallable84\\\\fIrSt'),':',(int)($ySnapshot===null),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='\\\\ReviewUnionCallable84\\\\fIrSt'),':',(int)($ySnapshot===null),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='\\\\ReviewUnionCallable84\\\\fIrSt'),':',(int)($ySnapshot===null),';';\n}\n",
+    "native_stdout": "I;M:1:1:1:1;W:1;H:8:0:1;F:29:\\ReviewUnionCallable84\\fIrSt:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_kinds": [
+      "callable",
+      "callable"
+    ],
+    "caller_strict": true,
+    "value_name": "\\ReviewUnionCallable84\\fIrSt",
+    "expected_notice_line": 8,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "728347ad4d664103623f6fe2ae6762c1a36cbfa1fe0720ee637931ff96e8d921",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_review_cases.json:independent-ordered-union-header-and-priority-variants",
+    "formal_orders": [
+      [
+        "callable",
+        "null"
+      ],
+      [
+        "null",
+        "callable"
+      ]
+    ],
+    "return_order": [
+      "null",
+      "callable"
+    ]
+  },
+  {
+    "id": "strict-missing-name-ordered-union-callable-receive-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewUnionCallable84\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|NULL &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x='ReviewUnionCallable84\\\\doesNotExist';$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewUnionCallable84\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b0e11cd3e2f67065210d065b197c828927820dd13c6801eb70c594e794722b41",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_review_cases.json:independent-ordered-union-header-and-priority-variants"
+  },
+  {
+    "id": "strict-ordered-union-callable-byref-body-write-return-priority",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewUnionCallable84\\ReturnPriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(CaLlAbLe|NULL &$saved):null|CALLABLE{echo 'M;';$saved=17;return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewUnionCallable84\\\\ReturnPriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:0:0;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "2f9830c69f300289cf59653f1e5a9bca6231787ea46bf819aa4284aeff9b91eb",
+    "derived_from": "tests/semantics/cv_nullable_callable_producer_reference_notice_review_cases.json:independent-ordered-union-header-and-priority-variants"
+  }
+]
