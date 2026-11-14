@@ -773,11 +773,17 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PINT i)
   -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_child)) = (z_precision)
-  -- if $string_read_runtime_value(S, porigin_child) = (PINT i_child)
+  -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
+  -- if $type_bytes(pvalue_child) <- [$ptascii("int"), $ptascii("float")]
+  -- if $string_read_runtime_integer_quiet(pvalue_child)
+  -- if S_child = $integer_coerce(S, pvalue_child, z_line)
+  -- if S_child.RESULT = KNOWN (PINT i_child)
+  -- if S_child = S[.RESULT = KNOWN (PINT i_child)]
+  -- if pvalue_child = PINT i_child \/ S.COMPLETION = NORMAL
   -- if $long_range(i_child)
   -- if i = $long_not(i_child)
   -- if $long_range(i)
-  -- if $bitnot_value(S, PINT i_child, z_line) = S[.RESULT = KNOWN (PINT i)]
+  -- if $bitnot_value(S, pvalue_child, z_line) = S[.RESULT = KNOWN (PINT i)]
 ;; Explicit primitive casts retain VALUE without widening FLOAT formatting.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (pvalue)
   -- if S.COMPLETION = NORMAL
