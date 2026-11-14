@@ -1180,6 +1180,15 @@ The one old RHS promotion is covered freshly. Actual MAIN `d3e72bce9`/508 loads
 in16.184982364s with source0. Wider producers, namespaces, formatting and lifetimes
 remain partial.
 
+[Numeric integer bitwise defaults](../../coverage/semantics/numeric-bitwise-default-reception-review.json)
+retain signed64 `NINT` results through AND/OR/XOR and unary NOT using the existing
+pure integer kernels. An absent whole integer certificate and proper typed numeric
+children keep the older integer path disjoint. Exact source, declaration ENV,
+resolved names, complete no-DIM bindings, Shared caches and ordinary receive/owner
+guards remain required. Cold/warm BYREF defaults, named holes and warning reentry
+preserve masks, MIN/MAX and nonnull zero. FLOAT/string coercion, effectful
+`E_STRICT`, wider operators, entries and lifetimes remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

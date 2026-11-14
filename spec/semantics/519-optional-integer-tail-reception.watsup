@@ -94,6 +94,21 @@ def $lossy_optional_integer_numeric(plenv, expression) = (pnumber)
   -- if $lossy_optional_integer_numeric(plenv, expression_left) = (pnumber_left)
   -- if $lossy_optional_integer_numeric(plenv, expression_right) = (pnumber_right)
   -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+def $lossy_optional_integer_numeric(plenv, expression) = (NINT i)
+  -- if $lossy_optional_integer_default_in(plenv, expression) = eps
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [BITAND, BITOR, BITXOR]
+  -- if $lossy_optional_integer_numeric(plenv, expression_left) = (NINT i_left)
+  -- if $lossy_optional_integer_numeric(plenv, expression_right) = (NINT i_right)
+  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $integer_binary(pbin, i_left, i_right) = IRESULT i
+  -- if $long_range(i)
+def $lossy_optional_integer_numeric(plenv, NExprBitwiseNot expression metadata) = (NINT i)
+  -- if $lossy_optional_integer_default_in(plenv, NExprBitwiseNot expression metadata) = eps
+  -- if $lossy_optional_integer_numeric(plenv, expression) = (NINT i_child)
+  -- if $long_range(i_child)
+  -- if i = $long_not(i_child)
+  -- if $long_range(i)
 def $lossy_optional_integer_numeric(plenv, expression) = eps -- otherwise
 def $lossy_optional_integer_special(plenv, NExprConstFetch name metadata) = $special_constant($pnfoldname(pnreference))
   -- if $pnresolve(plenv, PLCONSTANT, name) = PNRESOLVED pnreference

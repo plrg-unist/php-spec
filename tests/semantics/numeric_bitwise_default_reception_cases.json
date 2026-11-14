@@ -1,0 +1,50 @@
+[
+  {
+    "id": "numeric-bitwise-default-cold-warm",
+    "source": "<?php\nfunction bitwiseWarning235($errno, $message, $file, $line) {\n    global $xBitwise235;\n    echo 'warning:', $message, '|';\n    $xBitwise235 = 3.5;\n}\nfunction bitwiseDefaults235(int &$first, int $and = (PHP_INT_MIN & PHP_INT_MAX), int &$or = (E_WARNING | E_DEPRECATED), int $xor = (PHP_INT_MAX ^ PHP_INT_MAX), int $notMax = ~PHP_INT_MAX, int $notMin = ~PHP_INT_MIN, int $signed = (PHP_INT_MIN | E_WARNING), int $zero = ((PHP_INT_MAX ^ PHP_INT_MAX) ?? MISSING_ZERO235)) {\n    echo 'body:', $first, ':', $and, ':', $or, ':', $xor, ':', $notMax, ':', $notMin, ':', $signed, ':', $zero, '|';\n    $or = 9;\n    $first = $first + 1;\n}\nset_error_handler('bitwiseWarning235');\n$xBitwise235 = 1.5;\nbitwiseDefaults235($xBitwise235);\necho 'cold:x=', $xBitwise235, '|';\n$xBitwise235 = 1.5;\nbitwiseDefaults235($xBitwise235);\necho 'warm:x=', $xBitwise235, '|';\n",
+    "source_sha256": "d1f607f06e59ef38f96d4745855be519e052c363acce5210ee6f21004571c97d",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Numeric-only signed64 AND/OR/XOR/NOT retain exact boundary results through cold/warm defaults. A fresh BYREF mask8194, first-argument warning mutation and nonnull xor-zero retain complete source/declaration ENV/no-DIM/Shared-cache and ordinary receive/owner authority."
+  },
+  {
+    "id": "numeric-bitwise-default-alias-named-reentry",
+    "source": "<?php\nnamespace BitAlias235;\nuse const E_WARNING as Flag235;\nuse const PHP_INT_SIZE as Word235;\nuse const PHP_INT_MIN as Bottom235;\nfunction warning235($errno, $message, $file, $line) {\n    global $xAlias235;\n    echo 'warning:', $message, '|';\n    defaults235(2);\n    $xAlias235 = 3.5;\n}\nfunction defaults235(int $first, int $mask = (Flag235 | \\E_DEPRECATED), int $combined = (\\E_ALL & ~\\E_NOTICE), int $selected = ((Flag235 ^ Flag235) ? MISSING_TRUE235 : ~Bottom235), int $zero = ((Word235 & 4) ?? MISSING_ZERO235), int $last = 7) {\n    echo 'body:', $first, ':', $mask, ':', $combined, ':', $selected, ':', $zero, ':', $last, '|';\n}\n\\set_error_handler('BitAlias235\\\\warning235');\n$xAlias235 = 1.5;\n$lastAlias235 = 8;\ndefaults235(last: $lastAlias235, first: $xAlias235);\necho 'outer:x=', $xAlias235, '|';\n",
+    "source_sha256": "2077fa8c38a6bcc97b145b21db4fec8f41505236d3e43c5a74f986057ff3dadc",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "purpose": "Imported and FQN Numeric NINT operands compose nested bitwise parents, false xor selection and nonnull AND-zero. Named holes[1,2,3,4], suppliedlast8 and warning reentry retain raw names, exact declaration ENV, selected-child/source authority and warmed Shared caches."
+  },
+  {
+    "id": "numeric-bitwise-default-float-control",
+    "source": "<?php\nfunction warning235($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults235(int $first, int $later = (2.0 | E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning235');\n$x235 = 1.5;\ndefaults235($x235);\n",
+    "source_sha256": "7856bfcb980240dc6abd1d8f0d563d65239f6fc7eb789e1efabbe687ce3ee58d",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A FLOAT operand requires a different coercion rule and remains outside the Numeric-only signed64 bitwise path, even when its value is exactly integral."
+  },
+  {
+    "id": "numeric-bitwise-default-string-control",
+    "source": "<?php\nfunction warning235($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults235(int $first, int $later = ('2' | E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning235');\n$x235 = 1.5;\ndefaults235($x235);\n",
+    "source_sha256": "63d2845ec27b4ea76232be79dd97bc9a76c1510fcd0a454722d72ed0bb14b052",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A raw numeric string operand has no NINT identity; mixed string/integer coercion remains explicit Unsupported."
+  },
+  {
+    "id": "numeric-bitwise-default-deprecated-control",
+    "source": "<?php\nfunction warning235($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults235(int $first, int $later = (E_STRICT | E_WARNING)) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning235');\n$x235 = 1.5;\ndefaults235($x235);\n",
+    "source_sha256": "3e75c9e580e193b5eea45239ccee27ec6be392d1c46256e395c3093a0dad8cd9",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "E_STRICT is a genuinely effectful deprecated-constant fetch and remains outside quiet Numeric authority."
+  },
+  {
+    "id": "numeric-bitwise-default-skipped-dimension-control",
+    "source": "<?php\nfunction warning235($errno, $message, $file, $line) { echo 'warning:', $message, '|'; }\nfunction defaults235(int $first, int $later = ((PHP_INT_SIZE | 4) ?? (int)'9'[0])) { echo 'body:', $first, ':', $later, '|'; }\nset_error_handler('warning235');\n$x235 = 1.5;\ndefaults235($x235);\n",
+    "source_sha256": "5760cb6ca556894a05b19d5c46af9c25618a9e47c0c31b6c0d92aa3bfeff243f",
+    "expected_model": "unsupported",
+    "model_timeout_seconds": 360,
+    "purpose": "A skipped coalesce DIM remains outside complete whole-tree no-DIM authority even with an exact nonnull bitwise left result."
+  }
+]
