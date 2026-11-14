@@ -1,0 +1,39 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-inherited-cv-coalesce",
+      "source": "<?php\nclass QuietInheritedStaticCoalesceBase { public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietInheritedStaticCoalesceTarget extends \\qUIETiNHERITEDsTATICcOALESCEbASE {}\nclass QuietInheritedStaticCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietInheritedStaticCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = \\qUIETiNHERITEDsTATICcOALESCEtARGET::CoUnTeR(...);\necho QuietInheritedStaticCoalesceBase::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietInheritedStaticCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietInheritedStaticCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietInheritedStaticCoalesceTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "941bde82d9729966c19dd9eeab7414d7fa919ea058ef57a4ede7f17435fbdc6c",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRJbmhlcml0ZWRTdGF0aWNDb2FsZXNjZUJhc2U+UXVpZXRJbmhlcml0ZWRTdGF0aWNDb2FsZXNjZUJhc2U7V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtRdWlldEluaGVyaXRlZFN0YXRpY0NvYWxlc2NlQmFzZT5RdWlldEluaGVyaXRlZFN0YXRpY0NvYWxlc2NlVGFyZ2V0O1JFU1VMVDtRdWlldEluaGVyaXRlZFN0YXRpY0NvYWxlc2NlQmFzZT5RdWlldEluaGVyaXRlZFN0YXRpY0NvYWxlc2NlVGFyZ2V0O1NUQVRJQztDQVBUVVJFO1JFVElSRUQ7RE9ORTs=",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRJbmhlcml0ZWRTdGF0aWNDb2FsZXNjZUJhc2U+UXVpZXRJbmhlcml0ZWRTdGF0aWNDb2FsZXNjZUJhc2U7V0FSTTtJO0c7"
+    },
+    {
+      "id": "methodclosure-static-inherited-private-coalesce-assignment",
+      "source": "<?php\nclass QuietInheritedStaticAssignBase { public static function counter() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietInheritedStaticAssignTarget extends qUIETiNHERITEDsTATICaSSIGNbASE {}\nclass QuietInheritedStaticAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietInheritedStaticAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$held = qUIETiNHERITEDsTATICaSSIGNtARGET::CoUnTeR(...);\necho QuietInheritedStaticAssignBase::counter() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietInheritedStaticAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietInheritedStaticAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietInheritedStaticAssignTarget::counter() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "e09d116acb55fcdfb408f45f1c4be64b58237e33602e20587c1e653a19e1c9c2",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRJbmhlcml0ZWRTdGF0aWNBc3NpZ25CYXNlPlF1aWV0SW5oZXJpdGVkU3RhdGljQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0SW5oZXJpdGVkU3RhdGljQXNzaWduQmFzZT5RdWlldEluaGVyaXRlZFN0YXRpY0Fzc2lnblRhcmdldDtSRVNVTFQ7UXVpZXRJbmhlcml0ZWRTdGF0aWNBc3NpZ25CYXNlPlF1aWV0SW5oZXJpdGVkU3RhdGljQXNzaWduVGFyZ2V0O1NUQVRJQztDQVBUVVJFO1JFVElSRUQ7RE9ORTs=",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRJbmhlcml0ZWRTdGF0aWNBc3NpZ25CYXNlPlF1aWV0SW5oZXJpdGVkU3RhdGljQXNzaWduQmFzZTtXQVJNO0k7Rzs="
+    }
+  ]
+}

@@ -217,6 +217,81 @@ def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44_parent) = t
   -- if $origin_node(S.SOURCES, porigin_parent) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_name) metadata_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata_class)
   -- if pclassdesc_parent.NAME = $base64(text_name)
 def $property_magic_cv_static_method_parent(S, pclassdesc, phpType44) = false -- otherwise
+;; Inherited captures keep declaring and requested classes distinct in history.
+dec $property_magic_cv_inherited_static_method_clone_history(pstate, nat, porigin, porigin, porigin, porigin) : bool
+def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested, porigin_owner) = true
+  -- if porigin_owner =/= porigin_requested
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if pmethodcapture? = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = eps \/ $closure_scope_at(S.CLOSURESCOPES, n) = ({OBJECT n, LEXICAL porigin_owner, CALLED porigin_requested, RECEIVER eps, CREATION eps})
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = (pclosurecache)
+  -- if pclosurecache.OBJECT = n /\ pclosurecache.FUNCTION = porigin_method
+  -- if pclosurecache.SOURCE = (n_source)
+  -- if pclosurecache.SCOPE = (BIND_CLASS porigin_owner) /\ pclosurecache.CACHE = (CACHE_SHARED)
+  -- if $(n_source < n)
+  -- if S.OBJECTS[n_source] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture_source?
+  -- if pmethodcapture_source? = eps
+  -- if $closure_scope_at(S.CLOSURESCOPES, n_source) = eps \/ $closure_scope_at(S.CLOSURESCOPES, n_source) = ({OBJECT n_source, LEXICAL porigin_owner, CALLED porigin_requested, RECEIVER eps, CREATION eps})
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n_source) = eps
+  -- if ($closure_cache_at(S.CLOSURECACHES, n_source) = ({OBJECT n_source, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) /\ $function_cache_policy(S, porigin_method, n_source) = (CACHE_SHARED)) \/ $property_magic_cv_inherited_static_method_clone_history(S, n_source, porigin_method, porigin_site, porigin_requested, porigin_owner)
+def $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested, porigin_owner) = false -- otherwise
+;; A singleton-method root supplies the method of its genuine empty child.
+dec $property_magic_cv_inherited_static_methodclosure(pstate, nat) : bool
+def $property_magic_cv_inherited_static_methodclosure(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = METHODCLOSURE porigin_method porigin_site porigin_requested pmethodcapture?
+  -- if pmethodcapture? = eps
+  -- if $class_method_origin(S.CLASSES, porigin_method) = (pmethoddesc)
+  -- if pmethoddesc.VISIBILITY = PROPERTY_PUBLIC /\ pmethoddesc.STATIC /\ ~pmethoddesc.ABSTRACT
+  -- if ~$function_generator(S, pmethoddesc.FUNCTION)
+  -- if pmethoddesc.OWNER = porigin_owner
+  -- if porigin_owner =/= porigin_requested
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc_owner)
+  -- if pclassdesc_owner.KIND = "class" /\ pclassdesc_owner.PARENT = eps /\ pclassdesc_owner.INTERFACES = eps
+  -- if pclassdesc_owner.PROPERTIES = eps /\ pclassdesc_owner.METHODS = [pmethoddesc] /\ pclassdesc_owner.CONSTANTS = eps
+  -- if ~pclassdesc_owner.ABSTRACT /\ ~pclassdesc_owner.FINAL /\ ~pclassdesc_owner.READONLY
+  -- if porigin_owner = PORIGIN n_unit pcpath_owner
+  -- if $origin_node(S.SOURCES, porigin_owner) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_owner) metadata_owner_name) ABSENT (SEQUENCE eps) (SEQUENCE ([statement_method])) metadata_owner)
+  -- if pclassdesc_owner.NAME = $base64(text_owner)
+  -- if porigin_method = PORIGIN n_unit pcpath_method
+  -- if pcpath_method = pcpath_owner ++ [PCFIELD 5, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, porigin_method) = (statement_method)
+  -- if statement_method = NStmtClassMethod phpType14 (INTEGER flags) phpType4 (NIdentifier (BYTES text_method) metadata_method_name) phpType16 phpType18 (SEQUENCE statement*) metadata_method
+  -- if $ppmethod_flags(flags, "class") /\ $ppmethod_visibility(flags) = PROPERTY_PUBLIC
+  -- if $ppproperty_flag(flags, 8) /\ ~$ppproperty_flag(flags, 16)
+  -- if pmethoddesc.NAME = $base64(text_method)
+  -- if pmethoddesc.FUNCTION.BODY = pcpath_method ++ [PCFIELD 6]
+  -- if $class_at(S.CLASSES, porigin_requested) = (pclassdesc_child)
+  -- if pclassdesc_child.KIND = "class" /\ pclassdesc_child.INTERFACES = eps
+  -- if pclassdesc_child.PROPERTIES = eps /\ pclassdesc_child.METHODS = eps /\ pclassdesc_child.CONSTANTS = eps
+  -- if ~pclassdesc_child.ABSTRACT /\ ~pclassdesc_child.FINAL /\ ~pclassdesc_child.READONLY
+  -- if porigin_requested = PORIGIN n_unit pcpath_child
+  -- if $origin_node(S.SOURCES, porigin_requested) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_child) metadata_child_name) phpType44_parent (SEQUENCE eps) (SEQUENCE eps) metadata_child)
+  -- if pclassdesc_child.NAME = $base64(text_child)
+  -- if pclassdesc_child.PARENT = (ptbytes_parent)
+  -- if $property_magic_cv_static_method_parent_selector(phpType44_parent, ptbytes_parent)
+  -- if $ptlc(ptbytes_parent) = $ptlc(pclassdesc_owner.NAME)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_owner.NAME)) = (porigin_owner)
+  -- if $class_named(S.CLASSNAMES, $ptlc(pclassdesc_child.NAME)) = (porigin_requested)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_requested) = (SOURCE_PARENT porigin_owner)
+  -- if $effective_method(S, porigin_requested, pmethoddesc.NAME, |S.CLASSES|) = (pmethoddesc)
+  -- if $origin_node(S.SOURCES, porigin_site) = (NExprStaticCall phpType19_selector (NIdentifier (BYTES text_selected) metadata_selected) (SEQUENCE ([(NVariadicPlaceholder metadata_placeholder)])) metadata_site)
+  -- if $property_magic_cv_static_method_selector(phpType19_selector, pclassdesc_child.NAME)
+  -- if $ptlc($base64(text_selected)) = $ptlc(pmethoddesc.NAME)
+  -- if ~$ppscoped_keyword(phpType19_selector)
+  -- if $scoped_requested_site(S, porigin_site, phpType19_selector, porigin_requested, eps)
+  -- if porigin_site = PORIGIN n_site pcpath_site
+  -- if $goto_source_owner($all_functions(S), n_site, pcpath_site) = eps
+  -- if $closure_source_class(S, porigin_site) = eps
+  -- if $closure_live_object_valid(S, n)
+  -- if $closure_scope_at(S.CLOSURESCOPES, n) = ({OBJECT n, LEXICAL porigin_owner, CALLED porigin_requested, RECEIVER eps, CREATION eps})
+  -- if $closure_binding_at(S.CLOSUREBINDINGS, n) = eps
+  -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_owner), CACHE (CACHE_SHARED)}) \/ $property_magic_cv_inherited_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested, porigin_owner)
+  -- if $function_cache_policy(S, porigin_method, n) = (CACHE_SHARED)
+  -- if $closure_cache_records_valid(S)
+def $property_magic_cv_inherited_static_methodclosure(S, n) = false -- otherwise
 dec $property_magic_cv_static_methodclosure(pstate, nat) : bool
 def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $(n < |S.OBJECTS|)
@@ -258,6 +333,8 @@ def $property_magic_cv_static_methodclosure(S, n) = true
   -- if $closure_cache_at(S.CLOSURECACHES, n) = ({OBJECT n, FUNCTION porigin_method, SOURCE eps, SCOPE (BIND_CLASS porigin_requested), CACHE (CACHE_SHARED)}) \/ $property_magic_cv_static_method_clone_history(S, n, porigin_method, porigin_site, porigin_requested)
   -- if $function_cache_policy(S, porigin_method, n) = (CACHE_SHARED)
   -- if $closure_cache_records_valid(S)
+def $property_magic_cv_static_methodclosure(S, n) = true
+  -- if $property_magic_cv_inherited_static_methodclosure(S, n)
 def $property_magic_cv_static_methodclosure(S, n) = false -- otherwise
 dec $property_magic_cv_result_supported(pstate, porigin, int, bool, poperand) : bool
 def $property_magic_cv_result_supported(S, porigin, z, b_get, poperand) = true
