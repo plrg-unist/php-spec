@@ -1,0 +1,62 @@
+[
+  {
+    "id": "primitive-return-existing-string-member-precedes-numeric-preference",
+    "source": "<?php\nnamespace PrimitiveUnionStringIdentityReturn65 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(sTrInG $saved):float|int|sTrInG{echo 'M:',(int)($saved==='17'),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){$local=$value;$value[0]='X';echo 'F:',(int)($local==='17'),':',(int)($value==='X7'),';';return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('PrimitiveUnionStringIdentityReturn65\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',(int)($r==='X7'),':',$x,':',(int)($snapshot==='17'),';';$r[1]='Y';echo 'D:',(int)($r==='XY'),':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "string",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1:1;R:1:23:1;D:1:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "06ba3a80c4fb0c98d8746ef142a8a53e012e6869d1b4cba2f68d7d59b9dc4010",
+    "return_kind": "string",
+    "return_members": [
+      "float",
+      "int",
+      "string"
+    ],
+    "argument_count": 1,
+    "consumer_index": 0,
+    "formal_kinds": [
+      "string"
+    ],
+    "formal_nullable": [
+      false
+    ],
+    "formal_byrefs": [
+      false
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1:1;R:1:23:1;D:1:23:1;P:43:23:1;"
+  },
+  {
+    "id": "primitive-return-string-preference-before-bool-and-private-cow",
+    "source": "<?php\nnamespace PrimitiveUnionStringReturn65 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT $saved,?BoOl &$changed):array|bool|sTrInG{echo 'M:',(int)($saved===37),':',(int)($changed===null),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===null),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){$local=$value;$value[0]='X';echo 'F:',$prefix,':',(int)($local==='37'),':',(int)($value==='X7'),';';$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=null;$ySnapshot=$y;$yAlias=&$y;set_error_handler('PrimitiveUnionStringReturn65\\\\h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',(int)($r==='X7'),':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===null),';';$r[1]='Y';echo 'D:',(int)($r==='XY'),':',$yAlias,';';$r=47;unset($y);$yAlias=53;echo 'P:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===null),';';\n}\n",
+    "formal_kinds": [
+      "int",
+      "bool"
+    ],
+    "formal_nullable": [
+      false,
+      true
+    ],
+    "formal_byrefs": [
+      false,
+      true
+    ],
+    "caller_strict": false,
+    "return_members": [
+      "array",
+      "bool",
+      "string"
+    ],
+    "argument_count": 2,
+    "consumer_index": 1,
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:1:1;R:1:31:37:1:1;D:1:31;P:47:37:53:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "4f9173caa5a3b53b68c3dae1a6284b2a1ab4c70cc50c50134a11fd58eb3df5a7",
+    "observed_notice_line": 8,
+    "native_stdout": "S;M:1:1:1:1;H:8:0:body;F:29:1:1;R:1:31:37:1:1;D:1:31;P:47:37:53:1:1;"
+  }
+]

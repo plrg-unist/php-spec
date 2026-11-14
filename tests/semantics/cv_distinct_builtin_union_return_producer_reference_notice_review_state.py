@@ -59,7 +59,7 @@ def normal(initial, case, front):
         for kinds in (('array', 'array'), ('array', 'string', 'bool'), ('array', 'object'), ('array', 'mixed')):
             name = 'phpType18_bad_' + '_'.join(kinds)
             derived += [name + ' = ' + prior.raw_union(kinds),
-                '~$reference_notice_producer_header(' + arguments + name + ', pfunction_producer.SIGNATURE[.RETURNS = ' + prior.normalized(kinds) + '])']
+                ('' if kinds == ('array', 'string', 'bool') else '~') + '$reference_notice_producer_header(' + arguments + name + ', pfunction_producer.SIGNATURE[.RETURNS = ' + prior.normalized(kinds) + '])']
     return conditions, derived
 
 
