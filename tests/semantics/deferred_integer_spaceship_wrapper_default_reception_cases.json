@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-integer-spaceship-wrapper-raw-orderings",
+    "source": "<?php\nfunction rawIntegerSpaceship269($less = (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) <=> ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $equal = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) <=> ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $greater = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) <=> ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) {\n    echo 'raw:', $less, ':', $equal, ':', $greater, '|';\n    $less = 19;\n    $equal = 20;\n    $greater = 21;\n}\nrawIntegerSpaceship269();\nrawIntegerSpaceship269();\n",
+    "expected_model": "normal",
+    "purpose": "Actual signed64 PINT operands produce raw -1/0/+1 in cold and warm receives, independently of later local writes.",
+    "expected_normal_stdout": "raw:-1:0:1|raw:-1:0:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "ce0822e37619cb0afd021b29bd2ed86bffd7aacd8e5a72be80ef30e7694debdd"
+  },
+  {
+    "id": "deferred-integer-spaceship-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace IntegerSpaceship269;\nuse const E_WARNING as Base269;\nuse const E_ERROR as One269;\nfunction warning269($errno, $message, $file, $line) {\n    global $x269;\n    echo 'warning:', $message, '|';\n    defaults269(2);\n    $x269 = 3.5;\n}\nfunction defaults269(int $first, int &$less = (((int)((bool)(+(-((float)(+(Base269 === One269))))))) <=> ((int)(!(+(-((float)(+(Base269 === One269)))))))), int &$equal = (((int)(!(+(-((float)(+(Base269 === One269))))))) <=> ((int)(!(+(-((float)(+(Base269 === One269)))))))), int &$greater = (((int)(!(+(-((float)(+(Base269 === One269))))))) <=> ((int)((bool)(+(-((float)(+(Base269 === One269)))))))), int $last = 7) {\n    echo 'body:', $first, ':', $less, ':', $equal, ':', $greater, ':', $last, '|';\n    $less = 19;\n    $equal = 20;\n    $greater = 21;\n}\n\\set_error_handler('IntegerSpaceship269\\\\warning269');\n$x269 = 1.5;\n$last269 = 8;\ndefaults269(last: $last269, first: $x269);\necho 'outer:x=', $x269, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Imported aliases, three BYREF named holes, Warning reentry and raw -1/0/+1 private scalar caches.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:-1:0:1:7|body:1:-1:0:1:8|outer:x=3.5|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "dd42cbac33e2b4a310131fa1edfa62687c6dcbf154e9cd0bcb22c24604cc8bdd"
+  },
+  {
+    "id": "deferred-integer-spaceship-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryIntegerSpaceship269(int &$value = (E_WARNING <=> E_ERROR)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryIntegerSpaceship269();\n",
+    "expected_model": "normal",
+    "purpose": "Existing phase-safe deferred PINT comparison remains ordinary control with no new authority.",
+    "expected_normal_stdout": "ordinary:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "e226968f843e50d6dd2b3a7708e38fbd0b00e41ed82135e448dbd8f9d0d0b723"
+  }
+]
