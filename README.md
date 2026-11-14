@@ -128,6 +128,8 @@ Ordered callable unions with literal true or false preserve the matching Boolean
 
 Ordered callable|array/array|callable required ordinary-CV producer formals and returns retain exact raw/normalized order. Exact arrays bypass callable lookup; registered USER names retain their callable route. Scalar mismatches reject in both strict modes. Existing finite array graphs, ordinary transient BYREF writes, producer retirement and separate unconstrained private Notice cells retain their bounds. [Review](coverage/semantics/cv-array-callable-producer-reference-notice-review.json).
 
+Ordered callable|object/object|callable required ordinary-CV producer formals and returns retain exact raw/normalized order. Exact quiet stdClass values bypass callable lookup; registered USER names retain their callable route. Scalar mismatches reject in both strict modes. Real object edges, ordinary transient BYREF writes, producer retirement and separate unconstrained private Notice cells retain their existing bounds. [Review](coverage/semantics/cv-object-callable-producer-reference-notice-review.json).
+
 Completed one-CV producers with canonical `array` formals also admit `array`
 by-value returns before the Notice. Actual return verification and frame
 retirement preserve the returned table; the later private argument cell remains

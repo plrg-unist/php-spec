@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Ordered callable|object/object|callable required ordinary-CV producer formals and returns retain exact raw/normalized order. Exact quiet stdClass values bypass callable lookup; registered USER names retain their callable route. Scalar mismatches reject in both strict modes. Real object edges, ordinary transient BYREF writes, producer retirement and separate unconstrained private Notice cells retain their existing bounds. [Review](coverage/semantics/cv-object-callable-producer-reference-notice-review.json).
+
 Canonical deferred Boolean casts and NOT now consume certified FLOAT children when intrinsic truth is quiet, retaining raw Boolean results before private integer reception. Signed zero, finite values and infinities preserve their truth; NaN stays refused. Source, declaration ENV, cache and owner guards remain. [Review](coverage/semantics/deferred-float-truth-wrapper-default-reception-review.json).
 
 Fully qualified reserved keyword leaves: genuine native4 once/prelaw Unsupported4 before edit; separate privateSL507 source2+2 and179/179+235/235 pass. Wrong-catalogue preparation native-v1 remains0. Actual3138ce8c/tree649a4efe and sole SL50816.792228618s/source0 independently clear. No exact held boundary changes. [Review](coverage/semantics/magic-property-methodclosure-static-raw-fqn-keyword-concat-tree-quiet-get-review.json).

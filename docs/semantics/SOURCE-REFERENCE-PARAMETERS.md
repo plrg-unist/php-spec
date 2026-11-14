@@ -874,6 +874,17 @@ fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL5
 load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
 partial.
 
+Ordered `callable|object` and `object|callable` required formals and returns retain
+the same raw/normalized authority. Exact quiet stdClass values bypass callable
+lookup; registered USER names retain their callable route, while scalar mismatches
+reject in both strict modes. Existing real object edges, transient ordinary BYREF
+writes, producer retirement and separate unconstrained private Notice cells remain.
+The [object/callable review](../../coverage/semantics/cv-object-callable-producer-reference-notice-review.json)
+records six native-once source agreements and separate author597/peer307 fixture
+cuts; prelaw231/140 retain zero agreement credit. Actual38a6e31833 and its sole
+production-SL508 load pass in16.382436244s/source0, independently closed. Controller/
+Make remain unexecuted/source0; wider forms and every exact hold stay partial.
+
 Ordered `callable|array` and `array|callable` required formals and returns retain
 the same raw/normalized authority. Exact arrays bypass callable lookup;
 registered USER names retain their callable route, while scalar mismatches reject
