@@ -128,9 +128,9 @@ $string_read_raw_known_base(S_unary_integer,porigin_base,pvalue_base)
         ('interned_carrier', ('Plus', 'PINT 2', ('NScalarString (BYTES "Mg==")', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("2"))'), false), False),
         ('request_carrier', ('Plus', 'PINT 2', ('NScalarString (BYTES "Mg==")', 'PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("2"))'), false), False),
         ('nested_zero', ('Plus', 'PINT 2', bad_integer, string(b'1')), False),
-        ('modulo_gate', ('Mod', 'PINT 0', null, string(b'2')), False),
-        ('shift_gate', ('ShiftLeft', 'PINT 0', null, string(b'2')), False),
-        ('power_gate', ('Pow', 'PINT 0', null, string(b'2')), False),
+        ('modulo_gate', ('Mod', 'PINT 0', null, string(b'2')), True),
+        ('shift_gate', ('ShiftLeft', 'PINT 0', null, string(b'2')), True),
+        ('power_gate', ('Pow', 'PINT 0', null, string(b'2')), True),
     ]
     for label, tree, accepted in matrices:
         projected = _projection(label, tree, accepted)
