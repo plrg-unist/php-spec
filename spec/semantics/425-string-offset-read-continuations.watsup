@@ -592,6 +592,31 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
   -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; A quiet scalar never performs class lookup for an ordinary named instanceof.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL false)
+  -- if S.COMPLETION = NORMAL
+  -- if S.CONSTCONTEXT = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprInstanceof expression (NName (BYTES text) metadata_name) metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_name)
+  -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text) metadata_name)
+  -- if $ptast(NName (BYTES text) metadata_name) = PTNAME PTPLAIN preqbytes
+  -- if $ptvalidname(preqbytes, true) /\ ~(92 <- preqbytes)
+  -- if ~($ptlc(preqbytes) <- [$ptascii("self"), $ptascii("parent"), $ptascii("static")])
+  -- if $code_name(pcode.NAMES, pcpath) = ((preqbytes, eps))
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_child) = (pvalue_child)
+  -- if ~$pfcast_nan(pvalue_child)
+  -- if $type_bytes(pvalue_child) <- [$ptascii("null"), $ptascii("bool"), $ptascii("int"), $ptascii("float")] \/ ($type_bytes(pvalue_child) = $ptascii("string") /\ $string_read_runtime_cast_quiet(CASTSTRING, pvalue_child))
+  -- if S_value = $resolve_at(S, KNOWN pvalue_child, z_line)
+  -- if S_value = S[.RESULT = KNOWN pvalue_child]
+  -- if ~$class_instanceof(S_value, pvalue_child, preqbytes)
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PBOOL (~b))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBooleanNot expression metadata)
   -- if $code_at(S.CODE, n) = (pcode)

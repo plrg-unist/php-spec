@@ -1342,6 +1342,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_compiled_integer_empty_string_concat_special_concat_leading_key_sources.py --output "$$request_runtime_compiled_integer_empty_string_concat_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_compiled_integer_empty_string_concat_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_compiled_integer_empty_string_concat_out/source/report.json" --output "$$request_runtime_compiled_integer_empty_string_concat_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_compiled_integer_empty_string_concat_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_compiled_integer_empty_string_concat_out/source/report.json" --output "$$request_runtime_compiled_integer_empty_string_concat_out/review-state"
+	@request_runtime_scalar_named_instanceof_out=$$(mktemp -d .tools/runtime-scalar-named-instanceof-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_scalar_named_instanceof_special_concat_leading_key_sources.py --output "$$request_runtime_scalar_named_instanceof_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_scalar_named_instanceof_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_scalar_named_instanceof_out/source/report.json" --output "$$request_runtime_scalar_named_instanceof_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_scalar_named_instanceof_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_scalar_named_instanceof_out/source/report.json" --output "$$request_runtime_scalar_named_instanceof_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
