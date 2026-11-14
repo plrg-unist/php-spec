@@ -119,8 +119,8 @@ if __name__ == '__main__':
            ('both_nonempty', selected('a') + '.' + selected('b'), None, '$ptascii("ab")'),
            ('constant_and_runtime_empty', '"".' + empty, carrier(''), 'eps'),
            ('runtime_and_constant_empty', empty + '.""', carrier(''), 'eps'),
-           ('mixed_boolean', '(!INF).' + selected('1'), None, '$ptascii("1")'),
-           ('mixed_integer', '0 . ' + empty, None, '$ptascii("0")'),
+           ('mixed_boolean', '(!INF).' + selected('1'), carrier('1'), '$ptascii("1")'),
+           ('mixed_integer', '0 . ' + empty, carrier('0'), '$ptascii("0")'),
            ('raw_nul_survivor', empty + '."a\\0b"', None, '[97, 0, 98]'),
            ('selected_nul_survivor', empty + '.((!0.0)?"a\\0b":(1/0))', None, None),
            ('nested_multibyte', '(' + selected('003') + '.' + empty + ').' + empty, carrier('003'), '$ptascii("003")'),
@@ -130,7 +130,7 @@ if __name__ == '__main__':
            ('empty_coalesce', '((' + empty + '.' + empty + ')??"fallback")', carrier(''), 'eps'),
            ('empty_truth', '((' + empty + '.' + empty + ')?"no":"yes")', carrier('yes'), '$ptascii("yes")'),
            ('unchanged_constant_concat_consumer', '(' + selected('1') + '."")&"3"', None, None),
-           ('unchanged_primitive_concat_consumer', '(int)("1.5".(!INF))', None, None)]
+           ('unchanged_primitive_concat_consumer', '(int)("1.5".(!INF))', 'PINT 1', '$ptascii("1")')]
     paths = {name: prep / (name + '.php') for name, *_ in raw}
     for name, expression, *_ in raw:
         paths[name].write_bytes(('<?php $x=(' + expression + ');\n').encode())
@@ -164,6 +164,6 @@ if __name__ == '__main__':
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
     assert report['mode'] == 'fixture SL'
-    report['scope'] = 'Exact new author histories plus independent CONCAT/CAST/selector/literal source, CODE/line/precision/raw-pool/REQUEST-header mutations, nonnormal cached results and whole-state RESULT/TODO/BASE/STRINGDATA preservation. Nonempty checked CONSTCONTEXT refuses typed CONCAT and enclosing consumers while its existing direct BYTE facts remain. Twenty fresh controls distinguish emitted empty-left/right/both reuse, exact constant-empty allocation versus constant+runtime empty reuse, multibyte/nested survivors, new STRING-cast/bitwise/INT/truth/coalesce parents, raw compiled NUL BYTE versus selected NUL refusal, and unchanged constant/mixed-primitive consumer refusals. Allocation controls retain existing bytes and demonstrate one extra STRINGDATA entry. Fixture source0/native0; no accepted old campaign/native replay, implicit primitive-CONCAT claim, formatter/compiler/owner change or held-boundary expansion.'
+    report['scope'] = 'Exact new author histories plus independent CONCAT/CAST/selector/literal source, CODE/line/precision/raw-pool/REQUEST-header mutations, nonnormal cached results and whole-state RESULT/TODO/BASE/STRINGDATA preservation. Nonempty checked CONSTCONTEXT refuses typed CONCAT and enclosing consumers while its existing direct BYTE facts remain. Twenty fresh controls distinguish emitted empty-left/right/both reuse, exact constant-empty allocation versus constant+runtime empty reuse, multibyte/nested survivors, new STRING-cast/bitwise/INT/truth/coalesce parents, raw compiled NUL BYTE versus selected NUL refusal, unchanged constant-consumer refusal and exact quiet primitive/INT-consumer promotions. Allocation controls retain existing bytes and demonstrate one extra STRINGDATA entry. Fixture source0/native0; no accepted old campaign/native replay, wider primitive-CONCAT claim, formatter/compiler/owner change or held-boundary expansion.'
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

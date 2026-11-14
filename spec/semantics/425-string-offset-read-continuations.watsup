@@ -952,7 +952,7 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_
   -- if n_bytes* = $string_not([n_child])
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $bitnot_value(S, PSTRING_CARRIER INTERNED_STRING ([n_child]), z_line) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
-;; Runtime empty operands can preserve an existing interned CONCAT header.
+;; Quiet operands and runtime emptiness retain an interned CONCAT header.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
   -- if S.COMPLETION = NORMAL
   -- if S.CONSTCONTEXT = eps
@@ -968,11 +968,23 @@ def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_left)) = (z_precision)
   -- if $compiled_precision(S, (porigin_right)) = (z_precision)
-  -- if $string_read_runtime_value(S, porigin_left) = (PSTRING_CARRIER INTERNED_STRING n_left*)
-  -- if $string_read_runtime_value(S, porigin_right) = (PSTRING_CARRIER INTERNED_STRING n_right*)
+  -- if $string_read_runtime_value(S, porigin_left) = (pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if $string_read_runtime_cast_quiet(CASTSTRING, pvalue_left)
+  -- if $string_read_runtime_cast_quiet(CASTSTRING, pvalue_right)
   -- if b_left = $concat_constant(S, (porigin_left))
   -- if b_right = $concat_constant(S, (porigin_right))
-  -- if S_concat = $string_concat(S, PSTRING_CARRIER INTERNED_STRING n_left*, PSTRING_CARRIER INTERNED_STRING n_right*, b_left, b_right)
+  -- if (S, KNOWN pvalue_prepared_left) = $concat_operand(S, KNOWN pvalue_left, b_left, z_line)
+  -- if S_left = $stringify(S, pvalue_prepared_left, z_line)
+  -- if S_left.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_left*)
+  -- if S_left = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_left*)]
+  -- if (S_left, KNOWN pvalue_prepared_right) = $concat_operand(S_left, KNOWN pvalue_right, b_right, z_line)
+  -- if S_right = $stringify(S_left, pvalue_prepared_right, z_line)
+  -- if S_right.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_right*)
+  -- if S_right = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_right*)]
+  -- if $startup_bytes(n_left*) /\ $c_string(n_left*) = n_left*
+  -- if $startup_bytes(n_right*) /\ $c_string(n_right*) = n_right*
+  -- if S_concat = $string_concat(S_right, PSTRING_CARRIER INTERNED_STRING n_left*, PSTRING_CARRIER INTERNED_STRING n_right*, b_left, b_right)
   -- if S_concat.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)
   -- if S_concat = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_bytes*)]
   -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
