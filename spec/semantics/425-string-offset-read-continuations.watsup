@@ -320,6 +320,23 @@ def $string_read_raw_truth(S, porigin, PSTRING ([n_byte])) = true
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_raw_truth(S_probe, porigin_child, PSTRING ([n_child]))
   -- if $bitnot_value(S_probe, PSTRING ([n_child]), 0) = S_probe[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([n_byte]))]
+;; Folded one-byte string bitwise results retain both original string operands.
+def $string_read_raw_truth(S, porigin, PSTRING ([n_byte])) = true
+  -- if $origin_node(S.SOURCES, porigin) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [BITAND, BITOR, BITXOR]
+  -- if $compiled_read(S, porigin) = (PSTRING ([n_byte]))
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_read(S, porigin_left) = (PSTRING ([n_left]))
+  -- if $compiled_read(S, porigin_right) = (PSTRING ([n_right]))
+  -- if [n_byte] = $byte_binary(pbin, [n_left], [n_right])
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_raw_truth(S_probe, porigin_left, PSTRING ([n_left]))
+  -- if $string_read_raw_truth(S_probe, porigin_right, PSTRING ([n_right]))
+  -- if $binary_apply(S_probe, pbin, PSTRING ([n_left]), PSTRING ([n_right]), 0) = S_probe[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING ([n_byte]))]
 def $string_read_raw_truth(S, porigin, PINT i) = true
   -- if $string_read_raw_unary_integer(S, porigin, i)
 ;; A quiet integer sign retains a certified integer, Boolean or null child.
