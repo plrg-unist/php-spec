@@ -84,7 +84,7 @@ def fields(fixture, source, form):
         '~$hook_short_reference_header(phpType18,eps)',
         '~$hook_short_reference_header(phpType18,[(PTBRANCH ([PTBUILTIN "int"]))])',
         '~$hook_short_reference_header(NName (BYTES "Qm94Mjk3") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("Box297"))]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "YXJyYXk=") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "array"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "YXJyYXk=") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "array"])),(PTBRANCH ([PTBUILTIN "null"]))])',
     ]
     if nullable:
         checks += [

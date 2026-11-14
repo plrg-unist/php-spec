@@ -72,7 +72,7 @@ def fields(fixture, source, form):
         '~$reference_return_source(S_wrongreturn,7)', '~$call_task_valid(S_wrongreturn,RETURN_REF_FETCH 7)',
         '~$hook_short_reference_header(phpType18,[(PTBRANCH ([PTBUILTIN "int"]))])',
         '~$hook_short_reference_header(NName (BYTES "Qm94Mjk3") metadata_group,[(PTBRANCH ([PTCLASS ($ptascii("Box297"))]))])',
-        '~$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "YXJyYXk=") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "array"])),(PTBRANCH ([PTBUILTIN "null"]))])',
+        '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "YXJyYXk=") metadata_group,NIdentifier (BYTES "bnVsbA==") metadata_group])) metadata_group,[(PTBRANCH ([PTBUILTIN "array"])),(PTBRANCH ([PTBUILTIN "null"]))])',
         '~$hook_short_reference_header(NNullableType (NIdentifier (BYTES "YXJyYXk=") metadata_group) metadata_group,[(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "array"]))])',
     ]
     if abrupt:
