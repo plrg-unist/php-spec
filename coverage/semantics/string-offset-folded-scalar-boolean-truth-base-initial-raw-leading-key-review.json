@@ -1,0 +1,83 @@
+{
+  "scope": "Folded scalar LOGICALXOR and eight comparisons over certified finite PFLOAT children retain selected literal INTERNED bases and frozen initial raw keys through returning Warnings.",
+  "status": "independently reviewed bounded slice; complete core remains partial",
+  "target": "PHP8.5.10 CLI NTS64; vendor/php-src tag34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_truth",
+  "contract": [
+    "Only the existing PBOOL clause adds LOGICALXOR and FLOAT child tags; exact own PBOOL/both actual child source/pools and SAME NORMAL recursive/full original-tag binary_apply premises remain verbatim.",
+    "Existing raw_truth authenticates raw/computed finite PFLOAT bits, including signed zero/subnormal and quiet arithmetic/sign producers. NaN and both infinities remain refused even under suppressed reporting.",
+    "Original INT/BOOL/NULL/raw STRING behavior remains. OR/AND/SPACESHIP, nonfinite and wider producers/owners/lifetimes stay outside this cut; compiler/runtime/numeric rules are unchanged."
+  ],
+  "engine_sources": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_binary_op, zend_try_ct_eval_binary_op, zend_compile_greater",
+    "vendor/php-src/Zend/zend_operators.c::boolean_xor_function; spec/semantics/51-truth-expressions.watsup::$binary_apply; 52-comparison.watsup::$binary_apply; existing raw_truth finite PFLOAT certificates"
+  ],
+  "source_cases": [
+    "folded-scalar-boolean-truth-base-initial-raw-leading-current-key: computed FLOAT1.5 order and negative-zero FLOAT-vs-INT strict identity inside XOR give true; ordinary key replacement at line12",
+    "folded-scalar-boolean-truth-base-initial-raw-leading-reference-key: computed FLOAT1 equality and nonnumeric STRING truth inside XOR give false; genuine initial-reference rebinding at line18"
+  ],
+  "author_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-folded-scalar-boolean-truth-base-initial-raw-leading-key-author27-20261114",
+  "baseline": {
+    "report": "baseline/report.json",
+    "sha256": "1e265830dee8e44b122c921d626f97901cf07e3c580e7b7917d7304b73d89cb7",
+    "cut": "3071e9fee",
+    "native_originals_once": 2,
+    "expected_Unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "source-v1/report.json",
+    "sha256": "52eba27453dcf1bc92527aeb1b72db02c3998ee79094ac969422cca5b559b87e",
+    "cut": "e582fc89d",
+    "mode": "production SL508",
+    "saved_native_agreements": 2,
+    "source_credit": 2
+  },
+  "author_fixture": {
+    "report": "author-state-v1/report.json",
+    "sha256": "13c0a2dc1e7d523c986de716169e4556563f79314b7fbcf0eb77ed313bffc5bc",
+    "cut": "30ea6125eb0f18ea2caae960b43247b2eca56d87",
+    "mode": "production SL508 fixture",
+    "premises": 268,
+    "derived": 165,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-folded-scalar-boolean-truth-base-initial-raw-leading-key-peer25-20261114/peer-state-v3/report.json",
+    "sha256": "e07b212c00af287792dc25ab0e0c7da003665fe8928c273e3fc1d81dcc82a3bc",
+    "cut": "9838aed4e7637f876d401fd3319148924c32d4c4",
+    "mode": "production SL508 fixture",
+    "premises": 617,
+    "derived": 459,
+    "source_credit": 0
+  },
+  "counterfacts": "Each finite-FLOAT comparison true/false, strict tags, signed-zero identity, smallest-subnormal/zero/STRING/null XOR and computed/nested/NOT producers retain source-zero controls. Exact source/pool/tag/CODE/payload, demanded NaN/both infinities/masked NaN and BUDGET-cached invalid DIV-zero or missing-child CODE are refused.",
+  "affected_old_expectation": "Only current eight-comparison B float_child flag promotes False to True; NaN refusal stays False. Fresh independent finite-FLOAT controls replace an old-campaign replay.",
+  "failures": "Independent v1 malformed uppercase FLOAT payload reached existing partial hex_digit (report41bb344cbf5252fc442dddc7bedef3e0a60e218c5e36330224ac68b07cd4cd65/source0). V2 replaced it with canonical wrong-PFLOAT-pool refusal but failed a lower-XOR BUDGET demonstration (report0358548660ae2c554ced3523f09883f9c3031e9336662c70dccd7f4d2a610893/source0, later tail unrun0). V3 corrects only that RHS to the returned left-truth RESULT; no rule/native/source/A rerun.",
+  "whole_source": {
+    "logical_commit": "9838aed4e7637f876d401fd3319148924c32d4c4",
+    "tree": "58a45ae194e614d102db7e2582921f571d8b9bcb",
+    "owned_paths": 7,
+    "manifest": "whole-source-manifest.json",
+    "sha256": "3b0983c203c30e1b2935e907a5cdcba0c6226f3eb07f2d673c9040efada367e5",
+    "patch": "whole-source.patch",
+    "patch_sha256": "30a367daffda2f02d76f92c8f801072338ed31e32c317db9b95fe06fcf4b6d63"
+  },
+  "actual_composition": {
+    "commit": "6a0d9942c42bf35cb2ebf0ae021e504ca28c4a3e",
+    "tree": "4f910efcf354786e4d6e857cc63e2e6d3a8d2fce",
+    "parent": "688e29a3fd15607dffe37550bcb24e980c081fe7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main63-integer-not-instanceof-boolean-current-load-v1/report.json",
+    "sha256": "c4cd1f7947c6a9dd57dc3ddf8af8aa6d1bcb4da11fdf8f020bc7b0bd0ceff50e",
+    "mode": "production SL",
+    "modules": 508,
+    "ordered_argv": 511,
+    "stable_watches": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.741279031848535,
+    "source_credit": 0,
+    "compatibility": "The approved four raw_truth row changes preserve every other actual parent425 byte, including its accepted runtime INSTANCEOF+25; whole425 is not donor-exact. Other family edits match the approved seven-path patch; exactly two Make recipes preserve the actual parent. Reviewer26 closed the sole combined composition/load SAME read; author did not read the report."
+  },
+  "validation": "Native2 once/source2, author268/165-derived and independent617/459-derived retain separate cuts and quiet stable reaped raw records. Accepted207REF88 and current recipes were carried at913 before independentBv2/v3; sourcee582/A30ea retain prior identities through a disjoint bridge. Source/native/A and old campaigns were not repeated for fixture or metadata corrections.",
+  "remaining": "Wider source producers/bases/owners/lifetimes and every exact hold remain partial. No engine bug or intentional PHP divergence identified."
+}

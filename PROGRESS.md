@@ -8,6 +8,12 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Ordered bool|string/string|bool public parentless short reference Get preserves exact raw order, omitted-read Errors, genuine BOOL/STRING returns, independent copies and quiet type-source removal. Wider headers, owners, lifetimes and exact held boundaries remain partial. [Review](coverage/semantics/bool-string-parentless-short-reference-get-hook-review.json).
+
+Deferred NOT now consumes certified signed64 integer children, preserving raw Boolean complement before private integer reception. Exact emitted source, declaration ENV, Shared cache and owner guards remain; the earlier Boolean-cast arm and all held boundaries stay unchanged. Wider forms remain partial. [Review](coverage/semantics/deferred-integer-not-wrapper-default-reception-review.json).
+
+Shared scalar truth admits folded scalar XOR and finite FLOAT children through the existing eight comparisons. Exact original types/source/pools and SAME NORMAL recursive/full typed results preserve selected literal INTERNED bases and frozen raw keys through returning Warnings. Signed zero, subnormals and quiet computed finite values retain their bits; NaN/infinities, OR/AND and wider producers/lifetimes remain partial at this cut. Native2 once/source2, author268/165-derived and independent617/459-derived remain separate; original two fixture failures and unrun tail retain0. [Review](coverage/semantics/string-offset-folded-scalar-boolean-truth-base-initial-raw-leading-key-review.json).
+
 Ordered callable|bool/bool|callable formals and returns preserve exact Boolean masks, callable-before-weak-truth precedence, strict rejection, producer retirement and private Notice-cell ownership; wider forms, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-bool-callable-producer-reference-notice-review.json).
 
 Ordered callable unions with literal true or false preserve the matching Boolean tag without weak scalar coercion, alongside registered USER callables, producer retirement and private Notice-cell ownership; wider forms, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-literal-bool-callable-producer-reference-notice-review.json).
@@ -800,7 +806,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current combined source cut `2ad613104c3acc40b6bc3b847702b1d84f709f5a` (tree `83cb8ba03b12a1645d4ff2ff42c301017a64f124`) passes its saved 508-module production SL load in 16.440165288979188 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main63-singleton-bool-callable-current-load-v1/report.json` (SHA-256 `eebd2db6c70f01c1259d79ec0d45db1a8cb3b069366149c614ccfd8de826f014`). Earlier family cuts and their source/fixture selections retain their original identities.
+The current combined source cut `821bf70cfa30d46875b0c484f41fabfab8d70c1f` (tree `83d981e1b63c840fd4c358ea3dfce1f807677b14`) passes its saved 508-module production SL load in 16.331623897887766 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main63-short-circuit-truth-current-load-v1/report.json` (SHA-256 `6687d6ed2e2f865009280f374d5f8191ef04a3102effa4c6e81fa13788e0e41f`). Earlier family cuts and their source/fixture selections retain their original identities.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,
