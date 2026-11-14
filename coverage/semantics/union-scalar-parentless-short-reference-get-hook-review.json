@@ -1,0 +1,156 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with exact ordered int/float/bool/string|null or null|scalar headers and actual same-field identifier/literal-string bodies. Partial core.",
+  "target": "PHP8.5.10 CLI NTS64; pinned .tools/php/bin/php; tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp301",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "30b2b54fe14c74510e205336b5a1b3050dadb931c48ebce9c4c55028675206c3",
+    "source_donor": "eb793efca6ef4713bdb12c207f7e0635d97d85b9",
+    "change": "Only the two-member raw union whitelist adds int/float/bool/string, retaining positional raw/normalized authority. Canonical/nullable clauses, source/body/signature/owner/cleanup rules and wider/class/literal-Boolean/mixed refusals remain unchanged."
+  },
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_property_hooks supplies the implicit property return type and lowers short GET to RETURN; the existing ptast/ptunionfold/ptunionchecked retain raw branch order.",
+    "Zend/zend_execute.c::zend_handle_fetch_obj_flags and zend_verify_ref_assignable_zval retain nullable initialization and real reference constraints; Zend/zend_objects.c::zend_object_dtor_property removes the genuine property source.",
+    "spec/semantics/35-scalar-operations.watsup::stringify interns only integer0..9; weak integer173 creates its actual REQUEST string header, retained by the unconstrained ordinary copy."
+  ],
+  "behavior": "Both raw orders retain their property and implicit return signatures while using canonical ?scalar diagnostics. Weak numeric/string/Boolean coercions, strict integer-to-FLOAT widening and rejection, nullable writes, copies and four real type sources survive until real staged/quiet cleanup. Author cells and peer float/bool/string cells lose owners from2 to1; the peer's extra integer alias gives3 to2. RETURN/CODEARROW/order counterfeits and exact 0/1-step joins remain checked.",
+  "source_agreements": {
+    "author": {
+      "report": "author-postlaw-v1/report.json",
+      "sha256": "6b2f47dbdfd6afda709771f4d11895e37340147d54190a0968d47ab14b75a064",
+      "head": "70e20eb261b23da297f0c01d41a3736e72952635",
+      "module_count": 508,
+      "source_agreement_credit": 2
+    },
+    "independent": {
+      "report": "peer13-postlaw-sources-v1/report.json",
+      "sha256": "11d61c32350450b1c6261fccc800ad90d06378a735bb55b802302a541981ae1d",
+      "head": "ae5079e2e3c9cc73684074cae02074643a86f1e5",
+      "module_count": 508,
+      "source_agreements": 2
+    },
+    "total": 4,
+    "native_current_originals_once": 4,
+    "native_replayed": false,
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "21bab3863a1c5439aab605c9e6f1a6d180af62eb9b4cce5f58bd51963c1f478b",
+        "head": "784e0fcd11010c1a7c11b64383d350dcf75caa8c",
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "peer13-native-prelaw-v1/report.json",
+        "sha256": "ae1b6540942bedc452b8b3b20421ffbf1541f26fca6cd369ef30e9935d0b3382",
+        "head": "40ef20b70994c6b0ed669b7db3b9c090b8bf8d4a",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      }
+    ]
+  },
+  "fixture_cap_seconds": 240,
+  "fixture_cuts": [
+    {
+      "report": "author-scalar-null-protocol-v1/report.json",
+      "sha256": "e3c807e2a18e7a254e00f3856184453ee7497fce1f586ed4700d20ab7611ec0c",
+      "head": "eb793efca6ef4713bdb12c207f7e0635d97d85b9",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 269,
+      "source_agreement_credit": 0,
+      "seconds": 172.87266945838928
+    },
+    {
+      "report": "author-null-scalar-protocol-v1/report.json",
+      "sha256": "3f1818d60788dd34d9f029f4be1c20f81600c016ab3f96e1135d7246b091cc4f",
+      "head": "eb793efca6ef4713bdb12c207f7e0635d97d85b9",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 269,
+      "source_agreement_credit": 0,
+      "seconds": 206.79932141304016
+    },
+    {
+      "report": "peer13-scalar-null-fixture-v3/report.json",
+      "sha256": "e7b971a698e69a00ede0c570d954fd6c23df112cc480cc068f90ec15405b2be8",
+      "head": "07c7286591fa3ad2967b51ea173b702797279cf4",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 244,
+      "source_agreement_credit": 0,
+      "seconds": 101.11790156364441
+    },
+    {
+      "report": "peer13-null-scalar-fixture-v1/report.json",
+      "sha256": "de762e25a8f1a2a4f586c681a6bd4ddbef5e81a7f0557a6a6c5e5ab46d105c1b",
+      "head": "07c7286591fa3ad2967b51ea173b702797279cf4",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 244,
+      "source_agreement_credit": 0,
+      "seconds": 102.5576524734497
+    },
+    {
+      "report": "author-legacy-nullable-control-v1/report.json",
+      "sha256": "95416b3b4055ffb2450799f6c8dc41aff9f1c665cedb686331978fd503c804d2",
+      "head": "eb793efca6ef4713bdb12c207f7e0635d97d85b9",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 87,
+      "source_agreement_credit": 0,
+      "seconds": 26.384742259979248
+    }
+  ],
+  "prelaw": {
+    "author": {
+      "report": "author-prelaw-v1/report.json",
+      "sha256": "6af1e491a1b33705e766beaef84f7340b67f2f097c5ac5dd95c9daa637b87d59",
+      "head": "784e0fcd11010c1a7c11b64383d350dcf75caa8c",
+      "module_count": 508,
+      "source_agreement_credit": 0
+    },
+    "independent_report": "peer13-native-prelaw-v1/report.json",
+    "selected": "Each selected scalar-null original remains Unsupported/source0; reverse prelaw originals were unrun."
+  },
+  "preserved_failures": [
+    {
+      "report": "peer13-scalar-null-fixture-v1/report.json",
+      "sha256": "c7ddce21bfd1b4163124c507b4aa6f66ffe1aebc5e25c609445cf353d9dfd109",
+      "head": "ae5079e2e3c9cc73684074cae02074643a86f1e5",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 243,
+      "source_agreement_credit": 0,
+      "seconds": 11.44343113899231,
+      "reason": "Nested record-update DSL elaboration failure; source0."
+    },
+    {
+      "report": "peer13-scalar-null-fixture-v2/report.json",
+      "sha256": "5a9c5e7854887e58b1e02beb7c1f110455f0795bd93ebcc95ab88ebcc8a6a300",
+      "head": "c902215b3880e5c51a8a24a56996b502ce843975",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 244,
+      "source_agreement_credit": 0,
+      "seconds": 12.699541091918945,
+      "reason": "Indexed cell before binding failure; source0."
+    }
+  ],
+  "actual_composition": {
+    "head": "082bad61480cc3d51b6694340d87ed0284476d7e",
+    "tree": "b43a4ca3da22c26b4e38e86dcbf08bfa8afdc6fc",
+    "report": "../resumed-main-20261112/main55-comp301-current-load-v1/report.json",
+    "sha256": "14c911afc93122cfb3ec4cabc4bbb51cec6c47e51cec23f5bc1217a1977e0d87",
+    "seconds": 16.59453535103239,
+    "mode": "production-SL",
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "status": "One saved canonical report consumed by the independent reviewer; exact21 source/composition and SAME are quiet, stable and reaped. No author duplicate run or read."
+  },
+  "compatibility": "Whole21 manifest2990cbfd preserves all earlier five weak source paths and excludes only the separately closed COMP300 ledger. Seven standalone int|null helper expectations and only the typed296 nullable union-derived header/declaration/expression-return/line7 controls promote; the fresh thin87 cut does not renew old lifecycle evidence. Six Make recipes are prepared, unexecuted as an aggregate.",
+  "remaining": "Literal-Boolean, mixed/class/intersection/wider union headers, parented/Trait typed short hooks and wider bodies/consumers/lifetimes remain partial at this donor. COMP302 is separate work. Preserve narrow V110, COMP123 pendingException/recursiveError, exact COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and all standing holds.",
+  "engine_bug_or_intentional_divergence": null
+}
