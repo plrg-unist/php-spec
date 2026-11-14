@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-float-spaceship-wrapper-raw-orderings",
+    "source": "<?php\nfunction rawFloatSpaceship270($less = ((-((float)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) <=> (+(-((float)(+(E_WARNING === E_ERROR)))))), $equal = ((+(-((float)(+(E_WARNING === E_ERROR))))) <=> (-(+(-((float)(+(E_WARNING === E_ERROR))))))), $greater = ((+(-((float)(+(E_WARNING === E_ERROR))))) <=> (-((float)(!(+(-((float)(+(E_WARNING === E_ERROR))))))))), $negativeInfinity = (-INF <=> (+(-((float)(+(E_WARNING === E_ERROR)))))), $positiveInfinity = (INF <=> (+(-((float)(+(E_WARNING === E_ERROR))))))) {\n    echo 'raw:', $less, ':', $equal, ':', $greater, ':', $negativeInfinity, ':', $positiveInfinity, '|';\n    $less = 19;\n    $equal = 20;\n    $greater = 21;\n}\nrawFloatSpaceship270();\nrawFloatSpaceship270();\n",
+    "expected_model": "normal",
+    "purpose": "Actual nonNaN PFLOAT operands include both zero signs, finite orders and infinities; cold/warm receives retain raw PINT results.",
+    "expected_normal_stdout": "raw:-1:0:1:-1:1|raw:-1:0:1:-1:1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "b98dcf6c9cccc65a4fbf749c75d462337d5c39b9898e1b4ecc3164af62b2daa7"
+  },
+  {
+    "id": "deferred-float-spaceship-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FloatSpaceship270;\nuse const E_WARNING as Base270;\nuse const E_ERROR as One270;\nfunction warning270($errno, $message, $file, $line) {\n    global $x270;\n    echo 'warning:', $message, '|';\n    defaults270(2);\n    $x270 = 3.5;\n}\nfunction defaults270(int $first, int &$less = ((-((float)(!(+(-((float)(+(Base270 === One270)))))))) <=> (+(-((float)(+(Base270 === One270)))))), int &$equal = ((+(-((float)(+(Base270 === One270))))) <=> (-(+(-((float)(+(Base270 === One270))))))), int &$greater = ((+(-((float)(+(Base270 === One270))))) <=> (-((float)(!(+(-((float)(+(Base270 === One270))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $less, ':', $equal, ':', $greater, ':', $last, '|';\n    $less = 19;\n    $equal = 20;\n    $greater = 21;\n}\n\\set_error_handler('FloatSpaceship270\\\\warning270');\n$x270 = 1.5;\n$last270 = 8;\ndefaults270(last: $last270, first: $x270);\necho 'outer:x=', $x270, '|';\n",
+    "expected_model": "normal",
+    "purpose": "Imported aliases, three BYREF named holes, Warning reentry and private PINT caches after actual FLOAT comparisons.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:-1:0:1:7|body:1:-1:0:1:8|outer:x=3.5|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "bafa338987912227353882b4babf860d96e20ae5a4a3174b5271437add37043d"
+  },
+  {
+    "id": "deferred-float-spaceship-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryFloatSpaceship270(int &$value = (PHP_FLOAT_MIN <=> PHP_FLOAT_MAX)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryFloatSpaceship270();\n",
+    "expected_model": "normal",
+    "purpose": "Existing phase-safe deferred FLOAT comparison remains ordinary control with no new authority.",
+    "expected_normal_stdout": "ordinary:-1|",
+    "model_timeout_seconds": 360,
+    "source_sha256": "b9f44c4b36925f2d02c3c693fda4f0014bce07288e296a63bcb5ad08f77bb7ca"
+  }
+]
