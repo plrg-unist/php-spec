@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Ordered callable|bool/bool|callable formals and returns preserve exact Boolean masks, callable-before-weak-truth precedence, strict rejection, producer retirement and private Notice-cell ownership; wider forms, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-bool-callable-producer-reference-notice-review.json).
+
+Ordered callable unions with literal true or false preserve the matching Boolean tag without weak scalar coercion, alongside registered USER callables, producer retirement and private Notice-cell ownership; wider forms, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-literal-bool-callable-producer-reference-notice-review.json).
+
+Simple-name TRUE/FALSE/NULL leaves now compose with raw String/Integer CONCAT selectors for bounded static USER method Get captures; exact source/name-child/root-PSTRING and cleanup authority remain. Wider forms and complete core stay partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-keyword-concat-tree-quiet-get-review.json).
+
+Quiet scalar named instanceof retains false through emitted key parents using exact raw/CODE target identity, recursive nonNaN nonowning operands and full-state read/class checks. Identity imports retain matching bytes; qualified/FQN/relative/dynamic or resolved mismatches and wider values/lifetimes remain partial at this cut. [Review](coverage/semantics/string-offset-request-base-runtime-scalar-named-instanceof-review.json).
+
 Current reviewed source adds ordered float|string/string|float, int|bool/bool|int and float|bool/bool|float parentless short reference Get, retaining exact type checks, omitted-read Errors, copies and quiet type-source removal. Deferred Boolean int casts, unary signs and identity/NOT retain phase/source/cache authority. Ordinary-CV producers admit ordered two-member callable unions with string, int, float or bool under the existing strictness, frame and private-cell bounds. Wider headers, producers, owners and lifetimes remain partial.
 
 String-offset truth admits certified Boolean/null unary signs, coercive integer MOD/shift/bitwise/POWER trees and eight folded scalar comparisons with exact typed operands and quiet full-state NORMAL proofs. Quiet empty CONCAT accepts certified primitive and compiler-certified signed64 integer operands while preserving canonical INTERNED headers. Bounded raw concatenation method-Get selectors and raw FLOAT/keyword Boolean-cast handler returns retain source and cleanup authority. Family ledgers preserve separate native-once, source, author, peer and actual-load cuts, including failures and unrun checks. All exact held boundaries remain unchanged.
@@ -792,7 +800,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The current combined source cut `8256918832e3501a8c842d923b75333294701a8f` (tree `96099a1358542f202ad66bae4f746bfe96e5b774`) passes its saved 508-module production SL load in 16.532500301022083 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main62-keyword-concat-current-load-v1/report.json` (SHA-256 `485f154d473097d7c079d11ba57e26d33cb41b0ca1a6ba11af2d196373c1c074`). Earlier family cuts and their source/fixture selections retain their original identities.
+The current combined source cut `2ad613104c3acc40b6bc3b847702b1d84f709f5a` (tree `83cb8ba03b12a1645d4ff2ff42c301017a64f124`) passes its saved 508-module production SL load in 16.440165288979188 s under the unchanged 60-second cap. The 511 ordered arguments and 512 watched inputs are stable, with `true` plus LF, quiet stderr and fully reaped processes; it adds zero source credit. Raw report: `../php-spec-evidence-archive/resumed-main-20261112/main63-singleton-bool-callable-current-load-v1/report.json` (SHA-256 `eebd2db6c70f01c1259d79ec0d45db1a8cb3b069366149c614ccfd8de826f014`). Earlier family cuts and their source/fixture selections retain their original identities.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,

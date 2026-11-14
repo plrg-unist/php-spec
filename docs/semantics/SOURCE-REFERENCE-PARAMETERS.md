@@ -848,6 +848,32 @@ all REF87 runs pass first time. Controller/Make remain unexecuted/source0. Wider
 callable unions, forms, contexts, lifetimes and every exact held dependency remain
 partial.
 
+Ordered `callable|bool` and `bool|callable` required formals and returns also
+retain exact raw/normalized order. BOOL supplies both Boolean bits: exact Booleans
+bypass callable lookup; registered USER names precede weak scalar truth conversion.
+Strict scalar mismatches reject. BYVAL snapshots, ordinary transient BYREF writes,
+producer retirement and separate private Notice-cell ownership stay intact.
+The [Boolean/callable review](../../coverage/semantics/cv-bool-callable-producer-reference-notice-review.json)
+keeps native6 once/source6 (Notice4/strict RECEIVE1/RETURN1), author556/peer338 and
+genuine prelaw220/135 fixture-SL507 cuts separate from actual `05864a15d8` and its
+sole production-SL508 load. Twelve precise helper promotions use fresh states.
+The first author front's wrong REQUEST identity for `(string)0` stays zero credit;
+only carrier metadata/fixture expectations changed, preserving PHP/native bytes.
+Controller/Make remain unexecuted/source0. Wider callable unions, forms, contexts,
+lifetimes and every exact held dependency remain partial.
+
+Ordered `callable|true`/`true|callable` and `callable|false`/`false|callable`
+required formals and returns retain the same exact raw/normalized authority.
+Exact singleton Booleans bypass callable lookup; registered USER names remain
+callable, while opposite Booleans and other scalar mismatches reject in both
+strict modes. Ordinary transient BYREF writes, producer retirement and separate
+unconstrained private Notice cells retain their existing bounds. The
+[literal-Boolean/callable review](../../coverage/semantics/cv-literal-bool-callable-producer-reference-notice-review.json)
+keeps native6 once/source6, author741/peer371 and genuine prelaw217/131
+fixture-SL507 cuts separate from actual `2ad613104c` and its sole production-SL508
+load. Controller/Make remain unexecuted/source0; wider forms and exact holds stay
+partial.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
