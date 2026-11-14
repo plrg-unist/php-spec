@@ -1,0 +1,122 @@
+{
+  "milestone": "REF77",
+  "status": "Integrated bounded addition; complete core remains partial.",
+  "target": "PHP 8.5.10 CLI NTS64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": "tests/semantics/profile.json",
+  "implementation": {
+    "revision": "519e43c12c1c38ab7d5cb3cbf87ba009f8f331c5",
+    "file": "spec/semantics/207-error-handler-runtime.watsup",
+    "sha256": "9e2e445ed0dceb25e997591c47b4d89453e359f9d9e2f73c35ea00c054c61723",
+    "law": "Thirteen additive207 lines add disjoint canonical NNameFullyQualified stdClass FORMAL and RETURN>0 arms. Decoded raw name bytes equal the sole normalized PTCLASS bytes, whose casefold is stdclass. Required ordinary-CV, count, source/default/variadic/BYREF, actual reception/return, frame, compiler/line, quiet payload and physical ownership/lifetime proofs remain literal. Nullable/union/plain/imported class names and wider classes are not admitted. No current76 expectation change.",
+    "source_symbols": [
+      "Zend/zend_compile.c::zend_compile_single_typename, zend_compile_typename_ex, zend_resolve_class_name, zend_emit_return_type_check, zend_compile_args",
+      "Zend/zend_execute.c::zend_check_type, zend_check_type_slow, zend_verify_recv_arg_type",
+      "Zend/zend_vm_def.h::ZEND_RECV, ZEND_VERIFY_RETURN_TYPE",
+      "spec/semantics/16-static-types.watsup::ptresolve, ptsingle, ptast; 130-stdclass-runtime.watsup::typed_object_exact",
+      "spec/semantics/95-type-values.watsup::typed_conversion_at; 95-typed-calls.watsup::typed_parameter_conversion, typed_return_checked"
+    ]
+  },
+  "raw_root": "/home/user/workspace/php-spec-evidence-archive/cv-fqn-stdclass-producer-reference-notice-77",
+  "source_test_manifest": {
+    "report": "author/source-test-manifest.json",
+    "sha256": "48a6771e29edea7160566670f61fabb7c68d07e1fbfa2291f39c3d929cd8070f",
+    "source_donor": "f0d85b925928c12fbce388be4ed4caa6f3b2c65b",
+    "files": 9,
+    "scope": "Exact9/521 additions/0 deletions versus519bf2c14; whole READY and independent FULLCLEAR preceded integration. Two unchanged76 metadata ancestry paths were excluded."
+  },
+  "semantics": "FQN class types resolve directly and retain their source spelling in the normalized class name; PHP class matching is case-insensitive. Existing typed_object_exact recognizes real STDINSTANCE and class_type matching. Wrong-class Other objects reject at RECEIVE or RETURN before Notice. Ordinary reference parameters retain only entry-time checks, permitting later scalar rebinding of the caller cell; the returned old object crosses producer retirement into an independent untyped Notice cell.",
+  "counts": {
+    "native_originals_once": 5,
+    "native_replays": 0,
+    "notice_agreements": 3,
+    "receive_priority_agreements": 1,
+    "return_priority_agreements": 1,
+    "historical_campaigns_renewed": false,
+    "unique_aggregate_claim": false
+  },
+  "source_cuts": [
+    {
+      "role": "author source2 saved-native",
+      "report": "author/postlaw-source-v1-pzeg3174/report.json",
+      "sha256": "6e6a69ef069cc86f25a88a3daf71cbcbc3ff608ac51aeaa1839964d7e9855c09",
+      "revision": "519e43c12c1c38ab7d5cb3cbf87ba009f8f331c5",
+      "normal_agreements": 2,
+      "php_error_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true
+    },
+    {
+      "role": "peer source3 saved-native",
+      "report": "peer/postlaw-source-v1-aka8uw5x/report.json",
+      "sha256": "57ac11d61c96b71c6801203f823b57e5a4e82e96f30f45092411fd844f5a67db",
+      "revision": "d0d500545bf3c3695770f7f318fb8acd2f1da764",
+      "normal_agreements": 3,
+      "php_error_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true
+    }
+  ],
+  "state_cuts": [
+    {
+      "role": "author fixture295",
+      "report": "author/postlaw-state-v1/report.json",
+      "sha256": "f33bea42afcbe9e69e76a3ddf91011db8db7994b9633c76a7864ef40e16b7dee",
+      "revision": "519e43c12c1c38ab7d5cb3cbf87ba009f8f331c5",
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 295,
+      "reached_conditions": 207,
+      "derived_conditions": 88,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "elapsed_seconds": 50.37200355529785,
+      "cap_seconds": 1200,
+      "reaped": true
+    },
+    {
+      "role": "peer corrected fixture156",
+      "report": "peer/postlaw-full-v2/report.json",
+      "sha256": "bdc6432918c1af9d5de6abf9e9f770c42d0563b02b6fd25925897fcf83e7944e",
+      "revision": "7659789276f707f563bbfd12d0d23a9a99b9114a",
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 156,
+      "reached_conditions": 118,
+      "derived_conditions": 38,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "elapsed_seconds": 37.81249237060547,
+      "cap_seconds": 1200,
+      "reaped": true
+    }
+  ],
+  "prelaw": "Genuine author145 and independent80 fixture-SL507 cuts retain their original source-zero identities, revisions and report hashes in the manifest.",
+  "independent_review": {
+    "source": "Predecessor recover13 substantive FULLCLEAR remains valid; exact three peer preparation files came from765978927.",
+    "actual": "recover14 ONE actual1e7ec939d/tree3abe01a2 owned9/composition plus SAME dde26 report comparison CLEAR, sent directly MAIN55. No author duplicate read or execution."
+  },
+  "canonical_main": {
+    "source_revision": "1e7ec939d96a82d4ea9c67716621f29331f925da",
+    "tree": "3abe01a2d3d560fd464f6398e26c4b8f4037a8d0",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main55-ref77-get-own-child-current-load-v1/report.json",
+    "sha256": "dde26fe2a3e50dbc84ff806c7fc5a8b4c5c1e94ba8eaff7bf1065fb27dc1fa3e",
+    "mode": "SL",
+    "modules": 508,
+    "argv_count": 511,
+    "watched_inputs": 512,
+    "elapsed_seconds": 16.084937317995355,
+    "cap_seconds": 60,
+    "stdout": "true\n",
+    "stderr": "",
+    "stable": true,
+    "reaped": true,
+    "source_agreements": 0
+  },
+  "compatibility": "Source207 and accepted author execution inputs remain literal519e43c12; peer files are literal765978927. Existing76 ownership helpers remain unchanged519bf2c14. New canonical FQN rules are disjoint from builtin-object/counterfeit-class expectations; no76 correction or historical renewal. Actual source combined REF77 with GET6 under parent38e48dd7f; Make1REF+4GET is additive with union14.",
+  "preserved_failures": "Original peer156 constructor-elaboration failure remains zero credit; its corrected fixture changes only the overbroad nullable counterfact child to concrete NNameFullyQualified. Combined controller and Make recipe remain UNEXECUTED/source0. No accepted native/source/state/canonical replay.",
+  "limits": "Raw nullable/union/plain/imported class types, other classes, wider signatures/payload/source/backing/history/GC/lifetimes and complete core remain partial. Historical V110 stdClass dependency stays held without a finer recovered operation; these exact accepted quiet STDINSTANCE operations add no lifecycle widening or held rerun. Owned-NUL source release, undefined by-reference LIST keys, OP12 dimension increment/decrement warnings, Source47 low-precision DEFINE-name NaN conversion, COMP88 Stringable supplied-throw crash, GC35/I106/COMP123/ATTR87/GC87 and all other exact holds stay untouched."
+}

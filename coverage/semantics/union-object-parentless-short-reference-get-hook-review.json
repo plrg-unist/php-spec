@@ -1,0 +1,185 @@
+{
+  "scope": "Own public parentless sole short reference Get hooks with exact raw object|null and null|object headers, positional normalized builtin branches and identifier/literal-string same-field bodies. Bounded partial core.",
+  "target": "PHP8.5.10 CLI NTS64; sole oracle .tools/php/bin/php; baseline tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp300",
+  "implementation": {
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "d493973ddedff428f99715b0b7a0612ef437a307a86edb9bc99561c4eed23e03",
+    "source_donor": "aebb168219f3e503006be822a3b29a0743a87441",
+    "change": "Only the existing two-member raw union guard adds object beside array, preserving exact positional NIdentifier/normalized correspondence. Canonical and nullable clauses, all source/body/signature/owner/cleanup bounds and class/scalar/wider-union refusals stay unchanged."
+  },
+  "engine_evidence": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_property_hooks supplies the property return type and lowers short GET to RETURN. spec/semantics/16-static-types.watsup::ptast/ptunionfold/ptunionchecked preserve source branch order.",
+    "vendor/php-src/Zend/zend_compile.c::zend_type_to_string_resolved and the existing pttypename/ptaddnull render either object/null order as ?object without equating their source headers.",
+    "vendor/php-src/Zend/zend_execute.c::zend_handle_fetch_obj_flags and zend_verify_ref_assignable_zval retain nullable initialization and actual object reference constraints; vendor/php-src/Zend/zend_objects.c::zend_object_dtor_property removes the real source during receiver retirement."
+  ],
+  "validated_behavior": [
+    "Both orders retain their own property and implicit function return order while using canonical ?object diagnostics. Omitted backing, explicit NULL default and initialized user objects remain distinct source states.",
+    "Ordinary copies retain the old object identity and mutations while outer aliases share one genuinely constrained cell. NULL/object replacement and rejected integer writes preserve the correct value; copied cells acquire no outer constraint.",
+    "A second receiver CV keeps the constraint alive after removing the first name. Final quiet pruning or staged destructor storage retirement removes only the genuine property source before unconstrained alias writes. Source/Hook/CODEARROW/return counterfeits and actual0/1-step joins remain checked."
+  ],
+  "sources": {
+    "author": {
+      "report": "author-postlaw-v1/report.json",
+      "sha256": "ed9566cc07682ab81052a7cd49c5060ab7d1d45f76d5f4f28afbae59c60316e3",
+      "head": "aebb168219f3e503006be822a3b29a0743a87441",
+      "module_count": 508,
+      "source_agreement_credit": 2
+    },
+    "independent": {
+      "report": "peer13-postlaw-sources-v1/report.json",
+      "sha256": "150d2d51b714c924341d1b9e277099f2540f6730bf253c6b32bbdf2c46d2c5e6",
+      "head": "81bd37e9c9865cc992df21d46bba27d4590cd095",
+      "module_count": 508,
+      "source_agreements": 2
+    },
+    "agreements": 4,
+    "distinct_native_original_byte_revisions_once": 4,
+    "native_reports": [
+      {
+        "report": "author-native-v1/report.json",
+        "sha256": "0ca04245b5625f69a0a7fff5bb307e07281c37f0667be09141d6b8a43d164a7f",
+        "head": "b7dc0dd7499fcea1961a07dc5fd98410958f8403",
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "peer13-native-prelaw-v1/report.json",
+        "sha256": "a0f2a5429659530399cc7ec9b8fb0569605de5ac8e5522741517cb29678c6a10",
+        "head": "4639f134aa6ddaa4522be6b53c2b2c24aab4bfe1",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      }
+    ],
+    "native_replayed": false,
+    "caps_seconds": {
+      "native": 15,
+      "model": 120,
+      "outer_recorder": 140
+    }
+  },
+  "fixture_cap_seconds": 240,
+  "fixture_cuts": [
+    {
+      "report": "author-object-null-protocol-v1/report.json",
+      "sha256": "bab0c8854b5586efbfe60eb30aebd501ec9a98a96b1fb6fe4bd7b9353ef3b366",
+      "head": "aebb168219f3e503006be822a3b29a0743a87441",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 144,
+      "elapsed_seconds": 66.4674563407898,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-null-object-protocol-v1/report.json",
+      "sha256": "ca8607c8ed18aa90917b0a85aa3666619dc4dca4245fbede999358aacf8fbee8",
+      "head": "aebb168219f3e503006be822a3b29a0743a87441",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 140,
+      "elapsed_seconds": 49.232877254486084,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "peer13-object-null-fixture-v2/report.json",
+      "sha256": "eb5845e4759eeee23bfba4a36fdaaf8619a17a2de727a3ae884e5c7cb7b4c031",
+      "head": "363120c81495107ddf682fce8d3d8d09a9cffb50",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 163,
+      "elapsed_seconds": 36.117491006851196,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "peer13-null-object-fixture-v1/report.json",
+      "sha256": "898be1350428bcf358d05918856d27c4cd09d63551c152d4039dde344df3b371",
+      "head": "363120c81495107ddf682fce8d3d8d09a9cffb50",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 167,
+      "elapsed_seconds": 36.44193959236145,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "author-legacy-nullable-control-v1/report.json",
+      "sha256": "04d4207b94e32b738c17fe134c4c445be8b28c9e043b2142bf1f1d44eb9d26b3",
+      "head": "aebb168219f3e503006be822a3b29a0743a87441",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 70,
+      "elapsed_seconds": 22.385172605514526,
+      "source_agreement_credit": 0
+    }
+  ],
+  "compatibility": {
+    "manifest": "final-static-v1/report.json",
+    "sha256": "a4b48584e3a0242456a2bdbd565e1f9223326f5af5c7b8a24a7931102d876649",
+    "source_paths": 16,
+    "source_base": "8659eb99ea115e8bf25c6e795b9bf9b18bf15823",
+    "excluded_metadata": [
+      "coverage/semantics/object-parentless-short-reference-get-hook-review.json"
+    ],
+    "checks": "Whole16 includes the five weak source paths prepared before the separately integrated299 ledger. The four complete new passed DSLs keep their exact original paths. Only the two standalone legacy object/null predicates and three nullable-only derived helper/declaration/return predicates are promoted; thin70 verifies those actual changes without old lifecycle/native/source replay. Make adds six recipes."
+  },
+  "preserved_zero_credit": [
+    {
+      "cut": {
+        "report": "author-prelaw-v1/report.json",
+        "sha256": "49702634681e6f1d38f474a8eb0f069af0b3d8cdb6834d4268580ca2c13424ba",
+        "head": "b7dc0dd7499fcea1961a07dc5fd98410958f8403",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      },
+      "outcome": "Selected weak object-null prelaw source is Unsupported; reverse weak prelaw was unrun."
+    },
+    {
+      "cut": {
+        "report": "peer13-native-prelaw-v1/report.json",
+        "sha256": "a0f2a5429659530399cc7ec9b8fb0569605de5ac8e5522741517cb29678c6a10",
+        "head": "4639f134aa6ddaa4522be6b53c2b2c24aab4bfe1",
+        "module_count": 508,
+        "source_agreement_credit": 0
+      },
+      "outcome": "The selected strict object-null prelaw source is Unsupported; reverse strict prelaw was unrun. Both native originals are separate successful once-only observations."
+    },
+    {
+      "cut": {
+        "report": "peer13-object-null-fixture-v1/report.json",
+        "sha256": "93a41edb2047dd7eb437c64b4b1164a4a5650432b3c33c367f90178898c6cb10",
+        "head": "d55d88a41f2173cb320a5aa7772443196f7eae50",
+        "source_agreement_credit": 0
+      },
+      "outcome": "Original164-premise peer fixture timed out at unchanged240 cap, with stable inputs and fully reaped processes. It incorrectly sought staged INSTANCE_STORAGE_STEP on a quiet receiver."
+    },
+    {
+      "cut": {
+        "report": "peer13-stage-diagnostic-v1/report.json",
+        "sha256": "9d2c2090459273e9dc6ff6da7f473c57d258260cf6ab1e06ef9fb4dc08ff43ab",
+        "head": "ced9d6ea8aee9322d725a6b844157b40eb056ef4",
+        "source_agreement_credit": 0
+      },
+      "outcome": "Bounded stage diagnostic found all preceding phases and no requested storage task. Private seek now stops at completed programs; corrected fixtures use the actual quiet UNSET/pruning boundary, retaining source-before/source-after, owner multiplicities and budget joins. No runtime/source/native changes or renewed source credit."
+    }
+  ],
+  "actual_integration": {
+    "revision": "38e48dd7f6ffbf67e1cd758f53e52043e75fc7a9",
+    "tree": "ce19f40e518928c3869e066d9b3001e7ab9dc484",
+    "parent": "c49efed2de0ea22645f6781258996c1f44e01ebc",
+    "source_projection": "Exact16 manifest source_files: fifteen literal donor files plus additive Make6, independently checked once by peer13.",
+    "sole_saved_canonical": "../php-spec-evidence-archive/resumed-main-20261112/main55-comp300-current-load-v1/report.json",
+    "sha256": "60a7b529dd6b4cc7fdd8a409a687d95f773f2d36ec4600186aac2c548f61d881",
+    "elapsed_seconds": 15.58907210896723,
+    "cap_seconds": 60,
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "result": "PASS; quiet true LF, stable HEAD/inputs, fully reaped, as supplied by MAIN55.",
+    "source_agreement_credit": 0
+  },
+  "independent_review": {
+    "private_source_and_state": "recover13_compiler_object_union_review: exact whole16 FULLCLEAR.",
+    "actual_source_and_same_saved_canonical": "recover13_compiler_object_union_review: independently CLEAR once at actual38e/SAME60a7; no author duplicate, replay or new receipt."
+  },
+  "remaining": "Scalar/null and wider unions, class/intersection/literal-Boolean/mixed headers, parented/Trait typed short hooks and broader bodies/consumers/lifetimes remain partial at this donor. COMP301 is subsequent separate work. Preserve narrow V110, COMP123 pendingException/recursiveError, exact COMP88 supplied Stringable throw, undefined by-reference LIST, Owned-NUL and all standing holds.",
+  "engine_divergences": [],
+  "recovery": "Original bytes/paths/cwd, raw commands/results and input fingerprints remain under artifact_root with the original timeout and diagnostic. Metadata descendants renew no execution credit."
+}

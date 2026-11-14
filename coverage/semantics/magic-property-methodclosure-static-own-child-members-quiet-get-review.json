@@ -1,0 +1,169 @@
+{
+  "status": "Independently reviewed and integrated partial increment; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS64; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; sole project-local oracle and tests/semantics/profile.json.",
+  "scope": "Own public static nongenerator USER child-method Get captures over a genuine nonempty method-only ordinary global source root, including overrides and authenticated Shared clones, across quiet CV ??, private ??= and literal/CV Empty.",
+  "implementation": {
+    "source_proposal": "6b55f2ec4ed55d2785c3f98b301349efd0a06a9f",
+    "whole_proposal": "90961219c04d4d32c619536848e5093b553f48d7",
+    "whole_manifest_sha256": "5317b7b05d1669fd4238dfb40cd34fd28fabdaf81372ed30d449291bbcf7ea6d",
+    "accepted_main": "1e7ec939d96a82d4ea9c67716621f29331f925da",
+    "runtime_407_sha256": "7bff5f5a7c742b8037f201235b61e80cc19524bc225aa9b5de6971cc9e30063d",
+    "delta": "One 21-line nonempty-parent alternative plus earlier existing member declaration; old ABSENT/empty-parent bodies and own/inherited capture/cache/lifetime guards remain literal. Four new test files and four Make recipes."
+  },
+  "engine_basis": [
+    "Zend/zend_inheritance.c::do_inherit_method retains a genuine own child override rather than copying the same-name parent function.",
+    "Zend/zend_object_handlers.c::zend_std_get_static_method and Zend/zend_vm_def.h::ZEND_INIT_STATIC_METHOD_CALL select the actual method. ZEND_CALLABLE_CONVERT and Zend/zend_closures.c::zend_closure_from_frame preserve its declaring and called classes.",
+    "Zend/zend_closures.c::zend_create_closure_ex and zend_closure_clone reuse selected USER fake-Closure method statics and same-scope Shared caches; parent and overriding child functions retain distinct static roots."
+  ],
+  "contracts": [
+    "The new alternative requires a nonempty parent method list, genuine direct raw extends/name/SOURCE_PARENT identity, same source unit and exact ordinary global class declarations. Complete ordered raw-method/descriptor certificates authenticate both root and child, including real indices, names, OWNER, ORIGIN/BODY, visibility/static/final/nonabstract flags and no duplicates/orphans/nonmethods.",
+    "The selected own descriptor remains child OWNER=requested=LEXICAL=CALLED=cache scope. Existing live capture/effective-method, actual global selector/source/CODE, nongenerator/public/static, Shared birth/descending ancestry and consumer/result-ID fences remain unchanged.",
+    "Parent and overriding child method statics remain separate real persistent roots. Unselected methods are not entered; skipped RHS/SET, wrapper retirement, payload-before-receiver cleanup, receiver throw and exact budget resumptions retain existing rules.",
+    "The old ABSENT and empty-parent alternatives are byte-identical, and the new alternative requires nonempty root METHODS. No old source/native/fixture campaign is renewed."
+  ],
+  "source_validation": {
+    "mode": "production SL_mode",
+    "private_module_list_entries": 507,
+    "physical_revision": "8f34ccfe14164a738b7ffefb5daf14f72ff75d10",
+    "native_originals": 4,
+    "executions_per_native_original": 1,
+    "changed_model_agreements": 4,
+    "native_reports": [
+      {
+        "report": "author/native-v1/report.json",
+        "sha256": "5e56f43544fab5e6d1b2962b5a70479716f4c4fd765ec46af0fb4f565bc9493b"
+      },
+      {
+        "report": "independent/native-v1/report.json",
+        "sha256": "656da2a0cef8079c41af5da97d132567a8249e35dd982ef702be3ac95c561d16"
+      }
+    ],
+    "reports": [
+      {
+        "report": "author/source-v1/methodclosure-static-own-child-members-clone-private-coalesce-assignment/report.json",
+        "sha256": "9c4d20c75cce669f71e5d0a60bd7692c0625f7c870d8fe162f0272a947567f90",
+        "seconds": 91.81199467089027,
+        "status": "normal"
+      },
+      {
+        "report": "author/source-v1/methodclosure-static-own-child-members-cv-coalesce/report.json",
+        "sha256": "fddd0c4a7531b16e7139039c6f73d680c445aa2566b6e9d815efc92c13874db2",
+        "seconds": 109.20122801396064,
+        "status": "normal"
+      },
+      {
+        "report": "independent/source-v1/methodclosure-static-own-child-members-cv-empty-retired-sources/report.json",
+        "sha256": "4ab2206aaba97a6dd22cb4a90f98233b7f9434e4dbb9e4c18cb1cb4fc0430096",
+        "seconds": 124.34172873105854,
+        "status": "normal"
+      },
+      {
+        "report": "independent/source-v1/methodclosure-static-own-child-members-literal-empty-retired-sources-receiver-throw/report.json",
+        "sha256": "209da2457e0b8cbd5b3405af521d4b3524f13e4845aa13628a9b1b66be00fad5",
+        "seconds": 134.05810431414284,
+        "status": "normal"
+      }
+    ],
+    "sequence": "All four identities/native-once originals and expected prelaw Unsupported4 completed before407bf2f changed. Final source4 use4077bff and exact saved original bytes/path/CWD/profile. Model inner280/outer290, native30, 3GiB; commands, environment, binaries and stable before/after fingerprints remain in raw reports."
+  },
+  "fixture_validation": {
+    "mode": "fixture SL_mode",
+    "private_module_list_entries": 507,
+    "source_credit": 0,
+    "reports": [
+      {
+        "report": "author/fixture-v1-coalesce/launch.json",
+        "sha256": "a44e9681384d4df86d55b71f598afa430917784e605b0188b723d246c47f4065",
+        "seconds": 132.56007217499427,
+        "assertions": 229
+      },
+      {
+        "report": "author/fixture-v1-assignment/launch.json",
+        "sha256": "a9fd32054e6ce15f0d3a2e5c4d7511fdfdafa2d7653503b4f7927d804659eb47",
+        "seconds": 116.67559118103236,
+        "assertions": 238
+      },
+      {
+        "report": "independent/fixture-v3-cv/launch.json",
+        "sha256": "21b0c9db9d1ffc4fda680095eba78a61524458d44d82bf48e85ea82c0d842a23",
+        "seconds": 190.89382127881981,
+        "assertions": 507
+      },
+      {
+        "report": "independent/fixture-v4-literal/launch.json",
+        "sha256": "dcdf17e0109250a5c8d4d4c9e09942ecc2050c703dc9c6a4981a6e058a665574",
+        "seconds": 237.70511528709903,
+        "assertions": 525
+      }
+    ],
+    "note": "Separate setup-inclusive selections229/238/507/525, not a unique aggregate; cap297, 3GiB, quiet/stable/reaped. Current peer protocolaa6573; CV507 ran onf989 before a literal-only correction. Independent exact case and rendered-input equality preserves the CV cut without a rerun."
+  },
+  "preserved_non_agreements": {
+    "source_credit": 0,
+    "prelaw_unsupported": [
+      {
+        "report": "author/baseline-v1/methodclosure-static-own-child-members-clone-private-coalesce-assignment/report.json",
+        "sha256": "840e271fc344a2f124f5acf1a5ccfa307da4f2b6c838a2ef8327d08eea6d4f4b",
+        "seconds": 76.39455279707909,
+        "status": "unsupported"
+      },
+      {
+        "report": "author/baseline-v1/methodclosure-static-own-child-members-cv-coalesce/report.json",
+        "sha256": "b39aba4c6662d536c0733b3583ac2f2ccf3c6786861d8f550374218087ca5bf8",
+        "seconds": 91.58396790688857,
+        "status": "unsupported"
+      },
+      {
+        "report": "independent/baseline-v1/methodclosure-static-own-child-members-cv-empty-retired-sources/report.json",
+        "sha256": "dca536197bdba89a35960923aed478b6945f037612734ea104fab944f99c7db1",
+        "seconds": 98.4323736471124,
+        "status": "unsupported"
+      },
+      {
+        "report": "independent/baseline-v1/methodclosure-static-own-child-members-literal-empty-retired-sources-receiver-throw/report.json",
+        "sha256": "a1a3412058b41dac228cb7b910e773f06637f48ba6c8196e7d57af3f6a84a0fc",
+        "seconds": 106.9323951350525,
+        "status": "unsupported"
+      }
+    ],
+    "fixture_failures": [
+      {
+        "report": "independent/fixture-v1-cv/launch.json",
+        "sha256": "e46a563b126f4353b88711c4e9ccf9b0cc73fb5fadfabe7a420318993c22a370",
+        "seconds": 12.333389862906188,
+        "assertions": 506
+      },
+      {
+        "report": "independent/fixture-v2-cv/launch.json",
+        "sha256": "46d5b6e0f9992ff943cf0f8d7b778466f3c9ef6de27bfd0efe72cd981cea1f06",
+        "seconds": 107.39816581900232,
+        "assertions": 507
+      },
+      {
+        "report": "independent/fixture-v3-literal/launch.json",
+        "sha256": "e9ce9c54a360575cb6b761f125b88853f969eaa45fcc6f589b87497b88abce60",
+        "seconds": 114.70262484485283,
+        "assertions": 526
+      }
+    ],
+    "note": "The three fixture failures are unbound PARENT inside a conjunction, duplicate member/class counterfeit labels, and two inapplicable CV-helper conclusions on literal Empty. Corrections affect fixture code only; literal uses actual RV-kind refusal. No runtime/source/native correction, timeout or historical replay; literal was unrun before its first recorded attempt."
+  },
+  "canonical_composition": {
+    "actual_main": "1e7ec939d96a82d4ea9c67716621f29331f925da",
+    "actual_tree": "3abe01a2d3d560fd464f6398e26c4b8f4037a8d0",
+    "projection": "Peer13 direct read-only Git-object comparison against whole90961219; five runtime/test files exact and four Make additions once. No separate projection file or receipt.",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main55-ref77-get-own-child-current-load-v1/report.json",
+    "report_sha256": "dde26fe2a3e50dbc84ff806c7fc5a8b4c5c1e94ba8eaff7bf1065fb27dc1fa3e",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "seconds": 16.084937317995355,
+    "timeout_seconds": 60,
+    "source_credit": 0,
+    "note": "Sole saved actual MAIN production-SL canonical load; exact tuple, current module/argv/watched counts, caps, raw bytes, stability and reaping are in the report, independently read by peer13. Private507 source/fixture evidence is separate."
+  },
+  "independent_review": "The retained GET review role independently settled the contract, retained peer12's frozen Empty originals, checked their semantics and authored/refined adversarial fixtures. Reviewer13 executed independent native/prelaw/source/fixture checks, cleared whole90961219 exact6 directly to sole MAIN, and alone read the one actual source/SAME saved canonical tuple. No duplicate author read/run or receipt chain.",
+  "remaining": "Properties/constants/traits/interfaces, wider class headers/ancestry, nonpublic/instance selected methods, wider selectors/namespaces/producers/consumers/lifetimes and full core remain partial. All exact standing holds remain unchanged.",
+  "recovery": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-own-child-members-quiet-get/{author,independent}; original sources, streams, raw fixtures and failures are external evidence, not runtime/build prerequisites. Source/metadata manifests remain in the retained author .tools/methodclosure-static-own-child-members-quiet-get-ready."
+}

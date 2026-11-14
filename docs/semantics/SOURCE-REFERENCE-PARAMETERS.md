@@ -703,6 +703,19 @@ object-triple expectations without historical renewal. Preserved fixture and
 expectation failures remain zero credit. Class-name/callable/iterable types, wider
 contexts and all exact held dependencies, including V110, remain partial.
 
+Completed ordinary-CV producers also admit canonical fully qualified `\stdClass`
+required formals and returns. The raw `NNameFullyQualified` bytes equal the sole
+normalized class-name bytes before case-insensitive stdClass matching. Actual
+reception/return verification, ordinary BYREF rebinding, producer retirement and
+separate untyped private Notice-cell ownership retain their existing rules.
+The [FQN stdClass review](../../coverage/semantics/cv-fqn-stdclass-producer-reference-notice-review.json)
+keeps five native originals once (three Notice, one RECEIVE-priority and one
+RETURN-priority), author295/peer156 and prelaw145/80 fixture-SL507 cuts separate
+from the sole composed actual1e7ec939d SL508 load. The first peer elaboration
+failure and unexecuted controller/Make recipe retain zero credit. Nullable,
+union, plain/imported and wider class types, broader contexts and all exact held
+dependencies remain partial; V110 gains no lifecycle or operation coverage.
+
 Root Notice operands now also admit non-NUL REQUEST strings whose identity and
 bytes match current `STRINGDATA`. At the REF40 cut only KNOWN operands and the existing
 unconstrained scalar REFERENCE arm used this state-aware check; nested array/object
