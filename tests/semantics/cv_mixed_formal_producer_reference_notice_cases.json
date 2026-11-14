@@ -1,0 +1,71 @@
+[
+  {
+    "id": "singleton-mixed-formal-request-string-identity-and-private-byte-cow",
+    "source": "<?php\nnamespace MixedFormalStringIdentity68 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(mIxEd $saved):mIxEd{echo 'M:',(int)($saved==='17'),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){$local=$value;$value[0]='X';echo 'F:',(int)($local==='17'),':',(int)($value==='X7'),';';return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('MixedFormalStringIdentity68\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',(int)($r==='X7'),':',$x,':',(int)($snapshot==='17'),';';$r[1]='Y';echo 'D:',(int)($r==='XY'),':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "mixed",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1:1;R:1:23:1;D:1:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "63679648cd08d6dedca4b413f1e752e8eb25d007a61b0ee6aae8230e5ae9be2a",
+    "argument_count": 1,
+    "consumer_index": 0,
+    "formal_kinds": [
+      "mixed"
+    ],
+    "formal_nullable": [
+      false
+    ],
+    "formal_byrefs": [
+      false
+    ],
+    "return_kind": "mixed",
+    "return_shape": "identifier",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_mixed_return_producer_reference_notice_cases.json",
+      "id": "singleton-mixed-return-request-string-identity-and-private-byte-cow",
+      "source_sha256": "b00e1ce6e1e16d864a330ea5a45332707429d9bc93fce1d0997f9d17e49808b5",
+      "edits": "Fresh namespace and required mIxEd formal headers; remaining original bytes retained."
+    },
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1:1;R:1:23:1;D:1:23:1;P:43:23:1;"
+  },
+  {
+    "id": "multiple-cv-mixed-formals-owned-array-snapshot-and-private-cow",
+    "source": "<?php\nnamespace MultiCvMixedFormalArray68 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(mIxEd $saved,mIxEd &$changed):mIxEd{$changed=23;unset($GLOBALS['x']);echo 'M:',$saved[0],':',$changed,':',(int)isset($GLOBALS['x']),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value[0],':',(int)($value[0]==='17'),';';$value[0][0]='X';$prefix=31;return $value;}\n$seed=(string)17;$snapshot=$seed;$x=[$seed];$copy=$x;unset($seed);$y=5;$yAlias=&$y;set_error_handler('MultiCvMixedFormalArray68\\\\h',8);echo 'A;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$copy[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),';';$r=41;echo 'P:',$r,':',$copy[0],';';unset($copy,$y);$yAlias=43;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),';';\n}\n",
+    "source_sha256": "ab511fb2996c399aae204e56c5f70e693daa3faceaf20215e541daa54afd64b8",
+    "native_stdout_template": "A;M:17:23:0;H:{notice_line}:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;",
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_kind": "mixed",
+    "return_shape": "identifier",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_mixed_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-mixed-return-owned-array-snapshot-and-private-cow",
+      "source_sha256": "29db4fe6364e222e4a26c5e60decfc8bc4f26496cf90a4d8a50db7841f3e926f",
+      "edits": "Fresh namespace and required mIxEd formal headers; remaining original bytes retained."
+    },
+    "argument_count": 2,
+    "consumer_index": 1,
+    "formal_kinds": [
+      "mixed",
+      "mixed"
+    ],
+    "formal_nullable": [
+      false,
+      false
+    ],
+    "formal_byrefs": [
+      false,
+      true
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "A;M:17:23:0;H:8:0:23;F:29:17:1;R:X7:17:31:37:1;P:41:17;Q:41:37:43:1;"
+  }
+]

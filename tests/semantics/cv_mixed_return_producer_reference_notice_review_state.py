@@ -196,7 +196,7 @@ def normal(initial, case, front):
             '~' + header.replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.REQUIRED = false]]])'),
             '~' + header.replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.VARIADIC = true]]])'),
             '~' + header.replace('SEQUENCE ([phpType7]),', 'SEQUENCE ([NArg ABSENT (NScalarInt (INTEGER 5) metadata_arg) (BOOLEAN false) (BOOLEAN false) metadata_arg]),'),
-            '~$reference_notice_producer_header(SEQUENCE ([phpType7]), SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "mixed"]))]]]])',
+            '$reference_notice_producer_header(SEQUENCE ([phpType7]), SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) phpType18 (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = [(PTBRANCH ([PTBUILTIN "mixed"]))]]]])',
             '~$error_call_valid(S_notice, perrorcall[.LINE = 9])',
             '~$error_call_valid(S_notice, perrorcall[.LEVEL = 2])',
             'S_zero = $drive(S_notice, 0)', r'S_zero.COMPLETION = BUDGET /\ S_zero[.COMPLETION = NORMAL] = S_notice',
