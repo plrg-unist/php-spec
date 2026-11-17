@@ -86,8 +86,8 @@ negative_zero = base + ['|pfunction.SIGNATURE.PARAMETERS| = 1',
 boundary = base + ['|pfunction.SIGNATURE.PARAMETERS| = 4']
 for index in (0,2,3):
     boundary += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
-                 f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-                 f'~$lossy_optional_integer_deferred(S,pfunction,{index})']
+                 f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PINT 1)' if index == 3 else 'eps'),
+                 ('' if index == 3 else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
 boundary += ['$default_at(pfunction.DEFAULTS,1) = (pdefault_1)',
              '$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_1.ORIGIN) = (PBOOL false)',
              '$lossy_optional_integer_deferred(S,pfunction,1)']

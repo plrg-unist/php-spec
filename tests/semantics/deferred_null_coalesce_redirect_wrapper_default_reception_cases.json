@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-coalesce-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullRedirect295($p0 = (NULL ?? (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = (NULL ?? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (NULL ?? (((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p3 = (NULL ?? ((-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = (NULL ?? ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (NULL ?? (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p6 = (NULL ?? (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false))), $p7 = (NULL ?? (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawNullRedirect295();\nrawNullRedirect295();\n",
+    "purpose": "Literal NULL-left coalesce transports a genuinely emitted RHS with NULL/BOOL/INT/FLOAT tags, negative FLOAT zero and quiet NaN through cold/warm default caches.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "c4be7f6ec4f7b12d67b2da7b1ee373298c3bdac7931bb293092fcbd7a6fdefb0"
+  },
+  {
+    "id": "deferred-null-coalesce-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullRedirect295;\nuse const E_WARNING as Base295;\nuse const E_ERROR as One295;\nfunction warning295($errno, $message, $file, $line) {\n    global $x295;\n    echo 'warning:', $message, '|';\n    defaults295(2);\n    $x295 = 3.5;\n}\nfunction defaults295(int $first, int &$nullBool = (int)(NULL ?? (((bool)(+(-((float)(+(Base295 === One295)))))))), int &$nullInt = (int)(NULL ?? (((int)(!((bool)(+(-((float)(+(Base295 === One295)))))))))), int &$negativeZero = (int)(NULL ?? ((-((float)((bool)(+(-((float)(+(Base295 === One295)))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $nullBool, ':', $nullInt, ':', $negativeZero, ':', $last, '|';\n    $nullBool = 19;\n    $nullInt = 20;\n    $negativeZero = 21;\n}\n\\set_error_handler('NullRedirect295\\\\warning295');\n$x295 = 1.5;\n$last295 = 8;\ndefaults295(last: $last295, first: $x295);\necho 'outer:x=', $x295, '|';\n",
+    "purpose": "Literal NULL-left redirects preserve actual BOOL/INT/negative-zero RHS before INT private BYREF reception and named precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:7|body:1:0:1:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "35262d7d58d2390fbb4bebad44bb47ccba37f3b04abb1aa9439566950c950517"
+  }
+]
