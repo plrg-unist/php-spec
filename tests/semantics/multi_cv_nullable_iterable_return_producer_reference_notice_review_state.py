@@ -57,7 +57,7 @@ def controls(case):
     lines.append('~' + header + RAW_NULLABLE + ', ' + signature + '[.RETURNS = ' + branches(['array', 'null']) + '])')
     for members in (['iterable', 'null'], ['null', 'iterable']):
         nodes = [RAW if kind == 'iterable' else 'NIdentifier (BYTES "bnVsbA==") metadata_identifier' for kind in members]
-        lines.append('~' + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = ' + branches(members) + '])')
+        lines.append(header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = ' + branches(members) + '])')
     if case['caller_kind'] == 'generator':
         lines.append('~$named_reference_notice_operand(S_pre, KNOWN (POBJECT n_generator))')
     return lines

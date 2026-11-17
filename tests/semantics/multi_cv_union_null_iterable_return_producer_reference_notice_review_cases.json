@@ -1,0 +1,118 @@
+[
+  {
+    "id": "first-ordered-formal-iterable-null-return-generator-byref-second-int-null-result-private-cell-cow",
+    "namespace": "ReviewFirstGeneratorMultiCvUnionNullIterableReturn104",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "generator",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace ReviewFirstGeneratorMultiCvUnionNullIterableReturn104;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x=['n'=>23];echo 'H:',$line,';';return true;}\nfunction make(null|iTeRaBlE &$saved,int $stamp):iTeRaBlE|null{echo 'S:',$stamp,';';echo 'M:',(int)($saved instanceof \\Traversable),';';$saved=null;return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=produce();$copy=$x;$kept=$copy;$alias=&$x;set_error_handler('ReviewFirstGeneratorMultiCvUnionNullIterableReturn104\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x['n'],':',$alias['n'],':',(int)($copy===$kept),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===$kept),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:1;H:9;F:1;R:41:23:23:1;C:43:41;D:done:41:1;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "abee2bfac94109d210b098cf8ebcf7aee280b3b60a1a808f68d815d7f08ab036",
+    "derived_from": {
+      "id": "first-ordered-formal-nullable-iterable-return-generator-byref-second-int-null-result-private-cell-cow",
+      "source_sha256": "6e591c951f3b26de2273c53333017d05daf9a23b8e867046bd4d9afc77e955e6",
+      "catalogue": "tests/semantics/multi_cv_nullable_iterable_return_producer_reference_notice_review_cases.json",
+      "edits": "Fresh namespace; canonical raw ?iterable becomes an exact ordered iterable|null or null|iterable return. Required CV/formal positions, retained Generator-to-NULL or array result, multiline diagnostics and ownership operations remain. The two completing cases use return order opposite to their iterable formal order."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 9,
+    "last_actual_source_line": 10,
+    "first_actual_source_line": 9
+  },
+  {
+    "id": "first-ordered-formal-null-iterable-return-array-byref-second-int-handler-throw-retirement",
+    "namespace": "ReviewFirstArrayMultiCvUnionNullIterableReturn104",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstArrayMultiCvUnionNullIterableReturn104;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved,int $stamp):null|iTeRaBlE{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewFirstArrayMultiCvUnionNullIterableReturn104\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "622e49f042428977e389cd24708392bb7bb3f253165418e4bcbe971d01f7576d",
+    "derived_from": {
+      "id": "first-ordered-formal-nullable-iterable-return-array-byref-second-int-handler-throw-retirement",
+      "source_sha256": "0b2e102581593b83850b77e3b218aa074c77d5d82025cce0034a021c58b938bb",
+      "catalogue": "tests/semantics/multi_cv_nullable_iterable_return_producer_reference_notice_review_cases.json",
+      "edits": "Fresh namespace; canonical raw ?iterable becomes an exact ordered iterable|null or null|iterable return. Required CV/formal positions, retained Generator-to-NULL or array result, multiline diagnostics and ownership operations remain. The two completing cases use return order opposite to their iterable formal order."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  },
+  {
+    "id": "weak-first-ordered-formal-null-iterable-return-string-receive-priority-before-second-int-body-and-notice",
+    "namespace": "ReviewWeakFirstMultiCvUnionNullIterableReturnPriority104",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "caller_kind": "string",
+    "priority_control": true,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewWeakFirstMultiCvUnionNullIterableReturnPriority104;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;echo 'BAD-H;';return true;}\nfunction make(null|iTeRaBlE $saved,int $stamp):null|iTeRaBlE{echo 'S:',$stamp,';';echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewWeakFirstMultiCvUnionNullIterableReturnPriority104\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;Z:7;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "03c31435d8d261a3c5afc52e577ee015af8fcdedf0ac79dc7dba7de2c72ef44b",
+    "derived_from": {
+      "id": "weak-first-ordered-formal-nullable-iterable-return-string-receive-priority-before-second-int-body-and-notice",
+      "source_sha256": "c36b58bf674c2a61741ac5c7c5a15e86cfb9f7cab08c2aa0bf3bef8a7f7f98ba",
+      "catalogue": "tests/semantics/multi_cv_nullable_iterable_return_producer_reference_notice_review_cases.json",
+      "edits": "Fresh namespace; canonical raw ?iterable becomes an exact ordered iterable|null or null|iterable return. Required CV/formal positions, retained Generator-to-NULL or array result, multiline diagnostics and ownership operations remain. The two completing cases use return order opposite to their iterable formal order."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  }
+]

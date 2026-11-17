@@ -94,8 +94,6 @@ def controls(case):
     for line in prior.controls(case):
         if '[.PARAMETERS = [psparam[.' in line:
             continue
-        if line.startswith(header + 'NUnionType '):
-            line = '~' + line
         lines.append(line)
     if case.get('priority_control'):
         return lines
