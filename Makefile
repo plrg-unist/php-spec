@@ -1169,6 +1169,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_warning_sources.py --output "$$nested_unset_cv_range_warning_out/source" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_warning_protocol.py --source-report "$$nested_unset_cv_range_warning_out/source/report.json" --output "$$nested_unset_cv_range_warning_out/return-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_warning_review_state.py --source-report "$$nested_unset_cv_range_warning_out/source/report.json" --output "$$nested_unset_cv_range_warning_out/peer-throw-state"
+	@nested_unset_cv_range_default_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-range-default-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_sources.py --output "$$nested_unset_cv_range_default_out/source" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_protocol.py --source-report "$$nested_unset_cv_range_default_out/source/report.json" --output "$$nested_unset_cv_range_default_out/other-mask-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_review_state.py --source-report "$$nested_unset_cv_range_default_out/source/report.json" --output "$$nested_unset_cv_range_default_out/restored-mask-state"
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"

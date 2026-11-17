@@ -255,7 +255,7 @@ def $string_unset_cv_range_plan(S) = ((porigin, z, n_cell, n_bits))
   -- if S.RESULT = KNOWN PNULL
   -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
   -- if $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits)
-  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if $arithmetic_add_named(S)
   -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
 def $string_unset_cv_range_plan(S) = eps -- otherwise
 

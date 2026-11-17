@@ -11,6 +11,7 @@ import string_offset_nested_unset_bool_cv_float_post_review_state as shared
 import string_offset_nested_unset_bool_cv_range_warning_cases as cases
 
 FRONT_ONLY = False
+DEFAULT_ONLY = False
 PREFIX = shared.PREFIX + r'''
 dec $review_range_at(pstate, text) : bool
 def $review_range_at(S, "entered") = true
@@ -31,6 +32,20 @@ def $review_range_seek(S, text, n) = $review_range_seek($drive_steps($review_cv_
   -- if ~$review_range_at(S, text)
   -- if S.COMPLETION = NORMAL \/ S.COMPLETION = BUDGET
 '''
+
+
+def default_checks():
+    checks = ['S_P.DISPLAYINIT = ($ptascii("stderr"))',
+        'S_P.DISPLAYINI = S_P.DISPLAYINIT', '$display_state_mode(S_P) = 2']
+    for mask in (0, 512):
+        state = 'S_range_normal_mask_' + str(mask)
+        checks += [state + ' = S_P[.ERRORHANDLER.LEVELS = ' + str(mask) + ']',
+            '$string_unset_cv_range_plan(' + state + ') = ((porigin_site, z, n_key, n_bits))',
+            'PhpStep: ' + state + ' ~> ' + state + '_next',
+            state + '_next.TODO = (STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits) :: ptask_after*',
+            state + '_next = ' + state + '[.TODO = (STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits) :: ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.ERRORFATALTRACE = eps][.EVENTS = ' + state + '.EVENTS ++ [DIAGNOSTIC "Warning" n_message* z]]',
+            '$call_task_valid(' + state + '_next, STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits)']
+    return checks
 
 
 def conditions(program, path):
@@ -99,6 +114,9 @@ def conditions(program, path):
             'PhpStep: S_P ~> S_unsupported',
             'S_unsupported = S_P[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
         ], 0
+    if DEFAULT_ONLY:
+        changed = default_checks()
+        return checks + changed, len(changed)
     checks += [
         'S_P.RESULT = KNOWN PNULL',
         r'S_P.SOURCEPENDING = eps /\ S_P.CONSTCONTEXT = eps',
@@ -191,8 +209,6 @@ def conditions(program, path):
     ):
         checks += ['~$error_call_valid(' + changed + ', perrorcall_range)']
     for tag, changed in (
-        ('masked', 'S_P[.ERRORHANDLER.LEVELS = 0]'),
-        ('other_level', 'S_P[.ERRORHANDLER.LEVELS = 512]'),
         ('default', 'S_P[.ERRORHANDLER.CALLBACK = eps]'),
         ('nonfinite', 'S_P[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]'),
         ('reference', 'S_P[.REFCELLS = S_P.REFCELLS ++ [n_key]]'),
@@ -202,7 +218,7 @@ def conditions(program, path):
             '$string_unset_cv_range_plan(' + state + ') = eps',
             'PhpStep: ' + state + ' ~> ' + state + '_next',
             state + '_next = ' + state + '[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
-    checks += [
+    checks += default_checks() + [
         '$string_unset_cv_range_plan(S_P[.COMPLETION = BUDGET]) = eps',
         '$string_unset_cv_range_plan(S_P[.RESULT = KNOWN (PINT 7)]) = eps',
         '$string_unset_cv_range_plan(S_P[.STORE[n_key] = DEFINED (PFLOAT 0)]) = eps',
@@ -233,6 +249,10 @@ if __name__ == '__main__':
     FRONT_ONLY = '--front-only' in sys.argv
     if FRONT_ONLY:
         sys.argv.remove('--front-only')
+    DEFAULT_ONLY = '--default-only' in sys.argv
+    if DEFAULT_ONLY:
+        sys.argv.remove('--default-only')
+        assert not FRONT_ONLY
     own = Path(__file__).resolve()
     watched = [own, Path(shared.__file__), Path(shared.seek.__file__), Path(shared.sl.__file__),
                Path(cases.prior.__file__), Path(cases.prior.prior.__file__),
@@ -252,11 +272,16 @@ if __name__ == '__main__':
         'handler returns. Actual source/CODE/saved n/finite nonfitting bits/full quiet read, restored '
         'eligible callback and existing pure range formatter precede the current exact Unsupported step. '
         'No new range-plan/task premise establishes reachability. Source0/native0; exact native reused.' if FRONT_ONLY else
+        'Only two formerly refused normal Warning-excluding mask controls now use the existing stderr '
+        'default renderer and copied range task with the exact original caller tail. The old fixture '
+        'display profile stays literal; closed full secondThrow/whole campaigns are not renewed. '
+        'Source0/native0; exact saved native reused.' if DEFAULT_ONLY else
         'Independent secondary Warning preserves the entire actual caller tail and copied finite OOB '
         'bits/source/saved-cell authority. Actual second callback overwrites the old CV with INTERNED '
         'done; selected task remains valid without snapshot reread, generic discard preserves the same '
         'range Exception and raw callback, no task roots and exact whole/split equality. Forged '
-        'source/line/level/message/event/snapshot/bits and masked/default/nonfinite/ref guards refuse. '
+        'source/line/level/message/event/snapshot/bits and absent/nonfinite/ref guards refuse; normal '
+        'Warning-excluding masks use existing default reporting. '
         'First pending finite-OOB discard stays separate. Source0/native0; exact native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

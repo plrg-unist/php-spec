@@ -12,6 +12,7 @@ import string_offset_nested_unset_null_warning_protocol as sl
 import string_offset_nested_unset_bool_cv_warning_review_state as shared
 import string_offset_nested_unset_bool_cv_range_warning_cases as cases
 
+DEFAULT_ONLY = False
 PREFIX = shared.PREFIX + r'''
 dec $range_unset_at(pstate, text) : bool
 def $range_unset_at(S, "entered") = true
@@ -40,6 +41,18 @@ def seek(start, stage, target):
     return [target + '_found = $range_unset_seek(' + start + ', "' + stage + '", 1000)',
         '$range_unset_at(' + target + '_found, "' + stage + '")',
         target + ' = $review_cv_running(' + target + '_found)']
+
+
+def default_mask_checks():
+    checks = ['ptask_range = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits',
+        'S_R.DISPLAYINI = ($ptascii("stderr"))', '$display_mode(S_R.DISPLAYINI) = 2']
+    for mask in (0, 512):
+        state = 'S_range_mask_' + str(mask)
+        checks += [state + ' = S_R[.ERRORHANDLER.LEVELS = ' + str(mask) + ']',
+            '$string_unset_cv_range_plan(' + state + ') = ((porigin_site, z, n_key, n_bits))',
+            'PhpStep: ' + state + ' ~> ' + state + '_next',
+            state + '_next = ' + state + '[.TODO = ptask_range :: ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.ERRORFATALTRACE = eps][.EVENTS = ' + state + '.EVENTS ++ [DIAGNOSTIC "Warning" n_message* z]]']
+    return checks
 
 
 def conditions(program, path):
@@ -105,6 +118,10 @@ def conditions(program, path):
         '$drive_steps(S_R, 1) = S_dispatch[.COMPLETION = BUDGET]',
         *shared.public('S_dispatch'),
     ]
+    if DEFAULT_ONLY:
+        end = checks.index('$string_unset_cv_range_plan(S_R) = ((porigin_site, z, n_key, n_bits))')
+        changed = default_mask_checks()
+        return checks[:end] + changed, len(changed)
     reached = len(checks)
     for field, value in (('LINE', '$(z + 1)'), ('LEVEL', '8'),
                          ('MESSAGE', '$ptascii("forged")'),
@@ -126,8 +143,6 @@ def conditions(program, path):
                  9218868437227405313, 18446744073709551616):
         checks.append('~$string_unset_cv_range_bits(' + str(bits) + ')')
     for tag, changed in (
-        ('mask', 'S_R[.ERRORHANDLER.LEVELS = 0]'),
-        ('other_mask', 'S_R[.ERRORHANDLER.LEVELS = 512]'),
         ('no_callback', 'S_R[.ERRORHANDLER.CALLBACK = eps]'),
         ('nonnamed', 'S_R[.ERRORHANDLER.CALLBACK = (PARRAY 0)]'),
         ('budget', 'S_R[.COMPLETION = BUDGET]'),
@@ -144,11 +159,10 @@ def conditions(program, path):
         state = 'S_range_bad_' + tag
         checks += [state + ' = ' + changed, '$string_unset_cv_range_plan(' + state + ') = eps']
     checks += [
-        'PhpStep: S_range_bad_mask ~> S_range_mask_next',
-        'S_range_mask_next = S_range_bad_mask[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
         'PhpStep: S_range_bad_nonfinite ~> S_range_nonfinite_next',
         'S_range_nonfinite_next = S_range_bad_nonfinite[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
     ]
+    checks += default_mask_checks()
     derived = len(checks) - reached
     checks += seek('S_dispatch', 'entered', 'S_entered') + [
         'S_entered.FRAMES = pframe :: pframe_tail*',
@@ -196,6 +210,9 @@ if __name__ == '__main__':
     own = Path(__file__).resolve()
     watched = [own, Path(shared.__file__), Path(sl.__file__), Path(cases.prior.__file__)]
     before = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}
+    DEFAULT_ONLY = '--default-only' in sys.argv
+    if DEFAULT_ONLY:
+        sys.argv.remove('--default-only')
     runner.NAME, runner.OUTPUT = cases.RETURN, cases.OUTPUTS[cases.RETURN]
     runner.cases, runner.conditions, runner.PREFIX, runner.recorded = cases, conditions, PREFIX, sl.recorded
     passed = runner.main()
@@ -204,10 +221,14 @@ if __name__ == '__main__':
     report = json.loads(p.read_bytes())
     report['inputs'].update(before)
     report['mode'], report['raw_unset_steps'] = 'SL', 2
-    report['scope'] = ('Actual NORMAL first-handler resume snapshots the finite OOB value before the second '
+    report['scope'] = ('Only the old normal mask0/512 refusals now use existing stderr-default reporting '
+        'with the same copied range resume and complete caller tail. Original php_run startup explicitly '
+        'selects stderr; this affected-only cut renews no closed eligible-handler campaign. Source0/native0.' if DEFAULT_ONLY else
+        'Actual NORMAL first-handler resume snapshots the finite OOB value before the second '
         'Warning. Dispatch preserves the complete original caller tail, exact pure message and nonowning '
         'source/cell/bits task; pretarget snapshot, selected callback, source and bit forgeries remain checked. '
         'Second return restores the callback and raises the fixed nested Error without a converter replay; '
-        'normal/masked/nonfinite bounds, heap, final storage and whole/split budgets retain source0/native0.')
+        'normal ineligible named masks use default reporting while absent/nonfinite bounds, heap, final '
+        'storage and whole/split budgets retain source0/native0.')
     p.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

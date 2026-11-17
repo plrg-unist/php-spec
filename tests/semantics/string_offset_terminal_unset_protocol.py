@@ -121,7 +121,7 @@ $unset_terminal_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], PSTRING ($ptascii("ab"
     return checks, len(checks) - reached_count
 
 
-def main():
+def main(expected_stderr=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source-report', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
@@ -135,7 +135,8 @@ def main():
     assert source.is_absolute() and source.read_bytes() == cases.CASES[NAME]
     digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
     assert digest(source) == row['source_sha256']
-    assert source.with_name('native.stdout').read_bytes() == OUTPUT and not source.with_name('native.stderr').read_bytes()
+    assert source.with_name('native.stdout').read_bytes() == OUTPUT
+    assert source.with_name('native.stderr').read_bytes() == (expected_stderr(source) if expected_stderr else b'')
     profile = json.loads((ROOT / 'tests/semantics/profile.json').read_bytes())
     assert source_report['profile'] == profile
     hashes = [value for path, value in source_report['inputs'].items() if path == '.tools/php/bin/php' or path.endswith('/.tools/php/bin/php')]
