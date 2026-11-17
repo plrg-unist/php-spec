@@ -16,9 +16,9 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover quiet NaN equality, integer-bitwise-NOT shorthand
-bases, nullable-iterable multi-CV returns and phase-safe Boolean default leaves.
-Exact source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md) separates source agreements,
+Recent reviewed extensions cover quiet NaN equality, integer and one-byte STRING
+bitwise-NOT shorthand bases, nullable-iterable multi-CV returns and phase-safe
+Boolean default leaves. Exact source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md) separates source agreements,
 fixture checks and combined production loads; complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
 `PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,
