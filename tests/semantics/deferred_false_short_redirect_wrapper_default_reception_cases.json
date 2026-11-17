@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-false-short-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawFalseRedirect296($p0 = (false ?: (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = (false ?: ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (false ?: (((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p3 = (false ?: ((-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = (false ?: ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (false ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p6 = (false ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false))), $p7 = (false ?: (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawFalseRedirect296();\nrawFalseRedirect296();\n",
+    "purpose": "Literal-false shorthand redirects to genuinely emitted NULL/BOOL/INT/FLOAT RHS values, including negative FLOAT zero and quiet NaN, preserving cold/warm cache tags.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "eec5b0026fd10a0e741cd90b4f3678202f4c6226f9271ad690566253bd3fe04c"
+  },
+  {
+    "id": "deferred-false-short-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FalseRedirect296;\nuse const E_WARNING as Base296;\nuse const E_ERROR as One296;\nfunction warning296($errno, $message, $file, $line) {\n    global $x296;\n    echo 'warning:', $message, '|';\n    defaults296(2);\n    $x296 = 3.5;\n}\nfunction defaults296(int $first, int &$nullBool = (int)(false ?: (((bool)(+(-((float)(+(Base296 === One296)))))))), int &$nullInt = (int)(false ?: (((int)(!((bool)(+(-((float)(+(Base296 === One296)))))))))), int &$negativeZero = (int)(false ?: ((-((float)((bool)(+(-((float)(+(Base296 === One296)))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $nullBool, ':', $nullInt, ':', $negativeZero, ':', $last, '|';\n    $nullBool = 19;\n    $nullInt = 20;\n    $negativeZero = 21;\n}\n\\set_error_handler('FalseRedirect296\\\\warning296');\n$x296 = 1.5;\n$last296 = 8;\ndefaults296(last: $last296, first: $x296);\necho 'outer:x=', $x296, '|';\n",
+    "purpose": "Literal-false shorthand redirects preserve actual BOOL/INT/negative-zero RHS before INT private BYREF reception and named precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:7|body:1:0:1:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "14b929c025f11a38999ee09f34f97b6f5d30d7145f67e30334010e5523c184ca"
+  }
+]

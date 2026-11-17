@@ -85,8 +85,8 @@ expressions = [f'false ?: {truth}', f'0 ?: {selected}', f'NULL ?? {selected}', '
 boundary = base + ['|pfunction.SIGNATURE.PARAMETERS| = 4']
 for index in range(4):
     boundary += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PNULL)' if index in (2,3) else 'eps'),
-        ('' if index == 2 else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ['(PBOOL true)', 'eps', '(PNULL)', '(PNULL)'][index],
+        ('' if index in (0,2) else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
 context = ('S.CURRENT = (pcallcontext) -- if pcallcontext.FUNCTION = porigin_function '
            '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) '
            '-- if pfunction.ENV.NAMESPACE = $ptascii("NullTruth292") '
