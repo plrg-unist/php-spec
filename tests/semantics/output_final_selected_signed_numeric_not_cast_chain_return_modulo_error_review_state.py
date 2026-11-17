@@ -102,15 +102,17 @@ def frontier(name, fixture, path):
     state = (control.source_state([('pcpath_cast_1', nested)]) + '[.CODE = ' + function + '.CODE :: S.CODE]')
     if folded:
         state += control.pool_state('pcpath_cast_1', 'PBOOL false' if result == 'PBOOL true' else 'PBOOL true')[1:]
-    checks += [('a valid inner numeric NOT cannot certify a nested outer NOT with coherent parent source',
+    checks += [('a valid inner numeric NOT now certifies a strict opposite Boolean at its coherent outer NOT',
                 value(state, expression, function=function) + ' = (' + result + r') /\ ' +
-                value(state, nested, 'porigin_cast_1', function) + ' = eps')]
+                value(state, nested, 'porigin_cast_1', function) +
+                (' = (PBOOL false)' if result == 'PBOOL true' else ' = (PBOOL true)'))]
     child = current.expression(name, 1)
     outer = 'NExprBooleanNot (' + child + ') metadata_cast'
     state = control.source_state([('pcpath_cast', outer)])
-    checks += [('a valid quiet cast child cannot broaden numeric NOT despite coherent parent source',
+    cast_not = 'PBOOL true' if name in ['warning-left-constant', 'deprecated-both-cv-pair'] else 'PBOOL false'
+    checks += [('a valid quiet cast child now certifies an emitted NOT with its exact Boolean result',
                 value(state, child, 'porigin_cast_1') + ' = (' + current.CASTS[name][1][3] + r') /\ ' +
-                value(state, outer, 'porigin_cast') + ' = eps')]
+                value(state, outer, 'porigin_cast') + ' = (' + cast_not + ')')]
     if folded:
         checks += [('a folded signed INT NOT retains a strict PBOOL fact distinct from integer one',
                     value(control.pool_state('pcpath_not', 'PINT 1'), expression) + ' = eps')]

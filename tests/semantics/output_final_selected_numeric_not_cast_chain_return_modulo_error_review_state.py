@@ -128,7 +128,8 @@ def frontier(name, fixture, path):
     for leaf, typed in [('NScalarString (BYTES "MA==") metadata_raw', 'PSTRING ($ptascii("0"))'),
                         ('NExprArray (SEQUENCE eps) metadata_raw', 'PARRAY 0')]:
         state, _, expr = variant(name, leaf, typed, 'PBOOL true')
-        checks += [('quiet nonnumeric or owning child stays outside the raw literal contract',
+        checks += [(('the old numeric STRING substitution retains incompatible parent CODE' if typed.startswith('PSTRING') else
+                     'an owning ARRAY cannot supply a quiet child certificate'),
                     '~$ob_object_cast_chain_sign_literal(' + leaf + r') /\ ' + value(state, expr) + ' = eps')]
     bare = 'NStmtReturn (' + expression + ') metadata_cast_return'
     direct = current.CASTS[name][-1][0] + ' (' + expression + ') metadata_' + current.slot(len(current.CASTS[name]) - 1)
