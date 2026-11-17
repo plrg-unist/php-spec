@@ -2939,3 +2939,11 @@ Whole quiet normalization retains exact order and rejects duplicate resolved nam
 Existing defining source, own-public parentless body and real owner bounds remain.
 Mixtures with multiple nominal arms and builtins, DNF and wider lifetimes remain partial.
 [Review](../../coverage/semantics/nominal-union-parentless-short-reference-get-hook-review.json).
+
+Finite mixed unions with at least two quiet nominal arms and one compatible builtin
+arm consume raw and normalized singleton members together and count both kinds.
+The closed array/int/float/string/null/bool/false/true alphabet and whole quiet PTOK
+retain exact source order, compatibility and resolved-name authority without an arity cap.
+Existing own-public parentless body, alias, scalar/array and real owner bounds remain.
+DNF, iterable and wider source/value/modifier/owner/lifetime contexts remain partial.
+[Review](../../coverage/semantics/mixed-nominal-union-parentless-short-reference-get-hook-review.json).

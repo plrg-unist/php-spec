@@ -1,0 +1,253 @@
+{
+  "two-fq-bool": {
+    "id": "two-fq-bool",
+    "namespace": "I335A",
+    "payload_namespace": "I335A",
+    "names": [
+      "A",
+      "B"
+    ],
+    "raw_names": [
+      "bool",
+      "I335A\\B",
+      "I335A\\A"
+    ],
+    "raw_kinds": [
+      "NIdentifier",
+      "NNameFullyQualified",
+      "NNameFullyQualified"
+    ],
+    "resolved": [
+      {
+        "builtin": "bool"
+      },
+      {
+        "class": "I335A\\B"
+      },
+      {
+        "class": "I335A\\A"
+      }
+    ],
+    "imports": "",
+    "steps": [
+      {
+        "statement": "$r335 = true;",
+        "check": "$r335 === true && $s335 === true",
+        "value": "PBOOL true",
+        "marker": "T|"
+      },
+      {
+        "statement": "$s335 = false;",
+        "check": "$r335 === false && $s335 === false",
+        "value": "PBOOL false",
+        "marker": "L|"
+      }
+    ],
+    "bad": "127",
+    "free": "149",
+    "free_check": "$r335 === 149",
+    "consumer_namespace": "I335AX",
+    "header": "bool|\\I335A\\B|\\I335A\\A",
+    "class_names": [
+      "I335A\\B",
+      "I335A\\A"
+    ],
+    "typename": "I335A\\B|I335A\\A|bool",
+    "source": "two-fq-bool.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "default": "ABSENT",
+    "arity": 3,
+    "first_object": "I335A\\A",
+    "last_object": "I335A\\B",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s335 = new \\I335A\\B();",
+        "object": "I335A\\B",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|T|L|P|D|F|Z|"
+  },
+  "three-relative-true-string": {
+    "id": "three-relative-true-string",
+    "namespace": "I335B",
+    "payload_namespace": "I335B",
+    "names": [
+      "A",
+      "B",
+      "C"
+    ],
+    "raw_names": [
+      "C",
+      "true",
+      "A",
+      "string",
+      "B"
+    ],
+    "raw_kinds": [
+      "NNameRelative",
+      "NIdentifier",
+      "NName",
+      "NIdentifier",
+      "NNameRelative"
+    ],
+    "resolved": [
+      {
+        "class": "I335B\\C"
+      },
+      {
+        "builtin": "true"
+      },
+      {
+        "class": "I335B\\A"
+      },
+      {
+        "builtin": "string"
+      },
+      {
+        "class": "I335B\\B"
+      }
+    ],
+    "imports": "",
+    "steps": [
+      {
+        "statement": "$r335 = true;",
+        "check": "$r335 === true && $s335 === true",
+        "value": "PBOOL true",
+        "marker": "T|"
+      },
+      {
+        "statement": "$s335 = '12';",
+        "check": "$r335 === '12' && $s335 === '12'",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"12\"))",
+        "marker": "S|"
+      }
+    ],
+    "bad": "127",
+    "free": "149",
+    "free_check": "$r335 === 149",
+    "consumer_namespace": "I335BX",
+    "header": "namespace\\C|true|A|string|namespace\\B",
+    "class_names": [
+      "I335B\\C",
+      "I335B\\A",
+      "I335B\\B"
+    ],
+    "typename": "I335B\\C|I335B\\A|I335B\\B|string|true",
+    "source": "three-relative-true-string.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "default": "ABSENT",
+    "arity": 5,
+    "first_object": "I335B\\A",
+    "last_object": "I335B\\C",
+    "last_tag": 81,
+    "assignments": [
+      {
+        "statement": "$s335 = new \\I335B\\B();",
+        "object": "I335B\\B",
+        "tag": 71,
+        "marker": "O1|"
+      },
+      {
+        "statement": "$r335 = new \\I335B\\C();",
+        "object": "I335B\\C",
+        "tag": 81,
+        "marker": "O2|"
+      }
+    ],
+    "stdout": "I|C|O1|O2|W|J|T|S|P|D|F|Z|"
+  },
+  "two-imported-float-array-null": {
+    "id": "two-imported-float-array-null",
+    "namespace": "I335C",
+    "payload_namespace": "I335P",
+    "names": [
+      "A",
+      "B"
+    ],
+    "raw_names": [
+      "float",
+      "tReE\\B",
+      "array",
+      "aLpHa",
+      "null"
+    ],
+    "raw_kinds": [
+      "NIdentifier",
+      "NName",
+      "NIdentifier",
+      "NName",
+      "NIdentifier"
+    ],
+    "resolved": [
+      {
+        "builtin": "float"
+      },
+      {
+        "class": "I335P\\B"
+      },
+      {
+        "builtin": "array"
+      },
+      {
+        "class": "I335P\\A"
+      },
+      {
+        "builtin": "null"
+      }
+    ],
+    "imports": "use I335P as Tree;\nuse I335P\\A as Alpha;\n",
+    "steps": [
+      {
+        "statement": "$r335 = 3;",
+        "check": "$r335 === 3.0 && $s335 === 3.0",
+        "value": "PFLOAT 4613937818241073152",
+        "marker": "V|"
+      },
+      {
+        "statement": "$s335 = null;",
+        "check": "$r335 === null && $s335 === null",
+        "value": "PNULL",
+        "marker": "N|"
+      }
+    ],
+    "array": true,
+    "bad": "'bad335'",
+    "free": "false",
+    "free_check": "$r335 === false",
+    "consumer_namespace": "I335CX",
+    "header": "float|tReE\\B|array|aLpHa|null",
+    "class_names": [
+      "I335P\\B",
+      "I335P\\A"
+    ],
+    "typename": "I335P\\B|I335P\\A|array|float|null",
+    "source": "two-imported-float-array-null.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "default": "ABSENT",
+    "arity": 5,
+    "first_object": "I335P\\A",
+    "last_object": "I335P\\B",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s335 = new \\I335P\\B();",
+        "object": "I335P\\B",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|A|V|N|P|D|F|Z|"
+  }
+}
