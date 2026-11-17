@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-numeric-equality-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawNumericEquality280($p0 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) == ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) != ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p2 = ((+(-((float)(+(E_WARNING === E_ERROR))))) == (-((float)(+(E_WARNING === E_ERROR))))), $p3 = ((+(-((float)(+(E_WARNING === E_ERROR))))) != ((float)(((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = ((PHP_INT_MAX + ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))) == ((float)PHP_INT_MAX)), $p5 = (((float)PHP_INT_MAX) != (PHP_INT_MAX + ((int)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p6 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) == (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) != (+(-((float)(+(E_WARNING === E_ERROR)))))), $p8 = ((+(-((float)(+(E_WARNING === E_ERROR))))) == (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p9 = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) != (INF + (+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === true, ':', $p1 === true, ':', $p2 === true, ':', $p3 === true, ':', $p4 === true, ':', $p5 === false, ':', $p6 === false, ':', $p7 === true, ':', $p8 === false, ':', $p9 === false, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n}\nrawNumericEquality280();\nrawNumericEquality280();\n",
+    "purpose": "Actual numeric ==/!= retains raw Boolean cache tags for signed64 integers, opposite signed zeros, unequal floats, mixed MAX rounding, genuine emitted NaNs and infinities.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "c2af041b5ae883836e64964f0636bb4effd8f653bc4c62b621d5ed2b45266669"
+  },
+  {
+    "id": "deferred-numeric-equality-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NumericEquality280;\nuse const E_WARNING as Base280;\nuse const E_ERROR as One280;\nuse const PHP_INT_MAX as Max280;\nuse const NAN as Nan280;\nfunction warning280($errno, $message, $file, $line) {\n    global $x280;\n    echo 'warning:', $message, '|';\n    defaults280(2);\n    $x280 = 3.5;\n}\nfunction defaults280(int $first, int &$intEqual = (int)(((int)(+(-((float)(+(Base280 === One280)))))) == ((int)(+(-((float)(+(Base280 === One280))))))), int &$floatUnequal = (int)((+(-((float)(+(Base280 === One280))))) != ((float)(((int)(!(+(-((float)(+(Base280 === One280)))))))))), int &$roundedEqual = (int)((Max280 + ((int)(+(-((float)(+(Base280 === One280))))))) == ((float)Max280)), int &$nanEqual = (int)((Nan280 + (+(-((float)(+(Base280 === One280)))))) == (+(-((float)(+(Base280 === One280)))))), int $last = 7) {\n    echo 'body:', $first, ':', $intEqual, ':', $floatUnequal, ':', $roundedEqual, ':', $nanEqual, ':', $last, '|';\n    $intEqual = 19;\n    $floatUnequal = 20;\n    $roundedEqual = 21;\n    $nanEqual = 22;\n}\n\\set_error_handler('NumericEquality280\\\\warning280');\n$x280 = 1.5;\n$last280 = 8;\ndefaults280(last: $last280, first: $x280);\necho 'outer:x=', $x280, '|';\n",
+    "purpose": "Imported numeric equality/inequality including mixed MAX rounding and emitted NaN composes with INT-parent BYREF named defaults, private caches and Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:1:0:7|body:1:1:1:1:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "53daeb9785715352a3617ddf06535059c22cec0ebee4470103b84e7e63d556ba"
+  }
+]
