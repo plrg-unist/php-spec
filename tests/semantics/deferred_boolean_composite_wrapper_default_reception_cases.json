@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-boolean-composite-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawBooleanComposite286($p0 = ((!true) == ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = ((+(-((float)(+(E_WARNING === E_ERROR))))) != ((bool)0)), $p2 = ((false xor true) == (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) != (true && true)), $p4 = ((false && NAN) < (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <= (true || NAN)), $p6 = ((1 === 1) > (INF + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((-INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) >= (0 < 0)), $p8 = ((!true) <=> (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p9 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (!false)), $p10 = (((bool)1) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p11 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (false xor false)), $p12 = ((NAN == NAN) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p13 = ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((bool)0)), $p14 = ((1 <= 2) === ((int)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p15 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== (false || false))) {\n    echo 'raw:', $p0 === true, \":\", $p1 === false, \":\", $p2 === true, \":\", $p3 === false, \":\", $p4 === true, \":\", $p5 === true, \":\", $p6 === false, \":\", $p7 === true, \":\", $p8 === -1, \":\", $p9 === -1, \":\", $p10 === 0, \":\", $p11 === 1, \":\", $p12 === true, \":\", $p13 === true, \":\", $p14 === false, \":\", $p15 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n    $p12 = 31;\n    $p13 = 32;\n    $p14 = 33;\n    $p15 = 34;\n}\nrawBooleanComposite286();\nrawBooleanComposite286();\n",
+    "purpose": "Phase-safe NOT, BOOL cast, short/XOR and numeric comparison children retain actual PBOOL in emitted equality/order/SPACE/identity defaults, including quiet unused NaN and numeric NaN comparison, both orientations and cold/warm caches.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "639a0d6932549901e101b09ebe1e8ae8a053ce8626a8c1b71892ccf49b02c2c4"
+  },
+  {
+    "id": "deferred-boolean-composite-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanComposite286;\nuse const E_WARNING as Base286;\nuse const E_ERROR as One286;\nuse const NAN as Nan286;\nfunction warning286($errno, $message, $file, $line) {\n    global $x286;\n    echo 'warning:', $message, '|';\n    defaults286(2);\n    $x286 = 3.5;\n}\nfunction defaults286(int $first, int &$boolZero = (int)((!true) == ((int)(+(-((float)(+(Base286 === One286))))))), int &$nanLeft = (int)((Nan286 + (+(-((float)(+(Base286 === One286)))))) >= (true xor false)), int &$nanSpace = (int)(((bool)1) <=> (Nan286 + (+(-((float)(+(Base286 === One286))))))), int &$nanIdentity = (int)((Nan286 + (+(-((float)(+(Base286 === One286)))))) !== (true || NAN)), int $last = 7) {\n    echo 'body:', $first, ':', $boolZero, ':', $nanLeft, ':', $nanSpace, ':', $nanIdentity, ':', $last, '|';\n    $boolZero = 19;\n    $nanLeft = 20;\n    $nanSpace = 21;\n    $nanIdentity = 22;\n}\n\\set_error_handler('BooleanComposite286\\\\warning286');\n$x286 = 1.5;\n$last286 = 8;\ndefaults286(last: $last286, first: $x286);\necho 'outer:x=', $x286, '|';\n",
+    "purpose": "Authenticated composite BOOL children feed INT-parent BYREF named defaults and private caches under imported ENV and registered diagnostic-handler reentry, keeping unused NaN quiet.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:0:1:7|body:1:1:1:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "92b3e6c99d1756306612820c5212564d61ed42f4e00c37683f89654415283620"
+  }
+]

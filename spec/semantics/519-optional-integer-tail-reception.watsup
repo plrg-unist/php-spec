@@ -695,6 +695,9 @@ def $lossy_optional_integer_phase_children(S, plenv, n, (PCOCCURRENCE pcpath pcn
 dec $lossy_optional_integer_deferred_value(plenv, expression) : pvalue?
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PBOOL b)
   -- if $lossy_optional_integer_special(plenv, expression) = (PBOOL b)
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PBOOL b)
+  -- if $lossy_optional_integer_boolean_shape(expression)
+  -- if $lossy_optional_integer_condition(plenv, expression) = (b)
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)
