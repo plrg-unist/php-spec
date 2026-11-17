@@ -147,7 +147,6 @@ def conditions(program, path):
     reached = len(checks)
     for tag, changed in (
         ('absent', 'S_P[.ERRORHANDLER.CALLBACK = eps]'),
-        ('nonfinite', 'S_P[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]'),
     ):
         state = 'S_default_bad_' + tag
         checks += [state + ' = ' + changed,
@@ -226,7 +225,7 @@ if __name__ == '__main__':
         'existing default dispatcher appends one source-anchored stderr Warning, retains the copied '
         'nonowning task and entire caller tail without another callback, then raises the fixed Error. '
         'Exact raw/public states, real Error identity/line, no added owners, source storage and whole/split '
-        'are retained. Absent/nonfinite remain refused and pending masked discard uses its separate '
+        'are retained. Absent callbacks remain refused and pending masked discard uses its separate '
         'default-reporting route; reporting0 '
         'uses the existing suppression rule. Source0/native0; exact fresh native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')

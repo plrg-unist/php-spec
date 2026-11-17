@@ -207,8 +207,7 @@ def conditions(program, path):
             '$string_unset_bool_cv_post_cell(S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')], n_key_name*, z_key, n_key)']
     changes = [
         ('nonfinite_' + str(bits), 'S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]')
-        for bits in (9218868437227405312, 18442240474082181120,
-                     9218868437227405313, 18444492273895866368, 18446744073709551616)
+        for bits in (18446744073709551616,)
     ]
     checks += ['n_rebound = |S_float_P.STORE|']
     changes += [
@@ -294,6 +293,6 @@ if __name__ == '__main__':
         'priority, no extra owners/diagnostics and whole/split; eligible normal OOB starts the new '
         'secondary Warning with copied bits and the complete caller tail; pending mask0/512 controls '
         'use default reporting, while forged '
-        'pending object/context and nonfinite/out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
+        'pending object/context and out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

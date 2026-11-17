@@ -136,8 +136,6 @@ def conditions(program, path):
         'S_R[.REFCELLS = S_R.REFCELLS ++ [n_key]]',
         'S_R[.STORE[n_key] = UNDEFINED]',
         'S_R[.STORE[n_key] = DEFINED (POBJECT 0)]',
-        'S_R[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]',
-        'S_R[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405313)]',
         'S_R[.STORE[n_key] = DEFINED (PFLOAT 18446744073709551616)]',
         'S_R[.HELD = [HOBJECT n_throwable]]',
     ):

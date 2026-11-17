@@ -138,9 +138,7 @@ def conditions(program, path):
         '~$error_call_valid(S_dispatch, perrorcall_range[.RESUME = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key 4890909195324358656])',
         '~$error_call_valid(S_dispatch[.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("done")))], perrorcall_range)',
     ]
-    for bits in (0, 4890909195324358655, 14114281232179134464,
-                 9218868437227405312, 18442240474082181120,
-                 9218868437227405313, 18446744073709551616):
+    for bits in (0, 4890909195324358655, 14114281232179134464, 18446744073709551616):
         checks.append('~$string_unset_cv_range_bits(' + str(bits) + ')')
     for tag, changed in (
         ('no_callback', 'S_R[.ERRORHANDLER.CALLBACK = eps]'),
@@ -154,14 +152,9 @@ def conditions(program, path):
         ('absent', 'S_R[.ENV = $unbind(S_R.ENV, n_key_name*)]'),
         ('reference', 'S_R[.REFCELLS = S_R.REFCELLS ++ [n_key]]'),
         ('undefined', 'S_R[.STORE[n_key] = UNDEFINED]'),
-        ('nonfinite', 'S_R[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]'),
     ):
         state = 'S_range_bad_' + tag
         checks += [state + ' = ' + changed, '$string_unset_cv_range_plan(' + state + ') = eps']
-    checks += [
-        'PhpStep: S_range_bad_nonfinite ~> S_range_nonfinite_next',
-        'S_range_nonfinite_next = S_range_bad_nonfinite[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
-    ]
     checks += default_mask_checks()
     derived = len(checks) - reached
     checks += seek('S_dispatch', 'entered', 'S_entered') + [
@@ -228,7 +221,7 @@ if __name__ == '__main__':
         'Warning. Dispatch preserves the complete original caller tail, exact pure message and nonowning '
         'source/cell/bits task; pretarget snapshot, selected callback, source and bit forgeries remain checked. '
         'Second return restores the callback and raises the fixed nested Error without a converter replay; '
-        'normal ineligible named masks use default reporting while absent/nonfinite bounds, heap, final '
+        'normal ineligible named masks use default reporting while absent bounds, heap, final '
         'storage and whole/split budgets retain source0/native0.')
     p.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

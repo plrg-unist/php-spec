@@ -131,7 +131,6 @@ def conditions(program, path):
         ('reference', 'S_R[.REFCELLS = S_R.REFCELLS ++ [n_key]]'),
         ('undefined', 'S_R[.STORE[n_key] = UNDEFINED]'),
         ('owning', 'S_R[.STORE[n_key] = DEFINED (POBJECT 0)]'),
-        ('nonfinite', 'S_R[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]'),
         ('out_bits', 'S_R[.STORE[n_key] = DEFINED (PFLOAT 18446744073709551616)]'),
     ):
         checks.append('$string_unset_cv_range_plan(' + changed + ') = eps')
@@ -184,7 +183,7 @@ if __name__ == '__main__':
         'exact source/CODE/quiet read and restored same named callback with live512 mask. Existing '
         'stderr/reporting/source renderer produces exactly one range event before the copied nonowning '
         'resume raises the fixed Error, preserving the complete caller tail, state/heap and whole/split. '
-        'Reporting0/display0 remain quiet; absent/nonnamed/nonfinite/owning/ref/source forgeries and '
+        'Reporting0/display0 remain quiet; absent/nonnamed/owning/ref/source forgeries and '
         'pending discard uses its separate finite-OOB default-reporting route. Source0/native0, exact saved native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

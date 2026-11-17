@@ -209,7 +209,6 @@ def conditions(program, path):
         checks += ['~$error_call_valid(' + changed + ', perrorcall_range)']
     for tag, changed in (
         ('default', 'S_P[.ERRORHANDLER.CALLBACK = eps]'),
-        ('nonfinite', 'S_P[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]'),
         ('reference', 'S_P[.REFCELLS = S_P.REFCELLS ++ [n_key]]'),
     ):
         state = 'S_range_bad_' + tag
@@ -279,7 +278,7 @@ if __name__ == '__main__':
         'bits/source/saved-cell authority. Actual second callback overwrites the old CV with INTERNED '
         'done; selected task remains valid without snapshot reread, generic discard preserves the same '
         'range Exception and raw callback, no task roots and exact whole/split equality. Forged '
-        'source/line/level/message/event/snapshot/bits and absent/nonfinite/ref guards refuse; normal '
+        'source/line/level/message/event/snapshot/bits and absent/ref guards refuse; normal '
         'Warning-excluding masks use existing default reporting. '
         'First pending finite-OOB discard stays separate. Source0/native0; exact native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')

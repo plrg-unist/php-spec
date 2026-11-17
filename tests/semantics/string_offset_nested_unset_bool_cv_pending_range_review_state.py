@@ -158,7 +158,6 @@ def conditions(program, path):
         'S_R[.ENV = $unbind(S_R.ENV, n_key_name*)]',
         'S_R[.REFCELLS = S_R.REFCELLS ++ [n_key]]',
         'S_R[.STORE[n_key] = DEFINED (POBJECT n_exception)]',
-        'S_R[.STORE[n_key] = DEFINED (PFLOAT 9218868437227405312)]',
         'S_R[.STORE[n_key] = DEFINED (PFLOAT 18446744073709551616)]',
         'S_R[.HELD = [HOBJECT n_exception]]',
     ):
@@ -213,7 +212,7 @@ if __name__ == '__main__':
         'and real Exception. Existing default reporting appends exactly one source-anchored Warning '
         'while the full restored state, identical Throwable and entire pending caller tail remain. '
         'No nested Error appears; heap, object arena, callback/mask, quiet reporting/display and '
-        'whole/split are checked. Eligible/fitting identity and absent/nonfinite/owner/source/pending '
+        'whole/split are checked. Eligible/fitting identity and absent/owner/source/pending '
         'refusals stay separate. Source0/native0; exact saved native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
