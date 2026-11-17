@@ -145,7 +145,7 @@ def frontier(name, fixture, path):
                 '~$ob_object_cast_chain_sign_literal(' + raw + r') /\ ' + value(state, expr_sign, 'porigin_raw') + r' = eps /\ ' + value(state, expr) + ' = eps')]
     raw = 'NExprUnaryPlus (' + leaf + ') metadata_leaf'
     state, expr_sign, expr = variant(name, raw, leaf_value)
-    checks += [('a second sign remains outside the one-sign raw numeric composition',
+    checks += [('a nested sign without its proper raw-child SOURCE and CODE facts still refuses',
                 '$ob_object_cast_chain_sign_kind(' + raw + r') /\ ~$ob_object_cast_chain_sign_literal(' + raw + r') /\ ' + value(state, expr_sign, 'porigin_raw') + r' = eps /\ ' + value(state, expr) + ' = eps')]
     return bindings, checks
 

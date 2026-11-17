@@ -1414,17 +1414,20 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $ob_object_cast_chain_sign_kind(expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
   -- if punary = POSITIVE \/ punary = NEGATIVE
-  -- if $ob_object_cast_chain_sign_literal(expression_child)
   -- if z = $expression_line(expression_child)
-  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, true)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
   -- if $ob_object_cast_chain_sign_number(pvalue_child)
-  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if porigin_child = PORIGIN n_child pcpath_child
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z_child, b_child))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_child)
+  -- if S_signed = $unary_apply(S[.RESULT = KNOWN pvalue_child], punary, pvalue_child, z)
+  -- if S_signed.RESULT = KNOWN pvalue
   -- if $ob_object_cast_chain_sign_number(pvalue)
   -- if $type_bytes(pvalue) = $type_bytes(pvalue_child)
-  -- if S_child = S[.RESULT = KNOWN pvalue_child]
-  -- if $unary_apply(S_child, punary, pvalue_child, z) = S[.RESULT = KNOWN pvalue]
+  -- if S_signed = S[.RESULT = KNOWN pvalue]
+  -- if (b_child /\ $compiled_read(S, porigin) = (pvalue)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(pvalue) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
   -- if z = $expression_line(expression_child)

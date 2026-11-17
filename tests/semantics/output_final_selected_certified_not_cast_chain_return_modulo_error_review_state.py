@@ -177,9 +177,9 @@ def frontier(name, fixture, path):
                          ('pcpath_child_4', inner), ('pcpath_child_5', raw)],
                         [('pcpath_not', 'PBOOL false'), ('pcpath_child_3', 'PINT 1'),
                          ('pcpath_child_4', 'PINT 1'), ('pcpath_child_5', 'PINT 1')], function)
-        checks += [('an accepted single sign does not broaden the pre-existing raw-leaf sign fence',
+        checks += [('a fully certified nested numeric sign now composes with strict folded NOT',
                     value(state, inner, 'porigin_child_4', function) + r' = (PINT 1) /\ ' +
-                    value(state, expr, function=function) + ' = eps')]
+                    value(state, expr, function=function) + ' = (PBOOL false)')]
         raw = 'NScalarString (BYTES "MA==") metadata_child_4'
         child = 'NExprUnaryPlus (' + raw + ') metadata_child_3'
         expr = 'NExprBooleanNot (' + child + ') metadata_not'
