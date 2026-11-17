@@ -1573,6 +1573,22 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if pvalue_left = PNULL \/ pvalue_right = PNULL
   -- if pvalue_left <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue_left) =/= eps
   -- if pvalue_right <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue_right) =/= eps
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PNULL)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond ABSENT expression_false metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL false)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0]) = 0
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_false, false, z))
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 2])) = (PNULL)
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = eps -- otherwise
 
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool

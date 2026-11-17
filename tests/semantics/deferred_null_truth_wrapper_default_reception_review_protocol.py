@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""NULL Boolean consumers preserve tags and refuse redirected certificates."""
+"""NULL Boolean consumers preserve tags through certified NULL redirects."""
 import hashlib
 import json
 from pathlib import Path
@@ -21,10 +21,8 @@ for index, (result, path) in enumerate(zip(results, null_paths)):
             f'pdefault_{index}.ORIGIN = PORIGIN n_unit pcpath_{index}',
             f'porigin_null_{index} = PORIGIN n_unit (pcpath_{index} ++ [{fields}])',
             f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,porigin_null_{index}) = (PNULL)',
-            (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps' if index in (2,3) else
-             f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {result})'),
-            (f'~$lossy_optional_integer_deferred(S,pfunction,{index})' if index in (2,3) else
-             f'$lossy_optional_integer_deferred(S,pfunction,{index})'),
+            f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {result})',
+            f'$lossy_optional_integer_deferred(S,pfunction,{index})',
             f'pdefaultcache_{index} = {{ORIGIN pdefault_{index}.ORIGIN,VALUE PBOOL {result},CLASS PVSCALAR}}',
             f'$default_current_cache(S,pdefault_{index}.ORIGIN) = (pdefaultcache_{index})',
             f'$lookup(S.ENV,pfunction.SIGNATURE.PARAMETERS[{index}].NAME) = (n_cell_{index})',
@@ -32,7 +30,7 @@ for index, (result, path) in enumerate(zip(results, null_paths)):
     if index in (2,3):
         raw += [f'porigin_short_{index} = PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 0])',
                 f'$compiled_redirect(S,porigin_short_{index}) = ((porigin_null_{index},expression_selected_{index},false,z_redirect_{index}))',
-                f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,porigin_short_{index}) = eps']
+                f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,porigin_short_{index}) = (PNULL)']
 raw += ['S_wrong_tag = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE,pdefaultcache_0[.VALUE = PINT 0])]',
         '$default_caches_valid(S_wrong_tag,S_wrong_tag.DEFAULTCACHE)',
         '~$lossy_optional_integer_deferred(S_wrong_tag,pfunction,0)',

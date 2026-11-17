@@ -1,0 +1,11 @@
+[
+  {
+    "id": "deferred-null-short-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullTruth292;\nuse const E_WARNING as Base292;\nuse const E_ERROR as One292;\nfunction warning292($errno, $message, $file, $line) {\n    global $x292;\n    echo 'warning:', $message, '|';\n    defaults292(2);\n    $x292 = 3.5;\n}\nfunction defaults292(int $first, int &$castNull = (int)((bool)((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : false)), int &$notNull = (int)(!(((bool)(+(-((float)(+(Base292 === One292)))))) ? true : NULL)), int &$shortNull = (int)((bool)(false ?: ((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : false))), int &$selectedNull = (int)(!((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : Missing292)), int $last = 7) {\n    echo 'body:', $first, ':', $castNull, ':', $notNull, ':', $shortNull, ':', $selectedNull, ':', $last, '|';\n    $castNull = 19;\n    $notNull = 20;\n    $shortNull = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('NullTruth292\\\\warning292');\n$x292 = 1.5;\n$last292 = 8;\ndefaults292(last: $last292, first: $x292);\necho 'outer:x=', $x292, '|';\n",
+    "purpose": "Authentic folded literal-false shorthand redirects to a certified emitted NULL fallback before BOOL/INT private reception and precision Warning reentry. This reuses the exact saved original named292 source bytes.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:1:7|body:1:0:1:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "366d7634930bf78db6bb0c575b03eb94d7ffe92343a38838b16836c2fe2739dc"
+  }
+]
