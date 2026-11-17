@@ -1,0 +1,145 @@
+{
+  "feature": "Quiet static USER method-closure selectors with NOT over CONCAT-left coalesces",
+  "status": "Independently reviewed bounded increment; actual placement and SAME saved canonical load clear. Family and complete core remain partial.",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "engine": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "behavior": "NOT and repeated NOT compose over the closed CONCAT-left-coalesce tree and through surrounding CONCAT. Proper SOURCE children, non-NUL operands, exact nonfolded positive root CODE and absent read/pool/redirect/effect authenticate the PSTRING root. Closed NULL/BOOL/signed64 INT/STRING truth excludes FLOAT; prior scope, lookup, method, cache, owner and cleanup authority remain.",
+  "engine_routes": [
+    "Zend/zend_operators.h:i_zend_is_true",
+    "Zend/zend_vm_def.h:ZEND_BOOL_NOT",
+    "Zend/zend_compile.c:zend_compile_unary_op and zend_try_ct_eval_unary_op"
+  ],
+  "source": {
+    "commit": "79b1311f235ac1ba6d90fc9eaa479420559badf6",
+    "tree": "35578a0e7d140671f71cdc434f8e5688a65f9bd9",
+    "parent": "bebd599c9c812a845ec6a8a347da789e6af9e1d2",
+    "files": 7,
+    "additions": 623,
+    "deletions": 0,
+    "packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get/author/source-packet-v3.json",
+      "sha256": "d77a2a42301c55d1098d84f0fec93d1834cf2f8e581fe61591fe5786ad9176e1"
+    },
+    "runtime407_sha256": "d54f000a263035f57a887307067ac00658cf4ddffff2163707e7db4e832e355e",
+    "runtime407_additions": 88,
+    "peer_protocol_sha256": "e5c2666e3ffa5c7755483e2e253540a27003e7cbb19a816555646b0b39d3a162",
+    "make_registrations": 4,
+    "make_execution_credit": 0
+  },
+  "validation": {
+    "private_SL_module_cut": 507,
+    "author": {
+      "evidence": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get/author/author-evidence-v2.json",
+        "sha256": "9f9fc8b09fbde1fde73fab2d4cad0c39461c7ceb7363c3d93b1862d93df918c6"
+      },
+      "native_originals_once": 2,
+      "source_cases": 2,
+      "fixture_cuts": [
+        154,
+        154
+      ],
+      "prelaw_expected_Unsupported": 2
+    },
+    "independent": {
+      "reviewer": "/root/recover28_get_dispatch_review",
+      "whole": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get/independent/whole-review-v3.json",
+        "sha256": "7e6171834c96ebbf88351b1ae38cd82294119585cf6cef0f35687baff8edc554"
+      },
+      "result": "CLEAR",
+      "source_cases": 2,
+      "source_seconds": [
+        196.51491785096005,
+        94.25285543315113
+      ],
+      "fixture_cuts": [
+        24,
+        24,
+        24,
+        24,
+        7,
+        61,
+        59,
+        40,
+        42,
+        46,
+        46,
+        49,
+        25,
+        25
+      ]
+    },
+    "limits": {
+      "source_inner_seconds": 280,
+      "source_outer_seconds": 290,
+      "fixture_seconds": 297,
+      "address_space_bytes": 3221225472
+    },
+    "native_replays": 0,
+    "corrected_packet_semantic_mismatches": 0,
+    "corrected_packet_timeouts": 0,
+    "accounting": "Each source and fixture cut retains its tested identity. Repeated stage/binding premises are not aggregate obligations. Fixtures, compiler facts, Make recipes, WHOLE and canonical loading have source credit0; saved native observations were reused without replay."
+  },
+  "corrections": {
+    "dispatch": "One shared eight-line helper/comment block and forty early negated legacy generic CONCAT guards (twenty per side) reject only shapes impossible for the corresponding older raw Some. Removing them reproduces the initial ceb source exactly. Raw providers, new receipt, literal consumers, generic folded support, cache:false and det:true are unchanged.",
+    "fixture": "Only derived negative-integer notation changed from INTEGER -1 to INTEGER $(-1) in the peer value-controls fixture. All thirteen other CASES are exact; source comparisons do not watch the peer protocol and the first five cuts retain their original 5ed identities. Only the affected 61-check cut was rerun. Author source2 and154/154 retain their original evidence-v2 identities through this peer-only bridge.",
+    "preserved_original_source_timeouts": {
+      "count": 2,
+      "sha256": [
+        "4752f3ef5f771434b00cc95d82b67dbbec848e5994d05c21dc966e0dec41ff6c",
+        "8624de415b0331e42673f6d142c30c5b38804838bd85027204b45c4e873d386e"
+      ],
+      "source_credit": 0
+    },
+    "preserved_fixture_parse_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get/independent/fixtures-v2/value-controls/launch.json",
+      "sha256": "779de7bcd68340b14927f26bae349950b67ecf2084f1d53277dcb32248ba988b",
+      "source_credit": 0,
+      "assertion_credit": 0
+    }
+  },
+  "integration": {
+    "actual_revision": "8fb6e0fe04ac327191e638e2cd55f81b4c015296",
+    "actual_tree": "65036cb38e6c1a4724e5a4552bd03f60a5389073",
+    "actual_parent": "5213e160ed6ee04db033678618c39e261aa016d9",
+    "same_canonical_revision": "8fb6e0fe04ac327191e638e2cd55f81b4c015296",
+    "same_canonical_tree": "65036cb38e6c1a4724e5a4552bd03f60a5389073",
+    "placement_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main91-get-not-placement-v1.json",
+      "sha256": "02502378692d3e1a3e7fada8e54be88d9846ae51e2af362886b7d8603fd209c6"
+    },
+    "independent_composition": "CLEAR: one actual object review verified exact seven changed paths, six nonMake complete posts equal final79b, whole prior407 equal source parent, and four unique exact Make additions whose inverse restores the complete foreign parent.",
+    "saved_canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main91-get-not-load-v1/report.json",
+      "sha256": "57eebae39e24a4df5a26892614cda8aaa9c291e268d2ee34693f98d44874f59c",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_entries": 512,
+      "watched_inputs": 513,
+      "seconds": 16.583722584182397,
+      "cap_seconds": 60,
+      "pass": true,
+      "stable": true,
+      "reaped": true,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "source_credit": 0,
+      "physical_read_count": 2,
+      "canonical_executions": 1,
+      "reruns": 0,
+      "full_input_maps_equal": true,
+      "canonical_input_map_sha256": "e7926a7cd8e5532258213f71c831b083c1584e45395cf6575c7507cf6b351e49"
+    },
+    "independent_authority": "Direct immutable actual+SAME CLEAR tuple delivered by reviewer28 only to author30. The second physical read checked the same saved report and complete input maps; no production, semantic or native rerun.",
+    "author_consumption": "Immutable tuple only; no MAIN source or saved-canonical read, runtime execution or accepted-family renewal."
+  },
+  "remaining": "New forms below coalesce/Boolean/ternary parents or within a coalesce-left CONCAT, FLOAT/CV/nonquiet/NUL selectors and wider producers, owners or lifetimes remain partial. No family or full-core closure.",
+  "holds": "Exact holds, reserve93807cdd6/255, inventory169/306 and closed0+1 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}
