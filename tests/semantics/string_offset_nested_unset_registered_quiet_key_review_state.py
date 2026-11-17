@@ -19,8 +19,7 @@ def conditions(program, path):
                 'PSTRING ($ptascii("  +99tail"))',
                 'PSTRING_CARRIER INTERNED_STRING ($ptascii("0x"))')
     refused = ('PINT $(-9223372036854775809)', 'PINT 9223372036854775808',
-               'PSTRING eps', 'PSTRING ($ptascii("bad"))',
-               'PSTRING ($ptascii("1.0"))', 'PSTRING ([48, 0])',
+               'PSTRING ([48, 0])',
                'PSTRING ([256])', 'PSTRING_CARRIER INTERNED_STRING ([48, 0])',
                'PSTRING_CARRIER (REQUEST_STRING (|S_base.STRINGDATA|)) ($ptascii("0x"))',
                'PARRAY 0', 'POBJECT 0', 'PUNDEFINED')
@@ -28,6 +27,8 @@ def conditions(program, path):
         guards += [f'$unset_intermediate(S_base, pvalue_base, ROOT n_base, KNOWN ({value}), 9) = S_base[.RESULT = KNOWN ({value})][.COMPLETION = THROWN "Error" ptbytes_message 9]']
     for value in refused:
         guards += [f'$unset_intermediate(S_base, pvalue_base, ROOT n_base, KNOWN ({value}), 9) = S_base[.COMPLETION = THROWN "Error" ptbytes_generic 9]']
+    for value in ('PSTRING eps', 'PSTRING ($ptascii("bad"))', 'PSTRING ($ptascii("1.0"))'):
+        guards += [f'$unset_intermediate(S_base, pvalue_base, ROOT n_base, KNOWN ({value}), 9) = S_base[.RESULT = KNOWN ({value})][.COMPLETION = THROWN "Error" ($ptascii("Cannot unset string offsets")) 9]']
     guards += prior.lines(r'''
 S_peer_muted = S_base[.REPORTING = 0][.ERRORHANDLER.LEVELS = 0][.ERRORFATALTRACE = eps]
 S_peer_muted.ERRORHANDLER.CALLBACK = S_base.ERRORHANDLER.CALLBACK
@@ -70,6 +71,6 @@ if __name__ == '__main__':
     report = json.loads(report_path.read_bytes())
     report['mode'], report['raw_unset_steps'] = 'fixture SL', 1
     report['inputs'].update(before)
-    report['scope'] = 'Independent source-reached registered-handler nested-UNSET fixtures preserve the exact raw/public/catch/budget front. Constructed quiet signed64 endpoints, unchecked offset magnitudes and integer numeric/leading text retain the nested Error without handler effects. Suppressed NULL/BOOL/FLOAT conversions are explicitly quiet yet still refused by the type gate. Invalid numeric/nonprimitive/NUL/byte/range and request-header values retain their prior refusal; authenticated request keys and bases retain exact registry identity. Empty-handler and raw-string routes stay bounded. Controls are source0/native0, reuse the same saved native originals without execution, and add no undefined-key callback, owning-key or lifetime breadth.'
+    report['scope'] = 'Independent source-reached registered-handler nested-UNSET fixtures preserve the exact raw/public/catch/budget front. Quiet signed64 endpoints, unchecked offset magnitudes and integer numeric/leading text retain the nested Error without handler effects. Empty, nonnumeric and floatlike STRING keys instead keep their own Error. Suppressed NULL/BOOL/FLOAT conversions remain refused by the type gate. Nonprimitive/NUL/byte/range and request-header values retain prior refusal; authenticated request keys and bases retain exact registry identity. Empty-handler and raw-string routes stay bounded. Controls are source0/native0, reuse saved native originals without execution, and add no undefined-key callback, owning-key or lifetime breadth.'
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

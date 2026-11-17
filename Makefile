@@ -1016,6 +1016,12 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_registered_quiet_key_protocol.py --index 1 --source-report "$$nested_unset_quiet_out/source/report.json" --output "$$nested_unset_quiet_out/request-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_registered_quiet_key_review_state.py --index 0 --source-report "$$nested_unset_quiet_out/source/report.json" --output "$$nested_unset_quiet_out/peer-interned-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_registered_quiet_key_review_state.py --index 1 --source-report "$$nested_unset_quiet_out/source/report.json" --output "$$nested_unset_quiet_out/peer-request-state"
+	@nested_unset_string_error_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-string-error-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_registered_string_error_sources.py --output "$$nested_unset_string_error_out/source" && \
+		python3 -B tests/semantics/string_offset_nested_unset_registered_string_error_protocol.py --index 0 --source-report "$$nested_unset_string_error_out/source/report.json" --output "$$nested_unset_string_error_out/interned-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_registered_string_error_protocol.py --index 1 --source-report "$$nested_unset_string_error_out/source/report.json" --output "$$nested_unset_string_error_out/request-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_registered_string_error_review_state.py --index 0 --source-report "$$nested_unset_string_error_out/source/report.json" --output "$$nested_unset_string_error_out/peer-interned-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_registered_string_error_review_state.py --index 1 --source-report "$$nested_unset_string_error_out/source/report.json" --output "$$nested_unset_string_error_out/peer-request-state"
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"

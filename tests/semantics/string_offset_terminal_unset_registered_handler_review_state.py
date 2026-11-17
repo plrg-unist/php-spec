@@ -37,6 +37,10 @@ $unset_terminal_nonarray(S_peer_unset_masked, pvalue_base, 99) = S_peer_unset_ma
 $unset_terminal_nonarray(S_key, PSTRING_CARRIER (REQUEST_STRING (|S.STRINGDATA|)) ($ptascii("bad")), 99) = S_key[.COMPLETION = THROWN "Error" ptbytes_generic 99]
 $unset_intermediate(S_key, pvalue_base, ROOT n_base, KNOWN pvalue_key, 99) = S_key[.COMPLETION = THROWN "Error" ptbytes_generic 99]
 ''')
+    if source.INDEX == 1:
+        old = '$unset_intermediate(S_key, pvalue_base, ROOT n_base, KNOWN pvalue_key, 99) = S_key[.COMPLETION = THROWN "Error" ptbytes_generic 99]'
+        assert guards.count(old) == 1
+        guards[guards.index(old)] = old.replace('ptbytes_generic', 'ptbytes_message')
     return checks + guards, derived + len(guards)
 
 
@@ -57,6 +61,6 @@ if __name__ == '__main__':
     report = json.loads(report_path.read_bytes())
     report['mode'], report['raw_unset_steps'] = 'fixture SL', 1
     report['inputs'].update(before)
-    report['scope'] = 'Independent source-reached registered-handler terminal UNSET fixtures retain exact raw/public/catch behavior and add full-state key-priority controls. Ten admitted scalar keys, including signed64 endpoints, NaN and infinity, throw the string-offset Error without conversion or handler effects; ten malformed/unsupported/NUL key values retain the prior generic refusal. An out-of-range REQUEST carrier and the registered-handler intermediate path retain their existing bounds. A zero handler mask leaves the terminal Error unchanged. These constructed helper controls add source0/native0, make no undefined-key callback or owner expansion, and reuse the same two saved native originals without execution. The source baseline NORMAL wrong-Error mismatches remain distinct from postlaw agreements; no old campaign is replayed.'
+    report['scope'] = 'Independent source-reached registered-handler terminal UNSET fixtures retain exact raw/public/catch behavior and add full-state key-priority controls. Ten admitted scalar keys, including signed64 endpoints, NaN and infinity, throw the string-offset Error without conversion or handler effects; ten malformed/unsupported/NUL keys retain prior generic refusal. An out-of-range REQUEST carrier stays refused. The intermediate FLOAT control stays generic while the invalid STRING control keeps its own Error. A zero handler mask leaves terminal Error unchanged. These controls add source0/native0, make no undefined-key callback or owner expansion, and reuse the same saved native originals without execution. Prelaw NORMAL wrong-Error mismatches stay separate; no old campaign is replayed.'
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
