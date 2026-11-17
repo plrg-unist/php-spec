@@ -497,6 +497,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; The one-character string NOT path likewise retains its immutable header.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBitwiseNot expression_child metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; A quiet full ternary copies its truth-selected literal header through QM_ASSIGN.
 ;; The compiled scalar certificate authenticates the condition and both raw arms.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true

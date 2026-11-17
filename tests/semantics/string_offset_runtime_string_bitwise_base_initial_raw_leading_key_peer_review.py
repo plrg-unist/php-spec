@@ -102,7 +102,7 @@ $string_read_runtime_value(S_bitwise_{label},porigin_base) = eps
     checks += lines(r'''
 S_unary_bitwise = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base (NExprBitwiseNot expression_left metadata_base)) :: pcunit.OCCURRENCES]]]
 $string_read_runtime_value(S_unary_bitwise,porigin_base) = (PSTRING_CARRIER INTERNED_STRING ([204]))
-~$string_read_raw_known_base(S_unary_bitwise,porigin_base,PSTRING_CARRIER INTERNED_STRING ([204]))
+$string_read_raw_known_base(S_unary_bitwise,porigin_base,PSTRING_CARRIER INTERNED_STRING ([204]))
 S_budget_forged_bitwise = S_bad_bitwise_right_left_leaf_pool[.COMPLETION = BUDGET][.RESULT = KNOWN pvalue_base]
 ~$string_read_raw_known_base(S_budget_forged_bitwise,porigin_base,pvalue_base)
 ''')
