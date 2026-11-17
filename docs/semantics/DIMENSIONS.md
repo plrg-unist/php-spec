@@ -1229,9 +1229,9 @@ independent AL76 and the preserved fixture failure.
 
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
-offsets` without converting the key. The new carrier arm requires a known
-bounded primitive or valid non-NUL string key and no registered error handler.
-A missing key CV still gives its ordinary Warning before the Error.
+offsets` without converting the key. The carrier arm requires a known bounded
+primitive or valid non-NUL string key after its actual read. A missing key CV
+in the prior no-handler case still gives its ordinary Warning before the Error.
 
 `$unset_terminal_nonarray` is called only by `$unset_final` after that read.
 The shared `$unset_nonarray` remains literal for ArrayAccess callers whose
@@ -1240,6 +1240,16 @@ callback/lifetime admission is added. The
 [terminal-unset review](../../coverage/semantics/string-offset-terminal-unset-review.json)
 retains one original, author AL93 (34 derived controls) and independent AL53;
 preliminary source/AL87/89 cuts stay separate from final acceptance.
+
+A registered handler likewise stays idle when that terminal read supplies a
+defined admitted key. Two exact INTERNED+INF and REQUEST+bad-text originals reuse
+native2 once; author59/14 and independent124/79 SL fixtures for each retain their
+separate cuts, including exact raw Error/public allocation/catch, unchanged
+handler/base/key and the Error-line formatter's decimal REQUEST append. Actual=SAME
+`6917d71ae` and sole production-SL508 load `d6effbcb` pass16.340705161s/source0.
+The original NORMAL wrong-Error mismatches and overstrong fixture failure remain0;
+undefined-key callbacks, owning keys and wider lifetimes remain partial.
+[Registered-handler review](../../coverage/semantics/string-offset-terminal-unset-registered-handler-review.json).
 
 `$string_constant_read(bytes, key_value)` is a distinct compiler leaf returning
 an optional value. It implements only `zend_eval_const_expr`'s string DIM fold:
