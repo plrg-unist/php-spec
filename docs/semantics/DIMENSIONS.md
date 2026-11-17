@@ -1234,9 +1234,20 @@ Native2 once/source2 and separate author68/15+69/15 and independent115/62+116/62
 SL fixtures preserve the raw/public/caught Error and budgets, including no bounds
 or final missing-CV read and the final assignment before a delayed inner read.
 Actual=SAME `a38ab997e` and sole production-SL508 load `72e44c08` pass
-16.983509914s/source0. Original wrong-Error/fixture-failure cuts remain0; invalid
-STRING errors, wider callbacks, owners and held contours remain partial.
+16.983509914s/source0. Original wrong-Error/fixture-failure cuts remain0; at that
+cut invalid STRING errors, wider callbacks, owners and held contours remain partial.
 [Registered quiet-key review](../../coverage/semantics/string-offset-nested-unset-registered-quiet-key-review.json).
+
+Invalid admitted STRING keys now keep their exact own `Cannot unset string offsets`
+Error before the later nested-string Error, without handler entry. The existing
+key helper must return only the unchanged read or that precise Error state;
+inherited NORMAL/type/range/header/read guards remain. Native2 once/source2,
+author76/23+77/23 and independent125/72+126/72 SL fixtures retain separate cuts,
+including Error-not-TypeError, missing-CV laziness, delayed1.5 and budgets.
+Actual=SAME `fbac435c7` and sole production-SL508 load `db5fa9a2` pass
+16.239460308s/source0. Warning callbacks, owning keys, wider lifetimes and every
+held contour remain partial.
+[Registered STRING-key Error review](../../coverage/semantics/string-offset-nested-unset-registered-string-error-review.json).
 
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
