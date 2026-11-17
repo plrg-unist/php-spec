@@ -119,7 +119,7 @@ unsupported_pairs = [
     ('<=', 'NExprBinaryOpSmallerOrEqual', f'({chain})', boolean, 'PFLOAT 0', 'PBOOL false'),
     ('>', 'NExprBinaryOpGreater', boolean, nan, 'PBOOL false', 'PFLOAT n_nan_2'),
     ('>=', 'NExprBinaryOpGreaterOrEqual', nan, boolean, 'PFLOAT n_nan_3', 'PBOOL false'),
-    ('<', 'NExprBinaryOpSmaller', 'NULL', integer, None, 'PINT 0'),
+    ('<', 'NExprBinaryOpSmaller', 'NULL', integer, 'PNULL', 'PINT 0'),
     ('>', 'NExprBinaryOpGreater', integer, '"0"', 'PINT 0', None),
 ]
 unsupported = [

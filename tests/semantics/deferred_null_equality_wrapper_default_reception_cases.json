@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-equality-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullEquality288($p0 = (NULL == ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) != NULL), $p2 = (NULL != ((int)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p3 = (((int)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) == NULL), $p4 = (NULL == (+(-((float)(+(E_WARNING === E_ERROR)))))), $p5 = ((-(+(-((float)(+(E_WARNING === E_ERROR)))))) != NULL), $p6 = (NULL == (INF + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((-INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) != NULL), $p8 = (NULL == (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p9 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) != NULL), $p10 = (NULL == ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p11 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) != NULL), $p12 = (NULL != (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p13 = ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) == NULL), $p14 = (NULL == ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : true)), $p15 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) == NULL)) {\n    echo 'raw:', $p0 === true, \":\", $p1 === false, \":\", $p2 === true, \":\", $p3 === false, \":\", $p4 === true, \":\", $p5 === false, \":\", $p6 === false, \":\", $p7 === true, \":\", $p8 === false, \":\", $p9 === true, \":\", $p10 === true, \":\", $p11 === false, \":\", $p12 === true, \":\", $p13 === false, \":\", $p14 === true, \":\", $p15 === false, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n    $p12 = 31;\n    $p13 = 32;\n    $p14 = 33;\n    $p15 = 34;\n}\nrawNullEquality288();\nrawNullEquality288();\n",
+    "purpose": "Actual NULL with certified NULL/BOOL/signed64 INT/bit64 FLOAT children preserves PBOOL ==/!=, including both signed zeros, infinities, NaNs and bothNULL via an existing emitted selector; cold/warm defaults retain tags.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "debe675e6d17088e25e3065db6952ec070fdca2d96b2780b9b2126510fd4919b"
+  },
+  {
+    "id": "deferred-null-equality-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullEquality288;\nuse const E_WARNING as Base288;\nuse const E_ERROR as One288;\nuse const NAN as Nan288;\nfunction warning288($errno, $message, $file, $line) {\n    global $x288;\n    echo 'warning:', $message, '|';\n    defaults288(2);\n    $x288 = 3.5;\n}\nfunction defaults288(int $first, int &$nullZero = (int)(NULL == ((int)(+(-((float)(+(Base288 === One288))))))), int &$nanLeft = (int)((Nan288 + (+(-((float)(+(Base288 === One288)))))) != NULL), int &$falseNull = (int)(((bool)(+(-((float)(+(Base288 === One288)))))) == NULL), int &$nullNan = (int)(NULL == (Nan288 + (+(-((float)(+(Base288 === One288))))))), int $last = 7) {\n    echo 'body:', $first, ':', $nullZero, ':', $nanLeft, ':', $falseNull, ':', $nullNan, ':', $last, '|';\n    $nullZero = 19;\n    $nanLeft = 20;\n    $falseNull = 21;\n    $nullNan = 22;\n}\n\\set_error_handler('NullEquality288\\\\warning288');\n$x288 = 1.5;\n$last288 = 8;\ndefaults288(last: $last288, first: $x288);\necho 'outer:x=', $x288, '|';\n",
+    "purpose": "Literal PNULL operands and quiet NULL/NaN compatibility feed INT-parent BYREF named defaults and private caches under imported ENV and registered diagnostic-handler reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:1:0:7|body:1:1:1:1:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "1343340313194a42a93c68adff38dbd1c39aae1eaa48a1feee452c40e327e9a6"
+  }
+]

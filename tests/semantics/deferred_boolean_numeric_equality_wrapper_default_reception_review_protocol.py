@@ -160,8 +160,10 @@ for index, (_, _, constructor, _) in enumerate(refused_pairs):
         f'pdefault_{index}.ORIGIN = PORIGIN n_unit pcpath_{index}',
         f'$origin_node(S.SOURCES,pdefault_{index}.ORIGIN) = ({constructor} expression_left_{index} expression_right_{index} metadata_{index})',
         f'~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_{index}.ORIGIN)',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL true)' if index < 2 else
+         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps'),
+        (f'$lossy_optional_integer_deferred(S,pfunction,{index})' if index < 2 else
+         f'~$lossy_optional_integer_deferred(S,pfunction,{index})'),
     ]
 
 CASES = {

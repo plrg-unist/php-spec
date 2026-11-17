@@ -135,8 +135,8 @@ unsupported_pairs = [
     ('!=', 'NExprBinaryOpNotEqual', f'({chain})', boolean, 'PFLOAT 0', 'PBOOL false'),
     ('==', 'NExprBinaryOpEqual', integer, '"0"', 'PINT 0', None),
     ('!=', 'NExprBinaryOpNotEqual', '"0"', integer, None, 'PINT 0'),
-    ('==', 'NExprBinaryOpEqual', 'NULL', integer, None, 'PINT 0'),
-    ('!=', 'NExprBinaryOpNotEqual', integer, 'NULL', 'PINT 0', None),
+    ('==', 'NExprBinaryOpEqual', 'NULL', integer, 'PNULL', 'PINT 0'),
+    ('!=', 'NExprBinaryOpNotEqual', integer, 'NULL', 'PINT 0', 'PNULL'),
     ('<', 'NExprBinaryOpSmaller', integer, f'((int)(!({chain})))', 'PINT 0', 'PINT 1'),
 ]
 unsupported = [
@@ -160,7 +160,7 @@ for index, (_, constructor, _, _, left, right) in enumerate(unsupported_pairs):
     for field, value in enumerate([left, right]):
         expected = 'eps' if value is None else f'({value})'
         unsupported.append(f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD {field}])) = {expected}')
-    admitted = {0: 'true', 1: 'false', 6: 'true'}.get(index)
+    admitted = {0: 'true', 1: 'false', 4: 'true', 5: 'false', 6: 'true'}.get(index)
     unsupported += [
         (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {admitted})'
          if admitted is not None else

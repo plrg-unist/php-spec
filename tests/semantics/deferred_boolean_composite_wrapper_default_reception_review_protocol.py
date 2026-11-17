@@ -136,10 +136,12 @@ quiet += ['S_done = $drive_steps(S,3000)',
     'S_done.EVENTS = eps', 'S_done.ERRORHANDLER = S.ERRORHANDLER', '$heap_valid($heap_graph(S_done))']
 refused = base + ['|pfunction.SIGNATURE.PARAMETERS| = 2']
 for index in range(2):
+    expected = '(PBOOL true)' if index == 0 else 'eps'
+    negation = '' if index == 0 else '~'
     refused += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
                 f'~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_{index}.ORIGIN)',
-                f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-                f'~$lossy_optional_integer_deferred(S,pfunction,{index})']
+                f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = {expected}',
+                f'{negation}$lossy_optional_integer_deferred(S,pfunction,{index})']
 stage = ('S.CURRENT = (pcallcontext) -- if pcallcontext.ARGC = 0 '
          '-- if pcallcontext.FUNCTION = porigin_function '
          '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) ')
