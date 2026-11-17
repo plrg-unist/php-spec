@@ -2013,3 +2013,17 @@ Folded raw STRING/fitting signed64 NScalarInt CONCAT coalesce left operands pres
 Folded direct UnaryMinus(NScalarInt) CONCAT coalesce left operands preserve exact INTERNED headers and frozen raw leading CV keys through returning Warnings with an emitted fallback. Both input and result must fit signed64 before pure decimal_integer; raw MIN negation promotion stays excluded. Actual prefix/sign/atom/tail CODE and pools retain header authority while nested STRING tail leaves are pruned; poisoned retained facts leave rootread intact but downgrade the header to raw STRING and reject VALUE/base. Full SOURCE, STRING-only literal_bytes/RHS exclusions, key-cell, owner and continuation bounds remain. UnaryPlus/nested/FLOAT/coerced/wider forms and lifetimes stay partial at this cut. [Review](../../coverage/semantics/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
 Folded direct UnaryPlus(NScalarInt) CONCAT coalesce left operands preserve signed64 PINT identity, exact INTERNED headers and frozen raw leading CV keys through returning Warnings with an emitted fallback. One long_range guard precedes pure decimal_integer; existing direct-minus input/result bounds remain. Retained prefix/sign/atom/tail CODE and pools authenticate the header, while nested tail STRING leaves are pruned; rootread alone cannot authorize a raw header. Full SOURCE, STRING-only literal_bytes/RHS exclusions, key-cell, owner and continuation bounds remain. Nested/FLOAT/coerced/wider forms and lifetimes remain partial at this cut; finitePFLOATa547 stays withdrawn/HOLD0. [Review](../../coverage/semantics/string-offset-literal-unary-plus-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+Folded raw STRING-only CONCAT suffix trees share the cast-rooted allocated base
+certificate, directly or as coalesce-left bases. OPTION membership admits empty
+folded bytes while existing full SOURCE/folded-root CODE/read/pool/INTERNED and
+root precision authenticate each folded suffix; pruned children retain SOURCE
+only. Proper-left identity descent, contiguous allocation prefixes, actual CONST
+flags and genuine KNOWN ownership retain the exact non-NUL REQUEST temporary
+and frozen raw CV offset through returning Warnings. Native2 once/source2,
+author306/116-derived plus360/132-derived and corrected independent503/403-derived
+SL508 retain distinct cuts. WHOLE12 and actual45fa9d2e5/solec22b8e24 productionSL509
+16.581691941s/source0 are clear through immutable1b99a5d4/one saved-report read;
+the original B binding rejection retains0/runtimeUNRUN. Wider forms/lifetimes,
+Owned-NUL release and all exact holds remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-allocated-folded-string-concat-suffix-base-initial-raw-leading-key-review.json).
