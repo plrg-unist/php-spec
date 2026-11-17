@@ -2661,3 +2661,16 @@ source credit, as do the preserved prelaw and preparation failures. Actual
 `7a7814153` and its sole production-SL508 load (16.938333122 s) are separate.
 Wider headers, owners and lifetimes remain partial; all exact holds remain.
 [Review](../../coverage/semantics/int-bool-null-parentless-short-reference-get-hook-review.json).
+
+COMP319 admits every distinct ordered scalar-or-null union of length3..5 over
+`int`, `float`, `bool`, `string` and `null` for that same short reference Get.
+Exact raw/normalized order, complete Identifier proof, actual defaults, tags,
+copies, aliases and quiet type-source removal remain required. Six originals
+agree using native observations once. Eight separate fixture-SL cuts retain
+source0: author1253/296/297/299 and peer1253/297/297/297. The initial native
+expectation, pooled-array ownership and canonical-Identifier fixture failures
+remain0; their narrow corrections do not renew accepted source/header checks.
+Actual `eb5aa70f8` and the sole joined production-SL508 load (16.833466227 s)
+are independently clear. Wider members, owners and lifetimes remain partial;
+all exact holds remain.
+[Review](../../coverage/semantics/scalar-union-parentless-short-reference-get-hook-review.json).
