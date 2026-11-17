@@ -2931,3 +2931,11 @@ remain explicit. One transport preparation failure has zero execution/agreement 
 no accepted source/native/fixture evidence is renewed. Wider unions/lifetimes and all
 precise holds remain partial/unchanged.
 [Independent review](../../coverage/semantics/nominal-pair-parentless-short-reference-get-hook-peer-review.json).
+
+Pure nominal unions with three or more quiet class arms use finite list recursion.
+Every ordinary, fully qualified or namespace-relative raw name aligns with one
+singleton PTCLASS branch, with complete consumption and no inherited upper cap.
+Whole quiet normalization retains exact order and rejects duplicate resolved names.
+Existing defining source, own-public parentless body and real owner bounds remain.
+Mixtures with multiple nominal arms and builtins, DNF and wider lifetimes remain partial.
+[Review](../../coverage/semantics/nominal-union-parentless-short-reference-get-hook-review.json).
