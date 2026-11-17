@@ -2849,3 +2849,13 @@ Actual and joined `57af3b12f` and the sole production-SL509 load
 actual/SAME saved-report read; no prior native/source/fixture evidence is renewed.
 Wider forms and every exact hold remain partial/unchanged.
 [Independent review](../../coverage/semantics/class-float-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/string unions on that short reference producer retain both raw
+orders, `Class|string` and `string|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier string require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. Primitive string tags and their existing carrier checks stay intact.
+Eligible weak Boolean, integer and FLOAT writes convert; strict scalars reject.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
