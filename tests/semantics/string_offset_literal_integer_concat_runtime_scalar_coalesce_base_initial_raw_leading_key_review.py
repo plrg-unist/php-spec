@@ -25,7 +25,7 @@ $string_read_folded_concat_bytes(NScalarInt (INTEGER $(-9223372036854775808)) ep
 $string_read_folded_concat_bytes(NScalarInt (INTEGER 9223372036854775808) eps) = eps
 $string_read_folded_concat_bytes(NScalarInt (INTEGER $(-9223372036854775809)) eps) = eps
 $string_read_folded_concat_bytes(NScalarFloat (FLOAT "0000000000000000") eps) = eps
-$string_read_folded_concat_bytes(NExprUnaryMinus expression_suffix eps) = eps
+$string_read_folded_concat_bytes(NExprUnaryMinus expression_suffix eps) = ($ptascii("0"))
 $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) = eps
 $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) = eps
 expression_integer_float = NScalarFloat (FLOAT "0000000000000000") metadata_suffix
