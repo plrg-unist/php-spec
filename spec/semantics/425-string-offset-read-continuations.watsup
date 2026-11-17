@@ -910,6 +910,9 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $string_concat(S_before, pvalue_left, pvalue_right, false, true) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
 def $string_read_allocated_value(S, porigin, pvalue) = false -- otherwise
+;; Direct allocated temporaries use the same producer certificate.
+def $string_read_allocated_base(S, porigin, pvalue) = true
+  -- if $string_read_allocated_value(S[.COMPLETION = NORMAL], porigin, pvalue)
 ;; A nonnull emitted left temporary passes through COALESCE unchanged. Only
 ;; immediate source identity is demanded from its skipped emitted fallback.
 def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
