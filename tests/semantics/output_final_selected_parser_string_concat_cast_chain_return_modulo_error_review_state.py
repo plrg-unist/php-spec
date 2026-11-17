@@ -140,8 +140,9 @@ def frontier(name, fixture, path):
         deep = '((pcpath_value ++ [PCFIELD 1]) ++ [PCFIELD 0])'
         missing = state + '[.SOURCES = pcunit_handler[.OCCURRENCES = $or131_drop(' + state + '.SOURCES[0].OCCURRENCES, ' + deep + ')] :: S.SOURCES]'
         checks += [('source0 a missing deep SOURCE cannot be borrowed from the nested parent', value(missing, expr, function=function) + ' = eps')]
-        for raw, answer in [('NScalarInt (INTEGER 1) (eps)', b'1'),
-                            ('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b'1.5'),
+        checks += [('source0 the exact fitting INT1 parser CONCAT now retains its constant entry',
+                    compiled(query(('NScalarInt (INTEGER 1) (eps)', b''), b'1')))]
+        for raw, answer in [('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b'1.5'),
                             ('NExprConstFetch (NName (BYTES "dHJ1ZQ==") (eps)) (eps)', b'1'),
                             ('NExprConstFetch (NName (BYTES "bnVsbA==") (eps)) (eps)', b''),
                             ('NExprCastInt (NScalarString (BYTES "MQ==") (eps)) (eps)', b'1')]:
