@@ -2715,3 +2715,14 @@ direct consumers. Actual `ff79f6b6c` and its sole production-SL508 load
 class-bearing unions, nested hook writers and wider values, owners and lifetimes
 remain partial; all exact holds remain.
 [Review](../../coverage/semantics/fully-qualified-class-parentless-short-reference-get-hook-review.json).
+
+Ordinary and namespace-relative class singleton and nullable headers use the
+declaring namespace/imports for that same parentless short reference Get.
+Only quiet normalization to the exact class bytes or ordered class/null pair
+is admitted. Runtime authority comes from the canonical source unit, actual
+class origin/name/file/line and property origin/line; variable bindings and an
+unchecked function environment supply no declaration context. Import prefixes
+match without case sensitivity while the remaining class suffix keeps its
+original bytes. Raw scope keywords, whole-name underscore, warningful headers,
+class-bearing unions and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/scoped-class-parentless-short-reference-get-hook-review.json).
