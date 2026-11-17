@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-nan-spaceship-wrapper-raw-integers",
+    "source": "<?php\nfunction rawNaNSpaceship281($p0 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (+(-((float)(+(E_WARNING === E_ERROR)))))), $p2 = ((+(-((float)(+(E_WARNING === E_ERROR))))) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p4 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (INF + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p6 = ((INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === 1, ':', $p1 === 1, ':', $p2 === 1, ':', $p3 === 1, ':', $p4 === 1, ':', $p5 === 1, ':', $p6 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n}\nrawNaNSpaceship281();\nrawNaNSpaceship281();\n",
+    "purpose": "Actual emitted numeric NaN spaceship returns raw INT1 in both orientations, including equal NaN bits, FLOAT zero, signed64 integer zero and infinities through cold/warm caches.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "61ed209abfa2efc56706b77de5d00b45e5bd7473145e8410c13efd530fb1d832"
+  },
+  {
+    "id": "deferred-nan-spaceship-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NaNSpaceship281;\nuse const E_WARNING as Base281;\nuse const E_ERROR as One281;\nuse const NAN as Nan281;\nfunction warning281($errno, $message, $file, $line) {\n    global $x281;\n    echo 'warning:', $message, '|';\n    defaults281(2);\n    $x281 = 3.5;\n}\nfunction defaults281(int $first, int &$nanFloatLeft = (int)((Nan281 + (+(-((float)(+(Base281 === One281)))))) <=> (+(-((float)(+(Base281 === One281)))))), int &$nanFloatRight = (int)((+(-((float)(+(Base281 === One281))))) <=> (Nan281 + (+(-((float)(+(Base281 === One281))))))), int &$nanIntLeft = (int)((Nan281 + (+(-((float)(+(Base281 === One281)))))) <=> ((int)(+(-((float)(+(Base281 === One281))))))), int &$nanIntRight = (int)(((int)(+(-((float)(+(Base281 === One281)))))) <=> (Nan281 + (+(-((float)(+(Base281 === One281))))))), int $last = 7) {\n    echo 'body:', $first, ':', $nanFloatLeft, ':', $nanFloatRight, ':', $nanIntLeft, ':', $nanIntRight, ':', $last, '|';\n    $nanFloatLeft = 19;\n    $nanFloatRight = 20;\n    $nanIntLeft = 21;\n    $nanIntRight = 22;\n}\n\\set_error_handler('NaNSpaceship281\\\\warning281');\n$x281 = 1.5;\n$last281 = 8;\ndefaults281(last: $last281, first: $x281);\necho 'outer:x=', $x281, '|';\n",
+    "purpose": "Imported genuine emitted NaN/FLOAT and NaN/INT spaceship results compose with INT-parent BYREF named defaults, private caches and Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:1:1:7|body:1:1:1:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "53d86decf01f6fe4f4d58ff34664d4c9786f167ac01268acc0b98d01a426a6d1"
+  }
+]

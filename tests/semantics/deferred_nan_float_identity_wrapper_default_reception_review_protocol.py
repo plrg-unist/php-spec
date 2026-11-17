@@ -152,8 +152,11 @@ for index, shape in enumerate([
         f'~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_{index}.ORIGIN)',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 0])) = (PFLOAT n_nan_{index})',
         f'$pfcast_nan(PFLOAT n_nan_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PINT 1)'
+         if index == 0 else
+         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps'),
+        (f'$lossy_optional_integer_deferred(S,pfunction,{index})' if index == 0 else
+         f'~$lossy_optional_integer_deferred(S,pfunction,{index})'),
     ]
 
 CASES = {
