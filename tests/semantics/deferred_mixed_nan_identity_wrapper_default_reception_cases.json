@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-mixed-nan-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawMixedNaNIdentity279($p0 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) === (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) === ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p2 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) === (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p4 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p6 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === false, ':', $p1 === false, ':', $p2 === false, ':', $p3 === false, ':', $p4 === true, ':', $p5 === true, ':', $p6 === true, ':', $p7 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawMixedNaNIdentity279();\nrawMixedNaNIdentity279();\n",
+    "purpose": "Genuine emitted NaN versus signed64 INT and Boolean operands preserves strict identity tags for both orientations/operators through cold/warm receives.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "c17140ae78592889c3b2d420022e27f210896ec5c4556cf02e2aa3752ec523d2"
+  },
+  {
+    "id": "deferred-mixed-nan-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace MixedNaNIdentity279;\nuse const E_WARNING as Base279;\nuse const E_ERROR as One279;\nuse const NAN as Nan279;\nfunction warning279($errno, $message, $file, $line) {\n    global $x279;\n    echo 'warning:', $message, '|';\n    defaults279(2);\n    $x279 = 3.5;\n}\nfunction defaults279(int $first, int &$intSame = (int)(((int)(+(-((float)(+(Base279 === One279)))))) === (Nan279 + (+(-((float)(+(Base279 === One279))))))), int &$boolSame = (int)((Nan279 + (+(-((float)(+(Base279 === One279)))))) === ((bool)(+(-((float)(+(Base279 === One279))))))), int &$intDifferent = (int)((Nan279 + (+(-((float)(+(Base279 === One279)))))) !== ((int)(+(-((float)(+(Base279 === One279))))))), int &$boolDifferent = (int)(((bool)(+(-((float)(+(Base279 === One279)))))) !== (Nan279 + (+(-((float)(+(Base279 === One279))))))), int $last = 7) {\n    echo 'body:', $first, ':', $intSame, ':', $boolSame, ':', $intDifferent, ':', $boolDifferent, ':', $last, '|';\n    $intSame = 19;\n    $boolSame = 20;\n    $intDifferent = 21;\n    $boolDifferent = 22;\n}\n\\set_error_handler('MixedNaNIdentity279\\\\warning279');\n$x279 = 1.5;\n$last279 = 8;\ndefaults279(last: $last279, first: $x279);\necho 'outer:x=', $x279, '|';\n",
+    "purpose": "Imported actual emitted NaN versus INT/Boolean children retains typed identity before INT-parent BYREF named defaults, private caches and Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:0:1:1:7|body:1:0:0:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "93ea28c767f1521781ff436efe107983ce622e0d6c472eec4fc57e5ff3b55051"
+  }
+]

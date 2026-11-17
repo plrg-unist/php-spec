@@ -117,8 +117,7 @@ for index, (_, constructor, _, _, nan_field) in enumerate(refused_pairs):
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,porigin_nan_{index}) = (PFLOAT n_nan_{index})',
         f'$pfcast_nan(PFLOAT n_nan_{index})',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD {1-nan_field}])) = (PBOOL false)',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {str(index >= 2).lower()})',
     ]
 
 CASES = {
