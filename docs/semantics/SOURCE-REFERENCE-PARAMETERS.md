@@ -1348,3 +1348,15 @@ keeps seven originals/native4+3 once and separate author/independent source7 wit
 `fde250339`. Its sole saved production-SL508 load passes in16.732132342s/source0.
 Other iterable union partners, wider headers, payloads and lifetimes remain partial;
 every exact hold stays unchanged.
+
+Completed required ordinary-CV producers admit exact ordered `iterable|bool`
+and `bool|iterable` returns for one or multiple positions. Raw/normalized order,
+formal authentication, return verification, frame retirement and finite private
+Notice cells remain required. Weak text `0` returns false and nonempty `false`
+returns true while caller copies retain their String tags; strict numeric text
+rejects before the Notice. The [Boolean/iterable-return review](../../coverage/semantics/cv-union-bool-iterable-return-producer-reference-notice-review.json)
+keeps seven originals/native4+3 once and separate author/independent source7 with
+477/376 fixture-SL507 cuts distinct from actual `f12c49d37` and SAME `53782e750`.
+The sole saved production-SL508 load passes in16.440659384s/source0. Other iterable
+union partners, wider headers, payloads and lifetimes remain partial; every exact
+hold stays unchanged.
