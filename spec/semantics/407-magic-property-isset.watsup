@@ -590,6 +590,45 @@ def $property_magic_cv_raw_primitive_coalesce_tree(pcunit*, porigin, expression)
   -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin, expression) = (pvalue)
 def $property_magic_cv_raw_primitive_coalesce_tree(pcunit*, porigin, expression) = $property_magic_cv_raw_ternary_boolean_not_concat_tree(pcunit*, porigin, expression) -- otherwise
 
+;; A closed CONCAT is nonnull even when its components echo empty or falsey text.
+dec $property_magic_cv_raw_concat_left_coalesce_left(pcunit*, porigin, expression) : pvalue?
+def $property_magic_cv_raw_concat_left_coalesce_left(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
+  -- if $property_magic_cv_raw_primitive_coalesce_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+def $property_magic_cv_raw_concat_left_coalesce_left(pcunit*, porigin, expression) = $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin, expression) -- otherwise
+;; New forms compose through CONCAT and coalesce RHSs, retaining the old left domain.
+dec $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin, expression) : ptbytes?
+def $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_left ++ ptbytes_right)
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = ($property_magic_cv_raw_ternary_select(pvalue =/= PNULL, $echo_value(pvalue), ptbytes_right))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_concat_left_coalesce_left(pcunit*, porigin_left, expression_left) = (pvalue)
+  -- if $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_concat_left_coalesce_tree(pcunit*, porigin, expression) = $property_magic_cv_raw_primitive_coalesce_tree(pcunit*, porigin, expression) -- otherwise
+
+;; Observed emitted roots supply typed bytes without inventing child or pool facts.
+dec $property_magic_cv_emitted_concat_left_coalesce_concat_value(pstate, porigin, expression) : pvalue?
+def $property_magic_cv_emitted_concat_left_coalesce_concat_value(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
+  -- if $property_magic_cv_raw_concat_left_coalesce_tree(S.SOURCES, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes)
+  -- if $property_magic_cv_raw_primitive_coalesce_tree(S.SOURCES, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = eps
+  -- if porigin = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $pool_value(S.POOLS, porigin) = eps
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = eps
+  -- if $compiled_effects(S, porigin) = eps
+def $property_magic_cv_emitted_concat_left_coalesce_concat_value(S, porigin, expression) = eps -- otherwise
+
 ;; Genuine emitted primitive-coalesce CONCAT roots retain typed byte provenance.
 dec $property_magic_cv_emitted_primitive_coalesce_concat_value(pstate, porigin, expression) : pvalue?
 def $property_magic_cv_emitted_primitive_coalesce_concat_value(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
@@ -770,6 +809,11 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $property_magic_cv_emitted_primitive_coalesce_concat_value(S, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
+  -- if $property_magic_cv_emitted_concat_left_coalesce_concat_value(S, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
+  -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = false -- otherwise
 ;; Literal method names retain their raw bytes without class-name normalization.
 dec $property_magic_cv_static_method_site_name(pstate, porigin, phpType20, ptbytes) : bool
@@ -899,6 +943,10 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_primitive_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
+  -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
+def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
+  -- if $property_magic_cv_emitted_concat_left_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, phpType20, ptbytes) = false -- otherwise
 ;; Direct parent labels retain descriptor bytes before class-name lookup.
