@@ -658,6 +658,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_right) = (NScalarString (BYTES text_right) metadata_right)
   -- if $compiled_read(S, porigin_right) = (PSTRING n_right*)
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
+;; Two emitted string casts retain the nonnull left header and skip the right VALUE.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NExprCastString expression_left metadata_left) (NExprCastString expression_right metadata_right) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; Literal NULL selects an emitted string cast's certified immutable header.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NExprConstFetch (NName (BYTES text_left) metadata_name) metadata_left) (NExprCastString expression_child metadata_right) metadata)
