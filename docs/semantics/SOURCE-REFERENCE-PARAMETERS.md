@@ -928,6 +928,23 @@ are independently clear and retain separate cuts. Nullable/union
 and multiple-CV iterable formals, multiple-CV iterable returns, Traversable Notice
 payloads, wider producers/lifetimes and every exact hold remain partial.
 
+Raw `?iterable`, `iterable|null` and `null|iterable` required one-CV formals now
+retain canonical nullable order or exact ordered raw/normalized pairs. Two
+dedicated argument arms preserve the shared multi-CV lists and existing default,
+source, return, payload and ownership guards. Array, NULL and genuinely retained
+Generator inputs preserve ordinary BYREF writes and separate private Notice cells;
+Generator bodies stay unentered. The
+[nullable/ordered iterable-formal review](../../coverage/semantics/singleton-cv-nullable-iterable-formal-producer-reference-notice-review.json)
+binds native4+3 once/7 unique originals to independent whole packets and separate
+352/292 fixture-SL507 suites. Prelaw fronts179/150 and first-source Unsupported
+retain zero credit; no new failures occur. One prior derived nullable-header
+control is promoted using current reached states, without historical replay.
+Actual `045573120` and sole joined `d124d90a` SL508 loading
+(16.332717621 s/source0) are independently clear and remain separate from
+the original source and fixture cuts.
+Multiple-CV iterable formals/returns, Traversable Notice operands, wider headers,
+owners/lifetimes and every exact hold remain partial.
+
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
 case-folded stdClass identity, member order, unique builtins, one class and at
