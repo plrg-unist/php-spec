@@ -55,7 +55,8 @@ def controls(case):
     for members in (['iterable', 'string'], ['string', 'iterable'], ['float', 'float'], ['iterable', 'float', 'int']):
         nodes = ['NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_float' for kind in members]
         raw = 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return_union'
-        lines.append('~' + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
+        polarity = '' if members in (['iterable', 'string'], ['string', 'iterable']) else '~'
+        lines.append(polarity + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     return lines
 
 
