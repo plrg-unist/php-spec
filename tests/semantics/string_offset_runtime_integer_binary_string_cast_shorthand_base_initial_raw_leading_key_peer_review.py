@@ -139,7 +139,7 @@ $string_read_runtime_value(S_negative_integer,porigin_base) = eps
                    f'S_{label}_integer = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_{label}_base) :: (PCOCCURRENCE pcpath_cond expression_{label}_cond) :: (PCOCCURRENCE pcpath_right expression_{label}_right) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_right (PINT {integer})) :: ppool.CONSTANTS]]]',
                    f'$string_read_runtime_value(S_{label}_integer,porigin_cond) = (PINT 0)',
                    f'$string_read_runtime_value(S_{label}_integer,porigin_base) = (pvalue_base)',
-                   f'{"~" if label == "power" else ""}$string_read_raw_known_base(S_{label}_integer,porigin_base,pvalue_base)']
+                   f'$string_read_raw_known_base(S_{label}_integer,porigin_base,pvalue_base)']
     for label, raw, value, quiet in (
             ('integral', 'NScalarFloat (FLOAT "4000000000000000") metadata_right', 'PFLOAT 4611686018427387904', True),
             ('fractional', 'NScalarFloat (FLOAT "3ff8000000000000") metadata_right', 'PFLOAT 4609434218613702656', False),
