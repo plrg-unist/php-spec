@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-boolean-float-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawBooleanFloatIdentity277($p0 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) === (+(-((float)(+(E_WARNING === E_ERROR)))))), $p1 = ((!(+(-((float)(+(E_WARNING === E_ERROR)))))) === ((float)((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = ((+(-((float)(+(E_WARNING === E_ERROR))))) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = (((float)((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) === (!(+(-((float)(+(E_WARNING === E_ERROR))))))), $p4 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== (+(-((float)(+(E_WARNING === E_ERROR)))))), $p5 = ((!(+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((float)((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p6 = ((+(-((float)(+(E_WARNING === E_ERROR))))) !== ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = (((float)((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))) !== (!(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === false, ':', $p1 === false, ':', $p2 === false, ':', $p3 === false, ':', $p4 === true, ':', $p5 === true, ':', $p6 === true, ':', $p7 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawBooleanFloatIdentity277();\nrawBooleanFloatIdentity277();\n",
+    "purpose": "Actual Boolean/nonNaN float operand pairs retain raw strict identity tags in both orientations/operators through cold/warm receives.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "78aed63d127117d210ef3758377ff1688029b1f6bd52839b053d644188caad41"
+  },
+  {
+    "id": "deferred-boolean-float-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanFloatIdentity277;\nuse const E_WARNING as Base277;\nuse const E_ERROR as One277;\nfunction warning277($errno, $message, $file, $line) {\n    global $x277;\n    echo 'warning:', $message, '|';\n    defaults277(2);\n    $x277 = 3.5;\n}\nfunction defaults277(int $first, int &$boolSame = (int)(((bool)(+(-((float)(+(Base277 === One277)))))) === (+(-((float)(+(Base277 === One277)))))), int &$floatSame = (int)(((float)((int)(!(+(-((float)(+(Base277 === One277)))))))) === (!(+(-((float)(+(Base277 === One277))))))), int &$boolDifferent = (int)(((bool)(+(-((float)(+(Base277 === One277)))))) !== (+(-((float)(+(Base277 === One277)))))), int &$floatDifferent = (int)(((float)((int)(!(+(-((float)(+(Base277 === One277)))))))) !== (!(+(-((float)(+(Base277 === One277))))))), int $last = 7) {\n    echo 'body:', $first, ':', $boolSame, ':', $floatSame, ':', $boolDifferent, ':', $floatDifferent, ':', $last, '|';\n    $boolSame = 19;\n    $floatSame = 20;\n    $boolDifferent = 21;\n    $floatDifferent = 22;\n}\n\\set_error_handler('BooleanFloatIdentity277\\\\warning277');\n$x277 = 1.5;\n$last277 = 8;\ndefaults277(last: $last277, first: $x277);\necho 'outer:x=', $x277, '|';\n",
+    "purpose": "Imported names, existing INT parents, four BYREF named holes and Warning reentry preserve private caches for actual Boolean/nonNaN float strict identity.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:0:1:1:7|body:1:0:0:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "1218fbaa0369c62be8f03d9d23f7d32bd33838c75e52024368810491a4bb0bb0"
+  },
+  {
+    "id": "deferred-boolean-float-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryBooleanFloatIdentity277(int &$value = (int)(E_WARNING === E_ERROR)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryBooleanFloatIdentity277();\n",
+    "purpose": "The existing phase-safe numeric identity INT parent stays a separate ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "a14c67b8d18b0ad2f9c7444b6a6defde3027f9b950edc2edf8907453b381e5f4"
+  }
+]

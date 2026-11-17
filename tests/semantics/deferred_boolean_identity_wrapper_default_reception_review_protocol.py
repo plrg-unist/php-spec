@@ -116,14 +116,8 @@ for index, (_, constructor, _, _, left, right) in enumerate(refused_pairs):
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 0])) = ({left})',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 1])) = ({right})',
     ]
-    if index in (0, 1, 4, 5):
-        truth = 'false' if index in (0, 1) else 'true'
-        refused.append(f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {truth})')
-    else:
-        refused += [
-            f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-            f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
-        ]
+    truth = 'false' if index < 4 else 'true'
+    refused.append(f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {truth})')
 
 CASES = {
     'deferred-boolean-identity-wrapper-raw-booleans': {
