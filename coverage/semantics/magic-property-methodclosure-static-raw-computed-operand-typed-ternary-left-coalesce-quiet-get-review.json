@@ -1,0 +1,139 @@
+{
+  "feature": "Constructor-known STRING/BOOL operands in quiet static USER typed ternary-left coalesce selectors",
+  "status": "Independently reviewed bounded increment; family and full core remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned oracle and recorded profile.",
+  "behavior": "FULL present arms and SHORT condition/fallback admit existing primitive values plus old-certified non-NUL CONCAT PSTRING and NOT/five Boolean-constructor PBOOL. Only NULL requests coalesce fallback; false, INT0, empty STRING and STRING0 remain nonnull. Truthy SHORT retains its original tag/value. Both proper SOURCE arms authenticate, including skipped operands.",
+  "implementation": {
+    "source": "c54751a05461749cd1f1490c2c9b3092425d8622",
+    "tree": "d443084a1a50476c9c38f18e93ff9339ff570f9e",
+    "parent": "ea2218feee34de8247fc18e1792aa1c5b9f86afa",
+    "runtime407_sha256": "7cb020421bf0b2c917ad377b3ad69bf268940dee0a15f36c4ec631d7f18f9ab7",
+    "new_helpers": 1,
+    "operand_substitutions": 4,
+    "complete_parent_inverse_sha256": "3932e888cb9033ee3f699ef0f895780ec2d7160b7beef14e14f3de3841b9eb70",
+    "compatibility": "old Some(v) => same new Some(v); full-condition unchanged; composition preserves prior successes",
+    "preserved": "Full condition, old byte trees, root receipt,46 dispatch guards, cache and owner/lifetime bodies are byte-identical. No new provider or native evaluation."
+  },
+  "authorities": [
+    "Zend/zend_compile.c:zend_compile_conditional,zend_compile_shorthand_conditional,zend_compile_coalesce",
+    "Zend/zend_vm_def.h:ZEND_QM_ASSIGN,ZEND_JMP_SET,ZEND_COALESCE,Boolean/CONCAT handlers"
+  ],
+  "validation": {
+    "private_SL_modules": 507,
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "source_agreements": [
+      {
+        "role": "author",
+        "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "seconds": 63.09635699912906,
+        "status": "normal",
+        "exit_status": 0
+      },
+      {
+        "role": "author",
+        "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "seconds": 50.66192849515937,
+        "status": "normal",
+        "exit_status": 0
+      },
+      {
+        "role": "independent",
+        "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources",
+        "seconds": 142.40812070597894,
+        "status": "normal",
+        "exit_status": 0
+      },
+      {
+        "role": "independent",
+        "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw",
+        "seconds": 97.87658271589316,
+        "status": "normal",
+        "exit_status": 0
+      }
+    ],
+    "author_fixture_cuts": [
+      182,
+      180
+    ],
+    "independent_fixture_cuts": [
+      109,
+      86,
+      118,
+      139,
+      54
+    ],
+    "fixture_source_credit": 0,
+    "new_failures": 0,
+    "new_timeouts": 0,
+    "corrections": 0,
+    "prelaw": {
+      "expectedUnsupported": 3,
+      "inner280_timeout": 1,
+      "timeout_seconds": 285.2431563709397,
+      "source_credit": 0
+    },
+    "observations": {
+      "originals": 4,
+      "ternary": 27,
+      "coalesce": 29,
+      "null_fallbacks": 5,
+      "nonnull_exact_retained": 24,
+      "credit": 0,
+      "interpretation": "27 ternary /29 coalesce,5 NULL/24 nonnull including2 old coalesces; actual FIELD/retained values. Full AFTER PNULL is enqueue placeholder, logical PSTRING certificates do not forge runtime carriers."
+    },
+    "caps": {
+      "model_inner_seconds": 280,
+      "model_outer_seconds": 290,
+      "fixture_outer_seconds": 297,
+      "address_space_bytes": 3221225472,
+      "private_sl_modules": 507
+    },
+    "closed_evidence_renewal": 0,
+    "postlaw_first_pass": true
+  },
+  "review": {
+    "verdict": "ONE_WHOLE_CLEAR",
+    "reviewer": "/root/recover29_get_ternary_review",
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-quiet-get/independent/actual-and-same-clear-v1.json",
+    "tuple_sha256": "d8a392e64680423e6d9763087a72e48a05ffeff0c297367900dd3598a80a814f",
+    "source_packet_sha256": "e436c4b022989c7375a885fe8d0c671634ce0c904940df88eaa3d65fd268d1a3",
+    "evidence_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-quiet-get/author/evidence-packet-v1.json",
+    "evidence_packet_sha256": "081d8e8e78e3dda343ec160cb3e12638fc70655656ed9ac179e50afc35805f09",
+    "source_first_packet_sha256": "54a427d39b89e37c94c64236616fd2c0613c1b0691263911795ed05d082e1395"
+  },
+  "integration": {
+    "actual": "3c42ba7483245533598eb84ac4401df07990ff38",
+    "same_revision": "3c42ba7483245533598eb84ac4401df07990ff38",
+    "tree": "7c672e94b892650ede6ba3751007613560901d3d",
+    "canonical_report_sha256": "38fabd3e2478b648818257aad0b4ef8c0e8d7fe8fcb44ca71b655a033e2fc9bb",
+    "canonical_seconds": 16.44129897817038,
+    "canonical_SL_modules": 509,
+    "canonical_argv": 512,
+    "canonical_equal_watch": 513,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "canonical_executions": 1,
+    "read_custody": {
+      "actual_frozen_Git_assessments": 1,
+      "report_physical_reads": 1,
+      "projection_physical_reads": 1,
+      "placement_result_physical_reads": 1,
+      "full_originals_internally_cached": true,
+      "cached_SAME_reuse": 1,
+      "canonical_executions": 1,
+      "reviewer_added_runtime": 0,
+      "author_MAIN_source_report_map_raw_access_required": 0
+    },
+    "author_consumption": "Immutable reviewer tuple only; direct actual-source/canonical report/map/result reads0; added canonical/runtime executions0.",
+    "metadata_base": "a2db28de522566f391ea27488945d8733df93a29"
+  },
+  "remaining": [
+    "Bare ambiguous ternary/coalesce values and wider parents/selectors",
+    "FLOAT/CV/nonquiet/NUL operands and wider producers",
+    "Ownership, callbacks and lifecycle extensions"
+  ],
+  "holds": "Exact holds207/OP12/Source47/ownedNUL/undefined-refLIST/COMP88, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}

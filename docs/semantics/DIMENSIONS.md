@@ -2115,3 +2115,25 @@ Two author and one reviewer preparation assertions retain0. Nonfinite/owning/
 nonquiet values, changed precision histories and wider lifetimes remain partial;
 all exact holds, reserve93807cdd6/255 and inventory169/306closed0+1 remain unchanged.
 [Review](../../coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
+
+Saved ordinary initialized NULL/BOOL CVs also retain live empty-array postvalues
+through the first nested-unset Warning. The pinned `zval_get_long_func(false)`
+reads the array element count quietly, and nested unset discards the index.
+A separate stateful alternative requires the actual in-bounds stored array,
+empty ITEMS, a valid full heap and the ENV-rooted HCELL to HARRAY ownership edge.
+Logical owners must be positive; no native refcount or immutable-array flag is
+assumed. Pure PARRAY value admission stays false. The current-name/saved-cell,
+reference/released, exact quiet read, source and task guards remain unchanged.
+Normal completion raises the fixed Error; a pending throw retains the same
+Throwable and complete caller tail without adding a task owner or diagnostic.
+
+Native2 once/source2, author prelaw61/69 and independent78/91 retain their cuts.
+Author133/42-derived+137/41-derived and peer144/38-derived+149/37-derived SL180
+checks pass separately. Affected legacy6/130 confirms all three old fake-PARRAY0
+refusals remain literal: pending trace array0 is nonempty. Preparation/fixture
+failures retain zero credit. Actual=SAME548c625fa and sole3a519c80 productionSL509
+pass16.030759096s/source0 through immutable dc06c363. The one canonical execution
+is distinct from the factual two physical report reads after the ROOT-authorized
+reader recovery; author raw reads remain0. Nonempty/wider arrays, cells, owners
+and lifetimes remain partial; all exact holds and the withdrawn blanket finite
+acceptance remain unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-empty-array-post-review.json).

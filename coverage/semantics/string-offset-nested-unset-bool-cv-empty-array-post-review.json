@@ -1,0 +1,219 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-empty-array-post",
+  "status": "Independent source6, WHOLE and sole shared production-SL509 review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Source-produced live empty-array postvalues in the same saved ordinary initialized NULL/BOOL CV, preserving fixed Error versus the same pending Throwable/caller tail.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "fe7488e80d8d0e44eb0160ec62fc8902bcb0b4b692a1beb9f3b720c8dbc24734",
+    "law_revision": "ad1f8e5b41cb658fffea3e2ced98a0a0e320ea81",
+    "law": "Add one stateful empty-array proof to the two existing post-cell alternatives. Bound STORE/ARRAYS before graph access; require empty ITEMS, valid full heap, allocated rooted HCELL, allocated HARRAY, actual child/edge and positive logical owners. Pure PARRAY value admission and common current-name/saved-cell/unref/unreleased/quiet-read/source/task guards remain literal."
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_execute.c: zend_check_string_offset, zend_fetch_dimension_address, zend_wrong_string_offset_error",
+      "Zend/zend_operators.c: zval_get_long_func",
+      "Zend/zend_vm_def.h: ZEND_FETCH_DIM_UNSET; CV FREE_OP2 behavior"
+    ],
+    "reason": "NULL/BOOL Warning conversion rereads the saved CV. An empty array converts quietly by element count; the index is discarded. FREE_OP2 does not free the borrowed CV, and a pending Exception suppresses the fixed nested Error."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post",
+  "native_baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-baseline39-v1/report.json",
+    "sha256": "d2e25bc282802a40911ff7fd19c9285ae84c49c3642e63f69073870847d76a50",
+    "native_originals_once": 2,
+    "model_unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-source40-v1/report.json",
+    "sha256": "ba4755abff6c04a694e1ed4a585ab97f5cb1e72eea94844351454a5531cf245f",
+    "revision": "ad1f8e5b41cb658fffea3e2ced98a0a0e320ea81",
+    "agreements": 2,
+    "native_reused": 2,
+    "new_native": 0
+  },
+  "author_prelaw": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-source-prelaw39-v1.json",
+    "sha256": "c0a0ed65e9161c48947a5ac807c33984aedb0ec1f3d980fb88df2fa1c7173246",
+    "conditions": [
+      61,
+      69
+    ],
+    "source_credit": 0
+  },
+  "independent_prelaw": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-prelaw44-v1.json",
+    "sha256": "07eef3ed3c102680d6c3c708ddca5dfe73dbd996d4dda8fffc3f705b937d689a",
+    "conditions": [
+      78,
+      91
+    ],
+    "source_credit": 0
+  },
+  "author_states": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-state40-index0-v2/report.json",
+      "sha256": "b3a53a67d86e0adddce1c6b5df038e60a7f7e273cc54447dc86418b84ceb9c48",
+      "revision": "925702bb3173132fb12c27d958a00d4cc74ab54f",
+      "conditions": 133,
+      "derived": 42,
+      "mode": "SL",
+      "cap_seconds": 180,
+      "seconds": 25.323832988739014,
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-state40-index1-v1/report.json",
+      "sha256": "9f417861420c38e12607ea4d73ace68b87717ea61e295a0994b4207845f5e0ed",
+      "revision": "925702bb3173132fb12c27d958a00d4cc74ab54f",
+      "conditions": 137,
+      "derived": 41,
+      "mode": "SL",
+      "cap_seconds": 180,
+      "seconds": 25.537538290023804,
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "independent_states": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-state45-index0-v1/report.json",
+      "sha256": "47685c548dcb15c33b2ef0d98a82d3bc33ab3ed3f78d1a20b4dc905207ae1466",
+      "revision": "2c95e65b553108b2ab0c9e93a45619eb0c629c4a",
+      "conditions": 144,
+      "derived": 38,
+      "mode": "SL",
+      "cap_seconds": 180,
+      "seconds": 23.79848313331604,
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-state45-index1-v1/report.json",
+      "sha256": "907952e5497f48ebeb71ef3fd28d5524c6162633565c486e5a7739609656e96f",
+      "revision": "2c95e65b553108b2ab0c9e93a45619eb0c629c4a",
+      "conditions": 149,
+      "derived": 37,
+      "mode": "SL",
+      "cap_seconds": 180,
+      "seconds": 26.60519289970398,
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "affected_legacy": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-legacy45-v2/report.json",
+    "sha256": "43afad185002fd3f4760eb826c7d4852876415e62d39d74fe72239d52158bb38",
+    "fronts": 6,
+    "conditions": 130,
+    "source_credit": 0,
+    "native_credit": 0,
+    "result": "Three old fake-PARRAY0 negatives stay unchanged. Quiet return and INTERNED fronts have no arrays; pending fronts have three arrays and an allocated nonempty trace array0. The full-heap forged-array0 state remains refused by nonempty ITEMS."
+  },
+  "preserved_zero_credit": {
+    "author_fixture": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-state40-index0-v1/report.json",
+      "sha256": "1a6fa684e2d9289f0f1ce90e59b798051da8b65d08651dd43b15ec73888e204e",
+      "kind": "Generated Error message expected INTERNED instead of raw PSTRING; only that assertion changed. Failed0 and then-unrun index1 stay separate0."
+    },
+    "peer_legacy": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-legacy45-v1/report.json",
+      "sha256": "11b8b0ba82a3205919fd8f72e2d82af7110ea0478b6474da3ec42805629cbc1b",
+      "kind": "Incorrect ARRAYSeps at a pending trace-array frontier; later assertions unclaimed. Only affected header assertions corrected."
+    },
+    "other_preparation": "Peer diagnostic-v1 binding rejection, WHOLE diff-format assertion and author metadata two-LF EOF assumption all retain0. Metadata guard rejected before writes; corrected prefix preserves the exact one-LF parent. Diagnostic-v2 supplies header facts only/credit0. No accepted execution/source/native/state/WHOLE renewal.",
+    "actual_canonical_reader": {
+      "actual_original_report_physical_reads": 2,
+      "canonical_original_report_physical_reads": 2,
+      "first_transport_preparation_failure_credit": 0,
+      "first_failure": "Both expected hashes verified; oversized output was truncated before in-session cache parsing/storage. ROOT authorized one bounded independent reader retry. No execution or HEAD refresh.",
+      "independent_cache": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-independent-read-cache45-v1.json.gz",
+        "sha256": "23f2b39261a88d2d4df74dfe9a7c2bf7214616f039cbaaba8aa727eecef9804b"
+      },
+      "author_raw_actual_canonical_map_reads": 0,
+      "current_head_queries": 0
+    }
+  },
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/author-source-freeze40-v1.json",
+    "sha256": "dc911bdf6dbeaf659c64880a73537a25f2b4db5079bd05d20d11b0312f4a8941"
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-whole45-v1.json",
+    "sha256": "d741f0a031499e1568754dbec6ec8622eb6c838bf55533dc7d671eb903ac3657"
+  },
+  "actual_source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/main99-source6-placement40-v1/report.json",
+    "sha256": "2b1310a5e1ac3d864e8e2808ae61f2db442c267b46e3855e5ec104836f86b2fa",
+    "revision": "548c625faea601070d8980491a394cd55606b294",
+    "tree": "c252e9d7a273e4bb1c657a47524001dcad19b77d",
+    "parent": "871eb1f337bd8ca13d30a6e6804c250a77c578b5",
+    "parent_tree": "b25670f3fec28bdd58ea2bdd3d0048eb155f4688",
+    "literal_nonmake_full_posts_match": true,
+    "unique_make_lines": 6,
+    "make_block_sha256": "f395154f552baf1f260b778eaaa7c5b090980f100413b6eb55d57f97cad157a8",
+    "complete_current_parent_inverse": true,
+    "all_foreign_paths_preserved": true,
+    "source_credit": 0
+  },
+  "canonical": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main99-output148-ref125-string-empty-array-canonical-v1/report.json",
+    "sha256": "3a519c806e7167f6e57e5f145ddc9819b296d269668cda22e251465c6917cf63",
+    "tested_revision": "548c625faea601070d8980491a394cd55606b294",
+    "same_actual_revision": true,
+    "mode": "production_SL",
+    "module_count": 509,
+    "fixture_count": 1,
+    "argv_count": 512,
+    "watch_count": 513,
+    "watch_extra": [
+      "/home/user/workspace/php-spec/spec/semantics/modules.json",
+      "/home/user/workspace/php-spec/tests/semantics/numeric_runner.ml"
+    ],
+    "before_after_hashes_equal": true,
+    "module_catalog_sha256": "d15a61f1e2676d549a0fcbeeb27c7c2fcd54b114a1a755ace22a2fa8e27f4a5d",
+    "law_sha256": "fe7488e80d8d0e44eb0160ec62fc8902bcb0b4b692a1beb9f3b720c8dbc24734",
+    "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "fixture_sha256": "7dfe8bbabac236e82d623ddb8b02769a4f1067d26fad6643ffa83eddc9ed65fc",
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "seconds": 16.0307590959128,
+    "cap_seconds": 60,
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "executions": 1,
+    "source_credit": 0,
+    "physical_saved_report_reads": 2,
+    "author_raw_report_reads": 0
+  },
+  "actual_canonical_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-empty-array-post/peer-actual-canonical45-v1.json",
+    "sha256": "dc06c3635d248ae6fa110dcf4628face5b7fe6527c68440f8b77d936d013a696",
+    "reviewer": "recover45",
+    "verdict": "CLEAR",
+    "use": "Immutable independent cached tuple; no later original report/map/HEAD refresh."
+  },
+  "metadata_scope": {
+    "parent_revision": "c3140ad953a26928b413db955aaa27607fccc72b",
+    "parent_tree": "5012b175784df860d4af15cd0c27dfe911485630",
+    "owned_paths": [
+      "docs/semantics/DIMENSIONS.md",
+      "coverage/semantics/string-offset-nested-unset-bool-cv-empty-array-post-review.json"
+    ],
+    "family_parent_sha256": "fe3014a4262859e311b9923358b21b4b774998fdba836e96f5a3f73858d83397",
+    "family_change": "Literal EOF append to complete named c314 blob; accepted DYN54 append preserved. Removing only own append reconstructs the complete current family parent."
+  },
+  "remaining": "Nonempty/wider arrays, references/released/rebound cells, wider callback/owner/lifetime histories and REQUEST/unknown/NUL string postvalues remain partial.",
+  "holds": "All exact holds, Source47 low-precision DEFINE-name NaN, NaNBYTE, Owned REQUEST-NUL, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": []
+}
