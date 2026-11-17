@@ -135,6 +135,9 @@ dec $string_unset_bool_cv_post_value(pvalue) : bool
 def $string_unset_bool_cv_post_value(PNULL) = true
 def $string_unset_bool_cv_post_value(PBOOL b) = true
 def $string_unset_bool_cv_post_value(PINT i) = $long_range(i)
+def $string_unset_bool_cv_post_value(PFLOAT n) = true
+  -- if $(n < 18446744073709551616)
+  -- if $float_decode(n) = FINITE n_s n_n n_d
 def $string_unset_bool_cv_post_value(pvalue) = false -- otherwise
 
 dec $string_unset_bool_cv_post_cell(pstate, ptbytes, int, nat) : bool

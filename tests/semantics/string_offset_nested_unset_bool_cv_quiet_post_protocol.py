@@ -102,7 +102,8 @@ def conditions(program, path):
     ]
     reached = len(checks)
     for tag, value in (('null', 'PNULL'), ('false', '(PBOOL false)'),
-                       ('true', '(PBOOL true)'), ('minimum', '(PINT (-9223372036854775808))'),
+                       ('true', '(PBOOL true)'), ('float', '(PFLOAT 4607182418800017408)'),
+                       ('minimum', '(PINT (-9223372036854775808))'),
                        ('zero', '(PINT 0)'), ('maximum', '(PINT 9223372036854775807)')):
         state = 'S_post_' + tag
         checks += [state + ' = S_P[.STORE[n_key] = DEFINED ' + value + ']',
@@ -120,7 +121,6 @@ def conditions(program, path):
         ('reference', 'S_P[.REFCELLS = S_P.REFCELLS ++ [n_key]]'),
         ('overflow', 'S_P[.STORE[n_key] = DEFINED (PINT 9223372036854775808)]'),
         ('underflow', 'S_P[.STORE[n_key] = DEFINED (PINT (-9223372036854775809))]'),
-        ('float', 'S_P[.STORE[n_key] = DEFINED (PFLOAT 4607182418800017408)]'),
         ('string', 'S_P[.STORE[n_key] = DEFINED (PSTRING ($ptascii("7")))]'),
         ('array', 'S_P[.STORE[n_key] = DEFINED (PARRAY 0)]'),
         ('object', 'S_P[.STORE[n_key] = DEFINED (POBJECT 0)]'),

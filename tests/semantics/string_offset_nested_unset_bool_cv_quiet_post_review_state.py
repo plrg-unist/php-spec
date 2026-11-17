@@ -104,12 +104,12 @@ def conditions(program, path):
         *public('S_quiet_P'),
     ]
     derived = []
-    for value in ('PNULL', '(PBOOL true)', '(PBOOL false)', '(PINT (-9223372036854775808))',
+    for value in ('PNULL', '(PBOOL true)', '(PBOOL false)', '(PFLOAT 0)', '(PINT (-9223372036854775808))',
                   '(PINT 0)', '(PINT 9223372036854775807)'):
         derived += ['$string_unset_bool_cv_post_value(' + value + ')',
             '$string_unset_bool_cv_post_cell(S_quiet_P[.STORE[n_key] = DEFINED ' + value + '], n_key_name*, z_key, n_key)']
     for value in ('(PINT 9223372036854775808)', '(PINT (-9223372036854775809))',
-                  '(PFLOAT 0)', '(PSTRING ($ptascii("7")))', '(PARRAY 0)', '(POBJECT 0)'):
+                  '(PSTRING ($ptascii("7")))', '(PARRAY 0)', '(POBJECT 0)'):
         derived.append('~$string_unset_bool_cv_post_value(' + value + ')')
     for value in ('PNULL', '(PINT 7)'):
         derived += ['$string_unset_bool_cv_plan(S_quiet_E[.STORE[n_key] = DEFINED ' + value + ']) = eps',
