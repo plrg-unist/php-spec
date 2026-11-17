@@ -1,0 +1,44 @@
+[
+  {
+    "id": "strict-global-bare-stdclass-byval-formal-fqn-return",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(sTdClAsS $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "1484a3f4f1497e36adba6eb66a730e9c04b7f8ca69892231b47cb4b21762116b",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_producer_reference_notice_cases.json",
+      "id": "strict-singleton-fqn-stdclass-byval-and-canonical-class-return",
+      "source_sha256": "656f4c8db4682927eb9d159712014ba38cdfe5fc50da3751b061b6f9a4645e5b",
+      "edits": "Replace namespace physical line2 by global comment, remove only the stdClass FORMAL leading slash, and select global h; FQN RETURN and all runtime statements/physical lines retained."
+    },
+    "role_index": 0
+  },
+  {
+    "id": "weak-global-multiple-untyped-bare-stdclass-byref-formal-fqn-return",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,sTdClAsS &$right):\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "93852ed4da8b139e10bfa2e633eb32704ffda7311a6954dc90d8ee6b3a52748d",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_producer_reference_notice_cases.json",
+      "id": "weak-multiple-untyped-and-fqn-stdclass-byref-class-return",
+      "source_sha256": "eda9ce8c63582fdc24fff8564a648157bc03fc04b33198f824193630b5b2433b",
+      "edits": "Replace namespace physical line2 by global comment, remove only the stdClass FORMAL leading slash, and select global h; FQN RETURN and all runtime statements/physical lines retained."
+    },
+    "role_index": 1,
+    "line_observation": "Exact unchanged native original emitted Notice at physical final actual line9; expected metadata corrected without another native execution."
+  }
+]

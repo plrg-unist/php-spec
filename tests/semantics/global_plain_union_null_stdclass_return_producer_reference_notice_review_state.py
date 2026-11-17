@@ -65,7 +65,7 @@ def normal(initial, case, index, front):
         derived.append('~' + proof(signature='pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[' + update + ']]]'))
     parameter = next(line.removeprefix('phpType17 = ') for line in reached if line.startswith('phpType17 = '))
     if index == 0:
-        derived.append('~' + proof().replace('SEQUENCE ([phpType17]),','SEQUENCE ([' + parameter.replace('NNameFullyQualified','NName') + ']),'))
+        derived.append(proof().replace('SEQUENCE ([phpType17]),','SEQUENCE ([' + parameter.replace('NNameFullyQualified','NName') + ']),'))
     return reached, derived
 
 
