@@ -1011,10 +1011,24 @@ remain. Array and NULL results preserve identity and error priority; retained
 Generator inputs stay unentered. The
 [multiple-CV nullable iterable-return review](../../coverage/semantics/multi-cv-nullable-iterable-return-producer-reference-notice-review.json)
 records native4+3 once and two independently passed source7/fixture463/395 packets.
-Five canonical-only fixture bridges retain ordered-return refusals. Prelaw
-Unsupported and the corrected pure preparation assertion keep zero credit.
-Ordered return unions, wider headers, payloads and lifetimes remain partial;
-every exact hold stays unchanged.
+At that cut, five canonical-only fixture bridges retain ordered-return refusals.
+Prelaw Unsupported and the corrected pure preparation assertion keep zero credit.
+Wider return unions, headers, payloads and lifetimes remain partial; every exact
+hold stays unchanged.
+
+Exact raw two-member `iterable|null` and `null|iterable` returns now also
+authenticate for those completed multi-CV producers through a dedicated header
+arm. Matching ordered normalized singleton branches and raw Identifier
+casefolding reuse the existing required ordinary-CV argument proof. Return
+verification, frame retirement and private Notice-cell/payload guards remain.
+Seven originals cover alias/COW, NULL results, unentered retained Generator
+inputs, handler throws and receive/return-error priority. The
+[ordered-null multiple-CV iterable-return review](../../coverage/semantics/multi-cv-union-null-iterable-return-producer-reference-notice-review.json)
+records native4+3 once and two independently passed source7/fixture497/409
+packets. Prelaw fronts259/207 and the first source Unsupported keep zero credit.
+Six scoped older fixture bridges and the Makefile entry accompany the new tests;
+generic union lists remain unchanged. Other iterable unions, wider headers,
+payloads, lifetimes and every exact hold remain partial.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
