@@ -1,0 +1,237 @@
+{
+  "milestone": "ENUM305 literal infinite FLOAT full-ternary FIELD1 values",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local oracle and baseline profile",
+  "scope": "Raw NScalarFloat or unary-plus/minus literal chains whose exact binary64 bits decode INFINITE authenticate compiler-pruned full ternary FIELD1 values. Named/computed infinity and NaN predicates remain outside this receipt.",
+  "implementation": "Module519 adds28 lines: a separate three-argument literal-infinity redirect receipt shared by binding pruning and phase-unsafe finite scalar VALUE transport. Exact whole/three-child SOURCE, root CODEfalse/no pool/read, literal bits and actual condition PFLOAT VALUE, exact condition pool, absent condition CODE/read/redirect and unique proper noncopy FIELD1 redirect with emitted line remain mandatory. Finite303 and STRING304 helper bytes, declaration ENV/no-DIM/phase/cache/recipient/owner guards and scalar result tags are unchanged.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_provenance": [
+    {
+      "path": "vendor/php-src/Zend/zend_operators.h",
+      "symbol": "i_zend_is_true",
+      "rule": "IS_DOUBLE warns for NaN; both infinities are quiet truthy values."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_compile.c",
+      "symbol": "zend_eval_const_expr/ZEND_AST_CONDITIONAL",
+      "rule": "A folded truthy literal condition selects child1 and does not demand skipped child2."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_ast.c",
+      "symbol": "zend_ast_evaluate_ex/ZEND_AST_CONDITIONAL",
+      "rule": "Only the selected child supplies the raw result; conditional selection does not convert that result."
+    }
+  ],
+  "runtime_identities": {
+    "native_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "production_adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    }
+  },
+  "author_source": {
+    "base": "81b1da9d546fe32709795ed32c18e1b89ba5b9ae",
+    "revision": "1f06212e9b6d909a4c87da6c403bea1fe31f9518",
+    "module519_sha256": "f82881388da184575852f7c8275f116114045ec8c2b50c084b7c92f91cc801c6"
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/native-v1/report.json",
+    "sha256": "51ecbba68aa7333e4fa40315909a814a36cea73cc0d1dad030dee69f470b4b29",
+    "fresh_originals": 2,
+    "per_original_cap": 45,
+    "source_replays": 0,
+    "stable": true,
+    "source_hashes": [
+      "4989670e91aecc1b8da63181ff864345fe8d8252997555dd541216046ecddb03",
+      "67b7c0954e93a98fd92764fb731984abf268dbbc2864dd56791fc3f59523f8df"
+    ]
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/baseline-v1/report.json",
+    "sha256": "0c0b452fe738bb0992e98981adf3265470bdcc86a4032c56aecbe6cad6575eb7",
+    "revision": "81b1da9d546fe32709795ed32c18e1b89ba5b9ae",
+    "expected_unsupported": 1,
+    "reason": "error-handler ingress requires a producer continuation",
+    "source_credit": 0,
+    "mode": "production SL_mode",
+    "modules": 508,
+    "per_source_cap": 300,
+    "outer_cap": 660,
+    "elapsed_seconds": 25.401287188986316,
+    "stable": true,
+    "reaped": true
+  },
+  "prelaw": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/prelaw-v1/closure-call-protocol-s742qv0f/report.json",
+    "sha256": "38946c71f9226ff63e77dabf7c41790c028d6b8321681111f3153ea3a3313519",
+    "revision": "81b1da9d546fe32709795ed32c18e1b89ba5b9ae",
+    "conditions": 519,
+    "cuts": [
+      342,
+      177
+    ],
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 720,
+    "elapsed_seconds": 125.99487574095838,
+    "source_credit": 0,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/source-v1/report.json",
+    "sha256": "a6d1a2079421799990cb3bf9252aa7bf48e77702b3f25c28169cd761634b8c47",
+    "revision": "1f06212e9b6d909a4c87da6c403bea1fe31f9518",
+    "exact_normal_agreements": 2,
+    "mode": "production SL_mode",
+    "modules": 508,
+    "per_source_cap": 300,
+    "outer_cap": 720,
+    "elapsed_seconds": [
+      42.336192519869655,
+      169.17105088499375
+    ],
+    "native_reexecutions": 0,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixtures": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/author-v1/closure-call-protocol-y_o5f_fv/report.json",
+    "sha256": "3e67d8cb5bd0123492c3828bd6ff5d35dc66da6a407ceba18a84301a580db427",
+    "revision": "b09fa60fdcbed8df175b67de73d3f8e7c0bc0eb1",
+    "conditions": 591,
+    "cuts": [
+      284,
+      245,
+      62
+    ],
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 900,
+    "elapsed_seconds": 429.22552911005914,
+    "source_credit": 0,
+    "whole_first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "independent_fixtures": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/peer-whole-v1/closure-call-protocol-aonuhn2x/report.json",
+    "report_sha256": "17603dd99ddf99599d3fc1d356c6cdefed58439d24520fb90417cf0b9f9998ac",
+    "conditions": 491,
+    "cuts": [
+      253,
+      159,
+      79
+    ],
+    "elapsed_seconds": 380.3402641240973,
+    "pass_all": true,
+    "revision": "96510d13359764083b6a86dba01d2f7d5e89b490",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 900,
+    "source_credit": 0,
+    "whole_first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "affected_older_fixtures": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/peer-affected-v1/closure-call-protocol-xd0quyli/report.json",
+    "report_sha256": "148485a67b0c76ec3c92f15bec817dcbb9826bbde07eb783179eb5c18f6cb068",
+    "conditions": 34,
+    "elapsed_seconds": 32.74546968983486,
+    "pass_all": true,
+    "scope": "Only old303 positive/negative infinity whole VALUE RHS promotions; former finite helper and mismatched signature still refuse; no accepted303campaign replay",
+    "revision": "96510d13359764083b6a86dba01d2f7d5e89b490",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 360,
+    "source_credit": 0,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "independent_source_bridge": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/peer-source-bridge-v1.json",
+    "sha256": "7c246781aa10b316fb50d17426d7515e74eb9dcd41ca73ff7f19584a51b2f793",
+    "saved_originals": 2,
+    "exact_watched_inputs": 527,
+    "reviewer_model_source_runs": 0,
+    "native_reexecutions": 0,
+    "scope": "Two saved author production-source agreements;527 exact watched inputs, no second model source or native execution."
+  },
+  "condition_accounting": "Prelaw519, author whole591, independent whole491 and affected34 retain distinct cuts; no unique-condition sum or additional source agreement count is claimed. All completed runtime campaigns pass first attempt. Baseline Unsupported is a zero-credit boundary observation.",
+  "preparation_zero_credit": {
+    "records": [
+      "Initial guarded reviewer preparation refused the Makefile parent before mutation; exact24 prior registration lines were then bridged administratively.",
+      "One ambiguous local template assertion stopped before generating the independent fixture file; its narrow correction changed no runtime rule."
+    ],
+    "source_credit": 0,
+    "runtime_executions": 0
+  },
+  "author_source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/author-source-packet-v1/manifest.json",
+    "sha256": "16dace36b29fec134022f4bb90d6ab06e7b903e4cca5f7980fc55a0405fa60b0"
+  },
+  "independent_source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/peer-reviewed-source-packet-v1/manifest.json",
+    "sha256": "4837f23a07f98c330abe602802991cf8034e6a585c9a73fb7519d944c984544d"
+  },
+  "actual_same": {
+    "revision": "7f3eaafdc20f5b7332a35371a32a7484baad5df4",
+    "same_revision": "7f3eaafdc20f5b7332a35371a32a7484baad5df4",
+    "tree": "b6934c43342fa6aa67bb75bfb6e1a21ed1b5ddc2",
+    "parent": "2b9b68a843deecb96e9658c35a74dcd712c40223",
+    "immutable_review_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/peer-actual-canonical-cache-v1.json",
+      "sha256": "052404fdf36f634bfd78efc791a3c9140dde63b8d4d83a5086abd8866a57e842",
+      "reviewer": "recover28_enum_infinite_review",
+      "physical_canonical_reads": 1,
+      "author_raw_actual_map_canonical_reads": 0
+    },
+    "source_composition": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305/main98-source-placement-v1/report.json",
+      "sha256": "02e7f437becebb0c3cadfe6a21d85daa5d5e7a701eae4f3cd31edff7da212188",
+      "full_seven_parent_postimages": true,
+      "makefile_unique_additions": 3,
+      "private_protection_clear": true,
+      "actual_parent_inverse_clear": true
+    },
+    "canonical_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main98-enum305-canonical-v1/report.json",
+      "sha256": "3285c55f4575ff749507710f1a8f8417e78b636e212988b9dacf870ad28f28f4"
+    },
+    "mode": "production SL_mode",
+    "modules": 509,
+    "fixture_count": 1,
+    "argv_count": 512,
+    "watched_paths": 513,
+    "watched_input_digest": "c77f8b7b23410eff57128300a5b2be45f4bded9584379b96448e899eab2768b6",
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.74192619114183,
+    "exit": 0,
+    "timeout": false,
+    "stdout": "true\n",
+    "stderr": "",
+    "current_before_after_equal": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "accepted_cut_replays": 0
+  },
+  "remaining": "Named/computed infinite FLOAT predicates, NaN-condition warnings, computed/owning STRING predicates or results and wider declaration/reception/lifetime contexts remain partial. Prior finite FLOAT, INT, Boolean, falsey and literal STRING cuts are retained without renewal.",
+  "holds": "OP12; Source47 lowprecisionDEFINE-nameNaN; Owned-NUL source-release; undefined by-reference LIST keys; COMP88; V110/GC35/I106/COMP123/ATTR87/GC87/I140/GC84/held207 remain untouched. Reserve93807cdd6/255 and inventory169/306/closed0+1 stay unchanged.",
+  "recovery": "../php-spec-evidence-archive/enum-deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-305 retains exact originals/native once, baseline/prelaw/source/author/independent/affected reports, saved-source bridge, full source packets/current-parent inverses, sole canonical review cache and process records. Evidence archives are not build inputs.",
+  "postlaw_semantic_mismatches": 0,
+  "timeouts": 0,
+  "metadata_ownership": "One coordinated metadata batch; author34 owns this row and the narrow existing-family document delta. Generic README/PROGRESS/features operations are prepared separately against fixed7f3 and require the single writer/cohort named by MAIN98; no semantic rerun or new canonical read is authorized."
+}

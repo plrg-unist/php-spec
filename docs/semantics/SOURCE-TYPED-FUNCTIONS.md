@@ -1289,6 +1289,19 @@ sole saved production-SL509 load pass in16.239776302s with source0, independentl
 cleared through one immutable tuple. Generic truthy/NaN conditions, owning results
 and wider contexts remain partial.
 
+[Literal-infinity full-ternary defaults](../../coverage/semantics/deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-review.json)
+retain exact FIELD1 scalar tags when a raw FLOAT literal or unary sign chain
+has infinity bits. The same literal/INFINITE/typed-pool/full-source receipt
+serves binding pruning and value transport; the condition has no executable
+read or redirect, and the root has one proper noncopy FIELD1 redirect.
+Skipped FIELD2 names keep their source occurrences without demanded bindings.
+Shared raw caches and private integer recipients survive cold/warm calls and
+named coercion-handler reentry. Two originals and separate author/independent
+state cuts pass; the actual SL509 load remains a distinct zero-source-credit cut.
+Named/computed infinity predicates, NaN conditions, owning results and wider
+contexts remain partial. Prior finite FLOAT and literal STRING certificates
+retain their existing scope and evidence.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
