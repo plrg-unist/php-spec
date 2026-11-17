@@ -1397,6 +1397,15 @@ def $ob_object_parser_string(S, porigin, NScalarInt (INTEGER i) metadata) = ($de
   -- if $origin_node(S.SOURCES, porigin) = (NScalarInt (INTEGER i) metadata)
   -- if $(0 <= i)
   -- if $long_range(i)
+def $ob_object_parser_string(S, porigin, NScalarFloat (FLOAT text_float) metadata) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarFloat (FLOAT text_float) metadata)
+  -- if |text_float| = 16
+  -- if n_nibble* = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  -- if (text_float[n_nibble:1] <- ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"])*
+  -- if n_bits = $hex_bits(text_float, 0)
+  -- if $(n_bits < 9218868437227405312)
+  -- if $source_precision(S, (porigin)) = (z_precision)
+  -- if $parser_literal_text_at(PFLOAT n_bits, z_precision) = (n*)
 def $ob_object_parser_string(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)

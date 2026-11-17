@@ -830,6 +830,11 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_parser_integer_concat_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-integer-concat-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_parser_integer_concat_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-integer-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_parser_integer_concat_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-integer-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_parser_float_concat_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_parser_float_concat_precision_sources.py
+	python3 tests/semantics/output_final_selected_parser_float_concat_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_parser_float_concat_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_parser_float_concat_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -2216,6 +2221,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_computed_infinite_float_full_ternary_redirect_wrapper_default_reception.py
 	python3 tests/semantics/deferred_computed_infinite_float_full_ternary_redirect_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_computed_infinite_float_full_ternary_redirect_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_float_integer_infinite_full_ternary_redirect_wrapper_default_reception.py
+	python3 tests/semantics/deferred_float_integer_infinite_full_ternary_redirect_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_float_integer_infinite_full_ternary_redirect_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
@@ -3794,6 +3802,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_methodclosure_static_raw_computed_operand_typed_ternary_left_coalesce_quiet_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_computed_operand_typed_ternary_left_coalesce_quiet_get_review_cases.json --model-timeout 280
 	python3 tests/semantics/magic_property_methodclosure_static_raw_computed_operand_typed_ternary_left_coalesce_quiet_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_nested_operand_typed_ternary_left_coalesce_quiet_get_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_methodclosure_static_raw_nested_operand_typed_ternary_left_coalesce_quiet_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_nested_operand_typed_ternary_left_coalesce_quiet_get_review_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_methodclosure_static_raw_nested_operand_typed_ternary_left_coalesce_quiet_get_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json

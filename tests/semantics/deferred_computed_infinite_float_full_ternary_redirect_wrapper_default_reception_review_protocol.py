@@ -186,7 +186,7 @@ named += ['$lookup(S_done.ENV,$ptascii("x306")) = (n_global)',
     r'$heap_valid($heap_graph(S_done)) /\ $default_caches_valid(S_done,S_done.DEFAULTCACHE)']
 # Operand type, operator result and exact child receipts remain independent.
 for name, expression, entries, value, selected in [
-    ('integer_child', 'NExprBinaryOpPlus (NScalarFloat (FLOAT "7ff0000000000000") eps) (NScalarInt (INTEGER 0) eps) eps', [('0','PFLOAT 9218868437227405312'),('1','PINT 0')], 'PFLOAT 9218868437227405312', 'eps'),
+    ('integer_child', 'NExprBinaryOpPlus (NScalarFloat (FLOAT "7ff0000000000000") eps) (NScalarInt (INTEGER 0) eps) eps', [('0','PFLOAT 9218868437227405312'),('1','PINT 0')], 'PFLOAT 9218868437227405312', '(PINT 0)'),
     ('string_child', 'NExprBinaryOpPlus (NScalarFloat (FLOAT "7ff0000000000000") eps) (NScalarString (BYTES "MA==") eps) eps', [('0','PFLOAT 9218868437227405312'),('1','PSTRING ([48])')], 'PFLOAT 9218868437227405312', 'eps'),
     ('nested_child', 'NExprBinaryOpPlus (NExprBinaryOpPlus (NScalarFloat (FLOAT "7ff0000000000000") eps) (NScalarFloat (FLOAT "0000000000000000") eps) eps) (NScalarFloat (FLOAT "0000000000000000") eps) eps', [('0','PFLOAT 9218868437227405312'),('1','PFLOAT 0'),('0,PCFIELD 0','PFLOAT 9218868437227405312'),('0,PCFIELD 1','PFLOAT 0')], 'PFLOAT 9218868437227405312', 'eps'),
     ('finite', 'NExprBinaryOpPlus (NScalarFloat (FLOAT "3ff0000000000000") eps) (NScalarFloat (FLOAT "3ff0000000000000") eps) eps', [('0','PFLOAT 4607182418800017408'),('1','PFLOAT 4607182418800017408')], 'PFLOAT 4611686018427387904', '(PINT 0)'),

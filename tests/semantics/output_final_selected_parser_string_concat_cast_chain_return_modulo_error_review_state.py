@@ -142,12 +142,13 @@ def frontier(name, fixture, path):
         checks += [('source0 a missing deep SOURCE cannot be borrowed from the nested parent', value(missing, expr, function=function) + ' = eps')]
         checks += [('source0 the exact fitting INT1 parser CONCAT now retains its constant entry',
                     compiled(query(('NScalarInt (INTEGER 1) (eps)', b''), b'1')))]
-        for raw, answer in [('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b'1.5'),
-                            ('NExprConstFetch (NName (BYTES "dHJ1ZQ==") (eps)) (eps)', b'1'),
+        checks += [('source0 the exact finite FLOAT1.5 parser CONCAT now retains its constant entry',
+                    compiled(query(('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b''), b'1.5')))]
+        for raw, answer in [('NExprConstFetch (NName (BYTES "dHJ1ZQ==") (eps)) (eps)', b'1'),
                             ('NExprConstFetch (NName (BYTES "bnVsbA==") (eps)) (eps)', b''),
                             ('NExprCastInt (NScalarString (BYTES "MQ==") (eps)) (eps)', b'1')]:
             state, expr, function, _, _ = query((raw, b''), answer)
-            checks += [('source0 numeric, keyword and emitted-cast leaves stay outside the byte-only parser domain',
+            checks += [('source0 keyword and emitted-cast leaves stay outside the parser domain',
                         value(state, expr, function=function) + ' = eps')]
         state, expr, function, _, _ = query((b'\0', b'x'))
         checks += [('source0 literal NUL remains outside this non-NUL parser source domain', value(state, expr, function=function) + ' = eps')]

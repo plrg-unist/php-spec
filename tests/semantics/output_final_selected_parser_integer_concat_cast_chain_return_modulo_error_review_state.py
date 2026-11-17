@@ -83,15 +83,16 @@ def frontier(name, fixture, path):
         for number in [-1, -9223372036854775808, MAXIMUM + 1]:
             checks += [('source0 forged negative or overflowing raw INT refuses even matching own pool bytes',
                         matched_refusal(query((number, b''), str(number).encode())))]
-        excluded = [('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b'1.5'),
-                    ('NExprUnaryMinus (NScalarInt (INTEGER 1) (eps)) (eps)', b'-1'),
+        checks += [('source0 the exact old148 FLOAT1.5 query now retains its constant entry',
+                    previous.compiled(previous.query(('NScalarFloat (FLOAT "3ff8000000000000") (eps)', b''), b'1.5')))]
+        excluded = [('NExprUnaryMinus (NScalarInt (INTEGER 1) (eps)) (eps)', b'-1'),
                     ('NExprUnaryPlus (NScalarInt (INTEGER 1) (eps)) (eps)', b'1'),
                     ('NExprConstFetch (NName (BYTES "dHJ1ZQ==") (eps)) (eps)', b'1'),
                     ('NExprConstFetch (NName (BYTES "bnVsbA==") (eps)) (eps)', b''),
                     ('NExprCastInt (NScalarString (BYTES "MQ==") (eps)) (eps)', b'1')]
         for raw, answer in excluded:
             state, expr, function, _, _ = previous.query((raw, b''), answer)
-            checks += [('source0 FLOAT, unary, keyword and emitted-cast leaf fences remain',
+            checks += [('source0 unary, keyword and emitted-cast leaf fences remain',
                         value(state, expr, function=function) + ' = eps')]
         state, expr, function, _, _ = query((b'\0', 1), b'\x001')
         checks += [('source0 a NUL STRING leaf cannot enter through an admitted INT sibling',
