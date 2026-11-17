@@ -1456,9 +1456,9 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PBOOL b_re
   -- if pbin = IDENTICAL \/ pbin = NOTIDENTICAL \/ pbin = EQUAL \/ pbin = NOTEQUAL \/ pbin = LESS \/ pbin = LESSEQUAL \/ pbin = GREATER \/ pbin = GREATEREQUAL \/ pbin = LOGICALXOR
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
-  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (PINT i_left)
-  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (PINT i_right)
-  -- if $long_range(i_left) /\ $long_range(i_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue_right)
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
   -- if porigin_left = PORIGIN n_child pcpath_left
   -- if porigin_right = PORIGIN n_child pcpath_right
   -- if pfunction.CODE.UNIT = n_child
@@ -1466,7 +1466,7 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PBOOL b_re
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z, b_right))
   -- if b_fold = (b_left /\ b_right)
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_fold)
-  -- if S_binary = $binary_apply(S[.RESULT = KNOWN (PINT i_right)], pbin, PINT i_left, PINT i_right, z)
+  -- if S_binary = $binary_apply(S[.RESULT = KNOWN pvalue_right], pbin, pvalue_left, pvalue_right, z)
   -- if S_binary.RESULT = KNOWN (PBOOL b_result)
   -- if S_binary = S[.RESULT = KNOWN (PBOOL b_result)]
   -- if (b_fold /\ $compiled_read(S, porigin) = (PBOOL b_result)) \/ (~b_fold /\ $compiled_read(S, porigin) = eps)

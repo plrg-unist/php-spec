@@ -141,7 +141,7 @@ def frontier(name, fixture, path):
                 ('greaterequal', floating, integer(1), 'PBOOL true'),
                 ('xor', integer(0), string, 'PBOOL true')]:
             query = binary(kind, left, right, result)
-            checks += [('source0 genuine quiet mixed children cannot borrow two-PINT predicate authority', proof(query, result, False))]
+            checks += [('source0 genuine quiet mixed primitive children retain exact Boolean predicate authority', proof(query, result))]
         query = binary('equal', integer(1), integer(1), 'PFLOAT 4607182418800017408')
         checks += [('source0 FLOAT one cannot replace a strict Boolean folded equality fact', proof(query, 'PBOOL true', False))]
         state, expression, function, _, children, _ = binary('equal', integer(2 ** 63), integer(0), 'PBOOL false')
