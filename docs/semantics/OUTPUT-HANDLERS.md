@@ -1573,3 +1573,15 @@ passes separately in16.842721109 s/source0. Coercive signs, integer promotion,
 NaNs, wider handlers/owners/lifetimes and every exact hold remain partial.
 [Recursive sign evidence](../../coverage/semantics/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-review.json).
+
+Integer bitwise NOT also composes over certified signed64 INT children within
+those nested casts. Exact child source/CODE/folding, the own folded integer fact
+or emitted read-eps, full NORMAL bitnot-state equality and nonownership remain
+required. Four originals reuse four native observations once; author22/14 and
+independent73/14 retain separate fixture source0 cuts, including signed64 endpoints,
+proper-child type refusals and real retirement. Baseline Unsupported2/unrun2
+retain0. Actual composition `d4540a7d8` retains those postimages in the separate
+MAIN508 load at `eb5aa70f8`, passing in16.833466227 s/source0. Coercive or owning
+children, bare/single-cast handlers, wider lifetimes and every exact hold remain partial.
+[Integer NOT evidence](../../coverage/semantics/output-final-selected-integer-bitnot-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-bitnot-cast-chain-return-modulo-error-review.json).
