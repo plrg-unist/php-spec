@@ -2735,3 +2735,13 @@ only affected fixtures were corrected. The positive-line predicate rewrite is
 equivalent because the source-line accessor filters nonpositive metadata.
 Actual `7586f120b` and the sole joined `0823d7b3c` production-SL509 load
 (16.581980589 s, source0) are independently clear. All exact holds remain.
+
+Explicit class/null unions on that short reference producer retain both raw
+orders, `Class|null` and `null|Class`, with matching normalized branches.
+Exactly one ordinary, fully qualified or namespace-relative class name and one
+raw Identifier NULL use the existing singleton class proof and quiet full type
+normalization. Runtime defining source/class/property authority and existing
+reference/owner bounds remain. Both orders display `?Class` in diagnostics.
+Scope keywords, warningful headers, broader unions and wider owners/lifetimes
+remain partial.
+[Review](../../coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
