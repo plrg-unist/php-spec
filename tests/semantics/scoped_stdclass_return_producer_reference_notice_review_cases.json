@@ -1,0 +1,46 @@
+[
+  {
+    "id": "scoped-combined-formal-return-alias-named-byref-private-notice",
+    "source": "<?php\nnamespace PeerScopedReturn127;use stdClass as PeerBox;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(pEeRbOx &$saved):PEERBOX{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('PeerScopedReturn127\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "ac59bc53c6b19195c0afe7601caf98454fad20da94425d2d758804bdc34ff2d9",
+    "new_support_credit": 1,
+    "namespace": "PeerScopedReturn127",
+    "formal_alias": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "notice-positive",
+    "return_alias": "PEERBOX",
+    "derived_from": {
+      "catalogue": "scoped_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "scoped-imported-stdclass-named-byref-private-notice",
+      "source_sha256": "b74ffd6c57ccdca3d11affba384b8d0aecf7bb2685cf5a797026ab8ee035d458",
+      "edits": "Fresh namespace127; replace only the FQN singleton RETURN by an ordinary imported alias. Keep the ordinary FORMAL alias, body, observations and physical lines."
+    },
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes."
+  },
+  {
+    "id": "scoped-null-return-alias-typeerror-before-outer-notice",
+    "source": "<?php\nnamespace PeerScopedReturnControl127;use stdClass as ReturnBox;\n// NULL rejects the nonnullable RETURN before the outer Notice.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):rEtUrNbOx{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('PeerScopedReturnControl127\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0170147475e8186717df9b8d31e2c735ecdc37ee5727eb788a48e850ef9905bf",
+    "namespace": "PeerScopedReturnControl127",
+    "return_alias": "rEtUrNbOx",
+    "import_alias": "ReturnBox",
+    "import_target": "stdClass",
+    "role": "unchanged-return-control",
+    "new_support_credit": 0,
+    "derived_from": {
+      "catalogue": "global_plain_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-plain-stdclass-return-error-before-outer-notice",
+      "source_sha256": "fd09a5b76a3247b92bf6f5ac11df5df270714f727efb70d7178edefb8d1bd8ee",
+      "edits": "Fresh namespace/import and ordinary RETURN alias; replace the wrong-class actual by NULL and its now-unused class declaration by a same-line comment. Keep observers and physical line positions."
+    },
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes."
+  }
+]
