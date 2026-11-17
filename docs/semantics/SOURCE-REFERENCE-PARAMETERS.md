@@ -925,7 +925,7 @@ with separate author326/peer283 fixture-SL507 suites. Prelaw fronts174/143,
 the initial Unsupported source and two binding diagnostics retain zero credit.
 Actual `6e59bd311` composition and its sole SL508 load17.034237165s/source0
 are independently clear and retain separate cuts. Nullable/union
-and multiple-CV iterable formals are extended below. Nullable/ordered multiple-CV iterable returns,
+and multiple-CV iterable formals are extended below. Ordered multiple-CV iterable returns,
 Traversable Notice payloads, wider producers/lifetimes and every exact hold remain partial.
 
 Raw `?iterable`, `iterable|null` and `null|iterable` required one-CV formals now
@@ -959,7 +959,7 @@ The first Unsupported source, original line-expectation failure and stale litera
 occurrence assertion remain separate zero-credit cuts; the fixture correction
 reruns only its affected suite. Bare duplicated argument controls are promoted;
 canonical nullable and ordered duplicated formals are extended below;
-bare multi-CV iterable-return headers are extended below; nullable/ordered returns remain partial.
+bare and canonical nullable multi-CV iterable-return headers are extended below; ordered returns remain partial.
 Wider headers, Traversable Notice operands, owners/lifetimes and exact holds remain partial.
 
 Canonical raw `?iterable` required formals now also use the multiple-CV fold.
@@ -972,7 +972,7 @@ cells; Generator bodies stay unentered. The
 records native4+3 once, seven source originals and separate 459/367 fixture-SL507
 suites. Prelaw fronts269/205 and first-source Unsupported keep zero credit.
 Canonical nullable duplicated/forged argument controls are promoted; the ordered
-counterparts are extended below without replaying older campaigns. Nullable/ordered
+counterparts are extended below without replaying older campaigns. Ordered
 multiple-CV iterable returns, broader headers, Traversable Notice operands, owners/lifetimes
 and all exact holds remain partial.
 
@@ -988,7 +988,7 @@ fixture-SL507 suites in both independently passed whole packets. Prelaw fronts
 273/205, first-source Unsupported and the literal projection comparison failure
 keep zero credit. Only five affected older fixture bridges and the Makefile entry
 change alongside the new tests; historical campaigns are not renewed. Wider
-iterable unions, nullable/ordered multiple-CV iterable returns, headers, Notice
+iterable unions, ordered multiple-CV iterable returns, headers, Notice
 payloads, owners/lifetimes and every exact hold remain partial.
 
 Bare `iterable` returns now authenticate for completed multi-CV producers through
@@ -1001,8 +1001,20 @@ return/receive-error priority. The
 binds native4+3 once, retained author source7/fixture442, corrected peer fixture399
 and an independent full source7/442/399 packet. The first peer-fixture failure and
 prelaw Unsupported remain separate zero-credit cuts; only that affected suite
-reran. Nullable/ordered returns, Traversable Notice operands, wider headers,
-payloads and lifetimes remain partial; every exact hold stays unchanged.
+reran. Ordered returns, Traversable Notice operands, wider headers, payloads
+and lifetimes remain partial; every exact hold stays unchanged.
+
+Canonical raw `?iterable` returns now also authenticate for those completed
+multi-CV producers, with exact normalized `[iterable, null]` order. The existing
+formal fold, return verification, frame retirement and private-cell/payload guards
+remain. Array and NULL results preserve identity and error priority; retained
+Generator inputs stay unentered. The
+[multiple-CV nullable iterable-return review](../../coverage/semantics/multi-cv-nullable-iterable-return-producer-reference-notice-review.json)
+records native4+3 once and two independently passed source7/fixture463/395 packets.
+Five canonical-only fixture bridges retain ordered-return refusals. Prelaw
+Unsupported and the corrected pure preparation assertion keep zero credit.
+Ordered return unions, wider headers, payloads and lifetimes remain partial;
+every exact hold stays unchanged.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
