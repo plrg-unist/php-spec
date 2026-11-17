@@ -1158,7 +1158,18 @@ Notice-cell ownership retain their existing rules. The
 [bare-formal review](../../coverage/semantics/global-plain-stdclass-formal-producer-reference-notice-review.json)
 keeps fresh BYVAL/BYREF singleton and multiple-CV originals separate from the scalar
 rejection control and old pure expectation promotions, with no historical reruns.
-Bare nullable/union formals, other names/contexts and wider owners/lifetimes remain partial.
+Explicit bare union formals, other names/contexts and wider owners/lifetimes remain partial.
+
+Canonical raw `?stdClass` formals use the same global declaration context and
+required ordinary-CV proof. The nullable Param view changes only the inner class
+tag, preserving nullable/name/Param metadata and every other field. The existing
+FQN nullable fold authenticates exact `[class, null]` order before ordinary
+reception, return verification, frame retirement and private Notice cells. The
+[nullable bare-formal review](../../coverage/semantics/global-plain-nullable-stdclass-formal-producer-reference-notice-review.json)
+keeps object BYVAL/BYREF and NULL originals separate from the scalar reception
+control and the earlier pure expectation change. Explicit bare unions, other names
+and declaration contexts, and wider payloads/owners/lifetimes remain partial;
+exact holds stay unchanged.
 
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized

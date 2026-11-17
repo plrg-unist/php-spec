@@ -1783,3 +1783,20 @@ with stable/quiet/reaped source0 evidence. Wider producers, handlers, owners and
 lifetimes remain partial; all exact holds remain unchanged.
 [Folded STRING evidence](../../coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-review.json).
+
+Folded STRING bitwise NOT also feeds those nested INT/BOOL/FLOAT handler-return
+casts. Its proper STRING child keeps SOURCE/CODE/UNIT, true folding flags and
+the terminal child compiler line. Pure complement bytes must equal the own plain
+PSTRING pool fact; empty effects, exact identity, whole NORMAL constant-entry
+state equality apart from RESULT and child/result nonownership remain required.
+Double NOT, produced NUL and empty bytes retain distinct scalar-cast behavior.
+Native6 observed once at `741b27fd2` and source6 at `1619ddd40` retain their cuts;
+author27/19 and independent166/23 retain separate privateSL508 cuts at `89f478f9b`.
+The original fixture line-guard failure and narrow60-atom diagnostic retain
+source0; only new raw syntax-line guards changed before affected checks.
+Actual `69f028332` and SAME productionSL509 loading pass separately in
+16.081378270 s/cap60/source0 with independent saved-report review. Runtime REQUEST
+normalization, held Owned-NUL release and wider forms/lifetimes remain partial;
+all exact holds remain unchanged.
+[Folded STRING NOT evidence](../../coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-review.json).

@@ -16,13 +16,17 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Completed required ordinary-CV producers admit canonical bare `?stdClass` formals in global declarations without class imports. Exact class/null order and raw metadata retain ordinary object/NULL reception, unconstrained BYREF rebinding, return verification and private Notice-cell identity. Explicit bare union formals, other names/contexts and wider owners/lifetimes remain partial. [Review](coverage/semantics/global-plain-nullable-stdclass-formal-producer-reference-notice-review.json).
+
 Completed ordinary-CV producers admit canonical bare `stdClass` formals in global
 declarations without class imports. Exact raw/normalized bytes, ordinary BYREF
 reception, return verification and private Notice-cell ownership retain their
-existing guards. Bare nullable/union formals and wider contexts/lifetimes remain
+existing guards. Explicit bare union formals and wider contexts/lifetimes remain
 partial. [Review](coverage/semantics/global-plain-stdclass-formal-producer-reference-notice-review.json).
 
 Quiet pooled nonzero signed64 integer conditions in full ternary defaults preserve the selected FIELD1 scalar tag while skipped names remain undemanded. Exact source, typed pool and redirect receipts retain declaration bindings, Shared-cache values and private recipients through named Warning reentry. Two original source comparisons and separate author/independent fixture cuts pass; wider truthy domains, owning values and lifetimes remain partial. [Review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json).
+
+Quiet pooled nonzero signed64 integer and finite nonzero FLOAT conditions in full ternary defaults preserve selected FIELD1 scalar tags while skipped names remain undemanded. Exact source, typed pools, absent executable condition leaves and unique proper redirects retain declaration bindings, Shared-cache values and private recipients during named handler reentry. NaN/infinite predicates, truthy STRING predicates, owning values and wider lifetimes remain partial. [Integer review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json), [Review](coverage/semantics/deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Computed-TRUE full-ternary defaults preserve the selected scalar tag through exact
 recursive Boolean/source/pool authority and a proper selected-child redirect.
@@ -34,6 +38,8 @@ Quiet Boolean wrappers over closed NOT/CONCAT-left-coalesce static USER selector
 retain exact Boolean echo, both non-NUL source arms and genuine emitted-root
 authority. Wider expressions, owners and lifetimes remain partial.
 [Review](coverage/semantics/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
+
+Full and shorthand ternaries compose through closed NOT/CONCAT, Boolean and coalesce children in static USER selectors. Selected echo preserves the original truthy strings `01`, `1` and `10`; present NULL/FALSE differ from ABSENT. Every present proper quiet non-NUL SOURCE arm authenticates with genuine nonfolded CONCAT-root authority. A separate rejection-only ternary witness skips 44 impossible older alternatives while prior helpers and folded support remain literal. New coalesce parents, FLOAT/CV/nonquiet/NUL and wider roots/owners/lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-ternary-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
 
 Completed ordinary-CV producers admit flat `stdClass` return unions with the builtin companions already supported by fully qualified forms, in global declarations without class imports. Return verification preserves scalar priority, object identity and array COW before frame retirement and private reference Notices. Wider formals, names, contexts and lifetimes remain partial. [Ordered-union review](coverage/semantics/global-plain-ordered-stdclass-return-producer-reference-notice-review.json). The earlier float-only cut retains its [original review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
 
@@ -60,6 +66,8 @@ Recursive BooleanNot composes over bounded CONCAT-left-coalesce static USER sele
 Nested output-handler casts admit proper primitive children for twelve integer-result operators when the actual result fits signed64 and the whole state remains quiet and unchanged. Exact source, nonownership and two-cast guards remain; FLOAT or STRING results and wider lifetimes stay partial. [Review](coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-review.json).
 
 Compiler-folded STRING AND/OR/XOR trees feed nested INT/BOOL/FLOAT selected MOD handler returns through exact plain pool bytes, source/compiler/terminal-line authority, empty effects and unchanged state. Produced NUL, zero text and empty bytes retain distinct cast behavior. Emitted STRING/REQUEST producers, CONCAT and wider owners/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-review.json).
+
+Compiler-folded STRING bitwise NOT also feeds nested INT/BOOL/FLOAT selected MOD handler returns through proper STRING children, pure complement bytes and exact own plain pool, source/compiler/terminal-line authority, empty effects and unchanged NORMAL state. Double NOT, produced NUL and empty results retain their scalar cast behavior. Runtime REQUEST normalization and wider owners/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-review.json).
 
 [Bare stdClass/int producer returns](coverage/semantics/global-plain-union-int-stdclass-return-producer-reference-notice-review.json) preserve object identity or a verified INT through return checks, frame retirement and private Notice cells in the retained global declaration context; wider unions, formals and lifetimes remain partial.
 

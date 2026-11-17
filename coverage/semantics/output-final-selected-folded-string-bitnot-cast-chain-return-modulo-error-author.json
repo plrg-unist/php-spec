@@ -1,0 +1,218 @@
+{
+  "family": "output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "independently reviewed bounded extension; family remains partial",
+  "scope": "The existing two scalar handler-return casts consume folded plain STRING bitwise NOT. Recursively proper STRING children retain their own SOURCE/CODE/UNIT, true folding flags and independent compiler lines; the parent retains the terminal child line. Pure string_not bytes equal the exact own plain PSTRING pool fact. Empty effects, unchanged compiled_string_value identity, full NORMAL constant-entry state equality apart from RESULT and child/result nonownership remain required. Double NOT, produced NUL, zero text and empty results retain their scalar-cast behavior.",
+  "engine_basis": "PHP8.5.10 Zend/zend_compile.c::zend_compile_unary_op/zend_try_ct_eval_unary_op and Zend/zend_operators.c::bitwise_not_function. Runtime ZVAL_CHAR uses INTERNED identity only for one-byte inputs; other lengths, including empty input, retain REQUEST/STRINGDATA. Authored pure .watsup string_not and constant compilation supply the answers; no runtime REQUEST normalization or native evaluation is introduced.",
+  "source_package": {
+    "parent": "7a9bd00886ab8555d699f8c2ab42479cdf775bf4",
+    "revision": "89f478f9b3041e175ad1c72e2da7d5d806ea635c",
+    "tree": "0bf107884c0dd1e493339d8b9d4c7ebc8d8964b2",
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/ready-source-146-reviewed-manifest.json",
+    "manifest_sha256": "3061d87b80696746201d93b02c45074e5a1148e991cedd834147dc0c35627b9a",
+    "patch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/ready-source-146-reviewed.patch",
+    "patch_sha256": "4def70e0cf22da5c349cf75346fc3c6541c66da4c835a203bd8f8bbda873840b",
+    "files": 5,
+    "insertions": 312,
+    "deletions": 0,
+    "production_added_lines": 15,
+    "make_recipes": 4,
+    "review": "Independent recover32 WHOLE5 and published packet CLEAR. Complete parent/post bindings and the unique Makefile inverse preserve all predecessor rules and recipes."
+  },
+  "native": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/native-01/report.json",
+    "sha256": "4187f0ade087ddecab02420553c3084756c0127c9588cbd5736ef3a1dc5e60d3",
+    "revision": "741b27fd2eab6560635aaf20848915b27241e4cc",
+    "originals": 6,
+    "observed_once": true,
+    "seconds": 0.015910498099401593,
+    "watched_inputs": 20,
+    "source_credit": 0
+  },
+  "prelaw": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/before-01/report.json",
+    "sha256": "7611f3463fbd54872c5d2427ad9515f9243ba9a5774cd89847d0fcb205cb97b5",
+    "revision": "741b27fd2eab6560635aaf20848915b27241e4cc",
+    "selection": [
+      1,
+      4
+    ],
+    "expected_unsupported": 2,
+    "other_unrun_at_that_cut": 4,
+    "seconds": 77.26729938085191,
+    "watched_inputs": 540,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/after-01/report.json",
+    "sha256": "287f4d2ae2b657b596c312b16a8d857cdea2e6702c88814e20f170aff5766f18",
+    "revision": "1619ddd405da71882e561b3ff5b5e1f41a8c188c",
+    "originals": 6,
+    "seconds": 326.81391051597893,
+    "watched_inputs": 556,
+    "source_credit": 6,
+    "native_reused_without_replay": true,
+    "result": "All six original sources match saved native stdout P, exact stderr, MOD-zero diagnostic and fatal status255. Strict inner STRING and outer scalar witnesses distinguish one-byte/multibyte complement, NUL, double NOT to zero text, a folded AND child and empty bytes. Only the Boolean-false empty-NOT return retains both default Deprecated diagnostics.",
+    "caps": {
+      "steps": 100000,
+      "model_seconds": 90,
+      "process_seconds": 120,
+      "native_seconds": 10,
+      "outer_seconds": 660
+    }
+  },
+  "fixtures": {
+    "mode": "private SL508/cache=false/det=true; each group retains source0",
+    "author_frontier": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/front-02/report.json",
+      "sha256": "f6fd3523826b2d0c65c42de668d79c07c2a298e1cf760b10f7d13de2eabc0c03",
+      "revision": "89f478f9b3041e175ad1c72e2da7d5d806ea635c",
+      "launch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/front-launch-02.json",
+      "launch_sha256": "2094ab9c29dd275b22bf8cefe600e4c470ec6e5921bea5fe6611fbc870bae723",
+      "assertions": 27,
+      "groups": [
+        8,
+        8,
+        11
+      ],
+      "seconds": 265.88782507390715,
+      "watched_inputs_each": 589
+    },
+    "author_lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/life-01/report.json",
+      "sha256": "052648a5f7470c4f2e1ab1891b2c0aad44206ce9310d5233923e31775898c67f",
+      "revision": "89f478f9b3041e175ad1c72e2da7d5d806ea635c",
+      "launch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/life-launch-01.json",
+      "launch_sha256": "3ce1b208296477c9f3180304c4500e776265e60ae712caed693b9cf8ab4adda1",
+      "assertions": 19,
+      "groups": [
+        6,
+        6,
+        7
+      ],
+      "seconds": 374.5153362280689,
+      "watched_inputs_each": 589
+    },
+    "independent_frontier": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/peer-front-01/report.json",
+      "sha256": "1d2c3403edae807373d93e484ddfc4341ff3b2c91a7563ec069e5fe7d7d91beb",
+      "revision": "89f478f9b3041e175ad1c72e2da7d5d806ea635c",
+      "launch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/peer-front-launch-01.json",
+      "launch_sha256": "8452a346a2b7474e0428347df1750b3572584c3fae40de6642ea16679e2ddff4",
+      "assertions": 166,
+      "groups": [
+        78,
+        38,
+        50
+      ],
+      "seconds": 275.55422517401166,
+      "watched_inputs_each": 635
+    },
+    "independent_lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/peer-life-01/report.json",
+      "sha256": "7ac6ff536a2967baa22705a575c89c43aa8eb70fefaf642aaa5229ff61e82a2e",
+      "revision": "89f478f9b3041e175ad1c72e2da7d5d806ea635c",
+      "launch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/peer-life-launch-01.json",
+      "launch_sha256": "2f38b5ac3b9abf92c3e1279b2a87815f5deec922eb9c2c41763ee19f38425b79",
+      "assertions": 23,
+      "groups": [
+        7,
+        8,
+        8
+      ],
+      "seconds": 392.98128886381164,
+      "watched_inputs_each": 635
+    },
+    "result": "All raw SL conditions are true with empty stderr, stable complete maps/revisions and fully reaped empty launch groups. Independent source0 controls cover twelve byte/runtime-producer pairs, wrong typed/byte/identity facts, SOURCE/CODE/UNIT/BODY and compiler-line authority, true folding flags, effects, exact entry state, old numeric-STRING forged-PINT refusal, old integer-NOT success and actual formal/native-cell retirement.",
+    "caps": {
+      "fixture_seconds": 300,
+      "outer_seconds": 660
+    },
+    "source_credit": 0
+  },
+  "preserved_failures": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/front-01/report.json",
+      "sha256": "b5d1aa15d06906a22aa26a6bb34f4c749c0d770f7befcd4d6e5d6e0258e794c6",
+      "revision": "1619ddd405da71882e561b3ff5b5e1f41a8c188c",
+      "launch": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/front-launch-01.json",
+      "launch_sha256": "512b25d8541d8c5802b43de0a3518ba101c9653d4b42de6f44c3b5d99d00ca8d",
+      "seconds": 83.41329691093415,
+      "classification": "Fixture assertion used expression_line(root CAST), which recursively selects the child compiler line; the intended distinct raw syntax line is source_line(metadata_cast). The original seven true groups and one false conjunction are preserved.",
+      "raw_groups": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "source_credit": 0,
+      "further_author_frontier_unrun_at_failure": 2,
+      "author_lifecycle_unrun_at_failure": 3,
+      "independent_fixture_cases_unrun_at_failure": 6
+    }
+  ],
+  "diagnostic": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-146/front-diagnostic-01/report.json",
+    "sha256": "c9560340c3345eb015792158036ea9c41ec090bfaeb717db5c4f76ca3fda4853",
+    "atoms": 60,
+    "true": 59,
+    "false": 1,
+    "source_credit": 0,
+    "result": "The sole false atom was the inherited CAST expression_line inequality; CAST and NOT expression_line recurse to the terminal child."
+  },
+  "compatibility": {
+    "correction_rounds": 1,
+    "result": "Revision89f corrects only the new author and peer raw-syntax line guards. Production, source originals/helper/driver, Makefile and oracle remain unchanged from the accepted source cut1619. The affected author frontier rerun passed; author lifecycle and all independent cases then passed first try. Native/source observations retain their original cuts without replay or renewed credit. Existing generic expression_line behavior and predecessor fixtures remain unchanged.",
+    "source_credit": 0
+  },
+  "reliability": {
+    "fixture_assertion_failures": 1,
+    "php_source_disagreements": 0,
+    "timeouts": 0,
+    "current_unrun": 0,
+    "native_replays": 0,
+    "cap_changes": 0
+  },
+  "composition": {
+    "actual_revision": "69f02833269652c44f25a105499c08c6dd6d5228",
+    "same_revision": "69f02833269652c44f25a105499c08c6dd6d5228",
+    "actual_tree": "fb57bdcf80073d0f4f7bd2871a74a34cff4fe9d9",
+    "main_parent": "290593d1edcb9deb9bd47f289749cc85fb29f554",
+    "source_map": "../php-spec-evidence-archive/resumed-main-20261112/main96-ref122-enum303-output146-source-map-v1.json",
+    "source_map_sha256": "a320ad6c2dc118415973aac83b8c7bc8a945c59c62e9487ceaca836fa9d83f57",
+    "makefile_actual_sha256": "f79f5a048e0b196575e110a64e81cfaa36d44ff0761ce8265761d775df2faed1",
+    "makefile_actual_git_blob": "69c9cc76a374fcd9a5de7676f072268232dea23f",
+    "makefile_actual_bytes": 597774,
+    "make_inverse_parent_sha256": "c988b5d5a8058aa5d4cf224844003b21c47c87a779c17018550dbc6a62f75c00",
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main96-ref122-enum303-output146-canonical-v1/report.json",
+      "sha256": "dc3b547f109d1605cfad3ba5b088d2596c079be8859dd9ccb69971b913f00d88",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_count": 512,
+      "argv_sha256": "22d067f59916088e782314f71852e5f34f6d9b408cfa0a6b3095c18fe2f8799e",
+      "watch_count": 513,
+      "map_sha256": "de1add8991451e5464d61de31e1eff53d0203ac2aef4dc926a52dec27284c1a2",
+      "elapsed_seconds": 16.081378269940615,
+      "cap_seconds": 60,
+      "exit": 0,
+      "timeout": false,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "pid": 3536025,
+      "pid_absent": true,
+      "process_sha256": "283714aefc1d2dfe45c92f3cf1f9901f3d1282d5b0ea9170387df945f7da6f94",
+      "source_credit": 0
+    },
+    "review": "Independent recover32 ONE actual composition and physically saved SAME canonical CLEAR. Four non-Make postimages match the reviewed packet, including the complete456 parent and three new-file absences. Unique Make4 inverse preserves the complete foreign parent including REF122/ENUM303. The author received only this immutable tuple and read no MAIN artifact. No canonical/source/native/fixture replay."
+  },
+  "independent_review": "coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-review.json",
+  "limits": "Bounded selected-handler scalar casts and existing source/ownership/lifetime contours remain partial. Emitted STRING/REQUEST producers, CONCAT, held Owned-NUL release and wider handlers/owners/lifetimes stay outside this extension. OB31 remains unfinished; all exact holds/reserve93807cdd6/255 and inventory169/306/closed0+1 stay unchanged. Complete PHP core, interaction trees/Rocq/CRIS semantics and BOLA proofs remain unfinished.",
+  "metadata_semantic_runs": 0
+}

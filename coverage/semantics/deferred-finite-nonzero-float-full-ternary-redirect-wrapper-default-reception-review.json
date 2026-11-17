@@ -1,0 +1,253 @@
+{
+  "milestone": "ENUM303 finite nonzero FLOAT full-ternary FIELD1 values",
+  "decision": "accepted bounded increment; core remains partial",
+  "scope": "A recursively certified finite nonzero PFLOAT condition with an exact plain pool and no executable condition leaf authenticates the full ternary redirect to its proper FIELD1. Source occurrences for all three children remain mandatory; skipped FIELD2 bindings are not demanded.",
+  "implementation": "Module519 adds one typed finite nonzero FLOAT redirect certificate reused by binding pruning and phase-unsafe finite scalar VALUE transport. Prior INT, Boolean and falsey rules are literal. Source/context, no-DIM quiet shape, declaration ENV, Shared cache, recipient, alias/owner, cleanup and phase boundaries remain unchanged.",
+  "engine_provenance": [
+    "Pinned vendor/php-src/Zend/zend_compile.c::zend_eval_const_expr/ZEND_AST_CONDITIONAL reduces the condition, selects child1 for true and discards child2 before evaluating the selection.",
+    "Pinned vendor/php-src/Zend/zend_operators.h::i_zend_is_true/IS_DOUBLE tests nonzero and warns for NaN. The new certificate requires float_decode=FINITE with nonzero numerator, excluding NaN, both infinities and both zero signs."
+  ],
+  "corrected_sources": [
+    "75b58379a0637c70ade75798fdbebdbbb402309a7c374a2710ab13dd5da40c07",
+    "264d5f655a1b952ba4d63208e790119d69d75d48eef5aec3f217442376c06de5"
+  ],
+  "failures_and_boundaries": "The first source version used PHP_FLOAT_MIN/Tiny303 predicates. Original native2 and baseline Unsupported remain separate; prelaw-v1 failed first at raw index4 and named index1, so later raw checks were unrun. Corrected versions use literal minimum normal/subnormal predicates; only changed versions received new native runs, once each. Unfolded builtin-name conditions remain outside this redirect proof, as do truthy strings, NaN/infinite conditions and wider owners/callers.",
+  "held_lanes": "OP12; Source47 lowprecisionDEFINE-nameNaN; Owned-NUL release; undefined by-reference LIST keys; COMP88; V110/GC35/I106/COMP123/ATTR87/GC87/I140/GC84 and held207 stay untouched. Reserve93807cdd6/255, inventory169/306/closed0+1 unchanged.",
+  "recovery": "../php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303 retains immutable original/corrected sources, native-v1/v2, baselines, source-first prelaw-v1/v2, production source-v2, author/peer fixtures and exact source/final patch manifests. First-version native-v1 and corrected native-v2 have separate bytes/cuts; current source comparison uses corrected native-v2 original paths/CWD only.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local oracle and tests/semantics/profile.json",
+  "author_source": {
+    "revision": "35cf35468206dc71b32b204f8fba0e236ec0e9e7",
+    "tree": "b2b4e534f0b9479886a90a5519b0f6f4200e7973",
+    "base": "36f3037ba715d8fbcd92706008879ed6047fabd5"
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/native-final-v2.json",
+    "sha256": "31c9c9acee56fb93e7ff68745633a0b2c95ce94b35d30f5d678bb4e0f0d1f08f",
+    "fresh_corrected_originals": 2,
+    "unchanged_source_replays": 0,
+    "stable": true,
+    "original_version": "native-final.json retains separate first-version observations; no model agreement"
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/baseline-v2/report.json",
+    "sha256": "204ec1179806e7d958246895e5cda0bdbcf6555577d8ddebe53b9b1e004dee10",
+    "revision": "36f3037ba715d8fbcd92706008879ed6047fabd5",
+    "expected_unsupported": 1,
+    "exact_normal_agreements": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "prelaw_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/prelaw-v2/closure-call-protocol-zbjwfizi/report.json",
+    "sha256": "50902dd3d86831cf5d57b49a53bac0000bd6256e8c349982f5c6ff63454f3063",
+    "revision": "36f3037ba715d8fbcd92706008879ed6047fabd5",
+    "conditions": 495,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 720,
+    "elapsed_seconds": 105.55793881416321,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/source-v2/report.json",
+    "sha256": "ae9c056505e5bd663df54bbdc182802b880dec09a4baa981168d4e1ac6237266",
+    "revision": "35cf35468206dc71b32b204f8fba0e236ec0e9e7",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      43.23762301914394,
+      175.0635818860028
+    ],
+    "per_source_cap": 300,
+    "outer_cap": 720,
+    "native_reexecutions": 0,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixtures": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/author-v1/closure-call-protocol-72203suy/report.json",
+    "sha256": "2397bf0f0645313f54ec12ac32bb9f4533c8eb11a0e9da9cf5a2ce5c0560490f",
+    "revision": "35cf35468206dc71b32b204f8fba0e236ec0e9e7",
+    "conditions": 555,
+    "cuts": [
+      260,
+      233,
+      62
+    ],
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 900,
+    "elapsed_seconds": 434.4644877910614,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/source-final-v2.patch",
+    "sha256": "0a8f3a7d07fff1c19a03c1b20b624ccaf7b9cda6daca9fbbe89d936fe812cc0e",
+    "revision": "a0759e5eea59cada34152c6d5263d8186d82d7eb",
+    "tree": "10d415f92e2689e3066a0caa70d39d806cbde2b2",
+    "bytes": 53005,
+    "files": 8,
+    "semantic_delta": "29 insertions only in module519",
+    "author_whole_clear": true
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/source-final-v2-manifest.json",
+    "sha256": "4fa04f5e6cd9169bada1c7917ca53a6b37e1c93433f6a9960ed5096ce3b46639",
+    "independent_whole_clear": true,
+    "scope": "All eight final-v2 posts are independently clear. Seven posts are unchanged from v1. Corrected peer construction proves the five retained source/stage/check arrays pointwise equal (424 conditions); only forgeries check98 changes at the same 144-condition scope."
+  },
+  "condition_accounting": "Author555, independent retained424 plus corrected144, and affected older83 carry separate cuts. Counts include repeated setup; no unique-condition or additional source-agreement claim. There is no single whole568 passing report.",
+  "independent_retained_fixtures": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/peer-v1/closure-call-protocol-9rhaghrj/report.json",
+    "sha256": "6b20001fa2d26818a51568ab331bc23171fc226fba0a2e6a89789855f0dd8962",
+    "revision": "b4c5fe49b53a7c5720dacd4d33f6624cc70009d5",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "accepted_unchanged_cuts": [
+      253,
+      63,
+      32,
+      28,
+      48
+    ],
+    "accepted_conditions": 424,
+    "failed_forgeries_credit": 0,
+    "elapsed_seconds": 577.984626,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "fixture_correction": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/peer-wrong-target-fixture-correction-v1.json",
+    "sha256": "befa10877b4c43b148c546f04b88edc5cccdfb7b1ed5f66c963c493cc3caea05",
+    "scope": "One overstrong wrong-target VALUE refusal becomes binding refusal. New FLOAT certificate and whole-default refusals remain. No semantic/source/native/prelaw/author or successful peer-fixture replay."
+  },
+  "independent_corrected_forgery": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/peer-corrected-v1/closure-call-protocol-reev8uta/report.json",
+    "sha256": "13ba1bdcf8d1cdfdc4f1fc726cf239b80b29c8680eb6f34fb0f1097711272a1d",
+    "revision": "12b1cef42d3b60c900870a82dd808e541b378095",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "conditions": 144,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "elapsed_seconds": 36.170672,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "scope": "Only the affected forgeries fixture reran; original FALSE144 retains zero credit, retained424 do not rerun."
+  },
+  "affected_older_fixtures": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/peer-affected-v1/closure-call-protocol-00i8n8np/report.json",
+    "sha256": "43ba18377daad3d98407b5c36a3ca1a2876a8fc7098531b5aabe19ffe60ddb1d",
+    "revision": "12b1cef42d3b60c900870a82dd808e541b378095",
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "conditions": 83,
+    "cuts": [
+      27,
+      13,
+      27,
+      16
+    ],
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "elapsed_seconds": 102.922969,
+    "first_pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "scope": "Only eight generated finite-FLOAT promotions in old301/302; all forged whole-default refusals remain. Old300 and accepted source/native/prelaw/author/retained-fixture cuts were not rerun."
+  },
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "preserved_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/baseline-v1/report.json",
+      "sha256": "777ad027d1f88b9b214e5cfa516f695145bd51168f94e1f44bd7ee042c13ea3b",
+      "source_credit": 0,
+      "status": "Unsupported",
+      "kind": "expected Unsupported control"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/prelaw-v1/closure-call-protocol-kzjv6_45/report.json",
+      "sha256": "f2bcf6c8dde7dd277115b6612d947d69f948c0444eb701ff815d2c3bb1c7760b",
+      "source_credit": 0,
+      "status": "FALSE at raw index4/named index1; later checks unrun",
+      "kind": "first-version prelaw assertion failures; later checks unrun"
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/peer-v1/closure-call-protocol-9rhaghrj/report.json",
+      "sha256": "6b20001fa2d26818a51568ab331bc23171fc226fba0a2e6a89789855f0dd8962",
+      "source_credit": 0,
+      "status": "One independent forgeries fixture FALSE at overstrong wrong-target generic VALUE refusal. New FLOAT receipt already refuses; binding and whole-default refusal are the required admission bounds. Five unchanged fixtures retain their own successful cuts.",
+      "kind": "original independent overstrong assertion; affected later checks unrun"
+    }
+  ],
+  "postlaw_semantic_mismatches": 0,
+  "timeouts": 0,
+  "actual_same": {
+    "revision": "69f02833269652c44f25a105499c08c6dd6d5228",
+    "same_revision": "69f02833269652c44f25a105499c08c6dd6d5228",
+    "tree": "fb57bdcf80073d0f4f7bd2871a74a34cff4fe9d9",
+    "parent": "290593d1edcb9deb9bd47f289749cc85fb29f554",
+    "immutable_review_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-303/actual-main96-review-v1.json",
+      "sha256": "3af23ab7b5052eef3c1f43d8cedcacd71393e3d7b67bc57c09f44efeca56e599",
+      "result": "clear"
+    },
+    "canonical_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main96-ref122-enum303-output146-canonical-v1/report.json",
+      "sha256": "dc3b547f109d1605cfad3ba5b088d2596c079be8859dd9ccb69971b913f00d88",
+      "reviewer_physical_reads": 1,
+      "cached_map_checks": 1,
+      "author_raw_reads": 0
+    },
+    "source_composition": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main96-ref122-enum303-output146-source-map-v1.json",
+      "sha256": "a320ad6c2dc118415973aac83b8c7bc8a945c59c62e9487ceaca836fa9d83f57",
+      "global_source_paths": 21,
+      "family_source_paths": 8,
+      "nonmake_exact_posts": 7,
+      "make_inserted_lines": 3,
+      "all_three_shared_make_parent_inverses_clear": true,
+      "later_foreign_make_additions_preserved": true
+    },
+    "mode": "production_SL",
+    "modules": 509,
+    "fixtures": 1,
+    "argv_count": 512,
+    "input_count": 513,
+    "input_map_sha256": "de1add8991451e5464d61de31e1eff53d0203ac2aef4dc926a52dec27284c1a2",
+    "before_after_fingerprints_equal": true,
+    "current_inputs_match": true,
+    "module519_sha256": "f3baea541f81ab76ec0544e0a99566637d5bb989ea735dd44ece835f964a0377",
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.081378269940615,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "reaped": true,
+    "process_group_absent": true,
+    "source_credit": 0,
+    "native_reexecutions": 0,
+    "source_reexecutions": 0,
+    "canonical_reexecutions": 0
+  },
+  "module519_sha256": "f3baea541f81ab76ec0544e0a99566637d5bb989ea735dd44ece835f964a0377",
+  "final_metadata_parent": "69f02833269652c44f25a105499c08c6dd6d5228",
+  "metadata_ownership": "This dedicated review row is the only ENUM metadata file. README, PROGRESS and feature-inventory summaries are written once by the coordinated common batch; metadata adds no execution credit."
+}
