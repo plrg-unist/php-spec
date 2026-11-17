@@ -2920,3 +2920,14 @@ case-insensitive and alias-resolved duplicates; builtin and third arms stay part
 Both object alternatives use unchanged typed-reference checks, copied identities,
 atomic refusal, real property sources and owner retirement.
 [Review](../../coverage/semantics/nominal-pair-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using six native observations once. Author250/250/250,
+independent header315 and first270/272/272 retain separate SL508 cuts and caps.
+Prelaw Unsupported6 adds no source credit. One native expected-word correction
+preserves the original false report with zero credit; PHP/observable bytes are unchanged.
+Actual `930d3d990` and sole production-SL509 `4c98575c` pass16.434054234s/source0
+through immutable `36cda95e`. Canonical executions1 and saved-report/map reads2 each
+remain explicit. One transport preparation failure has zero execution/agreement credit;
+no accepted source/native/fixture evidence is renewed. Wider unions/lifetimes and all
+precise holds remain partial/unchanged.
+[Independent review](../../coverage/semantics/nominal-pair-parentless-short-reference-get-hook-peer-review.json).

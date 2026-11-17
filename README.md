@@ -16,7 +16,7 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Own public parentless short reference Get admits one quiet ordinary, fully qualified or namespace-relative class plus two to six compatible builtin union arms in exact source order. Whole quiet normalization, defining authority, scalar rank, aliases and array COW retain existing guards. Multiple classes, intersections and wider owners/lifetimes remain partial. [Review](coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
+Own public parentless short reference Get admits exact ordered pairs of quiet class names, and one class with two to six compatible builtin arms. Ordinary, fully qualified and namespace-relative names retain defining authority, real aliases and owner cleanup. Wider unions and lifetimes remain partial. [Pair review](coverage/semantics/nominal-pair-parentless-short-reference-get-hook-review.json), [builtin review](coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
 
 Completed required ordinary-CV producers admit canonical bare `stdClass`, `?stdClass`, and flat ordered bare-`stdClass` union formals in global declarations without class imports. Exact bytes/order/metadata and the existing two-through-eight-member FQN folds retain reception with caller strictness, ordinary BYREF rebinding, return verification, frame retirement and private Notice-cell identity. Other names/contexts and wider owners/lifetimes remain partial. [Review](coverage/semantics/global-plain-ordered-stdclass-formal-producer-reference-notice-review.json).
 
