@@ -603,7 +603,52 @@ def $lossy_optional_integer_redirect_count((CODEREDIRECT pcpath pcpath_target b)
 def $lossy_optional_integer_redirect_count((CODEREDIRECT pcpath_other pcpath_target b) :: pcoderedirect*, pcpath) = $lossy_optional_integer_redirect_count(pcoderedirect*, pcpath)
   -- if pcpath_other =/= pcpath
 
+;; Full folded falsey conditions retain every source occurrence, but only the
+;; selected branch has compiled bindings. Share its exact redirect certificate
+;; between binding pruning and finite scalar value transport.
+dec $lossy_optional_integer_deferred_value_at(pstate, plenv, porigin) : pvalue?
+dec $lossy_optional_integer_falsey_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
+def $lossy_optional_integer_falsey_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue_cond)
+  -- if pvalue_cond <- [PBOOL false, PNULL, PINT 0, PFLOAT 0, PFLOAT 9223372036854775808]
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue_cond)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0]) = 0
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_false, false, z))
+def $lossy_optional_integer_falsey_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if expression_cond = NScalarString (BYTES text) metadata_cond
+  -- if n_cond* = $base64(text)
+  -- if n_cond* = eps \/ n_cond* = [48]
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PSTRING n_cond*)
+  -- if $compiled_string_value(S, PORIGIN n (pcpath ++ [PCFIELD 0]), PSTRING n_cond*) = PSTRING_CARRIER INTERNED_STRING n_cond*
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0]) = 0
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_false, false, z))
+def $lossy_optional_integer_falsey_full_redirect(S, plenv, porigin) = eps -- otherwise
+
 dec $lossy_optional_integer_pruned_ternary(pstate, plenv, porigin) : (porigin, porigin)?
+def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_falsey_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
+  -- if $pool_value(S.POOLS, porigin_cond) =/= (PBOOL false) \/ $lossy_optional_integer_condition(plenv, expression_cond) =/= (false)
 def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_true expression_false metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
@@ -811,7 +856,6 @@ def $lossy_optional_integer_deferred_value(plenv, expression) = (PFLOAT n)
   -- if $lossy_parameter_snapshot(n) = ((i, ptbytes))
 def $lossy_optional_integer_deferred_value(plenv, expression) = eps -- otherwise
 
-dec $lossy_optional_integer_deferred_value_at(pstate, plenv, porigin) : pvalue?
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
   -- if $origin_node(S.SOURCES, porigin) = (expression)
   -- if $lossy_optional_integer_phase_safe(S, plenv, porigin)
@@ -905,8 +949,9 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PIN
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
-  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b)
-  -- if $coerce_number(PBOOL b) = COERCED (NINT i) false
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
+  -- if $coerce_number(pvalue) = COERCED (NINT i) false
   -- if $long_range(i)
 def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = ($number_value($num_mul(NFLOAT n_bits, NINT $(-1))))
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
@@ -1627,6 +1672,11 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pva
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_right, false, z))
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
+def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
+  -- if $lossy_optional_integer_falsey_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = eps -- otherwise
 

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-falsey-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawFullRedirect299($p0 = (false ? SKIPPED_FULL299_0 : (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = (NULL ? SKIPPED_FULL299_1 : ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (0 ? SKIPPED_FULL299_2 : (((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p3 = (0.0 ? SKIPPED_FULL299_3 : ((-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = (-0.0 ? SKIPPED_FULL299_4 : ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = ('' ? SKIPPED_FULL299_5 : (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p6 = (\"0\" ? SKIPPED_FULL299_6 : (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false))), $p7 = (\"\\x30\" ? SKIPPED_FULL299_7 : (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawFullRedirect299();\nrawFullRedirect299();\n",
+    "purpose": "Folded falsey predicates prune unresolved skipped names and select exact emitted finite scalar fallback tags.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "c717d05e7858ae656f0d9a35a686fbb26f368972bb2dca3ed863131956c7ce58"
+  },
+  {
+    "id": "deferred-falsey-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FullRedirect299;\nuse const E_WARNING as Base299;\nuse const E_ERROR as One299;\nuse const Unavailable299\\Payload as Skipped299;\nfunction warning299($errno, $message, $file, $line) {\n    global $x299;\n    echo 'warning:', $message, '|';\n    defaults299(2);\n    $x299 = 3.5;\n}\nfunction defaults299(int $first, int &$zeroBool = (int)(0 ? Skipped299 : (((bool)(+(-((float)(+(Base299 === One299)))))))), int &$nullInt = (int)(NULL ? Skipped299 : (((int)(!((bool)(+(-((float)(+(Base299 === One299)))))))))), int &$negativeZero = (int)(-0.0 ? Skipped299 : ((-((float)((bool)(+(-((float)(+(Base299 === One299)))))))))), int &$emptyNull = (int)('' ? Skipped299 : (((!((bool)(+(-((float)(+(Base299 === One299))))))) ? NULL : false))), int $last = 7) {\n    echo 'body:', $first, ':', $zeroBool, ':', $nullInt, ':', $negativeZero, ':', $emptyNull, ':', $last, '|';\n    $zeroBool = 19;\n    $nullInt = 20;\n    $negativeZero = 21;\n    $emptyNull = 22;\n}\n\\set_error_handler('FullRedirect299\\\\warning299');\n$x299 = 1.5;\n$last299 = 8;\ndefaults299(last: $last299, first: $x299);\necho 'outer:x=', $x299, '|';\n",
+    "purpose": "Skipped unresolved imported constants remain undemanded while selected fallback bindings, cache and private INT reception precede Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "fc668a521f0ab1d7edd995ad726ab8c65ac687177ff9fe61f26a26dc54e43f85"
+  }
+]
