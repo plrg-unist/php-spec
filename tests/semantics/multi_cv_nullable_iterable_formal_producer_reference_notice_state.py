@@ -64,7 +64,7 @@ def controls(case):
     for shape, members in ((RAW, ['iterable', 'null']), (RAW_NULLABLE, ['null', 'iterable']),
             ('(NUnionType (SEQUENCE ([' + RAW + ', NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal_nullable)', ['iterable', 'null'])):
         parameter = 'NParam (SEQUENCE eps) (INTEGER 0) ' + shape + ' (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-        lines.append('~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE (' + vector(case, parameter, 'phpType17_other') + '), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + vector(case, 'psparam[.TYPE = ' + branches(members) + ']', 'psparam_other') + '])')
+        lines.append(('' if shape.startswith('(NUnionType ') else '~') + '$reference_notice_producer_arguments(phpType6_producer, SEQUENCE (' + vector(case, parameter, 'phpType17_other') + '), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + vector(case, 'psparam[.TYPE = ' + branches(members) + ']', 'psparam_other') + '])')
     return lines
 
 

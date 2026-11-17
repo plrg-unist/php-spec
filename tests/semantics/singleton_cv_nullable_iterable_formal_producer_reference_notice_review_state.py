@@ -60,8 +60,8 @@ def controls(case):
         return ['$typed_conversion_at(S_full, ' + types_formal + ', pvalue_copy, ' + strict + ') = TYPEREJECT' for strict in ('false', 'true')]
     header = '$reference_notice_producer_header(phpType6_producer, '
     signature = 'pfunction_producer.SIGNATURE'
-    lines = [('~' + line if case['formal_shape'] == 'union' and line.startswith('$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual])') else line)
-        for line in prior.controls(case) if not line.lstrip('~').startswith(header + 'SEQUENCE (')]
+    lines = [line for line in prior.controls(case)
+        if not line.lstrip('~').startswith(header + 'SEQUENCE (')]
     for leaf in ('NName', 'NNameFullyQualified'):
         lines.append('~' + header + 'SEQUENCE ([' + parameter(formal(case, leaf)) + ']), phpType18, ' + signature + ')')
     lines.append('~' + header + 'phpType16, phpType18, ' + signature + '[.PARAMETERS = [psparam[.TYPE = ' + prior.ITERABLE + ']]])')

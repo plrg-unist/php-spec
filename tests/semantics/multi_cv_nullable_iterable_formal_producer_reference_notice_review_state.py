@@ -64,7 +64,7 @@ def controls(case):
         selected = 'NIdentifier (BYTES text_formal) metadata_formal'
         nodes = [selected if member == 'iterable' else null for member in members]
         raw = '(NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_formal_nullable)'
-        lines.append('~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + parameter(raw) + ', phpType17_other]), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + branches(members) + '], psparam_other]])')
+        lines.append('$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + parameter(raw) + ', phpType17_other]), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + branches(members) + '], psparam_other]])')
     return lines
 
 

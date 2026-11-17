@@ -131,7 +131,7 @@ def controls(case):
     for shape, members in (('(NNullableType ' + raw + ' metadata_formal)', ['iterable', 'null']),
             ('(NUnionType (SEQUENCE ([NIdentifier (BYTES "bnVsbA==") metadata_formal, ' + raw + '])) metadata_formal)', ['null', 'iterable'])):
         parameter = 'NParam (SEQUENCE eps) (INTEGER 0) ' + shape + ' (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-        lines += [('' if shape.startswith('(NNullableType ') else '~') + '$reference_notice_producer_arguments(phpType6_producer, SEQUENCE (' + vector(case, parameter, 'phpType17_other') + '), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + vector(case, 'psparam[.TYPE = ' + branches(members) + ']', 'psparam_other') + '])']
+        lines += ['$reference_notice_producer_arguments(phpType6_producer, SEQUENCE (' + vector(case, parameter, 'phpType17_other') + '), ' + signature + '[.RETURNS = eps][.PARAMETERS = ' + vector(case, 'psparam[.TYPE = ' + branches(members) + ']', 'psparam_other') + '])']
     lines += ['~$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual]), phpType16, ' + signature + '[.RETURNS = eps])',
         '~' + header + signature + '[.RETURNS = ' + branches(['iterable', 'null']) + '])']
     return lines
