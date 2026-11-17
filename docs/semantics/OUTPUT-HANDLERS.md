@@ -1800,3 +1800,20 @@ normalization, held Owned-NUL release and wider forms/lifetimes remain partial;
 all exact holds remain unchanged.
 [Folded STRING NOT evidence](../../coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error-review.json).
+
+Parser-literal CONCAT over non-NUL STRING leaf trees also feeds those nested
+INT/BOOL/FLOAT handler returns. Each indexed raw child retains SOURCE while its
+CODE/read remains absent. The own positive concat line, true folding flag, plain
+PSTRING pool bytes, empty effects and source/parser precision remain required.
+Existing compiled-string identity and whole NORMAL constant-entry equality apart
+from RESULT authenticate an INTERNED result with no value owners. Numeric leaves,
+NUL and emitted CONCAT retain their separate boundaries.
+Six source agreements at `3bf77cc19` reuse the exact first native observation at
+`11bbde2ad` and five new native observations once. Pre-rule10 at `e7cd3aec9`,
+author27/19 and independent140/23 at `3bf77cc19` retain separate privateSL508/source0
+cuts. Both preparation-only invocation errors retain zero execution credit.
+Actual `ef0ecbf6` and SAME productionSL509 loading pass separately in
+16.134256885 s/cap60/source0 with independent saved-report review. Wider producers,
+handlers, owners/lifetimes and every exact hold remain partial.
+[Parser STRING CONCAT evidence](../../coverage/semantics/output-final-selected-parser-string-concat-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-parser-string-concat-cast-chain-return-modulo-error-review.json).
