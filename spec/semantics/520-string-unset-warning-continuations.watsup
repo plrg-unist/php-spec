@@ -1,4 +1,4 @@
-;; FETCH_DIM_UNSET warns for literal NULL, then raises the fixed nested Error.
+;; FETCH_DIM_UNSET warns for literal NULL/BOOL, then raises the fixed nested Error.
 ;; The original string and converted offset are never used after the Warning.
 dec $string_unset_warning_source(pstate, porigin, int) : (ptbytes, int)?
 dec $string_unset_warning_plan(pstate) : (porigin, int)?
@@ -7,23 +7,23 @@ def $string_unset_warning_source(S, PORIGIN 0 pcpath, z) = ((n_name*, z_outer))
   -- if $key_unset_parent(pcpath) = (pcpath_parent)
   -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath_parent) = (NStmtUnset phpType25 metadata_unset)
   -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprArrayDimFetch expression_inner phpType5 metadata_outer)
-  -- if expression_inner = NExprArrayDimFetch (NExprVariable (BYTES text_name) metadata_base) (NExprConstFetch (NName (BYTES text_null) metadata_null_name) metadata_null) metadata_inner
+  -- if expression_inner = NExprArrayDimFetch (NExprVariable (BYTES text_name) metadata_base) (NExprConstFetch (NName (BYTES text_key) metadata_key_name) metadata_key) metadata_inner
   -- if n_name* = $base64(text_name)
   -- if $startup_bytes(n_name*) /\ $c_string(n_name*) = n_name*
-  -- if $ptlc($base64(text_null)) = $ptascii("null")
   -- if $origin_child((PORIGIN 0 pcpath), [PCFIELD 0]) = (porigin_inner)
   -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
   -- if $origin_child((porigin_inner), [PCFIELD 0]) = (porigin_base)
   -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable (BYTES text_name) metadata_base)
   -- if $origin_child((porigin_inner), [PCFIELD 1]) = (porigin_key)
-  -- if $origin_node(S.SOURCES, porigin_key) = (NExprConstFetch (NName (BYTES text_null) metadata_null_name) metadata_null)
+  -- if $origin_node(S.SOURCES, porigin_key) = (NExprConstFetch (NName (BYTES text_key) metadata_key_name) metadata_key)
   -- if $code_at(S.CODE, 0) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_outer, false))
   -- if porigin_inner = PORIGIN 0 pcpath_inner
   -- if $code_expression(pcode.EXPRESSIONS, pcpath_inner) = ((z, false))
   -- if $(z > 0 /\ z_outer > 0)
-  -- if $compiled_read(S, porigin_key) = (PNULL)
-  -- if $compiled_identity_value(S, porigin_key) = (PNULL)
+  -- if $compiled_read(S, porigin_key) = (pvalue_key)
+  -- if $compiled_identity_value(S, porigin_key) = (pvalue_key)
+  -- if ($ptlc($base64(text_key)) = $ptascii("null") /\ pvalue_key = PNULL) \/ ($ptlc($base64(text_key)) = $ptascii("true") /\ pvalue_key = PBOOL true) \/ ($ptlc($base64(text_key)) = $ptascii("false") /\ pvalue_key = PBOOL false)
 def $string_unset_warning_source(S, porigin, z) = eps -- otherwise
 
 def $string_unset_warning_plan(S) = ((porigin, z))
@@ -31,10 +31,12 @@ def $string_unset_warning_plan(S) = ((porigin, z))
   -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
   -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
   -- if S.TODO = UNSET_ARRAY :: ptask_tail*
-  -- if S.BASE = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) (KNOWN PNULL) z) (KNOWN (PINT i_final)) z_outer
+  -- if S.BASE = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) (KNOWN pvalue_key) z) (KNOWN (PINT i_final)) z_outer
   -- if $long_range(i_final)
   -- if S.ORIGIN = (porigin)
   -- if $string_unset_warning_source(S, porigin, z) = ((n_name*, z_outer))
+  -- if $origin_child((porigin), [PCFIELD 0, PCFIELD 1]) = (porigin_key)
+  -- if $compiled_identity_value(S, porigin_key) = (pvalue_key)
   -- if ~$environment_blocked(S, n_name*)
   -- if $lookup(S.ENV, n_name*) = (n_base)
   -- if $(n_base < |S.STORE|)
