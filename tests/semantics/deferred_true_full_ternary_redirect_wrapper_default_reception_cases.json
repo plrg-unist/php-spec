@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-true-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawTrueRedirect300($p0 = (true ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_TRUE300_0), $p1 = (true ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_TRUE300_1), $p2 = (true ? ((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_TRUE300_2), $p3 = (true ? (-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_TRUE300_3), $p4 = (true ? (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) : SKIPPED_TRUE300_4), $p5 = (true ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_TRUE300_5), $p6 = (true ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false) : SKIPPED_TRUE300_6), $p7 = (true ? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_TRUE300_7)) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawTrueRedirect300();\nrawTrueRedirect300();\n",
+    "purpose": "Literal TRUE selects emitted finite FIELD1 scalar tags while unresolved FIELD2 names remain undemanded.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "675e28359cc46f6e010d320ab71d4d28dc2b6cc09851007752c69829a14127ea"
+  },
+  {
+    "id": "deferred-true-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace TrueRedirect300;\nuse const E_WARNING as Base300;\nuse const E_ERROR as One300;\nuse const Unavailable300\\Payload as Skipped300;\nfunction warning300($errno, $message, $file, $line) {\n    global $x300;\n    echo 'warning:', $message, '|';\n    defaults300(2);\n    $x300 = 3.5;\n}\nfunction defaults300(int $first, int &$selectedBool = (int)(true ? (((bool)(+(-((float)(+(Base300 === One300))))))) : Skipped300), int &$selectedInt = (int)(true ? ((int)(!((bool)(+(-((float)(+(Base300 === One300)))))))) : Skipped300), int &$negativeZero = (int)(true ? (-((float)((bool)(+(-((float)(+(Base300 === One300)))))))) : Skipped300), int &$selectedNull = (int)(true ? ((!((bool)(+(-((float)(+(Base300 === One300))))))) ? NULL : false) : Skipped300), int $last = 7) {\n    echo 'body:', $first, ':', $selectedBool, ':', $selectedInt, ':', $negativeZero, ':', $selectedNull, ':', $last, '|';\n    $selectedBool = 19;\n    $selectedInt = 20;\n    $negativeZero = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('TrueRedirect300\\\\warning300');\n$x300 = 1.5;\n$last300 = 8;\ndefaults300(last: $last300, first: $x300);\necho 'outer:x=', $x300, '|';\n",
+    "purpose": "Literal TRUE retains selected aliases, Shared cache and four private INT defaults before named Warning reentry, skipping unavailable FIELD2 names.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "d5ac83791d7c01d7df6089b93b8ee2f5079515ceca8201983e8e816921d338d6"
+  }
+]
