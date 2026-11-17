@@ -943,8 +943,12 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
-;; Raw fitting integers concatenate quietly without floating-point formatting.
+;; These literals and direct integer signs need no floating-point formatting.
 def $string_read_folded_concat_bytes(NScalarString (BYTES text) metadata) = ($base64(text))
+def $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($ptascii("1"))
+  -- if $ptlc($base64(text)) = $ptascii("true")
+def $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = (eps)
+  -- if $ptlc($base64(text)) <- [$ptascii("false"), $ptascii("null")]
 def $string_read_folded_concat_bytes(NScalarInt (INTEGER i) metadata) = ($decimal_integer(i))
   -- if $long_range(i)
 def $string_read_folded_concat_bytes(NExprUnaryPlus (NScalarInt (INTEGER i) metadata_child) metadata) = ($decimal_integer(i))

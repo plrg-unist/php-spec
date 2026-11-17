@@ -150,8 +150,8 @@ $compiled_string_value(S_integer_nul,porigin_left,PSTRING n_integer_nul*) = PSTR
 $string_read_runtime_value(S_integer_nul,porigin_left) = eps
 $string_read_runtime_value(S_integer_nul,porigin_base) = eps
 ~$string_read_raw_known_base(S_integer_nul,porigin_base,PSTRING_CARRIER INTERNED_STRING n_integer_nul*)
-$string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "ZmFsc2U=") eps) eps) = eps
-$string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) = eps
+$string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "ZmFsc2U=") eps) eps) = (eps)
+$string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) = (eps)
 $string_read_folded_concat_bytes(NExprUnaryMinus (NScalarInt (INTEGER 1) eps) eps) = ($ptascii("-1"))
 ''')
     for label, node in (
