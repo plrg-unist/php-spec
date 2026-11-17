@@ -598,18 +598,16 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; Quiet falsey emitted casts retain only the exact literal shorthand fallback.
+;; Quiet falsey emitted scalars retain only the exact literal shorthand fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
   -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
-  -- if $pfshape(expression_cond) = PFCAST pcast expression_child
-  -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT, CASTSTRING]
   -- if $compiled_read(S, porigin_cond) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_cond) = (pvalue_cond)
-  -- if $type_bytes(pvalue_cond) <- [$ptascii("bool"), $ptascii("int"), $ptascii("float"), $ptascii("string")]
+  -- if $type_bytes(pvalue_cond) <- [$ptascii("bool"), $ptascii("null"), $ptascii("int"), $ptascii("float"), $ptascii("string")]
   -- if $truth_value(S_probe, pvalue_cond, 0) = S_probe[.RESULT = KNOWN (PBOOL false)]
   -- if n_bytes* = $base64(text_false)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
