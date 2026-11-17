@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-boolean-integer-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawBooleanIntegerIdentity276($p0 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) === ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = ((!(+(-((float)(+(E_WARNING === E_ERROR)))))) === ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p2 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === (!(+(-((float)(+(E_WARNING === E_ERROR))))))), $p4 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((!(+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((int)(!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p6 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = (((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== (!(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === false, ':', $p1 === false, ':', $p2 === false, ':', $p3 === false, ':', $p4 === true, ':', $p5 === true, ':', $p6 === true, ':', $p7 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawBooleanIntegerIdentity276();\nrawBooleanIntegerIdentity276();\n",
+    "purpose": "Actual Boolean/long operand pairs retain raw strict identity tags in both orientations/operators through cold/warm receives.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "fd13543de950f4d8543d385df059dc354f938cbf43a68eea575903f13feb2406"
+  },
+  {
+    "id": "deferred-boolean-integer-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanIntegerIdentity276;\nuse const E_WARNING as Base276;\nuse const E_ERROR as One276;\nfunction warning276($errno, $message, $file, $line) {\n    global $x276;\n    echo 'warning:', $message, '|';\n    defaults276(2);\n    $x276 = 3.5;\n}\nfunction defaults276(int $first, int &$boolSame = (int)(((bool)(+(-((float)(+(Base276 === One276)))))) === ((int)(+(-((float)(+(Base276 === One276))))))), int &$intSame = (int)(((int)(!(+(-((float)(+(Base276 === One276))))))) === (!(+(-((float)(+(Base276 === One276))))))), int &$boolDifferent = (int)(((bool)(+(-((float)(+(Base276 === One276)))))) !== ((int)(+(-((float)(+(Base276 === One276))))))), int &$intDifferent = (int)(((int)(!(+(-((float)(+(Base276 === One276))))))) !== (!(+(-((float)(+(Base276 === One276))))))), int $last = 7) {\n    echo 'body:', $first, ':', $boolSame, ':', $intSame, ':', $boolDifferent, ':', $intDifferent, ':', $last, '|';\n    $boolSame = 19;\n    $intSame = 20;\n    $boolDifferent = 21;\n    $intDifferent = 22;\n}\n\\set_error_handler('BooleanIntegerIdentity276\\\\warning276');\n$x276 = 1.5;\n$last276 = 8;\ndefaults276(last: $last276, first: $x276);\necho 'outer:x=', $x276, '|';\n",
+    "purpose": "Imported names, existing INT parents, four BYREF named holes and Warning reentry preserve private caches for actual Boolean/long strict identity.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:0:1:1:7|body:1:0:0:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "7deb47dc5556ee99e70ba20972ff4b933c4a69ef41f3e12c9ab6228dfc58cbc6"
+  },
+  {
+    "id": "deferred-boolean-integer-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryBooleanIntegerIdentity276(int &$value = (int)(E_WARNING === E_ERROR)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryBooleanIntegerIdentity276();\n",
+    "purpose": "The existing phase-safe numeric identity INT parent stays a separate ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "dd1324ef0c945bd7f405f0c4864e60390688d371bb3c5423fe2c7daaf235242b"
+  }
+]
