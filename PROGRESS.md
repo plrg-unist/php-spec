@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+
+Pending finite-OOB conversions in a saved ordinary NULL/BOOL CV now use the existing default reporter when the restored named callback excludes Warning, preserving the same Throwable and complete caller tail. Saved native1 is reused without replay/source1; author prelaw72 and independent94 precede the guarded law. Author SL131/33+58/12+70/4 and independent159/33+63/10+90/4+131/33+58/12+70/4 retain separate first-pass cuts. The original callback-presence fixture failure retains0; semantic/source failures, timeouts and native replays0. Actual=SAME `c5dee9715` and sole production-SL509 `52eb2b5f` pass16.788154026s/source0, independently clear through immutable`b5ab36ae` with one execution/one physical read and author raw reads0. Absent/nonfinite/reference/owning/wider histories stay partial; exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 and withdrawn blanket finite acceptance remain unchanged. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-pending-range-review.json).
 Required ordinary-CV producer formals admit canonical bare `stdClass` when the
 declaration has no namespace or class imports. Ordinary BYREF rebinding stays
 unconstrained after reception, and returned objects retain identity across frame

@@ -1377,13 +1377,29 @@ reused; only the normal named-handler eligibility condition changes.
 `set_error_handler(null)` inside an active handler leaves UNDEF, so automatic
 restoration reinstates the old raw callback; it does not establish an absent
 normal producer within these bounds. Absent callbacks remain refused. The
-existing reporting/display suppression stays quiet, and pending ineligible OOB,
-nonfinite/reference/owning posts and wider histories remain partial. The
+existing reporting/display suppression stays quiet. Pending ineligible OOB,
+nonfinite/reference/owning posts and wider histories remained partial at that cut. The
 [normal default review](../../coverage/semantics/string-offset-nested-unset-bool-cv-range-default-review.json)
 keeps fresh native/source/front facts and only affected old mask assertions
 separate from the closed eligible-handler and pending-throw campaigns. Actual
 `f3fda8eb8`/joined `7d7850824` retain the sole production-SL509 `599f53d1`
 load,16.791123519s/source0, through independently clear tuple`0f32ec27`.
+
+An admitted first-handler throw now also default-reports the finite range Warning
+when its restored named callback excludes Warning. Exact saved ordinary CV bits,
+source/CODE/quiet-read authority and a real pending Throwable precede dispatch.
+The existing dispatcher consumes and readds the identical `THROW_SEARCH` head,
+preserving the complete caller tail, Throwable, storage and heap. The Warning
+does not invoke the callback or raise the nested Error. Reporting/display
+suppression stays quiet, while eligible and fitting discard behavior stays
+unchanged. The [pending range review](../../coverage/semantics/string-offset-nested-unset-bool-cv-pending-range-review.json)
+keeps the saved native original, fresh prelaw/source/state cuts and affected-only
+old assertions separate. Absent/nonnamed callbacks, nonfinite/reference/owning
+posts and wider histories remain partial; withdrawn blanket finite acceptance,
+all exact holds, reserve93807cdd6/255 and inventory169/306/closed0+1 stay unchanged.
+Actual=SAME `c5dee9715` retains the sole production-SL509 `52eb2b5f` load,
+16.788154026s/source0, through independently clear tuple`b5ab36ae`; one execution
+and one physical report read, with author raw reads0.
 
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast

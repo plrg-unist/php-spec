@@ -1976,8 +1976,10 @@ FLOAT in the same saved cell can cause a [second named-handler Warning](coverage
 Copied bits determine its message; a second return raises the nested Error, while
 a supplied throw survives even after key mutation. Restored named handlers with
 a Warning-excluding live mask now use the [existing default reporter](coverage/semantics/string-offset-nested-unset-bool-cv-range-default-review.json)
-before the same Error. Absent callbacks, pending ineligible OOB, nonfinite posts
-and wider ownership remain partial.
+before the same Error. If the first handler throws with a Warning-excluding mask,
+the [default range Warning](coverage/semantics/string-offset-nested-unset-bool-cv-pending-range-review.json)
+preserves that pending Exception and the complete caller tail. Absent callbacks,
+nonfinite posts and wider ownership remain partial.
 
 [Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
 now reads the key and raises the string-offset Error for valid non-NUL interned
