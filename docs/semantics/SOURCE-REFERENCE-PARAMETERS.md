@@ -942,7 +942,7 @@ control is promoted using current reached states, without historical replay.
 Actual `045573120` and sole joined `d124d90a` SL508 loading
 (16.332717621 s/source0) are independently clear and remain separate from
 the original source and fixture cuts.
-Multiple-CV nullable/ordered iterable formals and iterable returns, Traversable
+Multiple-CV ordered iterable formals and iterable returns, Traversable
 Notice operands, wider headers, owners/lifetimes and every exact hold remain partial.
 
 Multiple required ordinary-CV formals can now include raw bare `iterable`
@@ -957,8 +957,23 @@ records seven originals, native4+3 once and separate 451/345 fixture-SL507 suite
 The first Unsupported source, original line-expectation failure and stale literal
 occurrence assertion remain separate zero-credit cuts; the fixture correction
 reruns only its affected suite. Bare duplicated argument controls are promoted;
-nullable/ordered duplicated formals and multi-CV iterable-return headers stay refused.
+canonical nullable duplicated formals are extended below; ordered duplicated
+formals and multi-CV iterable-return headers stay refused.
 Wider headers, Traversable Notice operands, owners/lifetimes and exact holds remain partial.
+
+Canonical raw `?iterable` required formals now also use the multiple-CV fold.
+Exact normalized `[iterable, null]` order, raw Identifier casefolding and the
+existing required, BYREF, nonvariadic, source, return and ownership guards remain.
+Genuine NULL, array and retained Generator inputs preserve caller/formal identity,
+array COW, receive-error priority, producer retirement and separate private Notice
+cells; Generator bodies stay unentered. The
+[multiple-CV nullable iterable-formal review](../../coverage/semantics/multi-cv-nullable-iterable-formal-producer-reference-notice-review.json)
+records native4+3 once, seven source originals and separate 459/367 fixture-SL507
+suites. Prelaw fronts269/205 and first-source Unsupported keep zero credit.
+Only canonical nullable duplicated/forged argument controls are promoted; ordered
+multi-CV controls stay refused without replaying older campaigns. Multiple-CV
+ordered iterable formals and iterable returns, broader headers, Traversable Notice
+operands, owners/lifetimes and all exact holds remain partial.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
