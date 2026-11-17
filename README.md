@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Quiet pooled nonzero signed64 integer conditions in full ternary defaults preserve the selected FIELD1 scalar tag while skipped names remain undemanded. Exact source, typed pool and redirect receipts retain declaration bindings, Shared-cache values and private recipients through named Warning reentry. Two original source comparisons and separate author/independent fixture cuts pass; wider truthy domains, owning values and lifetimes remain partial. [Review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json).
+
 Computed-TRUE full-ternary defaults preserve the selected scalar tag through exact
 recursive Boolean/source/pool authority and a proper selected-child redirect.
 Skipped names retain their original source without demanded bindings; other
