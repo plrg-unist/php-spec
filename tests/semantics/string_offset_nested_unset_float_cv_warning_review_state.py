@@ -91,12 +91,13 @@ def conditions(program, path):
         'S_float_global = S_float_E[.CODE = (pcode_key[.GLOBALS = pcpath_key :: pcode_key.GLOBALS]) :: eps]',
         '$string_unset_float_cv_plan(S_float_global) = eps',
     ]
-    for value in ('PNULL', '(PBOOL true)', '(PINT 1)', '(PFLOAT 18446744073709551616)',
-                  '(PFLOAT 9221120237041090560)', '(PFLOAT 9218868437227405313)'):
+    for value in ('PNULL', '(PBOOL true)', '(PINT 1)', '(PFLOAT 18446744073709551616)'):
         controls.append('~$string_unset_float_cv_cell(S_float_E[.STORE[n_key] = DEFINED '
                         + value + '], n_key_name*, z_key, n_key)')
     for bits in (0, 1 << 63, 1, 0x000fffffffffffff, 0x0010000000000000,
-                 0x7ff0000000000000, 0xfff0000000000000):
+                 0x7ff0000000000000, 0xfff0000000000000,
+                 0x7ff8000000000000, 0xfff8000000000000,
+                 0x7ff0000000000001, 0xfff0000000000001):
         controls.append('$string_unset_float_cv_cell(S_float_E[.STORE[n_key] = DEFINED (PFLOAT '
                         + str(bits) + ')], n_key_name*, z_key, n_key)')
     checks += controls

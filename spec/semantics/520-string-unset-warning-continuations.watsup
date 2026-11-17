@@ -203,7 +203,6 @@ def $string_unset_float_cv_cell(S, n_name*, z, n_cell) = true
   -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
   -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
   -- if $(n_bits < 18446744073709551616)
-  -- if ~$fparts_nan($float_decode(n_bits))
   -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_unset_float_cv_cell(S, ptbytes, z, n) = false -- otherwise
 

@@ -47,10 +47,12 @@ def conditions(program, path):
         '$string_unset_float_cv_plan(S[.HELD = [HCELL n_key]]) = eps',
     ]
     for value in (0, 1, 0x8000000000000000, 0x8000000000000001,
-                  0x7ff0000000000000, 0xfff0000000000000):
+                  0x7ff0000000000000, 0xfff0000000000000,
+                  0x7ff8000000000000, 0xfff8000000000000,
+                  0x7ff0000000000001, 0xfff0000000000001):
         controls.append('$string_unset_float_cv_cell(S[.STORE[n_key] = DEFINED (PFLOAT '
                         + str(value) + ')], $ptascii("key"), 5, n_key)')
-    for value in (0x7ff8000000000000, 0x7ff0000000000001, 1 << 64):
+    for value in (1 << 64,):
         controls.append('~$string_unset_float_cv_cell(S[.STORE[n_key] = DEFINED (PFLOAT '
                         + str(value) + ')], $ptascii("key"), 5, n_key)')
     if INDEX == 3:
@@ -100,7 +102,7 @@ if __name__ == '__main__':
     report['mode'], report['raw_unset_steps'] = 'SL', 1
     report['scope'] = ('Genuine ordinary nonNaN FLOAT-CV entry, mutable source/CODE/read-eps and quiet exact '
         'value. Actual object-return and fractional-throw retain source-only resume/discard without key/base '
-        'reread or owner retention. Derived float boundaries, NaN/range/ref/held refusals and key/base removal '
+        'reread or owner retention. Derived float/NaN boundaries, range/ref/held refusals and key/base removal '
         'are source0/native0; same Throwable/restoration and whole/split reuse saved originals only.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
