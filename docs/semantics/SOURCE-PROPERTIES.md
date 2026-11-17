@@ -2810,3 +2810,13 @@ successful source/state cuts preserved. Actual and joined `80c2caa8` and their
 sole production-SL509 load (16.381116563 s, source0) are independently clear
 through immutable peer tuple `60ede2a7`. Wider forms and all exact holds remain.
 [Independent review](../../coverage/semantics/class-bool-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/int unions on that short reference producer retain both raw
+orders, `Class|int` and `int|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier int require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. Existing integer checking admits integer values, converts
+eligible weak scalars and rejects strict non-integer scalar writes atomically.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-int-union-parentless-short-reference-get-hook-review.json).
