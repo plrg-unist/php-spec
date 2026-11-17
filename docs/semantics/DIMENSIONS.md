@@ -1813,3 +1813,24 @@ first-pass cuts. Actual/SAME7795982829 and the sole SL50916.281187734s/source0
 are independently clear through one immutable tuple. Wider producers, carriers,
 contexts, lifetimes and every exact hold remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json).
+
+Quiet runtime-certified falsey scalar conditions, including emitted NULL
+ternaries, select the exact literal INTERNED shorthand fallback and preserve
+frozen raw CV keys through returning Warnings. Source/read-eps, NORMAL typed
+VALUE, quiet full-state truth, selected demand and fallback header authority
+remain; runtime helpers and owner bounds are unchanged. Native2 once/source2,
+prelaw96, author236/103 and corrected independent299/178 retain separate cuts;
+the original peer binding failure stays0/executionUNRUN. Actual/SAME67f5ff6ed4
+and sole SL50917.645390434s/source0 are independently clear through one immutable
+tuple. Wider forms, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet runtime-certified truthy STRING conditions preserve their own exact
+INTERNED raw-literal shorthand header and frozen raw CV keys through returning
+Warnings. Actual source, both read-eps, NORMAL typed VALUE, quiet true whole-state
+truth and mandatory raw fallback source/header remain; runtime helpers and owner
+bounds are unchanged. Native2 once/source2, prelaw104, corrected author302/172
+and independent322/201 retain separate cuts; original author failure stays0.
+Actual/SAME6c0f1a6f59 and sole SL50916.690098264s/source0 are independently clear
+through one immutable tuple. Wider forms, lifetimes and every exact hold remain
+partial. [Review](../../coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).

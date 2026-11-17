@@ -1366,3 +1366,6 @@ Completed one- or multiple-required ordinary-CV producers admit exact ordered it
 
 Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|false/false|iterable and iterable|true/true|iterable returns, retaining raw/normalized order, unchanged formals, actual return verification, frame retirement and finite private Notice cells. Weak mismatched Boolean/scalar returns reject before the outer Notice; wider headers, payloads and lifetimes remain partial.
 [Review](../../coverage/semantics/cv-union-literal-bool-iterable-return-producer-reference-notice-review.json).
+
+Completed one- or multiple-required ordinary-CV producers admit exact object|iterable/iterable|object and callable|iterable/iterable|callable returns, plus longer ordered distinct builtin unions containing iterable. Dedicated RETURN-only folding preserves raw Identifier/normalized order and count, rejects array/duplicate/Boolean overlaps, and retains shared FORMALS, existing pairs/epsilon, actual return verification and finite private Notice cells. Class-bearing iterable unions and wider payload/lifetime contexts remain partial.
+[Review](../../coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).

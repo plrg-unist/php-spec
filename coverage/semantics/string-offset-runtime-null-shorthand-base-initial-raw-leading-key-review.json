@@ -1,0 +1,124 @@
+{
+  "scope": "Quiet runtime-certified falsey scalar conditions, including emitted selected-NULL ternaries, select the exact literal INTERNED shorthand fallback and preserve frozen initial raw CV keys through returning Warnings.",
+  "status": "Independently accepted bounded milestone; wider producers, carriers, contexts and lifetimes remain partial.",
+  "target": "PHP 8.5.10 CLI, NTS, signed64; tests/semantics/profile.json",
+  "implementation": {
+    "head": "bb4fbaf93d89ee28b28e7f048358bf790e87501a",
+    "tree": "39176a6fe2703a28c730e4054941f4dcbf8afb6e",
+    "source_files": 6,
+    "added": 178,
+    "removed": 6,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/source-six-author-v2-manifest.json",
+    "manifest_sha256": "1d68b4d94009a4d8390083382f7bec93948e644eddae8f37deecbce294962f0a"
+  },
+  "contract": [
+    "The existing emitted raw-literal shorthand arm removes only its PFCAST/tags restrictions and admits null in its bool/null/int/float/string whitelist. Exact root/condition read-eps, source, NORMAL typed runtime VALUE and quiet whole-state false truth remain required.",
+    "The existing runtime helper retains both immediate nested-arm source identities while demanding only the selected child value. Exact selected fallback source and compiled INTERNED header remain mandatory; deeper skipped CODE/value/precision facts remain undemanded.",
+    "Current-key replacement and initial-reference rebinding retain frozen raw bytes/index. Coherent truthy INT1 values gain no string header; falsey BOOL/INT compatibility, range/source/precision/CODE and forged-budget controls preserve existing ownership, callbacks and demand bounds. Runtime helpers remain unchanged."
+  ],
+  "provenance": {
+    "php_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_shorthand_conditional",
+      "Zend/zend_compile.c::zend_compile_conditional",
+      "Zend/zend_vm_def.h::ZEND_JMP_SET",
+      "Zend/zend_vm_def.h::ZEND_QM_ASSIGN"
+    ],
+    "rules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_known_base",
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_runtime_value"
+    ]
+  },
+  "source_evidence": {
+    "unique_originals": 2,
+    "native_once_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/baseline/report.json",
+      "sha256": "2b648f1b72fa80f412a90e3450bf4a464833f10430d606945be2ed79153b7346",
+      "native_executions": 2,
+      "unsupported": 2,
+      "agreement_credit": 0
+    },
+    "author_source_agreements": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/source-v1/report.json",
+      "sha256": "b869439b5e4514da489edf9706580ba251fe9249b2eea61b224495a53ffde45d",
+      "native_executions": 0,
+      "agreement_credit": 2,
+      "first_pass": true
+    }
+  },
+  "fixture_evidence": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/prelaw-v1/report.json",
+      "sha256": "de82bd1e11c45813f6d2ecea24f84147cace20f57d8ad095e1dafbb6acebc8be",
+      "kind": "reached prelaw",
+      "conditions": 96,
+      "first_pass": true,
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/author-state-v1/report.json",
+      "sha256": "29e2cc283f2348de56155ed83f76985ed7493b5401812f3ac714c09306dee2d8",
+      "kind": "author selected true NULL/current-key history",
+      "conditions": 236,
+      "derived_conditions": 103,
+      "first_pass": true,
+      "source_credit": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-peer41-20261117/peer-state-v2/report.json",
+      "sha256": "cf0796766ab11f8b2f02fbef7d3063bd544348a280e7032b839a472c820080b2",
+      "kind": "corrected independent selected false NULL/reference-key history",
+      "conditions": 299,
+      "derived_conditions": 178,
+      "first_pass_of_corrected_fixture": true,
+      "source_credit": 0
+    }
+  ],
+  "failures": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-peer41-20261117/peer-state-v1/report.json",
+      "sha256": "87b22f86d10c21fcc4bed722473dc71d7a6513d90596d42f40a5f638e3a5bd6e",
+      "kind": "Compiler binding diagnostic before execution; moved the existing nested-source deconstruction before inherited metadata use, preserving all299/178 obligations.",
+      "execution": "UNRUN",
+      "execution_credit": 0,
+      "source_credit": 0
+    }
+  ],
+  "preparation_only": {
+    "paths": [
+      "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/preparation-counter.txt",
+      "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-author44-20261117/preparation-wiring.txt"
+    ],
+    "scope": "Local main-versus-prefix counter and exact-indentation preparation assertions corrected without compiler/semantic execution.",
+    "execution_credit": 0,
+    "source_credit": 0
+  },
+  "independent_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-peer41-20261117/whole-six-clear.json",
+    "sha256": "7a405f3411dfe9ac2a07ea3ec50290ed65289c234662b5bc110b13aabdc81129",
+    "result": "CLEAR corrected six complete postimages; other five and native/source/pre/A cuts remain literal, original B failure stays0/runtimeUNRUN."
+  },
+  "integration": {
+    "actual_head": "67f5ff6ed4044c04e78724352ef08ffb21895fb8",
+    "actual_tree": "bbe077e311bb51ddd0bbc241f5dc06e47ef19902",
+    "same_head": "67f5ff6ed4044c04e78724352ef08ffb21895fb8",
+    "same_tree": "bbe077e311bb51ddd0bbc241f5dc06e47ef19902",
+    "composition_map_sha256": "0ed7a237ed18c30b9cbab538f2f8ccf966a23b6ebb981df2402bd451993c4853",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main82-dyn-null-shorthand-v1/report.json",
+    "sha256": "3c6ed82266301af7d8be0e8aece6d1d11b9340aa63e1d787b77cadb43cf5cf47",
+    "mode": "production SL",
+    "module_arguments": 509,
+    "fixture_arguments": 1,
+    "argv_count": 512,
+    "watched_paths": 513,
+    "cap_seconds": 60,
+    "elapsed_seconds": 17.6453904339578,
+    "source_credit": 0,
+    "result": "Sole saved actual/SAME load: quiet true LF, exit0, stable inputs and reaped group. Four literal posts and the unique complete425 arm plus Make2 recipes preserve all foreign bytes.",
+    "independent_reviewer": "recover41_dynamic_nullable_ternary_review",
+    "independent_decision": "ONE actual/SAME saved read CLEAR; author44 consumed only the immutable tuple without canonical/source/native/private report reread or replay.",
+    "independent_tuple": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-peer41-20261117/main-composition-clear.json",
+    "independent_tuple_sha256": "749e963d12bd6cb54a03dfeb6ad62ac5d4cc513952a7224b03bc01e742dab59c"
+  },
+  "remaining": "Wider producers, carriers, contexts and lifetimes remain partial. Every exact hold, reserve93807cdd6/255, inventory169/306 and closed0+1 remain unchanged."
+}

@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Quiet runtime-certified truthy STRING conditions preserve their own exact INTERNED raw-literal shorthand header and frozen raw CV keys through returning Warnings. Native2 once/source2, prelaw104, corrected author302/172 and independent322/201 retain separate cuts; original author failure stays0. Actual/SAME6c0f1a6f59 and sole SL50916.690098264s/source0 are independently clear through one immutable tuple. Wider forms/lifetimes and exact holds remain partial. [Review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet runtime-certified falsey scalar conditions, including emitted NULL ternaries, preserve exact literal INTERNED shorthand fallbacks and frozen raw CV keys through returning Warnings. Native2 once/source2, prelaw96, author236/103 and corrected independent299/178 retain separate cuts; original peer binding failure stays0/executionUNRUN. Actual/SAME67f5ff6ed4 and sole SL50917.645390434s/source0 are independently clear through one immutable tuple. Wider forms/lifetimes and exact holds remain partial. [Review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json).
+
+Completed one- or multiple-required ordinary-CV producers admit exact object|iterable/iterable|object and callable|iterable/iterable|callable returns, plus longer ordered distinct builtin unions containing iterable. Dedicated RETURN-only folding preserves raw Identifier/normalized order and count, rejects array/duplicate/Boolean overlaps, and retains shared FORMALS, existing pairs/epsilon, actual return verification and finite private Notice cells. Class-bearing iterable unions and wider payload/lifetime contexts remain partial. Native4+3 once/seven originals and separate author/independent source7 with685(340+345)/409(264+145) fixtureSL507 cuts retain their identities. Prelaw243/185 and original bindingfailure/unrun/Unsupported0 stay separate. Actual/SAME0866b43c and sole7813f0dc SL50916.490621153s/source0 independently clear; exact holds unchanged. [Review](coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).
+
+Deferred NULL BOOL casts and NOT preserve raw Boolean tags before private reception. Retained raw1 and corrected named1 source agreements stay separate; the original named Unsupported and author131 failure/timeout remain zero. Each native version ran once. Author155 and independent231 retain their 508-module fixture cuts. Actual=SAME60288ab43/sole a53f8c84 SL50916.732658621s/source0 are independently clear. Folded literal-false shorthand redirects and wider scope remain partial; exact holds stay unchanged. [Review](coverage/semantics/deferred-null-truth-wrapper-default-reception-review.json).
+
 Quiet exact signed64 INT DIVIDE composes in nested output-handler casts through two authenticated PINT children, exact quiet NORMAL full-state equality and the two-cast gate. Terminal CODE lines, fold/read authority, source and ownership guards remain; FLOAT results, zero divisors, coercive or owning children and wider handlers/lifetimes remain partial. Six originals/native6 once, author30/20 and independent127/22 retain separate private508 cuts; prelaw Unsupported2/other4unrun and peer preparation failure stay0. Actual/SAME93416bc4 and sole242b380a productionSL50916.591031378s/source0 are independently clear. OB31 and exact holds stay unchanged. [Review](coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
 
 Certified emitted NULL conditions select exact literal INTERNED full-ternary bases and preserve frozen raw CV keys through returning Warnings. Native2 once/source2, prelaw100, author241/108 and independent288/166 retain separate first-pass cuts. Actual/SAME7795982829 and sole SL50916.281187734s/source0 are independently clear through one immutable tuple. Wider producers, carriers, contexts and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json).
@@ -1052,16 +1060,7 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest integrated source cut is `30095b2d1f176e3f1e7078aa515e640915af51ca`
-(tree `65eb91c9b99c8853fc5948aa834871fa1f2fd2aa`). Its sole joined 509-module production
-SL load passes in 16.131729199 s under the unchanged 60-second cap, with
-512 ordered arguments, 513 stable watched inputs, `true` plus LF, quiet stderr
-and fully reaped processes, adding zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main81-ref110-string-bool-joined-v1/report.json`
-(SHA-256 `efcada7ef71eb5f4d02289f9373fc13fede56c6f96af4c47124897bfa8da5f20`).
-Separate source, fixture, composition and load cuts retain their original identities
-in family records. Metadata changes renew no execution credit; inventory statuses
-remain169/306 with zero closed constructors and one closed runtime obligation.
+The latest joined source is `b2f4df69640f19adc8b8c5f86d154fdb81c3ca0e` (tree `8f70ed38798403022e0173858733163698750b84`). Its sole saved MAIN83 production-SL load uses source cut `96d2dd0c`, 509 module arguments, 512 argv entries and 513 watched paths; it passes in 15.681542606 s under the 60 s cap with true plus LF, quiet stderr, stable inputs and reaped groups, adding zero source credit. Evidence: `../php-spec-evidence-archive/resumed-main-20261112/main83-get-ternary-enum293-v1/report.json`, SHA256 `897ffe0bc46bbaaf1c5f475fafac6266cd3fbca04fe9a23973673fa8633cd03d`. Earlier source/native/fixture cuts retain their original identities; all exact holds, reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.
 
 The previously recorded source cut `05427f0100` passes its once-only 508-module production SL
 load in 15.881095650838688 s under the unchanged 60-second cap, with `true` plus LF,

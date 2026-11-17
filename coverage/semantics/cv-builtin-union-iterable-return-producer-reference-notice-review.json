@@ -1,0 +1,140 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_bytes": 8,
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed one- or multiple-required ordinary-CV producers; exact object/iterable and callable/iterable pairs in either order, plus ordered builtin RETURN unions of more than two distinct members containing iterable. Raw Identifier leaves and normalized singleton branches retain exact count and order.",
+  "implementation": {
+    "revision": "55ef699aee46319248473d0d61a8e10abcb1ae00",
+    "tree": "4c04f25d1654ef59e00f8e915070bad76303477d",
+    "source_files": 21,
+    "manifest": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/author/source21-manifest-v1.json",
+    "manifest_sha256": "7c1973667afc77c26af6f160dd1f7945d1689b9e1b82dca58d2be879d3a31916",
+    "rule": "Dedicated RETURN-only iterable member fold requires iterable, rejects array, duplicate members and overlapping bool/false/true kinds, and preserves casefolded raw names and normalized singleton order. Two disjoint header arms retain the existing argument proof with RETURNS cleared. Existing pairs, epsilon, shared union_members, FORMALS, actual return verification and finite private-cell ownership remain unchanged. Twelve narrowly affected RETURN-control generators gain the matching positive guards, checked by fresh derived queries."
+  },
+  "engine_sources": [
+    "Zend/zend_compile.c: zend_compile_typename_ex, iterable fallback, type-mask overlap and Boolean-kind checks",
+    "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_execute.c: zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_return_error"
+  ],
+  "native": {
+    "unique_originals": 7,
+    "executions_once": [
+      4,
+      3
+    ],
+    "reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/author/native-first-v1/report.json",
+        "sha256": "ebdbcf3708f085a0c01d58216eeb11ee2d8a7a35d033193d63947d590ec449fb"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/peer/native-first-v1/report.json",
+        "sha256": "0e6a3779f3f568d9d50c019a72ac15443c7e75e53c2fe36bd8d382b7ed4cec21"
+      }
+    ]
+  },
+  "private_validation": {
+    "source_mode": "production-SL/cache=false/det=true",
+    "fixture_mode": "fixture-SL/cache=false/det=true",
+    "module_count": 507,
+    "source_agreements_per_packet": 7,
+    "fixture_conditions_per_packet": [
+      685,
+      409
+    ],
+    "fixture_reached_per_packet": [
+      340,
+      264
+    ],
+    "fixture_derived_per_packet": [
+      345,
+      145
+    ],
+    "fixture_source_agreements": 0,
+    "packets": [
+      {
+        "role": "author",
+        "revision": "55ef699aee46319248473d0d61a8e10abcb1ae00",
+        "summary": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/author/whole-summary-v1.json",
+        "sha256": "8fac0dbdb076a68cf81ee2fbee0d31606e3647d75ea5c9ca72394b39d5e7baf8",
+        "elapsed_seconds": 307.7719781398773
+      },
+      {
+        "role": "independent",
+        "revision": "258dd99d35c36a8f7d5c1d57df8fdf02c0296a79",
+        "tree": "d850cfb04ccf7a9f1542a7f0e4123be84ec1bf00",
+        "summary": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/peer/whole-summary-v1.json",
+        "sha256": "fd9de1c073cd6d75d0a9c79397917f3d3b8613eb96ac4aa1b05cb9b564dcd231",
+        "elapsed_seconds": 298.192323208
+      }
+    ],
+    "stable_inputs_and_heads": true,
+    "quiet_stderr": true,
+    "timeouts": false,
+    "remaining_process_groups": []
+  },
+  "prelaw": {
+    "source_agreements": 0,
+    "successful_front_conditions": [
+      243,
+      185
+    ],
+    "front_reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/author/prelaw-state-v1/report.json",
+        "sha256": "5d32d311f3007a8f4e77d30cc4e8f682a58ac40577d33657d7f6d41bd927bdba"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/peer/prelaw-state-v2/report.json",
+        "sha256": "05f34acd29196cfcd1754fd076ecd7dca0055e91c94884f4d00014396981b606"
+      }
+    ],
+    "original_peer_front_failure": {
+      "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/peer/prelaw-state-v1/report.json",
+      "sha256": "104236e167b3876eff07b32c1d9e0f01e868471878d3c1cdafd287dc296277d0",
+      "result": "SL binding failure before execution; all fixture conditions and its following source check unrun, zero agreement. Corrected by extracting the exact input before comparison; original/native bytes unchanged and native was not rerun."
+    },
+    "first_sources": [
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/author/prelaw-source-v1-3yyqxvm_/report.json",
+        "sha256": "af12e58475225938f62619335611fbe21c4467657664b0fe00d866b0c2bbd854"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-builtin-union-iterable-return-producer-reference-notice-111/peer/prelaw-source-v1-4fe822z3/report.json",
+        "sha256": "98cbaed9f9b18c74715cf1178d515f687ebeff18607e495b08bad6f92f7d566a"
+      }
+    ],
+    "first_source_outcome": "Each first source Unsupported; remaining three author and two peer originals unrun at that cut. Both false reports retain zero source agreement."
+  },
+  "limits": "Class-bearing iterable unions, wider source/type headers, Traversable Notice payloads and wider ownership/lifetime contexts remain partial. Every standing hold and reserved boundary is unchanged. Repeated packets add no unique-source credit.",
+  "composition": {
+    "actual_revision": "0866b43c73b4896429744b7e64a0ed72342f65b3",
+    "actual_tree": "8a5d26b15f03769700e763b0f5d8de14d6af2255",
+    "same_revision": "0866b43c73b4896429744b7e64a0ed72342f65b3",
+    "same_tree": "8a5d26b15f03769700e763b0f5d8de14d6af2255",
+    "source_files": 21,
+    "literal_postimages": 20,
+    "make": "one unique preserved recipe insertion",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main82-ref111-composition-v1/map.json",
+    "sha256": "930ba329cfa17b81827637e62d4411e2ef3dcfc62abda92585a0a76e84d02bb7",
+    "saved_load": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main82-ref111-v1/report.json",
+      "sha256": "7813f0dc8ca65c5c3785222195f07c6ee9e1e51cc47b0efd02e20eec3a097877",
+      "mode": "production-SL",
+      "module_count": 509,
+      "fixture_count": 1,
+      "elapsed_seconds": 16.490621153032407,
+      "passed": true,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "reaped": true
+    },
+    "review": "Independent ONE actual/SAME check verified all21 committed postimages, including exact207 and the sole Make insertion. The author uses the immutable reviewer tuple without rereading the saved canonical load."
+  }
+}

@@ -16,6 +16,17 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Certified emitted `?:` conditions preserve exact INTERNED headers and frozen raw
+CV keys through returning Warnings. Quiet falsey scalar values select a literal
+fallback; quiet truthy strings retain their selected header. Wider producers,
+carriers and lifetimes remain partial.
+[Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
+[truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Completed one- or multiple-required ordinary-CV producers admit exact object|iterable/iterable|object and callable|iterable/iterable|callable returns, plus longer ordered distinct builtin unions containing iterable. Dedicated RETURN-only folding preserves raw Identifier/normalized order and count, rejects array/duplicate/Boolean overlaps, and retains shared FORMALS, existing pairs/epsilon, actual return verification and finite private Notice cells. Class-bearing iterable unions and wider payload/lifetime contexts remain partial. [Review](coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).
+
+Canonical emitted BOOL casts and NOT of certified NULL children preserve exact false/true results before private integer default reception. Exact source, declaration bindings, Shared caches and recipient ownership remain required. Folded literal-false shorthand redirects, wider producers and lifetimes remain partial. [NULL truth review](coverage/semantics/deferred-null-truth-wrapper-default-reception-review.json).
+
 Quiet exact signed64 INT DIVIDE composes in nested output-handler casts through two authenticated PINT children, exact quiet NORMAL full-state equality and the two-cast gate. Terminal CODE lines, fold/read authority, source and ownership guards remain; FLOAT results, zero divisors, coercive or owning children and wider handlers/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
 
 Certified emitted NULL conditions select exact literal INTERNED full-ternary bases and preserve frozen raw CV keys through returning Warnings. Existing source, quiet truth, precision, selected demand and ownership guards remain; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json).

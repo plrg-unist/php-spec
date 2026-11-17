@@ -1,0 +1,198 @@
+{
+  "milestone": "ENUM292 emitted NULL Boolean cast and NOT wrapper defaults",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "A canonical emitted BOOL cast of a recursively certified NULL returns PBOOL false; emitted BooleanNot returns PBOOL true. Exact child source, phase/CODE/pool/read/redirect authority and existing declaration, cache and private-recipient bounds remain required.",
+  "implementation": "Module519 adds only 19 lines in two NULL-child arms. The BOOL cast retains style1. Existing BOOL/INT/FLOAT arms, NaN truth, generic truth/cast kernels, state fields and ownership rules are unchanged.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_operators.c::convert_to_boolean maps NULL to false; boolean_not_function maps NULL to true without a NaN truth conversion.",
+  "author_source": {
+    "revision": "9472c6b23df7c6412cb560aef5984fd0649d8ac3",
+    "tree": "02e306e6253c395d794cde6ba7628f865b83e7d9",
+    "base": "1ce1751aaa87877e3bda33ab861f4601a862c6a8"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/source-final-v1.patch",
+    "sha256": "f86d9e17577b4b8271ac230675fb7eee3758f8bc3cb5aeadb8688c215f2ce0ea",
+    "bytes": 26506,
+    "files": 6,
+    "added": 314,
+    "removed": 0
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/source-final-v1-manifest.json",
+    "sha256": "da023614ec9a34fb92554e1d5d284cf8254cc58160a500a2ece015b91f55ea63",
+    "independent_whole_clear": true
+  },
+  "native_original_versions": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/native-final.json",
+    "sha256": "ab00cdf2e41840c2519e8d56e1284eaa7a5eb1c557d3c36261a55c366004592f",
+    "fresh_originals": 2,
+    "replays": 0,
+    "stable": true
+  },
+  "native_current_selection": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/native-final-v2.json",
+    "sha256": "50c9cae78379c9709eb92334867e217ed6a15a5b2e8a6068e55cb7220a503960",
+    "selected_originals": 2,
+    "saved_raw_originals": 1,
+    "fresh_corrected_named_originals": 1,
+    "historical_distinct_versions": 3,
+    "native_reexecutions": 0,
+    "scope": "The original named version remains preserved. Only its corrected derivative was executed once; the accepted raw native observation was reused unchanged."
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/baseline-v1/report.json",
+    "sha256": "a407e166ec01f6a1da2a32c04a11b00fadb968f5a0046e5815d180606993f163",
+    "revision": "1ce1751aaa87877e3bda33ab861f4601a862c6a8",
+    "expected_unsupported": 1,
+    "source_credit": 0
+  },
+  "retained_raw_source": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/source-v1/report.json",
+    "sha256": "0141d0f0ac698473bd6aa626a17ed28b68da61f4131f564105ee79de08e4afce",
+    "revision": "32d3a4422ab980b4f581bc47674018e1b8120f24",
+    "source_sha256": "669549d0e5b3f47aa090f97c6b51499bc3f990a046a2204a8480dc7f869d603b",
+    "exact_normal_agreements": 1,
+    "elapsed_seconds": 52.01469482900575,
+    "mode": "production SL_mode",
+    "modules": 508,
+    "native_reexecutions": 0,
+    "whole_source2_result": "failed: original named case reached Unsupported",
+    "whole_source2_pass_claimed": false,
+    "scope": "Only the exact normal raw row is retained. Its source, original filename, profile, runtime and law bytes remain unchanged; the script checked input fingerprints before its final classification assertion."
+  },
+  "original_named_unsupported": {
+    "report": "source-v1/report.json",
+    "source_sha256": "366d7634930bf78db6bb0c575b03eb94d7ffe92343a38838b16836c2fe2739dc",
+    "elapsed_seconds": 22.129298666026443,
+    "source_credit": 0,
+    "cause": "The literal-false shorthand child has an actual CODEREDIRECT to its emitted NULL fallback. The private certificate requires no redirect at this boundary. Missing292 has valid name authority and was not the cause."
+  },
+  "corrected_named_source": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/source-named-v2/report.json",
+    "sha256": "ab5a2841f648b4a52bcfcb1e3f8d4cf7a66a7da232ab0377f56a4fd12be55f99",
+    "revision": "3d7525b7e6464582d20926b9ae13b6d4873d6e44",
+    "source_sha256": "942cef1370e20dea26442c73c68e69482798ba78f5b8cdc7990e9ec2760363d6",
+    "exact_normal_agreements": 1,
+    "elapsed_seconds": 205.78487736079842,
+    "mode": "production SL_mode",
+    "modules": 508,
+    "stable": true,
+    "reaped": true,
+    "native_reexecutions": 0,
+    "correction": "Only named index3 changed its shorthand condition from literal false to the existing emitted false expression. The selected NULL/result stayed the same. The raw source and named index4 Missing-name branch were preserved; no guard or law changed."
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/author-v3/closure-call-protocol-6rve88pg/report.json",
+    "sha256": "cd1b1c433c00d19209b8d7267c975c11ec0083772488c03743632b5a40728bc9",
+    "revision": "54f814cf0",
+    "cuts": [
+      "CASTBOOL 68",
+      "NOT and lifecycle 87"
+    ],
+    "conditions": 155,
+    "body": 143,
+    "setup": 12,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "source_credit": 0
+  },
+  "partition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/partition-v3.json",
+    "sha256": "88052180ce45e030596d2ca039bc1ce83accca984537bd79742e06a395547cd3",
+    "scope": "All original 125 body conditions remain. Splitting the two operators repeats 18 context/cache bindings and six fixture setup conditions; physical conditions are not new behavior claims. The per-fixture and total caps were unchanged."
+  },
+  "prior_author_failure": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/author-v1/closure-call-protocol-4vzl1axc/report.json",
+    "sha256": "431a1d2f135beba20315bdf1c95312c3e11dc9c9c318a8407388c1184a5ac327",
+    "conditions": 131,
+    "accepted_conditions": 0,
+    "source_credit": 0,
+    "cause": "An overstrong malformed-SOURCES control required partial value_at to return eps. The corrected control requires full default admission to reject the source forgery."
+  },
+  "prior_author_timeout": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/author-v2/timeout-summary.json",
+    "sha256": "107b91df087952da04cda0b113070e6510e6b5862ef6ec301547ff1ba6f2b380",
+    "conditions": 131,
+    "per_fixture_cap": 300,
+    "accepted_conditions": 0,
+    "source_credit": 0,
+    "scope": "The timeout is inconclusive; post-run fingerprint verification was not reached. It is not a stable or passing cut."
+  },
+  "independent_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-truth-wrapper-default-reception-292/peer-v1/closure-call-protocol-i6rl9hpo/report.json",
+    "sha256": "9fd19a34221f5684ac77857176793de78e96fae6ff328c96c46febc8877fb2be",
+    "revision": "9177b0cfcc5f952fe44b9d67b79feb0710229551",
+    "tree": "ad43629f2c8b370c68fde1fc31e917994f2e6d27",
+    "cuts": [
+      "raw 114",
+      "named 59",
+      "quiet 36",
+      "boundary 22"
+    ],
+    "conditions": 231,
+    "body": 207,
+    "setup": 24,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "affected_older_conditions": 0,
+    "source_credit": 0,
+    "native_reexecutions": 0
+  },
+  "independent_review": {
+    "reviewer": "recover23_enum_null_comparison_review",
+    "whole_source6": "FULLCLEAR: exact list, complete postimages, checked-input equality, filtered and reverse-diff checks.",
+    "source_cuts": "CLEAR: retained raw1 and corrected named1 remain distinct; no whole-source2 pass or native replay.",
+    "actual_and_same_saved_read": "CLEAR once; author uses only the supplied immutable tuple."
+  },
+  "actual_source": {
+    "revision": "60288ab43a10ec16bed0f6aef5cf35c546f517c1",
+    "tree": "21ddcc57221af7c960d0978ef094d5e92efa1da6",
+    "base": "67f5ff6ed4044c04e78724352ef08ffb21895fb8",
+    "files": 6
+  },
+  "canonical": {
+    "revision": "60288ab43a10ec16bed0f6aef5cf35c546f517c1",
+    "tree": "21ddcc57221af7c960d0978ef094d5e92efa1da6"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main82-enum292-v1/report.json",
+    "sha256": "a53f8c849bb66ab7a9da4d70e25be6d5237634e87820fc8f238faa63f414484e",
+    "mode": "SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "cap": 60,
+    "elapsed_seconds": 16.732658620923758,
+    "exit": 0,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main82-enum292-composition-v1/map.json",
+    "sha256": "0369b0735ee4ac1a8fa65d141d8784cd986f8f7a142308b0dfebee9b542df839",
+    "scope": "Peer sole saved read confirms five literal incoming9472 full postimages, including the complete519 parent equal to MAIN, plus three exact contiguous unique Make commands inside test-semantics. Removing those commands recovers all parent bytes."
+  },
+  "scope_limits": [
+    "Literal-false shorthand CODEREDIRECT over an emitted NULL fallback remains a private-certificate refusal despite ordinary runtime agreement.",
+    "Wider scalar/owning producers, NaN truth, contexts, owners and lifetimes remain partial.",
+    "No complete PHP core or default-reception closure is claimed."
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Retained raw1 and corrected named1 are separate source agreements under508 modules. Native versions ran once each. Fixture conditions have source0/native0. Original named Unsupported, author131 failure and author131 timeout retain zero credit. The sole joined509 load has source0; thin metadata renews no source/native/fixture or canonical evidence."
+}
