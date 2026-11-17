@@ -56,6 +56,8 @@ def $hook_short_reference_builtin_union(phpType69*, ptbranch*) = false -- otherw
 dec $hook_short_reference_header(phpType18, ptbranch*) : bool
 def $hook_short_reference_header(ABSENT, eps) = true
 def $hook_short_reference_header(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN text]))]) = (text <- ["array","object","int","float","bool","string","false","true","null","mixed"] /\ $ptlc($base64(text_type)) = $ptascii(text))
+;; Fully qualified quiet class names retain their exact normalized spelling.
+def $hook_short_reference_header(NNameFullyQualified (BYTES text_type) metadata_type, [(PTBRANCH ([PTCLASS ptbytes]))]) = ($base64(text_type) = ptbytes /\ $ptvalidname(ptbytes, true) /\ $ptbuiltin($ptlc($ptlast(ptbytes))) = "" /\ ptbytes =/= [95])
 def $hook_short_reference_header(NNullableType phpType35 metadata, [ptbranch,(PTBRANCH ([PTBUILTIN "null"]))]) = $hook_short_reference_header(phpType35, [ptbranch])
   -- if ptbranch =/= (PTBRANCH ([PTBUILTIN "null"])) /\ ptbranch =/= (PTBRANCH ([PTBUILTIN "mixed"]))
 def $hook_short_reference_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*) = true

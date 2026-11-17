@@ -189,7 +189,7 @@ def fields(fixture, source, case):
     return checks
 
 
-def main(header_report=None):
+def main(header_report=None, extra_paths=()):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--suite', choices=('weak', 'strict'), default='weak')
     selection = parser.add_mutually_exclusive_group(required=True)
@@ -200,7 +200,7 @@ def main(header_report=None):
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
     paths = [Path(__file__), Path(sys.argv[0]).resolve(), Path(prior.__file__), Path(prior.prior.__file__), Path(prior.prior.prior.__file__), Path(prior.prior.peer.__file__),
-             *folder.iterdir(), *modules, *(ROOT / p for p in ('spec/semantics/modules.json', 'spec/php.watsup',
+             *extra_paths, *folder.iterdir(), *modules, *(ROOT / p for p in ('spec/semantics/modules.json', 'spec/php.watsup',
              'spec/schema.json', 'frontend/worker.php', 'frontend/SourcePrinter.php', 'tests/semantics/recorded_worker.py',
              'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', 'tests/semantics/profile.json',
              '.tools/php/bin/php', '.tools/php-file.so', '_build/default/adapter/main.exe', 'tests/semantics/_build/default/numeric_runner.exe'))]
