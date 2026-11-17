@@ -1132,6 +1132,14 @@ The [ordered int-union return review](../../coverage/semantics/global-plain-unio
 records the source and state evidence. Wider unions, plain formals, namespace/import
 contexts, payloads and lifetimes remain partial.
 
+Bare `stdClass|float` and `float|stdClass` RETURN unions retain the same global
+declaration context and exact ordered member authentication. Matched objects
+retain identity, while verified FLOAT results include strict INT-to-FLOAT widening
+and quiet weak scalar conversion before frame retirement and private Notice cells.
+The [ordered float-union return review](../../coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json)
+records the source and state evidence. Other unions, plain formals, namespace/import
+contexts, payloads and lifetimes remain partial.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags

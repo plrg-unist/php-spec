@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Completed fixed-required ordinary-CV producers admit bare `stdClass|float` and `float|stdClass` returns in a global context without class imports. Exact raw/normalized order preserves object identity, strict integer-to-float widening and quiet weak scalar conversion before frame retirement and private Notice cells. Wider types, contexts and lifetimes remain partial. [Review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
+
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
 Fully qualified true/false/null leaves and their direct plus/minus forms preserve
