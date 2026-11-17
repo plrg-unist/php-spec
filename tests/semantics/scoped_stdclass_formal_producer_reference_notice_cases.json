@@ -1,0 +1,52 @@
+[
+  {
+    "id": "strict-scoped-imported-stdclass-byval-formal-fqn-return",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedFormal124;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bOx $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedFormal124\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "29b77a36392ec02f1cef60713d8fda98b13f57b74d0ee9a3238643c4aa2e4ef5",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "strict-global-bare-stdclass-byval-formal-fqn-return",
+      "source_sha256": "1484a3f4f1497e36adba6eb66a730e9c04b7f8ca69892231b47cb4b21762116b",
+      "edits": "Replace only declaration line2 by namespace and stdClass import; substitute the selected singleton formal alias and qualify the handler string. Preserve FQN return, statements and physical lines."
+    },
+    "role_index": 0,
+    "formal_name": "bOx",
+    "formal_target": "stdClass",
+    "namespace": "ScopedFormal124",
+    "new_support_credit": 1
+  },
+  {
+    "id": "weak-scoped-imported-stdclass-multiple-byref-formal-fqn-return",
+    "source": "<?php\nnamespace ScopedFormal124;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,BOX &$right):\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('ScopedFormal124\\h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "6ff64ebd40b15e827c1179e99cef9c573d6f340eefaa86b50101ac6132d58c68",
+    "native_stdout": "N;M:1:5;H:8:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      null,
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "weak-global-multiple-untyped-bare-stdclass-byref-formal-fqn-return",
+      "source_sha256": "93852ed4da8b139e10bfa2e633eb32704ffda7311a6954dc90d8ee6b3a52748d",
+      "edits": "Replace only declaration line2 by namespace and stdClass import; substitute the selected singleton formal alias and qualify the handler string. Preserve FQN return, statements and physical lines."
+    },
+    "role_index": 1,
+    "formal_name": "BOX",
+    "formal_target": "stdClass",
+    "namespace": "ScopedFormal124",
+    "new_support_credit": 1,
+    "line_observation": "The sole native execution of these unchanged imported declaration bytes reports Notice at physical line8; correct inherited global line9 expectation without native replay."
+  }
+]

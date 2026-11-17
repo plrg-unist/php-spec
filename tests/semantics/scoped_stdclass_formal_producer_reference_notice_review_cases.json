@@ -1,0 +1,67 @@
+[
+  {
+    "id": "scoped-imported-stdclass-named-byref-private-notice",
+    "source": "<?php\nnamespace PeerScopedFormal124;use stdClass as PeerBox;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(pEeRbOx &$saved):\\stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('PeerScopedFormal124\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "b74ffd6c57ccdca3d11affba384b8d0aecf7bb2685cf5a797026ab8ee035d458",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "global-bare-stdclass-byref-rebind-private-notice-object-identity",
+      "source_sha256": "67636106d720de510ce495d96902c4a84fc17828aebee4e2bca09da8e61aaeab",
+      "edits": "Replace physical declaration-context line by the stated namespace/import context and only the singleton FORMAL spelling and handler registration; the scalar control also enables strict_types on the existing first line. Retain FQN RETURN, body, observers and all physical lines."
+    },
+    "namespace": "PeerScopedFormal124",
+    "formal_alias": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "notice-positive",
+    "native_expectation_status": "Prediction until one native-first observation of these exact new bytes."
+  },
+  {
+    "id": "global-unrelated-import-stdclass-named-byref-private-notice",
+    "source": "<?php\nuse stdClass as Spare;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(stdClass &$saved):\\stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "fa47a25b6885952378b78dc561083f06060142891b29e81f27730fe984802237",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "global-bare-stdclass-byref-rebind-private-notice-object-identity",
+      "source_sha256": "67636106d720de510ce495d96902c4a84fc17828aebee4e2bca09da8e61aaeab",
+      "edits": "Replace physical declaration-context line by the stated namespace/import context and only the singleton FORMAL spelling and handler registration; the scalar control also enables strict_types on the existing first line. Retain FQN RETURN, body, observers and all physical lines."
+    },
+    "namespace": "",
+    "formal_alias": "stdClass",
+    "import_alias": "Spare",
+    "import_target": "stdClass",
+    "role": "notice-positive",
+    "native_expectation_status": "Prediction until one native-first observation of these exact new bytes."
+  },
+  {
+    "id": "strict-scoped-imported-stdclass-scalar-receive-before-body-notice",
+    "source": "<?php declare(strict_types=1);\nnamespace PeerScopedFormal124;use stdClass as PeerBox;\n// Scalar rejection must precede producer body and Notice.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(pEeRbOx &$saved):\\stdClass{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=19;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('PeerScopedFormal124\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ce4a6f5edadbc96fb001916b2cdb9d831424055278bd3862a586b6dbc654f40a",
+    "new_support_credit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "global-bare-stdclass-scalar-receive-before-body-and-notice",
+      "source_sha256": "1eada306b85bab59c59276b626aac7a665f0548fb7657e40bfe44b99699f14d8",
+      "edits": "Replace physical declaration-context line by the stated namespace/import context and only the singleton FORMAL spelling and handler registration; the scalar control also enables strict_types on the existing first line. Retain FQN RETURN, body, observers and all physical lines."
+    },
+    "namespace": "PeerScopedFormal124",
+    "formal_alias": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "unchanged-reception-control",
+    "native_expectation_status": "Prediction until one native-first observation of these exact new bytes."
+  }
+]

@@ -1142,9 +1142,22 @@ def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 
   -- if $reference_notice_producer_global_union_view(phpType69*, false) = (phpType69_view*)
 def $reference_notice_producer_global_parameter_view(phpType17) = phpType17 -- otherwise
 
+;; Declaration resolution authenticates a canonical nominal singleton proof view.
+dec $reference_notice_producer_scoped_parameter_view(plenv, phpType17) : phpType17
+def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+  -- if $ptvalidname($base64(text_type), true)
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
+def $reference_notice_producer_scoped_parameter_view(plenv, phpType17) = phpType17 -- otherwise
+
 dec $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) : bool
 def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = true
   -- if $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature)
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, phpType18, pssignature) = true
+  -- if plenv.NAMESPACE =/= eps \/ plenv.CLASSES =/= eps
+  -- if $(|phpType7*| > 0)
+  -- if phpType17_view* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
+  -- if phpType17_view* =/= phpType17*
+  -- if $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17_view*, phpType18, pssignature)
 def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NName (BYTES text_type) metadata_type, pssignature) = true
   -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
   -- if $(|phpType7*| > 0)
