@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Bare stdClass/int producer returns](coverage/semantics/global-plain-union-int-stdclass-return-producer-reference-notice-review.json) preserve object identity or a verified INT through return checks, frame retirement and private Notice cells in the retained global declaration context; wider unions, formals and lifetimes remain partial.
+
 Initialized ordinary NULL-CV inner unset keys share the saved-cell Warning route
 with BOOL, retaining the captured cell and corrected conversion, handler and owner
 bounds. Undefined, reference or released entries and wider lifetimes remain partial.

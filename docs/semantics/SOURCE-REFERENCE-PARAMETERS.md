@@ -1124,6 +1124,14 @@ The [ordered null-union return review](../../coverage/semantics/global-plain-uni
 records the source and state evidence. Other unions, plain formals, wider
 contexts, payloads and lifetimes remain partial.
 
+Bare `stdClass|int` and `int|stdClass` RETURN unions share the same declaration
+context and exact raw/normalized member authentication. The existing verifier
+preserves ordinary object identity or a verified INT result before frame retirement;
+later private-cell writes remain unconstrained by the producer's return type.
+The [ordered int-union return review](../../coverage/semantics/global-plain-union-int-stdclass-return-producer-reference-notice-review.json)
+records the source and state evidence. Wider unions, plain formals, namespace/import
+contexts, payloads and lifetimes remain partial.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags
