@@ -1546,3 +1546,18 @@ Actual MAIN508 loading stays separate/source0. Wider children, owners, handlers,
 lifetimes and every exact hold remain partial.
 [Signed numeric NOT evidence](../../coverage/semantics/output-final-selected-signed-numeric-not-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-signed-numeric-not-cast-chain-return-modulo-error-review.json).
+
+Quiet NOT now composes over every child already admitted by the nested-cast
+certificate, including Boolean/null keywords, non-NUL literal strings and
+emitted numeric casts or nested NOT. The child's actual CODE flag and non-FLOAT
+type determine folding; exact own PBOOL facts or emitted read-eps, source/line
+authority, intrinsic quiet truth and full NORMAL Boolean-state equality remain
+required. Raw string facts still need authenticated nonowning INTERNED carriers.
+Strict FALSE/default reporting remains distinct from numeric zero through real
+retirement. Seven originals reuse native observations once; author27/19,
+affected8 and independent115/23 retain separate fixture source0 cuts. Original
+Unsupported, fixture failures and unrun cases retain0. Actual MAIN508 loading at
+`15833bc85972` passes separately in 16.591738450 s/source0. Wider producers,
+owners, bare/single-cast handlers, lifetimes and every exact hold remain partial.
+[Certified NOT evidence](../../coverage/semantics/output-final-selected-certified-not-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-certified-not-cast-chain-return-modulo-error-review.json).
