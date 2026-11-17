@@ -1514,6 +1514,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_nan_equality_special_concat_leading_key_sources.py --output "$$request_runtime_nan_equality_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_nan_equality_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_nan_equality_out/source/report.json" --output "$$request_runtime_nan_equality_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_nan_equality_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_nan_equality_out/source/report.json" --output "$$request_runtime_nan_equality_out/peer-state"
+	@request_runtime_nan_ordered_out=$$(mktemp -d .tools/runtime-nan-ordered-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_nan_ordered_special_concat_leading_key_sources.py --output "$$request_runtime_nan_ordered_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_nan_ordered_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_nan_ordered_out/source/report.json" --output "$$request_runtime_nan_ordered_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_nan_ordered_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_nan_ordered_out/source/report.json" --output "$$request_runtime_nan_ordered_out/peer-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
