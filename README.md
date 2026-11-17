@@ -434,12 +434,14 @@ Raw `?\stdClass` formals and returns also preserve exact class bytes and `[class
 
 Explicit `\stdClass|null` and `null|\stdClass` formals/returns preserve exact raw/normalized order and existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain distinct evidence; wider class/builtin unions, plain/imported classes and all exact holds stay partial. [Ordered FQN/null review](coverage/semantics/cv-union-fqn-stdclass-producer-reference-notice-review.json).
 
-Completed ordinary-CV producers also admit singleton and nullable nominal formals
-whose declaration namespace/imports resolve quietly to exact global `stdClass`.
-Exact class/null order, metadata, reception, return verification and private Notice
-cells retain their existing ownership and lifetime bounds. Scoped unions, relative
-names and wider classes remain partial. [Singleton review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json),
-[nullable review](coverage/semantics/scoped-nullable-stdclass-formal-producer-reference-notice-review.json).
+Completed ordinary-CV producers also admit singleton, nullable and flat ordered
+nominal FORMAL unions whose declaration namespace/imports resolve quietly to exact
+global `stdClass`. Union members retain exact order and metadata through the existing
+two-through-eight-member FQN folds. Reception, return verification and private Notice
+cells retain their ownership and lifetime bounds; RETURN resolution stays independent.
+Relative names and wider classes remain partial. [Singleton review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json),
+[nullable review](coverage/semantics/scoped-nullable-stdclass-formal-producer-reference-notice-review.json),
+[ordered-union review](coverage/semantics/scoped-ordered-stdclass-formal-producer-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
@@ -11834,3 +11836,5 @@ required; integer bounds and wider partial contexts remain unchanged.
 [FLOAT cast review](coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
 
 Emitted string casts preserve an already-certified REQUEST temporary header through raw-key Warnings without appending a registry row. Exact source, compiler, precision, provider and owner guards remain. Wider producers and lifetimes stay partial. [Review](coverage/semantics/string-offset-runtime-allocated-string-identity-cast-base-initial-raw-leading-key-review.json).
+
+Outer string casts preserve an already-certified nonnull allocated coalesce result through raw-key Warnings, retaining its exact REQUEST header without a new row. Full child SOURCE includes the skipped fallback; wider coalesces and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-review.json).

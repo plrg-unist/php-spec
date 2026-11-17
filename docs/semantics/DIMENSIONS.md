@@ -2147,3 +2147,13 @@ guards remain. Native2 once/source2, author290/344 and independent613 retain
 separate cuts; the original compiler-only fixture failure keeps0. WHOLE12 and actual/SAME09fd36f77/solecfe47951 pass through immutable7caa0812
 with source0 and one cached saved-report/map read. Wider producers,
 precision histories, NUL and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-allocated-string-identity-cast-base-initial-raw-leading-key-review.json).
+
+Outer STRING casts also preserve the exact REQUEST header from the existing
+nonnull-left allocated COALESCE base certificate. One child premise uses BASE;
+full child SOURCE includes skipped fallback descendants, while underlying
+COALESCE, precision/CODE/read/line, numeric, prefix/KNOWN/non-NUL/provider/owner
+bounds stay. Native2 once/source2, author311/350 and independent607 pass separately
+without failures/corrections/timeouts. WHOLE12 and actual=joined5879941ed/sole70fc9e9a are clear through immutable65ed096e
+with source0 and reviewer47’s one cached saved-report/map read. General NULL-selected RHS, uncertified/CV
+children, changed precision histories, NUL and lifetimes remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-review.json).

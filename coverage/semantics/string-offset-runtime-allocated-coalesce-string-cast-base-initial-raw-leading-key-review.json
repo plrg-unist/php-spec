@@ -1,0 +1,206 @@
+{
+  "feature": "string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key",
+  "status": "accepted bounded scope; string-offset family and full core remain partial",
+  "scope": "Outer emitted CASTSTRING receives the exact REQUEST header from an existing certified nonnull-left COALESCE base. The unchanged COALESCE certificate requires its emitted left allocation, own/source/line/read/precision facts and skipped emitted RHS. General NULL-selected RHS remains outside.",
+  "implementation": {
+    "source_capture": "d30fa50af63d888a8b79096c558affc44505bcea",
+    "runtime_revision": "2e24fda9ff2e065f216eb859573ff91315a9eda3",
+    "author_driver": "98fc004b134b5889dbb9828147d4011a20c017f8",
+    "semantic_file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "change": "One identity-child premise uses allocated_base instead of allocated_value. All outer full child SOURCE, own false CODE/positive line/no read, equal own/child precision, valid/non-NUL REQUEST and full-S same-header cast replay remain literal. Underlying COALESCE, numeric and CONCAT rules are unchanged.",
+    "termination": "An outer cast descends to its proper checked-AST child. BASE tries VALUE at that child, or descends through the existing nonnull COALESCE left. The checked AST is finite.",
+    "revision": "5867a27c143b5dbf3975d03ee10adc59c502c122",
+    "tree": "a17e75c2ed4e01a033a04878de0b37fa4aa7a601",
+    "independent_helper": "fecef653c35faea8ed9aa4026f6fde49a62c7f1b",
+    "source_files": 6,
+    "freeze_manifest": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/source-twelve-proposal-manifest.json",
+    "global_metadata_parent": "5879941edb6fb5fef6c3046ff5b9222d84463faf"
+  },
+  "source_provenance": {
+    "target": "PHP8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "route": "zend_compile_coalesce compiles the left in BP_VAR_IS, emits COALESCE, then fallback/QM_ASSIGN with a jump target. ZEND_COALESCE moves a nonnull TMP value to its result and jumps over fallback. zend_compile_cast emits the outer CAST; ZEND_CAST STRING and zend_operators.h::zval_get_string copy the existing STRING header before TMP cleanup. Neither selected step allocates another header. Pure CASTSTRING/stringify preserves the exact carrier.",
+    "discriminator": "Both outer ROOT casts preserve REQUEST3 and four captured registry rows. Direct10bcde reads1 at saved0. Reference-10.5bcde reads dot at saved3 while rebound current4 would read5.",
+    "source_boundary": "The outer cast keeps full indexed SOURCE through the child COALESCE, including skipped fallback descendants, without demanding their runtime bindings. Child BASE alone may accept an unused-descendant shadow that the outer cast refuses. Equal own/child compiled precision and existing numeric/live-precision bounds remain."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/native-baseline/report.json",
+      "sha256": "d3bcf4b72b5294164303352dc4c15d12414f807e0c04abac9e7af2bd78853eea",
+      "revision": "d30fa50af63d888a8b79096c558affc44505bcea",
+      "source_credit": 0,
+      "new_native_executions": 2,
+      "executions_once": 2
+    },
+    "prelaw": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/baseline-v1/report.json",
+      "sha256": "747d8a176c2b4372764b880f784ae853393e6c427bdf8d5a2270ba46f2447460",
+      "revision": "d30fa50af63d888a8b79096c558affc44505bcea",
+      "source_credit": 0,
+      "new_native_executions": 0,
+      "model_seconds": [
+        19.826242208480835,
+        20.932815551757812
+      ],
+      "Unsupported": 2
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/source-v1/report.json",
+      "sha256": "e3ecd061c5551fb0ed2552cdbb7aeb3e79235502fe6095b08be086bc42473590",
+      "revision": "2e24fda9ff2e065f216eb859573ff91315a9eda3",
+      "source_credit": 2,
+      "new_native_executions": 0,
+      "model_seconds": [
+        21.77839231491089,
+        25.45961570739746
+      ],
+      "agreements": 2,
+      "native_observations_reused": true,
+      "source_sha256": [
+        "6716607bb56cf5ce8088ae5e8299e1a40f9bf0860681386399b9ac65ce4b78e1",
+        "567b9f5986867945f0e3e41fcf22fc8d47985f24486ac9cc992a9ab7566784fb"
+      ]
+    },
+    "author": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/author-current-v1/report.json",
+        "sha256": "3c51d68c1eb593c66add9c29fee944559d127e8c61c7fc5adbe945bbd73c72fd",
+        "revision": "98fc004b134b5889dbb9828147d4011a20c017f8",
+        "conditions": 311,
+        "derived": 138,
+        "compiler_seconds": 13.133397340774536,
+        "runtime_seconds": 27.38609004020691,
+        "compile_cap_seconds": 120,
+        "runtime_cap_seconds": 180,
+        "module_arguments": 508,
+        "source_credit": 0,
+        "first_pass": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/author-reference-v1/report.json",
+        "sha256": "0ff1a89dcc4826b6ce5e5bd9fdbec116c618aa572520227ba22014c8f8a8ba09",
+        "revision": "98fc004b134b5889dbb9828147d4011a20c017f8",
+        "conditions": 350,
+        "derived": 156,
+        "compiler_seconds": 13.529664516448975,
+        "runtime_seconds": 34.47637915611267,
+        "compile_cap_seconds": 120,
+        "runtime_cap_seconds": 180,
+        "module_arguments": 508,
+        "source_credit": 0,
+        "first_pass": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true
+      }
+    ],
+    "preserved_failures": [],
+    "failures_corrections_timeouts": 0,
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-peer47-20261118/state-v1/report.json",
+      "sha256": "17cf7d66db6175f4c01a1680fe39d1d50a2f4ce710bf956ee3b19f14a7bfe8a1",
+      "revision": "fecef653c35faea8ed9aa4026f6fde49a62c7f1b",
+      "conditions": 607,
+      "derived": 507,
+      "compiler_seconds": 13.377906799316406,
+      "runtime_seconds": 42.19537854194641,
+      "compile_cap_seconds": 120,
+      "runtime_cap_seconds": 180,
+      "module_arguments": 508,
+      "source_credit": 0,
+      "first_pass": true,
+      "quiet": true,
+      "stable": true,
+      "reaped": true,
+      "scope": "Fresh reference AST and five synthetic producer trees keep outer CAST(COALESCE). Child BASEtrue/VALUEfalse, exact no-row copy/clone controls, skipped-fallback SOURCE mismatch, genuine REQUEST-valued CV LHS refusal and abrupt normalization cannot bypass outer NORMAL."
+    },
+    "author_to_final_bridge": "Only the independent peer helper file was added after author98fc; runtime, source/cases, author helper and public selector remain literal. No executed author input changes or replay.",
+    "independent_whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-peer47-20261118/whole12-review.json",
+      "sha256": "7f2deb59ef04c6d8c8235cb655e37d38df4ff39e5d100882ef9a632dee28105c",
+      "files": 12,
+      "source_files": 6,
+      "metadata_proposals": 6,
+      "clear": true
+    },
+    "integration": {
+      "tuple_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-peer47-20261118/actual-same-review.json",
+      "tuple_sha256": "65ed096e15e23b6d6a70bc92d9ac7868a6d409ac596fe443d9106ee7e64f8305",
+      "actual": {
+        "revision": "5879941edb6fb5fef6c3046ff5b9222d84463faf",
+        "tree": "ea9e287ba06d6002f1400051b83726e5b0da81b2",
+        "parent": "e1a5b0b2ae935ae0d27b66f9221db982238acb87",
+        "source_map_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118/source-placement-map.json",
+        "source_map_sha256": "c517c795fe6317d00acc7f366e8825c835cf8a32f4bd8121a4279bcf1e732055",
+        "source_files": 6,
+        "owned425_replacements": 1,
+        "complete_current_parent_425_inverse": true,
+        "underlying_COALESCE_numeric_CONCAT_and_outer_guards_literal": true,
+        "Make_unique_recipes": 2,
+        "complete_current_parent_Make_inverse": true,
+        "selector_operations": 6,
+        "selector_mode_atoms": 2,
+        "complete_current_parent_selector_inverse": true,
+        "new3_literal": true,
+        "foreign_content_preserved": true,
+        "protected_private_unchanged": true
+      },
+      "canonical": {
+        "report_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main100-ref126-coalesce-string-canonical-v1/report.json",
+        "report_sha256": "70fc9e9adcc983a9612043b8aab7db5a11aa0eaec1c427fb8f38fd0321a8df0e",
+        "tested_revision": "5879941edb6fb5fef6c3046ff5b9222d84463faf",
+        "pass": true,
+        "mode": "production_SL",
+        "module_arguments": 509,
+        "ordered_argv": 512,
+        "watched_inputs": 513,
+        "full513_before_after_maps_independently_equal": true,
+        "canonical425_manifest_runner_source_match_fixed_actual": true,
+        "cap_seconds": 60,
+        "elapsed": 16.03868174017407,
+        "exit": 0,
+        "timeout": false,
+        "stdout_true_LF": true,
+        "stderr_quiet": true,
+        "stable": true,
+        "reaped": true,
+        "recorded_PID_absent": 3598507,
+        "source_credit": 0
+      },
+      "read_policy": {
+        "saved_report_physical_reads": 1,
+        "source_map_physical_reads": 1,
+        "SAME": "This reviewer's sole physical saved joined report/map, full513 equality and actual source assessment were cached and reused internally. No second physical read or new load.",
+        "author_canonical_reads": 0,
+        "author_map_reads": 0,
+        "author_actual_source_reads": 0,
+        "new_loads": 0,
+        "HEAD_refreshes": 0,
+        "new_native_runs": 0,
+        "new_source_runs": 0,
+        "new_fixture_runs": 0,
+        "old_milestone_renewals": 0
+      },
+      "scope": "One independent actual/SAME assessment. Canonical execution is shared with REF126; reviewer47 physical read1 remains distinct from reviewer40 read1. Author consumes only immutable tuple and fixed DIMENSIONS metadata; no new executions or evidence renewals."
+    }
+  },
+  "remaining": [
+    "General NULL-selected or other coalesce result histories",
+    "Uncertified/CV/nonquiet/owning children, wider precision histories, NUL and lifetimes",
+    "All exact held lanes, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged"
+  ],
+  "evidence_recovery": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-author55-20261118",
+  "metadata_ownership": {
+    "generic3_composer": "/root/recover36_reference_nullable_impl",
+    "generic_cohort": "REF126+DYNcoalesce",
+    "owned_literal3": [
+      "docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COALESCE-STRING-CAST-BASE-INITIAL-RAW-LEADING-KEY.md",
+      "coverage/semantics/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-review.json",
+      "docs/semantics/DIMENSIONS.md"
+    ],
+    "private_generic3_reads_writes_compositions": 0
+  }
+}

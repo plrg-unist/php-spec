@@ -1194,9 +1194,9 @@ return verification, retirement and finite private Notice cells.
 The [scoped-formal review](../../coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json)
 keeps four Notice originals and one unchanged strict reception control separate,
 including the original semantic overlap failure and saved line-expectation correction.
-FQN returns isolate formal authority in these originals. Scoped union/relative
-forms, other resolved spellings and wider owners/lifetimes remain partial;
-all exact holds stay unchanged.
+FQN returns isolate formal authority in these originals. Scoped unions are
+extended below; relative forms, other resolved spellings and wider owners/lifetimes
+remain partial, with all exact holds unchanged.
 
 Nullable `?Alias` FORMALs reuse that same quiet builtin-first declaration proof
 when the ordinary name resolves to exact global `stdClass`. The nullable Param
@@ -1212,9 +1212,32 @@ scalar reception control. Native4 ran once; author and independent source4 plus
 440/218 fixture cuts remain distinct. The old124 pure-view expectations and
 matching class/null proofs are promoted through fresh125 equivalents and static
 composition, without renewing124 execution. The fixed actual and one shared
-production-SL509 load are independently clear. Scoped unions, relative names,
-other resolved classes and wider payloads/owners/lifetimes remain partial;
-all exact holds stay unchanged.
+production-SL509 load are independently clear. Scoped unions are extended below.
+Relative names, other resolved classes and wider payloads/owners/lifetimes remain
+partial, with all exact holds unchanged.
+
+Flat ordered FORMAL unions reuse the same declaration proof for exactly one
+ordinary class name resolving quietly to canonical global `stdClass`. A finite
+member view canonicalizes that class proof and preserves every Identifier, raw
+member order and member/union/Param field and metadata before the existing FQN
+two-through-eight-member folds. The folds retain distinct builtin kinds, one
+Boolean kind and the separate `array` or `iterable` companion paths. Nonempty
+context, actuals and a changed vector keep the old global route disjoint.
+Reception, RETURN verification, frame retirement, private Notice-cell ownership
+and lifetime guards retain their existing rules; RETURN resolution remains
+independent of this FORMAL view.
+The [scoped ordered-formal review](../../coverage/semantics/scoped-ordered-stdclass-formal-producer-reference-notice-review.json)
+keeps native4 once and three Notice originals separate from one unchanged strict
+reception control. Retained source4 and author451 at bb72, corrected peer244 at
+8585 and the first independent whole4+451/244 at f2f65 retain separate identities.
+The original peer fixture/whole failure has zero credit: three weak-conversion
+expectations confused the scheduled conversion with its later result, so only
+that fixture was corrected and rerun. Old124/125 pure-view and matching class/null
+proof promotions use fresh126 equivalents without renewing those campaigns;
+class-only normalized mismatches remain refused. The fixed actual and one shared
+production-SL509 load are independently clear through the cached family tuple.
+Relative names, multi-nominal unions, wider resolved classes and wider payloads/
+owners/lifetimes remain partial; all exact holds stay unchanged.
 
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
