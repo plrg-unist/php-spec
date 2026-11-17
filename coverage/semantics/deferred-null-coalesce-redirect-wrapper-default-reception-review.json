@@ -1,0 +1,162 @@
+{
+  "milestone": "ENUM295 literal-NULL coalesce redirect default reception",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "A folded literal-NULL coalesce selects its actual emitted RHS and preserves NULL/BOOL/signed64 INT/bits64 FLOAT, including negative zero and quiet NaN, before existing private default reception.",
+  "implementation": "One 17-line Module519 certificate requires exact own/left/right occurrences, phase-unsafe CODE(z,false), absent own pool/read, special literal NULL left with matching pool and absent CODE/read/redirect, one proper same-unit FIELD1 false redirect and a recursively certified RHS in the existing finite scalar domain. Declaration, bindings, cache, recipient, state and ownership rules are unchanged.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_compile.c::zend_eval_const_expr ZEND_AST_COALESCE selects the literal-NULL RHS; Zend/zend_ast.c::zend_ast_evaluate_ex copies that RHS without truth conversion. The negative-zero RHS uses unary minus of FLOAT(F), retaining the emitted phase-sensitive F chain.",
+  "author_source": {
+    "revision": "637f37505b9328a86e8cf346d4fc24eb1204db99",
+    "tree": "82f7238380b27c94c21dfc8652f209f04efcf580",
+    "base": "cbb70d4d5795ff20d9752fb39c9cd2e3d71cd4a8"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/source-final-v1.patch",
+    "sha256": "9d7ee7f96dce07a23ea3a03d079a0a783885c16dbf5175148c98272c877af6e3",
+    "bytes": 29973,
+    "files": 8,
+    "added": 307,
+    "removed": 4
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/source-final-v1-manifest.json",
+    "sha256": "5719a860708dcb11aec9d8e9eb2452bb16b4e473edc8310b440b82a408e9f67d",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/native-final.json",
+    "sha256": "5e810732853801af85ae0d086e79cbd7c017e3678a9b6460295e739a1d8e2a81",
+    "fresh_originals": 2,
+    "saved_originals": 0,
+    "native_reexecutions": 0,
+    "stable": true
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/baseline-v1/report.json",
+    "sha256": "7d838fdacc970c877f310c3613c008a16257faab577f29b68c1a26076a9c178f",
+    "revision": "f8c9389cda5e4ac924307273356181382638e717",
+    "expected_unsupported": 1,
+    "source_credit": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/source-v1/report.json",
+    "sha256": "d38c593083769a8092ecd1845c8a09a6b81af246e263c000bedadd249584f668",
+    "revision": "3a8c4d261b0887d19f466fbfcaa6791ae4e07e37",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      41.68232863000594,
+      35.39883485203609
+    ],
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/author-v1/closure-call-protocol-8z_toqgh/report.json",
+    "sha256": "5b3a48e86d4617a972bd7176514d7c5d21324879744ab40add06f04b755077b8",
+    "revision": "a16ff9b143349f572838abf2742c48cd02acf829",
+    "cuts": [
+      166,
+      65,
+      51
+    ],
+    "conditions": 282,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 900,
+    "elapsed_seconds": 129.8748915195465,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "affected_older_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/affected-v1/closure-call-protocol-v4rc884w/report.json",
+    "sha256": "eb500128d48ecef6a9a8481c8484e4e1ff09e94b5ae3080d4dcc7f000df63526",
+    "revision": "a16ff9b143349f572838abf2742c48cd02acf829",
+    "cuts": [
+      13,
+      13
+    ],
+    "selection": "Only old293 boundary row3 and old294 boundary row2: prefix4 plus selected row3 plus setup6 each. Four generated assertions changed; sources, stages and all other checks remain unchanged.",
+    "elapsed_seconds": 40.27856969833374,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_retained": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/peer-v1/closure-call-protocol-713z3pmw/report.json",
+    "sha256": "229849507438a831173f04e1375d8dd8b7170cf97d8bd7486e633f20edd7d7d8",
+    "revision": "c511ec89eb36b8bc713ff1f950a9e15f3324e948",
+    "retained_cuts": [
+      137,
+      36,
+      22,
+      13,
+      13
+    ],
+    "retained_conditions": 221,
+    "initial_whole_conditions": 253,
+    "initial_whole_result": "pass",
+    "weaker_quiet_conditions": 32,
+    "elapsed_seconds": 207.716913462,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_strengthened": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-redirect-wrapper-default-reception-295/peer-quiet-v2/closure-call-protocol-wjtuyyfp/report.json",
+    "sha256": "08ca3c045a50398d8b05786470e02baa482a5fcd37d31e1e5a9b7af2cb62dba4",
+    "revision": "e9176f2d6a5b44a94cea57e4979ffda5f4300264",
+    "conditions": 32,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "elapsed_seconds": 24.61349225,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "correction": "Only the derived handler gained an unexpected-warning echo marker, making EPS events discriminate an unintended callback. All other221 CASE source/stage/checks are statically identical and were retained without rerun; the initial weaker32 remains preserved."
+  },
+  "independent_review": "WHOLE8 FULLCLEAR23 binds all complete posts, author282/affected26 and retained221 plus strengthened32 to final111 d94d462b. ONE actual and SAME saved canonical read are clear; thin metadata uses only the supplied immutable tuple.",
+  "actual_source": {
+    "revision": "07c8d191ee7c2c98a916345ee144070eb7fe4171",
+    "tree": "ed6f72b29ffb08a317c5fe983fdab43b99258f29",
+    "parent": "a55b110d4f92b083d9dcb99cc4ac2280bdc58ea8"
+  },
+  "canonical": {
+    "revision": "cdd8bfc5c3c7ff1ce563a2d4fa759943c1633aa0",
+    "tree": "bddb9d7e75e994302a4f81dab30903824d870c8f"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main85-enum295-output139-v1/report.json",
+    "sha256": "711e96853a3a79a2339a114c2131f960609df3b04a592de0bb3c4f168a83c251",
+    "mode": "production SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "cap": 60,
+    "elapsed_seconds": 16.53148844698444,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main85-enum295-output139-composition-v1/map.json",
+    "sha256": "9d9e8b8e01b6ce8749ad7feecffc712e14aa61125cf66a63d6e16de8cdf7a5b8",
+    "scope": "Exact eight posts: seven literal incoming posts, complete519/old293/old294 parents and three unique Make commands; removing the block restores the full actual parent. Joined14 posts match and foreign207 is retained."
+  },
+  "scope_limits": [
+    "Literal-false shorthand non-NULL results, wider folded leaves, STRING/ARRAY/OBJECT RHS values and broader headers/producers/lifetimes remain partial.",
+    "No full coalesce, default-reception, engine-equivalence or PHP-core closure is claimed."
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Native2 ran once; the two source comparisons reused exactly those original bytes, paths, argv and profile. Author282, affected26, retained221 and strengthened32 are distinct fixture cuts with source0/native0. Baseline Unsupported stays0. There are no failures/timeouts; the weaker initial quiet32 is preserved separately, with no accepted/source/native replay or final whole253 claim."
+}

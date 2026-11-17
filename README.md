@@ -39,6 +39,10 @@ carriers and lifetimes remain partial.
 [Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
 [truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
 
+Literal nonnull STRING coalesce left operands preserve their exact INTERNED header and frozen raw CV offsets with an emitted full-ternary RHS, including falsey "0". Returning Warning handlers retain current/reference-key behavior; wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-string-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+Two emitted ordinary coalesce operands preserve the certified selected INTERNED string header and frozen raw CV key through returning Warnings, including a full-ternary RHS and nonnull empty/"0" strings. Raw-literal RHS proofs and wider lifetime bounds remain. [Review](coverage/semantics/string-offset-runtime-scalar-pair-coalesce-base-initial-raw-leading-key-review.json).
+
 Certified emitted NULL/STRING coalesce left values with a raw literal RHS preserve their nullness-selected INTERNED header and frozen raw CV key through returning Warnings, including empty/"0" nonnull strings. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
 Quiet emitted NULL/STRING coalesce left values admit an exact emitted string-cast RHS, preserving the selected INTERNED header and frozen raw CV offset through returning Warnings. NULL demands the RHS certificate; nonnull STRING skips its deeper facts. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-scalar-coalesce-string-cast-base-initial-raw-leading-key-review.json).
@@ -11661,3 +11665,11 @@ remain required.
 `get_called_class()` through inherited/forwarded methods, source Closure binding,
 captures and handlers. Real stopping frames and explicit builtin Closure wrappers
 preserve their distinct scope, argument priorities and error traces.
+
+Fixed-required ordinary-CV producers admit ordered builtin FORMAL unions of2–8 members containing iterable, preserving exact raw/normalized order, unique builtin/Boolean kinds and pointwise Param/BYREF authority. Explicit nullable-pair exclusions retain existing admission; RETURN/payload/owner/lifetime rules remain. [Review](coverage/semantics/cv-builtin-union-iterable-formal-producer-reference-notice-review.json).
+
+Quiet static USER method selectors admit raw primitive-left coalesces: NULL selects the right bytes, while false, zero and empty String retain their left echo. Exact SOURCE/name-child and measured emitted-root authority preserve existing quiet Get ownership/cleanup; wider forms/lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-primitive-coalesce-tree-quiet-get-review.json).
+
+Literal-NULL coalesce redirects preserve their emitted RHS scalar tags, including quiet NaN and negative zero. Wider folded leaves, owning RHS values, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-null-coalesce-redirect-wrapper-default-reception-review.json).
+
+Quiet fitting signed64 POWER returns pass existing nested handler casts with exact source/fold/read/state/ownership guards. Wider FLOAT results, operands, owners and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-review.json).

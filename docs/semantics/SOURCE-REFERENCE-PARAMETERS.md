@@ -1082,8 +1082,20 @@ remain required. The [formal-union review](../../coverage/semantics/cv-fqn-stdcl
 keeps seven native originals once and separate author/independent source7 with
 942/759 fixture-SL507 cuts distinct from the actual composition and sole joined
 production-SL509 load. Original fixture failure, Unsupported and unrun cuts retain
-zero credit. Other iterable formals, wider class names, Traversable Notice payloads
-and lifetimes remain partial; every exact hold stays unchanged.
+zero credit. Wider class names, Traversable Notice payloads and lifetimes remain
+partial; every exact hold stays unchanged.
+
+Fixed required ordinary-CV formals also admit exact ordered builtin unions of two
+through eight members containing `iterable`. Raw Identifier order/count, unique
+permitted builtins, one Boolean kind and pointwise Param/BYREF authority remain
+required. Explicit normalized exclusions preserve the existing nullable-pair arm;
+the FQN class fold and RETURN/runtime/payload/owner/lifetime rules stay unchanged.
+The [builtin formal-union review](../../coverage/semantics/cv-builtin-union-iterable-formal-producer-reference-notice-review.json)
+keeps native7 once and separate author/independent source7 with891/782 fixture-SL507
+cuts distinct from actual composition and its sole joined production-SL509 load.
+Prelaw front254/271 and first Unsupported/other unrun cuts retain zero source
+credit. Wider headers, actual forms, payloads and lifetimes remain partial; all
+exact holds stay unchanged.
 
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized

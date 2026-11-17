@@ -1665,3 +1665,18 @@ Negative-count handler returns, implicit coercions, wider operations,
 owners/lifetimes and every exact hold remain partial.
 [Integer shift evidence](../../coverage/semantics/output-final-selected-integer-shift-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-shift-cast-chain-return-modulo-error-review.json).
+
+Quiet fitting signed64 INT POWER also composes in those nested casts. Two
+proper PINT children retain source/CODE/terminal-line/folding/read proofs;
+the actual PINT result must preserve quiet NORMAL full-state equality,
+nonownership and the two-cast gate. Six originals assert the inner PINT tag
+before outer casts, including emitted(-2)**63, reusing native6 once.
+Author30/20 and corrected independent147/22 retain private508 SL/source0 cuts.
+Both actual old137/138 POWER2**0 queries are promoted without old campaign replay.
+The first68/69 import-name fixture failure and prior unrun tails retain0;
+only three adapter-import lines changed before affected/unrun checks passed.
+Actual/joined composition and SAME `cdd8bfc5c3c` pass the separate MAIN509
+load in16.531488447 s/source0. FLOAT promotion, negative/deprecated powers,
+implicit operands, wider handlers/owners/lifetimes and every exact hold stay partial.
+[Integer power evidence](../../coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-review.json).
