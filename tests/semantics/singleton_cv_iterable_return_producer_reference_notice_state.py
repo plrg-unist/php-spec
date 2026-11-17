@@ -150,7 +150,7 @@ def controls(case):
         '~' + header + raw + ', ' + signature + '[.RETURNS = [(PTBRANCH ([PTBUILTIN "array"]))]])',
         '~' + header + 'NName (BYTES text_return) metadata_return, ' + signature + ')',
         '~' + header + 'NNameFullyQualified (BYTES text_return) metadata_return, ' + signature + ')',
-        '~' + header + 'NNullableType (' + raw + ') metadata_return, ' + signature + '[.RETURNS = ' + ITERABLE[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]])',
+        header + 'NNullableType (' + raw + ') metadata_return, ' + signature + '[.RETURNS = ' + ITERABLE[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]])',
         '$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
         '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
     for suffix in ('null', 'false'):
@@ -161,7 +161,7 @@ def controls(case):
             if reverse:
                 nodes.reverse()
                 branches.reverse()
-            lines += ['~' + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = [' + ', '.join(branches) + ']])']
+            lines += [('' if suffix == 'null' else '~') + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = [' + ', '.join(branches) + ']])']
     for edit in ('REQUIRED = false', 'VARIADIC = true', 'BYREF = ' + str(not case['formal_byref']).lower(),
                  'TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]'):
         lines += ['~' + header + 'phpType18, ' + signature + '[.PARAMETERS = [psparam[.' + edit + ']]])']

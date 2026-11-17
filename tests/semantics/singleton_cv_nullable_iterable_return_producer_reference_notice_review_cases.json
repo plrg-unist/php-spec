@@ -1,0 +1,90 @@
+[
+  {
+    "id": "nullable-array-formal-nullable-iterable-null-return-private-cell-cow",
+    "namespace": "ReviewNullableIterableReturn96",
+    "formal_kind": "array",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "array",
+      "null"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "source": "<?php\nnamespace ReviewNullableIterableReturn96;\nfunction h($n,$m,$file,$line){global $x;$x=['n'=>23];echo 'H;';return true;}\nfunction make(?array $saved):?iterable{echo 'M:',(int)($saved===null),';';return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$x=null;$copy=$x;set_error_handler('ReviewNullableIterableReturn96\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',(int)($copy===null),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:1;H;F:1;R:41:23:1;C:43:41;D:done:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "null",
+    "source_sha256": "096e34b21d81d1066c862cbcbc9059b6c23232729bf8fe6ee9b6edc72c20404e",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "nullable-array-formal-iterable-return-private-cell-cow",
+      "source_sha256": "b3b55513092ea304a8e3b4b7a4ab70c4527852ece592d69061ff7bbad0c7f98c",
+      "edits": "Fresh namespace and nullable/ordered-null iterable return header; nullable witness returns NULL and its untyped recipient observes NULL before replacing its private cell with an array."
+    }
+  },
+  {
+    "id": "union-byref-formal-ordered-null-iterable-return-handler-throw-retirement",
+    "namespace": "ReviewUnionIterableReturn96",
+    "formal_kind": "array",
+    "formal_shape": "union",
+    "formal_members": [
+      "array",
+      "false"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "handler_throws": true,
+    "source": "<?php\nnamespace ReviewUnionIterableReturn96;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';throw new \\Exception('stop');}\nfunction make(array|false &$saved):null|iterable{$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x=false;$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewUnionIterableReturn96\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',(int)($copy===false),';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,';';\n",
+    "native_stdout": "A;M:5;H;T:11:23:1;Q:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source_sha256": "aa2c1032dc2a71c49c77fea3debb4492badcb71103c53d5009aac39fb038bf92",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "union-byref-formal-iterable-return-handler-throw-retirement",
+      "source_sha256": "1ba62448d62c86c3a67a8af829700db8f64d1eead5461316ea7a4faf81bfbb9c",
+      "edits": "Fresh namespace and nullable/ordered-null iterable return header; nullable witness returns NULL and its untyped recipient observes NULL before replacing its private cell with an array."
+    }
+  },
+  {
+    "id": "strict-int-formal-receive-error-precedes-ordered-iterable-null-producer-and-notice",
+    "namespace": "ReviewIterableReceivePriority96",
+    "formal_kind": "int",
+    "formal_shape": "singleton",
+    "formal_members": [
+      "int"
+    ],
+    "formal_byref": false,
+    "caller_strict": true,
+    "priority_control": true,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewIterableReceivePriority96;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int $saved):iterable|null{echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewIterableReceivePriority96\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "array",
+    "source_sha256": "c251a06b2cfafdf192141e96cc3789791860f63db6ec63d9190cafe6c20b033b",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "strict-int-formal-receive-error-precedes-iterable-producer-and-notice",
+      "source_sha256": "ade65d1d6e3fa3495f44641ec6ee17f3f2fa4104597066cc9200e6d80e5b78cd",
+      "edits": "Fresh namespace and nullable/ordered-null iterable return header; nullable witness returns NULL and its untyped recipient observes NULL before replacing its private cell with an array."
+    }
+  }
+]
