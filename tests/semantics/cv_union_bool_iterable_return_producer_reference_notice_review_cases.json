@@ -1,0 +1,106 @@
+[
+  {
+    "id": "one-cv-weak-zero-string-bool-iterable-return-false-private-cell",
+    "namespace": "ReviewWeakFalseCvUnionBoolIterableReturn108",
+    "return_members": [
+      "bool",
+      "iterable"
+    ],
+    "value_kind": "bool",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewWeakFalseCvUnionBoolIterableReturn108;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):bOoL|iTeRaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=['n'=>41];return $value;}\n$x='0';$copy=$x;$alias=&$x;set_error_handler('ReviewWeakFalseCvUnionBoolIterableReturn108\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',$copy,';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',$copy,';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:0;C:43:41;D:done:41:0;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "29e3fb298c5d0c58d50a5c839042e99fb90743b536ace2839810d085ab07ab8e",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_float_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-weak-numeric-string-float-iterable-return-and-private-cell",
+      "source_sha256": "98429c6860f05c2fd0ea92d672c844960a9ee9fe421d89552cfed45048472c56",
+      "edits": "Fresh namespace and exact ordered bool/iterable return. Scalar witnesses now return strings0/false under weak typing and observe exact false/true private values; second source uses required string formal and removes strict_types. Array witness preserves two ordinary CV positions, nullable-union BYREF formal and real handler-throw retirement."
+    },
+    "cv_arity": 1,
+    "bool_result": false,
+    "input_text": "0"
+  },
+  {
+    "id": "two-cv-weak-nonempty-string-iterable-bool-return-true-private-cell",
+    "namespace": "ReviewWeakTrueCvUnionBoolIterableReturn108",
+    "return_members": [
+      "iterable",
+      "bool"
+    ],
+    "value_kind": "bool",
+    "formal_kind": "string",
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 9,
+    "source": "<?php\nnamespace ReviewWeakTrueCvUnionBoolIterableReturn108;\nfunction h($n,$m,$file,$line){global $stamp,$x;$stamp=13;$x='new';echo 'H:',$line,';';return true;}\nfunction make(sTrInG $saved,int $stamp):iTeRaBlE|bOoL{echo 'M:',$stamp,';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===true),';';$value=['n'=>41];return $value;}\n$stamp=7;$x='false';$copy=$x;$alias=&$x;set_error_handler('ReviewWeakTrueCvUnionBoolIterableReturn108\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x,':',$alias,':',$copy,';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',$copy,';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;M:7;H:8;F:1;R:41:new:new:false;C:43:41;D:done:41:false;Z:13;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f6349bcda07fd5bf2ce3de0f1e5457760f3dad0bee2d3f54b17de257f7067b27",
+    "cv_arity": 2,
+    "callee_strict": false,
+    "formal_members": [
+      "string"
+    ],
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_float_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "two-cv-strict-int-iterable-float-return-widening-and-private-cell",
+      "source_sha256": "5d218e098287a3ccd8620e3b792cac53867f07f4c26b1cb416555a834a939523",
+      "edits": "Fresh namespace and exact ordered bool/iterable return. Scalar witnesses now return strings0/false under weak typing and observe exact false/true private values; second source uses required string formal and removes strict_types. Array witness preserves two ordinary CV positions, nullable-union BYREF formal and real handler-throw retirement."
+    },
+    "bool_result": true,
+    "input_text": "false"
+  },
+  {
+    "id": "two-cv-array-byref-bool-iterable-return-handler-throw-retirement",
+    "namespace": "ReviewThrowCvUnionBoolIterableReturn108",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "bool",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewThrowCvUnionBoolIterableReturn108;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved,int $stamp):bOoL|iTeRaBlE{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewThrowCvUnionBoolIterableReturn108\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "050255aa56cedf68572cc94792afac97fed455b2a733b73a4250603e9f338490",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_float_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "two-cv-array-byref-float-iterable-return-handler-throw-retirement",
+      "source_sha256": "6f6592aa4409d14a3941dbc459840dccda2f57fccaae912fe50d4c46128b7396",
+      "edits": "Fresh namespace and exact ordered bool/iterable return. Scalar witnesses now return strings0/false under weak typing and observe exact false/true private values; second source uses required string formal and removes strict_types. Array witness preserves two ordinary CV positions, nullable-union BYREF formal and real handler-throw retirement."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8,
+    "cv_arity": 2
+  }
+]
