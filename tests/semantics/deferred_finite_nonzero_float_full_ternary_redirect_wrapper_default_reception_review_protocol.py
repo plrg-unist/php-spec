@@ -70,8 +70,8 @@ variants = [
     ('zero', 'NScalarFloat (FLOAT "0000000000000000") eps', 'PFLOAT 0', 'eps'),
     ('negative_zero', 'NScalarFloat (FLOAT "8000000000000000") eps', 'PFLOAT 9223372036854775808', 'eps'),
     ('nan', 'NScalarFloat (FLOAT "7ff8000000000000") eps', 'PFLOAT 9221120237041090560', 'eps'),
-    ('positive_infinity', 'NScalarFloat (FLOAT "7ff0000000000000") eps', 'PFLOAT 9218868437227405312', 'eps'),
-    ('negative_infinity', 'NScalarFloat (FLOAT "fff0000000000000") eps', 'PFLOAT 18442240474082181120', 'eps'),
+    ('positive_infinity', 'NScalarFloat (FLOAT "7ff0000000000000") eps', 'PFLOAT 9218868437227405312', '(PINT 0)'),
+    ('negative_infinity', 'NScalarFloat (FLOAT "fff0000000000000") eps', 'PFLOAT 18442240474082181120', '(PINT 0)'),
     ('integer', 'NScalarInt (INTEGER 1) eps', 'PINT 1', '(PINT 0)'),
     ('boolean', 'NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps', 'PBOOL true', '(PINT 0)'),
 ]
