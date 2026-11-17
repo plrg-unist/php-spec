@@ -2754,3 +2754,13 @@ composition and its sole joined production-SL509 load (15.831819022 s, source0)
 are independently clear through the saved immutable tuple. Wider forms and all
 exact holds remain.
 [Independent review](../../coverage/semantics/class-null-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/false unions on that short reference producer retain both raw
+orders, `Class|false` and `false|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier false require the existing singleton class proof and quiet full
+normalization. The defining source/class/property authority and existing owner
+bounds remain. False is an exact literal type: NULL, true and nonfalse scalars
+do not gain weak Boolean conversion. Both raw orders display `Class|false`.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-false-union-parentless-short-reference-get-hook-review.json).
