@@ -1426,6 +1426,18 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if S_child = S[.RESULT = KNOWN pvalue_child]
   -- if $unary_apply(S_child, punary, pvalue_child, z) = S[.RESULT = KNOWN pvalue]
   -- if $value_nodes(pvalue) = eps
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
+  -- if $ob_object_cast_chain_sign_literal(expression_child)
+  -- if z = $expression_line(expression_child)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_child)
+  -- if b_fold = ($type_bytes(pvalue_child) = [105,110,116])
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBooleanNot expression_child metadata, z, b_fold)
+  -- if S_not = $boolean_result(S[.RESULT = KNOWN pvalue_child], true, z)
+  -- if S_not.RESULT = KNOWN (PBOOL b_result)
+  -- if S_not = S[.RESULT = KNOWN (PBOOL b_result)]
+  -- if (b_fold /\ $compiled_read(S, porigin) = (PBOOL b_result)) \/ (~b_fold /\ $compiled_read(S, porigin) = eps)
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $ob_object_cast_chain_kind(expression)
   -- if $pfshape(expression) = PFCAST pcast expression_child
