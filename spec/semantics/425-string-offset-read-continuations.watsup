@@ -804,12 +804,15 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_right) = (NScalarString (BYTES text_right) metadata_right)
   -- if $compiled_read(S, porigin_right) = (PSTRING n_right*)
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
-;; Emitted coalesce operands retain the selected immutable string-cast header.
+;; Emitted coalesce operands retain the selected certified immutable header.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left (NExprCastString expression_right metadata_right) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $string_read_literal_bytes(expression_right) = eps
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $compiled_read(S, porigin_left) = eps
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_read(S, porigin_right) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; Literal NULL selects a certified emitted immutable string result.
