@@ -1,0 +1,83 @@
+[
+  {
+    "id": "global-ordered-plain-stdclass-null-named-byref-object-lifecycle",
+    "source": "<?php\n// Global declaration context for the plain stdClass return.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\sTdClAsS &$saved):STDCLASS|null{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "ad50722db253f02f05d84503f69a76dba4e7b31cd15d254b6d72987f919ac3a1",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-nullable-plain-stdclass-named-byref-object-lifecycle",
+      "source_sha256": "b485476f997a608f7869ba31b7e8510c796715ff84cb3d2a3b54366480027591",
+      "edits": "Fresh exact ordered plain stdClass/null RETURN union only; source lines, supported formals, bodies, named/private-cell/caller-alias and strict return-priority observations unchanged."
+    },
+    "namespace": "",
+    "class_return": "STDCLASS",
+    "role": "object",
+    "scope_controls": [
+      {
+        "id": "namespaced-imported-plain-ordered-null-stdclass-return",
+        "namespace": "ReviewNullablePlainScope116",
+        "source": "<?php\nnamespace ReviewNullablePlainScope116;\nuse \\stdClass;\nfunction make(\\sTdClAsS &$saved):stdClass|null{return $saved;}\n",
+        "source_sha256": "4af80bb4c282f929daec409fe8872ab028deda108849ff1fbb3acee1fef9e7f2",
+        "source_agreements": 0
+      },
+      {
+        "id": "global-explicit-import-plain-ordered-null-stdclass-return",
+        "namespace": "",
+        "source": "<?php\nuse \\stdClass as stdClass;\nfunction make(\\sTdClAsS &$saved):stdClass|null{return $saved;}\n",
+        "source_sha256": "d568489c183cdfa402749b6757e96ec403cdea1d3b9d59359a926815c8aedc1c",
+        "source_agreements": 0
+      }
+    ],
+    "return_members": [
+      "class",
+      "null"
+    ]
+  },
+  {
+    "id": "global-ordered-plain-stdclass-null-named-null-private-cell-rebinding",
+    "source": "<?php declare(strict_types=1);\n// Global nullable-return declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make($saved):null|stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "319cb43f90d62f322a0ea9dae5bb3e6a0298ad090d5c0ba3bee86414ef677974",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_return": "stdClass",
+    "namespace": "",
+    "role": "null",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-nullable-plain-stdclass-named-null-private-cell-rebinding",
+      "source_sha256": "ab8b782b8f36de0fddf61c7c56cabb948e71ad0a5d29b970036f11959ca9cd5b",
+      "edits": "Fresh exact ordered plain stdClass/null RETURN union only; source lines, supported formals, bodies, named/private-cell/caller-alias and strict return-priority observations unchanged."
+    },
+    "return_members": [
+      "null",
+      "class"
+    ]
+  },
+  {
+    "id": "global-ordered-plain-stdclass-null-strict-return-error-before-notice",
+    "source": "<?php declare(strict_types=1);\n// Global declaration context for the plain stdClass return.\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):stdClass|null{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "8bf7ee5d39964bd13d9bba3842681039395d227573078d3e0bfe53f046eee602",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-nullable-plain-stdclass-strict-return-error-before-notice",
+      "source_sha256": "ecc0a546b60c701cbe50f7a94bad2a4454e7ea7bb76fa2126dceddbbaa09f5a9",
+      "edits": "Fresh exact ordered plain stdClass/null RETURN union only; source lines, supported formals, bodies, named/private-cell/caller-alias and strict return-priority observations unchanged."
+    },
+    "namespace": "",
+    "class_return": "stdClass",
+    "role": "priority",
+    "return_members": [
+      "class",
+      "null"
+    ]
+  }
+]

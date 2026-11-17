@@ -192,7 +192,7 @@ def controls(case):
             lines.append('~' + proof.replace(raw, raw_nullable(spelling, tag)))
         bare = objects.prior.raw_class(spelling, 'NName').replace('metadata_function', 'metadata_return')
         union = 'NUnionType (SEQUENCE ([' + bare + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable'
-        lines += ['~' + proof.replace(raw, bare), '~' + proof.replace(raw, union)]
+        lines += ['~' + proof.replace(raw, bare), proof.replace(raw, union)]
     for spelling in ('Other', 'Other\\stdClass', '\\stdClass', 'stdClass\x00'):
         lines.append('~' + header + raw_nullable(spelling) + ', ' + signature + '[.RETURNS = ' + nullable(spelling) + '])')
     for stage in ('return', 'notice'):
