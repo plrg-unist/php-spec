@@ -1782,3 +1782,14 @@ separate cuts; the original external setup failure stays0. Actualc3b43a9e/SAME53
 and the sole joined SL50816.440659384s/source0 are independently clear through
 one immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-short-circuit-string-cast-shorthand-base-initial-raw-leading-key-review.json).
+
+Certified quiet emitted BOOL/INT/FLOAT/STRING conditions select the exact literal
+INTERNED full-ternary base and preserve frozen raw CV keys through returning
+Warnings. Root/condition read-eps, NORMAL typed VALUE and quiet whole-state truth
+retain the existing source/CODE/precision and both literal-arm header authority;
+runtime helpers and ownership/demand bounds remain unchanged. Native12 once/source12,
+prelaw396v2, author225/97 and independent287/165 retain separate accepted cuts.
+Actualcbdf1276/SAMEb1344f07 and the sole joined SL50816.742874468s/source0 are
+independently clear through one immutable tuple. Wider producers, carriers,
+contexts, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-scalar-truth-base-initial-raw-leading-key-review.json).

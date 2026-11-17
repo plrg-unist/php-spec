@@ -1,0 +1,158 @@
+{
+  "milestone": "ENUM291 emitted NULL strict identity wrapper defaults",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "Two emitted IDENTICAL/NOTIDENTICAL arms preserve raw Boolean results with at least one actual NULL operand and both operands restricted to NULL/BOOL/exact signed64 INT/bits64 FLOAT. Both-NULL emitted selection, signed zero and quiet NaN remain distinct from weak comparison and Boolean truth.",
+  "implementation": "Module519 compares raw pvalue equality or its complement only after the original left-to-right recursive value demands. Own and both-child source, phase/CODE/pool/read/redirect guards, declaration ENV, Shared cache and private recipient authority remain unchanged. The existing ten BOOL/BOOL and BOOL/numeric identity arms are not renewed.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_operators.c::zend_is_identical (2479): different tags reject before numeric comparison; NULL is identical to NULL. is_not_identical_function complements that result. No truth conversion or new numeric kernel is introduced.",
+  "author_source": {
+    "revision": "1ce1751aaa87877e3bda33ab861f4601a862c6a8",
+    "tree": "c095981de32ca5f8846603e5a1ba695eb87cb086",
+    "base": "fee6a72d5bee5fabad6eb7b85271b643f7017a1a"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/source-final-v1.patch",
+    "sha256": "39a06c710a46f8636dac70b90a3bad302b58da031b09a9fbcd8ebba758457997",
+    "bytes": 30113,
+    "files": 7,
+    "added": 329,
+    "removed": 1
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/source-final-v1-manifest.json",
+    "sha256": "f2bcd1c3ee2e5e3b9413a552d21ebeb9ecae0c8b0373503fc28ff69a63ff8aa9",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/native-final.json",
+    "sha256": "ffea458d6da4c8af1820d292bd7632e9131e8ee5527fb47e503dd097e052fdfc",
+    "fresh_originals": 2,
+    "replays": 0,
+    "stable": true
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/baseline-v1/report.json",
+    "sha256": "43c3a5e2c79d961d64a70a21a6171787fa9b0e3bcc0b71748ba53b13e393133d",
+    "revision": "fee6a72d5bee5fabad6eb7b85271b643f7017a1a",
+    "expected_unsupported": 1,
+    "source_credit": 0
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/source-v1/report.json",
+    "sha256": "181f87e8899b479554fcd0d9cf3e6c3184f2e0963653a2c1504dab4a66058cd6",
+    "revision": "9b8906e7a2311cea67eb5dcf20e56be0b47640d4",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      73.29122595791705,
+      51.526025428203866
+    ],
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/author-v1/closure-call-protocol-vt0tuvvx/report.json",
+    "sha256": "d4c3994ee137944fcca424c6777a6a52fa43497bfce65ebe4b4c206c04b2ae73",
+    "revision": "b9211303a936a1768667583484d9300b549bc7b9",
+    "body": 147,
+    "setup": 6,
+    "conditions": 153,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "source_credit": 0
+  },
+  "affected_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/affected-v1/closure-call-protocol-91q44myw/report.json",
+    "sha256": "e71f040925fd652dc7380ef4530020e64f30143e4ae6f663b5ec415a7648eda9",
+    "revision": "1ce1751aaa87877e3bda33ab861f4601a862c6a8",
+    "cut": "Only old288 index2 expectation changes; its group28 passes separately.",
+    "conditions": 28,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-identity-wrapper-default-reception-291/peer-v1/closure-call-protocol-ijg_mikf/report.json",
+    "sha256": "d180f1c1c7195810866e57cebb095454551349b5a8da22ffb632b891972fa375",
+    "revision": "ac3b095119a9a565610865dd5057459ec89d89bf",
+    "tree": "b60182103a4964286db3f1110ab1548bcfc5824f",
+    "cuts": [
+      "raw206",
+      "named64",
+      "quiet36",
+      "boundary22",
+      "sole affected28"
+    ],
+    "fresh_conditions": 328,
+    "conditions": 356,
+    "body": 326,
+    "setup": 30,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "source_credit": 0,
+    "native_reexecutions": 0
+  },
+  "independent_review": {
+    "reviewer": "recover23_enum_null_comparison_review",
+    "whole_source7": "FULLCLEAR: exact list, complete postimages, reverse and filtered diff checks; source6 unchanged plus independent134-line fixture.",
+    "actual_and_same_saved_read": "CLEAR once; author uses only the supplied immutable tuple"
+  },
+  "actual_source": {
+    "revision": "0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e",
+    "tree": "a7965ccc7f8f14e46093f06b26985b6ea434349f",
+    "base": "7586f120bbef8e75490bec0d86179c6c6fc3ddcc",
+    "files": 7
+  },
+  "canonical": {
+    "revision": "0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e",
+    "tree": "a7965ccc7f8f14e46093f06b26985b6ea434349f"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main81-comp323-enum291-joined-v1/report.json",
+    "sha256": "1ce98372c79ddf6a1c36359881bae61a2c5b17994f63244a460e9c27e604a26c",
+    "mode": "SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "cap": 60,
+    "elapsed_seconds": 16.58198058907874,
+    "exit": 0,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main81-enum291-composition-v1/composition.json",
+    "sha256": "ef27d1c6c721533d06fce763f6bfe9f666b27cb7d0034fe7250ba6337ad0165d",
+    "scope": "Peer sole saved read confirms six nonMake literal incoming1ce full postimages, complete519/old288 test parents equal fee6, four new files literal, and exact Make3 before the unique complete callable_returns.py recipe."
+  },
+  "joined_composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main81-comp323-enum291-joined-composition-v1/composition.json",
+    "sha256": "d5153c73d49e9a23dc4f47c3e5a7c8ff1037b7cf2140dda72cea6f339bcf7c82",
+    "scope": "Same own7 across the joined24, with disjoint382/519 and Make9/3 changes. Private source/fixture cuts retain508 modules; joined load509 has source0 and renews no execution evidence."
+  },
+  "scope_limits": [
+    "STRING/ARRAY/OBJECT operands and producers",
+    "Wider contexts, owners and lifetimes",
+    "No full operator, default-reception or PHP-core closure"
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Native2 once and source2 retain their exact original cuts. Fixture conditions are source0/native0; baseline Unsupported1 has zero agreement. No failed, timed-out, incomplete or unrun execution is counted. Thin metadata uses only supplied actual/canonical tuples without canonical reread, source/native/fixture replay or accepted evidence renewal."
+}

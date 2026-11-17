@@ -1,0 +1,217 @@
+{
+  "milestone": "COMP323",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless sole backed short reference Get admits ordinary NName/NNameRelative class singleton and Nullable headers. Exact normalized class bytes and ordered class/null branches require quiet PTOK under the defining namespace/imports. Runtime authority includes the canonical source unit, actual class origin/header/name/file/line and direct property origin/positive line. Import prefixes match case-insensitively while their suffix bytes remain exact; existing nominal runtime matching remains case-insensitive.",
+  "semantic_delta": "382 adds a scoped pure header check, uses135 property context at compilation and reconstructs the defining context from canonical source through21/382 at runtime. Current variable bindings and unchecked function ENV supply no declaration authority. Existing header arms, body/CODE/line, type-source, reference/copy/detach and ownership rules remain.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "engine_routes": [
+    "Zend/zend_compile.c:zend_compile_single_typename",
+    "Zend/zend_compile.c:zend_resolve_class_name",
+    "Zend/zend_compile.c:zend_is_confusable_type",
+    "Zend/zend_compile.c:zend_compile_prop_decl",
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval"
+  ],
+  "raw_evidence_root": "../php-spec-evidence-archive/comp323",
+  "source_ready": {
+    "commit": "3e712cdef1c0cf37b4361e2e2f965e273d1af294",
+    "tree": "c784c2f50dda577bb5bdc95d6b0927c34bbf835b",
+    "parent_for_shared_deltas": "5844ebd67e076201ab5270353e03d87c0fa951a7",
+    "exact_source_paths": 18,
+    "make_additions": 9,
+    "manifests": [
+      {
+        "path": "source-ready.json",
+        "sha256": "be533f1101816a0d7129b1096e1f1ad5947766f7ff4e863890c99af384400413"
+      },
+      {
+        "path": "source-ready-header-correction.json",
+        "sha256": "ddae9e9e43a13a9455d892a64e566a694b9c26f541af1b2dea4e6ece2fa42b32"
+      },
+      {
+        "path": "source-ready-state-correction.json",
+        "sha256": "ff154ca94921b53a13a8e40027dfe82ba94b191e429fa2a80e15db790b671f9b"
+      }
+    ],
+    "author_whole_ready": true,
+    "independent_whole_fullclear": true,
+    "independent_whole": {
+      "report": "independent-whole.json",
+      "sha256": "827490692d69c4c1c71b085db6344d6c486bf7de48b22b94dfa15088f1e0c1fb"
+    }
+  },
+  "oracle": {
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json with include_path=.:",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC"
+    },
+    "native_originals_once": 6,
+    "native_reports": [
+      {
+        "report": "weak-native-once/report.json",
+        "sha256": "71de2157f8e846b8ba73899ce445e6027515ba575c7951698b4178ed916acfe7",
+        "originals": 3
+      },
+      {
+        "report": "strict-native-once/report.json",
+        "sha256": "b1f2802ed1ef9f4db445d6380457ca81a4830e28a091bf0b64f4371cb6a17660",
+        "originals": 3
+      }
+    ]
+  },
+  "private_validation": {
+    "modules": 508,
+    "source_cuts": {
+      "weak": {
+        "report": "weak-source-scoped-binding-corrected/report.json",
+        "sha256": "69482051e0022af33e64efcddf4ac9cadfd610dcdc6bdb984a25b0a975dd5db0",
+        "normal": 3,
+        "new_native": 0,
+        "reused_native": 3,
+        "tested_revision": "8824e92fcaa92d0a54f6dc9f507821093682abb4",
+        "final_guard_bridge": "positive-property-line-bridge.json"
+      },
+      "strict": {
+        "report": "strict-source-scoped/report.json",
+        "sha256": "bf62f50e1142693c381d1d0063daa2c86d0ec1dc455ff275c62ea00934b4f3e8",
+        "head": "3a6f83d6e611ec0489dcd8fdca269f01f36f166a",
+        "normal": 3,
+        "new_native": 0,
+        "reused_native": 3,
+        "elapsed_seconds": [
+          94.09395027160645,
+          103.53674244880676,
+          96.58540678024292
+        ]
+      }
+    },
+    "author_fixture_premises": [
+      273,
+      284,
+      285
+    ],
+    "independent_fixture_premises": [
+      149,
+      141,
+      141,
+      141
+    ],
+    "fixture_mode": "fixture-SL",
+    "fixture_source_agreement_credit": 0,
+    "fixture_counts_are_separate": true,
+    "scope": "Defining/consumer namespace and import shadows, exact prefix/suffix case, Nullable/order/shape/diagnostic/scope exclusions, actual canonical source and class/property line authority, function/variable ENV independence, real type sources and aliases, copied objects, refused writes, source detach, physical retirement and zero/one-step resumption. Duplicated canonical occurrences preserve lookups but fail authentication; raw nonpositive property metadata keeps an authentic class header while its filtered line0 refuses the declaration.",
+    "all_passed_stable_quiet_reaped": true,
+    "caps_seconds": {
+      "native": 15,
+      "model_outer": 140,
+      "model_inner": 120,
+      "headers": 60,
+      "state": 360
+    }
+  },
+  "compatibility": {
+    "positive_property_line_bridge": {
+      "report": "positive-property-line-bridge.json",
+      "sha256": "9eaa4b019a29ebcd39a63897d8ca9699519a22bd18e9668fe97c1c2d4bccbe0b"
+    },
+    "global_generator_bridge": {
+      "report": "author-global-generator-bridge.json",
+      "sha256": "733714ebcc1ea1b37d63f34c4cd60c6ec42cece87c3052071461d83742b228ab"
+    },
+    "guard_equivalence": "source_line returns0 or positive. b764 rewrites the earlier positive-descriptor/absolute-line equality into a positive-accessor/equality predicate, equivalent over that entire domain. No acceptance hole was repaired. Earlier author cuts retain their identities; the recorded positive-line bridge is valid. Dropping an unused fixture PREFIX leaves all273 generated premises identical."
+  },
+  "preserved_zero_cuts": [
+    {
+      "report": "weak-source-scoped/report.json",
+      "sha256": "8d794191fc102e49da4f2996b9f60d7bc0cc1fc55072d96c04af88ab0a4cb03b",
+      "classification": "compiler binding runner failure before first comparison",
+      "then_unrun": 2,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-scoped-headers/report.json",
+      "sha256": "9bfdb7ac55cb3d293311cb532d4772435878e6d23a530003287a2d64a4c87d83",
+      "classification": "fixture syntax before premises",
+      "then_unrun": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-scoped-headers-eps-corrected/report.json",
+      "sha256": "9de35e38c06347f1c1187ec5a5fd5bc1d8275a69a79c09aa725539582b4ae6c3",
+      "classification": "fixture syntax before premises",
+      "then_unrun": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-scoped-local-state/report.json",
+      "sha256": "172912a61ac837205c2194325668a2b8c4fd0324af4d248e4a863b7425a290f7",
+      "classification": "incorrect expected filtered source line in generated140 fixture",
+      "then_unrun": 2,
+      "source_agreement_credit": 0
+    }
+  ],
+  "prelaw": {
+    "expected_unsupported": 6,
+    "source_agreement_credit": 0,
+    "reports": [
+      {
+        "report": "weak-prelaw/report.json",
+        "sha256": "0f0c55663de6a157066cf05ba6778ffe97691691c6c7e49f4d300f7c9c5fdf56"
+      },
+      {
+        "report": "strict-prelaw/report.json",
+        "sha256": "6e830f48791580baf32535ed66da1ee57a8674370e193b191c723096254dda2d"
+      }
+    ]
+  },
+  "timeouts": 0,
+  "incomplete_processes": 0,
+  "actual_and_canonical": {
+    "immutable_tuple": "independent-actual-same.json",
+    "sha256": "d8f035ce4dec89a2ad9ee7e57248205ed3e8cb5ae04f138662509d2eeb4f6487",
+    "actual_placement": {
+      "commit": "7586f120bbef8e75490bec0d86179c6c6fc3ddcc",
+      "tree": "3b3798900e2dd69b7bc7d2be61528e5401d793f1",
+      "parent": "1a62cd725ed1b4e0f6501a8f6f896bfb36e7af36"
+    },
+    "sole_canonical_join": {
+      "commit": "0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e",
+      "tree": "a7965ccc7f8f14e46093f06b26985b6ea434349f",
+      "parent": "7586f120bbef8e75490bec0d86179c6c6fc3ddcc",
+      "foreign_family": "ENUM291",
+      "joined_paths": 24,
+      "own_18_preserved": true
+    },
+    "canonical": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main81-comp323-enum291-joined-v1/report.json",
+      "sha256": "1ce98372c79ddf6a1c36359881bae61a2c5b17994f63244a460e9c27e604a26c",
+      "tested_revision": "0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e",
+      "revision_after": "0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e",
+      "mode": "production_SL",
+      "module_count": 509,
+      "ordered_arguments": 512,
+      "watched_inputs": 513,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.58198058907874,
+      "exit": 0,
+      "timeout": false,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "reported_stable": true,
+      "reaped": true,
+      "passed": true,
+      "source_credit": 0
+    },
+    "independently_clear": true,
+    "canonical_reads": 1,
+    "new_canonical_evaluations_by_peer": 0,
+    "note": "The sole production-SL509 load is at joined0823d7b3, not the earlier7586 placement. Private508 source/fixture cuts and joined509 source0 remain distinct."
+  },
+  "remaining": "Class-bearing raw unions, raw scope keywords and whole-name underscore, warningful headers, wider owners/payloads/consumers and lifetimes remain partial. The resolver-only relative-keyword concern in16 is unconfirmed; no16 edit, native probe or static-error coverage claim. No engine bug or intentional divergence was found in this slice.",
+  "holds": "All exact standing holds, reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged; globals are excluded."
+}

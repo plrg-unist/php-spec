@@ -16,13 +16,15 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover phase-safe NULL defaults, quiet Boolean and
-zero-spaceship shorthand string bases, &&/and/||/or/xor static method selectors
-and signed64 integer arithmetic in nested output-handler casts. Literal NULL
-intermediate string-offset unset preserves Warning-handler return or throw
-before the nested Error. Exact source, type, cache and ownership bounds remain.
-The [current checkpoint](PROGRESS.md) separates source agreements, fixture
-checks and combined production loads; complete core remains unfinished.
+Recent reviewed extensions cover phase-safe NULL defaults and strict identity,
+quiet scalar full-ternary and Boolean/zero-spaceship shorthand string bases,
+Boolean static method selectors and nested output-handler arithmetic. Canonical
+defining scopes authenticate quiet class reference Get headers; completed CV
+producers retain ordered iterable/string returns. Literal NULL intermediate
+string-offset unset preserves Warning-handler return or throw before the nested
+Error. Exact source, type, cache and ownership bounds remain. The
+[current checkpoint](PROGRESS.md) separates source agreements, fixture checks
+and combined production loads; complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
 `PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,
 namespace fallback and typed defaults. Other startup values remain partial.

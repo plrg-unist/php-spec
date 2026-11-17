@@ -8,6 +8,14 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Own public parentless sole short reference Get now admits quiet ordinary and namespace-relative class singleton/nullable headers through canonical defining namespace/imports and actual source/class/property/file/line authority. Source6/native6 once and separate author273/284/285 plus peer149/141/141/141 cuts keep private508 identities; actual7586/sole joined0823 production-SL509 source0 remains separate. Class-bearing raw unions, scope keywords, warningful headers and wider owners/lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/scoped-class-parentless-short-reference-get-hook-review.json).
+
+Certified quiet emitted BOOL/INT/FLOAT/STRING conditions select exact literal INTERNED full-ternary bases and preserve frozen raw CV keys through returning Warnings. Native12 once/source12, prelaw396v2, author225/97 and independent287/165 retain separate accepted cuts. Actualcbdf1276/SAMEb1344f07 and sole joined SL50816.742874468s/source0 are independently clear through one immutable tuple. Wider producers, carriers, contexts and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/string-offset-runtime-scalar-truth-base-initial-raw-leading-key-review.json).
+
+Deferred NULL strict identity and complement preserve typed Boolean results before private reception, with both operands demanded in original order. Native2 once/source2, author153, sole affected28 and independent356 retain their separate508-module cuts. Actual=SAME0823d7b3/solejoined1ce98372 SL50916.581980589s/source0 are independently clear. Wider operands, contexts and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/deferred-null-identity-wrapper-default-reception-review.json).
+
+Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|string/string|iterable returns, preserving raw/normalized order, unchanged formal reception, actual return verification, frame retirement and finite private Notice cells. Wider headers, payloads and lifetimes remain partial. Native4+3 once/seven originals and separate author/independent source7 with494(317+177)/384(262+122) fixture-SL507 cuts retain their identities. Actual/SAMEb1344f074 and soleaa660f98 productionSL50816.742874468s/source0 are independently clear; earlier failure/Unsupported remain0. Exact holds stay unchanged. [Review](coverage/semantics/cv-union-string-iterable-return-producer-reference-notice-review.json).
+
 Quiet emitted zero SPACESHIP shorthand conditions preserve exact INTERNED emitted CASTSTRING fallbacks and frozen raw CV keys through returning Warnings. Native2 once/source2, prelaw72, author332/242-derived, independent391/291-derived and focused48 retain separate first-pass cuts; folded and emitted UnaryMinus retain distinct child demands. Actual/SAMEfde250339c and its sole joined SL50816.732132342s/source0 are independently clear. Wider conditions, carriers, producers and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/string-offset-runtime-spaceship-string-cast-shorthand-base-initial-raw-leading-key-review.json).
 
 Quiet emitted false Boolean/keyword AND/OR shorthand conditions preserve exact INTERNED emitted CASTSTRING fallbacks and frozen raw CV keys through returning Warnings. Native4 once/source4, prelaw136, author328/238-derived and independent437/337-derived retain separate cuts; the original external setup failure stays0. Actualc3b43a9e/SAME53782e75 and the sole joined SL50816.440659384s/source0 are independently clear. Skipped RHS deeper facts stay undemanded while immediate source identity remains; wider expressions, carriers and lifetimes remain partial, with exact holds unchanged. [Review](coverage/semantics/string-offset-runtime-short-circuit-string-cast-shorthand-base-initial-raw-leading-key-review.json).
@@ -1036,13 +1044,13 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest integrated source cut is `0823d7b3c9b59771d89b1f1fd252ac8dcaa9c52e`
-(tree `a7965ccc7f8f14e46093f06b26985b6ea434349f`). Its sole 509-module production
-SL load passes in 16.58198058907874 s under the unchanged 60-second cap, with
+The latest integrated source cut is `93416bc48465bcc1c0c96042d7f03dd231ef02af`
+(tree `1e4fc45a8ada0a2b4e5fe58befdccf552278a15a`). Its sole 509-module production
+SL load passes in 16.591031377902254 s under the unchanged 60-second cap, with
 512 ordered arguments, 513 stable watched inputs, `true` plus LF, quiet stderr
 and fully reaped processes, adding zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main81-comp323-enum291-joined-v1/report.json`
-(SHA-256 `1ce98372c79ddf6a1c36359881bae61a2c5b17994f63244a460e9c27e604a26c`).
+`../php-spec-evidence-archive/resumed-main-20261112/main81-output136-v1/report.json`
+(SHA-256 `242b380a06e73a003ace02c38f95b2dd66ee6e5dfcaf2e1bdf9dcb5020f14383`).
 Separate source, fixture, composition and load cuts retain their original identities
 in family records. Metadata changes renew no execution credit; inventory statuses
 remain169/306 with zero closed constructors and one closed runtime obligation.

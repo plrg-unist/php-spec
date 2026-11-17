@@ -2726,3 +2726,12 @@ match without case sensitivity while the remaining class suffix keeps its
 original bytes. Raw scope keywords, whole-name underscore, warningful headers,
 class-bearing unions and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/scoped-class-parentless-short-reference-get-hook-review.json).
+
+COMP323 retains six originals with native observations once: weak source3 and
+final strict source3 keep their private508 identities and compatibility bridges.
+Separate author273/284/285 and independent149/141/141/141 fixtures retain source0.
+Original binding/parser/expected-observation failures and then-unrun cases stay0;
+only affected fixtures were corrected. The positive-line predicate rewrite is
+equivalent because the source-line accessor filters nonpositive metadata.
+Actual `7586f120b` and the sole joined `0823d7b3c` production-SL509 load
+(16.581980589 s, source0) are independently clear. All exact holds remain.
