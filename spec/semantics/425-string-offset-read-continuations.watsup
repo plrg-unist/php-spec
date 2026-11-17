@@ -11,6 +11,9 @@ dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
 dec $string_read_raw_leading(pvalue, pvalue) : int?
 dec $string_read_raw_known_base(pstate, porigin, pvalue) : bool
+dec $string_read_allocated_value(pstate, porigin, pvalue) : bool
+dec $string_read_allocated_base(pstate, porigin, pvalue) : bool
+dec $string_read_allocated_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_raw_capture(pstate, poperand, pvalue) : (pvalue, nat?)?
 dec $string_read_raw_saved(pstate, pstringread) : int?
 dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
@@ -853,6 +856,103 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
   -- if n_bytes* = n_right*
 def $string_read_raw_known_base(S, porigin, pvalue) = false -- otherwise
+;; Allocating producers replay from their own registry prefix, not the later
+;; state. The selected KNOWN operand owns the temporary; registry rows do not.
+def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
+  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprCastString expression_child metadata)
+  -- if expression_child = NScalarInt (INTEGER i) metadata_child
+  -- if $long_range(i) /\ $(i < 0 \/ i > 9)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_child) = (PINT i)
+  -- if n_bytes* = $decimal_integer(i)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
+  -- if $c_string(n_bytes*) = n_bytes*
+  -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
+  -- if $cast_apply(S_before, CASTSTRING, PINT i, z_line) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
+;; A literal RHS keeps its actual constant flag, including an empty literal.
+def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
+  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
+  -- if $(n_identity > 0)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if expression_left = NExprCastString expression_child metadata_left
+  -- if expression_right = NScalarString (BYTES text_right) metadata_right
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if n_left_identity = $nabs($(n_identity - 1))
+  -- if $(n_left_identity < |S.STRINGDATA|)
+  -- if n_left* = S.STRINGDATA[n_left_identity]
+  -- if pvalue_left = PSTRING_CARRIER (REQUEST_STRING n_left_identity) n_left*
+  -- if $string_read_allocated_value(S, porigin_left, pvalue_left)
+  -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
+  -- if pvalue_right = PSTRING_CARRIER INTERNED_STRING n_right*
+  -- if $concat_constant(S, (porigin_left)) = false
+  -- if $concat_constant(S, (porigin_right)) = true
+  -- if n_bytes* = n_left* ++ n_right*
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
+  -- if $c_string(n_bytes*) = n_bytes*
+  -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
+  -- if $string_concat(S_before, pvalue_left, pvalue_right, false, true) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
+def $string_read_allocated_value(S, porigin, pvalue) = false -- otherwise
+;; A nonnull emitted left temporary passes through COALESCE unchanged. Only
+;; immediate source identity is demanded from its skipped emitted fallback.
+def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $string_read_literal_bytes(expression_right) = eps
+  -- if $compiled_read(S, porigin_right) = eps
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $string_read_allocated_value(S[.COMPLETION = NORMAL], porigin_left, pvalue)
+def $string_read_allocated_base(S, porigin, pvalue) = false -- otherwise
+def $string_read_allocated_leading(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_base*, PSTRING n_key*) = (i)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_base*)
+  -- if $c_string(n_base*) = n_base*
+  -- if $startup_bytes(n_key*) /\ $c_string(n_key*) = n_key*
+  -- if $numeric_string(n_key*) = LEADNUM (NINT i)
+def $string_read_allocated_leading(S, pvalue_base, pvalue_key) = eps -- otherwise
+def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
+  -- if S.RESULT = KNOWN pvalue_base
+  -- if pvalue_base = PSTRING_CARRIER (REQUEST_STRING n_identity) n_base*
+  -- if $(n_identity + 1 = |S.STRINGDATA|)
+  -- if S.ORIGIN = (porigin)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_base)
+  -- if $string_read_allocated_base(S, porigin_base, pvalue_base)
+  -- if n_name* <- S.CVS /\ ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $(n < |S.STORE|)
+  -- if S.STORE[n] = DEFINED (PSTRING n_key*)
+  -- if $string_read_allocated_leading(S, pvalue_base, PSTRING n_key*) =/= eps
+  -- if $string_read_cell(S, n) \/ $call_reference_operand_valid(S, REFERENCE n)
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if $heap_valid($heap_graph(S))
 def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_key*, (n)))
   -- if S.RESULT = KNOWN pvalue_base
   -- if pvalue_base = PSTRING_CARRIER INTERNED_STRING n_base*
@@ -894,6 +994,15 @@ def $string_read_raw_capture(S, VARIABLE n_name* z, pvalue_base) = ((PSTRING n_k
   -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
   -- if $heap_valid($heap_graph(S))
 def $string_read_raw_capture(S, poperand, pvalue_base) = eps -- otherwise
+def $string_read_raw_saved(S, pstringread) = (i)
+  -- if pstringread.READ.OWNERS = BASE_VALUE (KNOWN pstringread.READ.BASE)
+  -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL =/= eps
+  -- if pstringread.READ.INPUT = VARIABLE n_name* z
+  -- if pstringread.READ.PHASE = KEY_NULL
+  -- if $origin_child((pstringread.READ.SITE), [PCFIELD 0]) = (porigin_base)
+  -- if $string_read_allocated_base(S, porigin_base, pstringread.READ.BASE)
+  -- if $string_read_allocated_leading(S, pstringread.READ.BASE, pstringread.READ.VALUE) = (i)
+  -- if $string_read_provider_ready(S, pstringread)
 def $string_read_raw_saved(S, pstringread) = (i)
   -- if pstringread.READ.OWNERS = BASE_VALUE (KNOWN pstringread.READ.BASE)
   -- if pstringread.BASECELL = eps /\ pstringread.KEYCELL =/= eps
@@ -2038,6 +2147,17 @@ def $string_read_phase(pvalue, pvalue_key) = (STRING_CAST)
   -- if $offset_cast_integer(pvalue_key) = (i)
 def $string_read_phase(pvalue, pvalue_key) = eps -- otherwise
 
+def $string_read_plan(S) = (pstringread)
+  -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if S.RESULT = KNOWN pvalue_base
+  -- if $string_read_base_capture(S, S.RESULT) = ((pvalue_base, n_base?))
+  -- if n_base? = eps
+  -- if $string_read_raw_capture(S, poperand, pvalue_base) = ((pvalue_key, n_key?))
+  -- if $string_read_allocated_leading(S, pvalue_base, pvalue_key) = (i)
+  -- if pkeyread = {SITE porigin, GLOBAL false, MODE KEY_R, INPUT poperand, VALUE pvalue_key, BASE pvalue_base, OWNERS BASE_VALUE S.RESULT, LINE z, PHASE KEY_NULL, KEY KSTRING eps, NAME eps}
+  -- if pstringread = {READ pkeyread, BASECELL n_base?, KEYCELL n_key?, KEYREF $string_read_key_reference(S, n_key?), PHASE STRING_LEADING i}
+  -- if $string_read_source(S, pstringread)
 def $string_read_plan(S) = (pstringread)
   -- if S.TODO = (KEY_READ_DIM poperand z KEY_R) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
