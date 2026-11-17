@@ -1679,7 +1679,7 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pva
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_selected)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_skipped)
-  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL true)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL true)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps

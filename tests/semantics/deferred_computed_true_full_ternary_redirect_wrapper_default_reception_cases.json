@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-computed-true-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawComputedTrueRedirect301($p0 = ((1 === 1) ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_COMPUTED301_0), $p1 = ((1 !== 0) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_COMPUTED301_1), $p2 = ((1 < 2) ? ((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_COMPUTED301_2), $p3 = ((2 > 1) ? (-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_COMPUTED301_3), $p4 = ((1 <= 1) ? (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) : SKIPPED_COMPUTED301_4), $p5 = ((1 >= 1) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_COMPUTED301_5), $p6 = (((bool)1) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false) : SKIPPED_COMPUTED301_6), $p7 = ((!0) ? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_COMPUTED301_7)) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawComputedTrueRedirect301();\nrawComputedTrueRedirect301();\n",
+    "purpose": "Quiet computed BOOLtrue conditions select exact emitted FIELD1 scalar tags while unresolved FIELD2 names remain undemanded.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "b098ba54ac96a6f880ec593072d5607b24e6f453c9cfcb06a4020f0f1071f1b8"
+  },
+  {
+    "id": "deferred-computed-true-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace ComputedTrueRedirect301;\nuse const E_WARNING as Base301;\nuse const E_ERROR as One301;\nuse const Unavailable301\\Payload as Skipped301;\nfunction warning301($errno, $message, $file, $line) {\n    global $x301;\n    echo 'warning:', $message, '|';\n    defaults301(2);\n    $x301 = 3.5;\n}\nfunction defaults301(int $first, int &$selectedBool = (int)((1 === 1) ? (((bool)(+(-((float)(+(Base301 === One301))))))) : Skipped301), int &$selectedInt = (int)((1 !== 0) ? ((int)(!((bool)(+(-((float)(+(Base301 === One301)))))))) : Skipped301), int &$negativeZero = (int)((1 < 2) ? (-((float)((bool)(+(-((float)(+(Base301 === One301)))))))) : Skipped301), int &$selectedNull = (int)((2 > 1) ? ((!((bool)(+(-((float)(+(Base301 === One301))))))) ? NULL : false) : Skipped301), int $last = 7) {\n    echo 'body:', $first, ':', $selectedBool, ':', $selectedInt, ':', $negativeZero, ':', $selectedNull, ':', $last, '|';\n    $selectedBool = 19;\n    $selectedInt = 20;\n    $negativeZero = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('ComputedTrueRedirect301\\\\warning301');\n$x301 = 1.5;\n$last301 = 8;\ndefaults301(last: $last301, first: $x301);\necho 'outer:x=', $x301, '|';\n",
+    "purpose": "Primitive computed BOOLtrue conditions retain selected aliases, Shared cache and private INT reception before named Warning reentry, skipping FIELD2 names.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "9d388d031f24981590f9eb00c9fbe2dc80ca124a73aabe764b94ab50b85dd48d"
+  }
+]
