@@ -1,0 +1,74 @@
+;; FETCH_DIM_UNSET warns for literal NULL, then raises the fixed nested Error.
+;; The original string and converted offset are never used after the Warning.
+dec $string_unset_warning_source(pstate, porigin, int) : (ptbytes, int)?
+dec $string_unset_warning_plan(pstate) : (porigin, int)?
+
+def $string_unset_warning_source(S, PORIGIN 0 pcpath, z) = ((n_name*, z_outer))
+  -- if $key_unset_parent(pcpath) = (pcpath_parent)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath_parent) = (NStmtUnset phpType25 metadata_unset)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprArrayDimFetch expression_inner phpType5 metadata_outer)
+  -- if expression_inner = NExprArrayDimFetch (NExprVariable (BYTES text_name) metadata_base) (NExprConstFetch (NName (BYTES text_null) metadata_null_name) metadata_null) metadata_inner
+  -- if n_name* = $base64(text_name)
+  -- if $startup_bytes(n_name*) /\ $c_string(n_name*) = n_name*
+  -- if $ptlc($base64(text_null)) = $ptascii("null")
+  -- if $origin_child((PORIGIN 0 pcpath), [PCFIELD 0]) = (porigin_inner)
+  -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
+  -- if $origin_child((porigin_inner), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable (BYTES text_name) metadata_base)
+  -- if $origin_child((porigin_inner), [PCFIELD 1]) = (porigin_key)
+  -- if $origin_node(S.SOURCES, porigin_key) = (NExprConstFetch (NName (BYTES text_null) metadata_null_name) metadata_null)
+  -- if $code_at(S.CODE, 0) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_outer, false))
+  -- if porigin_inner = PORIGIN 0 pcpath_inner
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_inner) = ((z, false))
+  -- if $(z > 0 /\ z_outer > 0)
+  -- if $compiled_read(S, porigin_key) = (PNULL)
+  -- if $compiled_identity_value(S, porigin_key) = (PNULL)
+def $string_unset_warning_source(S, porigin, z) = eps -- otherwise
+
+def $string_unset_warning_plan(S) = ((porigin, z))
+  -- if S.COMPLETION = NORMAL
+  -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_name* z_base)) (KNOWN PNULL) z) (KNOWN (PINT i_final)) z_outer
+  -- if $long_range(i_final)
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_warning_source(S, porigin, z) = ((n_name*, z_outer))
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_base)
+  -- if $(n_base < |S.STORE|)
+  -- if ~(n_base <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_base) /\ ~$typed_cv_string_released_cell(S, n_base) /\ ~$update_released_cell(S, n_base)
+  -- if S.STORE[n_base] = DEFINED (PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $base_find(S, BASE_VALUE (VARIABLE n_name* z_base), z) = S[.LOCATION = ROOT n_base][.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n_bytes*)]
+  -- if $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $error_handler_eligible(S, 2)
+  -- if S.ERRORHANDLER.CALLBACK = (pvalue_callback)
+  -- if $type_bytes(pvalue_callback) = $ptascii("string")
+  -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
+def $string_unset_warning_plan(S) = eps -- otherwise
+
+def $string_unset_warning_pending(S) = true
+  -- if $string_unset_warning_plan(S) = ((porigin, z))
+
+rule PhpStep/string-unset-warning-start: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], 2, $ptascii("String offset cast occurred"), z, DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z, STRING_UNSET_WARNING_RESULT porigin z)
+  -- if $string_unset_warning_plan(S) = ((porigin, z))
+
+;; This certificate depends only on the original source, never the current base.
+def $call_task_valid(S, STRING_UNSET_WARNING_RESULT porigin z) = (S.ORIGIN = (porigin) /\ $string_unset_warning_source(S, porigin, z) =/= eps)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = STRING_UNSET_WARNING_RESULT porigin z
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_warning_source(S, porigin, z) = ((n_name*, z_outer))
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("String offset cast occurred")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z
+def $task_nodes(STRING_UNSET_WARNING_RESULT porigin z) = eps
+
+rule PhpStep/string-unset-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tail*][.ORIGIN = (porigin)][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], "Error", $ptascii("Cannot use string offset as an array"), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_WARNING_RESULT porigin z) :: ptask_tail*
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_warning_source(S, porigin, z) = ((n_name*, z_outer))
