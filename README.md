@@ -11820,3 +11820,9 @@ Quiet fitting signed64 POWER returns pass existing nested handler casts with exa
 Own public parentless short reference Get admits exact `Class|true` and `true|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. True retains literal identity without weak Boolean conversion; canonical defining authority and existing alias/owner bounds remain. Wider headers and lifetimes stay partial. [Review](coverage/semantics/class-true-union-parentless-short-reference-get-hook-review.json).
 
 Ordinary nonNaN FLOAT-CV inner unset keys resume through a source-only Warning task after handler key mutation/removal. Initial NaN/reference/released keys, wider callers and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-float-cv-warning-review.json).
+
+Finite FLOAT string casts retain exact non-NUL REQUEST temporary identities and
+frozen raw CV offsets through returning Warnings. Complete child SOURCE, quiet
+typed VALUE, equal raw-live/compiled precision and exact allocation replay remain
+required; integer bounds and wider partial contexts remain unchanged.
+[FLOAT cast review](coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).

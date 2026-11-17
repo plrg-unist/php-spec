@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Allocated STRING casts admit existing quiet finite PFLOAT VALUE under full child SOURCE, matching own/child/raw-live precision and unchanged prefix/KNOWN/non-NUL bounds. Native3 once/source3, author261/107-derived+301/123-derived and corrected independent546/446-derived retain separate cuts. Failed545/445 NaN identity and two author/one reviewer preparation assertions stay0; four affected old FLOAT denials promote within new B, without historical453 renewal. WHOLE13 and actual=SAMEbe5d401551/solec306a206 productionSL50916.381769837s/source0 are clear through immutablea0e650d9/one cached saved-report read; author canonical/map/actual-source reads0. Wider forms/lifetimes and all exact holds/reserve93807cdd6/255/inventory169/306closed0+1 remain partial/unchanged. [Review](coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
+
 Singleton nominal FORMALs of completed required ordinary-CV producers now use quiet
 builtin-first declaration resolution to exact global `stdClass` in imported
 namespace and unrelated-import global contexts. Native5 once/source5 distinguish

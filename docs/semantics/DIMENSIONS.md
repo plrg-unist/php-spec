@@ -2101,3 +2101,17 @@ Preserved foreign VALUE helpers retain the quiet typed contract; MAIN2/reviewer1
 prep assertions retain0. Wider uncertified/FLOAT/owning/nonquiet producers and
 lifetimes remain partial; all exact holds stay unchanged.
 [Review](../../coverage/semantics/string-offset-runtime-allocated-integer-producer-cast-base-initial-raw-leading-key-review.json).
+
+Allocated STRING casts admit existing quiet finite PFLOAT producers under complete
+child SOURCE, equal own/child/raw-live precision and exact number_text/cast_apply
+replay on contiguous registry prefixes. PINT and CONCAT rules remain literal;
+FLOAT digit bytes retain REQUEST allocation. Native3 once/source3, separate
+261/107-derived+301/123-derived author and corrected546/446-derived independent
+SL508 cuts pass. Failed545/445 NaN-identity expectation retains0; only the four
+affected historical FLOAT refusals promote within the new B, without old453
+renewal. WHOLE13 and actual=SAMEbe5d401551/solec306a206 productionSL509
+16.381769837s/source0 are clear through tuplea0e650d9/one saved-report read.
+Two author and one reviewer preparation assertions retain0. Nonfinite/owning/
+nonquiet values, changed precision histories and wider lifetimes remain partial;
+all exact holds, reserve93807cdd6/255 and inventory169/306closed0+1 remain unchanged.
+[Review](../../coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
