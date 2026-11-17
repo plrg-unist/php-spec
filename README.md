@@ -27,7 +27,7 @@ retain exact Boolean echo, both non-NUL source arms and genuine emitted-root
 authority. Wider expressions, owners and lifetimes remain partial.
 [Review](coverage/semantics/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
 
-Completed fixed-required ordinary-CV producers admit bare `stdClass|float` and `float|stdClass` returns in a global context without class imports. Exact raw/normalized order preserves object identity, strict integer-to-float widening and quiet weak scalar conversion before frame retirement and private Notice cells. Wider types, contexts and lifetimes remain partial. [Review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
+Completed ordinary-CV producers admit flat `stdClass` return unions with the builtin companions already supported by fully qualified forms, in global declarations without class imports. Return verification preserves scalar priority, object identity and array COW before frame retirement and private reference Notices. Wider formals, names, contexts and lifetimes remain partial. [Ordered-union review](coverage/semantics/global-plain-ordered-stdclass-return-producer-reference-notice-review.json). The earlier float-only cut retains its [original review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
 
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
@@ -1963,8 +1963,10 @@ late reads. Handler and NUL paths and nonempty array or object keys stay partial
 After an admitted NULL/BOOL-CV Warning handler returns, a finite out-of-range
 FLOAT in the same saved cell can cause a [second named-handler Warning](coverage/semantics/string-offset-nested-unset-bool-cv-range-warning-review.json).
 Copied bits determine its message; a second return raises the nested Error, while
-a supplied throw survives even after key mutation. Default reporting, ineligible
-handlers, nonfinite posts and wider ownership remain partial.
+a supplied throw survives even after key mutation. Restored named handlers with
+a Warning-excluding live mask now use the [existing default reporter](coverage/semantics/string-offset-nested-unset-bool-cv-range-default-review.json)
+before the same Error. Absent callbacks, pending ineligible OOB, nonfinite posts
+and wider ownership remain partial.
 
 [Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
 now reads the key and raises the string-offset Error for valid non-NUL interned

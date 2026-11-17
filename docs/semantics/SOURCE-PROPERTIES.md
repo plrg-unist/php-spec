@@ -2879,3 +2879,14 @@ bounds remain. Empty/singleton scalar arrays retain alias and copy-on-write chec
 Wrong ordinary objects, null and scalars reject without changing shared values.
 Broader headers, array graphs and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-array-union-parentless-short-reference-get-hook-review.json).
+
+Six current originals each run native once; eleven runs retain five retired byte versions.
+Author source retained1+affected2 and independent retained2+affected1 stay separate.
+Author187/188/188 and independent436/184/184/184 preserve their SL508 cuts and caps.
+Four historical inner timeouts, one state-cursor failure and two private reader errors retain0.
+Five fixture corrections followed execution; semantic rules stayed unchanged.
+Actual `d71822de2`, joined `7d785082` and sole production-SL509 `599f53d1`
+(16.791123519s, source0) are independently clear through immutable `032f46aa`.
+One physical saved-report read retains one load; its cached-label correction adds no run.
+Wider headers, array graphs and lifetimes remain partial; exact holds stay unchanged.
+[Independent review](../../coverage/semantics/class-array-union-parentless-short-reference-get-hook-peer-review.json).

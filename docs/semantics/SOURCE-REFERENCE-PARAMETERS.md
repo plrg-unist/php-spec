@@ -1140,6 +1140,15 @@ The [ordered float-union return review](../../coverage/semantics/global-plain-un
 records the source and state evidence. Other unions, plain formals, namespace/import
 contexts, payloads and lifetimes remain partial.
 
+Flat ordered bare-`stdClass` RETURN unions reuse that same global context.
+A pure raw-shape view preserves member bytes, order and metadata, changes exactly
+one bare class tag to the existing fully qualified shape, then delegates to the
+established header proof. Its distinct builtin and Boolean-kind checks and separate
+array/iterable folds retain their existing bounds; FORMAL and lifetime rules stay.
+The [ordered plain-union review](../../coverage/semantics/global-plain-ordered-stdclass-return-producer-reference-notice-review.json)
+records scalar priority, object identity, runtime-array COW and private Notice cells.
+Wider class names, declaration contexts, payloads and lifetimes remain partial.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags

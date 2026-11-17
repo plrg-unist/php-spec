@@ -1356,8 +1356,9 @@ the copied bits even after the key becomes INTERNED `done`. Dispatch consumes
 exactly its old resume head and preserves the entire caller tail. A second
 return raises the fixed nested Error; a second throw preserves the same
 Exception through ordinary callback restoration and discard. Default/ineligible
-reporting, masked pending OOB, nonfinite posts and wider ownership remain
-Unsupported. Earlier blanket finite acceptance stays withdrawn.
+normal reporting stayed Unsupported at that cut; it is extended below. Masked
+pending OOB, nonfinite posts and wider ownership remain partial. Earlier blanket
+finite acceptance stays withdrawn.
 [Secondary range Warning review](../../coverage/semantics/string-offset-nested-unset-bool-cv-range-warning-review.json)
 records the two saved native identities, corrected source comparisons, separate
 source-state cuts and affected-only old OOB assertion bridges. Actual `bce529790`
@@ -1365,6 +1366,24 @@ and joined `8c749863f` retain the sole production-SL509 `0377a927` load,
 16.590228460s/source0, through the independently clear tuple`00a65c7a`. Earlier accepted
 campaigns and prelaw snapshots are retained without renewal; exact holds,
 reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.
+
+Normal returns now also use the existing default reporter when the restored
+named handler's live mask excludes Warning. Two fresh originals establish
+same-name re-registration with mask512 and automatic raw-callback restoration
+after `restore_error_handler()` pops the initial NONE/mask0 entry. Both leave
+the callback present and produce one range Warning before the fixed Error.
+The existing dispatcher, source/line renderer and copied nonowning task are
+reused; only the normal named-handler eligibility condition changes.
+`set_error_handler(null)` inside an active handler leaves UNDEF, so automatic
+restoration reinstates the old raw callback; it does not establish an absent
+normal producer within these bounds. Absent callbacks remain refused. The
+existing reporting/display suppression stays quiet, and pending ineligible OOB,
+nonfinite/reference/owning posts and wider histories remain partial. The
+[normal default review](../../coverage/semantics/string-offset-nested-unset-bool-cv-range-default-review.json)
+keeps fresh native/source/front facts and only affected old mask assertions
+separate from the closed eligible-handler and pending-throw campaigns. Actual
+`f3fda8eb8`/joined `7d7850824` retain the sole production-SL509 `599f53d1`
+load,16.791123519s/source0, through independently clear tuple`0f32ec27`.
 
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
