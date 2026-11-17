@@ -1255,6 +1255,17 @@ guards remain; decisive skipped effects stay skipped. Raw caches still precede
 private integer reception, BYREF resume and own precision throw/retry. Noisy
 NaN truth, selected effects and raw scalar selections remain outside this arm.
 
+[Falsey full-ternary defaults](../../coverage/semantics/deferred-falsey-full-ternary-redirect-wrapper-default-reception-review.json)
+retain exact FIELD2 scalar values while checking only condition and selected
+bindings. Skipped unresolved names retain genuine source occurrences without
+becoming compiled reads. Five scalar falseys and bare empty/`'0'` predicates
+require their exact source/pool/redirect and literal-header certificates.
+Quiet emitted integer casts carry selected null to integer zero. Two original
+agreements reuse native observations once; prelaw144, author227/62/261 and
+independent396/34 retain separate cuts and original failures0. Truthy/NaN
+conditions, wider strings, owning results and wider contexts remain partial;
+quiet-shape/no-DIM, declaration, cache, recipient and owner bounds remain.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

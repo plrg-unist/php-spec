@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Folded falsey full-ternary defaults preserve the selected scalar value and bindings while skipping unresolved names in the other branch. Exact falsey scalar or bare empty/`'0'` predicates and quiet null-to-int conversion retain source and owner bounds; wider forms remain partial. [Review](coverage/semantics/deferred-falsey-full-ternary-redirect-wrapper-default-reception-review.json).
+
 Own public parentless short reference Get admits exact `Class|float` and `float|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. FLOAT tags, strict integer widening and quiet weak scalar conversions retain defining authority and existing alias/owner bounds; strict Boolean and string writes reject. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-float-union-parentless-short-reference-get-hook-review.json).
 
 [Ordered bare stdClass/null producer returns](coverage/semantics/global-plain-union-null-stdclass-return-producer-reference-notice-review.json) authenticate both raw member orders in the retained global declaration context before existing return checks and private Notice cells; wider unions, formals and lifetimes remain partial.
