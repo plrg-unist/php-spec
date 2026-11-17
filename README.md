@@ -20,7 +20,8 @@ Recent reviewed extensions cover nullable iterable producer formals and returns,
 ordered short reference Get unions, raw and double BooleanNot method selectors,
 emitted string bitwise, coalesce and two-cast ternary bases, selected NaN full and false shorthand
 ternaries in named `instanceof`, signed BooleanNot handler casts and mixed
-Boolean/integer or Boolean/FLOAT strict-identity defaults. The [current checkpoint](PROGRESS.md) separates
+Boolean/integer or Boolean/FLOAT strict-identity defaults, plus NaN/FLOAT identity.
+The [current checkpoint](PROGRESS.md) separates
 source agreements, fixture checks and combined production loads; complete core
 remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
