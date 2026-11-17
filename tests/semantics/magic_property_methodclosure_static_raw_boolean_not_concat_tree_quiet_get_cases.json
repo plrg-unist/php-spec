@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-boolean-not-concat-tree-own-namespaced-cv-coalesce",
+      "source": "<?php\nnamespace {\nclass QuietLiteralSelectorOwnCoalesceTarget1 { public static function coun0ter121() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietLiteralSelectorOwnCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorOwnCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietLiteralSelectorOwnCoalesceDecoy { public static function coun0ter121() { echo \"BAD_ALIAS;\"; return 9001; } }\n}\nnamespace LiteralSelectorPick {\nuse \\QuietLiteralSelectorOwnCoalesceDecoy as QuietLiteralSelectorOwnCoalesceTarget1;\n$held = (('qUIETlITERALsELECT' . '') . ('ORoWNcOALESCEtARGET' . ((!((!!true) && ('00' or null))) . (+' 0001 '))))::{'CoUn' . ((+' -000 ') . ('TeR' . ((+0xC) . ('00' and !(+' -000 ')))))}(...);\n}\nnamespace {\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorOwnCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietLiteralSelectorOwnCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n}\n",
+      "source_sha256": "cd003920d36c9238a8ef0d3502fe3aaff78cf3421f40164c522af2cedd500cc1",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-recursive-not-concat-tree-own-namespaced-cv-coalesce",
+        "source_sha256": "c9109cbc47d0ae1e709760176b57c53b37f8919acfeb5002fea409db1cba4517",
+        "change": "Use the five BooleanAnd/LogicalAnd/BooleanOr/LogicalOr/LogicalXor forms with quiet certified operands, including NOT of a Boolean result; preserve Boolean text, names, declarations, streams, context and cleanup. Fresh native/prelaw checks required before new helper edit."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-boolean-not-concat-tree-inherited-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietLiteralSelectorInheritedAssignBase { public static function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } private function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } public static function counter1() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietLiteralSelectorInheritedAssignTarget0112 extends qUIETlITERALsELECTORiNHERITEDaSSIGNbASE { private function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } final public static function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietLiteralSelectorInheritedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorInheritedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = ('\\\\qUIETlITERALsELECTORiNHERITEDaSSIGNtARGET' . (((+'+000') . (false || ('0' xor true))) . ((+1_2) . '')))::{((\"CoUnTeR\" . '') . ((true xor '00') or (false && (+0xC)))) . (+\"001\")}(...);\n$held = clone $seed;\nunset($seed);\necho QuietLiteralSelectorInheritedAssignBase::counter1() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorInheritedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietLiteralSelectorInheritedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorInheritedAssignTarget0112::counter1() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "0ea8c3f03b8c0eac016dc69495c2adb25661994ad026d9ca58a7c7d079ed1610",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7UkVTVUxUO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7Rzs=",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-recursive-not-concat-tree-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "42b85ebe2b1bf0e89a0138557868e7e852d2eb3608a7f115b8ba46516049f986",
+        "change": "Use the five BooleanAnd/LogicalAnd/BooleanOr/LogicalOr/LogicalXor forms with quiet certified operands, including NOT of a Boolean result; preserve Boolean text, names, declarations, streams, context and cleanup. Fresh native/prelaw checks required before new helper edit."
+      }
+    }
+  ]
+}
