@@ -1360,6 +1360,8 @@ def $ob_object_cast_chain_quiet(pcast, PNULL) = true
   -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
 def $ob_object_cast_chain_quiet(pcast, PSTRING_CARRIER INTERNED_STRING n*) = true
   -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
+def $ob_object_cast_chain_quiet(pcast, PSTRING n*) = true
+  -- if pcast = CASTINT \/ pcast = CASTBOOL \/ pcast = CASTFLOAT
 def $ob_object_cast_chain_quiet(pcast, pvalue) = false -- otherwise
 dec $ob_object_cast_chain_result(pcast, pvalue) : bool
 def $ob_object_cast_chain_result(CASTINT, PINT i) = $long_range(i)
@@ -1430,6 +1432,29 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $value_nodes(pvalue) = eps
 ;; Both children authenticate their own lines; the parent retains the terminal
 ;; RHS compiler line, including through recursive multiline children.
+;; Folded STRING bitwise results enter as plain pool values.
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PSTRING n_result*)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue_right)
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if porigin_left = PORIGIN n_child pcpath_left
+  -- if porigin_right = PORIGIN n_child pcpath_right
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, true))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z, true))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, true)
+  -- if n_result* = $byte_binary(pbin, n_left*, n_right*)
+  -- if $compiled_read(S, porigin) = (PSTRING n_result*)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $compiled_string_value(S, porigin, PSTRING n_result*) = PSTRING n_result*
+  -- if $enter_compiled_task(S, porigin, EVAL expression, S.TODO) = S[.RESULT = KNOWN (PSTRING n_result*)]
+  -- if $value_nodes(PSTRING n_result*) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_result)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR \/ pbin = ADD \/ pbin = SUBTRACT \/ pbin = MULTIPLY \/ pbin = DIVIDE \/ pbin = MODULO \/ pbin = SHIFTLEFT \/ pbin = SHIFTRIGHT \/ pbin = POWER \/ pbin = SPACESHIP

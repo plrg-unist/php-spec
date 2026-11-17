@@ -145,8 +145,10 @@ def frontier(name, fixture, path):
                         primitive.old141.proof(binary(kind, left, right, result), result))]
         for kind, left, right, data in [('and', '3', '1', '[49]'), ('or', '2', '1', '[51]'), ('xor', '3', '1', '[2]')]:
             query = binary(kind, string(left), string(right), 'PSTRING (' + data + ')')
-            checks += [('source0 both-STRING bytewise results remain STRING even when their bytes resemble integers',
-                        primitive.old141.proof(query, 'PSTRING_CARRIER INTERNED_STRING (' + data + ')', False))]
+            proof = primitive.old141.proof(query, 'PSTRING_CARRIER INTERNED_STRING (' + data + ')', False)
+            assert proof.endswith(' = eps')
+            checks += [('source0 both-STRING bytewise results retain runtime carriers and exact plain compiled STRING',
+                        proof.removesuffix(' = eps') + ' = (PSTRING (' + data + '))')]
         for kind, left, right, error, message in [
                 ('div', TRUE, FALSE, 'DivisionByZeroError', 'Division by zero'),
                 ('mod', FLOAT5, NULL, 'DivisionByZeroError', 'Modulo by zero'),
