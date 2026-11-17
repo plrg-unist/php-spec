@@ -555,6 +555,19 @@ exact6/+347; the same saved `b220ba42b` production-SL508 load passes
 wider lifetimes remain partial; exact holds stay unchanged.
 [Quiet null-left coalesce review](../../coverage/semantics/string-offset-request-base-runtime-null-left-nan-coalesce-instanceof-review.json).
 
+
+Quiet emitted strict identity also consumes exact recursive NaNs through a
+disjoint NORMAL/at-least-one-NaN certificate. Actual source/CODE/read/precision,
+pure typed identity and unchanged whole-state operations retain Boolean results
+without coercion. Native4 once/source4, three reached author/peer histories and
+separate fourth compiled-root fixtures retain their own cuts; the fourth fixture
+adds no callback, owner, bounds or resumption credit. The affected legacy335/147
+cut remains separate. Actual `63f10fec4` preserves exact7/+389/-1; the sole saved
+production-SL508 load passes16.94508742284961s/source0. All earlier failures,
+timeouts and unrun selections retain0. General NaN VALUE/BYTE/truth and wider
+producers/lifetimes remain partial; exact holds stay unchanged.
+[Runtime NaN identity review](../../coverage/semantics/string-offset-request-base-runtime-nan-identity-review.json).
+
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
 certificates, both quiet numeric conversions, a successful pure numeric result
