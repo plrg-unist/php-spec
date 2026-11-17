@@ -117,7 +117,7 @@ S_string_bitnot = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpa
 $string_read_runtime_value(S_string_bitnot,porigin_cond_leaf) = (PSTRING_CARRIER INTERNED_STRING ([207]))
 $string_read_runtime_value(S_string_bitnot,porigin_cond) = (PSTRING_CARRIER INTERNED_STRING ([48]))
 $string_read_runtime_value(S_string_bitnot,porigin_base) = (pkeyread.BASE)
-~$string_read_raw_known_base(S_string_bitnot,porigin_base,pkeyread.BASE)
+$string_read_raw_known_base(S_string_bitnot,porigin_base,pkeyread.BASE)
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)

@@ -121,7 +121,7 @@ S_string_bitnot = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpa
 $string_read_runtime_value(S_string_bitnot,porigin_operand) = (PSTRING_CARRIER INTERNED_STRING ([207]))
 $string_read_runtime_value(S_string_bitnot,porigin_cond) = (PSTRING_CARRIER INTERNED_STRING ([48]))
 $string_read_runtime_value(S_string_bitnot,porigin_base) = (pvalue_base)
-~$string_read_raw_known_base(S_string_bitnot,porigin_base,pvalue_base)
+$string_read_raw_known_base(S_string_bitnot,porigin_base,pvalue_base)
 expression_fractional_signed = NExprUnaryMinus (NScalarFloat (FLOAT "3ff8000000000000") metadata_atom) metadata_signed
 expression_fractional_operand = NExprCastDouble expression_fractional_signed metadata_operand
 expression_fractional_cond = NExprBitwiseNot expression_fractional_operand metadata_cond
