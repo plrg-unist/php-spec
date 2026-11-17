@@ -2912,3 +2912,11 @@ Actual and joined `8d43c4823` and sole production-SL509 `a9aeaa5a`
 read. Two static assessment preparation mistakes retain0; no prior evidence is renewed.
 Wider forms and all precise holds remain partial/unchanged.
 [Independent review](../../coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exactly two quiet nominal class arms also form an admitted short-reference header.
+Each ordinary, fully qualified or namespace-relative name retains its own exact
+raw/normalized position and defining authority. Whole quiet normalization rejects
+case-insensitive and alias-resolved duplicates; builtin and third arms stay partial.
+Both object alternatives use unchanged typed-reference checks, copied identities,
+atomic refusal, real property sources and owner retirement.
+[Review](../../coverage/semantics/nominal-pair-parentless-short-reference-get-hook-review.json).
