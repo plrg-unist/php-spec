@@ -17,6 +17,7 @@ dec $string_read_request_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_request_saved(pstate, pstringread) : int?
 dec $string_read_request_base_leading(pstate, pvalue, pvalue) : int?
 dec $string_read_literal_bytes(expression) : nat*?
+dec $string_read_folded_concat_bytes(expression) : nat*?
 dec $string_read_runtime_value(pstate, porigin) : pvalue?
 dec $string_read_runtime_cast_quiet(pcast, pvalue) : bool
 dec $string_read_runtime_integer_quiet(pvalue) : bool
@@ -791,10 +792,10 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_right) = (PSTRING n_right*)
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
   -- if n_bytes* = n_left*
-;; A folded literal string tree skips a certified emitted coalesce fallback.
+;; A folded literal INT/STRING tree skips a certified emitted coalesce fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
-  -- if $string_read_literal_bytes(expression_left) = (n_bytes*)
+  -- if $string_read_folded_concat_bytes(expression_left) = (n_bytes*)
   -- if $string_read_literal_bytes(expression_right) = eps
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
@@ -942,6 +943,14 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
+;; Raw fitting integers concatenate quietly without floating-point formatting.
+def $string_read_folded_concat_bytes(NScalarString (BYTES text) metadata) = ($base64(text))
+def $string_read_folded_concat_bytes(NScalarInt (INTEGER i) metadata) = ($decimal_integer(i))
+  -- if $long_range(i)
+def $string_read_folded_concat_bytes(NExprBinaryOpConcat expression_1 expression_2 metadata) = (n_1* ++ n_2*)
+  -- if $string_read_folded_concat_bytes(expression_1) = (n_1*)
+  -- if $string_read_folded_concat_bytes(expression_2) = (n_2*)
+def $string_read_folded_concat_bytes(expression) = eps -- otherwise
 ;; Quiet compiled primitive values and emitted scalar results enter this
 ;; typed certificate. Runtime nodes retain their actual source and code.
 def $string_read_runtime_value(S, porigin) = (pvalue)
@@ -973,12 +982,12 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
   -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
   -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
-;; Parser-folded raw string CONCAT trees have source children without child code.
+;; Parser-folded literal CONCAT trees have source children without child code.
 def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if expression = NExprBinaryOpConcat expression_left expression_right metadata
-  -- if $string_read_literal_bytes(expression) = (n_bytes*)
+  -- if $string_read_folded_concat_bytes(expression) = (n_bytes*)
   -- if $pcwalk([PCOCCURRENCE pcpath expression]) = (PCOCCURRENCE pcpath_child pcnode_child)*
   -- (if $origin_node(S.SOURCES, PORIGIN n pcpath_child) = (pcnode_child))*
   -- if $code_at(S.CODE, n) = (pcode)

@@ -98,6 +98,8 @@ $string_read_raw_known_base(S_folded_budget,porigin_base,pvalue_base)
     for label, node in (
             ('int', 'NScalarInt (INTEGER 1) metadata_head'),
             ('float', 'NScalarFloat (FLOAT "3ff0000000000000") metadata_head')):
+        expected = '(PSTRING_CARRIER INTERNED_STRING ($ptascii("1bc")))' if label == 'int' else 'eps'
+        negative = '' if label == 'int' else '~'
         checks += lines(f'''
 expression_coherent_{label}_head = {node}
 expression_coherent_{label}_left = NExprBinaryOpConcat expression_coherent_{label}_head expression_tail metadata_left
@@ -107,9 +109,9 @@ $parser_literal_at(expression_coherent_{label}_left,z_precision) = (PSTRING ($pt
 $compiled_read(S_folded_coherent_{label},porigin_left) = (PSTRING ($ptascii("1bc")))
 $compiled_string_value(S_folded_coherent_{label},porigin_left,PSTRING ($ptascii("1bc"))) = PSTRING_CARRIER INTERNED_STRING ($ptascii("1bc"))
 $string_read_literal_bytes(expression_coherent_{label}_left) = eps
-$string_read_runtime_value(S_folded_coherent_{label},porigin_left) = eps
-$string_read_runtime_value(S_folded_coherent_{label},porigin_base) = eps
-~$string_read_raw_known_base(S_folded_coherent_{label},porigin_base,PSTRING_CARRIER INTERNED_STRING ($ptascii("1bc")))
+$string_read_runtime_value(S_folded_coherent_{label},porigin_left) = {expected}
+$string_read_runtime_value(S_folded_coherent_{label},porigin_base) = {expected}
+{negative}$string_read_raw_known_base(S_folded_coherent_{label},porigin_base,PSTRING_CARRIER INTERNED_STRING ($ptascii("1bc")))
 ''')
     for label, node in (
             ('head', 'NScalarString (BYTES text_head) eps'),
