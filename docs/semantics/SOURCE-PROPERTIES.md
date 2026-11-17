@@ -2674,3 +2674,16 @@ Actual `eb5aa70f8` and the sole joined production-SL508 load (16.833466227 s)
 are independently clear. Wider members, owners and lifetimes remain partial;
 all exact holds remain.
 [Review](../../coverage/semantics/scalar-union-parentless-short-reference-get-hook-review.json).
+
+
+COMP320 admits distinct ordered builtin-or-null unions of length2..7 over
+`array`, `object`, `int`, `float`, `bool`, `string` and `null` for that same
+short reference Get. The local fold retains exact raw/normalized order,
+casefolded Identifier proof and overlap rejection. Six originals agree using
+native observations once, including nested array COW with shared references,
+object identity, mixed payloads, coercion/refusal and quiet source detach.
+Separate author and peer header1899/lifecycle253/281/284 fixtures retain source0;
+the initial native diagnostic failure remains0. Actual `7a8a3916f` and the sole
+joined production-SL508 load at `76639477f` (16.082620611 s) are independently
+clear. Wider headers, owners and lifetimes remain partial; all exact holds remain.
+[Review](../../coverage/semantics/builtin-union-parentless-short-reference-get-hook-review.json).
