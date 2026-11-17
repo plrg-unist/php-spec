@@ -842,6 +842,33 @@ def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_v
   -- if $compiled_effects(S, porigin) = eps
 def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin, expression) = eps -- otherwise
 
+;; Known constructors recover scalar tags from the existing quiet byte proof.
+dec $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) : pvalue?
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = (pvalue)
+  -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin, expression) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBooleanNot expression metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBooleanNot expression metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (ptbytes)
+  -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = eps -- otherwise
+
 ;; Typed ternary-left coalesce keeps NULL distinct from false and empty echo.
 dec $property_magic_cv_raw_typed_ternary_value_select(bool, pvalue, pvalue) : pvalue
 def $property_magic_cv_raw_typed_ternary_value_select(true, pvalue_true, pvalue_false) = pvalue_true
@@ -854,15 +881,15 @@ def $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTerna
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_cond, expression_cond) = (ptbytes_cond)
   -- if ~(0 <- ptbytes_cond)
-  -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin_true, expression_true) = (pvalue_true)
-  -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin_false, expression_false) = (pvalue_false)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_true, expression_true) = (pvalue_true)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_false, expression_false) = (pvalue_false)
 def $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond ABSENT expression_false metadata) = ($property_magic_cv_raw_typed_ternary_value_select(ptbytes_cond =/= eps /\ ptbytes_cond =/= [48], pvalue_cond, pvalue_false))
   -- if $origin_node(pcunit*, porigin) = (NExprTernary expression_cond ABSENT expression_false metadata)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
   -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
-  -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin_cond, expression_cond) = (pvalue_cond)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_cond, expression_cond) = (pvalue_cond)
   -- if ptbytes_cond = $echo_value(pvalue_cond)
-  -- if $property_magic_cv_raw_primitive_coalesce_left(pcunit*, porigin_false, expression_false) = (pvalue_false)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_false, expression_false) = (pvalue_false)
 def $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, expression) = eps -- otherwise
 
 ;; Prior raw Some excludes this shape; this witness only rejects old searches.

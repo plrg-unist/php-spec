@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+      "source": "<?php\nnamespace {\nclass QuietLiteralSelectorOwnCoalesceTarget1 { public static function coun0ter121() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietLiteralSelectorOwnCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorOwnCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietLiteralSelectorOwnCoalesceDecoy { public static function coun0ter121() { echo \"BAD_ALIAS;\"; return 9001; } }\n}\nnamespace LiteralSelectorPick {\nuse \\QuietLiteralSelectorOwnCoalesceDecoy as QuietLiteralSelectorOwnCoalesceTarget1;\n$held = (('qUIETlITERALsELECTORoWNcOALESCEtARGET' . '') . (((true ? null : ('BAD_' . 'CLASS')) ?? '1') . (((true ? (((('0' . false) ?? 'BAD_CLASS') && true)) : 'BAD_CLASS') ?? 'BAD_CLASS') . ((true ? ('' . false) : 'BAD_CLASS') ?? 'BAD_CLASS'))))::{('CoUn' . (((true ? 0 : !('1' . false)) ?? 9) . ('TeR' . ((+0xC) . (((('1' . false) ?: null) ?? 9) . (!(!((true ? ('0' . null) : null) ?? 'BAD_METHOD'))))))))}(...);\n}\nnamespace {\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorOwnCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietLiteralSelectorOwnCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n}\n",
+      "source_sha256": "d73e8ecde9e2cdb46f289eda51f2bd818067931115ab805e456943c273371100",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "source_sha256": "d8847fca2bd119f0798aab0d9fd7009b5eb82e08b3e5a8825f508b8df510b5b1",
+        "change": "Only FCC selector initialization changes. Full primitive NULL/INT0 controls remain; selected/unselected full arms and SHORT condition/fallback now use old-closed CONCAT String or Boolean constructor results. Computed FALSE/empty/String0 remain nonnull; true SHORT String01/1 and BooleanTRUE preserve their exact kind/value. No scope/cache/body/stream/owner/lifetime change."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-computed-operand-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietLiteralSelectorInheritedAssignBase { public static function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } private function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } public static function counter1() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietLiteralSelectorInheritedAssignTarget0112 extends qUIETlITERALsELECTORiNHERITEDaSSIGNbASE { private function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } final public static function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietLiteralSelectorInheritedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorInheritedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = ((('\\qUIETlITERALsELECTORiNHERITEDaSSIGNtARGET' . '') ?? 'BAD_CLASS') . ((((('' . false) or false) ?: null) ?? '') . (((((('00' . null) xor true)) ?: (('0' . false) || false)) ?? 'BAD_CLASS') . (((('0' . '1') ?: null) ?? 'BAD_CLASS') . ((((('' . false) ?: ('' . '1')) ?? 'BAD_CLASS')) . (+2))))))::{('CoUnTeR' . ((((('0' . false) or ('00' . null)) ?: null) ?? 'BAD_METHOD') . (!(!(((('0' . false) || false) ?: 0) ?? 9)))))}(...);\n$held = clone $seed;\nunset($seed);\necho QuietLiteralSelectorInheritedAssignBase::counter1() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorInheritedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietLiteralSelectorInheritedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorInheritedAssignTarget0112::counter1() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "a88fc338e3ac567bc93252a396f1d02981d10639408ab2c72eef9b2726f3ddf7",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7UkVTVUxUO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7Rzs=",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "030bd0611d3fcf078b4ccfd1b65487334251158a781ee2c315601a347569366a",
+        "change": "Only FCC selector initialization changes. Full primitive NULL/INT0 controls remain; selected/unselected full arms and SHORT condition/fallback now use old-closed CONCAT String or Boolean constructor results. Computed FALSE/empty/String0 remain nonnull; true SHORT String01/1 and BooleanTRUE preserve their exact kind/value. No scope/cache/body/stream/owner/lifetime change."
+      }
+    }
+  ]
+}
