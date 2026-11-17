@@ -569,7 +569,7 @@ def $lossy_optional_integer_quiet_optional(expression) = $lossy_optional_integer
 ;; Folded special names can have a pool fact without an executable child read.
 ;; A recorded quiet-Boolean full-ternary redirect authenticates its condition
 ;; and selected child. Decisive pooled logical nodes authenticate their left.
-;; Folded BOOL selections authenticate their chosen edge and retained pools.
+;; Folded BOOL/NULL selections authenticate their chosen edge and retained pools.
 ;; Every other tree keeps the complete raw-name proof.
 dec $lossy_optional_integer_phase_value(plenv, pcnode, pvalue) : bool
 dec $lossy_optional_integer_redirect_count(pcoderedirect*, pcpath) : nat
@@ -626,15 +626,16 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
-  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL true)
   -- if $lossy_optional_integer_phase_value(plenv, expression_cond, PBOOL true)
   -- if $lossy_optional_integer_condition(plenv, expression_cond) = (true)
-  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b)
-  -- if $lossy_optional_integer_phase_value(plenv, expression_true, PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue)
+  -- if $lossy_optional_integer_phase_value(plenv, expression_true, pvalue)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
-  -- if $compiled_read(S, PORIGIN n pcpath) = (PBOOL b)
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 0
 def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
@@ -642,15 +643,16 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_true)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
-  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
   -- if $lossy_optional_integer_phase_value(plenv, expression_cond, PBOOL false)
   -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
-  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 2])) = (PBOOL b)
-  -- if $lossy_optional_integer_phase_value(plenv, expression_false, PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 2])) = (pvalue)
+  -- if $lossy_optional_integer_phase_value(plenv, expression_false, pvalue)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
-  -- if $compiled_read(S, PORIGIN n pcpath) = (PBOOL b)
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 0
 def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 0])))
@@ -672,15 +674,16 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, PORIGIN n pcpath) = ((PORIG
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = eps
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_false)
-  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true]
   -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
   -- if $lossy_optional_integer_phase_value(plenv, expression_cond, PBOOL false)
   -- if $lossy_optional_integer_condition(plenv, expression_cond) = (false)
-  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 2])) = (PBOOL b)
-  -- if $lossy_optional_integer_phase_value(plenv, expression_false, PBOOL b)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 2])) = (pvalue)
+  -- if $lossy_optional_integer_phase_value(plenv, expression_false, pvalue)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, true))
-  -- if $compiled_read(S, PORIGIN n pcpath) = (PBOOL b)
+  -- if $compiled_read(S, PORIGIN n pcpath) = (pvalue)
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 0
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = eps -- otherwise
@@ -779,6 +782,10 @@ def $lossy_optional_integer_deferred_value(plenv, expression) = (PBOOL b)
   -- if $lossy_optional_integer_selection_shape(expression)
   -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)
   -- if $lossy_optional_integer_deferred_value(plenv, expression_leaf) = (PBOOL b)
+def $lossy_optional_integer_deferred_value(plenv, expression) = (PNULL)
+  -- if $lossy_optional_integer_selection_shape(expression)
+  -- if $lossy_optional_integer_cast_leaf(plenv, expression) = (expression_leaf)
+  -- if $lossy_optional_integer_deferred_value(plenv, expression_leaf) = (PNULL)
 def $lossy_optional_integer_deferred_value(plenv, expression) = (PINT i)
   -- if $lossy_optional_integer_default_in(plenv, expression) = (i)
   -- if $long_range(i)

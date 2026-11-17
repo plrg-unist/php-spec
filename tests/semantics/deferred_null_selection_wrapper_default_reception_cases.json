@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-selection-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullSelection290($p0 = ((true ? NULL : NAN) == ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) != (false ? NAN : NULL)), $p2 = ((false ?: NULL) < (-((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p3 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) <= (NULL ?? NULL)), $p4 = (((NULL ?? NULL) ?? NULL) <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> (true ? NULL : 7)), $p6 = (((1 === 1) ? NULL : 9) > (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p7 = ((+(-((float)(+(E_WARNING === E_ERROR))))) >= (false ?: NULL)), $p8 = ((false ? NAN : NULL) != ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p9 = ((-((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) < (true ? NULL : NAN)), $p10 = ((NULL ?? NULL) == ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : true)), $p11 = ((false ?? NULL) == ((int)(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === true, \":\", $p1 === true, \":\", $p2 === true, \":\", $p3 === true, \":\", $p4 === -1, \":\", $p5 === 1, \":\", $p6 === false, \":\", $p7 === true, \":\", $p8 === false, \":\", $p9 === false, \":\", $p10 === true, \":\", $p11 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n}\nrawNullSelection290();\nrawNullSelection290();\n",
+    "purpose": "Phase-safe selected NULL through Boolean ternary/short/coalesce certificates, quiet skipped NaN, raw NULL comparison and SPACE results, plus false-coalesce BOOL tag control.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "a69fda22b3ced519f48b9057b4a7dd904c339c02f6b7666ef043266a74b6ad0f"
+  },
+  {
+    "id": "deferred-null-selection-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullSelection290;\nuse const E_WARNING as Base290;\nuse const E_ERROR as One290;\nuse const NAN as Nan290;\nfunction warning290($errno, $message, $file, $line) {\n    global $x290;\n    echo 'warning:', $message, '|';\n    defaults290(2);\n    $x290 = 3.5;\n}\nfunction defaults290(int $first, int &$nullTrue = (int)((true ? NULL : Missing290) == ((int)(+(-((float)(+(Base290 === One290))))))), int &$nullFalse = (int)((-((int)(!((bool)(+(-((float)(+(Base290 === One290))))))))) <=> (false ? Missing290 : NULL)), int &$nullShort = (int)((false ?: NULL) <=> (Nan290 + (+(-((float)(+(Base290 === One290))))))), int &$nullCoalesce = (int)((!((bool)(+(-((float)(+(Base290 === One290))))))) != (NULL ?? NULL)), int $last = 7) {\n    echo 'body:', $first, ':', $nullTrue, ':', $nullFalse, ':', $nullShort, ':', $nullCoalesce, ':', $last, '|';\n    $nullTrue = 19;\n    $nullFalse = 20;\n    $nullShort = 21;\n    $nullCoalesce = 22;\n}\n\\set_error_handler('NullSelection290\\\\warning290');\n$x290 = 1.5;\n$last290 = 8;\ndefaults290(last: $last290, first: $x290);\necho 'outer:x=', $x290, '|';\n",
+    "purpose": "Exact pooled selected-NULL receipts skip only unchosen missing-name arms before private INT-parent BYREF reception and first-argument Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:-1:1:7|body:1:1:1:-1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "4b74da607bd35ce09716737ba83fbb128d0a12eb9b391a2933d65a665f281556"
+  }
+]

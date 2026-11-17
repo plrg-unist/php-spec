@@ -111,7 +111,7 @@ quiet += ['S_done = $drive_steps(S,3000)',
           'S_done.EVENTS = eps', 'S_done.ERRORHANDLER = S.ERRORHANDLER', '$heap_valid($heap_graph(S_done))']
 refused = base + ['|pfunction.SIGNATURE.PARAMETERS| = 6']
 for index in range(6):
-    admitted = {0: 'PBOOL false', 1: 'PINT 1'}.get(index)
+    admitted = {0: 'PBOOL false', 1: 'PINT 1', 4: 'PBOOL true'}.get(index)
     refused += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
                 (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ({admitted})'
                  if admitted is not None else
