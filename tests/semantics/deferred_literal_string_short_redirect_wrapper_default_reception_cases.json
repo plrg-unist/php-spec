@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-literal-string-short-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawStringRedirect298($p0 = ('' ?: (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = (\"0\" ?: ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (\"\" ?: (((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p3 = ('0' ?: ((-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = (\"\\x30\" ?: ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = ('' ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p6 = (\"\\060\" ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false))), $p7 = ('0' ?: (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawStringRedirect298();\nrawStringRedirect298();\n",
+    "purpose": "Bare empty or one-byte ASCII-zero string literals, including escaped spellings, select the same emitted finite scalar RHS without transporting a condition string.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "4ffa7811bd8b92cf878283c107291be1d20de3412c76c39c21849e5b65e1625e"
+  },
+  {
+    "id": "deferred-literal-string-short-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace StringRedirect298;\nuse const E_WARNING as Base298;\nuse const E_ERROR as One298;\nfunction warning298($errno, $message, $file, $line) {\n    global $x298;\n    echo 'warning:', $message, '|';\n    defaults298(2);\n    $x298 = 3.5;\n}\nfunction defaults298(int $first, int &$emptyBool = (int)('' ?: (((bool)(+(-((float)(+(Base298 === One298)))))))), int &$zeroInt = (int)(\"0\" ?: (((int)(!((bool)(+(-((float)(+(Base298 === One298)))))))))), int &$negativeZero = (int)(\"\\x30\" ?: ((-((float)((bool)(+(-((float)(+(Base298 === One298)))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $emptyBool, ':', $zeroInt, ':', $negativeZero, ':', $last, '|';\n    $emptyBool = 19;\n    $zeroInt = 20;\n    $negativeZero = 21;\n}\n\\set_error_handler('StringRedirect298\\\\warning298');\n$x298 = 1.5;\n$last298 = 8;\ndefaults298(last: $last298, first: $x298);\necho 'outer:x=', $x298, '|';\n",
+    "purpose": "Bare empty/ASCII-zero literal predicates use exact borrowed compiler pools and literal-header facts before finite scalar RHS/INT private reception and precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:7|body:1:0:1:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "41cf09583d653d4e696311b898d5289d6990a18b8833701237b1fa81e783805c"
+  }
+]

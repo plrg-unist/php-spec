@@ -118,7 +118,9 @@ expressions = [f'1 ?: {false}', f'-1 ?: {false}', f'NAN ?: {false}',
                f'0 ?: (!{nan})', f'NULL ?: (+{selected})', f'0.0 ?: ((string){false})']
 boundary = base + [f'|pfunction.SIGNATURE.PARAMETERS| = {len(expressions)}']
 for index in range(len(expressions)):
-    boundary += [f'~$lossy_optional_integer_deferred(S,pfunction,{index})']
+    boundary += [f'$lossy_optional_integer_deferred(S,pfunction,{index})'
+                 if index in (3, 4)
+                 else f'~$lossy_optional_integer_deferred(S,pfunction,{index})']
 context = ('S.CURRENT = (pcallcontext) -- if pcallcontext.ARGC = 0 -- if pcallcontext.FUNCTION = porigin_function '
     '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) ')
 CASES = {
