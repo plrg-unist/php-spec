@@ -52,7 +52,7 @@ def header_fields():
                    '~$hook_short_reference_header(' + raw(members) + ',' + mask(members + ['int']) + ')']
     for kind in ('mixed', 'array', 'object', 'callable', 'true', 'false', 'void', 'integer'):
         members = ['int', kind, 'null']
-        checks += [('' if kind in ('array', 'object') else '~') + '$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
+        checks += [('' if kind in ('array', 'object', 'true', 'false') else '~') + '$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
     for members in ([], ['int'], ['int', 'float', 'bool', 'string', 'null', 'int']):
         checks += ['~$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
     ordinary = raw(['int', 'float', 'null'])

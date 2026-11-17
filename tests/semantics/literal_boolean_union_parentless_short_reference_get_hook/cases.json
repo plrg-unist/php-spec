@@ -1,0 +1,181 @@
+{
+  "array-object-false": {
+    "members": [
+      "array",
+      "object",
+      "false"
+    ],
+    "raw_members": [
+      "array",
+      "object",
+      "false"
+    ],
+    "default": "false",
+    "initial": "PBOOL false",
+    "steps": [
+      {
+        "statement": "$a320 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "try { $b320 = true; } catch (\\TypeError $e) {",
+        "value": "PBOOL false",
+        "reject": true
+      },
+      {
+        "statement": "try { $a320 = 127; } catch (\\TypeError $e) {",
+        "value": "PBOOL false",
+        "reject": true
+      },
+      {
+        "statement": "try { $b320 = null; } catch (\\TypeError $e) {",
+        "value": "PBOOL false",
+        "reject": true
+      }
+    ],
+    "source": "array-object-false.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array|false",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    },
+    "stdout": "I|N|C|M|L|F|T|I|N|P|D|R|Z|"
+  },
+  "true-array-object-string": {
+    "members": [
+      "true",
+      "array",
+      "object",
+      "string"
+    ],
+    "raw_members": [
+      "TRUE",
+      "array",
+      "OBJECT",
+      "string"
+    ],
+    "default": "true",
+    "initial": "PBOOL true",
+    "steps": [
+      {
+        "statement": "$a320 = false;",
+        "value": "PSTRING_CARRIER INTERNED_STRING eps",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = 7;",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"7\"))",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = true;",
+        "value": "PBOOL true",
+        "reject": false
+      },
+      {
+        "statement": "try { $b320 = null; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      }
+    ],
+    "source": "true-array-object-string.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array|string|true",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    },
+    "stdout": "I|N|C|M|L|S|J|T|N|P|D|R|Z|"
+  },
+  "all-builtins-false": {
+    "members": [
+      "array",
+      "object",
+      "string",
+      "int",
+      "float",
+      "false",
+      "null"
+    ],
+    "raw_members": [
+      "array",
+      "object",
+      "string",
+      "int",
+      "float",
+      "false",
+      "null"
+    ],
+    "default": "null",
+    "initial": "PNULL",
+    "steps": [
+      {
+        "statement": "$a320 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = true;",
+        "value": "PINT 1",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = 17;",
+        "value": "PINT 17",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = 7.0;",
+        "value": "PFLOAT 4619567317775286272",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = '12';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"12\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "source": "all-builtins-false.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array|string|int|float|false|null",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    },
+    "stdout": "I|N|C|M|L|F|B|J|D|S|N|P|D|R|Z|"
+  }
+}

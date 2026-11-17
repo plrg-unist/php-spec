@@ -6,6 +6,7 @@ import json
 from itertools import permutations
 from pathlib import Path
 import subprocess
+import sys
 
 import scalar_union_parentless_short_reference_get_hook_protocol as prior
 from error_handler_run import recorded
@@ -39,7 +40,7 @@ def header_fields():
                    '~$hook_short_reference_header(' + prior.raw(members[:-1] + [members[0].upper()]) + ',' + prior.mask(duplicate) + ')']
         for kind in ('mixed', 'true', 'false', 'iterable', 'callable', 'void', 'never', 'integer'):
             forged = members[:-1] + [kind]
-            checks += ['~$hook_short_reference_header(' + prior.raw(forged) + ',' + prior.mask(forged) + ')']
+            checks += [('' if kind in ('true', 'false') and length <= 5 else '~') + '$hook_short_reference_header(' + prior.raw(forged) + ',' + prior.mask(forged) + ')']
     ordinary = prior.raw(['array', 'object', 'int'])
     for node in ('NName', 'NNameFullyQualified'):
         checks += ['~$hook_short_reference_header(' + ordinary.replace('NIdentifier', node, 1) + ',' + prior.mask(['array', 'object', 'int']) + ')']
@@ -188,7 +189,7 @@ def fields(fixture, source, case):
     return checks
 
 
-def main():
+def main(header_report=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--suite', choices=('weak', 'strict'), default='weak')
     selection = parser.add_mutually_exclusive_group(required=True)
@@ -198,7 +199,7 @@ def main():
     cases = json.loads((folder / 'cases.json').read_text()); assert args.headers_only or args.form in cases
     out = args.output.resolve(); out.mkdir(parents=True, exist_ok=False)
     modules = [ROOT / p for p in json.loads((ROOT / 'spec/semantics/modules.json').read_text())]
-    paths = [Path(__file__), Path(prior.__file__), Path(prior.prior.__file__), Path(prior.prior.prior.__file__), Path(prior.prior.peer.__file__),
+    paths = [Path(__file__), Path(sys.argv[0]).resolve(), Path(prior.__file__), Path(prior.prior.__file__), Path(prior.prior.prior.__file__), Path(prior.prior.peer.__file__),
              *folder.iterdir(), *modules, *(ROOT / p for p in ('spec/semantics/modules.json', 'spec/php.watsup',
              'spec/schema.json', 'frontend/worker.php', 'frontend/SourcePrinter.php', 'tests/semantics/recorded_worker.py',
              'tests/semantics/error_handler_run.py', 'tests/semantics/static_types.py', 'tests/semantics/profile.json',
@@ -209,8 +210,10 @@ def main():
               'scope': 'headers-only' if args.headers_only else 'lifecycle', 'mode': 'fixture-SL', 'source_agreement_credit': 0, 'passed': False}
     try:
         if args.headers_only:
-            checks = header_fields(); report['ordered_header_tuples'] = 112
-            report['retained_scalar_header_tuples'] = 300; report['promoted_prior_header_assertions'] = 16
+            checks = header_fields()
+            report.update(header_report if header_report is not None else {
+                'ordered_header_tuples': 112, 'retained_scalar_header_tuples': 300,
+                'promoted_prior_header_assertions': 16})
         else:
             source = folder / cases[args.form]['source']
             frontend = Worker([str(types.PHP), '-n', *types.FLAGS, '-d', 'extension=' + str(ROOT / '.tools/php-file.so'), str(ROOT / 'frontend/worker.php')], out / 'frontend')
