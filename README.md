@@ -16,6 +16,16 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Initialized ordinary NULL-CV inner unset keys share the saved-cell Warning route
+with BOOL, retaining the captured cell and corrected conversion, handler and owner
+bounds. Undefined, reference or released entries and wider lifetimes remain partial.
+[Review](coverage/semantics/string-offset-nested-unset-null-cv-warning-review.json).
+
+Direct plus/minus on plain true/false/null CONCAT leaves preserves exact
+INTERNED coalesce headers and frozen raw CV offsets through returning Warnings.
+True supplies integer ±1; false/null supply integer 0. Qualified names, nested
+signs and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-unary-keyword-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 Folded falsey full-ternary defaults preserve the selected scalar value and bindings while skipping unresolved names in the other branch. Exact falsey scalar or bare empty/`'0'` predicates and quiet null-to-int conversion retain source and owner bounds; wider forms remain partial. [Review](coverage/semantics/deferred-falsey-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Own public parentless short reference Get admits exact `Class|float` and `float|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. FLOAT tags, strict integer widening and quiet weak scalar conversions retain defining authority and existing alias/owner bounds; strict Boolean and string writes reject. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-float-union-parentless-short-reference-get-hook-review.json).

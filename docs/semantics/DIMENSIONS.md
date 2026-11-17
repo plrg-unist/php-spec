@@ -1333,6 +1333,18 @@ one immutable tuple. Wider callbacks/posts/lifetimes and every exact hold,
 reserve93807cdd6/255 and inventory169/306 remain partial/unchanged.
 [Corrected FLOAT post-value review](../../coverage/semantics/string-offset-nested-unset-bool-cv-float-post-review.json).
 
+Initialized ordinary NULL CVs now join BOOL through that same borrowed-cell
+Warning task. Raw UNSET_ARRAY/source/CODE/PNULL/current-cell/quiet-read proofs
+precede admission; source/task/owners and corrected postnormal/discard/range/mask
+guards remain exact. Native4 once/source4 and separate author SL185/133-derived+
+208/142-derived and independent SL122/23-derived+111/23-derived retain their cuts.
+Prelaw NORMAL/missing-H mismatches4 keep0; failures0. Placement `94ba17c31`,
+joined `04d52e8fd` and sole production-SL509 `453e5eb1` pass 16.742607196s/source0,
+independently clear through one immutable tuple. Undefined/ref/released entry,
+secondary range/default callbacks and wider lifetimes remain partial;
+every exact hold, reserve93807cdd6/255 and inventory169/306 remain unchanged.
+[Initialized NULL-CV review](../../coverage/semantics/string-offset-nested-unset-null-cv-warning-review.json).
+
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
 does not dispatch on its changed type and its result is unused. No current-key
