@@ -8,6 +8,14 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Deferred NaN spaceship originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/enum-deferred-nan-spaceship-wrapper-default-reception-281/`; the [review](../coverage/semantics/deferred-nan-spaceship-wrapper-default-reception-review.json) keeps the recorder failure/unrun cut at zero and binds the accepted actual/SAME tuple.
+
+BooleanNot shorthand originals and separate native-once/source/fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-boolean-not-string-cast-shorthand-base-initial-raw-leading-key-{author39,peer36}-20261117/`; the [review](../coverage/semantics/string-offset-runtime-boolean-not-string-cast-shorthand-base-initial-raw-leading-key-review.json) retains the original peer diagnostic/unrun and accepted actual/SAME tuple.
+
+Integer CONCAT-NOT selector originals and separate author/peer source and fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-integer-concat-not-tree-quiet-get/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-integer-concat-not-tree-quiet-get-review.json) keeps the original timeout and ordered381 partition bridge separate from accepted cuts.
+
+Ordered iterable/null multiple-CV originals and separate native-once/source/fixture cuts remain in `../php-spec-evidence-archive/multi-cv-union-null-iterable-formal-producer-reference-notice-101/`; the [review](../coverage/semantics/multi-cv-union-null-iterable-formal-producer-reference-notice-review.json) retains both whole packets, zero-credit failures and accepted actual/SAME tuple.
+
 Truthy emitted CASTSTRING shorthand originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-author32-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-truthy-shorthand-base-initial-raw-leading-key-review.json) retains their separate identities, zero-credit failures and accepted actual/SAME tuple.
 
 Direct emitted CASTSTRING base originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-string-cast-base-initial-raw-leading-key-author32-20261115/`; the [review](../coverage/semantics/string-offset-runtime-string-cast-base-initial-raw-leading-key-review.json) retains their separate identities, zero-credit failures and accepted actual/SAME tuple.

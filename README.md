@@ -16,10 +16,9 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover nullable iterable producer formals, all six
-int/float/null orders in short reference Get unions, deferred numeric equality,
-certified NOT in selected output-handler cast chains, and primitive/nonstring-cast
-shorthand conditions with string-cast fallbacks.
+Recent reviewed extensions cover ordered iterable/null producer formals, deferred
+NaN spaceship comparisons, BooleanNot shorthand conditions with string-cast
+fallbacks, and integer CONCAT truth in static magic Get selectors.
 Exact source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md)
 separates source agreements, fixture checks and combined production loads;
 complete core remains unfinished.
