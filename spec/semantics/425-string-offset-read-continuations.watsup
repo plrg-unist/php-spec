@@ -812,13 +812,15 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_left) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
-;; Literal NULL selects an emitted string cast's certified immutable header.
+;; Literal NULL selects a certified emitted immutable string result.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NExprConstFetch (NName (BYTES text_left) metadata_name) metadata_left) (NExprCastString expression_child metadata_right) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NExprConstFetch (NName (BYTES text_left) metadata_name) metadata_left) expression_right metadata)
   -- if $ptlc($base64(text_left)) = $ptascii("null")
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $compiled_read(S, porigin_left) = (PNULL)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_read(S, porigin_right) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; A literal NULL instead copies the fallback through QM_ASSIGN.
