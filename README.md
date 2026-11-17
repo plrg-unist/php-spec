@@ -36,7 +36,7 @@ Ordinary NaN-CV inner unset keys share the source-only FLOAT Warning task while 
 
 Quiet signed64 PINT SPACESHIP results cross nested handler casts as normalized -1/0/1 under the existing source, quiet-state and ownership guards. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-review.json).
 
-Quiet Boolean identity, equality, ordering and logical XOR of two signed64 integer children cross nested handler casts with exact Boolean results and existing quiet-state and ownership guards. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-review.json).
+Quiet Boolean identity, equality, ordering and logical XOR over recursively certified proper primitive children cross nested handler casts, preserving child nonownership and exact NORMAL whole-state equality. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-primitive-predicate-cast-chain-return-modulo-error-review.json).
 
 Direct unary-minus raw nonNaN FLOAT intermediate unset keys preserve exact child/folded/captured bits and value-free Warning resume. [Review](coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
 
@@ -99,7 +99,12 @@ Literal true/false intermediate string-offset unset keys preserve the cast-Warni
 
 Ordinary initialized BOOL-CV inner unset keys retain their physical entry cell through Warning callbacks; replacement cells or owning poststates remain Unsupported. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
 
-The saved BOOL-CV cell may hold quiet NULL, BOOL or signed64 INT after its Warning handler. Exact cell identity, quiet reads and owner bounds remain; wider postvalues and lifetimes stay partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-quiet-post-review.json).
+The saved BOOL-CV cell may hold quiet NULL, BOOL, signed64 INT or a finite FLOAT that fits signed64 after its Warning handler. Out-of-range finite discard requires a genuine pending Throwable and a restored eligible Warning handler; returning or masked out-of-range forms remain Unsupported. Exact cell/read/owner bounds and wider limits remain. [Quiet post-value review](coverage/semantics/string-offset-nested-unset-bool-cv-quiet-post-review.json), [FLOAT review](coverage/semantics/string-offset-nested-unset-bool-cv-float-post-review.json).
+
+Folded plain reserved true/false/null CONCAT leaves preserve exact INTERNED
+coalesce headers and frozen raw CV offsets through returning Warnings. False/null
+produce empty bytes and true produces `1`; wider names and lifetimes remain
+partial. [Review](coverage/semantics/string-offset-literal-keyword-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
 The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
 and combined production loads; complete core remains unfinished.

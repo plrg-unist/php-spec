@@ -1317,6 +1317,22 @@ lifetimes remain partial; exact holds, reserve93807cdd6/255 and inventory169/306
 remain unchanged.
 [Quiet post-value review](../../coverage/semantics/string-offset-nested-unset-bool-cv-quiet-post-review.json).
 
+Post-handler FLOAT values on that BOOL-CV route use `zval_get_long_func`:
+`is_strict=false` suppresses fractional Deprecated, while range Warning remains.
+Normal return now admits signed64-fitting finite values, including fractions
+and negative zero. Finite OOB discard additionally requires a real pending
+Throwable and restored eligible Warning handler; its live mask is not restored
+with the callback. Returning OOB and masked pending OOB stay Unsupported.
+Two fresh native counterexamples preserve the second-H/default-stderr gaps;
+their corrected Unsupported assertions retain credit0. Native6 once, affected
+normal source2, author SL186/133-derived+206/142-derived and independent
+SL233/161-derived+188/128-derived keep separate cuts. Blanket finite989/a547/fa7e
+acceptance remains withdrawn. Corrected `baa9d1de7`, actual `894482bce` and sole
+production-SL509 `d9c27265` pass 16.438920544s/source0, independently clear through
+one immutable tuple. Wider callbacks/posts/lifetimes and every exact hold,
+reserve93807cdd6/255 and inventory169/306 remain partial/unchanged.
+[Corrected FLOAT post-value review](../../coverage/semantics/string-offset-nested-unset-bool-cv-float-post-review.json).
+
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
 does not dispatch on its changed type and its result is unused. No current-key

@@ -1710,3 +1710,20 @@ loading pass separately in16.440706252 s/source0. Mixed/coercive operands and
 wider handlers/owners/lifetimes remain partial; every exact hold remains.
 [Integer predicate evidence](../../coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-review.json).
+
+Those nine Boolean predicates now consume recursively certified proper primitive
+children, retaining explicit child nonownership and exact quiet NORMAL full-state
+`binary_apply` equality. Source/CODE/terminal-line/fold/read and two-cast guards
+remain; the PINT arithmetic arm is unchanged. Nine originals strictly distinguish
+inner PBOOL, outer cast tags and mixed scalar truth/order, reusing native9 once.
+Author33/21 and independent228/26 retain separate private508 SL/source0 cuts.
+Source0 controls distinguish quiet NaN comparisons from visible or handler-eligible
+XOR; masked unhandled XOR requires exact whole-state equality. The initial invalid
+uppercase FLOAT fixture aborted before observed JSON, outside the checked domain,
+retaining0; only its canonical raw/fact-mismatch control was corrected.
+Actual `894482bce65` and SAME MAIN509 loading pass separately in16.438920544 s,
+with stable/reaped source0 evidence; prior campaigns are not renewed.
+Wider producers, operators, handlers, owners/lifetimes and every exact hold remain
+partial.
+[Primitive predicate evidence](../../coverage/semantics/output-final-selected-primitive-predicate-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-primitive-predicate-cast-chain-return-modulo-error-review.json).
