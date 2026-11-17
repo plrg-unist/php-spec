@@ -165,7 +165,6 @@ def conditions(program, path):
         'S_range_D.ERRORHANDLER.CALLBACK = eps',
         '$lookup(S_range_D.ENV, n_key_name*) = (n_key)',
         'S_range_D.STORE[n_key] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("done")))',
-        '~$string_unset_bool_cv_post_cell(S_range_D, n_key_name*, z_key, n_key)',
         '~$string_unset_cv_range_snapshot(S_range_D, porigin_site, z, n_key, n_bits)',
         '$call_task_valid(S_range_D, ptask_range)',
         '$error_call_valid(S_range_D, perrorcall_entered)',

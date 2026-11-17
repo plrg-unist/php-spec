@@ -1190,6 +1190,12 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_sources.py --output "$$nested_unset_cv_pending_range_out/source" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_protocol.py --source-report "$$nested_unset_cv_pending_range_out/source/report.json" --output "$$nested_unset_cv_pending_range_out/state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_review_state.py --source-report "$$nested_unset_cv_pending_range_out/source/report.json" --output "$$nested_unset_cv_pending_range_out/peer-state"
+	@nested_unset_cv_interned_post_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-interned-post-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_interned_post_sources.py --output "$$nested_unset_cv_interned_post_out/source" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_interned_post_protocol.py --index 0 --source-report "$$nested_unset_cv_interned_post_out/source/report.json" --output "$$nested_unset_cv_interned_post_out/leading-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_interned_post_protocol.py --index 2 --source-report "$$nested_unset_cv_interned_post_out/source/report.json" --output "$$nested_unset_cv_interned_post_out/empty-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_interned_post_review_state.py --index 1 --source-report "$$nested_unset_cv_interned_post_out/source/report.json" --output "$$nested_unset_cv_interned_post_out/peer-throw-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_interned_post_review_state.py --index 3 --source-report "$$nested_unset_cv_interned_post_out/source/report.json" --output "$$nested_unset_cv_interned_post_out/peer-null-state"
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"
@@ -4489,6 +4495,15 @@ test-semantics: build
 	python3 tests/semantics/class_array_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-array-fq-case-literal --output "$$(mktemp -d /tmp/php-spec-class-array-union-short-reference-get-review-fq.XXXXXXXX)/protocol"
 	python3 tests/semantics/class_array_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-relative-class-array-literal --output "$$(mktemp -d /tmp/php-spec-class-array-union-short-reference-get-review-relative.XXXXXXXX)/protocol"
 	python3 tests/semantics/class_array_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-array-imported-alias-literal --output "$$(mktemp -d /tmp/php-spec-class-array-union-short-reference-get-review-imported.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_sources.py --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-sources.XXXXXXXX)/sources"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-headers.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_protocol.py --form min-fq-numeric --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-fq.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_protocol.py --form mid-scoped-array --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-local.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_protocol.py --form max-imported-scalars --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-imported.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_review_sources.py --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-review-sources.XXXXXXXX)/sources"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-float-fq-class-array --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-review-fq.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-true-relative-array-string-null --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-review-relative.XXXXXXXX)/protocol"
+	python3 tests/semantics/class_builtin_union_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-float-array-imported-bool-string-int-null --output "$$(mktemp -d /tmp/php-spec-class-builtin-union-short-reference-get-review-imported.XXXXXXXX)/protocol"
 	python3 tests/semantics/deprecated_reference_object_float_sources.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float.XXXXXXXX)/sources"
 	python3 tests/semantics/deprecated_reference_object_float_review_sources.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float-review.XXXXXXXX)/sources"
 	python3 tests/semantics/deprecated_reference_object_float_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float.XXXXXXXX)/protocol"

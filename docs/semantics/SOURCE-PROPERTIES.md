@@ -2890,3 +2890,13 @@ Actual `d71822de2`, joined `7d785082` and sole production-SL509 `599f53d1`
 One physical saved-report read retains one load; its cached-label correction adds no run.
 Wider headers, array graphs and lifetimes remain partial; exact holds stay unchanged.
 [Independent review](../../coverage/semantics/class-array-union-parentless-short-reference-get-hook-peer-review.json).
+
+A quiet nominal class can also compose with several compatible builtin arms.
+Raw unions retain three to seven members: one class and two to six builtins.
+Allowed builtin arms are array, int, float, string, null, bool, false and true.
+At most one of bool, false or true occurs; duplicate and overlapping arms reject.
+The singleton class proof and full quiet normalization retain exact checked-AST order.
+Defining source/class/property/file/line authority and existing owner bounds remain.
+Actual typed reference checks preserve scalar rank, exact tags, aliases and array COW.
+Multiple classes, intersections, iterable and wider payloads/lifetimes remain partial.
+[Review](../../coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).

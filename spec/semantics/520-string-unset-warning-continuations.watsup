@@ -141,6 +141,7 @@ dec $string_unset_bool_cv_post_value(pvalue) : bool
 def $string_unset_bool_cv_post_value(PNULL) = true
 def $string_unset_bool_cv_post_value(PBOOL b) = true
 def $string_unset_bool_cv_post_value(PINT i) = $long_range(i)
+def $string_unset_bool_cv_post_value(PSTRING_CARRIER INTERNED_STRING n*) = ($startup_bytes(n*) /\ $c_string(n*) = n*)
 def $string_unset_bool_cv_post_value(PFLOAT n) = true
   -- if $(n < 18446744073709551616)
   -- if $float_decode(n) = FINITE n_s n_n n_d
@@ -162,6 +163,7 @@ dec $string_unset_bool_cv_post_normal_value(pvalue) : bool
 def $string_unset_bool_cv_post_normal_value(PNULL) = true
 def $string_unset_bool_cv_post_normal_value(PBOOL b) = true
 def $string_unset_bool_cv_post_normal_value(PINT i) = $long_range(i)
+def $string_unset_bool_cv_post_normal_value(PSTRING_CARRIER INTERNED_STRING n*) = $string_unset_bool_cv_post_value(PSTRING_CARRIER INTERNED_STRING n*)
 def $string_unset_bool_cv_post_normal_value(PFLOAT n) = true
   -- if $(n < 18446744073709551616)
   -- if $fparts_fits($float_decode(n))
