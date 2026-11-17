@@ -1,0 +1,141 @@
+{
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; project-local pinned oracle/profile",
+  "scope": "Bounded main/global nested string-offset unset with literal NULL intermediate key, a known signed64 final key and an eligible named STRING error handler. Source originals distinguish true return then nested Error at line5 from the same handler Exception at line2; both retain final assignment7.",
+  "status": "Independent source WHOLE and actual composition/SAME canonical clear; full core and wider string-offset behavior remain partial.",
+  "source": {
+    "revision": "c41e65f5b86f84e877737e5449922081eda65237",
+    "tree": "e09a8b912d716504007115654e274d4f94e72f3d",
+    "paths": 9,
+    "numstat": "+505/-2",
+    "freeze": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-null-warning/author-source-freeze34-v4.json",
+    "freeze_sha256": "21d9ed75f50ae1630e209c0a783d6593d2000b2c86774b086cf519cbad601021"
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_vm_def.h: ZEND_FETCH_DIM_UNSET",
+      "Zend/zend_execute.c: zend_fetch_dimension_address_UNSET and zend_fetch_dimension_address",
+      "Zend/zend_execute.c: zend_check_string_offset and zend_wrong_string_offset_error"
+    ],
+    "reason": "The string branch checks the offset for BP_VAR_UNSET and then raises the nested-string Error. The offset result and surviving base are unused; zend_wrong_string_offset_error leaves an existing callback exception intact."
+  },
+  "implementation": [
+    "spec/semantics/30-storage.watsup",
+    "spec/semantics/43-array-unset-control.watsup",
+    "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "spec/semantics/modules.json"
+  ],
+  "tests": [
+    "tests/semantics/string_offset_nested_unset_null_warning_cases.py",
+    "tests/semantics/string_offset_nested_unset_null_warning_sources.py",
+    "tests/semantics/string_offset_nested_unset_null_warning_protocol.py",
+    "tests/semantics/string_offset_nested_unset_null_warning_review_state.py"
+  ],
+  "invariants": [
+    "30 adds one value-free porigin/int continuation; 43 adds only its pending negative to the generic unset rule; new520 follows519 exactly in the509-module manifest. No207/249/255/root/helper edits.",
+    "Entry authenticates exact source/CODE/compiledNULL, the ordinary non-reference live CV and valid non-NUL string carrier, final signed64 key, main/global scope and no extra HELD or input roots.",
+    "Dispatch consumes only the producer head and preserves the exact tail. The four callback arguments retain level2, message, original file and inner line.",
+    "Resume uses the saved source/origin/line only. call_task_valid is an unconditional Boolean case, preventing the generic otherwise=true fallback on forged origin/source; the Error step does not read the surviving base.",
+    "Entered callback frames retain the source anchor. Normal return restores the handler before Error resumption; actual throw discards the marker, restores the handler and preserves the same Throwable.",
+    "Whole/split budget equality and public heap/call checks preserve final7, base/CODE/pools/heap bounds and nonownership."
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-null-warning",
+  "native_originals": {
+    "unique_programs": 2,
+    "executions_per_original": 1,
+    "reuse": "Exact saved original bytes/path/cwd/profile/argv from author-baseline-v1; no native replay in any source, author, peer or integration cut."
+  },
+  "source_agreement": {
+    "report": "author-source-v1/report.json",
+    "sha256": "85bc777f0b2446f408b17b79a4f3925f486e2de6b5eab51420ab527801d023db",
+    "programs": 2,
+    "mode": "production SL509",
+    "status": "first pass at c7b185daa; retained via the valid-state Boolean correction bridge"
+  },
+  "author_fixture_cuts": [
+    {
+      "report": "author-return-state-v2/report.json",
+      "sha256": "48f80140cfb51d6e510b933f136baefefde2d524e8c545dcad59c874df10db1a",
+      "conditions": 78,
+      "mode": "SL509",
+      "status": "pass at db0a0911d; retained"
+    },
+    {
+      "report": "author-throw-state-v1/report.json",
+      "sha256": "cc4fc949089596a83e0931bcc7e7f3ac0e7113b32d97b73c90ca017d2ac7b554",
+      "conditions": 78,
+      "mode": "SL509",
+      "status": "first pass at db0a0911d; retained"
+    }
+  ],
+  "independent_fixture_cuts": [
+    {
+      "report": "independent-return-state-v3/report.json",
+      "sha256": "3af3cdf2e0fa86679293aeb416955d5732993bca4574a4b7068ac1be4528041f",
+      "conditions": 96,
+      "derived_controls": 30,
+      "mode": "AL509",
+      "elapsed_seconds": 95.8808500767,
+      "cap_seconds": 180,
+      "status": "pass after the narrow Boolean certificate correction"
+    },
+    {
+      "report": "independent-throw-state-v1/report.json",
+      "sha256": "c0cb4e572e2818393add0594d4578f1f9599d65239c5f31628e3be5fae5f4747",
+      "conditions": 82,
+      "derived_controls": 16,
+      "mode": "AL509",
+      "elapsed_seconds": 141.428787708,
+      "cap_seconds": 180,
+      "status": "previously unrun; first pass"
+    }
+  ],
+  "fixture_observation": "Every author/peer cut has source0/native0. Fresh peer cuts are quiet, stable HEAD+inputs, trueLF/empty stderr and reaped at the original180 cap. No totals combine these cuts with native or source-program agreement.",
+  "preserved_zero_credit": [
+    {
+      "report": "author-baseline-v1/report.json",
+      "sha256": "deb72ee2baebe06e37010cd0a76c6f656608ee27c199abd2339268e61ed26fc4",
+      "outcome": "Two genuine prelaw NORMAL/wrong-generic-Error/missing-handler-output mismatches; zero semantic agreements."
+    },
+    {
+      "report": "author-return-state-v1/report.json",
+      "sha256": "f115ea6b8e8aea58d25ac3c8389fe31d1b7fc74fb3e842e759f0f44ee0f718a9",
+      "outcome": "Prepared77 failed algorithmic binding before evaluator; then-unrun throw remains separately unrun at that cut."
+    },
+    {
+      "report": "independent-return-state-v1/report.json",
+      "sha256": "11c61ebef9c01aa3abc8978d8b9049d17399c57d18ae69b261de662597263649",
+      "outcome": "Prepared96 failed parsing before evaluator; the NUL carrier fixture list was narrowly parenthesized."
+    },
+    {
+      "report": "independent-return-state-v2/report.json",
+      "sha256": "a88aaab3dd878d39bd8261cfdb6d5fd4802b51dfbcdbb68554227fad1ad226c2",
+      "outcome": "Evaluated return cut failed forged-origin refusal, exposing a real generic-fallback certificate defect; corrected only in new520."
+    }
+  ],
+  "compatibility_bridge": "Accepted source2 and author78/78 have the original source/origin guards true, so the new unconditional Boolean preserves their previous true result and every positive runtime transition. Only malformed-certificate rejection changes. Their original cuts are retained, not renewed; fresh peer96/82 cover the correction and previously unrun throw.",
+  "actual": {
+    "revision": "1a62cd725ed1b4e0f6501a8f6f896bfb36e7af36",
+    "tree": "f3ab2ec6789300e5e2642aa56ed3353da8ec3162",
+    "parent": "b1344f0749f1ea7ca2d85446eb805175b51a326c",
+    "composition_sha256": "df8d1b279425368eb6f49bc45c25440b81780b6b4873e89a613e04b787df2827",
+    "composition": "Reviewer36 verified all nine incoming/MAIN parent+post blobs/hashes, unique value-free constructor, literal Make recipe composition and exact43/modules/new520/tests; modules509 unique and520 immediately after519."
+  },
+  "canonical": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main81-string-null-warning-v1/report.json",
+    "sha256": "4ac834e0605dbd49b6d3d636fedbe4295f72317fb0d277daa63607c345445a46",
+    "mode": "production SL509",
+    "ordered_unique_argv_count": 512,
+    "identical_before_after_watched_inputs": 513,
+    "elapsed_seconds": 16.536198805086315,
+    "cap_seconds": 60,
+    "exit": 0,
+    "stdout": "trueLF",
+    "stderr": "empty",
+    "stable": true,
+    "reaped": true,
+    "source_programs": 0,
+    "independent_review": "ONE actual composition plus SAME saved canonical read clear36; no evaluation or later HEAD refresh."
+  },
+  "remaining": "BOOL/FLOAT/undefined or owning intermediate keys, wider source/caller/callback forms, NUL/raw/owning carriers and final operands or lifetimes outside these bounds remain partial. Every exact hold, reserve93807cdd6/255 and inventory169/306 remains unchanged. No engine divergence or full-core completion is claimed."
+}

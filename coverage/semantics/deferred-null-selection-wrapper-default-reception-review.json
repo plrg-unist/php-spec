@@ -1,0 +1,158 @@
+{
+  "milestone": "ENUM290 phase-safe selected NULL wrapper defaults",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "Exact phase-safe NULL full ternary, shorthand ternary and coalesce projections retain PNULL beside existing BOOL projections through deferred comparison and private INT reception. Both-NULL comparisons and selected NULL against numeric, BOOL and NaN values keep their actual result tags.",
+  "implementation": "Module519 adds a separate selected-PNULL arm and exactly three pooled receipts: full-true, full-false and shorthand-false, with values in [PNULL,PBOOL false,PBOOL true]. Exact root/chosen pools, Boolean condition, source/CODE identity and zero redirects remain required. The ABSENT-true and nonnull-coalesce Boolean routes remain unchanged. Existing emitted comparison, declaration ENV, Shared caches, private recipient cells and Warning reentry retain their bounds.",
+  "author_source": {
+    "revision": "fee6a72d5bee5fabad6eb7b85271b643f7017a1a",
+    "tree": "e233008daf05c3c1d0f1ca13a5de0cf49c990ea3",
+    "base": "59d28774ba78003f88c7153507050756eac3eec1"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/source-final-v3.patch",
+    "sha256": "add30216e4e4778a68c774d8a8479ec6f1aef48c0d02df040dd619ba93430f6c",
+    "bytes": 36089,
+    "files": 8,
+    "added": 340,
+    "removed": 16
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/source-final-v3-manifest.json",
+    "sha256": "d93d97440645d8e25784c5d5b8e272e9cf90756c621649a3748b5752318480ba",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/native-final.json",
+    "sha256": "c811a221cc6d6089300ee1c116cf0600f101bc177433871bfa21e5de2f8e7418",
+    "fresh_originals": 2,
+    "replays": 0,
+    "stable": true
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/baseline-v1/report.json",
+    "sha256": "c2b70e03a40d704028f74e45f96f325ff025ac13a0e9ecf3214bd7d80427d7b4",
+    "revision": "59d28774ba78003f88c7153507050756eac3eec1",
+    "expected_unsupported": 1,
+    "source_credit": 0
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/source-v1/report.json",
+    "sha256": "87e3ce1664dadd8fc8ab4770808f9cf9f9d1686b9ddb499421ed183b023116c1",
+    "revision": "ac2de7f080651af20bd436a4b4f168190fbab9d8",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      77.46410100907087,
+      63.0568489509169
+    ],
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/author-v1/closure-call-protocol-3ruto1wp/report.json",
+    "sha256": "55947a62ae0d01571fb4e8d0238a0f469d92290d1f0bed3e838ce1177d2093fa",
+    "conditions": 156,
+    "body": 150,
+    "setup": 6,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "source_credit": 0
+  },
+  "affected_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/affected-v1/closure-call-protocol-ifnm3s86/report.json",
+    "sha256": "8270c12417b6fab578c91d492fa2c6995ccae8ad23d4ef0ba541b5595c2ccccf",
+    "cuts": [
+      "287:16",
+      "288:28"
+    ],
+    "conditions": 44,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/peer-v1/closure-call-protocol-ugxrrrzq/report.json",
+    "sha256": "79d757a9bd0e3e5d99b312cb11d46a6aaaa403d287eb75229aff3c17160e3e7d",
+    "overall_result": "fail",
+    "retained_passing_cuts": [
+      "raw192",
+      "quiet31",
+      "boundary23",
+      "affected16+28"
+    ],
+    "retained_conditions": 290,
+    "failed_named_conditions": 102,
+    "failed_named_source_credit": 0,
+    "whole392_pass_claimed": false,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "revision": "6671ea897",
+    "tree": "f1ba3518"
+  },
+  "corrected_named_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-selection-wrapper-default-reception-290/peer-named-v2/closure-call-protocol-r2j180t9/report.json",
+    "sha256": "8fed2a4c5ed748c312238b6c01daa6060b4eab2c38db3a89705bf26ee3f5bbdb",
+    "conditions": 102,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "correction": "Six generated chosen-leaf value expectations changed from eps to PNULL: those leaves carry pool facts but no executable CODE/read. Forged BOOL false and PINT 0 facts still reject the receipt, Missing-name bindings and admission. The original named102 failure remains zero; retained290 and corrected102 are distinct cuts, without a whole392 pass.",
+    "revision": "f9f315781",
+    "tree": "abae2a02"
+  },
+  "independent_review": {
+    "reviewer": "recover23_enum_null_comparison_review",
+    "source8": "FULLCLEAR corrected v3 complete list and full postimages",
+    "actual_and_same_saved_read": "CLEAR once; author uses only the supplied immutable tuple"
+  },
+  "actual_source": {
+    "revision": "383aea680df6ebe41782b88cf63481b53fac76d4",
+    "tree": "190643913945080a868acd63d54c99cf86fa7f49",
+    "base": "4fa8360f73b6bb10c011a462e6d1503634e18308",
+    "files": 8
+  },
+  "canonical": {
+    "revision": "383aea680df6ebe41782b88cf63481b53fac76d4",
+    "tree": "190643913945080a868acd63d54c99cf86fa7f49"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main80-enum290-v1/report.json",
+    "sha256": "4ea33e0a7f9f0a3b7734c9e02aa119e9c2c919e0d26dd35ab13e0a0c77715caa",
+    "mode": "SL_mode",
+    "modules": 508,
+    "argv": 511,
+    "watch": 512,
+    "cap": 60,
+    "elapsed_seconds": 16.432147635146976,
+    "exit": 0,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main80-enum290-composition-v1/composition.json",
+    "sha256": "efc305e41caeec51757905ce9332acb61ee6c286df6c77efa785b75bbce8a588",
+    "scope": "Peer sole saved read confirms seven literal sourcefee6 full-parent/postimages, including prior289 law/helpers, and exact Make3 at the complete289 recipe anchor. Metadata uses only the supplied tuple without canonical reread or replay."
+  },
+  "scope_limits": [
+    "NULL strict identity at this increment",
+    "Raw or computed STRING/ARRAY/OBJECT producers",
+    "Demanded NaN truth, wider contexts, owners and lifetimes"
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Fixture conditions retain their separate source0/native0 cuts. Baseline Unsupported1 and the original named102 failure have zero agreement; no timeout, incomplete or unrun cut is counted. Accepted source2 and native2 were not renewed."
+}

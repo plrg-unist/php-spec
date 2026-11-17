@@ -1249,6 +1249,17 @@ Actual=SAME `fbac435c7` and sole production-SL508 load `db5fa9a2` pass
 held contour remain partial.
 [Registered STRING-key Error review](../../coverage/semantics/string-offset-nested-unset-registered-string-error-review.json).
 
+Literal NULL intermediate keys now dispatch the cast Warning to an eligible
+named STRING handler from the bounded main/global unset state. A true return
+resumes the fixed nested Error; a throw preserves the same Exception instead.
+The value-free continuation authenticates its source/origin/line without reading
+the base again, and introduces no owning input. Native2 once/source2, retained
+author SL78+78 and independent AL96/30-derived+82/16-derived retain separate cuts;
+the original author and both peer failures remain0. Actual=SAME `1a62cd725` and
+the sole production-SL509 load `4ac834e0605` pass 16.536198805s/source0. Wider keys,
+callers, callback producers, owners and lifetimes remain partial; exact holds stay unchanged.
+[NULL Warning review](../../coverage/semantics/string-offset-nested-unset-null-warning-review.json).
+
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
 offsets` without converting the key. The carrier arm requires a known bounded
@@ -1761,3 +1772,13 @@ independent391/291 and focused48 retain separate first-pass cuts. Actual/SAMEfde
 and its sole joined SL50816.732132342s/source0 are independently clear through one
 immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-spaceship-string-cast-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet emitted false Boolean/keyword AND/OR conditions select the exact INTERNED
+CASTSTRING shorthand fallback and preserve frozen raw CV keys through returning
+Warnings. Decisive AND skips RHS values and deeper facts while retaining its
+immediate source; false OR demands the quiet RHS proof. True roots stay nonstring.
+Native4 once/source4, prelaw136, author328/238 and independent437/337 retain
+separate cuts; the original external setup failure stays0. Actualc3b43a9e/SAME53782e75
+and the sole joined SL50816.440659384s/source0 are independently clear through
+one immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-short-circuit-string-cast-shorthand-base-initial-raw-leading-key-review.json).

@@ -1611,3 +1611,15 @@ retain0, including the original lifecycle packet. Actual composition and SAME
 operators, handlers, owners, lifetimes and every exact hold remain partial.
 [Terminal-line evidence](../../coverage/semantics/output-final-selected-terminal-line-bitwise-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-terminal-line-bitwise-cast-chain-return-modulo-error-review.json).
+
+The same nested casts also consume signed64 INT ADD/SUB/MUL over two certified
+proper children. Pure `binary_apply` must retain an in-range PINT and exact quiet
+NORMAL full-state equality; child/terminal lines, fold/read authority, nonownership
+and the two-cast gate remain. Six originals reuse six native observations once;
+author30/20 and independent130/22 retain separate SL fixture source0 cuts.
+Prelaw Unsupported2/other4unrun0 retain0. Actual composition and SAME
+`6c5a2cde9ba` pass the separate MAIN508 load in16.637693919 s/source0. Promotion,
+coercive/owning children, other operations and wider handlers/lifetimes remain
+partial; all exact holds remain.
+[Integer arithmetic evidence](../../coverage/semantics/output-final-selected-integer-arithmetic-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-arithmetic-cast-chain-return-modulo-error-review.json).
