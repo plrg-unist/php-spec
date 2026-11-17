@@ -1806,7 +1806,7 @@ INT/BOOL/FLOAT handler returns. Each indexed raw child retains SOURCE while its
 CODE/read remains absent. The own positive concat line, true folding flag, plain
 PSTRING pool bytes, empty effects and source/parser precision remain required.
 Existing compiled-string identity and whole NORMAL constant-entry equality apart
-from RESULT authenticate an INTERNED result with no value owners. Numeric leaves,
+from RESULT authenticate an INTERNED result with no value owners. Unary/FLOAT leaves,
 NUL and emitted CONCAT retain their separate boundaries.
 Six source agreements at `3bf77cc19` reuse the exact first native observation at
 `11bbde2ad` and five new native observations once. Pre-rule10 at `e7cd3aec9`,
@@ -1817,3 +1817,19 @@ Actual `ef0ecbf6` and SAME productionSL509 loading pass separately in
 handlers, owners/lifetimes and every exact hold remain partial.
 [Parser STRING CONCAT evidence](../../coverage/semantics/output-final-selected-parser-string-concat-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-parser-string-concat-cast-chain-return-modulo-error-review.json).
+
+Raw nonnegative signed64 INT leaves also compose recursively with those STRING
+trees. Each INT keeps its indexed SOURCE and exact decimal bytes; source precision
+remains authenticated even though integer text is precision-independent. Existing
+parent, pool, INTERNED, full NORMAL entry and nonownership guards remain.
+Six source comparisons reuse five new native observations and the saved first
+original once. Author frontier/lifecycle checks (27/19) and independent checks (84/23)
+retain separate private SL508 cuts. Only the exact old147 INT1 query changes expectation; no old
+campaign is replayed. The first peer fixture failed elaboration before evaluating
+any assertion; restoring its helper prefix corrected it. The joined production
+SL509 load at `548c625fa` passes in 16.030759096 seconds under the
+original cap of 60 seconds, with no source credit.
+Unary/FLOAT, overflow, NUL, emitted CONCAT and wider producers/handlers/lifetimes
+remain partial; every exact hold remains unchanged.
+[Parser integer CONCAT evidence](../../coverage/semantics/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-review.json).

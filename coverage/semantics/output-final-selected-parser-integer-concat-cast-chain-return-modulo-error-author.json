@@ -1,0 +1,264 @@
+{
+  "family": "output-final-selected-parser-integer-concat-cast-chain-return-modulo-error",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "independently reviewed bounded extension; family remains partial",
+  "scope": "The existing selected Warning/Deprecated two INT/BOOL/FLOAT return casts admit parser-literal CONCAT trees over non-NUL STRING and nonnegative signed64 raw INT leaves. Each INT authenticates its exact indexed SOURCE, range and pure decimal bytes. Existing own concat line, true folding flag, absent child CODE/read, parser/source precision, plain pool, empty effects, INTERNED identity, full NORMAL compiled-entry equality and nonownership guards remain.",
+  "engine_basis": "PHP8.5.10 scanner LNUM/HNUM returns LONG only within range and uses DOUBLE on overflow; parser scalar LONG is a ZVAL, while unary +/- are distinct AST nodes. zend_ast_create_concat_op folds two ZVAL children; concat_function uses zend_long_to_str for precision-independent decimal INT text. Existing authored20/45/46 parser folding, 33 compiled identity and 272 source precision remain authoritative. Only the bounded source-domain helper in456 gains four lines; no native evaluation fallback.",
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "source_package": {
+    "parent": "6594b14f3baa04048db3db9bb3f7015c1f239529",
+    "parent_tree": "d608cea1a33d472d71aa0bd7951bf2aa5cece8af",
+    "revision": "867e5b9d138d59ea91620f683d72791796f0c92e",
+    "tree": "d7bd6efea7940a7c2f1272befa76bd159029dbcd",
+    "file_count": 6,
+    "insertions": 216,
+    "deletions": 2,
+    "production_added_lines": 4,
+    "fixture_only_bridge": {
+      "source_and_author_revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+      "corrected_review_revision": "867e5b9d138d59ea91620f683d72791796f0c92e",
+      "changed_file": "tests/semantics/output_final_selected_parser_integer_concat_cast_chain_return_modulo_error_review_state.py",
+      "change": "Only PREFIX=current.PREFIX becomes PREFIX=previous.PREFIX, declaring the or131 helper used by the unchanged84/23 predicates.",
+      "changed_file_absent_from_source_and_author_input_maps": true,
+      "source_and_author_reruns": 0,
+      "original_failed_review_credit": 0
+    },
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/ready-source-148-reviewed-fixed-manifest.json",
+    "manifest_sha256": "50d2ea832c44cd428b5d8ea6245a8e50366d64100bf0ec97734035b79f063098",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/ready-source-148-reviewed-fixed.patch",
+    "patch_sha256": "cd81ba2c3f5bcc122e6c0386e1db1bc0017ec80952d014ce9f94b9f76bb4a6c7",
+    "runtime_sha256": "861697de9058cbd3294b11f908971ae65187d164b5ba91290e2acdeaf0b65eeb"
+  },
+  "prelaw": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-integer-concat-assessment-148/report.json",
+    "sha256": "9303661e6c73f45e07033b9ed14c5d719590ac26df01e2b51daf3ca0eb9f0d45",
+    "revision": "6594b14f3baa04048db3db9bb3f7015c1f239529",
+    "selection": [
+      1
+    ],
+    "observed_unsupported": 1,
+    "other_unrun_at_that_cut": 5,
+    "seconds": 37.941027065971866,
+    "watched_inputs": 517,
+    "source_credit": 0,
+    "original_source_sha256": "491d813045bc6ea9f6ac8e060901f1586b38cd4dcb652acc39618e26cdb7d535",
+    "original_source_bytes": 481,
+    "native_exit": 255,
+    "model_cli_exit": 1,
+    "stdout": "P",
+    "model_stderr": ""
+  },
+  "pre_rule_state": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/pre-01/report.json",
+    "sha256": "97db9bdef758785de7214e7ae286a7f213313a44f42ee6fb8cd6d05b527f1236",
+    "revision": "fa70274bb63acd6fcbd4f21b1de310f7b1a58e52",
+    "assertions": 10,
+    "groups": [
+      5,
+      5
+    ],
+    "seconds": 48.20379039715044,
+    "watched_inputs_each": 589,
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/pre-launch-01.json",
+    "launch_sha256": "3cef99957e0e994738db314cf6cd7c8d1ab0b9cbc15f0c60a00bc728a0f84819",
+    "source_credit": 0
+  },
+  "native": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/native-01/report.json",
+    "sha256": "5dcdd160693e3325f02e4f519db97138623bd0cfc364fbe7ccaa6195594314a7",
+    "revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+    "passed": true,
+    "seconds": 0.01180311106145382,
+    "watched_inputs": 25,
+    "stable": true,
+    "source_credit": 0,
+    "originals": 6,
+    "new_native_observations": 5,
+    "saved_native_observations": 1,
+    "observed_once": true,
+    "saved_first_report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-integer-concat-assessment-148/report.json",
+    "saved_first_report_sha256": "9303661e6c73f45e07033b9ed14c5d719590ac26df01e2b51daf3ca0eb9f0d45",
+    "reuse": "Exact original481-byte source, path, cwd, profile, argv and raw native streams are reused without replay.",
+    "mode_flag_note": "The merged native report's mode flag is false; its first row explicitly reuses the saved native observation, and only five rows launch native PHP."
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/after-01/report.json",
+    "sha256": "5df0408ed793b4f17d9bebb946638185762023f00311f58efb4f5c24c912ce65",
+    "revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+    "passed": true,
+    "seconds": 312.09103276208043,
+    "watched_inputs": 557,
+    "stable": true,
+    "source_credit": 6,
+    "originals": 6,
+    "native_reused_without_replay": true,
+    "result": "All six original paths match exact stdout P, full stderr, DivisionByZeroError Modulo by zero and fatal255. Strict witnesses distinguish inner STRING and outer INT/BOOL/FLOAT tags; only case6 retains two default Deprecated diagnostics.",
+    "caps": {
+      "steps": 100000,
+      "model_seconds": 90,
+      "process_seconds": 120,
+      "native_seconds": 10,
+      "outer_seconds": 660
+    }
+  },
+  "fixtures": {
+    "mode": "privateSL508/cache=false/det=true; source/native credit0",
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/front-01/report.json",
+      "sha256": "ab02a3903789b6b014b056f3ab931904d83b3d2d0149b07b17f44697f18dfc5b",
+      "revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+      "assertions": 27,
+      "groups": [
+        8,
+        8,
+        11
+      ],
+      "seconds": 252.5537114040926,
+      "watched_inputs_each": 589,
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/front-launch-01.json",
+      "launch_sha256": "3dd5d2c92c189862bb223fc41f99647c1df4d75511b7271a465c0db24922a526",
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/life-01/report.json",
+      "sha256": "54a0eda4599b1ff1cde427a4869adf2471e89c2ffc356055f4ba51737152088b",
+      "revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+      "assertions": 19,
+      "groups": [
+        6,
+        6,
+        7
+      ],
+      "seconds": 378.2553607011214,
+      "watched_inputs_each": 589,
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/life-launch-01.json",
+      "launch_sha256": "10fa8062ba3a754be607d73cdf3f25ddcfbf1c6565ca345bd0fa07823cb8d247",
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-front-02/report.json",
+      "sha256": "1346fb6bf59597c2ac02583a78390648aee5ffc3e17cec27c2beb183011127d7",
+      "revision": "867e5b9d138d59ea91620f683d72791796f0c92e",
+      "assertions": 84,
+      "groups": [
+        42,
+        21,
+        21
+      ],
+      "seconds": 273.00788746983744,
+      "watched_inputs_each": 635,
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-front-launch-02.json",
+      "launch_sha256": "0b6ab4925dfce5b26573ca5a66629d48e87e89e8116b4da0abc4ccc6677cefc3",
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-life-01/report.json",
+      "sha256": "94b034fbc7f96027b78d2623e7d8f320841b76f2a38d40508995d0648e402cf9",
+      "revision": "867e5b9d138d59ea91620f683d72791796f0c92e",
+      "assertions": 23,
+      "groups": [
+        7,
+        8,
+        8
+      ],
+      "seconds": 387.84195902897045,
+      "watched_inputs_each": 635,
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-life-launch-01.json",
+      "launch_sha256": "d5e7f0ce7ce55796031cd19eb19177de06a75d8f3a79fb42b0cdb27a7bbd04bc",
+      "source_credit": 0
+    },
+    "result": "Every evaluated assertion is raw true with quiet stderr, stable full maps/revisions and reaped empty process groups. INT0/MAX, hex and separator syntax, mixed/nested trees, wrong source/pool/CODE/UNIT/BODY/precision, forged negative/overflow, FLOAT/unary/keyword/cast/NUL fences and actual formal/native-cell retirement retain their own checks.",
+    "caps": {
+      "fixture_seconds": 300,
+      "outer_seconds": 660
+    }
+  },
+  "retained_failure": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-front-01/report.json",
+    "sha256": "c59440c5da68de6a4497ee7a2e4f14c725722cc492156044ea11814558fcf354",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-front-launch-01.json",
+    "launch_sha256": "88e2ebb491177fbc38155203814a0dfe20dbf1c65fdfc3b589870f36d216dbc6",
+    "revision": "8a418907aecab188ef874b6ade83c8d81f1cb287",
+    "seconds": 11.78139800298959,
+    "classification": "Fixture elaboration failure: function or131_drop is undefined; no semantic assertion evaluated.",
+    "scheduled_first_group": 42,
+    "evaluated_assertions": 0,
+    "other_fixture_groups_unrun": 2,
+    "source_credit": 0,
+    "correction": "Only the new review fixture PREFIX changes from current.PREFIX to previous.PREFIX, declaring the unchanged predicates' helper. Affected B-frontier02 runs once; B-lifecycle01 remains its first run.",
+    "correction_revision": "867e5b9d138d59ea91620f683d72791796f0c92e",
+    "source_native_and_author_reruns": 0
+  },
+  "reliability": {
+    "semantic_assertion_failures": 0,
+    "pre_main_fixture_failures": 1,
+    "fixture_corrections": 1,
+    "current_selected_unrun": 0,
+    "native_replays": 0,
+    "cap_changes": 0,
+    "preparation_only_assertions": [
+      "Reviewer initially checked for unused or131_fact_put in a generation-only declaration assertion; no worker ran and no predicate changed.",
+      "Author exclusive-create assertion found the already prepared attempt02 driver; no file changed or worker ran."
+    ]
+  },
+  "affected_prior_query": "Only the exact old147 raw INT1 query is promoted through its original query/compiled builder. No old147 campaign is replayed.",
+  "composition": {
+    "placed_revision": "1187caa88a03a77f5853747f6c0a044c01bb158d",
+    "placed_tree": "116abba858084dcb51db0f0bd81d0fd70bf32ee1",
+    "parent": "be5d401551581c44f9c110e13cb5d08648f55906",
+    "joined_revision": "548c625faea601070d8980491a394cd55606b294",
+    "joined_tree": "c252e9d7a273e4bb1c657a47524001dcad19b77d",
+    "assessment": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/peer-33-actual-01.json",
+    "assessment_sha256": "be289890558cf4a757e4ff403d49128a2b4e9915638d72fa0ae0911c2480b724",
+    "placement_map_sha256": "fe1db6506345fc569c35497c18d3a29b52201ba7641a45e93b1bac8763e6d424",
+    "own_nonmake_literal_posts": 5,
+    "own_make_recipes": 4,
+    "joined_make_recipes": 11,
+    "complete_own_and_joined_parent_inverses": true,
+    "canonical": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main99-output148-ref125-string-empty-array-canonical-v1/report.json",
+      "sha256": "3a519c806e7167f6e57e5f145ddc9819b296d269668cda22e251465c6917cf63",
+      "tested_revision": "548c625faea601070d8980491a394cd55606b294",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_inputs": 513,
+      "input_map_sha256": "d090d197e0d1d0f79ead04a05dfe5acb4fcfe187ea3b277f7d3f9a50db4f369c",
+      "seconds": 16.0307590959128,
+      "cap_seconds": 60,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "exit": 0,
+      "stable": true,
+      "reaped": true,
+      "timeout": false,
+      "source_credit": 0,
+      "physical_saved_report_reads": 1,
+      "final_policy": "Same saved-report summary cached for one fixed final; no additional load, raw report refresh or later HEAD refresh."
+    }
+  },
+  "independent_review": "coverage/semantics/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-review.json",
+  "limits": "Unary/FLOAT, overflow, NUL, emitted CONCAT and wider producers/handlers/owners/lifetimes remain partial. Every exact hold, reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged. Complete core, later Rocq/interaction-tree/CRIS semantics and BOLA proofs remain unfinished.",
+  "metadata_semantic_runs": 0,
+  "documentation_operations": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-148/family-metadata-148-common-ops.json",
+    "sha256": "f9b74e4d35edce8627e0743a6f2e3da37d3c1024340862044ab9bf569b305178",
+    "private_common_files_written": 0,
+    "assigned_common_composer_only": true
+  }
+}
