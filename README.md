@@ -11830,3 +11830,5 @@ frozen raw CV offsets through returning Warnings. Complete child SOURCE, quiet
 typed VALUE, equal raw-live/compiled precision and exact allocation replay remain
 required; integer bounds and wider partial contexts remain unchanged.
 [FLOAT cast review](coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
+
+Emitted string casts preserve an already-certified REQUEST temporary header through raw-key Warnings without appending a registry row. Exact source, compiler, precision, provider and owner guards remain. Wider producers and lifetimes stay partial. [Review](coverage/semantics/string-offset-runtime-allocated-string-identity-cast-base-initial-raw-leading-key-review.json).

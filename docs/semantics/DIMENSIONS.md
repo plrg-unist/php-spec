@@ -2137,3 +2137,13 @@ is distinct from the factual two physical report reads after the ROOT-authorized
 reader recovery; author raw reads remain0. Nonempty/wider arrays, cells, owners
 and lifetimes remain partial; all exact holds and the withdrawn blanket finite
 acceptance remain unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-empty-array-post-review.json).
+
+Emitted STRING casts also preserve an already-certified allocated REQUEST child
+without a new registry row. Full indexed child SOURCE, own false CODE/read-eps/line,
+equal own/child precision, recursive allocation authority and exact full-state cast
+replay retain the same header. Raw/INTERNED/clone or uncertified real-CV children
+do not gain allocation authority. Existing prefix/KNOWN/non-NUL/provider/owner
+guards remain. Native2 once/source2, author290/344 and independent613 retain
+separate cuts; the original compiler-only fixture failure keeps0. WHOLE12 and actual/SAME09fd36f77/solecfe47951 pass through immutable7caa0812
+with source0 and one cached saved-report/map read. Wider producers,
+precision histories, NUL and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-allocated-string-identity-cast-base-initial-raw-leading-key-review.json).
