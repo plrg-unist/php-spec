@@ -2700,3 +2700,18 @@ remain0; this slice had no failed execution cuts. Actual `0efbd08e6` and its sol
 production-SL508 load (15.888344376 s) are independently clear. Wider headers,
 owners and lifetimes remain partial; all exact holds remain.
 [Review](../../coverage/semantics/literal-boolean-union-parentless-short-reference-get-hook-review.json).
+
+COMP322 admits exact quiet fully qualified class singleton and nullable headers
+for that same short reference Get. Raw class spelling matches normalized bytes
+exactly; existing runtime matching remains case-insensitive. Whole-name `_`
+warning handling remains outside this slice, while `Ns\_` stays admissible.
+Six corrected originals agree using current native observations once, with real
+`stdClass`/plain-user objects, case variations, copies, retargeting, refused writes
+and quiet source detach. Separate author100/255/254/265 and peer100/255/265/264
+fixtures retain source0. Original nested-writer Unsupported1/other5 unrun and
+original native/prelaw versions stay distinct; corrected fixtures use supported
+direct consumers. Actual `ff79f6b6c` and its sole production-SL508 load
+(16.893319101 s) are independently clear. Plain/relative/imported names, raw
+class-bearing unions, nested hook writers and wider values, owners and lifetimes
+remain partial; all exact holds remain.
+[Review](../../coverage/semantics/fully-qualified-class-parentless-short-reference-get-hook-review.json).

@@ -1336,3 +1336,15 @@ binds tested882 to canonical884 through the explicit unchanged two-file bridge.
 [Author history](../../coverage/semantics/reference-runtime-originals.json) and
 [publication/CLI evidence](../../coverage/semantics/reference-runtime-publication-originals.json)
 retain their separate scopes and original failures.
+
+Completed required ordinary-CV producers admit exact ordered `iterable|float`
+and `float|iterable` returns for one or multiple positions. Raw/normalized order,
+formal authentication, actual return conversion, frame retirement and finite
+private Notice cells remain required. Weak numeric text converts to FLOAT; strict
+INT widens to FLOAT, while strict numeric text rejects before the outer Notice.
+The [float/iterable-return review](../../coverage/semantics/cv-union-float-iterable-return-producer-reference-notice-review.json)
+keeps seven originals/native4+3 once and separate author/independent source7 with
+477/351 fixture-SL507 cuts distinct from actual `dd3e79342` and joined SAME
+`fde250339`. Its sole saved production-SL508 load passes in16.732132342s/source0.
+Other iterable union partners, wider headers, payloads and lifetimes remain partial;
+every exact hold stays unchanged.

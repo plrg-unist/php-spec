@@ -1,0 +1,143 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_bytes": 8,
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed producers with one or more required ordinary-CV arguments; exact two-Identifier iterable|float or float|iterable returns with matching ordered normalized singleton branches and casefolded raw names.",
+  "implementation": {
+    "revision": "a18e44d3f14d806c736dabeafe971723d3c71cc3",
+    "tree": "eb77e107b1229eca9cca4e94a37d946b06df7641",
+    "source_files": 13,
+    "manifest": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/author/source13-manifest-v1.json",
+    "manifest_sha256": "1318d795a4efcc823ccc07216b60ace3192815df07101b529c7d43e8e5e0806b",
+    "rule": "Dedicated nonempty-CV ordered float/iterable RETURN arm reuses the existing argument proof with RETURNS cleared. Four exact older helper polarity bridges preserve the newly admitted pair. Formal authentication, epsilon behavior, earlier disjoint singleton dispatch, actual return verification, frame retirement and finite private Notice-cell guards remain."
+  },
+  "engine_sources": [
+    "Zend/zend_compile.c: zend_compile_single_typename, zend_compile_typename_ex",
+    "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_execute.c: zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_return_error"
+  ],
+  "native": {
+    "unique_originals": 7,
+    "executions_once": [
+      4,
+      3
+    ],
+    "reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/author/native-first-v1/report.json",
+        "sha256": "1586404ad0f93951718743476db9621e20a25b96da7c5d0f64495fda91a3df48"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/peer/native-first-v1/report.json",
+        "sha256": "beae1d98ddfe160bfa97297c559e409267841791a4e255672ef60fb1d9788788"
+      }
+    ]
+  },
+  "private_validation": {
+    "source_mode": "production-SL/cache=false/det=true",
+    "fixture_mode": "fixture-SL/cache=false/det=true",
+    "module_count": 507,
+    "source_agreements_per_packet": 7,
+    "fixture_conditions_per_packet": [
+      477,
+      351
+    ],
+    "fixture_reached_per_packet": [
+      318,
+      253
+    ],
+    "fixture_derived_per_packet": [
+      159,
+      98
+    ],
+    "fixture_source_agreements": 0,
+    "stable_inputs_and_heads": true,
+    "quiet_stderr": true,
+    "timeouts": false,
+    "remaining_process_groups": [],
+    "packets": [
+      {
+        "role": "author",
+        "revision": "a18e44d3f14d806c736dabeafe971723d3c71cc3",
+        "summary": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/author/whole-summary-v1.json",
+        "sha256": "11fa23c3ed5c06069c4abcd3fbe81374cf4be3bab12417fe4d7ff7eea0e2711e",
+        "elapsed_seconds": 289.9830815792084
+      },
+      {
+        "role": "independent",
+        "revision": "42c12a59eae8fdb538eda180ab0c7fdba05ff382",
+        "tree": "a6dd5988c38f233d93c4bd77869d44932ef01033",
+        "summary": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/peer/whole-summary-v1.json",
+        "sha256": "7dd30c666aa767e725f98118d03aef23c2bc4b0d2b8e27cca0041c31d351fab3",
+        "elapsed_seconds": 300.58078265190125
+      }
+    ]
+  },
+  "prelaw": {
+    "source_agreements": 0,
+    "successful_front_conditions": [
+      221,
+      182
+    ],
+    "front_reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/author/prelaw-state-v1/report.json",
+        "sha256": "63679ca3640bb1fe0eab4664cec1a6e87896d3c78d61f16bf3d2ebdf6b97d6cc"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/peer/prelaw-state-v1/report.json",
+        "sha256": "72920b2eb493c957f3185031500cff7cc078195e070f39dfc3872c02b0cdcaef"
+      }
+    ],
+    "first_sources": [
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/author/prelaw-source-v1-pk482hzm/report.json",
+        "sha256": "ea1894997244a7f60df0885597d8a0907a50ea51de0e0d6379af81f52911833d",
+        "outcome": "first saved-native source Unsupported; report false and zero source agreement"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-union-float-iterable-return-producer-reference-notice-107/peer/prelaw-source-v1-sswv571i/report.json",
+        "sha256": "8dc64e5d8490481cced4ce25b9c12c0a9a23bf04cff6c6056e03be35a0509c91",
+        "outcome": "first saved-native source Unsupported; report false and zero source agreement"
+      }
+    ]
+  },
+  "composition": {
+    "actual_revision": "dd3e79342c9263c8eef5bfc821dc8ede3fa58059",
+    "actual_tree": "8371204de015ec11545cf3c0a25b0d9f0baca9a7",
+    "parent": "33b6439ed6f4d75b6a0b4d063c18b1b5eba6c137",
+    "same_revision": "fde250339c73736b3f75d38b4b98833a38521bcc",
+    "same_tree": "6d1ecd43cc4342102b4be38520c42f15a878137d",
+    "source_files": 13,
+    "literal_postimages": 12,
+    "make": "one unique recipe insertion at the existing REF106 anchor",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main79-ref107-composition-v1/composition.json",
+    "sha256": "6db06e3d58496925d376c5293c3cbd1627bb843f0e7c021ad4ab12317b59c520",
+    "joined_source_files": 29,
+    "joined_report": "../php-spec-evidence-archive/resumed-main-20261112/main79-ref107-enum288-spaceship-joined-composition-v1/composition.json",
+    "joined_sha256": "d1a20dab7215f6e6240db1580f140181a63e92ef85f6fc53144998b923382f8b",
+    "saved_load": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main79-ref107-enum288-spaceship-joined-v1/report.json",
+      "sha256": "7ddff73f49e7da2c046cc646fe317bb4dd24ac3c72229112e9ccc907af877757",
+      "mode": "production-SL/cache=false/det=true",
+      "module_count": 508,
+      "argv_modules": 511,
+      "watch_paths": 512,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.732132341945544,
+      "passed": true,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "quiet_stderr": true,
+      "remaining_process_groups": []
+    },
+    "review": "Independent actual/SAME read of the sole saved canonical load; immutable tuple supplied to the author without rereading canonical evidence."
+  },
+  "limits": "Other iterable union partners, longer unions, wider producer headers, Traversable Notice payloads and wider ownership/lifetime contexts remain partial. Every standing hold and reserved boundary is unchanged. Repeated packets do not add unique-source credit."
+}
