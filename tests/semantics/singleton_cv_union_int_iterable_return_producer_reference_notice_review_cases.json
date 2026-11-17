@@ -1,0 +1,89 @@
+[
+  {
+    "id": "weak-int-result-single-cv-ordered-int-iterable-return-and-private-cell",
+    "namespace": "ReviewScalarSingleCvUnionIntIterableReturn106",
+    "return_members": [
+      "int",
+      "iterable"
+    ],
+    "value_kind": "int",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewScalarSingleCvUnionIntIterableReturn106;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):iNt|iTeRaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['n'=>41];return $value;}\n$x='17';$copy=$x;$alias=&$x;set_error_handler('ReviewScalarSingleCvUnionIntIterableReturn106\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',$copy,';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',$copy,';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:17;C:43:41;D:done:41:17;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "e1e622cecb0e8d31b99ed4006997871094b5a698fbfad3a07dcb5dd97ede6777",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "weak-int-result-second-cv-ordered-int-iterable-return-and-untyped-private-cell",
+      "source_sha256": "319a8d08df9b84ffc2dc8f884fc463511905ce44da1bf97c01dd6e0696582d58",
+      "edits": "Fresh namespace; remove stamp formal, actual, caller initialization and all stamp effects/observations to leave exactly one required ordinary-CV actual. Array case crosses raw/normalized return order to iterable|int. Scalar private-cell, COW, handler-throw retirement and strict return-error priority observations remain."
+    }
+  },
+  {
+    "id": "single-cv-array-byref-ordered-iterable-int-return-handler-throw-retirement",
+    "namespace": "ReviewFirstArraySingleCvUnionIntIterableReturn106",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "int"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstArraySingleCvUnionIntIterableReturn106;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved):iTeRaBlE|iNt{echo 'S;';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewFirstArraySingleCvUnionIntIterableReturn106\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\n\n",
+    "native_stdout": "A;S;M:5;H:8;T:11:23:3;Q:29:11:3;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "d9b73f7896310cfc1fd050c3f79e5aafef879fa262e62d7591d413747e97ef91",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "first-ordered-formal-int-iterable-return-array-byref-second-int-handler-throw-retirement",
+      "source_sha256": "fb11898d765e700f1559987ac64ce8f10c340c8ef8ae40a1686a7c26549f5802",
+      "edits": "Fresh namespace; remove stamp formal, actual, caller initialization and all stamp effects/observations to leave exactly one required ordinary-CV actual. Array case crosses raw/normalized return order to iterable|int. Scalar private-cell, COW, handler-throw retirement and strict return-error priority observations remain."
+    },
+    "expected_notice_line": 8,
+    "last_actual_source_line": 8,
+    "first_actual_source_line": 8
+  },
+  {
+    "id": "single-cv-strict-ordered-iterable-int-return-error-precedes-outer-notice",
+    "namespace": "ReviewStrictSingleCvUnionIntIterableReturnPriority106",
+    "return_members": [
+      "iterable",
+      "int"
+    ],
+    "value_kind": "string",
+    "formal_kind": null,
+    "formal_byref": true,
+    "caller_kind": "string",
+    "priority_control": true,
+    "callee_strict": true,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewStrictSingleCvUnionIntIterableReturnPriority106;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(&$saved):iTeRaBlE|int{echo 'M;';$saved='17';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x='old';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewStrictSingleCvUnionIntIterableReturnPriority106\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',$x,':',$alias,':',$copy,';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',$copy,';';\n",
+    "native_stdout": "A;M;T:11:17:17:old;D:11:23:old;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f19b161b8ddf6d4204d567270788a719335f8f726d71a216fe3ae13b514c1856",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "strict-ordered-iterable-int-return-error-precedes-outer-notice-after-byref-write",
+      "source_sha256": "d186c4fe0d1f3ce9b672dbe6ca5e26db96b17557c5b8a9e4f8bf019b1b7caebb",
+      "edits": "Fresh namespace; remove stamp formal, actual, caller initialization and all stamp effects/observations to leave exactly one required ordinary-CV actual. Array case crosses raw/normalized return order to iterable|int. Scalar private-cell, COW, handler-throw retirement and strict return-error priority observations remain."
+    }
+  }
+]

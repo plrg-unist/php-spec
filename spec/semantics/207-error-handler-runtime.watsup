@@ -909,6 +909,9 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if |phpType7*| = 1 /\ |phpType17*| = 1 /\ pssignature.RETURNS = eps
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE =/= eps /\ psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "array"]))]
+  -- if psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "iterable"]))]
+  -- if psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "iterable"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTBUILTIN "iterable"]))]
   -- if $reference_notice_producer_multiple(phpType7*, phpType17*, pssignature.PARAMETERS)
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
   -- if $(|phpType7*| > 1) /\ pssignature.RETURNS = eps
@@ -1022,7 +1025,7 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first, NIdentifier (BYTES text_second) metadata_second])) metadata_union, pssignature) = true
-  -- if $(|phpType7*| > 1)
+  -- if $(|phpType7*| > 0)
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
   -- if text_first_type <- ["iterable", "int"] /\ text_second_type <- ["iterable", "int"] /\ text_first_type =/= text_second_type
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)

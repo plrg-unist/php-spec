@@ -155,7 +155,7 @@ def controls(case):
         lines.append('~' + header + 'phpType18, ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for edit in ('REQUIRED = false', 'VARIADIC = true', 'BYREF = ' + str(not case['formal_byref']).lower(), 'DEFAULT = PSDEFAULTUNSUPPORTED "forged producer default"'):
         lines.append('~' + header + 'phpType18, ' + signature + '[.PARAMETERS = [psparam[.' + edit + '], psparam_other]])')
-    lines.append('~$reference_notice_producer_header(SEQUENCE ([phpType7_actual]), SEQUENCE ([phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam]])')
+    lines.append('$reference_notice_producer_header(SEQUENCE ([phpType7_actual]), SEQUENCE ([phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam]])')
     for bad_arg in ('NArg ABSENT expression_actual (BOOLEAN true) (BOOLEAN false) metadata_actual', 'NArg ABSENT expression_actual (BOOLEAN false) (BOOLEAN true) metadata_actual'):
         lines.append('~$reference_notice_producer_header(SEQUENCE ([' + bad_arg + ', phpType7_other]), phpType16, phpType18, ' + signature + ')')
     for member in ('iterable', 'int'):
