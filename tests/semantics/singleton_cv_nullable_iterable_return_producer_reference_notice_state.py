@@ -68,7 +68,9 @@ def controls(case):
     else:
         lines += ['metadata_nullable = metadata_union']
     promoted = [line for line in prior.controls(case)
-        if line.startswith(header + 'NNullableType ') or line.startswith(header + 'NUnionType ')]
+        if (line.startswith(header + 'NNullableType ') or line.startswith(header + 'NUnionType '))
+        and any(line.endswith(signature + '[.RETURNS = ' + branches(members) + '])')
+            for members in (['iterable', 'null'], ['null', 'iterable']))]
     assert len(promoted) == 3
     lines += promoted
     lines += [header + 'NIdentifier (BYTES text_return) metadata_return, ' + signature + '[.RETURNS = ' + prior.ITERABLE + '])',
@@ -85,7 +87,7 @@ def controls(case):
         false_node = '(NIdentifier (BYTES "ZmFsc2U=") metadata_return)'
         iterable_node = '(NIdentifier (BYTES text_return) metadata_return)'
         nodes = [iterable_node if kind == 'iterable' else false_node for kind in members]
-        lines += ['~' + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_union, ' + signature + '[.RETURNS = ' + branches(members) + '])']
+        lines += [header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_union, ' + signature + '[.RETURNS = ' + branches(members) + '])']
     for edit in ('REQUIRED = false', 'VARIADIC = true', 'BYREF = ' + str(not case['formal_byref']).lower(),
                  'TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]'):
         lines += ['~' + header + 'phpType18, ' + signature + '[.PARAMETERS = [psparam[.' + edit + ']]])']

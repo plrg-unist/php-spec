@@ -1,0 +1,106 @@
+[
+  {
+    "id": "multiple-cv-array-byref-ordered-literal-false-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "MultiCvArrayOrderedFalseIterableReturn110",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvArrayOrderedFalseIterableReturn110 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(int $stamp,aRrAy &$input):iTeRaBlE|fAlSe{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvArrayOrderedFalseIterableReturn110\\\\h',8);echo 'A;';\n$r=&take(make($stamp,$source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "id": "multiple-cv-array-byref-ordered-string-iterable-return-embedded-alias-and-private-cell",
+      "source_sha256": "d64c1ba88697a036290818951195ccab93c90809af62312beaf32ba3a83310e5",
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_cases.json",
+      "edits": "Fresh namespace; exact ordered iterable/literal-Boolean return replaces String/iterable. Existing required one/two-CV formals and array/alias/COW observations stay unchanged. Priority source returns integer17 in weak mode, which must reject rather than coerce to true."
+    },
+    "source_sha256": "dd1ce9b2fd63098093b9cc77ba1e7e380326d1bcdeda203aa2954bd355fec810",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "false"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-untyped-byval-ordered-literal-false-iterable-return-cow-and-private-cell",
+    "namespace": "SingleCvUntypedOrderedFalseIterableReturn110",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace SingleCvUntypedOrderedFalseIterableReturn110;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved):fAlSe|iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('SingleCvUntypedOrderedFalseIterableReturn110\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "id": "single-cv-untyped-byval-ordered-string-iterable-return-cow-and-private-cell",
+      "source_sha256": "c8eb4ba754fef9614cbe27357f24c456b912c19c7f11ef82e3df97e2006489ea",
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_cases.json",
+      "edits": "Fresh namespace; exact ordered iterable/literal-Boolean return replaces String/iterable. Existing required one/two-CV formals and array/alias/COW observations stay unchanged. Priority source returns integer17 in weak mode, which must reject rather than coerce to true."
+    },
+    "source_sha256": "89f6647c8ee1d8db23bf25af059e8a9c2f2f472252485c9e165fb67dccc701ef",
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "false",
+      "iterable"
+    ],
+    "cv_arity": 1
+  },
+  {
+    "id": "multiple-cv-strict-int-byval-ordered-literal-true-iterable-return-and-private-cell",
+    "namespace": "MultiCvIntOrderedTrueIterableReturn110",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvIntOrderedTrueIterableReturn110;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved,int $stamp):iterable|tRuE{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('MultiCvIntOrderedTrueIterableReturn110\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "id": "multiple-cv-strict-int-byval-ordered-string-iterable-return-and-private-cell",
+      "source_sha256": "464d2041842e8a13e38a88f6729791d60d00585cadf02a0e8cc2a50235cc06ab",
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_cases.json",
+      "edits": "Fresh namespace; exact ordered iterable/literal-Boolean return replaces String/iterable. Existing required one/two-CV formals and array/alias/COW observations stay unchanged. Priority source returns integer17 in weak mode, which must reject rather than coerce to true."
+    },
+    "source_sha256": "7482de5c6494fa6ccb7e7eb1a8fad20d27553cb9475324ca91b3de372cb550bc",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "true"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-ordered-literal-true-iterable-return-type-error-precedes-outer-notice",
+    "namespace": "SingleCvOrderedTrueIterableReturnPriority110",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\nnamespace SingleCvOrderedTrueIterableReturnPriority110 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input):tRuE|iterable{$input=17;echo 'M;';return 17;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=[];$sourceAlias=&$source;$r='old';set_error_handler('SingleCvOrderedTrueIterableReturnPriority110\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "id": "single-cv-ordered-string-iterable-return-type-error-precedes-outer-notice",
+      "source_sha256": "4f5cfc471550b971cb2af09c97c54ceff818c9e351b4e176a11af4c98bedae6c",
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_cases.json",
+      "edits": "Fresh namespace; exact ordered iterable/literal-Boolean return replaces String/iterable. Existing required one/two-CV formals and array/alias/COW observations stay unchanged. Priority source returns integer17 in weak mode, which must reject rather than coerce to true."
+    },
+    "source_sha256": "91889aa2e04d33621258add125164a98e3485a01a768b5f7bce9c872f43bb92b",
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "true",
+      "iterable"
+    ],
+    "callee_strict": false,
+    "cv_arity": 1
+  }
+]

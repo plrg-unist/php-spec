@@ -161,7 +161,7 @@ def controls(case):
             if reverse:
                 nodes.reverse()
                 branches.reverse()
-            lines += [('' if suffix == 'null' else '~') + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = [' + ', '.join(branches) + ']])']
+            lines += [header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = [' + ', '.join(branches) + ']])']
     for edit in ('REQUIRED = false', 'VARIADIC = true', 'BYREF = ' + str(not case['formal_byref']).lower(),
                  'TYPE = [(PTBRANCH ([PTBUILTIN "bool"]))]'):
         lines += ['~' + header + 'phpType18, ' + signature + '[.PARAMETERS = [psparam[.' + edit + ']]])']

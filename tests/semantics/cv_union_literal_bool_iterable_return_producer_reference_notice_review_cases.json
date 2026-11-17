@@ -1,0 +1,106 @@
+[
+  {
+    "id": "one-cv-exact-false-iterable-return-private-cell",
+    "namespace": "ReviewFalseCvUnionLiteralBoolIterableReturn110",
+    "return_members": [
+      "false",
+      "iterable"
+    ],
+    "value_kind": "bool",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "bool",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewFalseCvUnionLiteralBoolIterableReturn110;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):fAlSe|iTeRaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=['n'=>41];return $value;}\n$x=false;$copy=$x;$alias=&$x;set_error_handler('ReviewFalseCvUnionLiteralBoolIterableReturn110\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy===false),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===false),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "c88362a1dd8e19c49e803dad1e385bb976441e0b4907d814770b3cc94dbff31e",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-weak-int-string-iterable-return-interned-private-cell",
+      "source_sha256": "8b9d09c61e02feedae6250665f34d6a18a63aa68ea66ae72fbd4f2d4501ada44",
+      "edits": "Fresh namespace and exact ordered literal-false/true iterable returns. Scalar witnesses return exact Boolean inputs with strict private-value and caller-copy observations; array witness retains ordinary CVs, nullable-union BYREF formal and handler-throw retirement."
+    },
+    "cv_arity": 1,
+    "input_value": "PBOOL false",
+    "bool_result": false
+  },
+  {
+    "id": "two-cv-exact-true-iterable-return-private-cell",
+    "namespace": "ReviewTrueCvUnionLiteralBoolIterableReturn110",
+    "return_members": [
+      "true",
+      "iterable"
+    ],
+    "value_kind": "bool",
+    "formal_kind": "bool",
+    "formal_byref": false,
+    "caller_kind": "bool",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 9,
+    "source": "<?php\nnamespace ReviewTrueCvUnionLiteralBoolIterableReturn110;\nfunction h($n,$m,$file,$line){global $stamp,$x;$stamp=13;$x='new';echo 'H:',$line,';';return true;}\nfunction make(bOoL $saved,int $stamp):tRuE|iTeRaBlE{echo 'M:',$stamp,';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===true),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=true;$copy=$x;$alias=&$x;set_error_handler('ReviewTrueCvUnionLiteralBoolIterableReturn110\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',(int)($x==='new'),':',(int)($alias==='new'),':',(int)($copy===true),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===true),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;M:7;H:8;F:1;R:41:1:1:1;C:43:41;D:done:41:1;Z:13;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6d4297725238945ba2346576fad5407ad6495c59b45b6ed07e1b1bad8b5a4f90",
+    "cv_arity": 2,
+    "callee_strict": false,
+    "formal_members": [
+      "bool"
+    ],
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "two-cv-weak-false-iterable-string-return-empty-interned-private-cell",
+      "source_sha256": "126d3d6c281702c5fc2d1867f339d2d0e5d7dac0442d176e857666fdf75d1a85",
+      "edits": "Fresh namespace and exact ordered literal-false/true iterable returns. Scalar witnesses return exact Boolean inputs with strict private-value and caller-copy observations; array witness retains ordinary CVs, nullable-union BYREF formal and handler-throw retirement."
+    },
+    "input_value": "PBOOL true",
+    "bool_result": true
+  },
+  {
+    "id": "two-cv-array-byref-iterable-false-return-handler-throw-retirement",
+    "namespace": "ReviewThrowCvUnionLiteralBoolIterableReturn110",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "false"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewThrowCvUnionLiteralBoolIterableReturn110;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved,int $stamp):iTeRaBlE|fAlSe{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewThrowCvUnionLiteralBoolIterableReturn110\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "f4786adb5d7fd8546b3f763bd9d7eea22f504794da29497e2dad7351fd97bceb",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "two-cv-array-byref-string-iterable-return-handler-throw-retirement",
+      "source_sha256": "61003ae18ae968c129e889bbfa5d641f8883c99a8ab5a18302ca02cbabdd5398",
+      "edits": "Fresh namespace and exact ordered literal-false/true iterable returns. Scalar witnesses return exact Boolean inputs with strict private-value and caller-copy observations; array witness retains ordinary CVs, nullable-union BYREF formal and handler-throw retirement."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8,
+    "cv_arity": 2
+  }
+]
