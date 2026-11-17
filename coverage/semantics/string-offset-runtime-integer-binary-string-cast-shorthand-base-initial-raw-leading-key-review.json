@@ -1,0 +1,131 @@
+{
+  "scope": "Quiet emitted MODULO/SHIFTLEFT/SHIFTRIGHT/BITAND/BITOR/BITXOR integer-zero shorthand conditions selecting recursive emitted CASTSTRING fallbacks and retaining frozen initial raw CV keys through returning Warnings.",
+  "status": "Independently accepted bounded milestone; wider producers, carriers and lifetimes remain partial.",
+  "target": "PHP 8.5.10 CLI, NTS, signed64; tests/semantics/profile.json",
+  "implementation": {
+    "head": "51afb2425a2e885a1053115c8682283ccae91a4f",
+    "tree": "e607ae8416c2f830e01a0840a77025ed3259ee1a",
+    "source_files": 6,
+    "added": 465,
+    "removed": 2,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/source-six-manifest.json",
+    "manifest_sha256": "af52f364475dad24d2bff954a52f67069042b3350a3ddc0877d681c227924092",
+    "patch_sha256": "cfab5539a654de49ae38c5fa32970d719f62db405c978af55a11b8e2663e1f97"
+  },
+  "contract": [
+    "Exact shorthand NExprTernary with ABSENT true and outer NExprCastString fallback; root and condition compiled_read remain eps.",
+    "Actual condition source has PFBINARY MODULO, SHIFTLEFT, SHIFTRIGHT, BITAND, BITOR or BITXOR. A SAME-state NORMAL runtime-value probe demands exact PINT0 before the whole-root exact INTERNED result.",
+    "The existing recursive runtime certificate preserves source/CODE/equal-precision authority, intrinsically quiet integer conversions and exact whole-state operation/truth equality. Nonzero integer results, quiet string bitwise results including falsey ASCII zero, zero modulo and negative shifts do not gain this route.",
+    "Existing compiler-pool authority remains explicit: a NULL ConstFetch pool replaced by Boolean false can still certify integer zero, while Boolean true produces nonzero under the peer shift. No new general raw-source/pool type-matching refusal is claimed.",
+    "Returning current-key replacement and initial-reference rebinding preserve frozen raw bytes/index. Helpers, numerics, compiler, ownership and all exact holds remain unchanged; POWER is outside this six-operator gate."
+  ],
+  "provenance": {
+    "php_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_binary_op",
+      "Zend/zend_compile.c::zend_compile_shorthand_conditional",
+      "Zend/zend_vm_def.h::ZEND_JMP_SET",
+      "Zend/zend_operators.c::mod_function",
+      "Zend/zend_operators.c::shift_left_function",
+      "Zend/zend_operators.c::shift_right_function",
+      "Zend/zend_operators.c::bitwise_and_function",
+      "Zend/zend_operators.c::bitwise_or_function",
+      "Zend/zend_operators.c::bitwise_xor_function"
+    ],
+    "rules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_known_base",
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_runtime_value"
+    ]
+  },
+  "source_evidence": {
+    "native_once_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/baseline/report.json",
+      "sha256": "d2a2db4a918e24a3be0f182ba5f0953935179d8842772750d5c19296b7b22ebd",
+      "head": "ae90ced25a2bfea1930db70934c7bc98163b1436",
+      "native_executions": 6,
+      "unsupported": 6,
+      "agreement_credit": 0
+    },
+    "source_agreements": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/source-v1/report.json",
+      "sha256": "56286f1aad0a01aded4795c93cd0ebcbea511e27041038057773020b87959d43",
+      "head": "20391f29ce1c36af96356899d9afa9744a0703b0",
+      "originals": 6,
+      "native_executions": 0,
+      "agreement_credit": 6,
+      "first_pass": true,
+      "result": "Normal completion, exact saved native stdout/stderr and process status; stable inputs and reaped groups."
+    }
+  },
+  "fixture_evidence": [
+    {
+      "kind": "reached prelaw",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/prelaw-v1/report.json",
+      "sha256": "6517c138c73e6860dba773e6231570a20a8573f09615cae6200f0197294abc62",
+      "head": "ae90ced25a2bfea1930db70934c7bc98163b1436",
+      "conditions": 228,
+      "first_pass": true,
+      "mode": "production SL fixture",
+      "module_arguments": 508,
+      "source_credit": 0
+    },
+    {
+      "kind": "author continuation and guards",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/author-state-v1/report.json",
+      "sha256": "58af89768e47a62a403062d7ecaa28a36b6f41f745c8c267e053189d560ba102",
+      "head": "cd4b79ed634c8201632710b4400b01a12331392b",
+      "conditions": 375,
+      "first_pass": true,
+      "mode": "production SL fixture",
+      "module_arguments": 508,
+      "source_credit": 0,
+      "derived_conditions": 285
+    },
+    {
+      "kind": "independent reference-rebinding continuation and guards",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-peer38-20261117/fixture-v1/report.json",
+      "sha256": "4bd5087e2b827241421fc6457773d8458c1aea0226ac73c2ceeaed75d4c0610f",
+      "head": "e4abeff7428a2a9004b6ec024ee8cbc0bad40eab",
+      "conditions": 447,
+      "first_pass": true,
+      "mode": "production SL fixture",
+      "module_arguments": 508,
+      "source_credit": 0,
+      "derived_conditions": 347
+    }
+  ],
+  "independent_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-peer38-20261117/whole-six-clear.json",
+    "sha256": "af37dca6d798100e79d80046688662974c311db85fc1c7b8c4e01e426ebcbda0",
+    "result": "FULL CLEAR: all six author/frozen/reviewer postimages and six original source agreements bound; distinct first-pass fixture cuts and two zero-credit preparation diagnostics retained."
+  },
+  "integration": {
+    "actual_head": "3ceeeef782eef91c3d18eeb2efb1a566667fbcb8",
+    "actual_tree": "fcddce94995c4c87b9c9fd34c47f1c3b22924f52",
+    "actual_map_sha256": "67d2993433716984c6191678865c45bbcd85af7b92b8fffb76e66f1440b43160",
+    "same_head": "3ceeeef782eef91c3d18eeb2efb1a566667fbcb8",
+    "same_tree": "fcddce94995c4c87b9c9fd34c47f1c3b22924f52",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main75-intbinary-v1/report.json",
+    "sha256": "b5de3ef94463f4fd474cf17c13654ec0399a54ab77c867d1b250a3c5f8753e11",
+    "mode": "production SL",
+    "module_arguments": 508,
+    "fixture_arguments": 1,
+    "argv_count": 511,
+    "watched_paths": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.842855774099007,
+    "source_credit": 0,
+    "result": "The sole actual/SAME load returns true LF with quiet stderr, exit0, stable HEAD/inputs and reaped group. All six changed identities and complete current parent/postimage hashes are independently clear.",
+    "independent_reviewer": "recover38_dynamic_intbinary_review",
+    "independent_decision": "ONE actual/SAME read FULL CLEAR; immutable tuple retained without rerun or author duplicate read."
+  },
+  "remaining": "Wider emitted conditions, producer/carrier/owner/lifetime forms and full core remain partial. All exact holds, reserve93807cdd6/255 and inventory169/306 remain unchanged.",
+  "preserved_preparation": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-integer-binary-string-cast-shorthand-base-initial-raw-leading-key-author40-20261117/preparation-failures.json",
+    "sha256": "1a5529b3336ac08fa2af97e4725f5dc8271a7978278c0bf608bfd24b020766ad",
+    "count": 2,
+    "semantic_executions": 0,
+    "source_credit": 0,
+    "scope": "External draft quoting and a duplicated empty protocol selector failed before semantic execution; both corrected before first-pass source/fixture validation."
+  }
+}
