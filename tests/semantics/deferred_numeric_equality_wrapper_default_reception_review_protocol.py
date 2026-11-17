@@ -160,11 +160,12 @@ for index, (_, constructor, _, _, left, right) in enumerate(unsupported_pairs):
     for field, value in enumerate([left, right]):
         expected = 'eps' if value is None else f'({value})'
         unsupported.append(f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD {field}])) = {expected}')
+    admitted = {0: 'true', 1: 'false', 6: 'true'}.get(index)
     unsupported += [
-        (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL true)'
-         if index == 6 else
+        (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {admitted})'
+         if admitted is not None else
          f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps'),
-        (f'$lossy_optional_integer_deferred(S,pfunction,{index})' if index == 6 else
+        (f'$lossy_optional_integer_deferred(S,pfunction,{index})' if admitted is not None else
          f'~$lossy_optional_integer_deferred(S,pfunction,{index})'),
     ]
 

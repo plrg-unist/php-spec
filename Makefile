@@ -1859,6 +1859,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_numeric_relational_wrapper_default_reception.py
 	python3 tests/semantics/deferred_numeric_relational_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_numeric_relational_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_boolean_numeric_equality_wrapper_default_reception.py
+	python3 tests/semantics/deferred_boolean_numeric_equality_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_boolean_numeric_equality_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py
