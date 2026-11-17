@@ -1388,6 +1388,18 @@ def $ob_object_cast_chain_sign_number(PINT i) = $long_range(i)
 def $ob_object_cast_chain_sign_number(PFLOAT n) = ($float_decode(n) =/= NOTNUMBER n)
   -- if $(n < 18446744073709551616)
 def $ob_object_cast_chain_sign_number(pvalue) = false -- otherwise
+dec $ob_object_parser_string(pstate, porigin, expression) : nat*?
+def $ob_object_parser_string(S, porigin, NScalarString (BYTES text) metadata) = (n*)
+  -- if $origin_node(S.SOURCES, porigin) = (NScalarString (BYTES text) metadata)
+  -- if n* = $base64(text)
+  -- if ~(0 <- n*)
+def $ob_object_parser_string(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (n_left* ++ n_right*)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $ob_object_parser_string(S, porigin_left, expression_left) = (n_left*)
+  -- if $ob_object_parser_string(S, porigin_right, expression_right) = (n_right*)
+def $ob_object_parser_string(S, porigin, expression) = eps -- otherwise
 dec $ob_object_cast_chain_value(pstate, pfunction, porigin, expression) : pvalue?
 def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarInt (INTEGER i) metadata) = (PINT i)
   -- if $long_range(i)
@@ -1406,6 +1418,16 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarString (BYTES text
   -- if ~(0 <- n*)
   -- if $compiled_read(S, porigin) = (PSTRING n*)
   -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING_CARRIER INTERNED_STRING n*)
+  -- if $($concat_line(metadata) > 0)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBinaryOpConcat expression_left expression_right metadata, $concat_line(metadata), true)
+  -- if $ob_object_parser_string(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (n*)
+  -- if $parser_literal_origin(S, (porigin), NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING n*)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+  -- if $enter_compiled_task(S, porigin, EVAL (NExprBinaryOpConcat expression_left expression_right metadata), S.TODO) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n*)]
+  -- if $value_nodes(PSTRING_CARRIER INTERNED_STRING n*) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata) = (pvalue)
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata, $source_line(metadata), true)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)

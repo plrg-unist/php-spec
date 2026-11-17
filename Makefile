@@ -814,6 +814,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_parser_string_concat_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_parser_string_concat_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-string-concat-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_parser_string_concat_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-string-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_parser_string_concat_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-string-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -2168,6 +2172,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception.py
 	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_truthy_literal_string_full_ternary_redirect_wrapper_default_reception.py
+	python3 tests/semantics/deferred_truthy_literal_string_full_ternary_redirect_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_truthy_literal_string_full_ternary_redirect_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py

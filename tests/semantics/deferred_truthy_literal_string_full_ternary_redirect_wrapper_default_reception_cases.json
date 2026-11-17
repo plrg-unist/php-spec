@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-truthy-literal-string-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawLiteralStringRedirect304($p0 = (('00') ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_STRING304_0), $p1 = (('0.0') ? (!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_STRING304_1), $p2 = (('false') ? ((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_STRING304_2), $p3 = ((' ') ? (-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_STRING304_3), $p4 = (('0e0') ? (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) : SKIPPED_STRING304_4), $p5 = (('x') ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_STRING304_5), $p6 = (('-0') ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false) : SKIPPED_STRING304_6), $p7 = (('1') ? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_STRING304_7)) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawLiteralStringRedirect304();\nrawLiteralStringRedirect304();\n",
+    "purpose": "Literal STRING truth is determined by decoded bytes, including numeric zero-looking and nonnumeric literals, preserving selected raw scalar tags and skipped names.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "1a5539d9f9c24a309670ee1736b73befbc4c4804d4f08fa10003ff1e879a85cc"
+  },
+  {
+    "id": "deferred-truthy-literal-string-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace LiteralStringRedirect304;\nuse const E_WARNING as Base304;\nuse const E_ERROR as One304;\nuse const Unavailable304\\Payload as Skipped304;\nfunction coercion304($errno, $message, $file, $line) {\n    global $x304;\n    echo 'coercion:', $message, '|';\n    defaults304(2);\n    $x304 = 3.5;\n}\nfunction defaults304(int $first, int &$selectedBool = (int)(('00') ? (((bool)(+(-((float)(+(Base304 === One304))))))) : Skipped304), int &$selectedInt = (int)(('0.0') ? ((int)(!((bool)(+(-((float)(+(Base304 === One304)))))))) : Skipped304), int &$negativeZero = (int)(('false') ? (-((float)((bool)(+(-((float)(+(Base304 === One304)))))))) : Skipped304), int &$selectedNull = (int)((' ') ? ((!((bool)(+(-((float)(+(Base304 === One304))))))) ? NULL : false) : Skipped304), int $last = 7) {\n    echo 'body:', $first, ':', $selectedBool, ':', $selectedInt, ':', $negativeZero, ':', $selectedNull, ':', $last, '|';\n    $selectedBool = 19;\n    $selectedInt = 20;\n    $negativeZero = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('LiteralStringRedirect304\\\\coercion304');\n$x304 = 1.5;\n$last304 = 8;\ndefaults304(last: $last304, first: $x304);\necho 'outer:x=', $x304, '|';\n",
+    "purpose": "Literal STRING predicates preserve declaration aliases, shared caches and private integer reception through E_DEPRECATED coercion-handler reentry.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "b8422b76e2be8c76207e159871f4cfa819afb892484a70e3bc508d257b3a2e58"
+  }
+]

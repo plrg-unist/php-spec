@@ -187,8 +187,8 @@ expressions = [f'"1" ? {false} : Missing303', f'INF ? {false} : Missing303',
 boundary = base + [f'|pfunction.SIGNATURE.PARAMETERS| = {len(expressions)}']
 for index in range(len(expressions)):
     boundary += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})']
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PBOOL false)' if index == 0 else 'eps'),
+        ('' if index == 0 else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
 context = ('S.CURRENT = (pcallcontext) -- if pcallcontext.ARGC = 0 -- if pcallcontext.FUNCTION = porigin_function '
     '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) ')
 raw_source = ROWS['deferred-finite-nonzero-float-full-ternary-redirect-wrapper-raw-tagged-results']['source']

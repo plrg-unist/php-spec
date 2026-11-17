@@ -147,8 +147,8 @@ expressions = [f'1 ? {false} : Missing300', f'(!false) ? {false} : Missing300',
 boundary = base + [f'|pfunction.SIGNATURE.PARAMETERS| = {len(expressions)}']
 for index in range(len(expressions)):
     boundary += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PBOOL false)' if index in (0, 1) else 'eps'),
-        ('' if index in (0, 1) else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PBOOL false)' if index in (0, 1, 2) else 'eps'),
+        ('' if index in (0, 1, 2) else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
 context = ('S.CURRENT = (pcallcontext) -- if pcallcontext.ARGC = 0 -- if pcallcontext.FUNCTION = porigin_function '
     '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) ')
 CASES = {
