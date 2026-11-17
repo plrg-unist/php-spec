@@ -141,6 +141,6 @@ $string_read_raw_known_base(S_attested_comparison_peer,porigin_base,pvalue_base)
                    f'S_{label}_comparison_peer = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_{label}_comparison_peer_base) :: (PCOCCURRENCE pcpath_cond expression_{label}_comparison_peer_cond) :: pcunit.OCCURRENCES]]]',
                    f'$string_read_runtime_value(S_{label}_comparison_peer,porigin_cond) = ({value})',
                    f'$string_read_runtime_value(S_{label}_comparison_peer,porigin_base) = (pvalue_base)',
-                   f'~$string_read_raw_known_base(S_{label}_comparison_peer,porigin_base,pvalue_base)']
+                   f'{"~" if label == "spaceship" else ""}$string_read_raw_known_base(S_{label}_comparison_peer,porigin_base,pvalue_base)']
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)

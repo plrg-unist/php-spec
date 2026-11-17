@@ -732,14 +732,14 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_cond) = (PSTRING_CARRIER INTERNED_STRING n_cond*)
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
-;; Quiet emitted false comparisons select an emitted string fallback.
+;; Quiet emitted false comparisons and XOR select an emitted string fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NExprCastString expression_false metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
   -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
   -- if $pfshape(expression_cond) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL]
+  -- if pbin <- [EQUAL, NOTEQUAL, IDENTICAL, NOTIDENTICAL, LESS, LESSEQUAL, GREATER, GREATEREQUAL, LOGICALXOR]
   -- if $compiled_read(S, porigin_cond) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_cond) = (PBOOL false)
