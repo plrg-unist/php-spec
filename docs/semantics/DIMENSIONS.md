@@ -511,6 +511,16 @@ in the [review](../../coverage/semantics/string-offset-request-base-coercive-int
 MAIN `7da259b5e` has one combined SL508 load15.68941183295101s/source0.
 GENERAL, Deprecated, NaN BYTE, unary FLOAT NOT and wider lifetimes remain partial.
 
+Ordinary nonnull NaN-left coalesce also supplies an exact named `instanceof`
+operand through both actual source children, root/left compiler precision and
+the unchanged full `coalesce_result` state. The skipped RHS needs no value or
+compiler certificate. Four originals reuse native observations once; author
+SL1236/129-derived and independent SL1758/651-derived retain separate cuts in
+the [review](../../coverage/semantics/string-offset-request-base-runtime-nonnull-nan-coalesce-instanceof-review.json).
+The missing fourth peer process remains incomplete0; only that fixture was
+recovered. General NaN VALUE/BYTE/truth, null-left selection and wider lifetimes
+retain their existing bounds.
+
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
 certificates, both quiet numeric conversions, a successful pure numeric result
