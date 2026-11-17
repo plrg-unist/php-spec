@@ -60,7 +60,7 @@ def main():
         outcome = json.loads((directory / 'model.stdout').read_bytes())
         common = (native_ok and not model['timeout'] and model['interruption'] is None
                   and not model['group_after'] and not (directory / 'model.stderr').read_bytes()
-                  and outcome['frontend'] == 'accepted' and outcome['checked'] == 'program')
+                  and outcome.get('frontend') == 'accepted' and outcome.get('checked') == 'program')
         if args.baseline:
             passed = common and model['exit'] == 1 and outcome['status'] == 'unsupported'
         else:
@@ -71,7 +71,7 @@ def main():
         rows.append({'id': name, 'source': str(source), 'source_sha256': digest(source),
                      'native': native, 'native_reused': bool(saved), 'model': model, 'outcome': outcome,
                      'passed': passed, 'agreement_credit': int(passed and not args.baseline)})
-        print(name, passed, outcome['status'], outcome['reason'], flush=True)
+        print(name, passed, outcome['status'], outcome.get('reason'), flush=True)
         (args.output / 'report.json').write_text(json.dumps({
             'revision': revision, 'inputs': before, 'profile': profile,
             'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING')},

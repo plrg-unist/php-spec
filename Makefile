@@ -1439,6 +1439,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_request_base_runtime_nonnull_nan_coalesce_instanceof_special_concat_leading_key_sources.py --output "$$request_runtime_nonnull_nan_coalesce_instanceof_out/source" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_nonnull_nan_coalesce_instanceof_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_nonnull_nan_coalesce_instanceof_out/source/report.json" --output "$$request_runtime_nonnull_nan_coalesce_instanceof_out/author-state" && \
 		python3 -B tests/semantics/string_offset_request_base_runtime_nonnull_nan_coalesce_instanceof_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_nonnull_nan_coalesce_instanceof_out/source/report.json" --output "$$request_runtime_nonnull_nan_coalesce_instanceof_out/review-state"
+	@request_runtime_full_ternary_nan_instanceof_out=$$(mktemp -d .tools/runtime-full-ternary-nan-instanceof-key-XXXXXX); \
+		python3 -B tests/semantics/string_offset_request_base_runtime_full_ternary_nan_instanceof_special_concat_leading_key_sources.py --output "$$request_runtime_full_ternary_nan_instanceof_out/source" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_full_ternary_nan_instanceof_special_concat_leading_key_protocol.py --sl --source-report "$$request_runtime_full_ternary_nan_instanceof_out/source/report.json" --output "$$request_runtime_full_ternary_nan_instanceof_out/author-state" && \
+		python3 -B tests/semantics/string_offset_request_base_runtime_full_ternary_nan_instanceof_special_concat_leading_key_review_state.py --sl --source-report "$$request_runtime_full_ternary_nan_instanceof_out/source/report.json" --output "$$request_runtime_full_ternary_nan_instanceof_out/review-state"
 	python3 tests/semantics/function_compiler.py
 	python3 tests/semantics/function_argument_compiler.py
 	python3 tests/semantics/function_calls.py
