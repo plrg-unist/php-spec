@@ -1,0 +1,167 @@
+{
+  "array-object": {
+    "members": [
+      "array",
+      "object"
+    ],
+    "raw_members": [
+      "array",
+      "object"
+    ],
+    "default": "[]",
+    "initial": "array",
+    "steps": [
+      {
+        "statement": "try { $a320 = 127; } catch (\\TypeError $e) {",
+        "value": "POBJECT n_intermediate",
+        "reject": true
+      },
+      {
+        "statement": "try { $b320 = null; } catch (\\TypeError $e) {",
+        "value": "POBJECT n_intermediate",
+        "reject": true
+      }
+    ],
+    "source": "array-object.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array",
+    "stdout": "I|N|C|M|L|T|U|P|D|R|Z|",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    }
+  },
+  "array-int-object": {
+    "members": [
+      "array",
+      "int",
+      "object"
+    ],
+    "raw_members": [
+      "ARRAY",
+      "int",
+      "OBJECT"
+    ],
+    "default": "[]",
+    "initial": "array",
+    "steps": [
+      {
+        "statement": "$a320 = '12';",
+        "value": "PINT 12",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = true;",
+        "value": "PINT 1",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = 7.0;",
+        "value": "PINT 7",
+        "reject": false
+      },
+      {
+        "statement": "try { $a320 = null; } catch (\\TypeError $e) {",
+        "value": "PINT 7",
+        "reject": true
+      },
+      {
+        "statement": "try { $b320 = 'plain'; } catch (\\TypeError $e) {",
+        "value": "PINT 7",
+        "reject": true
+      }
+    ],
+    "source": "array-int-object.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array|int",
+    "stdout": "I|N|C|M|L|J|B|F|T|U|P|D|R|Z|",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    }
+  },
+  "all-builtins": {
+    "members": [
+      "string",
+      "array",
+      "int",
+      "bool",
+      "object",
+      "float",
+      "null"
+    ],
+    "raw_members": [
+      "string",
+      "array",
+      "int",
+      "bool",
+      "object",
+      "float",
+      "null"
+    ],
+    "default": "false",
+    "initial": "PBOOL false",
+    "steps": [
+      {
+        "statement": "$a320 = 17;",
+        "value": "PINT 17",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = 7.0;",
+        "value": "PFLOAT 4619567317775286272",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = '12';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"12\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = true;",
+        "value": "PBOOL true",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "source": "all-builtins.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "typename": "object|array|string|int|float|bool|null",
+    "stdout": "I|N|C|M|L|J|F|S|B|U|P|D|R|Z|",
+    "values": {
+      "seed": 61,
+      "seed_text": "leaf",
+      "inner": 67,
+      "written": 71,
+      "tag": 103,
+      "tag_written": 107,
+      "leaf": 109,
+      "free": 149
+    }
+  }
+}

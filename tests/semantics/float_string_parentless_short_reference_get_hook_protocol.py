@@ -175,7 +175,7 @@ def fields(fixture, source, form):
     for left, right in [('float', 'float'), ('string', 'string'), ('array', 'int'), ('mixed', 'null')]:
         raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES ' + peer.quoted(left) + ') eps,NIdentifier (BYTES ' + peer.quoted(right) + ') eps])) eps'
         normalized = '[(PTBRANCH ([PTBUILTIN "' + left + '"])),(PTBRANCH ([PTBUILTIN "' + right + '"]))]'
-        checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
+        checks += [('' if left == 'array' else '~') + '$hook_short_reference_header(' + raw + ',' + normalized + ')']
     checks += ['$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "ZmxvYXQ=") eps,NIdentifier (BYTES "c3RyaW5n") eps,NIdentifier (BYTES "bnVsbA==") eps])) eps,[(PTBRANCH ([PTBUILTIN "float"])),(PTBRANCH ([PTBUILTIN "string"])),(PTBRANCH ([PTBUILTIN "null"]))])']
     for state in [*states, 'S_before', 'S_detached', 'S_written', 'S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',

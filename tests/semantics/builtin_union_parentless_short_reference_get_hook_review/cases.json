@@ -1,0 +1,169 @@
+{
+  "object-array": {
+    "members": [
+      "object",
+      "array"
+    ],
+    "raw_members": [
+      "OBJECT",
+      "array"
+    ],
+    "default": "[]",
+    "initial": "array",
+    "values": {
+      "seed": 73,
+      "seed_text": "peer",
+      "inner": 79,
+      "written": 83,
+      "tag": 89,
+      "tag_written": 97,
+      "leaf": 113,
+      "free": 157
+    },
+    "steps": [
+      {
+        "statement": "try { $a320 = 131; } catch (\\TypeError $e) {",
+        "value": "POBJECT n_intermediate",
+        "reject": true
+      },
+      {
+        "statement": "try { $b320 = null; } catch (\\TypeError $e) {",
+        "value": "POBJECT n_intermediate",
+        "reject": true
+      }
+    ],
+    "source": "object-array.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "typename": "object|array",
+    "stdout": "I|N|C|M|L|T|U|P|D|R|Z|"
+  },
+  "null-object-array-int": {
+    "members": [
+      "null",
+      "object",
+      "array",
+      "int"
+    ],
+    "raw_members": [
+      "NuLl",
+      "OBJECT",
+      "array",
+      "int"
+    ],
+    "default": "null",
+    "initial": "PNULL",
+    "values": {
+      "seed": 73,
+      "seed_text": "peer",
+      "inner": 79,
+      "written": 83,
+      "tag": 89,
+      "tag_written": 97,
+      "leaf": 113,
+      "free": 157
+    },
+    "steps": [
+      {
+        "statement": "$a320 = 31;",
+        "value": "PINT 31",
+        "reject": false
+      },
+      {
+        "statement": "try { $b320 = 5.0; } catch (\\TypeError $e) {",
+        "value": "PINT 31",
+        "reject": true
+      },
+      {
+        "statement": "try { $a320 = true; } catch (\\TypeError $e) {",
+        "value": "PINT 31",
+        "reject": true
+      },
+      {
+        "statement": "try { $b320 = '18'; } catch (\\TypeError $e) {",
+        "value": "PINT 31",
+        "reject": true
+      },
+      {
+        "statement": "$a320 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "source": "null-object-array-int.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "typename": "object|array|int|null",
+    "stdout": "I|N|C|M|L|J|F|B|S|U|P|D|R|Z|"
+  },
+  "all-builtins-reverse": {
+    "members": [
+      "null",
+      "float",
+      "object",
+      "bool",
+      "int",
+      "array",
+      "string"
+    ],
+    "raw_members": [
+      "NULL",
+      "float",
+      "OBJECT",
+      "BOOL",
+      "int",
+      "ARRAY",
+      "string"
+    ],
+    "default": "null",
+    "initial": "PNULL",
+    "values": {
+      "seed": 73,
+      "seed_text": "peer",
+      "inner": 79,
+      "written": 83,
+      "tag": 89,
+      "tag_written": 97,
+      "leaf": 113,
+      "free": 157
+    },
+    "steps": [
+      {
+        "statement": "$a320 = 41;",
+        "value": "PINT 41",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = 5.0;",
+        "value": "PFLOAT 4617315517961601024",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = '18';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"18\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b320 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "$a320 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "source": "all-builtins-reverse.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": true,
+    "body": "literal",
+    "typename": "object|array|string|int|float|bool|null",
+    "stdout": "I|N|C|M|L|J|F|S|B|U|P|D|R|Z|"
+  }
+}

@@ -150,7 +150,7 @@ def fields(fixture, source, form):
     for left, right in [('int', 'int'), ('string', 'string'), ('array', 'int'), ('mixed', 'null'), ('null', 'mixed')]:
         raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES ' + peer.quoted(left) + ') eps,NIdentifier (BYTES ' + peer.quoted(right) + ') eps])) eps'
         normalized = '[(PTBRANCH ([PTBUILTIN "' + left + '"])),(PTBRANCH ([PTBUILTIN "' + right + '"]))]'
-        checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
+        checks += [('' if left == 'array' else '~') + '$hook_short_reference_header(' + raw + ',' + normalized + ')']
     checks += ['$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "string"]))])',
                '$hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES "aW50") eps,NIdentifier (BYTES "bnVsbA==") eps,NIdentifier (BYTES "c3RyaW5n") eps])) eps,[(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTBUILTIN "null"])),(PTBRANCH ([PTBUILTIN "string"]))])']
     for state in [*states, 'S_before', 'S_detached', 'S_written', 'S_end']:

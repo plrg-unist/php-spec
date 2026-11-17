@@ -52,7 +52,7 @@ def header_fields():
                    '~$hook_short_reference_header(' + raw(members) + ',' + mask(members + ['int']) + ')']
     for kind in ('mixed', 'array', 'object', 'callable', 'true', 'false', 'void', 'integer'):
         members = ['int', kind, 'null']
-        checks += ['~$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
+        checks += [('' if kind in ('array', 'object') else '~') + '$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
     for members in ([], ['int'], ['int', 'float', 'bool', 'string', 'null', 'int']):
         checks += ['~$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
     ordinary = raw(['int', 'float', 'null'])
@@ -66,7 +66,7 @@ def header_fields():
         checks += ['~$hook_short_reference_header(' + ordinary + ',' + branches + ')']
     for members in (['int', 'float'], ['array', 'null'], ['null', 'object'], ['false', 'null']):
         checks += ['$hook_short_reference_header(' + raw(members) + ',' + mask(members) + ')']
-    checks += ['~$hook_short_reference_header(' + raw(['array', 'int']) + ',' + mask(['array', 'int']) + ')']
+    checks += ['$hook_short_reference_header(' + raw(['array', 'int']) + ',' + mask(['array', 'int']) + ')']
     # Exact assertions promoted in the affected older protocol tails.
     for family, orders in PROMOTED.items():
         for review in (False, True):

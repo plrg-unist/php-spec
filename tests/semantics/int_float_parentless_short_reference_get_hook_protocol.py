@@ -165,7 +165,7 @@ def fields(fixture, source, form):
     for left, right in [('int', 'int'), ('float', 'float'), ('array', 'int'), ('mixed', 'null')]:
         raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES ' + peer.quoted(left) + ') eps,NIdentifier (BYTES ' + peer.quoted(right) + ') eps])) eps'
         normalized = '[(PTBRANCH ([PTBUILTIN "' + left + '"])),(PTBRANCH ([PTBUILTIN "' + right + '"]))]'
-        checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
+        checks += [('' if left == 'array' else '~') + '$hook_short_reference_header(' + raw + ',' + normalized + ')']
     for text, value in [('12', 'PINT 12'), ('12.5', 'PFLOAT 4623226492472524800'), ('2e0', 'PFLOAT 4611686018427387904')]:
         checks += ['$propref_conversion(S_aliases,' + mask + ',PSTRING ($ptascii("' + text + '")),false) = TYPEVALUE (' + value + ')']
     checks += ['$propref_conversion(S_aliases,' + mask + ',PBOOL true,false) = TYPEINTEGER (PBOOL true)',

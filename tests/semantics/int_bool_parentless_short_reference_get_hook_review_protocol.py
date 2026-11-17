@@ -183,7 +183,7 @@ def fields(fixture, source, form):
     for left, right in [('int', 'int'), ('bool', 'bool'), ('array', 'int'), ('mixed', 'null')]:
         raw = 'NUnionType (SEQUENCE ([NIdentifier (BYTES ' + peer.quoted(left) + ') eps,NIdentifier (BYTES ' + peer.quoted(right) + ') eps])) eps'
         normalized = '[(PTBRANCH ([PTBUILTIN "' + left + '"])),(PTBRANCH ([PTBUILTIN "' + right + '"]))]'
-        checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
+        checks += [('' if left == 'array' else '~') + '$hook_short_reference_header(' + raw + ',' + normalized + ')']
     for state in [*states, 'S_before', 'S_detached', 'S_written', 'S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',
                    '$heap_valid($heap_prune($heap_graph(' + state + ')))']
