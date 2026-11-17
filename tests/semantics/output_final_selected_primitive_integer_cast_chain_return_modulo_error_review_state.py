@@ -133,16 +133,16 @@ def frontier(name, fixture, path):
                 checks += [('source0 ' + kind + ' refuses same-truth BOOL and incorrect integer folded facts',
                             primitive.old141.proof(binary(kind, left, right, wrong), pint(number), False))]
         for family, query, result in predecessor_queries():
-            checks += [('source0 actual old ' + family + ' builder preserves PINT promotion or its FLOAT refusal',
-                        primitive.old141.proof(query, result, result.startswith('PINT ')))]
+            checks += [('source0 actual old ' + family + ' builder preserves exact PINT or PFLOAT results',
+                        primitive.old141.proof(query, result))]
         for kind, left, right, result in [
                 ('add', FLOAT1, TRUE, 'PFLOAT 4611686018427387904'),
                 ('sub', integer(1), FLOAT1, 'PFLOAT 0'),
                 ('div', TRUE, integer(2), 'PFLOAT 4602678819172646912'),
                 ('pow', FLOAT1, integer(3), 'PFLOAT 4607182418800017408'),
                 ('add', string('9223372036854775807'), TRUE, 'PFLOAT 4890909195324358656')]:
-            checks += [('source0 FLOAT typing or overflow cannot borrow signed PINT authority',
-                        primitive.old141.proof(binary(kind, left, right, result), result, False))]
+            checks += [('source0 quiet FLOAT typing or overflow retains exact PFLOAT authority',
+                        primitive.old141.proof(binary(kind, left, right, result), result))]
         for kind, left, right, data in [('and', '3', '1', '[49]'), ('or', '2', '1', '[51]'), ('xor', '3', '1', '[2]')]:
             query = binary(kind, string(left), string(right), 'PSTRING (' + data + ')')
             checks += [('source0 both-STRING bytewise results remain STRING even when their bytes resemble integers',

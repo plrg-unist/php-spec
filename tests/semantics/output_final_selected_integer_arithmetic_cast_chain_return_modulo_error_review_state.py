@@ -92,9 +92,9 @@ def frontier(name, fixture, path):
                 ('mul', '$(-9223372036854775808)', '1', 'PINT $(-9223372036854775808)', True),
                 ('sub', '4', '9', 'PINT $(-5)', True),
                 ('sub', '9', '4', 'PINT 5', True),
-                ('add', '9223372036854775807', '1', 'PFLOAT 4890909195324358656', False),
-                ('sub', '$(-9223372036854775808)', '1', 'PFLOAT 14114281232179134464', False),
-                ('mul', '$(-9223372036854775808)', '$(-1)', 'PFLOAT 4890909195324358656', False),
+                ('add', '9223372036854775807', '1', 'PFLOAT 4890909195324358656', True),
+                ('sub', '$(-9223372036854775808)', '1', 'PFLOAT 14114281232179134464', True),
+                ('mul', '$(-9223372036854775808)', '$(-1)', 'PFLOAT 4890909195324358656', True),
                 ('div', '4', '2', 'PINT 2', True)]:
             state, expression, function, operator, children, values = binary(kind, integer(left), integer(right), result)
             proof = [value(state, child, 'PORIGIN n_cast_handler pcpath_value_' + side, function) + ' = (' + typed + ')'
@@ -102,7 +102,7 @@ def frontier(name, fixture, path):
             proof += ['$binary_apply(' + state + '[.RESULT = KNOWN (' + values[1] + ')], ' + operator + ', ' +
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
                       value(state, expression, function=function) + (' = (' + result + ')' if admitted else ' = eps')]
-            checks += [('source0 ' + kind + ' keeps endpoint/order results and refuses promotion or other operators', current.CONJ.join(proof))]
+            checks += [('source0 ' + kind + ' keeps exact endpoint/order results including FLOAT promotion', current.CONJ.join(proof))]
         false = ('NExprConstFetch (NName (BYTES "ZmFsc2U=") {metadata}) {metadata}', 'PBOOL false', 'PBOOL false')
         null = ('NExprConstFetch (NName (BYTES "bnVsbA==") {metadata}) {metadata}', 'PNULL', 'PNULL')
         floating = ('NScalarFloat (FLOAT "3ff0000000000000") {metadata}',
@@ -119,8 +119,8 @@ def frontier(name, fixture, path):
                      for side, child, typed in zip(['left', 'right'], children, values)]
             proof += ['$binary_apply(' + state + '[.RESULT = KNOWN (' + values[1] + ')], ' + operator + ', ' +
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
-                      value(state, expression, function=function) + (' = (' + result + ')' if result.startswith('PINT ') else ' = eps')]
-            checks += [('source0 proper primitive children keep exact quiet signed PINT results and refuse FLOAT results', current.CONJ.join(proof))]
+                      value(state, expression, function=function) + ' = (' + result + ')']
+            checks += [('source0 proper primitive children keep exact quiet PINT or PFLOAT results', current.CONJ.join(proof))]
     bare = 'NStmtReturn (' + current.expression(name, 'value') + ') metadata_cast_return'
     single = nodes['cast_1'][0] + ' (' + current.expression(name, 'value') + ') metadata_cast_1'
     statement = 'NStmtReturn (' + single + ') metadata_cast_return'

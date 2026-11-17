@@ -66,7 +66,7 @@ def frontier(name, fixture, path):
         # This uses the actual predecessor query builder, not its whole campaign.
         for left, right, result, admitted in [
                 ('4', '2', 'PINT 2', True),
-                ('2', '4', 'PFLOAT 4602678819172646912', False),
+                ('2', '4', 'PFLOAT 4602678819172646912', True),
                 ('9223372036854775807', '1', 'PINT 9223372036854775807', True),
                 ('$(-9223372036854775808)', '1', 'PINT $(-9223372036854775808)', True),
                 ('$(-9223372036854775808)', '$(-9223372036854775808)', 'PINT 1', True),
@@ -74,7 +74,7 @@ def frontier(name, fixture, path):
                 ('$(-6)', '3', 'PINT $(-2)', True),
                 ('6', '$(-3)', 'PINT $(-2)', True),
                 ('$(-6)', '$(-3)', 'PINT 2', True),
-                ('$(-9223372036854775808)', '$(-1)', 'PFLOAT 4890909195324358656', False)]:
+                ('$(-9223372036854775808)', '$(-1)', 'PFLOAT 4890909195324358656', True)]:
             state, expression, function, operator, children, values = affected.binary('div', integer(left), integer(right), result)
             proof = [value(state, child, 'PORIGIN n_cast_handler pcpath_value_' + side, function) + ' = (' + typed + ')'
                      for side, child, typed in zip(['left', 'right'], children, values)]
@@ -82,7 +82,7 @@ def frontier(name, fixture, path):
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
                       value(state, expression, function=function) + (' = (' + result + ')' if admitted else ' = eps')]
             label = ('source0 affected old135 DIV4/2 query is now admitted' if left == '4' and right == '2' else
-                     'source0 quotient keeps exact order/sign/width and refuses FLOAT results')
+                     'source0 quotient keeps exact order/sign/width including FLOAT results')
             checks += [(label, current.CONJ.join(proof))]
         state, expression, function, operator, children, values = affected.binary('div', integer('1'), integer('0'), 'PINT 0')
         checks += [('source0 a forged folded zero quotient cannot erase genuine division-by-zero failure',
@@ -105,8 +105,8 @@ def frontier(name, fixture, path):
                      for side, child, typed in zip(['left', 'right'], children, values)]
             proof += ['$binary_apply(' + state + '[.RESULT = KNOWN (' + values[1] + ')], ' + operator + ', ' +
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
-                      value(state, expression, function=function) + (' = (' + result + ')' if result.startswith('PINT ') else ' = eps')]
-            checks += [('source0 proper primitive children keep exact quiet signed PINT results and refuse FLOAT results', current.CONJ.join(proof))]
+                      value(state, expression, function=function) + ' = (' + result + ')']
+            checks += [('source0 proper primitive children keep exact quiet PINT or PFLOAT results', current.CONJ.join(proof))]
     bare = 'NStmtReturn (' + current.expression(name, 'value') + ') metadata_cast_return'
     single = nodes['cast_1'][0] + ' (' + current.expression(name, 'value') + ') metadata_cast_1'
     statement = 'NStmtReturn (' + single + ') metadata_cast_return'
