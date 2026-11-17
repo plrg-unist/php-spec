@@ -2839,3 +2839,13 @@ bounds remain. FLOAT tags and integer widening in either mode stay intact.
 Eligible weak scalars convert; strict Boolean and string writes reject atomically.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-float-union-parentless-short-reference-get-hook-review.json).
+
+Six exact originals and native observations once cover those ordered class/float
+headers. Author174/175/175 and independent386/176/176/176 retain their separate
+SL508 fixture/source0 cuts; prelaw Unsupported6 and the summary-reader/static-checker
+errors remain zero-credit. Strict INT widening retains exact FLOAT0.0/1.0 tags.
+Actual and joined `57af3b12f` and the sole production-SL509 load
+`f82e9927` (16.030890049s, source0) are independently clear through one fixed
+actual/SAME saved-report read; no prior native/source/fixture evidence is renewed.
+Wider forms and every exact hold remain partial/unchanged.
+[Independent review](../../coverage/semantics/class-float-union-parentless-short-reference-get-hook-peer-review.json).
