@@ -168,6 +168,16 @@ credit. Wider headers, producers, owners and lifetimes remain partial, with exac
 standing holds unchanged.
 [Review](../../coverage/semantics/int-float-bool-string-parentless-short-reference-get-hook-review.json).
 
+The same own public parentless sole short shape now admits all six raw
+`int|float|null` orders. Zero, omitted defaults and explicit NULL retain actual
+storage; Get materializes an omitted nullable backing as NULL. Exact tags,
+independent copies, genuine aliases, weak numeric-text/Boolean conversion and
+strict rejection retain source and return authority. Quiet receiver retirement
+removes the constraint before a free string write. Six originals agree; separate
+fixture and production loads keep their scopes. Wider headers, producers, owners
+and lifetimes remain partial, with exact standing holds unchanged.
+[Review](../../coverage/semantics/int-float-null-parentless-short-reference-get-hook-review.json).
+
 The same Parent declaration now serves a direct Child with no property
 redeclaration. The Parent getter runs with the Child receiver and Parent lexical
 scope; the inherited physical slot carries a typed source only when Parent's
