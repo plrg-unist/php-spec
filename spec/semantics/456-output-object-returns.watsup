@@ -1373,6 +1373,19 @@ def $ob_object_cast_chain_node(S, pfunction, PORIGIN n_unit pcpath, expression, 
   -- if $origin_node(S.SOURCES, PORIGIN n_unit pcpath) = (expression)
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath) = ((z, b))
 def $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b) = false -- otherwise
+dec $ob_object_cast_chain_sign_literal(expression) : bool
+def $ob_object_cast_chain_sign_literal(NScalarInt (INTEGER i) metadata) = true
+def $ob_object_cast_chain_sign_literal(NScalarFloat (FLOAT text) metadata) = true
+def $ob_object_cast_chain_sign_literal(expression) = false -- otherwise
+dec $ob_object_cast_chain_sign_kind(expression) : bool
+def $ob_object_cast_chain_sign_kind(NExprUnaryPlus expression metadata) = true
+def $ob_object_cast_chain_sign_kind(NExprUnaryMinus expression metadata) = true
+def $ob_object_cast_chain_sign_kind(expression) = false -- otherwise
+dec $ob_object_cast_chain_sign_number(pvalue) : bool
+def $ob_object_cast_chain_sign_number(PINT i) = $long_range(i)
+def $ob_object_cast_chain_sign_number(PFLOAT n) = ($float_decode(n) =/= NOTNUMBER n)
+  -- if $(n < 18446744073709551616)
+def $ob_object_cast_chain_sign_number(pvalue) = false -- otherwise
 dec $ob_object_cast_chain_value(pstate, pfunction, porigin, expression) : pvalue?
 def $ob_object_cast_chain_value(S, pfunction, porigin, NScalarInt (INTEGER i) metadata) = (PINT i)
   -- if $long_range(i)
@@ -1397,6 +1410,22 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprConstFetch (NName (B
   -- if $origin_node(S.SOURCES, porigin_name) = (NName (BYTES text_constant) metadata_name)
   -- if $special_constant($base64(text_constant)) = (pvalue)
   -- if $compiled_read(S, porigin) = (pvalue)
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
+  -- if $ob_object_cast_chain_sign_kind(expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary = POSITIVE \/ punary = NEGATIVE
+  -- if $ob_object_cast_chain_sign_literal(expression_child)
+  -- if z = $expression_line(expression_child)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, true)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if $ob_object_cast_chain_sign_number(pvalue_child)
+  -- if $compiled_read(S, porigin) = (pvalue)
+  -- if $ob_object_cast_chain_sign_number(pvalue)
+  -- if $type_bytes(pvalue) = $type_bytes(pvalue_child)
+  -- if S_child = S[.RESULT = KNOWN pvalue_child]
+  -- if $unary_apply(S_child, punary, pvalue_child, z) = S[.RESULT = KNOWN pvalue]
+  -- if $value_nodes(pvalue) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $ob_object_cast_chain_kind(expression)
   -- if $pfshape(expression) = PFCAST pcast expression_child
