@@ -913,6 +913,20 @@ a separate zero-source cut. Metadata adds no execution credit. Multiple-CV itera
 returns, new iterable formals, Traversable Notice payloads, wider lifetimes and
 every exact hold remain partial at this cut.
 
+Canonical bare `iterable` required formals also use the completed one-CV route.
+Raw Identifier casefolding agrees pointwise with the normalized builtin tag;
+ordinary CV, BYREF, required/default and nonvariadic guards remain. Genuine
+Generator inputs stay retained by outside caller roots and return NULL before the
+Notice; their bodies remain unentered. Array/NULL Notice payloads, actual return
+verification, producer retirement and separate private cells keep their bounds.
+The [iterable-formal review](../../coverage/semantics/singleton-cv-iterable-formal-producer-reference-notice-review.json)
+binds native4+3 once/7 unique originals to author and independent whole packets,
+with separate author326/peer283 fixture-SL507 suites. Prelaw fronts174/143,
+the initial Unsupported source and two binding diagnostics retain zero credit.
+Actual `6e59bd311` review and sole joined loading remain separate. Nullable/union
+and multiple-CV iterable formals, multiple-CV iterable returns, Traversable Notice
+payloads, wider producers/lifetimes and every exact hold remain partial.
+
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
 case-folded stdClass identity, member order, unique builtins, one class and at

@@ -1,0 +1,109 @@
+{
+  "milestone": "REF97",
+  "decision": "Independent whole-source and state review accepted; actual integration review and joined loading remain separately bound.",
+  "scope": "Completed one-CV producers with a canonical bare iterable required formal, including ordinary BYREF reception. Existing typed calls receive arrays or genuine retained Generator inputs; existing finite array/NULL Notice operands and separate private cells remain unchanged.",
+  "implementation": {
+    "revision": "a0eb0ec9e007355a2ac3424e02fa85a184c028af",
+    "tree": "c9594367250359b74039afdf3c5e676e66cfed38",
+    "base": "3ab066f12289a05f44fc25bb1142d078f2eba8ef",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/source-ready-v1.patch",
+    "patch_sha256": "6609ce167835343c07dc3f76704335d8365e39347d6fc88d6ea0188d1b7209ed",
+    "files": 9,
+    "insertions": 670,
+    "deletions": 2,
+    "rule": "spec/semantics/207-error-handler-runtime.watsup: $reference_notice_producer_arguments",
+    "change": "Generalize the existing singleton array gate to pointwise array/iterable raw and normalized tags; bind the normalized tag before membership. Preserve all cardinality, raw-header, BYREF, required/default, source, payload and owner guards."
+  },
+  "validation": {
+    "target": "PHP 8.5.10 CLI NTS64; project profile and local oracle remain pinned.",
+    "unique_originals": 7,
+    "notice_admissions": 5,
+    "receive_priority_controls": 2,
+    "native_originals_run_once": {
+      "author": 4,
+      "independent": 3
+    },
+    "source_packets": {
+      "author": {
+        "revision": "a0eb0ec9e007355a2ac3424e02fa85a184c028af",
+        "root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/author/whole-packet-v1",
+        "source_report_sha256": "58c40af43486aa6c3e19bece2ec28af3c06ac0da10d080401143725f2105a721",
+        "normal_agreements": 7,
+        "saved_native_reused": 7,
+        "controller_exit": 0
+      },
+      "independent": {
+        "revision": "d6b0f2dc80ddc7d0eafc7175a8132c7bacb0f969",
+        "tree": "37e9449450454ae791e76f2e39bf48d3d8754d89",
+        "root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/peer/whole-v1",
+        "source_report_sha256": "3ab327adb098018da0e5b949eb70495ad11d1c18e03ad9337e848261629ee08f",
+        "normal_agreements": 7,
+        "saved_native_reused": 7,
+        "controller_exit": 0,
+        "controller_elapsed_seconds": 276.887169
+      }
+    },
+    "fixture_SL": {
+      "module_count": 507,
+      "mode": "SL/cache=false/det=true",
+      "author_suite": {
+        "conditions": 326,
+        "reached": 264,
+        "derived": 62,
+        "author_report_sha256": "db64ef6dde35f30a28ff9e30ad0cbe4ec0c50f4dcc18cb2c8285dac7efaa10af",
+        "independent_report_sha256": "43aaf841fbdc8dda8c08d49b1401418f44209e021a351dab03cbfd8448b1fb77"
+      },
+      "peer_suite": {
+        "conditions": 283,
+        "reached": 214,
+        "derived": 69,
+        "author_report_sha256": "f96fbd37c279afdd62334bb12247294735b61ebff98b9570eb4a5a3d910c3b37",
+        "independent_report_sha256": "7a15f4b45b17f61e5469de5bbf67536e2ced82b453e3416e6898baa28a5348b8"
+      },
+      "source_credit": 0
+    },
+    "outcomes": "Both packets passed with stable inputs and HEAD, exact normal observations, quiet successful fixtures, no timeout and fully reaped processes. Source packets reuse the seven native originals; fixture counts are separate, not added to source credit."
+  },
+  "preserved_zero_credit": {
+    "accepted_fronts": {
+      "author_conditions": 174,
+      "author_report_sha256": "40aae1c7c41ff8e7b4f93feaa34493bc7a9f3a9d583c663e2e77eca99bd6f417",
+      "independent_conditions": 143,
+      "independent_report_sha256": "2887c87f68d06e2a4f25398c4ecae947c6f36eeb3d0e71046fc68c6783e3c543",
+      "replayed": false
+    },
+    "prelaw_source": {
+      "root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/author/prelaw-source-v1",
+      "report_sha256": "0ab12842fe592c7aad7fcd2af26a425c76a8bfa9352b8ed3227fd2c00d33d3ed",
+      "outcome": "Unsupported after A;M:17;: error-handler ingress requires a producer continuation"
+    },
+    "binding_failures": [
+      {
+        "root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/author/binding-membership-failure-v1",
+        "report_sha256": "2f619d57831e3e4e32aeb6edf1489fe22476577f82152fb3b2f9182306f0929e"
+      },
+      {
+        "root": "/home/user/workspace/php-spec-evidence-archive/singleton-cv-iterable-formal-producer-reference-notice-97/author/binding-conjunction-failure-v1",
+        "report_sha256": "264bb90701a340924ede957f2d5d5fe6d8b79b8eafba8ca7e13e8e197ba21f55"
+      }
+    ],
+    "binding_failure_scope": "Each failed before semantic execution on the first selected source; six sources and both states remained unrun. All retain zero credit."
+  },
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_typename iterable alias lowering",
+    "vendor/php-src/Zend/zend_execute.c: zend_check_type, zend_verify_recv_arg_type",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_RECV, ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF(_EX)"
+  ],
+  "actual_integration": {
+    "revision": "6e59bd311962d7146e3ed2fd88c04392f315250c",
+    "tree": "819762d671a5f1efc227ea628bb60d7102ec0d05",
+    "status": "placed; independent actual/SAME review pending",
+    "canonical": "MAIN69 owns the sole main69-iterable-formal-joined-v1 tuple, with zero source credit.",
+    "remaining_review": "One actual/SAME comparison and one final metadata projection; reuse accepted source signatures."
+  },
+  "recovery": "Reports remain under the named external roots; find report.json by its SHA256. Author original .tools paths remain unchanged; the independent original .tools path links to its moved external root. The tracked controller and case catalogues reproduce a fresh self-contained campaign without the archive.",
+  "remaining": [
+    "Nullable/ordered-null iterable formals, multiple-CV iterable formals/returns and wider headers remain partial.",
+    "Traversable Notice payloads, wider producer/owner/lifetime contexts and every exact held boundary are unchanged."
+  ]
+}
