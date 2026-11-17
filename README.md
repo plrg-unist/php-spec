@@ -41,7 +41,7 @@ retain exact Boolean echo, both non-NUL source arms and genuine emitted-root
 authority. Wider expressions, owners and lifetimes remain partial.
 [Review](coverage/semantics/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
 
-Full and shorthand ternaries compose through closed NOT/CONCAT, Boolean and coalesce children in static USER selectors. Selected echo preserves the original truthy strings `01`, `1` and `10`; present NULL/FALSE differ from ABSENT. Every present proper quiet non-NUL SOURCE arm authenticates with genuine nonfolded CONCAT-root authority. A separate rejection-only ternary witness skips 44 impossible older alternatives while prior helpers and folded support remain literal. New coalesce parents, FLOAT/CV/nonquiet/NUL and wider roots/owners/lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-ternary-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
+Full and shorthand ternaries retain their selected echo and original truthy strings in closed static USER selectors. Direct primitive-arm ternary-left coalesces also distinguish NULL fallback from nonnull FALSE, integer zero, empty string and String0, while true shorthand preserves its scalar tag/value. Exact SOURCE, genuine nonfolded CONCAT-root authority and existing cache/owner/cleanup guards remain; new forms compose only through CONCAT/NOT. Wider typed arms, new parents, FLOAT/CV/nonquiet/NUL selectors and lifetimes stay partial. [Ternary review](coverage/semantics/magic-property-methodclosure-static-raw-ternary-boolean-not-concat-left-coalesce-tree-quiet-get-review.json), [typed coalesce review](coverage/semantics/magic-property-methodclosure-static-raw-typed-ternary-left-coalesce-quiet-get-review.json).
 
 Completed ordinary-CV producers admit flat `stdClass` return unions with the builtin companions already supported by fully qualified forms, in global declarations without class imports. Return verification preserves scalar priority, object identity and array COW before frame retirement and private reference Notices. Wider formals, names, contexts and lifetimes remain partial. [Ordered-union review](coverage/semantics/global-plain-ordered-stdclass-return-producer-reference-notice-review.json). The earlier float-only cut retains its [original review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
 
@@ -1999,8 +1999,10 @@ preserves that pending Exception and the complete caller tail. Valid non-NUL
 [INTERNED poststrings](coverage/semantics/string-offset-nested-unset-bool-cv-interned-post-review.json)
 also preserve the fixed Error or pending Exception: nonstrict string conversion
 is quiet and its index is unused, including leading, fractional and out-of-range
-numeric text. Absent callbacks, REQUEST/unknown/NUL strings, nonfinite FLOAT
-posts and wider ownership remain partial.
+numeric text. Absent callbacks, REQUEST/unknown/NUL strings
+and wider ownership remain partial.
+
+Saved ordinary initialized NULL/BOOL-CV nested unset now admits nonfinite FLOAT postvalues through the existing range Warning path. Copied bits, named-handler masks, pending exceptions and second-handler throws retain their separate source/cell/context/owner guards. Seven source originals reuse native7 once; independent state and actual integration checks pass. Wider callbacks/cells/owners/lifetimes remain partial. See [nonfinite postvalue review](coverage/semantics/string-offset-nested-unset-bool-cv-nonfinite-post-review.json).
 
 [Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
 now reads the key and raises the string-offset Error for valid non-NUL interned

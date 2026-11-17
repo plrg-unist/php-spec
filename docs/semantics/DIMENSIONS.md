@@ -1422,6 +1422,33 @@ Actual=SAME `8d43c4823` retains the sole joined production-SL509 `a9aeaa5a`
 load16.431872817s/source0, independently clear through tuple`1d6d653b`; one
 execution/one physical report read, with author raw reads0.
 
+Nonfinite FLOAT postvalues now use that same saved ordinary NULL/BOOL-CV route.
+`zval_get_long_func(false)` copies the double before `zend_dval_to_lval` emits
+the range Warning and returns zero. The discarded index needs no new numeric
+conversion. Only the payload and range-bit predicates lose their finite-only
+premises; unsigned64 validation, fitting-only quiet reception, exact saved-cell
+read and every source/context/handler/owner guard remain. A normal return
+dispatches the existing copied-bit range task, including default reporting under
+a Warning-excluding named callback. An eligible handler is not called while an
+Exception is already pending; a masked callback default-reports without replacing
+that Exception or its complete caller tail. A second callback may change the CV
+before throwing its own Exception; the selected task retains the original bits.
+Seven fresh originals cover NaN, positive/negative infinity, an initially NULL
+CV, normal/default callbacks and both throw positions. Their native executions
+occurred once, then were reused for seven source agreements. Author state cuts
+remain separate; one original fixture binding failure has zero runtime credit.
+Derived selected-target unbind/UNDEFINED-store controls establish those exact
+mutations, without a physical-retirement source claim. Seven old fixtures only
+lose newly obsolete nonfinite-class refusals; their original evidence is not
+renewed. Independent SL180 cuts153/29 and141/29 plus the bounded WHOLE are
+clear; actual source13 composition and its sole production-SL509 load are
+independently clear in the [nonfinite review](../../coverage/semantics/string-offset-nested-unset-bool-cv-nonfinite-post-review.json).
+Wider callbacks/cells/owners/lifetimes, all exact holds, the withdrawn blanket
+finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 remain
+unchanged. Actual=SAME87fe9d899 retains sole saved23413570,
+16.782590839s/source0 through immutable71dc5eed: one execution, one physical
+report read cached by the reviewer, with author raw actual/canonical/map reads0.
+
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
 does not dispatch on its changed type and its result is unused. No current-key

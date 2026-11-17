@@ -1,0 +1,252 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-nonfinite-post",
+  "status": "Independent private validation, actual source13 composition and the sole production-SL509 load are clear. Complete core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local pinned oracle and baseline profile",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Valid nonfinite PFLOAT postvalues in the same saved ordinary initialized NULL/BOOL CV under named Warning callbacks. Normal copied-bit range dispatch and eligible versus masked pending exceptions retain their separate guards.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "c903094cb7ab1e718a86388b6ad912215780200a271f5b396cdbbf7cccd65998",
+    "law_revision": "314c4acde",
+    "law": "Remove only the FINITE premise from post_value and range_bits. Keep unsigned64, !fparts_fits, fitting-only postnormal, exact saved ordinary cell/read/source, handler/context and copied-bit task guards."
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_execute.c: zend_check_string_offset, zend_fetch_dimension_address, zend_wrong_string_offset_error",
+      "Zend/zend_operators.c: zval_get_long_func, zend_oob_double_to_long_error",
+      "Zend/zend_operators.h: zend_dval_to_lval",
+      "Zend/zend.c: zend_error_zstr_at",
+      "Zend/zend_execute_API.c: zend_call_function"
+    ],
+    "reason": "Nonstrict conversion copies dval, reports nonfinite range Warning and returns0. Nested unset discards the converted index. A pending exception prevents user callback entry; an ineligible mask uses default reporting."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post",
+  "native_baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-baseline39-v1/report.json",
+    "sha256": "a1b9f53eab9358f66782b0227b8fb11c5d290e22d89e64e38d6a6888f5feba99",
+    "native_originals": 7,
+    "model_unsupported": 7,
+    "agreement_credit": 0
+  },
+  "source": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-source39-v1/report.json",
+    "sha256": "5ddcbe156abc3006b69520dce122143e5e65a367db7f7aeec24e6db17817286b",
+    "revision": "314c4acde9c515e77f601618d020b829820d498b",
+    "agreements": 7,
+    "native_reused": 7,
+    "new_native": 0
+  },
+  "author_prelaw": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-prelaw39-index0-v1/report.json",
+      "sha256": "72966a34efc9480b5ce4d2abd85d002c21af988157d7e712824a4a321e243b71",
+      "index": 0,
+      "conditions": 61,
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-prelaw39-index6-v1/report.json",
+      "sha256": "59da41b0624764669b2421baa29cc8004fe4eda74297e2bda8d2efc1e6249de2",
+      "index": 6,
+      "conditions": 70,
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "inherited_peer_prelaw": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/peer-prelaw43-v1.json",
+    "sha256": "86d9fed2c689ec9d00c538dc1c7dc848dc6ac690467d069c9f0a7ee81b14db41",
+    "conditions": [
+      76,
+      88
+    ],
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "inherited_peer_static": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/peer-law43-v1.json",
+    "sha256": "ca10d7ecaed8df164007d9d129c790cf6b1792615371007cab6e2aaa8d8efd34"
+  },
+  "law_legacy_diff": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-law-legacy39-v1.patch",
+    "sha256": "0854871aaebc0d4d12482ddaa1478eeb7db3f68eeff76d6ac43f64398d71c2a0"
+  },
+  "author_states": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index0-v2/report.json",
+      "sha256": "3f0b0b48b146a198a70c7d238976bba83217f72f3967f8ecfa1074cba4924fe2",
+      "index": 0,
+      "conditions": 118,
+      "derived": 25,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index1-v1/report.json",
+      "sha256": "2483951de2eeb24fe4cedf93f20108c862e9a468df504b4b109cb70fd4af019c",
+      "index": 1,
+      "conditions": 142,
+      "derived": 32,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index2-v1/report.json",
+      "sha256": "44a4ff18396b6fd62231d27cfa64c8fb8511842f302025ef8ac941e237c63fed",
+      "index": 2,
+      "conditions": 118,
+      "derived": 25,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index3-v1/report.json",
+      "sha256": "ddf3d7b9d71d4afced8608049d5091801e6fbf43937f1fd32bf62bc9b90570e4",
+      "index": 3,
+      "conditions": 107,
+      "derived": 25,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index4-v1/report.json",
+      "sha256": "c6eddc8c80184d45ad38ca2f8060be001dfe63cfc88fbb7ad5160aebfa29fc72",
+      "index": 4,
+      "conditions": 118,
+      "derived": 25,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index6-v1/report.json",
+      "sha256": "6115de367c92b1cc16fe18dae7ee4ed4a014a8a8317fd44375e931d2f77a5f8d",
+      "index": 6,
+      "conditions": 118,
+      "derived": 25,
+      "mode": "SL",
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "preserved_failure": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-state39-index0-v1/report.json",
+    "sha256": "4b7a759d76e992ddf8f675a08742bdd1288579785f3dc77dafbfa1c8089d68c6",
+    "kind": "Fixture compiler binding rejection before runtime; fixed only by binding S_next.TODO before its complete-state equality. Other five cuts were initially unrun.",
+    "credit": 0
+  },
+  "legacy_bridge": "Seven old test scripts delete only obsolete nonfinite-class refusals. Their saved-bit mismatch, actual task/source/owner checks and original accepted cuts remain. Deleted queries and old source/native/whole campaigns gain no renewed credit.",
+  "derived_controls": "Selected TARGET is source-reached before derived unset_name/unbind and UNDEFINED-store mutations. These are not a physical-retirement source claim. Additional NaN payload/sign bits have state-only credit.",
+  "holds": "All exact holds, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.",
+  "remaining": "REQUEST/unknown/NUL string posts, wider cells/callbacks/owners/lifetimes and complete PHP core remain partial.",
+  "divergences": [],
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-source-freeze39-v1.json",
+    "sha256": "c4f783ee7943810b09425cfaaa44d991115d4286a66810d8ea1feb8ac27e9818",
+    "revision": "8a0c4036084c664c31c2d238402c126ea9717415",
+    "source_paths": 13,
+    "ordered_modules": 509
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/peer-whole44-v1.json",
+    "sha256": "48cdc160566d8c8edf79f083399e2459d7889abbaf260c522fb1bc9f8d25b62e"
+  },
+  "independent_post": {
+    "reviewer": "recover44_string_nonfinite_review",
+    "revision": "8a0c4036084c664c31c2d238402c126ea9717415",
+    "separate_SL180_cuts": [
+      {
+        "index": 1,
+        "conditions": 153,
+        "derived": 29,
+        "elapsed_seconds": 37.605178
+      },
+      {
+        "index": 5,
+        "conditions": 141,
+        "derived": 29,
+        "elapsed_seconds": 28.666973
+      }
+    ],
+    "source_credit": 0,
+    "native_credit": 0,
+    "raw_reports": "See independent WHOLE packet for exact per-cut paths/hashes."
+  },
+  "preserved_metadata_failure": "Independent inventory reader initially queried status=closed instead of validated; count/report preparation only, preserved0 and corrected without reruns or repeated union audit in WHOLE.",
+  "actual_integration": {
+    "revision": "87fe9d8992616fe2db69b935e62254c65a79b899",
+    "tree": "3bd3935dbc8ae8864304524d7e0f4fc02a9019f0",
+    "parent": "e9479c2b20185ba9c0e3ddb0d8264a28b1f8d251",
+    "parent_tree": "39f57b65f9209e463c281ad430a5ac657945ce4e",
+    "source_paths": 13,
+    "literal_nonmake_paths": 12,
+    "make_unique_added_physical_lines": 8,
+    "make_complete_current_parent_inverse": true,
+    "full_current_parent_inverse": true,
+    "source_proof": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main97-string-nonfinite-source13-map-v1.json",
+      "sha256": "34a4d2876dbd5189ff4a5102cb85c93738cea232d15df4b03dd0fe13f69397fe"
+    },
+    "source_manifest": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/author-source-freeze39-v1.json",
+      "sha256": "c4f783ee7943810b09425cfaaa44d991115d4286a66810d8ea1feb8ac27e9818"
+    },
+    "whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/peer-whole44-v1.json",
+      "sha256": "48cdc160566d8c8edf79f083399e2459d7889abbaf260c522fb1bc9f8d25b62e"
+    },
+    "scope": "Independent exact13 projection,12 literal nonMake paths and unique8-line Make block/full foreign-parent inverse. Author did not read raw actual proof/map."
+  },
+  "canonical": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main97-string-nonfinite-canonical-v1/report.json",
+    "sha256": "23413570fffd552aa14a9f51ffa626466ab4e1de13e6f0c9397d6e01a7eccba2",
+    "tested_revision": "87fe9d8992616fe2db69b935e62254c65a79b899",
+    "module_count": 509,
+    "argv_count": 512,
+    "watched_count": 513,
+    "mode": "production_SL",
+    "elapsed": 16.782590839080513,
+    "cap_seconds": 60,
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "source_credit": 0,
+    "executions": 1,
+    "physical_saved_report_reads": 1,
+    "tracked_frozen_input_hashes_checked": 511,
+    "saved_report_data": "Parsed and assessed once; this immutable tuple is the cached result. No later HEAD or report refresh.",
+    "author_raw_report_reads": 0,
+    "author_raw_actual_source_map_reads": 0
+  },
+  "actual_canonical_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonfinite-post/peer-actual-canonical44-v1.json",
+    "sha256": "71dc5eed9ec734a81c56773bbd3467e31fb94bd96e46dd79c88f9dfc8c4f4b36",
+    "reviewer": "recover44_string_nonfinite_review",
+    "verdict": "CLEAR",
+    "use": "Immutable cached tuple; no later HEAD/report/map refresh."
+  },
+  "metadata_scope": {
+    "parent_revision": "87fe9d8992616fe2db69b935e62254c65a79b899",
+    "existing_path_sha256": {
+      "README.md": "795c09a19686ba6f3bbc7168d957d3d3e48178eaecae65f8faa3110dc04b5a51",
+      "PROGRESS.md": "b78b820dea4343c6b7e2d835fc7c99d7ca1efef272deb10909a93131a3aa256e",
+      "docs/semantics/DIMENSIONS.md": "f3b3ebbbad5c67deda93bec27b59fbe9e175e1bc07ef5d7d0342da54991945f3",
+      "coverage/semantics/features.json": "9a20dbbee9e8b31ac59428da98ac7514d0c05ba6083fb1c4245cd270a60d0da2"
+    },
+    "author_allowed_paths": [
+      "docs/semantics/DIMENSIONS.md",
+      "coverage/semantics/string-offset-nested-unset-bool-cv-nonfinite-post-review.json"
+    ],
+    "generic_three": "Author does not edit README/PROGRESS/features; MAIN retains its existing generic curation. No metadata-only reruns or new acceptance gates."
+  },
+  "preserved_failures": "Author original fixture0 binding rejection, peer inventory-reader preparation assertion and MAIN Make-linecount preparation assertion each retain0. No accepted native/source/prelaw/state/WHOLE campaign is replayed."
+}

@@ -1,0 +1,218 @@
+{
+  "feature": "Quiet static USER method selectors with typed full/shorthand ternary-left coalesce",
+  "status": "Independently reviewed bounded increment; actual and cached SAME canonical placement clear. Family/full core remain partial.",
+  "target": {
+    "php": "8.5.10 CLI NTS64",
+    "engine": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398"
+  },
+  "behavior": "Direct full/shorthand ternary-left COALESCE distinguishes selected NULL from nonnull FALSE/INT0/empty/String0; true shorthand preserves its exact primitive tag/value. FULL uses existing closed quiet condition truth and both primitive present arms; SHORT uses exact primitive condition/fallback. Both proper coalesce arms authenticate; RHS remains the old closed tree. Only CONCAT/NOT propagate new forms under genuine emitted CONCAT roots. Prior scope/method/cache/owner/cleanup guards remain.",
+  "engine_routes": [
+    "Zend/zend_compile.c:zend_compile_coalesce, zend_compile_conditional, zend_compile_shorthand_conditional",
+    "Zend/zend_vm_def.h:ZEND_COALESCE, ZEND_JMP_SET, ZEND_QM_ASSIGN",
+    "spec/semantics/66-nonvariable-coalesce.watsup:coalesce_result",
+    "spec/semantics/51-truth-expressions.watsup:selected_branch/selected_true"
+  ],
+  "source": {
+    "donor": "ea2218feee34de8247fc18e1792aa1c5b9f86afa",
+    "tree": "baa147069a3e0bd116da38501338fc20e0f30528",
+    "parent": "f0e689fc25b330f5a13128b9ffc63790ff0cf4a8",
+    "packet_sha256": "5fe59e598610f6966323ae17b00a979bcae5e239a3a1e469704bf04d13df7f51",
+    "evidence_sha256": "30689c660e46e0cafa21173d842d3f6a881dcf7e0cc71ab93822990f1f689dcb",
+    "runtime407_sha256": "3932e888cb9033ee3f699ef0f895780ec2d7160b7beef14e14f3de3841b9eb70",
+    "bridge_sha256": "8059e58cea7fe94c62a3698300b589cd79751a5bf622478b2688d240da70f9ff",
+    "files": 7,
+    "insertions": 671,
+    "deletions": 0,
+    "runtime407_insertions": 123,
+    "rejection_only_FIRST_guards": 46,
+    "source_packet_path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-typed-ternary-left-coalesce-quiet-get/author/source-packet-v1.json",
+    "author_evidence_path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-typed-ternary-left-coalesce-quiet-get/author/author-evidence-v1.json",
+    "make_registrations": 4,
+    "make_execution_credit": 0
+  },
+  "dispatch": "Prior raw Some implies a false ternary-left-coalesce witness by syntax-domain induction. The positive receipt witness therefore implies oldRawNone; omitting exactly that redundant premise adds no admission/value/root authority. Old raw providers, literal/folded support and all prior guards remain literal. Removing only new blocks/46 FIRST guards/two consumers recovers ef822 exactly. Pure authored .watsup; no native evaluation, case IDs or runtime-carrier invention.",
+  "validation": {
+    "private_SL_modules": 507,
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "source_comparisons": [
+      {
+        "role": "author",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "seconds": 58.630152602214366,
+        "runtime407_sha256": "216b6061476ceaa60235f32f04600a277400cd7b431524508988850adc76b24d"
+      },
+      {
+        "role": "author",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "seconds": 45.16481422493234,
+        "runtime407_sha256": "216b6061476ceaa60235f32f04600a277400cd7b431524508988850adc76b24d"
+      },
+      {
+        "role": "independent",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw",
+        "seconds": 103.06095386995003,
+        "runtime407_sha256": "216b6061476ceaa60235f32f04600a277400cd7b431524508988850adc76b24d"
+      },
+      {
+        "role": "independent",
+        "id": "methodclosure-static-raw-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources",
+        "seconds": 140.77157403202727,
+        "runtime407_sha256": "3932e888cb9033ee3f699ef0f895780ec2d7160b7beef14e14f3de3841b9eb70"
+      }
+    ],
+    "historical216b_bridge": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-typed-ternary-left-coalesce-quiet-get/author/receipt-equivalence-bridge-v1.json",
+      "sha256": "8059e58cea7fe94c62a3698300b589cd79751a5bf622478b2688d240da70f9ff",
+      "old_blob": "db396278ee0cfc20dc2b0145b4ccbbcff4656c48",
+      "interpretation": "Successful author2/226+216 and peer literal103.060953870 retain216b identities. Only failed peerCV source was retried at3932, passing140.771574032. No accepted-cut/native/prelaw/observer/closed-family renewal."
+    },
+    "author_fixture_cuts": [
+      226,
+      216
+    ],
+    "independent_fixture_cuts": [
+      31,
+      67,
+      49,
+      31,
+      39,
+      61,
+      71,
+      73,
+      65,
+      57,
+      54,
+      54,
+      41
+    ],
+    "independent_review": {
+      "verdict": "WHOLE_CLEAR",
+      "reviewer": "/root/recover29_get_ternary_review",
+      "verified_report_hashes": 35,
+      "source_files": 7,
+      "source_insertions": 123,
+      "old_bodies_literal": true,
+      "private_SL_modules": 507,
+      "normal_sources": {
+        "historical216b": 3,
+        "affected3932": 1
+      },
+      "author_fixture_cuts": [
+        226,
+        216
+      ],
+      "independent_fixture_cuts": [
+        31,
+        67,
+        49,
+        31,
+        39,
+        61,
+        71,
+        73,
+        65,
+        57,
+        54,
+        54,
+        41
+      ],
+      "native_originals_once": 4,
+      "failures_retained_zero": "Both CV inner280 timeouts; literal rawUnsupported/recorder KeyError without invented stability/timing; interrupted extra launch; pre-VM cost-probe syntax failure.",
+      "observations": {
+        "ternary": 26,
+        "coalesce": 27,
+        "NULL_RHS": 5,
+        "nonnull_exact_retained": 22,
+        "credit": 0
+      },
+      "no_accepted_evidence_renewal": true
+    },
+    "compiler_observations": {
+      "originals": 4,
+      "ternary_snapshots": 26,
+      "coalesce_snapshots": 27,
+      "NULL_RHS": 5,
+      "nonnull_exact_retained": 22,
+      "source_credit": 0,
+      "assertion_credit": 0,
+      "interpretation": "26 new ternary-left sites plus one old CONCAT-left coalesce. Full AFTERPNULL is an enqueue placeholder; COALESCE_RESULT exposes exact selected operands. Real String carriers are separate from plain typed source certificates. Literal child pools/reads are present; no child absence is invented."
+    },
+    "limits": {
+      "source_inner_seconds": 280,
+      "source_outer_seconds": 290,
+      "fixture_seconds": 297,
+      "address_space_bytes": 3221225472
+    },
+    "prelaw": "Author2 expectedUnsupported pass/source0; peerCV inner280 timeout0; peer literal rawUnsupported followed by recorder KeyError0, with no invented timing/stability/PASS.",
+    "preserved_zero_credit": "PeerCV prelaw and first postlaw inner280 timeouts; literal prelaw recorder KeyError; interrupted extra launch; pre-VM root-cost probe syntax failure. Only affected recorder/probe paths and failed CV source were corrected/retried; original raw remains.",
+    "root_cost_queries": {
+      "old_two_roots_seconds": 62.8627899531275,
+      "new_two_roots_seconds": 29.856442596996203,
+      "source_steps": 0,
+      "source_credit": 0,
+      "assertion_credit": 0
+    },
+    "source_semantic_mismatches": 0,
+    "source_or_native_fixture_corrections": 0,
+    "new_peer_fixture_failures_or_corrections": 0,
+    "accounting": "Every original/cut keeps its input/mode/cap identity. Repeated source/state bindings are not unique aggregate obligations. Fixtures, observations, cost queries, Make, WHOLE and canonical loading have source credit0; raw is external."
+  },
+  "integration": {
+    "immutable_tuple_path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-typed-ternary-left-coalesce-quiet-get/independent/actual-and-same-clear-v1.json",
+    "immutable_tuple_sha256": "c1cba31a80a85464ae7fbaa7e7b56b0ca7c108cb451d154f674d2d4548046ae6",
+    "actual": {
+      "revision": "333081794337d4d28e2667a39690266d7bec1f20",
+      "tree": "35bc5b35db9e38de800b84296197a1b5bf261f18",
+      "parent": "ef0ecbf6ff22013cccefad030026fa7ea82c428c",
+      "parent_tree": "cf16b248dc5efb1e38d3449d8f00a1704ecdefed",
+      "projection_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main97-get-typed-ternary-left-source7-map-v1.json",
+      "projection_sha256": "55bdc78c7d8f55c6b5d8e8e5a843aac13fa332325ca4b31a27535573558415c9",
+      "six_nonMake_posts_literal": true,
+      "Make4_unique_full_foreign_parent_inverse": true,
+      "source_credit": 0
+    },
+    "same_canonical_revision": "333081794337d4d28e2667a39690266d7bec1f20",
+    "saved_canonical": {
+      "report_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main97-get-typed-ternary-left-canonical-v1/report.json",
+      "report_sha256": "1cfe0bb8bf9fcb903f1e944d468d53c199ac587096e9e4973ca3287f1ca649c4",
+      "tested_revision": "333081794337d4d28e2667a39690266d7bec1f20",
+      "revision_after": "333081794337d4d28e2667a39690266d7bec1f20",
+      "mode": "production_SL",
+      "modules": 509,
+      "argv_count": 512,
+      "watch_count": 513,
+      "fixture_count": 1,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.691196887986735,
+      "exit": 0,
+      "timeout": false,
+      "reaped": true,
+      "stable": true,
+      "pass": true,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "source_credit": 0,
+      "canonical_executions": 1,
+      "reruns": 0
+    },
+    "read_custody": {
+      "verdict": "ACTUAL_AND_SAME_CLEAR",
+      "physical_report_reads": 1,
+      "physical_map_reads": 1,
+      "cached_SAME_reuse": 1,
+      "full_originals_cached": true,
+      "input_maps_equal": 513,
+      "new_runtime_runs": 0,
+      "source_credit": 0,
+      "elapsed": 16.691196887986735
+    },
+    "author_consumption": "Only reviewer29 immutable tuple; author MAIN source/report/map/raw reads0 and added canonical/runtime executions0.",
+    "metadata_base": "b49f3d6639d87ea3e20ad23bdfaaa218cdf389be"
+  },
+  "remaining": "Wider typed arms, new Boolean/ternary/coalesce parents, FLOAT/CV/nonquiet/NUL selectors, wider producers/owners/lifetimes remain partial; no family/core closure.",
+  "holds": "Exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 unchanged; family/full core partial.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}
