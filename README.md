@@ -432,10 +432,12 @@ Raw `?\stdClass` formals and returns also preserve exact class bytes and `[class
 
 Explicit `\stdClass|null` and `null|\stdClass` formals/returns preserve exact raw/normalized order and existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain distinct evidence; wider class/builtin unions, plain/imported classes and all exact holds stay partial. [Ordered FQN/null review](coverage/semantics/cv-union-fqn-stdclass-producer-reference-notice-review.json).
 
-Completed ordinary-CV producers can also use singleton nominal formals whose
-declaration imports resolve quietly to exact global `stdClass` before a
-reference-send Notice. The [scoped-formal review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json)
-records reception, return verification, private cells and unchanged lifetime bounds.
+Completed ordinary-CV producers also admit singleton and nullable nominal formals
+whose declaration namespace/imports resolve quietly to exact global `stdClass`.
+Exact class/null order, metadata, reception, return verification and private Notice
+cells retain their existing ownership and lifetime bounds. Scoped unions, relative
+names and wider classes remain partial. [Singleton review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json),
+[nullable review](coverage/semantics/scoped-nullable-stdclass-formal-producer-reference-notice-review.json).
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native

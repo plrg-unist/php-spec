@@ -1194,8 +1194,26 @@ return verification, retirement and finite private Notice cells.
 The [scoped-formal review](../../coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json)
 keeps four Notice originals and one unchanged strict reception control separate,
 including the original semantic overlap failure and saved line-expectation correction.
-FQN returns isolate formal authority in these originals. Scoped nullable/union/
-relative forms, other resolved spellings and wider owners/lifetimes remain partial;
+FQN returns isolate formal authority in these originals. Scoped union/relative
+forms, other resolved spellings and wider owners/lifetimes remain partial;
+all exact holds stay unchanged.
+
+Nullable `?Alias` FORMALs reuse that same quiet builtin-first declaration proof
+when the ordinary name resolves to exact global `stdClass`. The nullable Param
+view delegates to the existing singleton view, changing only the inner proof
+name and tag while preserving nullable/name/Param metadata and every other field.
+The existing fold authenticates exact class-then-null order; nonempty declaration
+context, nonempty actuals and a changed parameter vector preserve disjointness
+from the old global route. Caller strictness, ordinary BYREF reception, RETURN
+verification, frame retirement and finite private Notice cells keep their guards.
+The [scoped nullable-formal review](../../coverage/semantics/scoped-nullable-stdclass-formal-producer-reference-notice-review.json)
+separates object BYVAL/BYREF and NULL Notice originals from an unchanged strict
+scalar reception control. Native4 ran once; author and independent source4 plus
+440/218 fixture cuts remain distinct. The old124 pure-view expectations and
+matching class/null proofs are promoted through fresh125 equivalents and static
+composition, without renewing124 execution. The fixed actual and one shared
+production-SL509 load are independently clear. Scoped unions, relative names,
+other resolved classes and wider payloads/owners/lifetimes remain partial;
 all exact holds stay unchanged.
 
 Distinct ordered builtin unions of three through eight members also admit

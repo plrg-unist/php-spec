@@ -10,18 +10,21 @@ and current family documents identify implemented routes and remaining obligatio
 
 Allocated STRING casts admit existing quiet finite PFLOAT VALUE under full child SOURCE, matching own/child/raw-live precision and unchanged prefix/KNOWN/non-NUL bounds. Native3 once/source3, author261/107-derived+301/123-derived and corrected independent546/446-derived retain separate cuts. Failed545/445 NaN identity and two author/one reviewer preparation assertions stay0; four affected old FLOAT denials promote within new B, without historical453 renewal. WHOLE13 and actual=SAMEbe5d401551/solec306a206 productionSL50916.381769837s/source0 are clear through immutablea0e650d9/one cached saved-report read; author canonical/map/actual-source reads0. Wider forms/lifetimes and all exact holds/reserve93807cdd6/255/inventory169/306closed0+1 remain partial/unchanged. [Review](coverage/semantics/string-offset-runtime-allocated-float-producer-cast-base-initial-raw-leading-key-review.json).
 
-Singleton nominal FORMALs of completed required ordinary-CV producers now use quiet
-builtin-first declaration resolution to exact global `stdClass` in imported
-namespace and unrelated-import global contexts. Native5 once/source5 distinguish
-four Notice positives from one unchanged strict reception control/newcredit0.
-Retained author436/affected418 and first independent WHOLE5+436/418 keep their
-separate cuts; the disjoint-context correction preserves the original semantic
-overlap failure0 and saved H9-to-H8 native expectation correction0 without replay.
-Actual/SAME7af4af741 and sole SL509/512argv/513watch16.131483867s/source0 are
-independently clear through immutableae281dc2. Scoped nullable/union/relative forms,
-other resolved spellings and wider owners/lifetimes remain partial; all exact holds,
-reserve93807cdd6/255 and inventory169/306/closed0+1 are unchanged.
-[Review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json).
+Nullable nominal FORMALs of completed required ordinary-CV producers now reuse
+quiet builtin-first declaration resolution to exact global `stdClass` in imported
+namespace and unrelated-import global contexts. Exact class-then-null order and
+nullable/name/Param metadata retain existing reception, RETURN and private-cell
+ownership guards. Native4 once/source4 separates Notice positives3 from one
+unchanged strict reception control/newcredit0. Author440(266+174)/218(115+103)
+and first independent WHOLE4+440/218 keep separate SL507 cuts, with no new
+failures/corrections/timeouts/replays. Baseline Unsupported2, author other1 UNRUN
+and old124 expectation promotions retain zero renewed credit through fresh125
+equivalents. Actual871eb1f337 and joined548c625fae sole productionSL509/512argv/
+513watch pass16.0307590959128s/cap60/source0, independently clear through immutable
+bbd9f34e and one cached saved-report read; author raw reads0. Scoped unions, relative
+names, wider payloads/owners/lifetimes and all exact holds remain partial;
+reserve93807cdd6/255 and inventory169/306/closed0+1 stay unchanged.
+[Review](coverage/semantics/scoped-nullable-stdclass-formal-producer-reference-notice-review.json).
 
 Already-certified quiet PINT producers feed allocated STRING casts through a complete indexed child SOURCE walk. Existing false parent CODE/no-read/positive line, equal own/child precision, signed64/outside0..9, exact decimal/prefix/cast_apply and genuine non-NUL REQUEST KNOWN ownership remain. Folded signs and emitted ternary-backed arithmetic retain exact REQUEST3 prefixes and frozen raw CV offsets through returning Warnings. Native3 once/source3savedreuse, author277/117-derived plus302/127-derived and independent453/353-derived SL508 keep separate first-pass cuts. WHOLE12 and actualcb0cf98ca/sole66ab9b2d productionSL50916.589039046s/source0 are independently clear through immutableb5647c31/one saved-report read; author canonical/map/actual-source reads0. Source/fixture failures/corrections/timeouts0; separate MAIN2/reviewer1 preparation assertions retain0. Existing quiet typed VALUE extensions and the old literal singleton bridge remain preserved/unrenewed. Wider uncertified producers/lifetimes, exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 stay partial/unchanged. [Review](coverage/semantics/string-offset-runtime-allocated-integer-producer-cast-base-initial-raw-leading-key-review.json).
 
