@@ -16,16 +16,34 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Computed-TRUE full-ternary defaults preserve the selected scalar tag through exact
+recursive Boolean/source/pool authority and a proper selected-child redirect.
+Skipped names retain their original source without demanded bindings; other
+truthy conditions, owning results and wider contexts remain partial.
+[Review](coverage/semantics/deferred-computed-true-full-ternary-redirect-wrapper-default-reception-review.json).
+
+Quiet Boolean wrappers over closed NOT/CONCAT-left-coalesce static USER selectors
+retain exact Boolean echo, both non-NUL source arms and genuine emitted-root
+authority. Wider expressions, owners and lifetimes remain partial.
+[Review](coverage/semantics/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get-review.json).
+
 Completed fixed-required ordinary-CV producers admit bare `stdClass|float` and `float|stdClass` returns in a global context without class imports. Exact raw/normalized order preserves object identity, strict integer-to-float widening and quiet weak scalar conversion before frame retirement and private Notice cells. Wider types, contexts and lifetimes remain partial. [Review](coverage/semantics/global-plain-union-float-stdclass-return-producer-reference-notice-review.json).
 
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
+
+Allocated raw-integer string casts and optional literal CONCAT coalesce bases preserve
+their exact non-NUL REQUEST temporary and frozen raw CV offset through returning
+Warnings. Separate entry freshness and saved ownership preserve later callback
+allocations. Source and independent validation plus the joined integration check
+are clear; wider producers and lifetimes remain partial.
+[Review](coverage/semantics/string-offset-runtime-allocated-string-base-initial-raw-leading-key-review.json).
 
 Fully qualified true/false/null leaves and their direct plus/minus forms preserve
 exact INTERNED CONCAT coalesce headers and frozen raw CV offsets through returning
 Warnings. Original source names and demanded typed compiler facts remain authoritative;
 wider names, signs and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-fqn-keyword-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
-Literal-TRUE full-ternary defaults retain the selected scalar tag while existing binding pruning skips unresolved names in the other arm. Exact source, Boolean pool and selected-child redirect remain required; computed truthy conditions, owning results and wider contexts stay partial. [Review](coverage/semantics/deferred-true-full-ternary-redirect-wrapper-default-reception-review.json).
+Literal-TRUE full-ternary defaults retain the selected scalar tag while existing binding pruning skips unresolved names in the other arm. Exact source, Boolean pool and selected-child redirect remain required; other truthy conditions, owning results and wider contexts stay partial. [Review](coverage/semantics/deferred-true-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Recursive BooleanNot composes over bounded CONCAT-left-coalesce static USER selectors while preserving exact source and emitted-root authority. A shared syntax witness avoids forty impossible legacy alternatives; existing raw providers and folded cases retain their behavior. Wider forms and lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get-review.json).
 

@@ -1273,8 +1273,21 @@ must resolve to TRUE with a matching plain Boolean pool and no executable leaf.
 Existing binding pruning skips unresolved FIELD2 names, while every source
 occurrence remains authenticated. Two originals reuse native observations once;
 prelaw162, author244/206/62 and independent280/76/32/28 pass at separate cuts.
-Computed-TRUE and wider truthy predicates, owning results and wider contexts remain
-partial; declaration, quiet-shape/no-DIM, cache, recipient and owner bounds remain.
+Wider truthy predicates, owning results and wider contexts remain partial;
+declaration, quiet-shape/no-DIM, cache, recipient and owner bounds remain.
+
+[Computed-Boolean-TRUE full-ternary defaults](../../coverage/semantics/deferred-computed-true-full-ternary-redirect-wrapper-default-reception-review.json)
+extend the selected FIELD1 certificate through one recursive exact-Boolean
+condition premise. Matching pools and absent condition CODE/read/redirect remain
+required; selected tags, skipped names and all other guards are unchanged.
+Eight primitive conditions retain raw integer, Boolean, NULL and binary64 results.
+Two originals reuse native observations once; prelaw214/165, author252/206/62 and
+independent300/76/32/28 retain separate first-pass cuts. Only three old assertions
+are promoted, with separate affected27/13 checks per author and reviewer; forged
+SOURCE versus SIGNATURE still refuses the whole default. Actual49e4a8839 and its
+sole saved production-SL509 load pass in16.239776302s with source0, independently
+cleared through one immutable tuple. Generic truthy/NaN conditions, owning results
+and wider contexts remain partial.
 
 ## Source metadata and resumed states
 
