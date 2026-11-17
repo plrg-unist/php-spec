@@ -1515,3 +1515,13 @@ Baseline2 Unsupported/2 unrun and the external builder-check failure retain0.
 Wider producers, owners, noisy conversions and every exact hold remain partial.
 [Evidence](../../coverage/semantics/output-final-selected-nested-scalar-cast-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-nested-scalar-cast-return-modulo-error-review.json).
+
+These chains also admit one raw numeric unary +/- leaf. Separate exact source,
+CODE and compiled facts authenticate the raw and signed values; full unary-state
+equality preserves scalar type without adding an owner. NaNs, out-of-width
+FLOATs and integer promotion remain outside this slice. Four originals reuse
+native observations once; author16/shape4/12 and independent132/23 retain separate
+fixture source0 cuts. Original failures retain0, and actual MAIN508 loading stays
+separate/source0. Wider producers, owners, noisy conversions and exact holds remain.
+[Signed numeric evidence](../../coverage/semantics/output-final-selected-signed-numeric-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-signed-numeric-cast-chain-return-modulo-error-review.json).
