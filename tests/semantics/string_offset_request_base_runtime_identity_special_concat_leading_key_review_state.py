@@ -64,6 +64,9 @@ def conditions(program, path, index):
                        '$compiled_read(' + state + ', porigin_operator_0_0) = (' + value + ')',
                        '$string_read_runtime_value(' + state + ', porigin_operator) = eps',
                        '$string_read_request_base_saved(' + state + ', pstringread) = eps']
+            if label in ('nan', 'negative_nan', 'payload_nan'):
+                guards += ['$compiled_identity_value(' + state + ', porigin_operator_0_0) = eps',
+                           '$string_read_runtime_instanceof_operand(' + state + ', porigin_operator_0_0) = eps']
         guards += ['S_peer_identity_signed_zero = S_after[.POOLS[0] = ppool_peer_identity[.CONSTANTS = (PCONSTANT pcpath_peer_identity_float (PFLOAT 9223372036854775808)) :: ppool_peer_identity.CONSTANTS]]',
                    '$string_read_runtime_value(S_peer_identity_signed_zero, porigin_operator_0_0) = (PFLOAT 9223372036854775808)',
                    '$string_read_runtime_value(S_peer_identity_signed_zero, porigin_operator_0) = (PBOOL false)',
@@ -150,6 +153,6 @@ if __name__ == '__main__':
     path = output / 'report.json'
     report = json.loads(path.read_bytes())
     report['inputs'].update(before)
-    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET Boolean-result controls. Fourteen genuine checked-source states distinguish equal string bytes or truth from strict scalar identity, reverse operand types and nested NOT/identity; compiled PINT/PBOOL, NULL/array/object, NaN and runtime FLOAT producers retain refusal; the exact literal-string comparison is admitted. Signed-zero PFLOAT substitution stays admitted at the existing compiler-output boundary. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
+    report['scope'] = ('Exact author prefixes plus independent own/both-child source/CODE/line/precision, malformed/NaN/typed-leaf and stale BUDGET Boolean-result controls. Fourteen genuine checked-source BUDGET states distinguish equal string bytes or truth from strict scalar identity, reverse operand types and nested NOT/identity; compiled PINT/PBOOL, NULL/array/object, NaN and runtime FLOAT producers retain refusal there; the exact literal-string comparison is admitted. Signed-zero substitution stays admitted; three forged NaN pools on the raw finite FLOAT source retain compiler-identity/consumer-operand refusal rather than gaining genuine NaN authority. Fixture source0/native0; no compiler/schema/API/387/kernel/owner changes or source/native replay.')
     path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
