@@ -1,0 +1,259 @@
+{
+  "milestone": "COMP321",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Bounded own public parentless short reference Get admits every well-formed distinct ordered builtin union of length2..7 over array/object/int/float/bool/string/null/true/false. bool cannot overlap either literal and true/false cannot coexist. Exact raw casefolded Identifier/singleton normalized branch order and complete consumption remain required. Standalone/Nullable/mixed, actual body/default/CODE/source/line, source owners and lifetime bounds remain unchanged.",
+  "semantic_delta": "382 local recursive whitelist adds true/false and a separate suffix true+false exclusion, retaining the existing overlap check and max7. Remove only the old literal|null pair clause so all four old orders use the disjoint fold. Promote exactly12 newly admitted legacy assertions: scalar2, builtin8 at lengths2..5, bool_string review2; their other ordered strings remain identical. Existing valid bool length6/7 unions remain positive; overlaps with literals remain refused. No141/95/138/API/ABI/runtime/backend/native-fallback change.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source_suites": [
+    "tests/semantics/literal_boolean_union_parentless_short_reference_get_hook_sources.py",
+    "tests/semantics/literal_boolean_union_parentless_short_reference_get_hook_review_sources.py"
+  ],
+  "helper_suites": [
+    "tests/semantics/literal_boolean_union_parentless_short_reference_get_hook_protocol.py"
+  ],
+  "source_ready": {
+    "path": "../php-spec-evidence-archive/comp321/source-ready.json",
+    "sha256": "2b552fd722c6bcf405b5095813a92cc78320be545395a837b619aec0867781b8",
+    "commit": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+    "tree": "7f8a69a89eec154157b0b2fcc184e8c2bc2c0587",
+    "base_source_commit": "7ecd6999054f2fd94e88d5f47ae641dcebbc7f4c",
+    "exact_paths": 18,
+    "make_additions": 9,
+    "author_whole_ready": true,
+    "independent_whole_fullclear": true,
+    "reviewer": "/root/recover25_compiler_builtin_union_review",
+    "note": "Immutable author export retains the peer runtime status at creation. Completed independent8f6b cuts below establish WHOLE18 FULL CLEAR. Closed320 metadata and later322 preparation are excluded."
+  },
+  "engine_routes": [
+    "Zend/zend_compile.c:zend_compile_typename_ex",
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/zend_execute.c:zend_verify_weak_scalar_type_hint",
+    "Zend/zend_execute.c:i_zend_verify_type_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval",
+    "Zend/zend_execute.c:zend_throw_ref_type_error_zval"
+  ],
+  "raw_evidence_root": "../php-spec-evidence-archive/comp321",
+  "native_current_originals_once": 6,
+  "native_current_reports": [
+    {
+      "report": "weak-native-once/report.json",
+      "sha256": "41efaa69292f92e05eb3675210c4655df9153cb21bdf8a6cbe1410c3006a4830",
+      "head": "7f2e57309df5a695779adaf0f06ade4ca7082bf9",
+      "current_originals": 3,
+      "new_observations": 3,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-native-once/report.json",
+      "sha256": "98ab246ed12ea68f75091c47af5c33bb84899cf0caca818eeead43fbaa03ccce",
+      "head": "68656cd21acd384155fd74c3b402d9ded7277225",
+      "current_originals": 3,
+      "new_observations": 3,
+      "source_agreement_credit": 0
+    }
+  ],
+  "source_agreements": [
+    {
+      "report": "weak-sources/report.json",
+      "sha256": "abc1eff5a256e83e352edab80e31db94be5db5c79dd44c50d3ce41dad18e6d5d",
+      "head": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+      "normal": 3,
+      "new_native": 0,
+      "reused_native": 3,
+      "elapsed_seconds": [
+        64.40129232406616,
+        63.47713255882263,
+        69.85033345222473
+      ]
+    },
+    {
+      "report": "strict-sources/report.json",
+      "sha256": "6b1c2b2ea50ad6a0d99aa2a35e14d5d1b266f967ec1bb6c704562d2e4c6d9c7e",
+      "head": "8f6b1752cb67f9290c10b55891ce13a66a7ab586",
+      "normal": 3,
+      "new_native": 0,
+      "reused_native": 3,
+      "elapsed_seconds": [
+        69.43363833427429,
+        75.55260014533997,
+        71.45298838615417
+      ]
+    }
+  ],
+  "fixture_contract": {
+    "mode": "fixture-SL",
+    "modules": 508,
+    "cap_seconds": 360,
+    "seek_steps": 30000,
+    "source_agreement_credit": 0,
+    "passed": true,
+    "stable": true,
+    "quiet": true,
+    "reaped": true,
+    "scope": "Eight separate author/independent cuts, without aggregate/unique credit. Affected header747 contains124 representative literal orders, casefold and raw/normalized order/count/shape/domain/overlap controls, old literal|null four orders and12 exact promoted guards; accepted320 header1899 is not replayed. Existing Nullable is an unchanged static boundary, not newly tested Nullable execution. Author lifecycles271/272/293 and independent271/290/293 authenticate actual source/header/default/CODE/line/strictness, genuine reference/type sources, separate array/object copy cells, nested COW with shared seed references, stdClass and user Leaf identity, literal exactness, weak secondary conversion/refusal with unchanged cell values, physical owner/source detach, pool-only final owners and return/cleanup0-1 joins."
+  },
+  "author_fixture_cuts": [
+    {
+      "report": "weak-headers/report.json",
+      "sha256": "5c5e36e42c793305f43ba64883b3f55c3e2e6ba1c3c91f4abe20a3fe965b261c",
+      "head": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+      "premises": 747,
+      "scope": "headers-only",
+      "form": null,
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "watched_inputs": 531,
+      "ordered_arguments": 511,
+      "cap_seconds": 360,
+      "elapsed_seconds": 16.801441192626953,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "weak-lifecycle-array-object-false/report.json",
+      "sha256": "5d702e1163d4217def2b599f74b8081286e768c56c6d851ff66edc59062183a6",
+      "head": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+      "premises": 271,
+      "scope": "lifecycle",
+      "form": "array-object-false",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "watched_inputs": 531,
+      "ordered_arguments": 511,
+      "cap_seconds": 360,
+      "elapsed_seconds": 161.54058527946472,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "weak-lifecycle-true-array-object-string/report.json",
+      "sha256": "e1f7c98d3e6fe33fc23e0ced889a8f91ce9a475c7c476bc861dcb550a082efe3",
+      "head": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+      "premises": 272,
+      "scope": "lifecycle",
+      "form": "true-array-object-string",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "watched_inputs": 531,
+      "ordered_arguments": 511,
+      "cap_seconds": 360,
+      "elapsed_seconds": 159.18763184547424,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "weak-lifecycle-all-builtins-false/report.json",
+      "sha256": "015a5551ee745eece4b28451ccc13f47c93891ef29b4927ff04c91bdf631eda6",
+      "head": "c26f68bd4722dd2598fa1d9a6a301f41f2cb5829",
+      "premises": 293,
+      "scope": "lifecycle",
+      "form": "all-builtins-false",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "watched_inputs": 531,
+      "ordered_arguments": 511,
+      "cap_seconds": 360,
+      "elapsed_seconds": 182.36601519584656,
+      "source_agreement_credit": 0
+    }
+  ],
+  "independent_fixture_cuts": [
+    {
+      "report": "strict-headers/report.json",
+      "sha256": "04c6d0299aafafdc21c44fbe57cb57bdf4ffd66a86084b29ec669fedf565ac0f",
+      "head": "8f6b1752cb67f9290c10b55891ce13a66a7ab586",
+      "premises": 747,
+      "scope": "headers-only",
+      "form": null,
+      "elapsed_seconds": 16.80591320991516,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-lifecycle-object-array-true/report.json",
+      "sha256": "d1b9cbf5c1b534ec496559cf414a95814e52653e04d4ea9a452707cb3fe8b3f1",
+      "head": "8f6b1752cb67f9290c10b55891ce13a66a7ab586",
+      "premises": 271,
+      "scope": "lifecycle",
+      "form": "object-array-true",
+      "elapsed_seconds": 184.89611339569092,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-lifecycle-string-object-false-array/report.json",
+      "sha256": "fe9271b8a4df7486f41b71efe1ac46d2f349a6f5fb9fd3d3cc7ababbc85e02b4",
+      "head": "8f6b1752cb67f9290c10b55891ce13a66a7ab586",
+      "premises": 290,
+      "scope": "lifecycle",
+      "form": "string-object-false-array",
+      "elapsed_seconds": 217.28683423995972,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-lifecycle-all-builtins-true-reverse/report.json",
+      "sha256": "4e949709ec6864ff46cc1a9865511d92223dcf4c404b9453564f0e2828915e0c",
+      "head": "8f6b1752cb67f9290c10b55891ce13a66a7ab586",
+      "premises": 293,
+      "scope": "lifecycle",
+      "form": "all-builtins-true-reverse",
+      "elapsed_seconds": 195.01260018348694,
+      "source_agreement_credit": 0
+    }
+  ],
+  "guard_audit": {
+    "report": "promoted-guard-audit.json",
+    "sha256": "447c2647a5c7a367f01df7f4d3e921e3089bcea3e9d78532d48a3791eeb98e69",
+    "source_agreement_credit": 0,
+    "scope": "Only exact2/8/2 legacy expression signs change; all other assertion strings retain their order, and every promoted expression appears in747."
+  },
+  "preserved_source_zero": [
+    {
+      "report": "weak-prelaw/report.json",
+      "sha256": "771ee35e12efde5040370d1809768a987ffc697b81309f5776bd00c780aec6a1",
+      "head": "7f2e57309df5a695779adaf0f06ade4ca7082bf9",
+      "unsupported": 3,
+      "native_observations": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "report": "strict-prelaw/report.json",
+      "sha256": "9193e7609f64517428bc93ebbf6575620d59b5533abfc2e098e955427e30dc80",
+      "head": "68656cd21acd384155fd74c3b402d9ded7277225",
+      "unsupported": 3,
+      "native_observations": 0,
+      "source_agreement_credit": 0
+    }
+  ],
+  "preserved_failures": "No COMP321 native/source/fixture failure, timeout or interrupted cut occurred. Earlier family failures, including COMP320bf31, retain their original source-zero cuts; metadata renews no execution evidence.",
+  "actual_composition": {
+    "commit": "0efbd08e6d37ddf97b91008c7d36c977201136e2",
+    "tree": "a6f78d14c7559dbb9939728883f7da46d2d2fcaa",
+    "parent": "1c6089692340142bf42e9c3cc737a22e39af4b6b",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main78-comp321-composition-v1/composition.json",
+    "sha256": "ffc6f97ded0f6b06c6c593fdb70f25b2b72c189e3001d9d2d454ef7d7659e671",
+    "postimages": "17 exact non-Make full postimages and9 exact recipes, preserving current MAIN bytes. Closed320 thin2 and later322 prep are excluded.",
+    "independent_actual_fullclear": true,
+    "independent_tuple": "../php-spec-evidence-archive/comp321/independent-actual-same.json",
+    "independent_tuple_sha256": "e0f1d4bbf5ce15e62a7dd61ce54fe6917bec4f3317edb7714da20a1dd8f41976",
+    "reviewer": "/root/recover26_compiler_class_union_review"
+  },
+  "sole_canonical_load": {
+    "same_commit": "0efbd08e6d37ddf97b91008c7d36c977201136e2",
+    "same_tree": "a6f78d14c7559dbb9939728883f7da46d2d2fcaa",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main78-comp321-v1/report.json",
+    "sha256": "fd47e21322a749f356d90e94191dbcc5e7172578f4b7adee12e5a250ee94649b",
+    "elapsed_seconds": 15.888344375882298,
+    "mode": "production-SL",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "passed": true,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_agreement_credit": 0,
+    "note": "Peer26 ONEactual/SAME supplied this immutable tuple after peer25 WHOLE18 FULL CLEAR. Author consumes only that tuple, without canonical read or reexecution."
+  },
+  "compatibility": "Weak native/prelaw at7f2 and strict native/prelaw at68656 precede the local c26f law. All six original application source bytes, native argv/file/cwd/profile and PHP hashes remain unchanged. Author source3 and four fixture cuts bind frozen c26f. Shared driver adds one watched wrapper path and explicit header_report metadata for its second actual caller; existing320 defaults/modes/caps/lifecycle assertions remain. No accepted320/source/native/header/whole/canonical evidence replay or renewal. Independent source3/header747/lifecycles271/290/293 retain their separate8f6b cuts with exact saved-native reuse. Later322 prep and this thin metadata do not renew any accepted source/native/fixture or canonical cut.",
+  "remaining": "Fully qualified/plain/relative/imported class, intersection/DNF and other wider headers, producers, payloads, owners and lifetimes remain partial. Existing Nullable remains an unchanged static boundary, without new Nullable source credit in this slice. All standing exact holds, including COMP192/193 Generator-close private Closure cache/This release, COMP123, COMP88, V110/GC35/I106, OP12/source47/owned-NUL/undefined by-reference LIST and reserve93807cdd6/255 remain unchanged."
+}

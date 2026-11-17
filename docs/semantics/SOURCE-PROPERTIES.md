@@ -2687,3 +2687,16 @@ the initial native diagnostic failure remains0. Actual `7a8a3916f` and the sole
 joined production-SL508 load at `76639477f` (16.082620611 s) are independently
 clear. Wider headers, owners and lifetimes remain partial; all exact holds remain.
 [Review](../../coverage/semantics/builtin-union-parentless-short-reference-get-hook-review.json).
+
+COMP321 extends that local fold with `true` and `false`, retaining duplicate
+and Boolean-overlap rejection and forbidding both literals together. Existing
+literal/null pairs use the same disjoint fold; raw/normalized order, source and
+owner bounds remain. Six originals agree using native observations once,
+including literal exactness, weak secondary conversion, strict rejection,
+nested COW, shared object copies and quiet type-source removal. Separate author
+header747/lifecycles271/272/293 and peer747/271/290/293 retain source0, with no
+aggregate credit or replay of the earlier header1899. Prelaw Unsupported cuts
+remain0; this slice had no failed execution cuts. Actual `0efbd08e6` and its sole
+production-SL508 load (15.888344376 s) are independently clear. Wider headers,
+owners and lifetimes remain partial; all exact holds remain.
+[Review](../../coverage/semantics/literal-boolean-union-parentless-short-reference-get-hook-review.json).
