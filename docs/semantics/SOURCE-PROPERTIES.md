@@ -2783,3 +2783,11 @@ bounds remain. True is an exact literal type: false, NULL and truthy scalars
 do not gain weak Boolean conversion. Both raw orders display `Class|true`.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-true-union-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using their native observations once. Separate author
+149/150/150 and independent312/157/157/157 fixture-SL508 cuts retain source0;
+prelaw Unsupported6 stays0, with no execution failures, timeouts or corrections.
+Actual and joined `76ceffde6` preserve the exact source additions. Their sole
+production-SL509 load (16.039205513 s, source0) is independently clear through
+immutable peer tuple `762467d5`. Wider forms and all exact holds remain.
+[Independent review](../../coverage/semantics/class-true-union-parentless-short-reference-get-hook-peer-review.json).

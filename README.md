@@ -11673,3 +11673,7 @@ Quiet static USER method selectors admit raw primitive-left coalesces: NULL sele
 Literal-NULL coalesce redirects preserve their emitted RHS scalar tags, including quiet NaN and negative zero. Wider folded leaves, owning RHS values, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-null-coalesce-redirect-wrapper-default-reception-review.json).
 
 Quiet fitting signed64 POWER returns pass existing nested handler casts with exact source/fold/read/state/ownership guards. Wider FLOAT results, operands, owners and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-review.json).
+
+Own public parentless short reference Get admits exact `Class|true` and `true|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. True retains literal identity without weak Boolean conversion; canonical defining authority and existing alias/owner bounds remain. Wider headers and lifetimes stay partial. [Review](coverage/semantics/class-true-union-parentless-short-reference-get-hook-review.json).
+
+Ordinary nonNaN FLOAT-CV inner unset keys resume through a source-only Warning task after handler key mutation/removal. Initial NaN/reference/released keys, wider callers and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-float-cv-warning-review.json).

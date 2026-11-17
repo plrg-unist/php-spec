@@ -1303,6 +1303,18 @@ and sole production-SL509 `7207eea2` pass 16.431716288s/source0; exact holds,
 reserve93807cdd6/255 and inventory169/306 remain unchanged.
 [BOOL-CV Warning review](../../coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
 
+Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
+The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
+does not dispatch on its changed type and its result is unused. No current-key
+lookup, value/cell owner or BOOL postguard crosses the callback. Native6 once/source6
+include actual GLOBALS-key removal and object return/throw. Author SL115/28-derived+
+103/16-derived and peer AL118/37-derived+110/22-derived retain separate first-pass cuts;
+prelaw mismatches6 remain0. Actual `7f6d16086`, joined `76ceffde6` and sole production-
+SL509 `b2fd79a1` pass 16.039205513s/source0. Initial NaN/ref/released keys, wider
+callers/producers/owners and lifetimes remain partial; all exact holds,
+reserve93807cdd6/255 and inventory169/306 are unchanged.
+[FLOAT-CV Warning review](../../coverage/semantics/string-offset-nested-unset-float-cv-warning-review.json).
+
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
 offsets` without converting the key. The carrier arm requires a known bounded
