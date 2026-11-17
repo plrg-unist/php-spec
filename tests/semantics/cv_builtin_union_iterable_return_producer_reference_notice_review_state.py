@@ -123,7 +123,7 @@ def controls(case):
     for members in (['iterable', 'object'], ['iterable', 'callable'], ['iterable', 'int', 'float']):
         raw = 'NUnionType (SEQUENCE (' + raw_members(members) + ')) metadata_union'
         formal = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw + ') (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-        lines.append('~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + formal + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + branches(members) + ']]])')
+        lines.append('$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + formal + ']), ' + signature + '[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + branches(members) + ']]])')
     return lines
 
 
