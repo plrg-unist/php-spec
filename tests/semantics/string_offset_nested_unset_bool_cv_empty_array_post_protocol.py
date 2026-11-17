@@ -167,10 +167,13 @@ def conditions(program, path):
         ('undefined', 'S_R[.STORE[n_key] = UNDEFINED]'),
     ):
         state = 'S_bad_' + tag
+        refusal = '' if tag == 'nonempty' else '~'
         checks += [state + ' = ' + changed,
             '~$string_unset_bool_cv_post_empty_array(' + state + ', n_key)',
-            '~$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
-            '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)']
+            refusal + '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+            refusal + '$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)']
+        if tag == 'nonempty':
+            checks += ['$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
     checks += ['n_rebound = |S_R.STORE|']
     for changed in (
         'S_R[.ENV = $unbind(S_R.ENV, n_key_name*)]',
@@ -184,10 +187,10 @@ def conditions(program, path):
     checks += ['~$string_unset_bool_cv_post_empty_array(S_R, (|S_R.STORE|))',
         '$call_task_valid(S_bad_nonempty, ' + resume + ')']
     if pending:
-        checks += ['$error_read_discard(S_bad_nonempty, ' + resume + ') = S_bad_nonempty[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+        checks += ['$error_read_discard(S_bad_nonempty, ' + resume + ') = S_bad_nonempty']
     else:
         checks += ['PhpStep: S_bad_nonempty ~> S_bad_next',
-            'S_bad_next = S_bad_nonempty[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+            'S_bad_next = S_bad_nonempty[.TODO = ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.COMPLETION = THROWN "Error" ($ptascii("Cannot use string offset as an array")) z]']
     return checks, len(checks) - reached
 
 

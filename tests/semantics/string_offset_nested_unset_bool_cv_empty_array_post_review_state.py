@@ -198,10 +198,13 @@ def postconditions(checks, pending, resume):
         ('unrooted', 'S_R[.ENV = eps][.GLOBALTABLE = eps][.TODO = eps]'),
     ):
         state = 'S_refuse_' + tag
+        refusal = '' if tag == 'nonempty' else '~'
         checks += [state + ' = ' + changed,
             '~$string_unset_bool_cv_post_empty_array(' + state + ', n_key)',
-            '~$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
-            '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)']
+            refusal + '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+            refusal + '$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)']
+        if tag == 'nonempty':
+            checks += ['$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
     checks += [
         '~$string_unset_bool_cv_post_empty_array(S_R, (|S_R.STORE|))',
         '$string_unset_bool_cv_post_empty_array(S_R[.NATIVEEXCESS = S_R.NATIVEEXCESS ++ [HARRAY n_array, HARRAY n_array]], n_key)',
@@ -217,10 +220,10 @@ def postconditions(checks, pending, resume):
     for changed in ('S_R[.CODE = eps]', 'S_R[.SOURCES = eps]', 'S_R[.ORIGIN = eps]'):
         checks.append('~$call_task_valid(' + changed + ', ' + resume + ')')
     if pending:
-        checks += ['$error_read_discard(S_refuse_nonempty, ' + resume + ') = S_refuse_nonempty[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+        checks += ['$error_read_discard(S_refuse_nonempty, ' + resume + ') = S_refuse_nonempty']
     else:
         checks += ['PhpStep: S_refuse_nonempty ~> S_refuse_next',
-            'S_refuse_next = S_refuse_nonempty[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+            'S_refuse_next = S_refuse_nonempty[.TODO = ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.COMPLETION = THROWN "Error" ($ptascii("Cannot use string offset as an array")) z]']
     return checks, len(checks) - reached
 
 
@@ -251,6 +254,6 @@ if __name__ == '__main__':
         'Independent source-reached saved ordinary NULL/BOOL CV retains its real empty array and '
         'full heap through the exact normal Error or same pending Exception/caller tail, public '
         'materialization, zero/one/split budgets and final state. Derived dangling, unallocated, '
-        'duplicate, nonempty, unrooted, reference and source refusals stay separate; source0/native0.')
+        'duplicate, unrooted, reference and source refusals and the nonempty promotion stay separate; source0/native0.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
