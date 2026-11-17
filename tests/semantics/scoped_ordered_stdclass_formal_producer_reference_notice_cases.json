@@ -1,0 +1,66 @@
+[
+  {
+    "id": "strict-scoped-ordered-bool-stdclass-string-byval-formal-fqn-return",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedOrderedFormal126;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bool|bOx|string $saved):?\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedOrderedFormal126\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "d0c9581c98f05d39cee1a9ac431b098a7d3fa693a085101b094df6ff8442524a",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/scoped_nullable_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "strict-scoped-imported-nullable-stdclass-object-byval-formal-fqn-return",
+      "source_sha256": "e9951ae64b4732d139a4dbf72003a31cfd036fcdf069a3fc0d2ad4696caa92c5",
+      "edits": "Fresh namespace126 and selected nullable FORMAL changed to ordered alias/builtin union; nullable FQN RETURN, runtime body, observers and physical lines retained. All native observations require one fresh exact-byte execution."
+    },
+    "role_index": 0,
+    "formal_name": "bOx",
+    "formal_target": "stdClass",
+    "namespace": "ScopedOrderedFormal126",
+    "new_support_credit": 1,
+    "formal_members": [
+      "bool",
+      "class",
+      "string"
+    ]
+  },
+  {
+    "id": "weak-scoped-ordered-eight-stdclass-multiple-byref-formal-fqn-return",
+    "source": "<?php\nnamespace ScopedOrderedFormal126;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,iterable|int|float|bool|BOX|string|callable|null &$right):?\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('ScopedOrderedFormal126\\h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "285dbb9cac50b37b6cd4428c6b65b7459292fe5e75eee7394fe2215823493167",
+    "native_stdout": "N;M:1:5;H:8:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      null,
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/scoped_nullable_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "weak-scoped-imported-nullable-stdclass-multiple-byref-formal-fqn-return",
+      "source_sha256": "38efa8fc6a44534af89af4a19e465d84f6dd53dbcf27292e29ff4a669418940c",
+      "edits": "Fresh namespace126 and selected nullable FORMAL changed to ordered alias/builtin union; nullable FQN RETURN, runtime body, observers and physical lines retained. All native observations require one fresh exact-byte execution."
+    },
+    "role_index": 1,
+    "formal_name": "BOX",
+    "formal_target": "stdClass",
+    "namespace": "ScopedOrderedFormal126",
+    "new_support_credit": 1,
+    "formal_members": [
+      "iterable",
+      "int",
+      "float",
+      "bool",
+      "class",
+      "string",
+      "callable",
+      "null"
+    ]
+  }
+]

@@ -76,7 +76,7 @@ def normal(initial, case, front):
     wrapper = 'NNullableType (NName (BYTES text_formal) metadata_formal) metadata_formalnullable'
     union = 'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formalnullable'
     raw = parameter.replace(wrapper, union, 1)
-    derived += [helper(env, raw) + ' = (' + raw + ')', '~' + proof(raw)]
+    derived += [helper(env, raw) + ' = (' + raw.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1) + ')', proof(raw)]
     for before, after in (('(INTEGER 0)', '(INTEGER 1)'),
             ('(BOOLEAN false) (BOOLEAN false)', '(BOOLEAN true) (BOOLEAN false)'),
             ('(BOOLEAN false) (BOOLEAN false)', '(BOOLEAN false) (BOOLEAN true)'),

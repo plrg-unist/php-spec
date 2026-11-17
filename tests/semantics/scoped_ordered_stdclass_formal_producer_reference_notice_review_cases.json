@@ -1,0 +1,57 @@
+[
+  {
+    "id": "global-unrelated-import-ordered-null-stdclass-int-null-named-byval-private-notice",
+    "source": "<?php declare(strict_types=1);\nuse stdClass as Spare;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(null|stdClass|int $saved):?\\stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "a5ff14745d81539f1cc8f030ca90310f14495974e5f917fe403fc1801c69193c",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/scoped_nullable_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "global-unrelated-import-nullable-stdclass-null-named-byval-private-notice",
+      "source_sha256": "aebb77861978312967b72e5bc6daa79aed3df2b423cb070383cbd89dae6415d2",
+      "edits": "Replace only the nullable FORMAL by the exact ordered three-arm union; control also renames its namespace and handler registration. Preserve nullable FQN RETURN, runtime body, observers and physical lines."
+    },
+    "notice_line": 8,
+    "namespace": "",
+    "formal_name": "stdClass",
+    "import_alias": "Spare",
+    "import_target": "stdClass",
+    "role": "notice-positive",
+    "new_support_credit": 1,
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes.",
+    "formal_members": [
+      "null",
+      "stdClass",
+      "int"
+    ],
+    "class_index": 1
+  },
+  {
+    "id": "strict-scoped-ordered-array-stdclass-null-scalar-receive-before-body-notice",
+    "source": "<?php declare(strict_types=1);\nnamespace PeerScopedUnionFormal126;use stdClass as PeerBox;\n// Scalar argument rejects before the producer body.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(array|pEeRbOx|null &$saved):?\\stdClass{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=19;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('PeerScopedUnionFormal126\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "ff235592f4acce53b6c93a4f16b6dcd594e6a16177de1ce77ae6faf6b9c1dd78",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/scoped_nullable_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "strict-scoped-imported-nullable-stdclass-scalar-receive-before-body-notice",
+      "source_sha256": "484c2db95e467c8fef0623bfac7acd1abf7edc3f569fb77a8dd22d8e1e0cabbc",
+      "edits": "Replace only the nullable FORMAL by the exact ordered three-arm union; control also renames its namespace and handler registration. Preserve nullable FQN RETURN, runtime body, observers and physical lines."
+    },
+    "namespace": "PeerScopedUnionFormal126",
+    "formal_name": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "unchanged-reception-control",
+    "new_support_credit": 0,
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes.",
+    "formal_members": [
+      "array",
+      "pEeRbOx",
+      "null"
+    ],
+    "class_index": 1
+  }
+]

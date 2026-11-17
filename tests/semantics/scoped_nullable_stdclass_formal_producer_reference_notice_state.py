@@ -87,7 +87,7 @@ def controls(index, case):
     wrapper = 'NNullableType (NName (BYTES text_formal) metadata_formal) metadata_nullable_formal'
     union = 'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_nullable_formal'
     changed = shape.replace(wrapper, union, 1)
-    lines += [converted(changed) + ' = (' + changed + ')', '~' + proof(changed)]
+    lines += [converted(changed) + ' = (' + changed.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1) + ')', proof(changed)]
     for normalized in (prior.prior.prior.class_type('stdClass'),
             '[(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]',
             nullable_type('stdClass')[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'):

@@ -89,10 +89,10 @@ def normal(initial, case, index, front):
             'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal'):
         raw = parameter.replace('NName (BYTES text_formal) metadata_formal', wrapper, 1)
         normalized = canonical[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'
-        expected = raw.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1) if wrapper.startswith('NNullableType ') else raw
+        expected = raw.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1)
         check = proof(raw).replace('pfunction_producer.SIGNATURE)', 'pfunction_producer.SIGNATURE[.PARAMETERS = [psparam[.TYPE = ' + normalized + ']]])')
         derived += [helper('pfunction_producer.ENV', raw) + ' = (' + expected + ')',
-            ('' if wrapper.startswith('NNullableType ') else '~') + check]
+            check]
     return reached, derived
 
 

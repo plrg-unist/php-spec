@@ -82,7 +82,7 @@ def controls(index, case):
     for wrapper in ('NNullableType (NName (BYTES text_formal) metadata_formal) metadata_formal',
                     'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal'):
         changed = shape.replace('NName (BYTES text_formal) metadata_formal', wrapper, 1)
-        expected = changed.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1) if wrapper.startswith('NNullableType') else changed
+        expected = changed.replace('NName (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1)
         lines += [converted(changed) + ' = (' + expected + ')', '~' + proof(changed)]
     for before, after in (('metadata_formal)', 'eps)'), (metadata, 'eps')):
         lines.append(converted(shape.replace(before, after)) + ' = (' + view.replace(before, after) + ')')
