@@ -1030,6 +1030,22 @@ Six scoped older fixture bridges and the Makefile entry accompany the new tests;
 generic union lists remain unchanged. Other iterable unions, wider headers,
 payloads, lifetimes and every exact hold remain partial.
 
+Exact raw two-member `iterable|int` and `int|iterable` returns now authenticate
+for completed multi-CV producers through a separate dedicated arm. Matching
+ordered normalized branches and Identifier casefolding reuse the existing
+required ordinary-CV formal proof. Weak numeric-string returns become integers
+before private Notice-cell creation while caller/formal values remain unchanged;
+the returned alias has no persistent return-type constraint. Strict return
+rejection precedes the outer Notice and assignment. The
+[multiple-CV integer/iterable-return review](../../coverage/semantics/multi-cv-union-int-iterable-return-producer-reference-notice-review.json)
+records native4+3 once and two independently passed source7/fixture525/285
+packets. Prelaw fronts260/172, the first source Unsupported and the corrected
+peer-fixture failures keep zero credit. Only two older fixture bridges for
+matching integer-pair HEADERs and the Makefile entry change alongside the new tests; generic
+union lists and all return/frame/private-cell/payload guards remain. The one-CV
+counterpart, other partners, wider headers and lifetimes remain partial; every
+exact hold stays unchanged.
+
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
 case-folded stdClass identity, member order, unique builtins, one class and at

@@ -1,0 +1,152 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_bytes": 8,
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed producers with more than one required ordinary-CV argument; exact two-Identifier iterable|int or int|iterable returns, with matching ordered normalized singleton branches and casefolded raw names.",
+  "implementation": {
+    "revision": "9e809ab8af0b6e675aa77cd84b92ad821d401344",
+    "tree": "1347f6004ac1c1d5bd2aa90a72b0fe7f0aab2831",
+    "source_files": 11,
+    "manifest": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/source11-manifest-v1.json",
+    "manifest_sha256": "edbb87dd1be97ffbaac9444d32aa2ad32086f4ccff659b32e488221dbb1fb3dd",
+    "rule": "Dedicated exact-pair >1 RETURN header arm; existing ARGUMENTS proof with RETURNS cleared. Generic union lists and formal, return, frame, Notice-cell, payload and ownership guards are unchanged."
+  },
+  "engine_sources": [
+    "Zend/zend_compile.c: zend_compile_single_typename, zend_compile_typename_ex",
+    "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_execute.c: zend_check_type_slow, zend_verify_return_error"
+  ],
+  "native": {
+    "unique_originals": 7,
+    "executions_once": [
+      4,
+      3
+    ],
+    "reports": [
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/native-first-v1/report.json",
+        "sha256": "a8d109389882081225a6386eb2c2905c253abea6ecc95903dbd08d7b0d89c7f8"
+      },
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/native-first-v1/report.json",
+        "sha256": "0433e24adf34c0329e1ccb385c5b981a4f7789cc311490616f6138fcdf32ed09"
+      }
+    ]
+  },
+  "private_validation": {
+    "source_mode": "production-SL/cache=false/det=true",
+    "fixture_mode": "fixture-SL/cache=false/det=true",
+    "module_count": 507,
+    "source_agreements_per_packet": 7,
+    "fixture_conditions_per_packet": [
+      525,
+      285
+    ],
+    "fixture_reached_per_packet": [
+      362,
+      218
+    ],
+    "fixture_derived_per_packet": [
+      163,
+      67
+    ],
+    "fixture_source_agreements": 0,
+    "stable_inputs_and_heads": true,
+    "quiet_stderr": true,
+    "timeouts": false,
+    "remaining_process_groups": [],
+    "packets": [
+      {
+        "role": "author",
+        "revision": "9e809ab8af0b6e675aa77cd84b92ad821d401344",
+        "root": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/whole-packet-v1/",
+        "source_report": "sources-c_roehv_/report.json",
+        "source_sha256": "5e8d27b490ecf6bb0b152b9756d2e012605a384fce99357bcd134046bb725774",
+        "author_fixture_sha256": "1f9bd16e30158f260fd99cbdb04325135d98264144f3744e05731bfe52df4b00",
+        "peer_fixture_sha256": "11955783687cdd56bb127594707244940b27ff6be18b71c51c2bd65e20554396",
+        "controller": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/whole-command-v1.json",
+        "elapsed_seconds": 284.58504724502563
+      },
+      {
+        "role": "independent",
+        "revision": "16e4cb6914e53a1e7dc16035cd4b126da5162657",
+        "tree": "d9f323fb2689934e380b87b36da2c75be124f563",
+        "root": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/whole-v1/",
+        "source_report": "sources-2mea6bwu/report.json",
+        "source_sha256": "cd426c5690d7097ac67a97d97e0fd511e8b8b64c256dc9c071dc4a1fab0fb683",
+        "author_fixture_sha256": "b72fed8370b7ce6c21df0372e3cadb1fa811a775f4c53637d63b032f26b411ec",
+        "peer_fixture_sha256": "a24256ce292c1c2cdd9cd30bed40ae8306a9364305f3f42352c5f51cd47d7704",
+        "controller": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/whole-controller-v1.exit.json",
+        "controller_sha256": "c481bfb4591b64db62ad3d6c9da87812ff143dbe42c2b20bd0778fb4e989877e",
+        "elapsed_seconds": 281.17322278022766
+      }
+    ]
+  },
+  "prelaw": {
+    "source_agreements": 0,
+    "front_conditions": [
+      260,
+      172
+    ],
+    "front_reports": [
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/prelaw-state-v1/report.json",
+        "sha256": "ceb032be53359f868b5e78b363ce13ce2a4d7cf40ffa71ac9223a1bf6c1ef199"
+      },
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/prelaw-state-v3/report.json",
+        "sha256": "79508422af36dc1a92973b181ab06e547718ac73f95071b6b26169f8d932254b"
+      }
+    ],
+    "first_source": {
+      "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/author/prelaw-source-v1-q7qhdggo/report.json",
+      "sha256": "91aa84638793a4abb41219543226b593754c131b259be4cb134938adbe295a6f",
+      "outcome": "Unsupported; preserved separately, not a source agreement"
+    },
+    "failed_fixture_fronts": [
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/prelaw-state-v1/report.json",
+        "sha256": "daec8c56c8422f7efd1982195466f7425137806ea3a55e80fc2093dba3297a90",
+        "outcome": "Algorithmic binding failure before execution; fixture-only correction",
+        "source_agreements": 0
+      },
+      {
+        "path": "../php-spec-evidence-archive/multi-cv-union-int-iterable-return-producer-reference-notice-105/peer/prelaw-state-v2/report.json",
+        "sha256": "ac509a6b81290675a1462af70eabc82ef6a84432f6034a92fa4ce0ffef3bb34e",
+        "outcome": "Incorrect symbolic-error fixture premise; fixture-only correction",
+        "source_agreements": 0
+      }
+    ]
+  },
+  "composition": {
+    "actual_revision": "0e085671aea40d3cd00a39901c4604e63c1bdfde",
+    "actual_tree": "10cda4abceca7662b7200851e527bd138ce8fb29",
+    "parent": "4618bd0f72e43176bb6c028476b2a860c0fd44e4",
+    "same_revision": "0e085671aea40d3cd00a39901c4604e63c1bdfde",
+    "source_files": 11,
+    "literal_postimages": 10,
+    "make": "Sole unique insertion preserves every other current-parent byte.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main78-ref105-composition-v1/composition.json",
+    "sha256": "9c398cbd3c8791429d04b08a8118e4db15a84a768c7644e521c9390f78deb039",
+    "saved_load": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/main78-ref105-v1/report.json",
+      "sha256": "b4204126ef05d80f27c834c9317e3e21f356c76d9e3cf9284537ad0f5878ccac",
+      "mode": "production-SL/cache=false/det=true",
+      "module_count": 508,
+      "elapsed_seconds": 16.28106580208987,
+      "exit": 0,
+      "stable_inputs_and_head": true,
+      "quiet_stderr": true,
+      "timeout": false,
+      "remaining_process_groups": [],
+      "source_agreements": 0
+    },
+    "review": "Independent saved actual/SAME read by REF29; no execution renewal."
+  },
+  "limits": "The one-CV counterpart, other iterable union partners, longer unions, wider producer headers, Traversable Notice payloads and wider ownership/lifetime contexts remain partial. Every standing hold and reserved boundary stays unchanged. Repeated packets do not add unique-source credit."
+}
