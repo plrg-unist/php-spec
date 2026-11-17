@@ -1,0 +1,45 @@
+[
+  {
+    "id": "global-unrelated-import-nullable-stdclass-null-named-byval-private-notice",
+    "source": "<?php declare(strict_types=1);\nuse stdClass as Spare;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(?stdClass $saved):?\\stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "aebb77861978312967b72e5bc6daa79aed3df2b423cb070383cbd89dae6415d2",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "strict-global-bare-nullable-stdclass-null-byval-formal-fqn-return",
+      "source_sha256": "403c8c74b2db962995ef9578175881d34728b6cdf430322ddd6dee3188c0db62",
+      "edits": "Replace only physical declaration-context line, nullable FORMAL name and handler registration; strict control also enables strict_types on the existing first line. Preserve nullable FQN RETURN, body, observers and physical lines."
+    },
+    "notice_line": 8,
+    "namespace": "",
+    "formal_name": "stdClass",
+    "import_alias": "Spare",
+    "import_target": "stdClass",
+    "role": "notice-positive",
+    "new_support_credit": 1,
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes."
+  },
+  {
+    "id": "strict-scoped-imported-nullable-stdclass-scalar-receive-before-body-notice",
+    "source": "<?php declare(strict_types=1);\nnamespace PeerScopedNullableFormal125;use stdClass as PeerBox;\n// Scalar argument rejects before the producer body.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(?pEeRbOx &$saved):?\\stdClass{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=19;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('PeerScopedNullableFormal125\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "484c2db95e467c8fef0623bfac7acd1abf7edc3f569fb77a8dd22d8e1e0cabbc",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_formal_producer_reference_notice_review_cases.json",
+      "id": "scalar-global-bare-nullable-stdclass-byref-receive-before-body-and-notice",
+      "source_sha256": "907a098fc1a0b80ae8020fbcc614d3613fe8f0bd288f320a64ab79cfcb1f70fb",
+      "edits": "Replace only physical declaration-context line, nullable FORMAL name and handler registration; strict control also enables strict_types on the existing first line. Preserve nullable FQN RETURN, body, observers and physical lines."
+    },
+    "namespace": "PeerScopedNullableFormal125",
+    "formal_name": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "unchanged-reception-control",
+    "new_support_credit": 0,
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes."
+  }
+]
