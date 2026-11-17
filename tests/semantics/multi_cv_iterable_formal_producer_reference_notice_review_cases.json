@@ -1,0 +1,115 @@
+[
+  {
+    "id": "first-iterable-generator-byref-second-int-null-return-private-cell-cow",
+    "namespace": "ReviewFirstGeneratorIterableFormal99",
+    "formal_kind": "iterable",
+    "formal_shape": "singleton",
+    "formal_members": [
+      "iterable"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "generator",
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace ReviewFirstGeneratorIterableFormal99;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x=['n'=>23];echo 'H:',$line,';';return true;}\nfunction make(iterable &$saved,int $stamp):?array{echo 'S:',$stamp,';';echo 'M:',(int)($saved instanceof \\Traversable),';';$saved=null;return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=produce();$copy=$x;$kept=$copy;$alias=&$x;set_error_handler('ReviewFirstGeneratorIterableFormal99\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x['n'],':',$alias['n'],':',(int)($copy===$kept),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===$kept),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:1;H:9;F:1;R:41:23:23:1;C:43:41;D:done:41:1;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "2e92a20e8894a2e2a1135ae3116228f7029ab545457327d5ede57d23c6be6a4c",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "generator-byref-iterable-formal-null-return-private-cell-cow",
+      "source_sha256": "ea417160c99e7fdee8562a57e8927ed3791feb9a0368a927327f346c47aa64c4",
+      "edits": "Fresh namespace; required second int CV/formal and observable caller stamp writes; existing multi array/null return headers, bare iterable first formal and finite Notice/lifetime behavior."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 9,
+    "last_actual_source_line": 10,
+    "first_actual_source_line": 9
+  },
+  {
+    "id": "first-iterable-array-byref-second-int-handler-throw-retirement",
+    "namespace": "ReviewFirstArrayIterableFormal99",
+    "formal_kind": "iterable",
+    "formal_shape": "singleton",
+    "formal_members": [
+      "iterable"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "array"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstArrayIterableFormal99;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iterable &$saved,int $stamp):null|array{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewFirstArrayIterableFormal99\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "345b4ac0f8536a56576bc503da7136f0c290c667318030450a35f9a8b815d9ff",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "array-byref-iterable-formal-ordered-return-handler-throw-retirement",
+      "source_sha256": "34e4e02eec4cef1b50b26647792d00ace73580348f0c084ea34fe2bd5467e77c",
+      "edits": "Fresh namespace; required second int CV/formal and observable caller stamp writes; existing multi array/null return headers, bare iterable first formal and finite Notice/lifetime behavior."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  },
+  {
+    "id": "weak-first-iterable-string-receive-priority-before-second-int-body-and-notice",
+    "namespace": "ReviewWeakFirstIterablePriority99",
+    "formal_kind": "iterable",
+    "formal_shape": "singleton",
+    "formal_members": [
+      "iterable"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "caller_kind": "string",
+    "priority_control": true,
+    "return_shape": "union",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewWeakFirstIterablePriority99;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;echo 'BAD-H;';return true;}\nfunction make(iterable $saved,int $stamp):array|null{echo 'S:',$stamp,';';echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewWeakFirstIterablePriority99\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;Z:7;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "bf0d5b37bc3be11ae755fa10879a447b87f50fa5e45bbb4fd4283083e1c6a489",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "weak-string-iterable-formal-receive-error-precedes-producer-and-notice",
+      "source_sha256": "e579c2e22bab0365b22fba2aa2eef812278461d901c86ddf37a9b9ceb73c8eef",
+      "edits": "Fresh namespace; required second int CV/formal and observable caller stamp writes; existing multi array/null return headers, bare iterable first formal and finite Notice/lifetime behavior."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  }
+]

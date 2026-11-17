@@ -73,11 +73,7 @@ def controls(case):
     if case.get('priority_control'):
         return ['$typed_conversion_at(S_full, ' + ITERABLE + ', pvalue_copy, false) = TYPEREJECT',
             '$typed_conversion_at(S_full, ' + ITERABLE + ', pvalue_copy, true) = TYPEREJECT']
-    lines = []
-    for line in prior.controls(case):
-        if line.startswith('$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual])'):
-            line = '~' + line
-        lines.append(line)
+    lines = prior.controls(case)
     header = '$reference_notice_producer_header(phpType6_producer, '
     signature = 'pfunction_producer.SIGNATURE'
     raw = '(NIdentifier (BYTES text_formal) metadata_formal)'

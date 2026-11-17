@@ -1,0 +1,159 @@
+[
+  {
+    "id": "later-iterable-byref-formal-scalar-prefix-embedded-alias-and-private-cell",
+    "namespace": "MultiCvLaterIterableFormal99",
+    "formal_kind": "iterable",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvLaterIterableFormal99 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H:',$line,';';return true;}\nfunction make(int $stamp,iTeRaBlE &$input):?array{$saved=$input;$input=17;echo 'M:',$input,':',$stamp,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvLaterIterableFormal99\\\\h',8);echo 'A;';\n$r=&take(make(\n    $stamp, // first actual\n    $source // final actual\n));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17:5;H:9;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "iterable-byref-formal-nullable-return-embedded-alias-and-private-cell",
+      "source_sha256": "cbdd20abe79587e21bb3d40f9422bf49d4dd2a9731d4736e1f5c50871f7ae98c",
+      "edits": "Fresh namespace, two required ordinary-CV formals/actuals with bare iterable in mixed positions or duplicated array CV, existing array/NULL return header and payload. Multiline original arguments and handler line output authenticate the final CV; receive-priority prefix aliases remain writable after failure."
+    },
+    "source_sha256": "340563430a340f61181b84aa7e1f95356e67034317e1cbd540c38fd5d642d79f",
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "input",
+    "caller_kind": "array",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "other_value_kind": "integer",
+    "other_integer": 5,
+    "expected_notice_line": 9,
+    "notice_line_candidates": [
+      9,
+      10
+    ],
+    "last_actual_source_line": 10,
+    "line_observation": "Namespace fallback uses zend_compile_args with unknown fbc: direct CVs retain the argument-list AST line in CODEEXPR. Native first-actual line and last-actual source line are distinct; no runtime-line helper change."
+  },
+  {
+    "id": "duplicate-iterable-byval-formals-cow-and-private-cell",
+    "namespace": "MultiCvDuplicateIterableFormal99",
+    "formal_kind": "iterable",
+    "formal_byref": false,
+    "source": "<?php\nnamespace MultiCvDuplicateIterableFormal99;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H:',$line,';';return true;}\nfunction make(ItErAbLe $saved,ItErAbLe $again):array|null{$saved['n']=7;echo 'M:',$again['n'],';';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('MultiCvDuplicateIterableFormal99\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x, // first actual\n    $x // final actual\n));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H:8;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "iterable-byval-formal-ordered-return-cow-and-private-cell",
+      "source_sha256": "6293a21cde72de45b93c6e6a66a79f1cc81534df32e13bae170738f2c4585acd",
+      "edits": "Fresh namespace, two required ordinary-CV formals/actuals with bare iterable in mixed positions or duplicated array CV, existing array/NULL return header and payload. Multiline original arguments and handler line output authenticate the final CV; receive-priority prefix aliases remain writable after failure."
+    },
+    "source_sha256": "014190a0217993fa1b90adc75a623d09ddea35b33588317a49fcd21d3e5411d5",
+    "return_shape": "union",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "saved",
+    "caller_kind": "array",
+    "iterable_index": 0,
+    "other_kind": "iterable",
+    "other_name": "again",
+    "other_actual_name": "x",
+    "other_byref": false,
+    "other_value_kind": "array",
+    "duplicate_cv": true,
+    "expected_notice_line": 8,
+    "notice_line_candidates": [
+      8,
+      9
+    ],
+    "last_actual_source_line": 9,
+    "line_observation": "Namespace fallback uses zend_compile_args with unknown fbc: direct CVs retain the argument-list AST line in CODEEXPR. Native first-actual line and last-actual source line are distinct; no runtime-line helper change."
+  },
+  {
+    "id": "later-generator-iterable-byval-formal-scalar-prefix-null-return",
+    "namespace": "MultiCvGeneratorIterableFormal99",
+    "formal_kind": "iterable",
+    "formal_name": "saved",
+    "formal_byref": false,
+    "caller_kind": "generator",
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "array"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace MultiCvGeneratorIterableFormal99;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H:',$line,';';return true;}\nfunction make(int $stamp,iterable $saved):null|array{echo 'M:',$stamp,';';return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value='done';return $value;}\n$stamp=7;$x=produce();$copy=$x;$kept=$copy;set_error_handler('MultiCvGeneratorIterableFormal99\\\\h',8);echo 'A;';\n$r=&take(make(\n    $stamp, // first actual\n    $x // final actual\n));echo 'R:',$r,':',$x,':',(int)($copy===$kept),';';\n$snapshot=$r;$r=13;echo 'C:',$r,':',$snapshot,';';$r=29;echo 'D:',$r,':',(int)($copy===$kept),';';\n",
+    "native_stdout": "A;M:7;H:9;F:1;R:done:23:1;C:13:done;D:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "generator-iterable-byval-formal-null-return-retained-input",
+      "source_sha256": "2a449c55acca9c1cbbfa6f458a78ed15e08d356582ac28446cf3ca749d6b2c76",
+      "edits": "Fresh namespace, two required ordinary-CV formals/actuals with bare iterable in mixed positions or duplicated array CV, existing array/NULL return header and payload. Multiline original arguments and handler line output authenticate the final CV; receive-priority prefix aliases remain writable after failure."
+    },
+    "source_sha256": "3fc4c5f144c3889d238bf2ae5160c52a67addb38e4bcaec8d8464aedbfb9fdcd",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "other_value_kind": "integer",
+    "other_integer": 7,
+    "expected_notice_line": 9,
+    "notice_line_candidates": [
+      9,
+      10
+    ],
+    "last_actual_source_line": 10,
+    "line_observation": "Namespace fallback uses zend_compile_args with unknown fbc: direct CVs retain the argument-list AST line in CODEEXPR. Native first-actual line and last-actual source line are distinct; no runtime-line helper change."
+  },
+  {
+    "id": "strict-later-iterable-receive-error-retires-prefix-constraint",
+    "namespace": "MultiCvIterableReceivePriority99",
+    "formal_kind": "iterable",
+    "formal_name": "input",
+    "formal_byref": true,
+    "caller_kind": "integer",
+    "receive_priority_control": true,
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvIterableReceivePriority99;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int &$stamp,iterable &$input):?array{echo 'BAD-M;';return [];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=5;$stampAlias=&$stamp;$source=17;$sourceAlias=&$source;$r='old';set_error_handler('MultiCvIterableReceivePriority99\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $stamp, // first actual\n    $source // final actual\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';$stamp='done';echo 'S:',$stamp,':',$stampAlias,';';\n",
+    "native_stdout": "A;T:1:17:17;Q:19;S:done:done;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "strict-iterable-formal-receive-error-precedes-producer-and-notice",
+      "source_sha256": "045b86389b5b218d38491911f7ba5c0b2ada724db8155cb482ccc168bb9f9ab1",
+      "edits": "Fresh namespace, two required ordinary-CV formals/actuals with bare iterable in mixed positions or duplicated array CV, existing array/NULL return header and payload. Multiline original arguments and handler line output authenticate the final CV; receive-priority prefix aliases remain writable after failure."
+    },
+    "source_sha256": "f9c2267e02e6121c0f44079b735583cde56d764da22ed059f038901f2bbcf6af",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": true,
+    "other_value_kind": "integer",
+    "other_integer": 5,
+    "expected_notice_line": 9,
+    "notice_line_candidates": [
+      9,
+      10
+    ],
+    "last_actual_source_line": 10,
+    "line_observation": "Namespace fallback uses zend_compile_args with unknown fbc: direct CVs retain the argument-list AST line in CODEEXPR. Native first-actual line and last-actual source line are distinct; no runtime-line helper change."
+  }
+]
