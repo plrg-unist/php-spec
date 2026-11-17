@@ -540,9 +540,20 @@ author SL1391/129-derived and independent SL1748/486-derived remain separate.
 The namespace-control failure is retained0; only its affected fixture and the
 three unrun fixtures followed the two-line qualification correction. Actual
 `d7f06936e` preserves exact6/+343; the same saved `64b6c7981` production-SL508
-load passes16.141001238953322s/source0. General NaN VALUE/BYTE/truth, null-left
-selection and wider lifetimes remain partial.
+load passes16.141001238953322s/source0. General NaN VALUE/BYTE/truth
+and wider lifetimes remain partial.
 [Quiet false shorthand review](../../coverage/semantics/string-offset-request-base-runtime-false-shorthand-nan-instanceof-review.json).
+
+Quiet emitted null-left coalesce also selects an exact recursive NaN operand
+for named `instanceof`. Both actual source children, root/left/right captured
+precision and general left VALUE=PNULL retain exact RHS bits and whole
+`resolve_at`; module66 schedules the original fallback AT(EVAL)/VALUE_COPY,
+TODO tail and canonical RESULT/BASE. Native4 once/source4, author SL1439/129-derived
+and independent SL1842/532-derived remain separate. Actual `a4e1351d7` preserves
+exact6/+347; the same saved `b220ba42b` production-SL508 load passes
+16.542667850852013s/source0. General NaN VALUE/BYTE/truth, quiet-location forms,
+wider lifetimes remain partial; exact holds stay unchanged.
+[Quiet null-left coalesce review](../../coverage/semantics/string-offset-request-base-runtime-null-left-nan-coalesce-instanceof-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
@@ -1596,6 +1607,10 @@ Coalesce with both operands outer emitted CASTSTRING preserves the exact nonnull
 Full ternaries with both present arms outer emitted CASTSTRING retain the exact truth-selected INTERNED header through returning raw-key Warnings. Root read-eps and SAME NORMAL VALUE preserve all three immediate child sources, condition truth and selected-arm authority; skipped arm CODE/precision/VALUE/deep mapping stay undemanded. Native2 once/source2, reached prelaw42, author283/193-derived and independent354/254-derived retain distinct cuts, with no family failures. Actualf6d812132b and the sole SL508 load16.945511707s/source0 are independently clear. Shorthand ABSENT, older raw-arm rules and all exact holds remain unchanged; wider producers/carriers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-string-cast-pair-ternary-base-initial-raw-leading-key-review.json).
 
 Shorthand ternaries with both condition and fallback outer emitted CASTSTRING retain the exact truth-selected INTERNED header through returning raw-key Warnings. ABSENT true, root read-eps and SAME NORMAL VALUE preserve both immediate sources, condition truth and demanded fallback authority; a truthy condition skips fallback CODE/precision/VALUE/deep mapping. Native2 once/source2, reached prelaw40, author253/163-derived and independent353/253-derived retain distinct first-pass cuts, with no family failures. Actualf7300d9109 and the sole SL508 load16.132049450s/source0 are independently clear. Full-ternary and older raw-fallback routes, ownership and all exact holds remain unchanged; wider producers/carriers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-string-cast-pair-shorthand-base-initial-raw-leading-key-review.json).
+
+Full ternaries with exactly one raw STRING arm and one outer emitted CASTSTRING arm retain the truth-selected INTERNED header through returning raw-key Warnings. Root read-eps and SAME NORMAL VALUE preserve all three immediate sources, condition quiet truth and selected raw-pool/header or recursive cast authority; skipped CODE/precision/VALUE/deep mapping remain undemanded. Native4 once/source4, reached prelaw76, author312/222-derived and independent360/260-derived retain distinct first-pass cuts, with no family failures. Actual21195fe96f and joined b220ba42b SL508 load16.542667851s/source0 are independently clear. Both-raw/both-cast/shorthand routes and every exact hold remain unchanged; wider producers/carriers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-mixed-string-cast-ternary-base-initial-raw-leading-key-review.json).
+
+Raw STRING conditions with ABSENT true and an emitted CASTSTRING fallback retain the truth-selected INTERNED header through returning raw-key Warnings. Root read-eps and SAME NORMAL VALUE preserve raw CODEtrue/pool/header/precision and quiet truth; raw line zero stays valid, while skipped fallback CODE/precision/VALUE/deep mapping remain undemanded. Native2 once/source2, corrected reached prelaw40, author251/161-derived and corrected independent322/222-derived retain distinct cuts; the original fixture binder and peer bracket failures retain zero credit. Actual6c4d60be05 and the sole SL508 load16.488973542s/source0 are independently clear. Wider producers/carriers and lifetimes remain partial; every exact hold stays unchanged. [Review](../../coverage/semantics/string-offset-runtime-raw-string-cast-shorthand-base-initial-raw-leading-key-review.json).
 
 Direct emitted CONCAT bases preserve an exact INTERNED header through the existing quiet VALUE proof when an empty operand is nonconstant. Raw CONST-empty beside emitted nonempty remains a REQUEST allocation and is refused in both orientations. Native2 once/source2, reached prelaw26, author234/144-derived and independent363/263-derived retain separate cuts; actual6bd25d811b and its sole SL508 load16.440858809s/source0 are independently clear. Frozen raw keys, Warning cleanup and held boundaries remain unchanged; wider producers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-empty-concat-base-initial-raw-leading-key-review.json).
 

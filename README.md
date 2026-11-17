@@ -17,9 +17,11 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 Recent reviewed extensions cover multiple required iterable CV producer formals,
-all four scalar orders in short reference Get unions, raw String NOT(CONCAT)
-method selectors and mixed integer/Boolean-NaN strict-identity defaults. Exact
-source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md)
+all 24 orders of four scalar types in short reference Get unions, raw String NOT(CONCAT)
+method selectors, mixed integer/Boolean-NaN strict-identity defaults, null-left
+NaN coalesce for named `instanceof`, mixed literal/string-cast ternary bases
+and raw-string shorthand conditions with string-cast fallbacks.
+Exact source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md)
 separates source agreements, fixture checks and combined production loads;
 complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
