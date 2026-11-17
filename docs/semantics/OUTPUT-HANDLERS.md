@@ -1598,3 +1598,16 @@ trees, coercive or owning children, other operations, bare/single-cast handlers,
 wider lifetimes and every exact hold remain partial.
 [Integer bitwise evidence](../../coverage/semantics/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-review.json).
+
+These certificates also preserve multiline terminal compiler lines. Unary signs,
+BooleanNot, integer BitwiseNot and casts retain the authenticated proper child's
+terminal CODE line; INT AND/OR/XOR retain the RHS terminal line while independently
+certifying the LHS. Raw leaf source anchors, flags, own facts or read-eps, quiet
+NORMAL full-state results, signed widths, nonownership and the two-cast gate remain.
+Six originals reuse six native observations once; author30/20 and independent129/22
+retain separate fixture source0 cuts. Inherited location-expectation failures
+retain0, including the original lifecycle packet. Actual composition and SAME
+`b59e23f8871` pass the separate MAIN508 load in16.435393262 s/source0. Wider children,
+operators, handlers, owners, lifetimes and every exact hold remain partial.
+[Terminal-line evidence](../../coverage/semantics/output-final-selected-terminal-line-bitwise-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-terminal-line-bitwise-cast-chain-return-modulo-error-review.json).
