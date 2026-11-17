@@ -866,9 +866,10 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if $reference_cv(expression) = (n_name*)
   -- if n_name* =/= $ptascii("http_response_header")
   -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) (NIdentifier (BYTES text_type) metadata_type) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
-  -- if $ptlc($base64(text_type)) = $ptascii("array")
   -- if pssignature.PARAMETERS = [psparam]
-  -- if psparam.BYREF = b_ref /\ psparam.TYPE = [(PTBRANCH ([PTBUILTIN "array"]))] /\ ~psparam.VARIADIC
+  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_parameter]))]
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
+  -- if text_parameter <- ["array", "iterable"] /\ $ptlc($base64(text_type)) = $ptascii(text_parameter)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
   -- if |phpType7*| = 1 /\ |phpType17*| = 1 /\ pssignature.RETURNS = eps
