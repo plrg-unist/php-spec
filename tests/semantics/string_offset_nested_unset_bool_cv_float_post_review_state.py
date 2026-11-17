@@ -15,6 +15,7 @@ import string_offset_nested_unset_bool_cv_float_post_cases as cases
 
 INDEX = 1
 FRONT_ONLY = False
+RANGE_ONLY = False
 term = lambda data: '$base64(' + json.dumps(base64.b64encode(data).decode()) + ')'
 PREFIX = seek.PREFIX + r'''
 dec $float_post_output(pevent) : bool
@@ -75,10 +76,36 @@ def front(program, path):
     ]
 
 
+def normal_range_checks():
+    checks = []
+    for bits in (4890909195324358656, 14114281232179134465, 9218868437227405311):
+        state = 'S_float_range_' + str(bits)
+        checks += [state + ' = S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
+            '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+            '~$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')',
+            '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
+            '$string_unset_cv_range_plan(' + state + ') = ((porigin_site, z, n_key, ' + str(bits) + '))',
+            'PhpStep: ' + state + ' ~> ' + state + '_next',
+            state + '_next.TODO = (ERROR_HANDLER_INVOKE perrorcall_range_' + str(bits) + ') :: ptask_after*',
+            'perrorcall_range_' + str(bits) + '.RESUME = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key ' + str(bits),
+            '$error_call_valid(' + state + '_next, perrorcall_range_' + str(bits) + ')',
+            state + '_next.STORE = ' + state + '.STORE',
+            state + '_next.EVENTS = ' + state + '.EVENTS',
+            state + '_next.HELD = ' + state + '.HELD']
+    return checks
+
+
 def conditions(program, path):
     checks = front(program, path)
     if FRONT_ONLY:
         return checks, 0
+    if RANGE_ONLY:
+        assert INDEX == 2
+        changed = normal_range_checks()
+        return checks + [
+            'S_float_P.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key) :: ptask_after*',
+            'S_float_P.ERRORHANDLER = S_float_E.ERRORHANDLER',
+        ] + changed, len(changed)
     name = tuple(cases.CASES)[INDEX]
     throwing = INDEX == 1
     checks += [
@@ -143,14 +170,7 @@ def conditions(program, path):
                 '~$string_unset_bool_cv_post_discard_cell(' + state + ', n_key_name*, z_key, n_key)',
                 '$error_read_discard(' + state + ', perrorcall_entered.RESUME) = ' + state + '[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
     else:
-        for bits in (4890909195324358656, 14114281232179134465, 9218868437227405311):
-            state = 'S_float_range_' + str(bits)
-            checks += [state + ' = S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
-                '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
-                '~$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')',
-                '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
-                'PhpStep: ' + state + ' ~> ' + state + '_next',
-                state + '_next = ' + state + '[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+        checks += normal_range_checks()
     for bits in (0, 1, 9223372036854775808, 9223372036854775809,
                  9218868437227405311, 18442240474082181119):
         checks += ['$string_unset_bool_cv_post_value(PFLOAT ' + str(bits) + ')',
@@ -213,6 +233,10 @@ if __name__ == '__main__':
     FRONT_ONLY = '--front-only' in sys.argv
     if FRONT_ONLY:
         sys.argv.remove('--front-only')
+    RANGE_ONLY = '--range-only' in sys.argv
+    if RANGE_ONLY:
+        sys.argv.remove('--range-only')
+        assert INDEX == 2 and not FRONT_ONLY
     runner.NAME = tuple(cases.CASES)[INDEX]
     runner.OUTPUT = cases.OUTPUTS[runner.NAME]
     runner.cases, runner.conditions, runner.PREFIX = cases, conditions, PREFIX
@@ -225,9 +249,13 @@ if __name__ == '__main__':
     report['mode'], report['raw_unset_steps'] = 'SL', 1
     report['scope'] = ('Independent actual saved-cell identity, in-bounds ordinary unreferenced/unreleased '
         'CV and unchanged-state PFLOAT read with exact finite bits, before any finite law.' if FRONT_ONLY else
+        'Only three formerly refused normal finite-OOB controls from the peer negative-zero return '
+        'front dispatch copied range Warning tasks with their entire original caller tail. '
+        'Closed fitting/discard/whole campaigns are not renewed. Source0/native0; saved native reused.' if RANGE_ONLY else
         'Independent fitting normal PFLOAT resume and finite OOB discard only under a genuine pending '
         'Throwable and restored eligible Warning handler. Exact Error or same Exception, callback/mask '
-        'priority, no extra owners/diagnostics and whole/split; normal OOB, masked OOB discard, forged '
+        'priority, no extra owners/diagnostics and whole/split; eligible normal OOB starts the new '
+        'secondary Warning with copied bits and the complete caller tail, while masked OOB discard, forged '
         'pending object/context and nonfinite/out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

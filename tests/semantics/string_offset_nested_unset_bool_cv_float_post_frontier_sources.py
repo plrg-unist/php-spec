@@ -35,6 +35,8 @@ def main():
         assert saved['inputs']['.tools/php/bin/php'] == before['.tools/php/bin/php']
     rows = []
     for name, source_bytes in cases.CASES.items():
+        if args.unsupported and name.endswith('range-return'):
+            continue
         out = args.output / name
         out.mkdir()
         if saved:
@@ -80,7 +82,8 @@ def main():
     (args.output / 'report.json').write_text(json.dumps({
         'revision': revision, 'inputs': before, 'profile': profile,
         'environment': {key: ENV.get(key) for key in ('LC_ALL', 'TZ', 'PHP_SPEC_SCRIPT_ENCODING')},
-        'scope': 'post-correction Unsupported controls0' if args.unsupported else 'original negative witnesses; no source agreement',
+        'scope': 'masked pending range Unsupported control0; returning original belongs to the range Warning suite' if args.unsupported else 'original negative witnesses; no source agreement',
+        'selection': [row['id'] for row in rows],
         'rows': rows}, indent=2) + '\n')
     return all(row['passed'] for row in rows)
 

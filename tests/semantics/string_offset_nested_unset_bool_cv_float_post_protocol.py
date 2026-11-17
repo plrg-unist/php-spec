@@ -9,6 +9,7 @@ import string_offset_nested_unset_bool_cv_quiet_post_protocol as prior
 import string_offset_nested_unset_bool_cv_float_post_cases as cases
 
 INDEX = 0
+RANGE_ONLY = False
 
 
 def finite_checks():
@@ -23,9 +24,33 @@ def front_checks(program, path):
     return prior.front_checks(program, path) + finite_checks()
 
 
+def normal_range_checks():
+    checks = []
+    for tag, bits in (('positive_boundary', 4890909195324358656),
+                      ('below_minimum', 14114281232179134465)):
+        state = 'S_oob_' + tag
+        call = 'perrorcall_' + tag
+        checks += [state + ' = S_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
+            '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+            '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
+            '$string_unset_cv_range_plan(' + state + ') = ((porigin_site, z, n_key, ' + str(bits) + '))',
+            'PhpStep: ' + state + ' ~> ' + state + '_next',
+            state + '_next.COMPLETION = NORMAL',
+            state + '_next.TODO = (ERROR_HANDLER_INVOKE ' + call + ') :: ptask_after*',
+            call + '.RESUME = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key ' + str(bits),
+            '$error_call_valid(' + state + '_next, ' + call + ')',
+            state + '_next.EVENTS = ' + state + '.EVENTS']
+    return checks
+
+
 def conditions(program, path):
     assert INDEX in (0, 3)
     prior.INDEX, prior.cases = INDEX, cases
+    if RANGE_ONLY:
+        checks = front_checks(program, path) + [
+            'S_P.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key) :: ptask_after*']
+        changed = normal_range_checks()
+        return checks + changed, len(changed)
     checks, derived = prior.conditions(program, path)
     if INDEX == 3:
         old = '$error_read_discard(S_P, perrorcall_entered.RESUME) = S_P'
@@ -53,15 +78,7 @@ def conditions(program, path):
         for tag, bits in (('maximum_fit', 4890909195324358655),
                           ('minimum_fit', 14114281232179134464)):
             controls += ['$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')']
-        for tag, bits in (('positive_boundary', 4890909195324358656),
-                          ('below_minimum', 14114281232179134465)):
-            state = 'S_oob_' + tag
-            controls += [state + ' = S_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
-                '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
-                '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
-                'PhpStep: ' + state + ' ~> ' + state + '_next',
-                state + '_next.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"',
-                state + '_next.EVENTS = ' + state + '.EVENTS']
+        controls += normal_range_checks()
         checks += controls
         derived += len(controls)
     return checks + finite_checks(), derived
@@ -76,6 +93,10 @@ if __name__ == '__main__':
     INDEX = int(sys.argv[at + 1])
     del sys.argv[at:at + 2]
     assert INDEX in (0, 3)
+    RANGE_ONLY = '--range-only' in sys.argv
+    if RANGE_ONLY:
+        sys.argv.remove('--range-only')
+        assert INDEX == 0
     runner = prior.runner
     runner.NAME = tuple(cases.CASES)[INDEX]
     runner.OUTPUT = cases.OUTPUTS[runner.NAME]
@@ -87,7 +108,10 @@ if __name__ == '__main__':
     report = json.loads(report_path.read_bytes())
     report['inputs'].update(before)
     report['mode'], report['raw_unset_steps'] = 'SL', 1
-    report['scope'] = ('Actual finite PFLOAT post-handler bits retain the saved ordinary BOOL-CV slot, '
+    report['scope'] = ('Only the two formerly refused eligible normal finite-OOB controls now dispatch a '
+        'secondary Warning with their copied bits and complete caller tail. Old fitting/discard campaigns '
+        'are not renewed; source0/native0, saved native reused.' if RANGE_ONLY else
+        'Actual finite PFLOAT post-handler bits retain the saved ordinary BOOL-CV slot, '
         'no reference/released marker and whole-state quiet read. Normal Error or same pending Exception '
         'and callback restoration retain whole/split; fixture source0/native0 reuses only fresh FLOAT originals.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')

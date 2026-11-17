@@ -229,6 +229,55 @@ def $error_call_valid(S, perrorcall) = true
   -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z
 def $task_nodes(STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = eps
 
+dec $string_unset_cv_range_bits(nat) : bool
+def $string_unset_cv_range_bits(n) = true
+  -- if $(n < 18446744073709551616)
+  -- if $float_decode(n) = FINITE n_s n_n n_d
+  -- if ~$fparts_fits($float_decode(n))
+def $string_unset_cv_range_bits(n) = false -- otherwise
+
+dec $string_unset_cv_range_snapshot(pstate, porigin, int, nat, nat) : bool
+def $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits) = true
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if $string_unset_bool_cv_post_cell(S, n_key_name*, z_name, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $string_unset_cv_range_bits(n_bits)
+def $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits) = false -- otherwise
+
+dec $string_unset_cv_range_plan(pstate) : (porigin, int, nat, nat)?
+def $string_unset_cv_range_plan(S) = ((porigin, z, n_cell, n_bits))
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n_cell) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n_cell)
+  -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits)
+  -- if $error_handler_eligible(S, 2) /\ $arithmetic_add_named(S)
+  -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
+def $string_unset_cv_range_plan(S) = eps -- otherwise
+
+rule PhpStep/string-unset-cv-range-warning-start: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], 2, n_message*, z, DIAGNOSTIC "Warning" n_message* z, STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits)
+  -- if $string_unset_cv_range_plan(S) = ((porigin, z, n_cell, n_bits))
+  -- if $integer_float_notices([RANGEWARNING], n_bits) = [(2, n_message*)]
+
+def $call_task_valid(S, STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits) = (S.ORIGIN = (porigin) /\ $(n_cell < |S.STORE|) /\ $string_unset_bool_cv_source(S, porigin, z) =/= eps /\ $string_unset_cv_range_bits(n_bits))
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.TARGET =/= eps \/ $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits)
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 2
+  -- if $integer_float_notices([RANGEWARNING], n_bits) = [(2, perrorcall.MESSAGE)]
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" perrorcall.MESSAGE z
+def $task_nodes(STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits) = eps
+
+rule PhpStep/string-unset-cv-range-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], "Error", $ptascii("Cannot use string offset as an array"), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_UNSET_CV_RANGE_WARNING_RESULT porigin z n_cell n_bits)
+
 rule PhpStep/string-unset-boolean-cv-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], "Error", $ptascii("Cannot use string offset as an array"), z)
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) :: ptask_tail*
@@ -242,6 +291,7 @@ rule PhpStep/string-unset-boolean-cv-warning-result-unsupported: S ~> S[.TODO = 
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
   -- if ~$string_unset_bool_cv_post_normal_cell(S, n_key_name*, z_name, n)
+  -- if $string_unset_cv_range_plan(S) = eps
 
 def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = S[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
