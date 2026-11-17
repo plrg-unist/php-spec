@@ -903,6 +903,26 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $c_string(n_bytes*) = n_bytes*
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $cast_apply(S_before, CASTSTRING, PFLOAT n_bits, z_line) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
+;; STRING casts copy a certified allocated child header without appending a row.
+def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
+  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprCastString expression_child metadata)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_child)
+  -- if $origin_node(S.SOURCES, porigin_child) = (expression_child)
+  -- if porigin_child = PORIGIN n pcpath_child
+  -- if $pcwalk([PCOCCURRENCE pcpath_child expression_child]) = (PCOCCURRENCE pcpath_desc pcnode_desc)*
+  -- (if $origin_node(S.SOURCES, PORIGIN n pcpath_desc) = (pcnode_desc))*
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_child)) = (z_precision)
+  -- if pvalue_child = PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*
+  -- if $string_read_allocated_value(S, porigin_child, pvalue_child)
+  -- if $string_carrier_valid(S, pvalue_child)
+  -- if $c_string(n_bytes*) = n_bytes*
+  -- if $cast_apply(S, CASTSTRING, pvalue_child, z_line) = S[.RESULT = KNOWN pvalue_child]
 ;; A folded scalar-CONCAT RHS keeps its actual constant flag, including empty bytes.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
