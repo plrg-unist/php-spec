@@ -116,7 +116,7 @@ $unset_intermediate(S_base, PSTRING ([97,0]), ROOT n_s, KNOWN (PINT 0), 9) = S_b
 $unset_intermediate(S_base, PSTRING ([256]), ROOT n_s, KNOWN (PINT 0), 9) = S_base[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
 S_callback = S_base[.ERRORHANDLER.CALLBACK = (PSTRING ($ptascii("heldHandler")))][.ERRORHANDLER.LEVELS = 2]
 $unset_intermediate(S_callback, PSTRING ($ptascii("ab")), ROOT n_s, KNOWN (PINT 0), 9) = S_callback[.COMPLETION = UNSUPPORTED "intermediate string offset unset"]
-$unset_intermediate(S_callback, PSTRING_CARRIER INTERNED_STRING ($ptascii("ab")), ROOT n_s, KNOWN (PINT 0), 9) = S_callback[.COMPLETION = THROWN "Error" ($ptascii("Cannot unset offset in a non-array variable")) 9]
+$unset_intermediate(S_callback, PSTRING_CARRIER INTERNED_STRING ($ptascii("ab")), ROOT n_s, KNOWN (PINT 0), 9) = S_callback[.RESULT = KNOWN (PINT 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]
 S_request = S_base[.STRINGDATA = [$ptascii("ab")]]
 $unset_intermediate(S_request, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("ab")), ROOT n_s, KNOWN (PINT 0), 9) = S_request[.RESULT = KNOWN (PINT 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_intermediate(S_request, PSTRING_CARRIER (REQUEST_STRING 0) ($ptascii("zz")), ROOT n_s, KNOWN (PINT 0), 9) = S_request[.COMPLETION = THROWN "Error" ($ptascii("Cannot unset offset in a non-array variable")) 9]

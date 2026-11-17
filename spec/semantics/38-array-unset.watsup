@@ -1,4 +1,5 @@
 dec $position_delete(pposition*, pkey) : pposition*
+dec $unset_terminal_key(pstate, pvalue) : bool
 ;; Unset does not create missing slots; its final key conversion is distinct
 ;; from intermediate dimension access (notably for null keys and warning order).
 dec $entry_delete(pentry*, pkey) : pentry*
@@ -124,6 +125,17 @@ def $unset_intermediate(S, PSTRING n*, plocation, poperand, z) = S[.COMPLETION =
 def $unset_intermediate(S, PSTRING_CARRIER pstringidentity n*, plocation, poperand, z) = $unset_string_intermediate(S, poperand, z)
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
   -- if S.ERRORHANDLER.CALLBACK = eps
+;; A registered handler stays idle through an exact quiet int/text key read.
+def $unset_intermediate(S, PSTRING_CARRIER pstringidentity n*, plocation, poperand, z) = $unset_string_intermediate(S, poperand, z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.ERRORHANDLER.CALLBACK =/= eps
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
+  -- if S_read = $resolve_at(S, poperand, z)
+  -- if S_read.RESULT = KNOWN pvalue_key
+  -- if S_read = S[.RESULT = KNOWN pvalue_key]
+  -- if $type_bytes(pvalue_key) <- [$ptascii("int"), $ptascii("string")]
+  -- if $unset_terminal_key(S_read, pvalue_key)
+  -- if $unset_string_key(S_read, pvalue_key, z) = S_read
 def $unset_intermediate(S, POBJECT n, plocation, poperand, z) = S[.COMPLETION = UNSUPPORTED "ArrayAccess nested unset dimension protocol"]
   -- if $access_instance(S, POBJECT n)
 def $unset_intermediate(S, pvalue, plocation, poperand, z) = $throw_scalar(S, "Error", ([67,97,110,110,111,116,32,117,110,115,101,116,32,111,102,102,115,101,116,32,105,110,32,97,32,110,111,110,45,97,114,114,97,121,32,118,97,114,105,97,98,108,101]), z)
@@ -162,7 +174,6 @@ def $unset_key(S, poperand, z) = $unset_key_value(S_read, pvalue, z)
   -- if S_read.RESULT = KNOWN pvalue
 
 ;; Terminal UNSET_DIM reads, but does not convert, its key before the Error.
-dec $unset_terminal_key(pstate, pvalue) : bool
 def $unset_terminal_key(S, PNULL) = true
 def $unset_terminal_key(S, PBOOL b) = true
 def $unset_terminal_key(S, PINT i) = $long_range(i)
