@@ -1212,8 +1212,8 @@ accepts ordinary no-handler execution: two separate source agreements, author
 AL104 (43 derived controls) and independent AL60 retain their actual cuts.
 The shared numeric kernel, quiet/R/W rules and wider handler boundaries stay unchanged.
 
-Module38 separately handles intermediate string `unset` without an error handler.
-After final-key expression effects, it reads the live inner key. Integer and
+Module38 handles intermediate string `unset` after final-key expression effects,
+then reads the live inner key. Without a handler, integer and
 leading-integer text keys give `Cannot use string offset as an array` without
 checking bounds; UNSET suppresses the usual trailing-text Warning. Invalid
 admitted keys instead give `Cannot unset string offsets`, cancelling the second
@@ -1221,11 +1221,22 @@ Error. Null/bool/float keys retain one cast Warning before the nested Error;
 the converted index is unused. A final delayed CV is never read after failure.
 
 This admission requires valid non-NUL raw or authenticated carrier bytes.
-Object and nonempty-array keys, malformed inputs, NUL and handler paths retain
+Object and nonempty-array keys, malformed inputs, NUL and wider handler paths retain
 their fences.
 The [nested-unset review](../../coverage/semantics/string-offset-nested-unset-review.json)
 separates four original-source agreements, author AL72 (31 derived controls),
 independent AL76 and the preserved fixture failure.
+
+A registered handler also permits an exact quiet defined INT or integer/leading
+STRING key on an authenticated non-NUL carrier. NORMAL, type/range/header and
+whole-state read/key checks keep suppressed NULL/BOOL/FLOAT conversions separate.
+Native2 once/source2 and separate author68/15+69/15 and independent115/62+116/62
+SL fixtures preserve the raw/public/caught Error and budgets, including no bounds
+or final missing-CV read and the final assignment before a delayed inner read.
+Actual=SAME `a38ab997e` and sole production-SL508 load `72e44c08` pass
+16.983509914s/source0. Original wrong-Error/fixture-failure cuts remain0; invalid
+STRING errors, wider callbacks, owners and held contours remain partial.
+[Registered quiet-key review](../../coverage/semantics/string-offset-nested-unset-registered-quiet-key-review.json).
 
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
