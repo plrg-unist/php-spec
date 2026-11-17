@@ -225,7 +225,8 @@ def fields(fixture, source, form, headers_only=False):
         members = [first, second, third]; members[right] = members[left]
         checks += ['~$hook_short_reference_header(' + raw_header(members) + ',' + type_mask(members) + ')']
     for members in [('mixed', 'bool', 'null'), ('int', 'bool', 'string', 'null')]:
-        checks += ['~$hook_short_reference_header(' + raw_header(members) + ',' + type_mask(members) + ')']
+        negation = '' if members == ('int', 'bool', 'string', 'null') else '~'
+        checks += [negation + '$hook_short_reference_header(' + raw_header(members) + ',' + type_mask(members) + ')']
     for state in [*states, 'S_before', 'S_detached', 'S_written', 'S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',
                    '$heap_valid($heap_prune($heap_graph(' + state + ')))']

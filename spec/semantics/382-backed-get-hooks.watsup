@@ -47,6 +47,11 @@ def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_thi
 def $hook_short_reference_body(NExprPropertyFetch (NExprVariable (BYTES text_this) metadata_this) (NScalarString (BYTES text_name) metadata_name) metadata, ptbytes) = ($base64(text_this) = $ptascii("this") /\ $base64(text_name) = ptbytes)
 def $hook_short_reference_body(expression, ptbytes) = false -- otherwise
 
+dec $hook_short_reference_scalar_branches(ptbranch*) : bool
+def $hook_short_reference_scalar_branches(eps) = true
+def $hook_short_reference_scalar_branches((PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*) = (text <- ["int","float","bool","string","null"] /\ $hook_short_reference_scalar_branches(ptbranch_tail*))
+def $hook_short_reference_scalar_branches(ptbranch*) = false -- otherwise
+
 ;; Canonical headers retain raw type proof; admitted unions retain raw order.
 dec $hook_short_reference_header(phpType18, ptbranch*) : bool
 def $hook_short_reference_header(ABSENT, eps) = true
@@ -56,34 +61,10 @@ def $hook_short_reference_header(NNullableType phpType35 metadata, [ptbranch,(PT
 def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2]))]) = true
   -- if (text_1 <- ["array","object","int","float","bool","string","false","true"] /\ text_2 = "null") \/ (text_1 = "null" /\ text_2 <- ["array","object","int","float","bool","string","false","true"]) \/ (text_1 = "int" /\ text_2 = "string") \/ (text_1 = "string" /\ text_2 = "int") \/ (text_1 = "int" /\ text_2 = "float") \/ (text_1 = "float" /\ text_2 = "int") \/ (text_1 = "float" /\ text_2 = "string") \/ (text_1 = "string" /\ text_2 = "float") \/ (text_1 = "int" /\ text_2 = "bool") \/ (text_1 = "bool" /\ text_2 = "int") \/ (text_1 = "float" /\ text_2 = "bool") \/ (text_1 = "bool" /\ text_2 = "float") \/ (text_1 = "bool" /\ text_2 = "string") \/ (text_1 = "string" /\ text_2 = "bool")
   -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["int","float","bool"] /\ text_2 <- ["int","float","bool"] /\ text_3 <- ["int","float","bool"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["int","float","string"] /\ text_2 <- ["int","float","string"] /\ text_3 <- ["int","float","string"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["int","bool","string"] /\ text_2 <- ["int","bool","string"] /\ text_3 <- ["int","bool","string"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["float","bool","string"] /\ text_2 <- ["float","bool","string"] /\ text_3 <- ["float","bool","string"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third,NIdentifier (BYTES text_fourth) metadata_fourth])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3])),(PTBRANCH ([PTBUILTIN text_4]))]) = true
-  -- if text_1 <- ["int","float","bool","string"] /\ text_2 <- ["int","float","bool","string"] /\ text_3 <- ["int","float","bool","string"] /\ text_4 <- ["int","float","bool","string"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_1 =/= text_4 /\ text_2 =/= text_3 /\ text_2 =/= text_4 /\ text_3 =/= text_4
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3) /\ $ptlc($base64(text_fourth)) = $ptascii(text_4)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["int","float","null"] /\ text_2 <- ["int","float","null"] /\ text_3 <- ["int","float","null"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
-def $hook_short_reference_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first,NIdentifier (BYTES text_second) metadata_second,NIdentifier (BYTES text_third) metadata_third])) metadata, [(PTBRANCH ([PTBUILTIN text_1])),(PTBRANCH ([PTBUILTIN text_2])),(PTBRANCH ([PTBUILTIN text_3]))]) = true
-  -- if text_1 <- ["int","bool","null"] /\ text_2 <- ["int","bool","null"] /\ text_3 <- ["int","bool","null"]
-  -- if text_1 =/= text_2 /\ text_1 =/= text_3 /\ text_2 =/= text_3
-  -- if $ptlc($base64(text_first)) = $ptascii(text_1) /\ $ptlc($base64(text_second)) = $ptascii(text_2) /\ $ptlc($base64(text_third)) = $ptascii(text_3)
+def $hook_short_reference_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*) = true
+  -- if $(|phpType69*| >= 3 /\ |phpType69*| <= 5)
+  -- if ptbranch* = $ppmethod_get_scalar_union_prefix(phpType69*)
+  -- if $ppmethod_get_scalar_union_source(phpType69*) /\ $hook_short_reference_scalar_branches(ptbranch*)
 def $hook_short_reference_header(phpType18, ptbranch*) = false -- otherwise
 
 dec $hook_name(ptbytes) : ptbytes

@@ -1,0 +1,264 @@
+{
+  "null-bool-float": {
+    "source": "null-bool-float.php",
+    "mode": "direct",
+    "status": "normal",
+    "stdout": "I|V|N|J|T|S|Y|X|Q|E|C|F|D|B|L|A|O|K|R|Z|",
+    "members": [
+      "null",
+      "bool",
+      "float"
+    ],
+    "raw_members": [
+      "NULL",
+      "bool",
+      "FLOAT"
+    ],
+    "strict": true,
+    "initial": "PFLOAT 0",
+    "default": "explicit",
+    "steps": [
+      {
+        "statement": "$a319 = 17;",
+        "value": "PFLOAT 4625478292286210048",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = true;",
+        "value": "PBOOL true",
+        "reject": false
+      },
+      {
+        "statement": "try { $a319 = '12'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $b319 = '2e0'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $a319 = 'plain'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $b319 = ''; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $a319 = '0'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "$b319 = 7.0;",
+        "value": "PFLOAT 4619567317775286272",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "captures": [
+      {
+        "after": 2,
+        "marker": "$textcopy319 = false;",
+        "name": "textcopy319",
+        "value": "PBOOL true"
+      },
+      {
+        "after": 7,
+        "marker": "$floatcopy319 = false;",
+        "name": "floatcopy319",
+        "value": "PFLOAT 4619567317775286272"
+      }
+    ],
+    "final": "PFLOAT 4630404104378646528"
+  },
+  "string-null-float-bool": {
+    "source": "string-null-float-bool.php",
+    "mode": "direct",
+    "status": "normal",
+    "stdout": "U|V|N|J|T|S|Y|X|Q|E|C|F|D|B|L|A|O|K|R|Z|",
+    "members": [
+      "string",
+      "null",
+      "float",
+      "bool"
+    ],
+    "raw_members": [
+      "STRING",
+      "null",
+      "FLOAT",
+      "bool"
+    ],
+    "strict": true,
+    "initial": "PNULL",
+    "default": "omitted",
+    "steps": [
+      {
+        "statement": "$a319 = 17;",
+        "value": "PFLOAT 4625478292286210048",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = true;",
+        "value": "PBOOL true",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = '12';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"12\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = '2e0';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"2e0\"))",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = 'plain';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"plain\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = '';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"\"))",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = '0';",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"0\"))",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = 7.0;",
+        "value": "PFLOAT 4619567317775286272",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "captures": [
+      {
+        "after": 2,
+        "marker": "$textcopy319 = false;",
+        "name": "textcopy319",
+        "value": "PSTRING_CARRIER INTERNED_STRING ($ptascii(\"12\"))"
+      },
+      {
+        "after": 7,
+        "marker": "$floatcopy319 = false;",
+        "name": "floatcopy319",
+        "value": "PFLOAT 4619567317775286272"
+      }
+    ],
+    "final": "PFLOAT 4630404104378646528"
+  },
+  "bool-int-null-float": {
+    "source": "bool-int-null-float.php",
+    "mode": "direct",
+    "status": "normal",
+    "stdout": "I|V|N|J|T|S|Y|X|Q|E|C|F|D|B|L|A|O|K|R|Z|",
+    "members": [
+      "bool",
+      "int",
+      "null",
+      "float"
+    ],
+    "raw_members": [
+      "BOOL",
+      "int",
+      "NULL",
+      "float"
+    ],
+    "strict": true,
+    "initial": "PINT 0",
+    "default": "explicit",
+    "steps": [
+      {
+        "statement": "$a319 = 17;",
+        "value": "PINT 17",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = true;",
+        "value": "PBOOL true",
+        "reject": false
+      },
+      {
+        "statement": "try { $a319 = '12'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $b319 = '2e0'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $a319 = 'plain'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $b319 = ''; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "try { $a319 = '0'; } catch (\\TypeError $e) {",
+        "value": "PBOOL true",
+        "reject": true
+      },
+      {
+        "statement": "$b319 = 7.0;",
+        "value": "PFLOAT 4619567317775286272",
+        "reject": false
+      },
+      {
+        "statement": "$a319 = false;",
+        "value": "PBOOL false",
+        "reject": false
+      },
+      {
+        "statement": "$b319 = null;",
+        "value": "PNULL",
+        "reject": false
+      }
+    ],
+    "captures": [
+      {
+        "after": 2,
+        "marker": "$textcopy319 = false;",
+        "name": "textcopy319",
+        "value": "PBOOL true"
+      },
+      {
+        "after": 7,
+        "marker": "$floatcopy319 = false;",
+        "name": "floatcopy319",
+        "value": "PFLOAT 4619567317775286272"
+      }
+    ],
+    "final": "PINT 37"
+  }
+}

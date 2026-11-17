@@ -232,7 +232,8 @@ def fields(fixture, source, form, headers_only=False, failed_join_only=False):
     for members in [('int', 'float', 'bool', 'null'), ('mixed', 'float', 'bool', 'string'), ('int', 'float', 'bool', 'string', 'null')]:
         raw = 'NUnionType (SEQUENCE ([' + ','.join('NIdentifier (BYTES ' + peer.quoted(part) + ') eps' for part in members) + '])) eps'
         normalized = '[' + ','.join('(PTBRANCH ([PTBUILTIN "' + part + '"]))' for part in members) + ']'
-        checks += ['~$hook_short_reference_header(' + raw + ',' + normalized + ')']
+        negation = '' if members != ('mixed', 'float', 'bool', 'string') else '~'
+        checks += [negation + '$hook_short_reference_header(' + raw + ',' + normalized + ')']
     for state in [*states, 'S_before', 'S_detached', 'S_written', 'S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',
                    '$heap_valid($heap_prune($heap_graph(' + state + ')))']
