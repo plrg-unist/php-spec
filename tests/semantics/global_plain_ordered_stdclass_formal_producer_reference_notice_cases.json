@@ -1,0 +1,52 @@
+[
+  {
+    "id": "strict-global-ordered-bool-bare-stdclass-string-byval-formal-fqn-return",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bool|sTdClAsS|string $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "07a3fda18f0c7bb4e73f1bfb77fff32f56af1ff6c6767a0fc55264da6bb49974",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "strict-global-bare-stdclass-byval-formal-fqn-return",
+      "source_sha256": "1484a3f4f1497e36adba6eb66a730e9c04b7f8ca69892231b47cb4b21762116b",
+      "edits": "Replace only the selected required bare stdClass FORMAL by an ordered flat bare-class union. FQN singleton RETURN, body, observers and all physical lines stay literal."
+    },
+    "role_index": 0,
+    "formal_members": [
+      "bool",
+      "class",
+      "string"
+    ]
+  },
+  {
+    "id": "weak-global-multiple-untyped-ordered-bare-stdclass-null-byref-formal-fqn-return",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,sTdClAsS|null &$right):\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "1f42f2eb1ca2a111fc8c4e22cd7447d4197a359452fba8656f42f9bae8d19877",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "weak-global-multiple-untyped-bare-stdclass-byref-formal-fqn-return",
+      "source_sha256": "93852ed4da8b139e10bfa2e633eb32704ffda7311a6954dc90d8ee6b3a52748d",
+      "edits": "Replace only the selected required bare stdClass FORMAL by an ordered flat bare-class union. FQN singleton RETURN, body, observers and all physical lines stay literal."
+    },
+    "role_index": 1,
+    "formal_members": [
+      "class",
+      "null"
+    ]
+  }
+]

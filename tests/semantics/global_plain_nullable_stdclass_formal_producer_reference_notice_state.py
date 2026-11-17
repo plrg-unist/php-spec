@@ -88,7 +88,7 @@ def controls(index, case):
     wrapper = 'NNullableType (NName (BYTES text_formal) metadata_formal) metadata_nullable_formal'
     union = 'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_nullable_formal'
     changed = shape.replace(wrapper, union, 1)
-    lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + proof(changed)]
+    lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed.replace('NName ', 'NNameFullyQualified ', 1) + ')', proof(changed)]
     for before, after in (('metadata_nullable_formal', 'eps'), ('metadata_formal)', 'eps)'), (metadata, 'eps')):
         lines.append('$reference_notice_producer_global_parameter_view(' + shape.replace(before, after) + ') = (' + view.replace(before, after) + ')')
     for before, after in (('(INTEGER 0)', '(INTEGER 1)'),

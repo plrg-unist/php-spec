@@ -1,0 +1,111 @@
+[
+  {
+    "id": "global-bare-ordered-iterable-stdclass-byval-array-cow-private-cell",
+    "namespace": "",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make(iTeRaBlE|stdClass $saved):iterable|\\stdClass{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_iterable_formal_producer_reference_notice_cases.json",
+      "id": "single-cv-byval-iterable-fqn-stdclass-formal-cow-and-private-cell",
+      "source_sha256": "d50f76703f29fb43039211788e195e8e4dedd395834164c3d674c23475afbd8c",
+      "edits": "Replace the original namespace physical line by a global/no-class-import comment; remove only the selected FORMAL stdClass leading slash and retarget error-handler registration to global h. Preserve all RETURN declarations, runtime statements, observers and physical lines."
+    },
+    "source_sha256": "86abdfe6c511ca45e63952af08c9f2b9c912ac0a8f783d1467b2ba16f4176922",
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "class"
+    ],
+    "cv_arity": 1,
+    "class_return": "stdClass",
+    "formal_members": [
+      "iterable",
+      "class"
+    ],
+    "class_formal": "stdClass",
+    "formal_class_name_kind": "bare",
+    "support": "notice-positive",
+    "native_expectation_status": "Prediction for edited bytes until the single new native-first observation."
+  },
+  {
+    "id": "strict-global-bare-eight-member-stdclass-iterable-formal-private-cell",
+    "namespace": "",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(callable|int|StDcLaSs|iterable|float|bool|string|null $saved,int $stamp):callable|int|\\StDcLaSs|iterable|float|bool|string|null{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_iterable_formal_producer_reference_notice_cases.json",
+      "id": "multiple-cv-strict-eight-member-fqn-stdclass-iterable-formal-and-private-cell",
+      "source_sha256": "4d9165f34ea2b6ab48fb9411322258165f0fe05d05942c9400708306cf7e7cde",
+      "edits": "Replace the original namespace physical line by a global/no-class-import comment; remove only the selected FORMAL stdClass leading slash and retarget error-handler registration to global h. Preserve all RETURN declarations, runtime statements, observers and physical lines."
+    },
+    "source_sha256": "d0308f1dc8455d3eab313e0ca1a5b25d9aaed30b64569b942fa58df718980ffd",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "callable",
+      "int",
+      "class",
+      "iterable",
+      "float",
+      "bool",
+      "string",
+      "null"
+    ],
+    "cv_arity": 2,
+    "class_return": "StDcLaSs",
+    "formal_members": [
+      "callable",
+      "int",
+      "class",
+      "iterable",
+      "float",
+      "bool",
+      "string",
+      "null"
+    ],
+    "class_formal": "StDcLaSs",
+    "formal_class_name_kind": "bare",
+    "support": "notice-positive",
+    "native_expectation_status": "Prediction for edited bytes until the single new native-first observation."
+  },
+  {
+    "id": "strict-global-bare-class-iterable-formal-receive-priority-before-body-notice",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(iterable|StDcLaSs|int|float &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "a931425630aca2ea07ba685882c462d43a37d5e71b6afde5fab915eed721c4c9",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "one-cv-strict-fqn-class-iterable-formal-receive-priority-before-body-notice",
+      "source_sha256": "95250c45ddb74ce27a4ccb94ec65f13cdc311d2f72ddb909102cf58ec8ac74a9",
+      "edits": "Replace the original namespace physical line by a global/no-class-import comment; remove only the selected FORMAL stdClass leading slash and retarget error-handler registration to global h. Preserve all RETURN declarations, runtime statements, observers and physical lines."
+    },
+    "namespace": "",
+    "role": "receive",
+    "formal_members": [
+      "iterable",
+      "class",
+      "int",
+      "float"
+    ],
+    "class_formal": "StDcLaSs",
+    "formal_byref": true,
+    "caller_strict": true,
+    "formal_class_name_kind": "bare",
+    "support": "unchanged-reception-control",
+    "native_expectation_status": "Prediction for edited bytes until the single new native-first observation."
+  }
+]

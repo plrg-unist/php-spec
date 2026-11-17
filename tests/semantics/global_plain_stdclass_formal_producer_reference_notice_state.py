@@ -134,7 +134,7 @@ def controls(index, case):
     for typename in ('NNullableType (NName (BYTES text_formal) metadata_formal) metadata_formal',
                      'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal'):
         changed = shape.replace('NName (BYTES text_formal) metadata_formal', typename, 1)
-        expected = changed.replace('NName ', 'NNameFullyQualified ', 1) if typename.startswith('NNullableType ') else changed
+        expected = changed.replace('NName ', 'NNameFullyQualified ', 1)
         lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + expected + ')', '~' + proof(changed)]
     for before, after in (('(INTEGER 0)', '(INTEGER 1)'),
                           ('(BOOLEAN ' + byref + ') (BOOLEAN false)', '(BOOLEAN ' + byref + ') (BOOLEAN true)'),

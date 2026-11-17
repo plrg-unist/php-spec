@@ -1122,7 +1122,7 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
-;; A global return view changes only one authenticated bare class tag.
+;; A global union view changes only one authenticated bare class tag.
 dec $reference_notice_producer_global_union_view(phpType69*, bool) : phpType69*?
 def $reference_notice_producer_global_union_view(eps, true) = (eps)
 def $reference_notice_producer_global_union_view((NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES text_type) metadata_member) :: phpType69_view*)
@@ -1138,6 +1138,8 @@ def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 
   -- if $ptlc($base64(text_type)) = $ptascii("stdclass")
 def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 (NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNullableType (NNameFullyQualified (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if $ptlc($base64(text_type)) = $ptascii("stdclass")
+def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69_view*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+  -- if $reference_notice_producer_global_union_view(phpType69*, false) = (phpType69_view*)
 def $reference_notice_producer_global_parameter_view(phpType17) = phpType17 -- otherwise
 
 dec $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) : bool
