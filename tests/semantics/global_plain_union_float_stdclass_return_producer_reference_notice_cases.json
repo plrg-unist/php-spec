@@ -1,0 +1,127 @@
+[
+  {
+    "id": "strict-single-global-plain-union-float-class-return-identity-and-private-cell",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "StDcLaSs",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):StDcLaSs|float{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "432a02962ae6f492b7782e3a8acb0b1978ba8177aac73e3750dfadb3f9d8a53b",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-union-int-class-return-identity-and-private-cell",
+      "source_sha256": "94df4c37d7f5b66f736da7149133df2d48b94289562bfcf9c3a327ac97d327ec",
+      "edits": "Replace only the bare RETURN union int member with float. Object programs retain all identity effects. Strict scalar programs still return INT37 and now observe the required FLOAT37.0 return widening with ===37.0 before private-array writes; FQN formals, globals/aliases/caller snapshots and physical lines stay literal."
+    },
+    "float_first": false
+  },
+  {
+    "id": "weak-multiple-global-plain-union-float-class-return-byref-rebinding",
+    "role_index": 1,
+    "variant": "weak-class-byref",
+    "callee_strict": false,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "STDCLASS",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,\\sTdClAsS &$right):float|STDCLASS{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "c81d3f23472683aa8434f9bcdeefd13466c16656f2e306701b93782beda6f917",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-global-plain-union-int-class-return-byref-rebinding",
+      "source_sha256": "e9d85dc3cc4589981e04fa1c648f51b36831f12bce298c158a76eb18a93be635",
+      "edits": "Replace only the bare RETURN union int member with float. Object programs retain all identity effects. Strict scalar programs still return INT37 and now observe the required FLOAT37.0 return widening with ===37.0 before private-array writes; FQN formals, globals/aliases/caller snapshots and physical lines stay literal."
+    },
+    "float_first": true
+  },
+  {
+    "id": "strict-global-plain-class-float-return-private-array-and-caller-snapshots",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT|\\sTdClAsS $saved,fLoAt|\\sTdClAsS &$changed):stdClass|float{echo 'M:',(int)($saved===37),':',(int)($changed===17.0),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===17.0),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n// End global declarations.\n",
+    "source_sha256": "77e13639f05e49c9f09f568e3bd0d4b1c7b870f605fdd26efdf43d87dff79c91",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Fresh global-declaration native observation selects the last CV physical line 9; all PHP bytes remain unchanged.",
+    "formal_kinds": [
+      "int",
+      "float"
+    ],
+    "caller_strict": true,
+    "native_stdout": "S;M:1:1:1:1;H:9:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      false,
+      false
+    ],
+    "return_kind": "float",
+    "return_class_first": true,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-global-plain-class-int-return-private-array-and-caller-snapshots",
+      "source_sha256": "badd56dbbac80cf94a47bcbe9bdf440f2c4fa7296f979214b3cddd205a96b868",
+      "edits": "Replace only the bare RETURN union int member with float. Object programs retain all identity effects. Strict scalar programs still return INT37 and now observe the required FLOAT37.0 return widening with ===37.0 before private-array writes; FQN formals, globals/aliases/caller snapshots and physical lines stay literal."
+    },
+    "kind": "float",
+    "class_return": "stdClass",
+    "role_index": 2,
+    "notice_line": 9,
+    "float_first": false
+  },
+  {
+    "id": "strict-global-plain-float-class-return-private-array-and-caller-snapshots",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT|\\sTdClAsS $saved,fLoAt|\\sTdClAsS &$changed):float|stdClass{echo 'M:',(int)($saved===37),':',(int)($changed===17.0),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===17.0),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n// End global declarations.\n",
+    "source_sha256": "c6e201165fdb997dcf1c93afb752bc4a968d85c8e0d006db04b5701dca6f6a1e",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Fresh global-declaration native observation selects the last CV physical line 9; all PHP bytes remain unchanged.",
+    "formal_kinds": [
+      "int",
+      "float"
+    ],
+    "caller_strict": true,
+    "native_stdout": "S;M:1:1:1:1;H:9:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      false,
+      false
+    ],
+    "return_kind": "float",
+    "return_class_first": false,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-global-plain-int-class-return-private-array-and-caller-snapshots",
+      "source_sha256": "514648e8e9f330c4b4bc4735fa0530f1ad5a5e3be6598012875775f548e5aa7e",
+      "edits": "Replace only the bare RETURN union int member with float. Object programs retain all identity effects. Strict scalar programs still return INT37 and now observe the required FLOAT37.0 return widening with ===37.0 before private-array writes; FQN formals, globals/aliases/caller snapshots and physical lines stay literal."
+    },
+    "kind": "float",
+    "class_return": "stdClass",
+    "role_index": 3,
+    "notice_line": 9,
+    "float_first": true
+  }
+]

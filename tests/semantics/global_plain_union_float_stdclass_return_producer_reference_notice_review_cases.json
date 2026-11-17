@@ -1,0 +1,90 @@
+[
+  {
+    "id": "named-weak-global-class-float-return-int-reception",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(\\sTdClAsS|FlOaT $saved,BoOl|\\sTdClAsS &$changed):stdClass|float{echo 'M:',(int)($saved===17.0),':',(int)($changed===false),':',(int)($GLOBALS['x']===17),':',(int)($GLOBALS['y']===false),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=17;$snapshot=$x;$y=(string)0;$ySnapshot=$y;$yAlias=&$y;set_error_handler('h',8);echo 'I;';\n$r=&take(prefix:$y,value:make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===17),':',(int)($ySnapshot==='0'),';';$r=43;echo 'P:',$r,':',(int)($snapshot===17),':',(int)($ySnapshot==='0'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===17),':',(int)($ySnapshot==='0'),';';\n// End global declarations.\n",
+    "source_sha256": "e46ec8de3138cd5576ebec3e27ac3cd8f3d481737099363b2e841898349fb945",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "The unchanged physical last-CV line9 is a prediction; fresh119 native observation is pending.",
+    "formal_kinds": [
+      "float",
+      "bool"
+    ],
+    "caller_strict": false,
+    "native_stdout": "I;M:1:1:1:1;H:9:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      true,
+      false
+    ],
+    "return_kind": "float",
+    "return_class_first": true,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "named-weak-global-class-int-return-entry-coercions",
+      "source_sha256": "78e223dfe188020a226e4dbf99338dccb10e1e20905ff2901dadaf075e382ce9",
+      "edits": "Use a weak global/no-import class|FLOAT formal to receive the original INT17 by value as FLOAT17.0, return the saved FLOAT directly through bare stdClass|float, and require an exact FLOAT17.0 at the named recipient. Keep caller INT copies, Boolean by-reference reception, GLOBALS unset, Notice lines and private-array/alias writes."
+    },
+    "notice_line": 9,
+    "class_return": "stdClass",
+    "role_index": 0,
+    "float_first": false,
+    "value_bits": 4625478292286210048
+  },
+  {
+    "id": "named-weak-global-float-class-string-return-coercion",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(sTrInG|\\sTdClAsS $saved,\\sTdClAsS|fLoAt &$changed):float|stdClass{echo 'M:',(int)($saved==='37'),':',(int)($changed===17.0),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===17.0),';';$changed='body';unset($GLOBALS['x']);return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37.0),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('h',8);echo 'S;';\n$r=&take(prefix:$y,value:make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n// End global declarations.\n",
+    "source_sha256": "785070a8a7927267f489ca6d7187a7d587692afa15975cfaa2782ae76df94d79",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "The unchanged physical last-CV line9 is a prediction; fresh119 native observation is pending.",
+    "formal_kinds": [
+      "string",
+      "float"
+    ],
+    "caller_strict": false,
+    "native_stdout": "S;M:1:1:1:1;H:9:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      false,
+      true
+    ],
+    "return_kind": "float",
+    "return_class_first": false,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "named-weak-global-int-class-string-return-coercion",
+      "source_sha256": "1c0bbc4a9f5b2840a53d3c55743a7702950e5f4df2cb52f068d8272bab7445b1",
+      "edits": "Change only the bare RETURN builtin from int to float and require an exact FLOAT37.0 at the named recipient. Keep actual INT37-to-STRING reception, delayed saved STRING return, by-reference INT17-to-FLOAT reception, caller snapshots, GLOBALS unset and source lines."
+    },
+    "notice_line": 9,
+    "class_return": "stdClass",
+    "role_index": 1,
+    "float_first": true,
+    "value_bits": 4630404104378646528
+  },
+  {
+    "id": "strict-global-class-float-string-return-rejection-before-named-notice",
+    "source": "<?php declare(strict_types=1);\n// Global declaration context, no class imports.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):stdClass|float{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "c0ea2e504178b6f12154e0f4483b479f5c451b64265a9869976e876073712b0f",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "strict-global-class-int-string-return-rejection-before-named-notice",
+      "source_sha256": "369f8660dac1633cb5ecd9660c1a570861fc66c2e3430463db270945623d967c",
+      "edits": "Change only the bare RETURN builtin from int to float. Keep strict STRING17 rejection before Notice or recipient, named-call catch priority and all caller alias observations."
+    }
+  }
+]
