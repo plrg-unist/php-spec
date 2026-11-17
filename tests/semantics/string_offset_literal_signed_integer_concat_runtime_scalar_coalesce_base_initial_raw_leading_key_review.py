@@ -63,7 +63,7 @@ $string_read_folded_concat_bytes(NExprUnaryMinus (NScalarInt (INTEGER $(-9223372
 $string_read_folded_concat_bytes(NExprUnaryMinus (NScalarInt (INTEGER 9223372036854775808) eps) eps) = eps
 $string_read_folded_concat_bytes(NExprUnaryMinus (NScalarInt (INTEGER $(-9223372036854775809)) eps) eps) = eps
 $string_read_folded_concat_bytes(NExprUnaryMinus (NScalarFloat (FLOAT "43e0000000000000") eps) eps) = eps
-$string_read_folded_concat_bytes(NExprUnaryPlus expression_sign_atom eps) = eps
+$string_read_folded_concat_bytes(NExprUnaryPlus expression_sign_atom eps) = ($ptascii("0"))
 $string_read_folded_concat_bytes(NExprUnaryMinus (NExprUnaryMinus expression_sign_atom eps) eps) = eps
 $string_read_folded_concat_bytes(NExprUnaryMinus expression_prefix eps) = eps
 S_sign_atom_shadow = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_sign_atom (NScalarInt (INTEGER 0) eps)) :: pcunit.OCCURRENCES]]]

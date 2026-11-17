@@ -186,8 +186,8 @@ $string_read_runtime_value(S_signed_bad_{label},porigin_left) = eps
 $string_read_runtime_value(S_signed_bad_{label},porigin_base) = eps
 ~$string_read_raw_known_base(S_signed_bad_{label},porigin_base,PSTRING_CARRIER INTERNED_STRING ($ptascii("{text}")))
 ''')
+    checks.append('$string_read_folded_concat_bytes(NExprUnaryPlus expression_integer eps) = ($ptascii("9223372036854775807"))')
     for node in (
-            'NExprUnaryPlus expression_integer eps',
             'NExprUnaryMinus (NExprUnaryMinus expression_integer eps) eps',
             'NExprUnaryMinus (NExprUnaryPlus expression_integer eps) eps',
             'NExprUnaryMinus (NScalarString (BYTES "MQ==") eps) eps',
