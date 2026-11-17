@@ -1,0 +1,84 @@
+{
+  "milestone": "COMP318",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless sole short reference Get with all six exact raw int/bool/null orders, identifier or literal-string backing names, and initialized zero, omitted lazy NULL or explicit NULL defaults. Exact tags, independent copies, real aliases, ordinary Boolean/NULL Get probes, weak numeric-text/integral-FLOAT to INT and nonnumeric/empty-STRING Boolean fallback, strict rejection and quiet source detach retain the existing guards.",
+  "implementation": ["spec/semantics/382-backed-get-hooks.watsup"],
+  "source_suites": [
+    "tests/semantics/int_bool_null_parentless_short_reference_get_hook_sources.py",
+    "tests/semantics/int_bool_null_parentless_short_reference_get_hook_review_sources.py"
+  ],
+  "helper_suites": [
+    "tests/semantics/int_bool_null_parentless_short_reference_get_hook_protocol.py",
+    "tests/semantics/int_bool_null_parentless_short_reference_get_hook_review_protocol.py"
+  ],
+  "source_ready": {
+    "path": "../php-spec-evidence-archive/comp318/source-ready.json",
+    "sha256": "94aa6a97d34b505abc0fb1dd3c698f00d4c1326904a2ff1deeee930c7143ea6e",
+    "commit": "47f2a47b2d757136c64dcaa3d0e1848f23e402c6",
+    "tree": "66f9a39cf18407d078ac963bf3eef68457200e6c",
+    "base_source_commit": "8e467397020c8ff39a6d024e318b4012e9f5d11b",
+    "exact_paths": 20,
+    "make_additions": 10,
+    "author_whole_ready": true,
+    "independent_whole_fullclear": true,
+    "reviewer": "/root/recover23_compiler_nullable_union_review",
+    "later_tuple_reviewer": "/root/recover24_compiler_scalar_union_review",
+    "note": "The immutable author export predates independent runtime completion; the completed cuts below supersede its explicitly pending strict selection without changing source postimages. Closed COMP317 metadata is excluded."
+  },
+  "raw_evidence_root": "../php-spec-evidence-archive/comp318",
+  "native_current_originals_once": 6,
+  "native_current_reports": [
+    {"path": "weak-native-current/report.json", "sha256": "ec9d7d71831553ec9682d531150487e7b2c5779a2c98136bac50927b4a721c57", "originals": 3, "fresh": 2, "saved_reuse": 1},
+    {"path": "strict-native-current/report.json", "sha256": "efff62da360d100764a71b3e57f666bb430834dd406a7c74faacfc2887e79d5c", "originals": 3, "fresh": 2, "saved_reuse": 1}
+  ],
+  "source_agreements": [
+    {"path": "weak-sources/report.json", "sha256": "0629471b6a9e18c030108b1432258e027a8a733fad8b2cce631398c255392c53", "commit": "3d7000d602bf7bb19586b4c4cbd15db1ac49e49a", "normal": 3, "native_fresh": 0, "native_reused": 3},
+    {"path": "strict-sources/report.json", "sha256": "9d3faf83b0dd4f3b7469ebe622f1392a03daf9f87527ac5b3370299867284083", "commit": "47f2a47b2d757136c64dcaa3d0e1848f23e402c6", "normal": 3, "native_fresh": 0, "native_reused": 3, "watched_inputs": 531, "model_elapsed_seconds": [64.557138681, 66.247828484, 62.941676140]}
+  ],
+  "fixture_contract": {"commit": "47f2a47b2d757136c64dcaa3d0e1848f23e402c6", "mode": "fixture-SL", "modules": 508, "ordered_arguments": 511, "cap_seconds": 360, "seek_steps": 30000, "source_agreement_credit": 0, "note": "Eight separate cuts; no aggregate or unique-premise claim. Each retained exact true LF, quiet stderr, stable HEAD/inputs and reaped processes. Author watch526 and peer watch527 are distinct actual selections."},
+  "author_fixture_cuts": [
+    {"path": "weak-headers-int-bool-null/report.json", "sha256": "6de14f54dc57b168e67022d4917826bc169cc35542a400688ab0a19fe4bf0896", "premises": 438, "elapsed_seconds": 35.12942028045654, "scope": "headers"},
+    {"path": "weak-lifecycle-int-bool-null/report.json", "sha256": "7056acb50ecbc3408560f1919eb13f01fe5083ba928d142cfc68ca71abc99d3c", "premises": 443, "elapsed_seconds": 186.43634557724, "scope": "lifecycle"},
+    {"path": "weak-lifecycle-bool-null-int/report.json", "sha256": "e4951ac87c2c53c3904c556c5c9ad14272b7e2ebf7be7ca86ff9898a7cb50671", "premises": 443, "elapsed_seconds": 193.023508310318, "scope": "lifecycle"},
+    {"path": "weak-lifecycle-null-int-bool/report.json", "sha256": "8229a3c6547f2586c42d3df3d5432e35efc5716f5ee05ac773e83daefb958670", "premises": 444, "elapsed_seconds": 190.48779010772705, "scope": "lifecycle"}
+  ],
+  "independent_fixture_cuts": [
+    {"path": "strict-lifecycle-int-null-bool/report.json", "sha256": "e0c8714ad63c594a54407630877703a085251e97c6d52407f0740c1117f48dbc", "premises": 443, "elapsed_seconds": 232.620299339, "scope": "lifecycle"},
+    {"path": "strict-lifecycle-bool-int-null/report.json", "sha256": "0243fe7aca4f07f1e179ad86af99a7db487612d824eef18550f0211e51a22a53", "premises": 443, "elapsed_seconds": 239.102392912, "scope": "lifecycle"},
+    {"path": "strict-lifecycle-null-bool-int/report.json", "sha256": "6cb78cfc29dc704335d0a9efff3fec0cf53b8b5914c478b7a720ff32f5655b17", "premises": 444, "elapsed_seconds": 241.498135805, "scope": "lifecycle"},
+    {"path": "strict-headers-int-null-bool/report.json", "sha256": "d86886248c547e2014940a7dbcfdba57c30486a30412bc052ca952bd31d3cbcb", "premises": 438, "elapsed_seconds": 37.708388805, "scope": "headers"}
+  ],
+  "preserved_source_zero": [
+    {"path": "weak-prelaw/report.json", "sha256": "b73643da472f6f60f393565a1649cf7de970b889d1de8d4cd713f9b5b0dee623", "unsupported": 3},
+    {"path": "strict-prelaw/report.json", "sha256": "10296a86e02bfdd612479b2ac3c7637ab1a9193d766408c30055309c8dc3453a", "unsupported": 3},
+    {"path": "weak-native-once and strict-native-once", "note": "Each preserves one failed omitted-default pre-read cast expectation and original bytes; corrected [] pre-read sources preserve unchanged passed originals by exact saved-native reuse."},
+    {"note": "Two early corrected-driver output-path collisions stopped before native or model execution."}
+  ],
+  "actual_composition": {
+    "commit": "7a78141530a145a1319094b5f0d66586d6f5b5c7",
+    "tree": "86a8796413e300fef2a56d2023e254a1e914ede6",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main74-comp318-composition-v1/composition.json",
+    "sha256": "ac8e02c705c7453c44c3f8ad536c4e1ec368707c8a623914c423719c1cdf024c",
+    "postimages": "19 exact non-Make files plus the ten recipes, preserving current parent bytes",
+    "independent_actual_fullclear": true
+  },
+  "sole_canonical_load": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main74-order-get-joined-v1/report.json",
+    "sha256": "e041eb2ea73ad64d1d083cf1dd52c725dceab9a95a70aaccb2979b0060e27e76",
+    "elapsed_seconds": 16.938333122059703,
+    "mode": "production-SL",
+    "modules": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "passed": true,
+    "quiet": true,
+    "stable": true,
+    "reaped": true,
+    "source_agreement_credit": 0,
+    "note": "The independent reviewer consumed the actual/SAME tuple once; author metadata uses that immutable tuple without canonical reexecution or author canonical read."
+  },
+  "compatibility": "The 47f2 closed-COMP317 metadata descendant does not alter the 3d7 source selection. Later COMP319 private preparation does not renew these accepted cuts.",
+  "remaining": "Wider headers, producers, owners and lifetimes remain partial. Existing APIs95/138, exact COMP192/193 Generator-close private Closure cache/This release holds, COMP123, COMP88 and all standing holds remain unchanged. Reserve93807cdd6/255 is unchanged."
+}

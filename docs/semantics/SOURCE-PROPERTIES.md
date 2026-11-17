@@ -2651,3 +2651,13 @@ Own public untyped sole BYVAL GET hooks with omitted defaults and without same-f
 When the sole block or short BYVAL GET accesses that same field, its existing child slot instead keeps declaration order. Explicit17 and omittedNULL retain actual getter BODY/CODE/line and child identity through physical cleanup and shared owners. [Existing-slot review](../../coverage/semantics/ordinary-parent-backed-get-child-slot-review.json). Wider parents/types/BYREF and lifetimes remain partial; exact holds stay unchanged.
 
 Own public untyped backed block &get hooks also retain their lexical child slot over a same-name ordinary root parent. Actual returned references, unconstrained aliases and real ALIAS-cell edges survive to physical cleanup without reusing the old parent slot. [Block reference-Get slot review](../../coverage/semantics/ordinary-parent-backed-reference-get-child-slot-review.json). Short reference Get, ordinary This-reference-fetch consumers and wider types/parents/lifetimes remain partial.
+
+COMP318 admits all six raw `int|bool|null` orders for the bounded own public
+parentless short reference Get, retaining actual defaults, exact tags, real
+aliases, ordinary Boolean/NULL copies, weak coercion, strict rejection and quiet
+type-source removal. Six original sources agree using saved native observations
+once. Separate author438/443/443/444 and peer443/443/444/438 fixtures retain zero
+source credit, as do the preserved prelaw and preparation failures. Actual
+`7a7814153` and its sole production-SL508 load (16.938333122 s) are separate.
+Wider headers, owners and lifetimes remain partial; all exact holds remain.
+[Review](../../coverage/semantics/int-bool-null-parentless-short-reference-get-hook-review.json).
