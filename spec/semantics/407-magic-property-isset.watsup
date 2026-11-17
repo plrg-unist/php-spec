@@ -347,6 +347,20 @@ def $property_magic_cv_raw_not_integer_string_tree(pcunit*, porigin, NExprBinary
   -- if $property_magic_cv_raw_not_integer_string_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
   -- if $property_magic_cv_raw_not_integer_string_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
 def $property_magic_cv_raw_not_integer_string_tree(pcunit*, porigin, expression) = $property_magic_cv_raw_not_keyword_string_tree(pcunit*, porigin, expression) -- otherwise
+;; Raw non-NUL String BooleanNot uses byte truth without numeric coercion.
+dec $property_magic_cv_raw_not_string_tree(pcunit*, porigin, expression) : ptbytes?
+def $property_magic_cv_raw_not_string_tree(pcunit*, porigin, NExprBooleanNot (NScalarString (BYTES text) metadata_string) metadata) = ($echo_value(PBOOL (ptbytes = eps \/ ptbytes = [48])))
+  -- if $origin_node(pcunit*, porigin) = (NExprBooleanNot (NScalarString (BYTES text) metadata_string) metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_string)
+  -- if $property_magic_cv_raw_string_tree(pcunit*, porigin_string, NScalarString (BYTES text) metadata_string) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+def $property_magic_cv_raw_not_string_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_left ++ ptbytes_right)
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_not_string_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_not_string_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+def $property_magic_cv_raw_not_string_tree(pcunit*, porigin, expression) = $property_magic_cv_raw_not_integer_string_tree(pcunit*, porigin, expression) -- otherwise
 ;; Literal class strings keep their exact source and compiled bytes before lookup.
 dec $property_magic_cv_static_method_site_selector(pstate, porigin, phpType19, porigin, ptbytes) : bool
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = true
@@ -432,6 +446,13 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $compiled_read(S, porigin_selector) = (PSTRING ptbytes_raw)
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
+  -- if $property_magic_cv_raw_not_string_tree(S.SOURCES, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_raw)
+  -- if $property_magic_cv_raw_not_integer_string_tree(S.SOURCES, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = eps
+  -- if $compiled_read(S, porigin_selector) = (PSTRING ptbytes_raw)
+  -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = false -- otherwise
 ;; Literal method names retain their raw bytes without class-name normalization.
 dec $property_magic_cv_static_method_site_name(pstate, porigin, phpType20, ptbytes) : bool
@@ -504,6 +525,12 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_raw_not_integer_string_tree(S.SOURCES, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_raw)
   -- if $property_magic_cv_raw_not_keyword_string_tree(S.SOURCES, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = eps
+  -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
+  -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
+def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
+  -- if $property_magic_cv_raw_not_string_tree(S.SOURCES, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_raw)
+  -- if $property_magic_cv_raw_not_integer_string_tree(S.SOURCES, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = eps
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, phpType20, ptbytes) = false -- otherwise
