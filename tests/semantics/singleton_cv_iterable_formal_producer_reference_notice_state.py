@@ -93,7 +93,7 @@ def controls(case):
             '(NNullableType ' + raw + ' metadata_formal)'):
         lines += ['~' + header + 'SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ' + replacement + ' (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, ' + signature + ')']
     lines += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])',
+        ('' if case['return_shape'] == 'nullable' else '~') + '$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])',
         '~$reference_notice_producer_header(SEQUENCE ([NArg ABSENT (NExprVariable (BYTES "aHR0cF9yZXNwb25zZV9oZWFkZXI=") metadata_variable) (BOOLEAN false) (BOOLEAN false) metadata_actual]), phpType16, phpType18, ' + signature + ')']
     return lines
 

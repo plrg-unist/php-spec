@@ -1,0 +1,103 @@
+[
+  {
+    "id": "multiple-cv-array-byref-nullable-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "MultiCvArrayNullableIterableReturn103",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvArrayNullableIterableReturn103 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(int $stamp,aRrAy &$input):?iTeRaBlE{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvArrayNullableIterableReturn103\\\\h',8);echo 'A;';\n$r=&take(make($stamp,$source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-array-byref-iterable-return-embedded-alias-and-private-cell",
+      "source_sha256": "ad7629506764292f831341e34e2b695fa6fcfa83d036861b2fc75bfcb43c1402",
+      "edits": "Fresh namespace; bare iterable return becomes canonical raw ?iterable with exact normalized [iterable,null]. Formal/CV positions, return values, observations and ownership operations stay unchanged."
+    },
+    "source_sha256": "990bbcd5f9e9f66414f25cca5f095c95dbd51cc9aa8afb068ebbf071d094c92f",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "multiple-cv-untyped-byval-nullable-iterable-return-cow-and-private-cell",
+    "namespace": "MultiCvUntypedNullableIterableReturn103",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace MultiCvUntypedNullableIterableReturn103;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved,int $stamp):?iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=['n'=>5];$copy=$x;set_error_handler('MultiCvUntypedNullableIterableReturn103\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-untyped-byval-iterable-return-cow-and-private-cell",
+      "source_sha256": "3e14d8ecaf9a52453afe363b7386a2f0107a1c45ac845600ec776e0bd1554b77",
+      "edits": "Fresh namespace; bare iterable return becomes canonical raw ?iterable with exact normalized [iterable,null]. Formal/CV positions, return values, observations and ownership operations stay unchanged."
+    },
+    "source_sha256": "a2a5989b69cc9be6407f961d0ea526b8d8d369651886c2c312f7f26eb7625559",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "multiple-cv-strict-int-byval-nullable-iterable-return-and-private-cell",
+    "namespace": "MultiCvIntNullableIterableReturn103",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvIntNullableIterableReturn103;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved,int $stamp):?iterable{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('MultiCvIntNullableIterableReturn103\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-strict-int-byval-iterable-return-and-private-cell",
+      "source_sha256": "6a0f092c9104ba985dbec456d86b0ba6746762ba27177490805e9287b1d44388",
+      "edits": "Fresh namespace; bare iterable return becomes canonical raw ?iterable with exact normalized [iterable,null]. Formal/CV positions, return values, observations and ownership operations stay unchanged."
+    },
+    "source_sha256": "bcf288a0951f51be542bebc816d77d479a35c7c8aa774ce5796003f59d564ee5",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "multiple-cv-nullable-iterable-return-type-error-precedes-outer-notice",
+    "namespace": "MultiCvNullableIterableReturnPriority103",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\nnamespace MultiCvNullableIterableReturnPriority103 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int $stamp,array &$input):?iterable{$input=17;echo 'M;';return $input;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=5;$source=[];$sourceAlias=&$source;$r='old';set_error_handler('MultiCvNullableIterableReturnPriority103\\\\h',8);echo 'A;';\ntry{$r=&take(make($stamp,$source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-iterable-return-type-error-precedes-outer-notice",
+      "source_sha256": "fff6eb151e615c05be679851b773a87fd6b77495207a467f0f1cdb399eca1a10",
+      "edits": "Fresh namespace; bare iterable return becomes canonical raw ?iterable with exact normalized [iterable,null]. Formal/CV positions, return values, observations and ownership operations stay unchanged."
+    },
+    "source_sha256": "4f215dbb34038894e5afac73afe8a69b926efdd5e97fccac359cd93b89fceaa1",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ]
+  }
+]

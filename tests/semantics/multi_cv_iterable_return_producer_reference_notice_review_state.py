@@ -56,7 +56,7 @@ def controls(case):
         lines.append('~' + header + leaf + ' (BYTES text_return) metadata_return, ' + signature + ')')
     for kind in ('array', 'null', 'mixed', 'callable'):
         lines.append('~' + header + RAW + ', ' + signature + '[.RETURNS = ' + branches([kind]) + '])')
-    lines.append('~' + header + 'NNullableType (' + RAW + ') metadata_return, ' + signature + '[.RETURNS = ' + branches(['iterable', 'null']) + '])')
+    lines.append(header + 'NNullableType (' + RAW + ') metadata_return, ' + signature + '[.RETURNS = ' + branches(['iterable', 'null']) + '])')
     for members in (['iterable', 'null'], ['null', 'iterable']):
         nodes = [RAW if kind == 'iterable' else 'NIdentifier (BYTES "bnVsbA==") metadata_return' for kind in members]
         lines.append('~' + header + 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return, ' + signature + '[.RETURNS = ' + branches(members) + '])')

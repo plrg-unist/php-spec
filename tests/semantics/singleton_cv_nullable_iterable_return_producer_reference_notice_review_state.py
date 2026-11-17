@@ -230,7 +230,7 @@ def controls(case):
         raw_members = ['NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return' for kind in members]
         lines += ['~' + header + 'NUnionType (SEQUENCE ([' + ', '.join(raw_members) + '])) metadata_return, ' + signature + '[.RETURNS = ' + branches(members) + '])']
     lines += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
+        ('' if case['return_shape'] == 'nullable' else '~') + '$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
     return lines
 
 

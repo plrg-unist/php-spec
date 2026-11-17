@@ -77,7 +77,7 @@ def controls(case):
         '~' + header + 'NName (BYTES text_return) metadata_return, ' + signature + ')',
         '~' + header + 'NNameFullyQualified (BYTES text_return) metadata_return, ' + signature + ')',
         '$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
+        ('' if case['return_shape'] == 'nullable' else '~') + '$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
     for members in (['iterable', 'null'], ['null', 'iterable']):
         reversed_members = list(reversed(members))
         lines += ['~' + header + raw('union', members) + ', ' + signature + '[.RETURNS = ' + branches(reversed_members) + '])']
