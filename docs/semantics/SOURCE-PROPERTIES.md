@@ -2900,3 +2900,15 @@ Defining source/class/property/file/line authority and existing owner bounds rem
 Actual typed reference checks preserve scalar rank, exact tags, aliases and array COW.
 Multiple classes, intersections, iterable and wider payloads/lifetimes remain partial.
 [Review](../../coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using six native observations once, with no new native runs.
+Author230/232/244 retain their original cuts through the reviewed pure predicate
+factor; actual header1795 and first independent193/209/233 pass at SL508.
+Retained FQ and actual factored mid/max source cuts remain distinct. Original
+inner timeouts2, header preparation failures2 and launcher preparation1 retain0;
+the genuine zero-step budget diagnostic adds no source credit.
+Actual and joined `8d43c4823` and sole production-SL509 `a9aeaa5a`
+(16.431872817s, source0) are clear through immutable `243dc800` and one saved-report
+read. Two static assessment preparation mistakes retain0; no prior evidence is renewed.
+Wider forms and all precise holds remain partial/unchanged.
+[Independent review](../../coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-peer-review.json).

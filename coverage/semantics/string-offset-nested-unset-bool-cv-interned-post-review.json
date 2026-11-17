@@ -1,0 +1,177 @@
+{
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit; pinned project-local oracle/profile",
+  "scope": "Valid non-NUL INTERNED poststrings in the saved ordinary NULL/BOOL CV preserve the fixed nested Error or the original pending Throwable and complete caller tail. No entry/context/owner widening.",
+  "status": "Actual source placement and the sole joined canonical load are independently clear. Complete core remains unfinished.",
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_execute.c: zend_check_string_offset / zend_wrong_string_offset_error",
+      "Zend/zend_operators.c: zval_get_long_func(...,is_strict=false)",
+      "Zend/zend_operators.h: zend_dval_to_lval_cap"
+    ],
+    "finding": "The string branch returns0 for nonnumeric text, a long directly, or the silent saturating cap for float text. The cap body ignores its string argument and has no diagnostic/callback; the strict compatibility check is disabled. Its converted index is discarded by this nested-unset path, so no numeric answer/parser is needed. The older convert_to_long comment about warning does not match the pinned cap body; native4 corroborates the body. No engine divergence."
+  },
+  "invariants": [
+    "Only two exact INTERNED predicate arms are added: startup byte validation and non-NUL bytes; post-normal delegates the same class. Existing physical saved-cell/source/CODE/full-state quiet read, unwrapped/unreleased and normal/pending guards remain literal.",
+    "Normal completion uses the same fixed Error. Pending completion preserves the same real Throwable, complete caller tail, state and heap; no secondary Warning even with live512 for numeric-string OOB.",
+    "REQUEST even with matching valid registry bytes, unknown raw PSTRING, NUL/malformed bytes, references/released/rebound/owning payloads remain outside admission. Actual FLOAT range tasks still require PFLOAT and are disjoint. No task/arithmetic/renderer/storage/owner API is added."
+  ],
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post",
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-baseline-v1/report.json",
+    "sha256": "ba497a6203e1516e4c6100db5e0fe7401069652782d7340472160498fcdbb277",
+    "revision": "f5f4db4b165e87306ba99bbebce91d65ef06f8f8",
+    "native_originals": 4,
+    "executions_per_original": 1,
+    "native_replays": 0,
+    "classification": "Unsupported4/credit0; native4 exact stdout/empty stderr"
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-source-v1/report.json",
+    "sha256": "ba0c4da0794f9ccc1721a32df385131ad9516ebc3a0529b25befa1934988ace1",
+    "revision": "19b5632cc00152492626a9c12bcd0f71ccd8b1ca",
+    "agreements": 4,
+    "native_reused": 4,
+    "model_timeout_seconds": 90,
+    "model_cap_seconds": 120
+  },
+  "independent_native_source_facts": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-source-facts42-v1.json",
+    "sha256": "138bdce5340d85e6ae71f86bd9f6377963a9d2238ba5a918cd00eaff41a7d34c"
+  },
+  "prelaw": {
+    "author": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-leading-front-v1/report.json",
+        "sha256": "d81422d11150b89b4292a2ac11dfca32e0eabb685a3216545403b5873b9de64d",
+        "revision": "f5f4db4b165e87306ba99bbebce91d65ef06f8f8",
+        "conditions": 46,
+        "derived": 0,
+        "seconds": 17.374503135681152,
+        "cap_seconds": 180
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-empty-front-v1/report.json",
+        "sha256": "dd2f5bb5e2f0f9412333d05883967ce27ab5a0562154fa90e63d20933ff642a7",
+        "revision": "f5f4db4b165e87306ba99bbebce91d65ef06f8f8",
+        "conditions": 46,
+        "derived": 0,
+        "seconds": 17.198683738708496,
+        "cap_seconds": 180
+      }
+    ],
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-prelaw42-v1.json",
+      "sha256": "3f87ff19a0b75c4499c2c493e0196e1ef9b8c3c4604bc89e0dafb2abfeead7f7"
+    },
+    "scope": "Fresh reached ordinary CV/actual INTERNED/source/quiet read/no-owner facts precede the law: author46/46, peer pending59 and NULL52, source0/native0. No new class admission premise establishes reachability."
+  },
+  "author_fixtures": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-leading-state-v2/report.json",
+      "sha256": "9ef74c00fdbd782ca64ebde6440db69f23d821c06588721a47eadbf0ec2e104e",
+      "revision": "1e8d350819e62315df5b012bf6d76391bfcafe7a",
+      "conditions": 122,
+      "derived": 52,
+      "seconds": 22.83222508430481,
+      "cap_seconds": 180
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-empty-state-v1/report.json",
+      "sha256": "9721c6d1e63a230c763c4dd4ef837d7574fd730a580407e2e117e95dc4743807",
+      "revision": "1e8d350819e62315df5b012bf6d76391bfcafe7a",
+      "conditions": 122,
+      "derived": 52,
+      "seconds": 22.32460045814514,
+      "cap_seconds": 180
+    }
+  ],
+  "independent_fixtures": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-runtime42-v1.json",
+    "sha256": "50105d451873f8632737f008f45f9b6bf866f93218e5c46a9dba0cd8dce19d98"
+  },
+  "independent_counts": "Separate pending131/58 and NULL-normal146/81, originalSL180, exact original source/native bytes reused; no old cuts replayed.",
+  "static_law": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-law42-v1.json",
+    "sha256": "f9162ee8f661eb5cbdea809d2774eb252cb453ffca12350e77224bd879fc7618"
+  },
+  "legacy_bridge": "Remove only the obsolete ~post_cell(INTERNED done) query from the old range peer fixture. That pure helper now admits the class; all actual captured RANGE task assertions remain literal, and PFLOAT snapshot/discard guards stay false for String. New source-state fixtures cover that disjointness and the changed class. Original accepted old cut is retained without replay or renewed credit.",
+  "preserved_zero_credit": {
+    "report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-leading-state-v1/report.json",
+      "sha256": "5fd9a4cf6b442633cab0940f88aa5d4d1eddcff8041f9e3111bbc1284d8a2e70",
+      "revision": "19b5632cc00152492626a9c12bcd0f71ccd8b1ca",
+      "conditions": 122,
+      "derived": 52,
+      "seconds": 11.046182632446289,
+      "cap_seconds": 180
+    },
+    "reason": "Malformed-byte derivative omitted parentheses around [256], so elaboration parsed indexing on INTERNED_STRING. Corrected only that fixture spelling; no PHP/source/law/native change. Affected122/52 passes in v2; no semantic/source failure."
+  },
+  "compatibility_bridge": "Source4 passes at19b5632cc. Later1e8d35081 changes only the malformed-byte derivative spelling and imports the independently prepared budget assertions; production rules, cases/native4 and source inputs remain unchanged. The native-baseline path now requires the exact saved selection before the loop; the earlier fresh baseline did not use that branch and is not replayed. The frozen11 posts,509 ordered module bytes,531 union final fixture inputs and all saved source4 inputs are current SAME; no runtime renewal is needed for these metadata records. Actual source7 and complete foreign parent inverses plus the sole joined canonical result are supplied only by immutable43 tuple1d6d653b. One execution/one physical report read, author raw reads0. Final family metadata updates only this ledger and its new DIMENSIONS paragraph; COMP32 owns the single common generic curation. No source/private/native/WHOLE renewal.",
+  "make": "Fresh local source/native4 plus two author and two independent selected state cuts need no historical archive by default. All existing commands stay literal; one new six-line block is added.",
+  "remaining": "UNKNOWN/REQUEST/NUL strings, nonfinite FLOAT posts, wider entries/contexts/callbacks/cells/owners/lifetimes remain partial. All closed native/source/float-range/normal-default/pending milestones remain closed; blanket finite acceptance stays withdrawn. Exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 unchanged.",
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-source-freeze38-v1.json",
+    "sha256": "c7725996404501ff21a96ca82bae4f53c7d547560dc5477ca11401ee007bd841",
+    "revision": "b53e0f20c6974f8a7dce9f00025eac0b3031070c",
+    "tree": "306eb0094a4211b7aa3a68dedc21885d4cefe5d7",
+    "paths": 11,
+    "source_paths": 7,
+    "ordered_modules": 509,
+    "union_fixture_inputs": 531
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-whole43-v1.json",
+    "sha256": "459c6c3e529a0862baf113b968babd53d9d2429a2e9facb918e649c46118b9db",
+    "verdict": "CLEAR",
+    "reviewed_revision": "27a7f7dc1c173cef5c7a31e198796bd660e80c90"
+  },
+  "preparation_only_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/author-whole-binding-preparation-v1.stderr",
+      "sha256": "ac45f41b84f5f7903b2f0e0a971871deafcd85cb989783a139c0f536cf8179a3",
+      "reason": "Author binding reader asserted a decision key; the immutable WHOLE uses verdict=CLEAR. Corrected only that field read before any ledger write. No source/module audit or runtime renewal."
+    }
+  ],
+  "actual": {
+    "revision": "8d43c4823e880586f8639eb186b723698d260579",
+    "tree": "019c8b83ef660f490c4398e5467508fcb0b762ad",
+    "parent_revision": "0e5f4e51991f0acfbae8a97e7daed045508f9741",
+    "same_revision": "8d43c4823e880586f8639eb186b723698d260579",
+    "source_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main96-comp332-string-interned-post-source-map-v1.json",
+      "sha256": "e0022f5f465afc27519a55ad898e789cd86ca9e49b2c7c11349c12f9915188e3"
+    },
+    "source_paths": 7,
+    "nonshared6_literal": true,
+    "unique_Make6_literal": true,
+    "complete_Make_parent_inverse": true,
+    "companion_shared_doc_parent_preserved": true,
+    "complete_batch24_fixed_hashes": true
+  },
+  "canonical": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main96-comp332-string-interned-post-canonical-v1/report.json",
+    "sha256": "a9aeaa5a17582fb265ce1070c560bfb16c92450b9b012307b46a3f6c88ec9ebe",
+    "mode": "production_SL",
+    "ordered_modules": 509,
+    "argv": 512,
+    "watched_inputs": 513,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.4318728169892,
+    "source_credit": 0,
+    "canonical_executions": 1,
+    "physical_report_reads": 1,
+    "semantic_reruns": 0,
+    "complete513_maps_equal": true,
+    "raw_output_match": true,
+    "stable": true,
+    "reaped": true
+  },
+  "independent_tuple": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-interned-post/peer-actual-canonical43-v1.json",
+    "sha256": "1d6d653b7b787710e1714db7ae5b7800157b61b6f797060778e00f2da1f1fecb",
+    "reviewer": "recover43_string_post_review",
+    "author_raw_canonical_report_reads": 0
+  }
+}

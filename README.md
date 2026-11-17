@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Own public parentless short reference Get admits one quiet ordinary, fully qualified or namespace-relative class plus two to six compatible builtin union arms in exact source order. Whole quiet normalization, defining authority, scalar rank, aliases and array COW retain existing guards. Multiple classes, intersections and wider owners/lifetimes remain partial. [Review](coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
+
 Completed required ordinary-CV producers admit canonical bare `?stdClass` formals in global declarations without class imports. Exact class/null order and raw metadata retain ordinary object/NULL reception, unconstrained BYREF rebinding, return verification and private Notice-cell identity. Explicit bare union formals, other names/contexts and wider owners/lifetimes remain partial. [Review](coverage/semantics/global-plain-nullable-stdclass-formal-producer-reference-notice-review.json).
 
 Completed ordinary-CV producers admit canonical bare `stdClass` formals in global
@@ -46,11 +48,13 @@ Completed ordinary-CV producers admit flat `stdClass` return unions with the bui
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
 Allocated raw-integer string casts and finite left-associated literal CONCAT chains,
-including folded raw STRING-only suffix trees, preserve their exact
+including folded raw STRING-only and certified scalar-CONCAT suffix trees,
+preserve their exact
 non-NUL REQUEST temporary and frozen raw CV offset through returning Warnings,
 both directly and as coalesce-left operands. Separate entry freshness and saved
 ownership preserve later callback allocations. Source, state and integration
 evidence retain their separate scopes; wider producers and lifetimes remain partial.
+[Scalar suffix review](coverage/semantics/string-offset-runtime-allocated-folded-scalar-concat-suffix-base-initial-raw-leading-key-review.json),
 [Folded suffix review](coverage/semantics/string-offset-runtime-allocated-folded-string-concat-suffix-base-initial-raw-leading-key-review.json),
 [chain review](coverage/semantics/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-review.json),
 [Direct review](coverage/semantics/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-review.json),
@@ -1989,8 +1993,12 @@ a supplied throw survives even after key mutation. Restored named handlers with
 a Warning-excluding live mask now use the [existing default reporter](coverage/semantics/string-offset-nested-unset-bool-cv-range-default-review.json)
 before the same Error. If the first handler throws with a Warning-excluding mask,
 the [default range Warning](coverage/semantics/string-offset-nested-unset-bool-cv-pending-range-review.json)
-preserves that pending Exception and the complete caller tail. Absent callbacks,
-nonfinite posts and wider ownership remain partial.
+preserves that pending Exception and the complete caller tail. Valid non-NUL
+[INTERNED poststrings](coverage/semantics/string-offset-nested-unset-bool-cv-interned-post-review.json)
+also preserve the fixed Error or pending Exception: nonstrict string conversion
+is quiet and its index is unused, including leading, fractional and out-of-range
+numeric text. Absent callbacks, REQUEST/unknown/NUL strings, nonfinite FLOAT
+posts and wider ownership remain partial.
 
 [Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
 now reads the key and raises the string-offset Error for valid non-NUL interned

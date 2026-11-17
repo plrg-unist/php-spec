@@ -1401,6 +1401,27 @@ Actual=SAME `c5dee9715` retains the sole production-SL509 `52eb2b5f` load,
 16.788154026s/source0, through independently clear tuple`b5ab36ae`; one execution
 and one physical report read, with author raw reads0.
 
+Valid non-NUL INTERNED strings also survive the saved ordinary NULL/BOOL-CV
+Warning route. `zval_get_long_func(false)` returns zero for nonnumeric text,
+the parsed integer for integer text, or the silent saturating cap for float
+text. Its cap body ignores the string argument and emits no diagnostic; the
+strict compatibility check is disabled here. Since nested unset discards the
+index, the new two-arm admission needs no numeric result or parser. The exact
+saved-cell/source/quiet-read and reference/released guards remain. A normal
+callback return raises the fixed Error; a throw keeps the same Throwable and
+caller tail even with a Warning-excluding mask. Actual FLOAT range tasks still
+require PFLOAT payloads and remain disjoint. One obsolete broad post-cell
+refusal query is removed from the old range fixture; its original accepted
+cut and all actual task assertions are retained without replay. The
+[INTERNED poststring review](../../coverage/semantics/string-offset-nested-unset-bool-cv-interned-post-review.json)
+keeps fresh native4 once/source4, raw prelaw and separate state cuts distinct.
+REQUEST/unknown/NUL strings, nonfinite FLOAT posts, wider owners and lifetimes
+remain partial; all exact holds/reserve93807cdd6/255/inventory169/306/closed0+1
+and withdrawn blanket finite acceptance remain unchanged.
+Actual=SAME `8d43c4823` retains the sole joined production-SL509 `a9aeaa5a`
+load16.431872817s/source0, independently clear through tuple`1d6d653b`; one
+execution/one physical report read, with author raw reads0.
+
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
 does not dispatch on its changed type and its result is unused. No current-key
@@ -2027,3 +2048,16 @@ SL508 retain distinct cuts. WHOLE12 and actual45fa9d2e5/solec22b8e24 productionS
 the original B binding rejection retains0/runtimeUNRUN. Wider forms/lifetimes,
 Owned-NUL release and all exact holds remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-allocated-folded-string-concat-suffix-base-initial-raw-leading-key-review.json).
+
+Compiler-certified scalar-CONCAT suffixes reuse the existing folded byte grammar
+on allocated cast-rooted chains. Typed STRING roots, full SOURCE, actual CONST
+flags, root precision, prefix identities and genuine KNOWN ownership preserve
+saved raw CV leading offsets through returning Warnings. Intermediate/sign/ConstFetch
+facts follow their actual compiler certificate; raw leaves and Name-only nodes
+retain distinct SOURCE/precision roles. Standalone PINT RHS remains refused.
+Native2 once/source2, author286/118-derived plus315/128-derived and corrected
+independent757/657-derived SL508 retain separate cuts. WHOLE12 and actuald287c4813/
+solece125816 productionSL50916.883331442s/source0 are clear through immutablebfa0e703
+and one saved-report read; original B syntax rejection retains0/runtimeUNRUN.
+Wider forms/lifetimes, Owned-NUL release and all exact holds remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-allocated-folded-scalar-concat-suffix-base-initial-raw-leading-key-review.json).
