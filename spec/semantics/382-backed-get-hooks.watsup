@@ -138,6 +138,18 @@ def $hook_short_reference_class_int_header(NUnionType (SEQUENCE ([NIdentifier (B
   -- if $ptype_normalize(NUnionType (SEQUENCE ([NIdentifier (BYTES text_int) metadata_int,phpType69_class])) metadata, ptcontext) = PTOK ([(PTBRANCH ([PTBUILTIN "int"])),(PTBRANCH ([PTCLASS ptbytes]))]) eps
 def $hook_short_reference_class_int_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 
+;; FLOAT tags and integer widening retain the existing reference checks.
+dec $hook_short_reference_class_float_header(phpType18, ptbranch*, ptcontext) : bool
+def $hook_short_reference_class_float_header(NUnionType (SEQUENCE ([phpType69_class,NIdentifier (BYTES text_float) metadata_int])) metadata, [(PTBRANCH ([PTCLASS ptbytes])),(PTBRANCH ([PTBUILTIN "float"]))], ptcontext) = true
+  -- if $ptlc($base64(text_float)) = $ptascii("float")
+  -- if $hook_short_reference_header(phpType69_class, [(PTBRANCH ([PTCLASS ptbytes]))]) \/ $hook_short_reference_scoped_header(phpType69_class, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $ptype_normalize(NUnionType (SEQUENCE ([phpType69_class,NIdentifier (BYTES text_float) metadata_int])) metadata, ptcontext) = PTOK ([(PTBRANCH ([PTCLASS ptbytes])),(PTBRANCH ([PTBUILTIN "float"]))]) eps
+def $hook_short_reference_class_float_header(NUnionType (SEQUENCE ([NIdentifier (BYTES text_float) metadata_int,phpType69_class])) metadata, [(PTBRANCH ([PTBUILTIN "float"])),(PTBRANCH ([PTCLASS ptbytes]))], ptcontext) = true
+  -- if $ptlc($base64(text_float)) = $ptascii("float")
+  -- if $hook_short_reference_header(phpType69_class, [(PTBRANCH ([PTCLASS ptbytes]))]) \/ $hook_short_reference_scoped_header(phpType69_class, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $ptype_normalize(NUnionType (SEQUENCE ([NIdentifier (BYTES text_float) metadata_int,phpType69_class])) metadata, ptcontext) = PTOK ([(PTBRANCH ([PTBUILTIN "float"])),(PTBRANCH ([PTCLASS ptbytes]))]) eps
+def $hook_short_reference_class_float_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
+
 dec $hook_name(ptbytes) : ptbytes
 def $hook_name(ptbytes) = [36] ++ ptbytes ++ $ptascii("::get")
 dec $pphook_compile(ppstate, pcpath, ppropertydesc, phpType38, pchheader) : ppstate
@@ -582,7 +594,7 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata])) metadata_group)
   -- if flags <- [0,1]
-  -- if $hook_short_reference_header(phpType18, ppropertydesc.TYPE) \/ $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_null_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_false_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_true_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_bool_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_int_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group)))
+  -- if $hook_short_reference_header(phpType18, ppropertydesc.TYPE) \/ $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_null_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_false_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_true_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_bool_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_int_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_float_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group)))
   -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
   -- if $hook_parameter_facts(metadata) = [false]
   -- if z = $source_line(metadata)
@@ -1899,7 +1911,7 @@ def $property_hook_short_reference_header(S, pclassdesc, ppropertydesc, phpType1
   -- if ptbytes_file = $call_sourcefile(S.FILES, pclassdesc.ORIGIN)
   -- if $plclasscontext(pcunit, pcpath_owner, ptbytes_file, pclassdesc.LINE) = (ptcontext)
   -- if ptcontext_property = ptcontext[.SCOPE = PTKNOWN pclassdesc.NAME pclassdesc.PARENT][.POSITION = PTPROPERTY][.OWNER = pclassdesc.NAME][.MEMBER = ppropertydesc.NAME][.LINE = ppropertydesc.LINE]
-  -- if $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_null_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_false_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_true_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_bool_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_int_header(phpType18, ppropertydesc.TYPE, ptcontext_property)
+  -- if $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_null_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_false_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_true_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_bool_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_int_header(phpType18, ppropertydesc.TYPE, ptcontext_property) \/ $hook_short_reference_class_float_header(phpType18, ppropertydesc.TYPE, ptcontext_property)
 def $property_hook_short_reference_header(S, pclassdesc, ppropertydesc, phpType18) = false -- otherwise
 
 def $property_hook_reference_decl(S, ppropertydesc) = true

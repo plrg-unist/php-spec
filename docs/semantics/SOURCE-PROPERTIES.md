@@ -2829,3 +2829,13 @@ Actual and joined `cb5c64bfd` and the sole production-SL509 load
 The recorded second physical read completed the same saved report's fingerprint
 comparison without a new semantic run. Wider forms and all exact holds remain.
 [Independent review](../../coverage/semantics/class-int-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/float unions on that short reference producer retain both raw
+orders, `Class|float` and `float|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier float require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. FLOAT tags and integer widening in either mode stay intact.
+Eligible weak scalars convert; strict Boolean and string writes reject atomically.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-float-union-parentless-short-reference-get-hook-review.json).
