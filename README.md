@@ -16,6 +16,16 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Own public parentless short reference Get admits exact Class|null and null|Class headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw/normalized order, defining source/class/property authority and existing alias/owner bounds remain. Wider unions, warningful headers and lifetimes stay partial. [Review](coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
+
+Raw nonNaN FLOAT intermediate string-offset unset literals preserve the cast-Warning handler's return or throw through exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-float-warning-review.json)).
+
+Quiet full and shorthand ternaries compose through Boolean/NOT/CONCAT static USER method selectors, retaining exact source bytes, String truth, guarded emitted-root authority and existing quiet Get ownership/cleanup. Wider forms and lifetimes remain partial. [Ternary selector review](coverage/semantics/magic-property-methodclosure-static-raw-ternary-boolean-not-concat-tree-quiet-get-review.json).
+
+Emitted NULL-left coalesce demands the certified RHS and preserves its actual NULL/BOOL/numeric tag before private integer reception. Exact source, declaration bindings, Shared caches and recipient ownership remain required. Redirected or owning producers and wider lifetimes remain partial. [NULL coalesce review](coverage/semantics/deferred-null-coalesce-wrapper-default-reception-review.json).
+
+Completed required ordinary-CV producers admit exact ordered FQN stdClass/iterable RETURN unions of2–8 members, preserving decoded class bytes, raw/normalized order, distinct permitted builtins and oneBoolean kind. Actual return verification, frame retirement and finite private Notice-cell payload/owner bounds remain; FORMALS/wider class names, Traversable payloads and lifetimes stay partial. [Review](coverage/semantics/cv-fqn-stdclass-iterable-return-producer-reference-notice-review.json).
+
 Certified emitted `?:` conditions preserve exact INTERNED headers and frozen raw
 CV keys through returning Warnings. Quiet falsey scalar values select a literal
 fallback; quiet truthy strings retain their selected header. Wider producers,

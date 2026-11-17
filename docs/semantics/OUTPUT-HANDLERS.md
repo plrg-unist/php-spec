@@ -1637,3 +1637,17 @@ coercive/owning children and wider operations/handlers/lifetimes remain partial;
 all exact holds remain.
 [Exact division evidence](../../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
+
+Quiet signed64 INT MODULO also composes in those nested casts. Two certified
+proper PINT children retain exact source/CODE authority; the actual remainder
+must fit and preserve quiet NORMAL full-state equality. Terminal lines,
+fold/read authority, nonownership and the two-cast gate remain. Six originals,
+including emitted MIN%-1, reuse six native observations once. Author30/20 and
+independent141/22 retain separate private508 SL fixture source0 cuts.
+Prelaw Unsupported2/other4unrun retain0; no predecessor campaign is renewed.
+Actual composition `bb422858ac9` retains its posts through the separate
+joined `b9cb2a675e4` MAIN509 load, passing in15.831819022 s/source0.
+Implicitly coercive operands, zero-divisor handler returns, wider operations,
+owners/lifetimes and every exact hold remain partial.
+[Integer remainder evidence](../../coverage/semantics/output-final-selected-integer-remainder-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-remainder-cast-chain-return-modulo-error-review.json).

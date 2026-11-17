@@ -1,0 +1,147 @@
+{
+  "milestone": "ENUM293 emitted NULL-left coalesce wrapper defaults",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "An emitted coalesce with an actual certified NULL left operand demands its actual RHS and preserves its NULL/BOOL/exact signed64 INT/bits64 FLOAT tag before existing private integer reception. Quiet NaN is copied without truth conversion.",
+  "implementation": "Module519 adds only 12 lines. Exact own and both-child source, phase/CODEfalse, EPS pool/read and no redirect are required. Demand left PNULL first, then RHS in the finite nonowning domain. The existing nonnull-left arm is disjoint; no kernel, state or ownership rule changes.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_ast.c::zend_ast_evaluate_ex, ZEND_AST_COALESCE: evaluate the RHS exactly when the left value is NULL.",
+  "author_source": {
+    "revision": "7c666e273de869d211103d06fea4f7895f396c17",
+    "tree": "38d05aeae797667675f7c710d42f4b1c5d5d76ed",
+    "base": "9472c6b23df7c6412cb560aef5984fd0649d8ac3"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/source-final-v1.patch",
+    "sha256": "91846ac1f39812f5983890914584684937ab4185fbfca95a481ec500d7ed2c6e",
+    "bytes": 25459,
+    "files": 6,
+    "added": 288,
+    "removed": 0
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/source-final-v1-manifest.json",
+    "sha256": "9764e7f5654d039ee3d67063d4248c298e44d6986f9badbef1a69fe41ac5dac0",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/native-final.json",
+    "sha256": "a926b151aebd67e5a924b3d8d9103ce9df46397a90d6622947a8b062ee27ff95",
+    "fresh_originals": 2,
+    "replays": 0,
+    "stable": true
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/baseline-v1/report.json",
+    "sha256": "5a3b14b4c3051c26492feb5c42bf6368305366831c11b6f8d5a8a5d9f5fdd776",
+    "revision": "9472c6b23df7c6412cb560aef5984fd0649d8ac3",
+    "expected_unsupported": 1,
+    "source_credit": 0
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/source-v1/report.json",
+    "sha256": "4875d491aacd7af6e7bf00fc39327ed4223e6b44e57debf2926c588f7412f00e",
+    "revision": "6c327c93e3395033ce2fd312d579d34f79762d51",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      59.20636378903873,
+      76.68839980498888
+    ],
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "zero_scope_correction": "Frozen native raw RHS zero controls are positive FLOAT zero. The earlier preparation edit changed a left-condition unary expression, not that RHS. Only the catalogue purpose and unrun fixture expectation were corrected; native/model source bytes and the 12-line law were unchanged, with no replay. The independent negative-zero RHS fixture is derived and carries source0/native0.",
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/author-v1/closure-call-protocol-rndp_j3j/report.json",
+    "sha256": "4107a26b78d536c969bea215c6b6ee2ba8835a4392f97c5ad458fb6b64508387",
+    "revision": "a756116976e99df7ea28fc4365ea31985278b0d7",
+    "conditions": 148,
+    "body": 142,
+    "setup": 6,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-coalesce-wrapper-default-reception-293/peer-v1/closure-call-protocol-ff_z461w/report.json",
+    "sha256": "d2687936d4902b88e031b10c901a474aad91eb2dd9295603fce2c4511d6a644f",
+    "revision": "214c833d7a7009d28e303445c1fcaa86854e69da",
+    "tree": "a1d03b62",
+    "cuts": [
+      "raw 117",
+      "named 54",
+      "derived negative-zero RHS 22",
+      "demand boundaries 22"
+    ],
+    "conditions": 215,
+    "body": 191,
+    "setup": 24,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "affected_older_conditions": 0,
+    "source_credit": 0,
+    "native_reexecutions": 0
+  },
+  "independent_review": {
+    "reviewer": "recover23_enum_null_comparison_review",
+    "whole_source6": "FULLCLEAR: exact list, complete postimages, checked-input equality, filtered and reverse-diff checks. RHS demand/skip, raw tags/cache, source binding/refusal, derived negative-zero bits and lifecycle are clear.",
+    "actual_and_same_saved_read": "CLEAR once; author uses only the supplied immutable tuple."
+  },
+  "actual_source": {
+    "revision": "b2f4df69640f19adc8b8c5f86d154fdb81c3ca0e",
+    "tree": "8f70ed38798403022e0173858733163698750b84",
+    "base": "3dba22ec9e4690d834c4b5cca771390aa062b527",
+    "files": 6
+  },
+  "canonical": {
+    "revision": "b2f4df69640f19adc8b8c5f86d154fdb81c3ca0e",
+    "tree": "8f70ed38798403022e0173858733163698750b84"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main83-get-ternary-enum293-v1/report.json",
+    "sha256": "897ffe0bc46bbaaf1c5f475fafac6266cd3fbca04fe9a23973673fa8633cd03d",
+    "mode": "SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "cap": 60,
+    "elapsed_seconds": 15.68154260609299,
+    "exit": 0,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main83-enum293-composition-v1/map.json",
+    "sha256": "607756e4eed1d0b3bc0c213ec58b07995ccea6e0afdc975ad2a150cd44554c0f",
+    "scope": "Five literal incoming full postimages and the complete519 parent equal9472; three exact unique Make commands inside test-semantics. Removing the block recovers the complete actual parent."
+  },
+  "joined_sourcecut": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main83-get-ternary-enum293-v1/sourcecut.json",
+    "sha256": "96d2dd0cefa65b395ece196aeae0179ad7a7e6efe3c514df2ccd3b7c6cda436e",
+    "scope": "The sole saved joined cut binds all11 final postimages with disjoint407/519 changes. Private execution/fixture cuts retain508 modules; canonical509 loading has source0."
+  },
+  "scope_limits": [
+    "Literal-NULL compiler redirects and literal-false shorthand redirects remain separate certificate boundaries.",
+    "STRING/ARRAY/OBJECT RHS values, wider contexts, owners and lifetimes remain partial.",
+    "No complete coalesce, default-reception or PHP-core closure is claimed."
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Native2 once and source2 retain their exact original cuts. Author148 and peer215 are physical fixture checks with source0/native0; older affected0. There are no new failures/timeouts, and no incomplete or unrun cut is counted. Thin metadata uses only the supplied actual/canonical tuple and renews no accepted execution."
+}

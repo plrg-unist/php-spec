@@ -1,0 +1,135 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_bytes": 8,
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed one- or multiple-required ordinary-CV producers; exact ordered RETURN unions of two through eight members containing one raw fully qualified stdClass and one iterable, plus distinct int/float/string/null/callable and at most one bool/false/true kind. Raw class bytes exactly match the normalized PTCLASS name before stdClass casefolding; all raw/normalized members retain exact count and order.",
+  "implementation": {
+    "revision": "2c5e3a60105d3badab08ccc62d2586cce29ab8bc",
+    "tree": "4ab1ee91282b55c2f3018fdd121b4fe9d204e536",
+    "source_files": 12,
+    "manifest": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/author/source12-manifest-v1.json",
+    "manifest_sha256": "139f40acece05afa536c481cceba88842cca75f8774d9988bde0a874f0234a4d",
+    "rule": "A dedicated structural fold and disjoint RETURN header arm require exactly one FQN stdClass and iterable, exclude array/object, duplicates and overlapping Boolean kinds, then reuse the existing argument proof with RETURNS cleared. Shared stdclass_union_members, FORMALS, noniterable class routes, actual return conversion, frame retirement, epsilon and finite payload/private-cell/owner guards remain unchanged. Three precise older RETURN-control generators gain the matching positive guards, checked by fresh derived queries."
+  },
+  "engine_sources": [
+    "Zend/zend_compile.c: zend_compile_single_typename iterable fallback; zend_compile_typename_ex type-mask overlap, Boolean-kind and object/class redundancy checks",
+    "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_execute.c: zend_check_type_slow, zend_verify_scalar_type_hint, zend_verify_return_error"
+  ],
+  "native": {
+    "unique_originals": 7,
+    "executions_once": [
+      4,
+      3
+    ],
+    "reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/author/native-first-v1/report.json",
+        "sha256": "3700df9ca21d743fccda5ef9fe49c67dad489aa0c3f46234ad82059bcc544022"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/peer/native-first-v1/report.json",
+        "sha256": "a0583682f2453ccfe4f6d49cb1399f8712a6767cf2b3fd1eb0ccef01c1a5c5e3"
+      }
+    ]
+  },
+  "private_validation": {
+    "source_mode": "production-SL/cache=false/det=true",
+    "fixture_mode": "fixture-SL/cache=false/det=true",
+    "module_count": 507,
+    "source_agreements_per_packet": 7,
+    "fixture_conditions_per_packet": [
+      835,
+      381
+    ],
+    "fixture_reached_per_packet": [
+      340,
+      211
+    ],
+    "fixture_derived_per_packet": [
+      495,
+      170
+    ],
+    "fixture_source_agreements": 0,
+    "packets": [
+      {
+        "role": "author",
+        "revision": "2c5e3a60105d3badab08ccc62d2586cce29ab8bc",
+        "summary": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/author/whole-summary-v1.json",
+        "sha256": "856ff27edcb0c1ef7d0681154c764481ae2d0817f3b9d2c3d7b907f4383eb2d3",
+        "elapsed_seconds": 261.42413687705994
+      },
+      {
+        "role": "independent",
+        "revision": "a6eba24c04ccd757b0a2069e52ccfc623ef8aaa2",
+        "tree": "c5d21f8cea3051638fe772cc114eb193c210d8f4",
+        "summary": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/peer/whole-summary-v1.json",
+        "sha256": "9699b48be17af04babc3b8d4d3fbd78087dd6e8a444719876015528b531ed045",
+        "elapsed_seconds": 278.3513538837433
+      }
+    ],
+    "stable_inputs_and_heads": true,
+    "quiet_stderr": true,
+    "timeouts": false,
+    "remaining_process_groups": []
+  },
+  "prelaw": {
+    "source_agreements": 0,
+    "successful_front_conditions": [
+      243,
+      159
+    ],
+    "front_reports": [
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/author/prelaw-state-v1/report.json",
+        "sha256": "277342b881a976a06113318a5ccdc053a89f62626184bf07208b913c2b777913"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/peer/prelaw-state-v1/report.json",
+        "sha256": "2061d01dcbb6e3de8a85cd338188db69b53a6b26c8e817869b798f23dcde35c2"
+      }
+    ],
+    "first_sources": [
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/author/prelaw-source-v1-he9_ylh5/report.json",
+        "sha256": "ab4552781bd67edecdf71880fa102424b23710d30fdcf8e44dcf6301f49bea09"
+      },
+      {
+        "path": "../php-spec-evidence-archive/cv-fqn-stdclass-iterable-return-producer-reference-notice-112/peer/prelaw-source-v1-obc4xysu/report.json",
+        "sha256": "7a1f051a2ba25dbfcf13e27b3afe6dfd83f9ba7ed5f1e5b764df97f0c0173af4"
+      }
+    ],
+    "first_source_outcome": "Each first source Unsupported; remaining three author and two peer originals unrun at that cut. Both false reports retain zero source agreement. No execution failures or native renewal."
+  },
+  "limits": "Plain/relative/imported class names, other nominal types, class-bearing iterable FORMALS, Traversable Notice payloads and wider carriers, contexts, ownership or lifetimes remain partial. Shared helper/formal refusals, every standing hold and reserved boundary remain unchanged. Repeated packets add no unique-source credit.",
+  "composition": {
+    "actual_revision": "58bd65303a18fc8d75e570f15051f64ae808ecc3",
+    "actual_tree": "d4a100778b8e6764d558e224c35904c5001ea99f",
+    "same_revision": "58bd65303a18fc8d75e570f15051f64ae808ecc3",
+    "same_tree": "d4a100778b8e6764d558e224c35904c5001ea99f",
+    "source_files": 12,
+    "literal_postimages": 11,
+    "make": "one unique preserved recipe insertion",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main83-ref112-composition-v1/map.json",
+    "sha256": "46167b3a8f40c1a2d98205d27802b58413a028bf4658fa11c6ce231687c2cabf",
+    "saved_load": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main83-ref112-v1/report.json",
+      "sha256": "c7b0ed3645ddb60917e6633f9616394c5a18ae66b8de69e716d52d490ee64637",
+      "mode": "production-SL",
+      "module_count": 509,
+      "fixture_count": 1,
+      "elapsed_seconds": 16.38176454999484,
+      "passed": true,
+      "source_agreements": 0,
+      "inputs_stable": true,
+      "head_stable": true,
+      "reaped": true
+    },
+    "review": "Independent ONE actual/SAME check verified all twelve committed postimages, including exact 207 and the sole Make insertion. An initial Make identity-field assertion was corrected by direct complete-parent content comparison only; no execution failure. The author uses the immutable reviewer tuple without rereading the saved canonical load."
+  }
+}

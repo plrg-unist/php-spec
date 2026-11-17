@@ -2745,3 +2745,12 @@ reference/owner bounds remain. Both orders display `?Class` in diagnostics.
 Scope keywords, warningful headers, broader unions and wider owners/lifetimes
 remain partial.
 [Review](../../coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
+
+Six originals reuse their native observations once: weak3 and independent strict3
+finish normally. Separate author145/146/146 and independent259/150/150/150
+fixture-SL508 cuts retain source0; prelaw Unsupported6 stays0. No execution
+failure, timeout or post-execution correction occurred. Actual `b9cb2a675`
+composition and its sole joined production-SL509 load (15.831819022 s, source0)
+are independently clear through the saved immutable tuple. Wider forms and all
+exact holds remain.
+[Independent review](../../coverage/semantics/class-null-union-parentless-short-reference-get-hook-peer-review.json).
