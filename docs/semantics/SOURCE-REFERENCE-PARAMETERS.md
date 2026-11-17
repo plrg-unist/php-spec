@@ -1104,7 +1104,7 @@ identity. Both Notice ingress sites reuse the existing required ordinary-CV
 argument proof, return verification, frame retirement and private-cell bounds.
 The [plain-name return review](../../coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json)
 records the source and state evidence. Namespaced/imported declarations, plain
-formal names, explicit union plain returns and wider payload/lifetime histories
+formal names, other explicit union plain returns and wider payload/lifetime histories
 remain partial; the older context-independent header stays unchanged.
 
 Nullable bare `?stdClass` RETURN names use the same bounded declaration context.
@@ -1113,8 +1113,16 @@ return verification before producer-frame retirement. Object identity and NULL
 results cross named/positional Notices through fresh unconstrained private cells;
 handler caller rebinding and later private scalar writes remain separate.
 The [nullable plain-name return review](../../coverage/semantics/global-plain-nullable-stdclass-return-producer-reference-notice-review.json)
-records the source and state evidence; explicit unions, wider contexts, payloads
+records the source and state evidence; other explicit unions, wider contexts, payloads
 and lifetimes remain partial.
+
+Bare `stdClass|null` and `null|stdClass` RETURN unions retain exact raw member
+order and normalized class/null identities in that same declaration context.
+Each member authenticates its decoded bytes before the existing ordinary-CV
+argument proof, return verification, frame retirement and private Notice cell.
+The [ordered null-union return review](../../coverage/semantics/global-plain-union-null-stdclass-return-producer-reference-notice-review.json)
+records the source and state evidence. Other unions, plain formals, wider
+contexts, payloads and lifetimes remain partial.
 
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized

@@ -16,6 +16,10 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+[Ordered bare stdClass/null producer returns](coverage/semantics/global-plain-union-null-stdclass-return-producer-reference-notice-review.json) authenticate both raw member orders in the retained global declaration context before existing return checks and private Notice cells; wider unions, formals and lifetimes remain partial.
+
+Bare empty/'0' literal shorthand predicates retain exact borrowed compiler pools and INTERNED-header receipts before finite scalar fallback/private reception; wider predicates, owning results and lifetimes remain partial. [Review](coverage/semantics/deferred-literal-string-short-redirect-wrapper-default-reception-review.json).
+
 Own public parentless short reference Get admits exact `Class|int` and `int|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Exact integer tags, weak scalar conversion and strict rejection retain defining authority and existing alias/owner bounds. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-int-union-parentless-short-reference-get-hook-review.json).
 
 Own public parentless short reference Get admits exact `Class|bool` and `bool|Class` raw/normalized orders with one quiet ordinary, fully qualified or namespace-relative class name. Both Boolean tags remain valid; existing weak scalar conversion and strict rejection preserve defining authority and owner bounds. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-bool-union-parentless-short-reference-get-hook-review.json).
