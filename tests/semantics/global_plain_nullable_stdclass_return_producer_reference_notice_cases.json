@@ -1,0 +1,77 @@
+[
+  {
+    "id": "strict-single-global-plain-nullable-class-return-identity-and-private-cell",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "StDcLaSs",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):?StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "75d1cfac0846d758b6ad2096ff44aba91c3199793a548fd2a1c52652e282f3d2",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-class-return-identity-and-private-cell",
+      "source_sha256": "cb4fda095eabd82af333c5c4364b064fcd3059e5d423c2c33e3edca7a9cb8675",
+      "edits": "Fresh raw nullable plain stdClass RETURN only; exact fixed required FQN/untyped formals, source lines, bodies and identity/reference/lifetime observers unchanged."
+    }
+  },
+  {
+    "id": "weak-multiple-global-plain-nullable-class-return-byref-rebinding",
+    "role_index": 1,
+    "variant": "weak-class-byref",
+    "callee_strict": false,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "STDCLASS",
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,\\sTdClAsS &$right):?STDCLASS{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "ef8cb13eb9383c3fa345bb710940c2afc020bd176a24e1c576f0a1cac3ae638d",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-global-plain-class-return-byref-rebinding",
+      "source_sha256": "9e9806bc2e7230f7d979e9aa7cf525862aedec99627f305516387131481610bc",
+      "edits": "Fresh raw nullable plain stdClass RETURN only; exact fixed required FQN/untyped formals, source lines, bodies and identity/reference/lifetime observers unchanged."
+    }
+  },
+  {
+    "id": "strict-single-null-global-plain-nullable-class-return-private-cell",
+    "kind": "null",
+    "role_index": 0,
+    "class_return": "stdClass",
+    "callee_strict": true,
+    "source": "<?php declare(strict_types=1);\n// Global nullable-return producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===null),';';$x=17;return true;}\nfunction make($saved):?stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=19;return $value;}\n$x=null;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "39cd544229ddc8546511b2be643440368ef58381132022754f358ff522c37e83",
+    "native_stdout": "N;M:1;H:8:1;F:1;R:23:19:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8
+  },
+  {
+    "id": "weak-multiple-null-global-plain-nullable-class-return-private-cell",
+    "kind": "null",
+    "role_index": 1,
+    "class_return": "STDCLASS",
+    "callee_strict": false,
+    "source": "<?php\n// Global nullable-return producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$stamp;echo 'H:',$line,':',$x,':',$stamp,';';$x=17;$stamp=29;return true;}\nfunction make(int $tag,&$saved):?STDCLASS{$keep=$saved;$saved=11;echo 'M:',$tag,':',$saved,';';return $keep;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=19;return $value;}\n$stamp=2;$stampAlias=&$stamp;$x=null;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $stamp,\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',$stampAlias,':',(int)($copy===null),';';unset($r,$x,$copy,$alias,$snapshot,$stamp,$stampAlias);\n",
+    "source_sha256": "74c8ceee97be7e30952e0e13d9cf8e2ea751cd3e2e043f6a2ae10026f3368756",
+    "native_stdout": "N;M:2:11;H:9:11:2;F:1;R:23:19:17:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9
+  }
+]

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "global-nullable-plain-stdclass-named-byref-object-lifecycle",
+    "source": "<?php\n// Global declaration context for the plain stdClass return.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\sTdClAsS &$saved):?STDCLASS{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "b485476f997a608f7869ba31b7e8510c796715ff84cb3d2a3b54366480027591",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-plain-stdclass-named-byref-rebind-and-private-return-cell",
+      "source_sha256": "eecc19a26b451a86f7d53168a2cfa091179c2662a2a162023274d9e6cbf71a34",
+      "edits": "Fresh global raw nullable plain stdClass RETURN and preserved body/line/alias/private-cell observations. The NULL case selects an already-supported required untyped formal; the priority control explicitly selects strict_types=1 without adding a source line."
+    },
+    "namespace": "",
+    "class_return": "STDCLASS",
+    "role": "object",
+    "scope_controls": [
+      {
+        "id": "namespaced-imported-plain-nullable-stdclass-return",
+        "namespace": "ReviewNullablePlainScope116",
+        "source": "<?php\nnamespace ReviewNullablePlainScope116;\nuse \\stdClass;\nfunction make(\\sTdClAsS &$saved):?stdClass{return $saved;}\n",
+        "source_sha256": "904a965582d5dde6e0c3abf666c06109c5f7ed997a570469297553980430a350",
+        "source_agreements": 0
+      },
+      {
+        "id": "global-explicit-import-plain-nullable-stdclass-return",
+        "namespace": "",
+        "source": "<?php\nuse \\stdClass as stdClass;\nfunction make(\\sTdClAsS &$saved):?stdClass{return $saved;}\n",
+        "source_sha256": "b6e82f90e0552c19e65877a7ae8acf2f3817691a98b2b64b64c9e184b386bb93",
+        "source_agreements": 0
+      }
+    ]
+  },
+  {
+    "id": "global-nullable-plain-stdclass-named-null-private-cell-rebinding",
+    "source": "<?php declare(strict_types=1);\n// Global nullable-return declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make($saved):?stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "ab8b782b8f36de0fddf61c7c56cabb948e71ad0a5d29b970036f11959ca9cd5b",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_return": "stdClass",
+    "namespace": "",
+    "role": "null",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_object_producer_reference_notice_review_cases.json",
+      "id": "named-nullable-object-null-and-ordered-object-null-return",
+      "source_sha256": "f204e71f7fbaf69faa179cbb6812258ac17d48dbd28506d306ae9b02eb0c2a39",
+      "edits": "Fresh global raw nullable plain stdClass RETURN and preserved body/line/alias/private-cell observations. The NULL case selects an already-supported required untyped formal; the priority control explicitly selects strict_types=1 without adding a source line."
+    }
+  },
+  {
+    "id": "global-nullable-plain-stdclass-strict-return-error-before-notice",
+    "source": "<?php declare(strict_types=1);\n// Global declaration context for the plain stdClass return.\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):?stdClass{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "ecc0a546b60c701cbe50f7a94bad2a4454e7ea7bb76fa2126dceddbbaa09f5a9",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "global-plain-stdclass-return-error-before-outer-notice",
+      "source_sha256": "fd09a5b76a3247b92bf6f5ac11df5df270714f727efb70d7178edefb8d1bd8ee",
+      "edits": "Fresh global raw nullable plain stdClass RETURN and preserved body/line/alias/private-cell observations. The NULL case selects an already-supported required untyped formal; the priority control explicitly selects strict_types=1 without adding a source line."
+    },
+    "namespace": "",
+    "class_return": "stdClass",
+    "role": "priority"
+  }
+]

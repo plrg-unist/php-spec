@@ -1131,6 +1131,12 @@ def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType1
   -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
+  -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
+  -- if $(|phpType7*| > 0)
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
 dec $reference_notice_producer_target(pstate, porigin) : pfunction?
