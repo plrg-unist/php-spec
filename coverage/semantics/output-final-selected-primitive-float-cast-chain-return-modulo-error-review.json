@@ -1,0 +1,255 @@
+{
+  "milestone": "OUTPUT144 selected primitive FLOAT cast-chain return before MOD-zero error",
+  "obligation": "lifecycle.output-buffer-callbacks",
+  "status": "independently reviewed guarded partial extension",
+  "target": "PHP 8.5.10 CLI NTS64 / vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": {
+    "operations": [
+      "ADD",
+      "SUBTRACT",
+      "MULTIPLY",
+      "DIVIDE",
+      "POWER"
+    ],
+    "result": "canonical64 PFLOAT, exact bits and no value owner",
+    "proper_children": "Recursively certified NULL/BOOL/signed64 PINT/canonical64 PFLOAT/authenticated non-NUL INTERNED STRING",
+    "guards": [
+      "NORMAL and exact full-state equality apart from RESULT",
+      "Each child retains SOURCE/CODE/UNIT, independent line and nonownership",
+      "RHS terminal parent line and conjunction fold flag",
+      "Exact own folded result or emitted read-eps",
+      "Existing two-cast, cast-quiet, source BODY and retirement guards"
+    ],
+    "production": "One separate 21-line PFLOAT arm; prior PINT/PBOOL/unary rules unchanged",
+    "affected_old_expectation_instances": {
+      "integer_arithmetic": 4,
+      "integer_division": 3,
+      "integer_power": 6,
+      "primitive_integer": 8,
+      "total": 21
+    },
+    "bit_observations": "Signed-zero, subnormal, infinity and NaN payload/quieting checks are constructed-state source0 observations",
+    "masked_power": "Masked unhandled zero-negative POWER may qualify only in exact quiet full state with supplied exact compiler facts; actual diagnostic POWER folding is not claimed"
+  },
+  "source": {
+    "base": "d8dad002edeb73e3ba0a9c4e42e10c3e3d39ec4d",
+    "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+    "tree": "3d4c5365377da00b4a27c1e9349275dd2d82319d",
+    "file_count": 9,
+    "insertions": 293,
+    "deletions": 19,
+    "static_clear": true,
+    "manifest": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/ready-source-144-reviewed-manifest.json",
+      "sha256": "7a039635211588120fa216495de24dbaf13f2fbf637f785353f915d81622511c",
+      "patch_sha256": "1b7f67c84cff94191583458f878b6089e858f62d24ef10bf5cced6db751901de"
+    }
+  },
+  "validation": {
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/native-01/report.json",
+      "sha256": "9af79e4a90986ff849b97a888de48e4b1ac0ee3a9686e538a52bb00dc9ca3c39",
+      "revision": "efdfc20114f35421c0ef2e389be24dddb009ef29",
+      "seconds": 0.013483660062775016,
+      "source_credit": 0,
+      "watched_inputs": 20,
+      "selection": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "prelaw": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/before-01/report.json",
+      "sha256": "c3305962aba75b80cdedfe5b4d01e9163bd6703720a1d351487fe197e402b9d9",
+      "revision": "efdfc20114f35421c0ef2e389be24dddb009ef29",
+      "seconds": 78.24871798511595,
+      "source_credit": 0,
+      "watched_inputs": 540,
+      "selection": [
+        1,
+        6
+      ],
+      "unsupported": 2,
+      "unrun_zero": 4
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/after-01/report.json",
+      "sha256": "905eb79d6e33aaad5c4e4518274655dffc9185de1b945c8a170bb118f4216d8c",
+      "revision": "8889c94822bfedfcd2a85c6b304f389f59b4d26e",
+      "seconds": 326.7487069030758,
+      "source_credit": 6,
+      "watched_inputs": 556
+    },
+    "author_front": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/front-01/report.json",
+      "sha256": "d3698e72d74bf734e0d0e7943beb42d757d69d8afad4bf9b98a51c64d56a94ac",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 268.0946333941538,
+      "source_credit": 0,
+      "assertions": 27,
+      "groups": [
+        8,
+        11,
+        8
+      ],
+      "watched_inputs": [
+        595,
+        595,
+        595
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/front-launch-01.json",
+      "launch_sha256": "fe1b42cac3d41dc2685f9f43c4b5f37d427d9f8305ca17220271e34e95f35985"
+    },
+    "author_life": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/life-01/report.json",
+      "sha256": "315c2c235b5dfb94147096757ca90768f8b9797b29a3c7f50473e0ba787ffeac",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 387.40866226283833,
+      "source_credit": 0,
+      "assertions": 19,
+      "groups": [
+        6,
+        7,
+        6
+      ],
+      "watched_inputs": [
+        595,
+        595,
+        595
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/life-launch-01.json",
+      "launch_sha256": "3d701d28d50153ceca801d946a3eb361da9d38d9bdfd0c91eb23fe1c9b30f8e9"
+    },
+    "independent_front": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-front-01/report.json",
+      "sha256": "d52178a030d32fa5d49222fb73180a0babbd6ba8c9be943cea251e6ef906e660",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 296.1919587380253,
+      "source_credit": 0,
+      "assertions": 194,
+      "groups": [
+        112,
+        42,
+        40
+      ],
+      "watched_inputs": [
+        628,
+        628,
+        628
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-front-launch-01.json",
+      "launch_sha256": "9391fdb0f9e5a07002b6e3ab12e743f56279fa738c1e9fad3971fe9dc22c6a17"
+    },
+    "independent_life": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-life-01/report.json",
+      "sha256": "a605fb6cc9e75be7d205687749e2af689c993f963cef211fdbc9a91431ae5a21",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 396.04811726510525,
+      "source_credit": 0,
+      "assertions": 26,
+      "groups": [
+        8,
+        9,
+        9
+      ],
+      "watched_inputs": [
+        628,
+        628,
+        628
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-life-launch-01.json",
+      "launch_sha256": "9919e6ff4a696a2c6ff9f01a9676bd6b686037e88d2f98aacac698c9be8719ed"
+    }
+  },
+  "reliability": {
+    "semantic_failures": 0,
+    "timeouts": 0,
+    "incomplete": 0,
+    "fixture_corrections": 0,
+    "unrun_prelaw_zero": 4,
+    "driver_invocation": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/prepare-invocation-error-01.json",
+      "sha256": "1efa066ff14c836456d81c58fc9c97bd0057cf1e84549515020292d1ef1b89a2",
+      "semantic_runs": 0,
+      "source_credit": 0,
+      "exit": 2
+    },
+    "original_per_fixture_cap_seconds": 300,
+    "original_outer_cap_seconds": 660,
+    "native_replays": 0,
+    "reader_correction": "The pending fixed-packet reader used .stdout/.stderr globs before correcting to the existing stdout.raw/stderr.raw filenames; no semantic execution, report replacement or source change."
+  },
+  "actual_composition": {
+    "actual": "8c749863f6088ddb2f61d1c2a9f62d0770e80e72",
+    "tree": "de1d94f50636fae35e2d440400565ca48a1a59be",
+    "parent": "bce529790e9185d11f19412dbdfa976f1da71a0d",
+    "placement_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main92-output144-placement-v1.json",
+    "placement_sha256": "4fb70327ce299e5f29d728658de9aa20e38c12e544160a2e80c6d6757673b6b4",
+    "source_revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+    "source_manifest_sha256": "7a039635211588120fa216495de24dbaf13f2fbf637f785353f915d81622511c",
+    "runtime_sha256": "6fb334dc5e63f40bd95da54b4d5b34e304ef0d38037c461eea914b8bbc3f435a",
+    "Make": {
+      "path": "Makefile",
+      "post_sha256": "fb2b8507614141dc713556c8e6b6ddfeda1a0d6cf8d91d14b77b92f697b6e501",
+      "post_blob": "a129e3ee73448b8595faccb76b5ac4c6edf4994b",
+      "bytes": 588505,
+      "parent_sha256": "20e27cc38d92d973a406e82e2f3f1040c00492ab6ebde6a00032150d05d2e410",
+      "parent_blob": "0f9f29d679834b89ae7c0283ced3f734ad5477ff",
+      "recipe_count": 4,
+      "foreign_parent_inverse": true,
+      "recipe_block_sha256": "f06cb085373f53b891ab87c9e1b7b1c73c9f046567ace248b5bb6d8be09dc6da"
+    },
+    "canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main92-string-range-output144-load-v1/report.json",
+      "sha256": "0377a927b683ce851b5f0fb46f82b861e7fe698766b6bc4212de9bd7d92570cd",
+      "production_modules": 509,
+      "argv_count": 512,
+      "argv_sha256": "d80123fbea9d76882a614aa731f5b6296032d9c1fd92e880a66567a5d136bb0a",
+      "watched_inputs": 513,
+      "map_sha256": "abaf183395b394741fa31b7ecce5313c517ffd5ee7d4be9ac7d0bc8b0fb7c272",
+      "cap_seconds": 60,
+      "seconds": 16.59022846003063,
+      "exit": 0,
+      "stdout": "true\n",
+      "stderr": "",
+      "stable": true,
+      "reaped": true,
+      "process_group": 3419319,
+      "group_empty": true,
+      "process_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main92-string-range-output144-load-v1/check.process.json",
+      "process_sha256": "734475331fe51525dc0a4009dd8e341f27922e04875f792b0cd6a847c20ff8ae",
+      "source_credit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": ""
+    },
+    "disposition": "ONE fixed actual composition and physically saved SAME canonical CLEAR; no rerun or HEAD refresh"
+  },
+  "limitations": [
+    "Six finite source/native agreements do not establish every value/operator combination or exact NaN/signed-zero bits through PHP source.",
+    "The 21 affected old query instances ran through actual builders; unrelated older campaigns were retained without replay.",
+    "Canonical source loading and state fixtures carry source/native agreement credit zero.",
+    "Output-buffer callbacks remain partial; held source/runtime obligations, inventory counts, statuses, dependencies and reserve remain unchanged.",
+    "Complete core PHP, interaction-tree semantics, Rocq/CRIS and BOLA proofs remain unfinished."
+  ],
+  "validation_profile": {
+    "fixture_mode": "SL508/cache=false/det=true",
+    "all_completed_runs": "PASS; full before/after watched maps equal, quiet raw stderr, unchanged tested revisions and reaped empty process groups",
+    "native_source_observations": "Exact saved source/argv/cwd/profile, native stdout P, full stderr and status255; source outcomes php_error/DivisionByZeroError Modulo-by-zero and exit_status255",
+    "native_driver_sha256": "b3fdead804a4122647b37be9e784a822e3bf4f89a95991d1aff155944dc260cf",
+    "independent_fixture_driver_sha256": "2aa06cf90866d12ab12ddbebe4401e2e9ae6db802bef4563540607b4fa20f0e6",
+    "author_selections": [
+      1,
+      2,
+      6
+    ],
+    "independent_selections": [
+      3,
+      4,
+      5
+    ]
+  }
+}

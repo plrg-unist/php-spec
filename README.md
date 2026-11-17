@@ -1942,6 +1942,12 @@ text stays silent; invalid keys raise the first string-unset Error. Four ordinar
 sources and separate reached-state checks preserve final-key effects and skipped
 late reads. Handler and NUL paths and nonempty array or object keys stay partial.
 
+After an admitted NULL/BOOL-CV Warning handler returns, a finite out-of-range
+FLOAT in the same saved cell can cause a [second named-handler Warning](coverage/semantics/string-offset-nested-unset-bool-cv-range-warning-review.json).
+Copied bits determine its message; a second return raises the nested Error, while
+a supplied throw survives even after key mutation. Default reporting, ineligible
+handlers, nonfinite posts and wider ownership remain partial.
+
 [Terminal string unset](coverage/semantics/string-offset-terminal-unset-review.json)
 now reads the key and raises the string-offset Error for valid non-NUL interned
 and authenticated REQUEST carriers, without key conversion. A separate wrapper

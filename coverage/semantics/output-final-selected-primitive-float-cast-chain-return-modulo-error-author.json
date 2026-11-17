@@ -1,0 +1,215 @@
+{
+  "family": "output-final-selected-primitive-float-cast-chain-return-modulo-error",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "independently reviewed bounded extension; family remains partial",
+  "source_revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+  "source_base": "d8dad002edeb73e3ba0a9c4e42e10c3e3d39ec4d",
+  "scope": "A separate five-operator PFLOAT result clause consumes recursively certified proper primitive children with explicit child nonownership. Actual binary_apply must return a 64-bit PFLOAT and preserve exact quiet NORMAL whole-state equality. Existing source/CODE/independent child lines/RHS terminal line/conjunction folding/own exact folded result or emitted read-eps/two-cast guards remain. PINT/PBOOL/unary rules are unchanged.",
+  "operators": [
+    "ADD",
+    "SUBTRACT",
+    "MULTIPLY",
+    "DIVIDE",
+    "POWER"
+  ],
+  "engine_basis": "PHP8.5.10/vendor34308a6666b2d489c509541ea9befea9e2b42348; Zend/zend_operators.c add/sub/mul/div/pow_function and safe_pow, zend_compile_binary_op/zend_try_ct_eval_binary_op and ppbinary/pfbinary retain source and compiler authority. Pure authored binary_apply/coerce_number/number_binary/power_complete supplies answers.",
+  "source_package": {
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/ready-source-144-reviewed-manifest.json",
+    "manifest_sha256": "7a039635211588120fa216495de24dbaf13f2fbf637f785353f915d81622511c",
+    "patch": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/ready-source-144-reviewed.patch",
+    "patch_sha256": "1b7f67c84cff94191583458f878b6089e858f62d24ef10bf5cced6db751901de",
+    "parent": "d8dad002edeb73e3ba0a9c4e42e10c3e3d39ec4d",
+    "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+    "tree": "3d4c5365377da00b4a27c1e9349275dd2d82319d",
+    "files": 9,
+    "insertions": 293,
+    "deletions": 19
+  },
+  "native": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/native-01/report.json",
+    "sha256": "9af79e4a90986ff849b97a888de48e4b1ac0ee3a9686e538a52bb00dc9ca3c39",
+    "revision": "efdfc20114f35421c0ef2e389be24dddb009ef29",
+    "seconds": 0.013483660062775016,
+    "input_count": 20,
+    "selection": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "source_credit": 0
+  },
+  "prelaw": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/before-01/report.json",
+    "sha256": "c3305962aba75b80cdedfe5b4d01e9163bd6703720a1d351487fe197e402b9d9",
+    "revision": "efdfc20114f35421c0ef2e389be24dddb009ef29",
+    "seconds": 78.24871798511595,
+    "input_count": 540,
+    "selection": [
+      1,
+      6
+    ],
+    "source_credit": 0,
+    "expected_unsupported": 2,
+    "other_unrun": 4
+  },
+  "source": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/after-01/report.json",
+    "sha256": "905eb79d6e33aaad5c4e4518274655dffc9185de1b945c8a170bb118f4216d8c",
+    "revision": "8889c94822bfedfcd2a85c6b304f389f59b4d26e",
+    "seconds": 326.7487069030758,
+    "input_count": 556,
+    "selection": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "source_credit": 6,
+    "native_reused_without_replay": true,
+    "cases": 6
+  },
+  "fixtures": {
+    "mode": "SL508/cache=false/det=true",
+    "author_frontier": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/front-01/report.json",
+      "sha256": "d3698e72d74bf734e0d0e7943beb42d757d69d8afad4bf9b98a51c64d56a94ac",
+      "launch_sha256": "fe1b42cac3d41dc2685f9f43c4b5f37d427d9f8305ca17220271e34e95f35985",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 268.0946333941538,
+      "groups": [
+        8,
+        11,
+        8
+      ],
+      "assertions": 27,
+      "input_counts": [
+        595,
+        595,
+        595
+      ],
+      "source_credit": 0
+    },
+    "author_lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/life-01/report.json",
+      "sha256": "315c2c235b5dfb94147096757ca90768f8b9797b29a3c7f50473e0ba787ffeac",
+      "launch_sha256": "3d701d28d50153ceca801d946a3eb361da9d38d9bdfd0c91eb23fe1c9b30f8e9",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 387.40866226283833,
+      "groups": [
+        6,
+        7,
+        6
+      ],
+      "assertions": 19,
+      "input_counts": [
+        595,
+        595,
+        595
+      ],
+      "source_credit": 0
+    },
+    "independent_frontier": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-front-01/report.json",
+      "sha256": "d52178a030d32fa5d49222fb73180a0babbd6ba8c9be943cea251e6ef906e660",
+      "launch_sha256": "9391fdb0f9e5a07002b6e3ab12e743f56279fa738c1e9fad3971fe9dc22c6a17",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 296.1919587380253,
+      "groups": [
+        112,
+        42,
+        40
+      ],
+      "assertions": 194,
+      "input_counts": [
+        628,
+        628,
+        628
+      ],
+      "source_credit": 0
+    },
+    "independent_lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/peer-life-01/report.json",
+      "sha256": "a605fb6cc9e75be7d205687749e2af689c993f963cef211fdbc9a91431ae5a21",
+      "launch_sha256": "9919e6ff4a696a2c6ff9f01a9676bd6b686037e88d2f98aacac698c9be8719ed",
+      "revision": "55efb03612eb00fbb97326bd6d96b243a5d01448",
+      "seconds": 396.04811726510525,
+      "groups": [
+        8,
+        9,
+        9
+      ],
+      "assertions": 26,
+      "input_counts": [
+        628,
+        628,
+        628
+      ],
+      "source_credit": 0
+    }
+  },
+  "originals": "Six originals strictly observe the inner PFLOAT and outer cast tags across all five operators, three folded and three emitted trees, zero/default and nonzero choices and MAX+true overflow promotion. Native6 observed once; original source/file/cwd/profile/raw streams/status reused without replay.",
+  "affected_predecessors": "Exactly21 actual affected old query instances are promoted across arithmetic/division/power/primitive-integer review builders. Only their four expectation/label scopes change; PINT-only, unary/MIN/NaN-sign and wrong-PINT zero-negative POWER controls remain unchanged. No predecessor whole campaign replay or unique-count claim.",
+  "compatibility": "Native6/prelaw[1,6] Unsupported2/other4unrun0 retain efdfc2011. Source6 retains8889c9482; source-identical A27/19 and B194/26 retain55efb0361 after the independent fixture-only commit. Stable watched maps20/540/556/595/628 retain private508 cuts. Native10/source90/120/660 and fixture300/660 caps are unchanged. Exact-bit special controls carry source0; masked unhandled POWER requires supplied compiler facts and full-state equality, with no actual zero-negative folding/source claim.",
+  "whole_review": {
+    "reviewer": "/root/recover32_output_boolean_review",
+    "disposition": "FINAL WHOLE9 CLEAR plus direct CLEAN/REAPED B RELEASE/jobs0 at55efb/tree3d4c5365 before publication.",
+    "recorded_by": "/root/recover33_output_float_impl",
+    "checks": "Exact9+293/-19 full posts/parents: sole21-line separate PFLOAT5 clause, Make4 inverse, new3 helpers, four exact old expectation scopes. All21 affected old FLOAT query instances pass. Native/prelaw/source/A/B full maps, raw streams/status, source/static/type/compiler/line/fold/read/nonowner/two-cast/retirement checks independently clear. Source0 special bits and visible/eligible/masked POWER controls retain their constructed-state identities."
+  },
+  "failure_accounting": {
+    "semantic_failures": 0,
+    "timeouts": 0,
+    "fixture_corrections": 0,
+    "invocation_errors": [
+      {
+        "report": "../php-spec-evidence-archive/new/output-final-selected-primitive-float-cast-chain-return-modulo-error-144/prepare-invocation-error-01.json",
+        "sha256": "1efa066ff14c836456d81c58fc9c97bd0057cf1e84549515020292d1ef1b89a2",
+        "exit": 2,
+        "classification": "unsupported driver option before fixture creation or semantic execution",
+        "source_credit": 0,
+        "semantic_runs": 0
+      }
+    ]
+  },
+  "composition": {
+    "revision": "8c749863f6088ddb2f61d1c2a9f62d0770e80e72",
+    "tree": "de1d94f50636fae35e2d440400565ca48a1a59be",
+    "parent": "bce529790e9185d11f19412dbdfa976f1da71a0d",
+    "map": "../php-spec-evidence-archive/resumed-main-20261112/main92-output144-placement-v1.json",
+    "map_sha256": "4fb70327ce299e5f29d728658de9aa20e38c12e544160a2e80c6d6757673b6b4",
+    "source_manifest_sha256": "7a039635211588120fa216495de24dbaf13f2fbf637f785353f915d81622511c",
+    "placement_review": "CLEAR32: eight exact non-Make posts, five complete present parent blobs and three new-path absences; unique Make4 forward/inverse preserves its complete foreign parent, including Range10.",
+    "makefile_sha256": "fb2b8507614141dc713556c8e6b6ddfeda1a0d6cf8d91d14b77b92f697b6e501",
+    "makefile_git_blob": "a129e3ee73448b8595faccb76b5ac4c6edf4994b",
+    "makefile_bytes": 588505,
+    "makefile_recipe_sha256": "f06cb085373f53b891ab87c9e1b7b1c73c9f046567ace248b5bb6d8be09dc6da",
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main92-string-range-output144-load-v1/report.json",
+      "sha256": "0377a927b683ce851b5f0fb46f82b861e7fe698766b6bc4212de9bd7d92570cd",
+      "tested_revision": "8c749863f6088ddb2f61d1c2a9f62d0770e80e72",
+      "mode": "production_SL",
+      "module_count": 509,
+      "ordered_arguments": 512,
+      "watched_inputs": 513,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.59022846003063,
+      "timeout": false,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable_revision_and_all_inputs": true,
+      "reaped": true,
+      "process_group_absent": true,
+      "passed": true,
+      "source_credit": 0
+    },
+    "disposition": "Author copies the single immutable peer32 actual+SAME tuple without reading MAIN artifacts, refreshing HEAD or renewing execution. Private508 cuts retain their original identities."
+  },
+  "limits": "Wider producers, operators, handlers, owners/lifetimes and OB31 remain partial. Every exact hold, reserve93807cdd6/255 and inventory169/306 (closed0 constructors/1 obligation) are unchanged. Special-bit and diagnostic controls are constructed source0 observations; masked-unhandled POWER requires supplied compiler facts and full-state equality. Unsupported/unrun/command-error and fixture cuts retain zero source agreement. No engine bug, intentional divergence or full-core/Rocq/BOLA closure. Actual MAIN composition and SAME retain separate source0 credit.",
+  "metadata_semantic_runs": 0
+}

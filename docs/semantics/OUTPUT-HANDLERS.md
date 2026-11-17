@@ -1745,3 +1745,23 @@ Wider results, producers, handlers, owners/lifetimes and every exact hold remain
 partial.
 [Primitive integer evidence](../../coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-review.json).
+
+A separate quiet PFLOAT result arm admits ADD/SUBTRACT/MULTIPLY/DIVIDE/POWER
+within those nested casts. Existing proper primitive children, nonownership,
+source/CODE/independent child lines/terminal RHS/fold/read, NORMAL whole-state
+and two-cast guards remain; PINT/PBOOL/unary rules are unchanged. Six originals
+strictly observe inner FLOAT and outer cast tags across folded/emitted trees,
+zero/default and nonzero choices and MAX+true overflow, reusing native6 once.
+Source6 retains its private508 `8889c9482` cut; author27/19 and independent194/26
+retain separate `55efb0361` SL508/source0 cuts. Exactly21 affected old FLOAT query
+instances are promoted without replaying prior campaigns. Constructed source0
+controls distinguish signed-zero, subnormal, nonfinite/NaN bits and visible,
+eligible or masked diagnostics; masked unhandled POWER still requires exact
+compiler facts and whole-state equality. Actual `8c749863f6` and SAME MAIN509
+loading pass separately in16.590228460 s/source0, with stable/reaped evidence.
+The preserved unsupported-option invocation stopped before fixture creation or
+semantic execution; semantic failures, timeouts and fixture corrections remain0.
+Wider producers, operators, handlers, owners/lifetimes and every exact hold remain
+partial.
+[Primitive float evidence](../../coverage/semantics/output-final-selected-primitive-float-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-primitive-float-cast-chain-return-modulo-error-review.json).

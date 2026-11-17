@@ -1322,7 +1322,8 @@ Post-handler FLOAT values on that BOOL-CV route use `zval_get_long_func`:
 Normal return now admits signed64-fitting finite values, including fractions
 and negative zero. Finite OOB discard additionally requires a real pending
 Throwable and restored eligible Warning handler; its live mask is not restored
-with the callback. Returning OOB and masked pending OOB stay Unsupported.
+with the callback. Returning OOB and masked pending OOB stayed Unsupported at
+that corrected cut; the bounded normal-return extension is described below.
 Two fresh native counterexamples preserve the second-H/default-stderr gaps;
 their corrected Unsupported assertions retain credit0. Native6 once, affected
 normal source2, author SL186/133-derived+206/142-derived and independent
@@ -1344,6 +1345,26 @@ independently clear through one immutable tuple. Undefined/ref/released entry,
 secondary range/default callbacks and wider lifetimes remain partial;
 every exact hold, reserve93807cdd6/255 and inventory169/306 remain unchanged.
 [Initialized NULL-CV review](../../coverage/semantics/string-offset-nested-unset-null-cv-warning-review.json).
+
+After the first handler returns normally, a finite OOB FLOAT in that same saved
+ordinary CV now dispatches a second Warning through a restored eligible named
+handler. `zval_get_long_func` copies its `double` before `zend_dval_to_lval`
+warns, so the new nonowning task keeps exact bits, source, line and saved-cell
+identity. Existing pure range formatting supplies the message. Pretarget
+validation requires the actual snapshot; selected callback validation retains
+the copied bits even after the key becomes INTERNED `done`. Dispatch consumes
+exactly its old resume head and preserves the entire caller tail. A second
+return raises the fixed nested Error; a second throw preserves the same
+Exception through ordinary callback restoration and discard. Default/ineligible
+reporting, masked pending OOB, nonfinite posts and wider ownership remain
+Unsupported. Earlier blanket finite acceptance stays withdrawn.
+[Secondary range Warning review](../../coverage/semantics/string-offset-nested-unset-bool-cv-range-warning-review.json)
+records the two saved native identities, corrected source comparisons, separate
+source-state cuts and affected-only old OOB assertion bridges. Actual `bce529790`
+and joined `8c749863f` retain the sole production-SL509 `0377a927` load,
+16.590228460s/source0, through the independently clear tuple`00a65c7a`. Earlier accepted
+campaigns and prelaw snapshots are retained without renewal; exact holds,
+reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.
 
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
