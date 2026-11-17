@@ -740,6 +740,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_integer_division_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-division-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_integer_division_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-division-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_integer_division_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-division-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_integer_remainder_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_integer_remainder_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-remainder-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_integer_remainder_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-remainder-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_integer_remainder_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-integer-remainder-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
