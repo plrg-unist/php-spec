@@ -526,7 +526,7 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if (b /\ n_bytes* = n_true*) \/ (~b /\ n_bytes* = n_false*)
-;; Quiet emitted scalar conditions select literal headers without folding.
+;; Quiet emitted scalars and NULL select literal headers without folding.
 ;; Read-eps separates this route; NORMAL probes authenticate value and truth.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond (NScalarString (BYTES text_true) metadata_true) (NScalarString (BYTES text_false) metadata_false) metadata)
@@ -536,7 +536,7 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_cond) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_cond) = (pvalue_cond)
-  -- if $type_bytes(pvalue_cond) <- [$ptascii("bool"), $ptascii("int"), $ptascii("float"), $ptascii("string")]
+  -- if $type_bytes(pvalue_cond) <- [$ptascii("bool"), $ptascii("null"), $ptascii("int"), $ptascii("float"), $ptascii("string")]
   -- if S_truth = $truth_value(S_probe, pvalue_cond, 0)
   -- if S_truth.RESULT = KNOWN (PBOOL b)
   -- if S_truth = S_probe[.RESULT = KNOWN (PBOOL b)]
