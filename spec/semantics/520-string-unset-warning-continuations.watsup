@@ -87,3 +87,107 @@ rule PhpStep/string-unset-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tai
   -- if S.TODO = (STRING_UNSET_WARNING_RESULT porigin z) :: ptask_tail*
   -- if S.ORIGIN = (porigin)
   -- if $string_unset_warning_source(S, porigin, z) = ((n_name*, z_outer))
+
+;; A CV is read late, and NULL/BOOL conversion reads it again after the handler.
+;; Retain only its borrowed cell identity; changed/owning completion is partial.
+dec $string_unset_bool_cv_source(pstate, porigin, int) : (ptbytes, int, ptbytes, int)?
+def $string_unset_bool_cv_source(S, PORIGIN 0 pcpath, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if $key_unset_parent(pcpath) = (pcpath_parent)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath_parent) = (NStmtUnset phpType25 metadata_unset)
+  -- if $origin_node(S.SOURCES, PORIGIN 0 pcpath) = (NExprArrayDimFetch expression_inner phpType5 metadata_outer)
+  -- if expression_inner = NExprArrayDimFetch (NExprVariable (BYTES text_base) metadata_base) expression_key metadata_inner
+  -- if expression_key = NExprVariable (BYTES text_key) metadata_key
+  -- if n_base_name* = $base64(text_base)
+  -- if $startup_bytes(n_base_name*) /\ $c_string(n_base_name*) = n_base_name*
+  -- if n_key_name* = $base64(text_key)
+  -- if $startup_bytes(n_key_name*) /\ $c_string(n_key_name*) = n_key_name*
+  -- if ~$this_name(n_key_name*) /\ ~$ppglobals_base(expression_key)
+  -- if $origin_child((PORIGIN 0 pcpath), [PCFIELD 0]) = (porigin_inner)
+  -- if $origin_node(S.SOURCES, porigin_inner) = (expression_inner)
+  -- if $origin_child((porigin_inner), [PCFIELD 0]) = (porigin_base)
+  -- if $origin_node(S.SOURCES, porigin_base) = (NExprVariable (BYTES text_base) metadata_base)
+  -- if $origin_child((porigin_inner), [PCFIELD 1]) = (porigin_key)
+  -- if $origin_node(S.SOURCES, porigin_key) = (expression_key)
+  -- if $code_at(S.CODE, 0) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_outer, false))
+  -- if porigin_inner = PORIGIN 0 pcpath_inner
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_inner) = ((z, false))
+  -- if porigin_key = PORIGIN 0 pcpath_key
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath_key) = ((z_key, false))
+  -- if ~(pcpath_key <- pcode.GLOBALS)
+  -- if $compiled_read(S, porigin_key) = eps
+  -- if z_name = $variable_line(BYTES text_key, metadata_key)
+  -- if $(z > 0 /\ z_outer > 0 /\ z_key > 0 /\ z_name > 0)
+def $string_unset_bool_cv_source(S, porigin, z) = eps -- otherwise
+
+dec $string_unset_bool_cv_cell(pstate, ptbytes, int, nat) : bool
+def $string_unset_bool_cv_cell(S, n_name*, z, n) = true
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n)
+  -- if $(n < |S.STORE|)
+  -- if ~(n <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
+  -- if S.STORE[n] = DEFINED (PBOOL b)
+  -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN (PBOOL b)]
+def $string_unset_bool_cv_cell(S, ptbytes, z, n) = false -- otherwise
+
+dec $string_unset_bool_cv_plan(pstate) : (porigin, int, nat)?
+def $string_unset_bool_cv_plan(S) = ((porigin, z, n_key))
+  -- if S.COMPLETION = NORMAL
+  -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_base_name* z_base)) (VARIABLE n_key_name* z_name) z) (KNOWN (PINT i_final)) z_outer
+  -- if $long_range(i_final)
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if $lookup(S.ENV, n_key_name*) = (n_key)
+  -- if $string_unset_bool_cv_cell(S, n_key_name*, z_name, n_key)
+  -- if ~$environment_blocked(S, n_base_name*)
+  -- if $lookup(S.ENV, n_base_name*) = (n_base)
+  -- if $(n_base < |S.STORE|)
+  -- if ~(n_base <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_base) /\ ~$typed_cv_string_released_cell(S, n_base) /\ ~$update_released_cell(S, n_base)
+  -- if S.STORE[n_base] = DEFINED (PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $base_find(S, BASE_VALUE (VARIABLE n_base_name* z_base), z) = S[.LOCATION = ROOT n_base][.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n_bytes*)]
+  -- if $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $error_handler_eligible(S, 2)
+  -- if S.ERRORHANDLER.CALLBACK = (pvalue_callback)
+  -- if $type_bytes(pvalue_callback) = $ptascii("string")
+  -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
+def $string_unset_bool_cv_plan(S) = eps -- otherwise
+
+def $string_unset_warning_pending(S) = true
+  -- if $string_unset_bool_cv_plan(S) = ((porigin, z, n))
+
+rule PhpStep/string-unset-boolean-cv-warning-start: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], 2, $ptascii("String offset cast occurred"), z, DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
+  -- if $string_unset_bool_cv_plan(S) = ((porigin, z, n))
+
+def $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = (S.ORIGIN = (porigin) /\ $(n < |S.STORE|) /\ $string_unset_bool_cv_source(S, porigin, z) =/= eps)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("String offset cast occurred")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z
+def $task_nodes(STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = eps
+
+rule PhpStep/string-unset-boolean-cv-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], "Error", $ptascii("Cannot use string offset as an array"), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if $string_unset_bool_cv_cell(S, n_key_name*, z_name, n)
+
+rule PhpStep/string-unset-boolean-cv-warning-result-unsupported: S ~> S[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if ~$string_unset_bool_cv_cell(S, n_key_name*, z_name, n)
+
+def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = S[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
+  -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if ~$string_unset_bool_cv_cell(S, n_key_name*, z_name, n)
