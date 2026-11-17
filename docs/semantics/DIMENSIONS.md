@@ -1751,3 +1751,13 @@ separate cuts; the original peer elaboration failure stays0. Actual/SAME2319feef
 and its sole joined SL50816.482216466s/source0 are independently clear through
 one immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-logical-xor-string-cast-shorthand-base-initial-raw-leading-key-review.json).
+
+Quiet emitted SPACESHIP conditions returning INT zero select the exact INTERNED
+CASTSTRING shorthand fallback and preserve frozen raw CV keys through returning
+Warnings. Exact signed-zero operands, source/CODE/precision and SAME NORMAL VALUE
+remain required; nonzero INT roots stay nonstring. Folded and emitted UnaryMinus
+retain their distinct child demands. Native2 once/source2, prelaw72, author332/242,
+independent391/291 and focused48 retain separate first-pass cuts. Actual/SAMEfde250339c
+and its sole joined SL50816.732132342s/source0 are independently clear through one
+immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-spaceship-string-cast-shorthand-base-initial-raw-leading-key-review.json).
