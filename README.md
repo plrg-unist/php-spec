@@ -16,15 +16,12 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover nullable iterable producer formals and returns,
-ordered short reference Get unions, raw and double BooleanNot method selectors,
-emitted string bitwise and coalesce bases, full and shorthand ternary bases with
-two string casts, selected NaN ternaries in named `instanceof`, signed BooleanNot
-handler casts and mixed
-Boolean/integer or Boolean/FLOAT strict-identity defaults, plus NaN/FLOAT identity.
-The [current checkpoint](PROGRESS.md) separates
-source agreements, fixture checks and combined production loads; complete core
-remains unfinished.
+Recent reviewed extensions cover multiple required iterable CV producer formals,
+all four scalar orders in short reference Get unions, raw String NOT(CONCAT)
+method selectors and mixed integer/Boolean-NaN strict-identity defaults. Exact
+source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md)
+separates source agreements, fixture checks and combined production loads;
+complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
 `PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,
 namespace fallback and typed defaults. Other startup values remain partial.

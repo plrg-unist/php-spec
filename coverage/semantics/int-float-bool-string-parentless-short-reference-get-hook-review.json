@@ -1,0 +1,78 @@
+{
+  "scope": "Own public parentless sole short reference Get with all24 raw int/float/bool/string union orders, actual same-field identifier/literal-string bodies and initialized/omitted defaults. Partial core.",
+  "target": "PHP8.5.10 CLI NTS64; pinned .tools/php/bin/php; tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp316",
+  "implementation": {
+    "source_commit": "7cde535b1bc4802020480098da3c25847c73cba0",
+    "source_tree": "4abee5792ac677b33967ba7b65a96249ae521276",
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "f4de27d30075f75d4d339134a73b9011c020d9575d8309f83c081391ded2759a",
+    "ready_manifest": "source-ready.json",
+    "ready_sha256": "9e8e884fc1c13ebf622f6899b7165323f3de4aa64768d36341107548350b5367",
+    "change": "One4-line exact four-Identifier clause preserves distinct builtin membership, raw order and the implicit return signature. Six now-supported sibling refusal tuples retire; retained premises remain literal. Runtime numeric/type/ownership APIs and laws are unchanged."
+  },
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_property_hooks lowers short Get to return and supplies the property's return type; zend_compile_func_decl_ex preserves declaration strictness.",
+    "Zend/zend_execute.c::i_zend_verify_type_assignable_zval and zend_verify_ref_assignable_zval prioritize exact scalar tags before weak coercion.",
+    "Zend/zend_objects.c::zend_object_dtor_property removes the genuine property source while escaped aliases keep their cell."
+  ],
+  "behavior": "INT/FLOAT/BOOL/STRING returns and writes preserve exact tags in both strict modes, including numeric/plain/empty/zero strings. Ordinary copies remain independent; real aliases share the typed backing cell. Uninitialized nonnullable reads and NULL/array/object writes preserve existing errors and state. Quiet receiver retirement removes the source before unconstrained NULL writes. Source/CODE/line/order forgeries, real owners and 0/1-step rejoins remain checked.",
+  "source_agreements": {
+    "author": {"report": "weak-sources-corrected/report.json", "sha256": "83d8085a6db8d45bc92a815308735f7dc25cf5b5493e69ae7b89e6645775f243", "head": "9083f9f22f79fb26771fb70f4a895ba8019ea250", "normal": 3},
+    "independent": {"report": "strict-sources-corrected/report.json", "sha256": "7c48e987e849839d0c94dce33979f8ff8f3c63a428210b8463c6f90522686582", "head": "ab7097caa000eef2761c585fce1dda1411c502f3", "normal": 3},
+    "native_originals_once": 6,
+    "native_replayed": false,
+    "native_reports": [
+      {"report": "weak-native-once/report.json", "sha256": "7c09ef4f5fec97392ce6568c0e6bbe1cc2bf81820dd07ce02ab4c41e48952eb1"},
+      {"report": "strict-native-once/report.json", "sha256": "d4e6caf52875cf1ab6039424f430b0d9eef52fa070fc418413c0efd6fa3b7117"}
+    ],
+    "compatibility": "Source/runtime bytes retain their tested cuts; only fixture factoring, registration, exact old refusals and closed315 metadata change afterward. Metadata renews no source credit."
+  },
+  "fixture_cuts": [
+    {"report": "weak-headers-int-float-bool-string/report.json", "sha256": "29c56b65a69821ff03a34334c8f947daf859c54ab4cbbf8786d6a7e801ba849e", "head": "b9967ed50fad40d8dc5f469116384dbe3e93333c", "premises": 1807, "seconds": 99.79402327537537},
+    {"report": "weak-lifecycle-int-float-bool-string/report.json", "sha256": "0ebb2ce7afe0a1ffdb1a316b0c81f7786da99c10f7a1fe476753ce015ec068c1", "premises": 535, "seconds": 268.3731904029846},
+    {"report": "weak-lifecycle-string-int-float-bool/report.json", "sha256": "35f093282050d971bf876df4713c94adc25c4b49715f031b82d471c53ae8c16b", "premises": 535, "seconds": 265.36439967155457},
+    {"report": "weak-lifecycle-float-bool-string-int/report.json", "sha256": "f3ed5dfb25971aeadf1ed6ebe404f1cc72d6354f0a175df6d97473d1b6b8a6c4", "premises": 564, "seconds": 324.22506499290466},
+    {"report": "weak-failed-join-float-bool-string-int/report.json", "sha256": "ce49cbd788b2c7045204841a291467369081f3013c87793c4ff1660b2fd70f4c", "premises": 558, "seconds": 328.2766194343567},
+    {"report": "strict-protocol-bool-float-int-string/report.json", "sha256": "ffc57c1705586834a3f30733c48f1046da3a2b46268f277ddd685a73442b01df", "head": "ab7097caa000eef2761c585fce1dda1411c502f3", "premises": 535, "seconds": 267.9066698551178},
+    {"report": "strict-headers-int-string-bool-float/report.json", "sha256": "66dda65bca7f18aadf89b38abf66dcff0986ee1fda2aadc6dc7d0718547c83f1", "premises": 1807, "seconds": 102.28832268714905},
+    {"report": "strict-lifecycle-int-string-bool-float/report.json", "sha256": "147f254bdce0c8175671a289906a5669d74352a7f8be1111cc379bdd25e7d245", "premises": 535, "seconds": 270.4348928928375},
+    {"report": "strict-lifecycle-string-bool-float-int/report.json", "sha256": "407d4cda914a0c64f1b254a0ed01a9685cf4cd45b6cdf8964aa5ba03fc60424e", "premises": 564, "seconds": 329.252916097641},
+    {"report": "strict-failed-join-string-bool-float-int/report.json", "sha256": "b3f85d402466d196668ab7330a430b6ee158ddd17aabe83d2e39992ecf45842b", "premises": 558, "seconds": 333.55730271339417}
+  ],
+  "fixture_contract": "Ten separate quiet/stable/reaped fixture-SL508 cuts at7cde except the two explicitly named earlier heads; cap360, source_agreement_credit=0. No aggregate or unique-count claim.",
+  "factoring": "Independent generated-array review preserves every original2168 literal across full535+headers1807 and every omitted570 literal across564+558, with none invented. Other535/header arrays remain ordered-identical. Full reached states, cleanup and all0/1 joins remain;360/30000 caps never increase.",
+  "preserved_zero_credit": [
+    "weak-prelaw/report.json: Unsupported3/native0/source0; SHAce99dfff534c9b9742a947539952eb7bcb5bc51057358d2e9c7c74934af33356.",
+    "strict-prelaw/report.json: Unsupported3/native0/source0; SHA5e6a4a5688dd77996c83cd5644203e11bb021cd0419ab838daff6937887fca6b.",
+    "strict-sources/launcher-failure.json: external argv0 fingerprint failure before any native/model run. Corrected external drivers select the actual repo wrapper and separately fingerprint themselves; no native replay.",
+    "strict-protocol-int-string-bool-float/report.json: original2168 timeout360.1901354789734s, SHAe4f27a1037a17b567186414b47c7b4347ba6bf1147c4aa303180d087c23a786a.",
+    "strict-protocol-string-bool-float-int/report.json: original570 timeout360.1949269771576s, SHA23cfe57ba3ee2b45139d3fd5a7511645ba5452e3bf08756786065b1759e51347."
+  ],
+  "independent_review": "recover22: whole22/Make12 semantic/source/static and all separate fixture cuts FULLCLEAR; actual composition and sole SAME accepted. All inherited cuts retain their identities.",
+  "actual_composition": {
+    "head": "484c8a4e3b8fed9a9b62d41521897993491f5ba1",
+    "tree": "63e4a598bcaa9785db9a5baf03e091674486a590",
+    "comparison_base": "963843a1a5836f7ec8e1ce76cca8365f74123d47",
+    "exact_paths": 22,
+    "patch_sha256": "4475ee075ae3e73ddf005ebfd6530debdd894718de5fc081302c5c5734000ee5",
+    "report": "../resumed-main-20261112/main71-four-scalar-reference-get-v1/report.json",
+    "sha256": "7ffbe16ee73c4a5c0f339027e8955f99115b52944c03eaddc545bd809fb44d7a",
+    "mode": "production-SL",
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "seconds": 16.83831935096532,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_empty": true,
+    "stable": true,
+    "reaped": true,
+    "source_agreement_credit": 0,
+    "acceptance": "Sole saved canonical report read once by independent recover22; author uses the supplied accepted tuple without canonical read or rerun."
+  },
+  "remaining": "Nullable/wider union headers, producers, owners and lifetimes remain partial at this cut. Preserve exact COMP192/193 Generator-close private Closure cache/This release, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw, V110, GC35, I106, OP12, source47, owned-NUL, undefined by-reference LIST and standing holds; callbacks and whole families are not globally held.",
+  "engine_bug_or_intentional_divergence": null
+}

@@ -157,6 +157,17 @@ Six original sources agree. Author and independent fixture-SL cuts and the actua
 owners and lifetimes remain partial; exact standing holds remain unchanged.
 [Review](../../coverage/semantics/float-bool-string-parentless-short-reference-get-hook-review.json).
 
+Own public parentless sole short `&get` also admits all24 raw
+`int|float|bool|string` orders. Exact source order and the implicit return
+signature preserve all four scalar tags, including numeric, empty and zero
+strings. Ordinary copies remain independent; live aliases retain the genuine
+property constraint until quiet receiver retirement permits a NULL write.
+Six originals agree. Ten separate fixture-SL cuts retain the source, owner,
+cleanup and budget checks; the original timeouts and recorder failure keep zero
+credit. Wider headers, producers, owners and lifetimes remain partial, with exact
+standing holds unchanged.
+[Review](../../coverage/semantics/int-float-bool-string-parentless-short-reference-get-hook-review.json).
+
 The same Parent declaration now serves a direct Child with no property
 redeclaration. The Parent getter runs with the Child receiver and Parent lexical
 scope; the inherited physical slot carries a typed source only when Parent's

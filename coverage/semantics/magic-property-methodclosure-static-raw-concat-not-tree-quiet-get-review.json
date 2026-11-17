@@ -1,0 +1,213 @@
+{
+  "scope": "Bounded static USER method-Closure quiet Get captures: raw-String NOT(CONCAT) descendants inside recursive class/method selector CONCAT trees, through CV ??, private ??= and literal/CV Empty.",
+  "status": "Integrated bounded extension independently validated; entire family/core remain partial.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "integer_bytes": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ]
+  },
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "implementation": {
+    "source_commit": "61aa135c5a45180c27fd0e2fc77b1cfedcc5b100",
+    "tree": "c1c5cf65a8fa22ccb40e2a6b3476de547a88465f",
+    "base": "a48ec72a32885255d1f064c504e0feb01bb07afd",
+    "paths": [
+      {
+        "path": "Makefile",
+        "blob": "564da922a8818a45050773daac2806fc7f6a765b",
+        "sha256": "aa801d418fe89ac4eed51cb1fb955c5af214e6e8f138f05ed0885d2381984cef"
+      },
+      {
+        "path": "spec/semantics/407-magic-property-isset.watsup",
+        "blob": "923e30cddeedbfa12058bbfbdc6cd902d6cc25c7",
+        "sha256": "556457c245c4ae631afc512216a0d6b9d30fc0449f9f70789046f8f0cbb469cd"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_concat_not_tree_quiet_get_cases.json",
+        "blob": "df5db5226f414630d4877443743787c0885a8c23",
+        "sha256": "f682da2051da290e0702feb0122f3eee76e1cad64374c67f8dc9188fc8672d82"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_concat_not_tree_quiet_get_protocol.py",
+        "blob": "21ef23868c4d4cc4f4ec6b2fd863d4dbda180bde",
+        "sha256": "c37e8e062528e3187c35d8294331b50076787612cc61b7247503824a33ec2ad1"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_concat_not_tree_quiet_get_review_cases.json",
+        "blob": "4bb7ff344b4859be7e08f62c661a22131fd987a4",
+        "sha256": "e284adaf22681cb088bfa77ded197d92c6f73894817c85c4f8da18efddfea220"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_concat_not_tree_quiet_get_review_protocol.py",
+        "blob": "26d4e8415c7cb63699c83e1ced65ab3d46505dd5",
+        "sha256": "d67788c15a0e3c45f630b7949c54c89f7e9731cd9c9a31c498f71929d60d8da9"
+      }
+    ],
+    "patch_sha256": "fdd95f9b78a6c85ff62ba77751f4228a516a5057467823b3bd881be79648c386"
+  },
+  "semantics": {
+    "certificate": "Actual outer NOT/PCFIELD0 and complete raw String/CONCAT source proof; joined nonNUL bytes retain String truth, false only empty or sole ASCII-zero. Recursive outer CONCAT falls back to unchanged Double-NOT helper.",
+    "site": "New helper success/prior Double refusal, exact own folded root PSTRING, no child pools, class normalization once and method casefold; unchanged source/cache/owner/cleanup guards.",
+    "engine_symbols": [
+      "zend_compile_unary_op",
+      "zend_try_ct_eval_unary_op",
+      "boolean_not_function",
+      "i_zend_is_true"
+    ]
+  },
+  "preparation": {
+    "native_once": 4,
+    "prelaw_expected_unsupported": 4,
+    "author_prelaw_seconds": [
+      34.155020584119484,
+      40.77942861081101
+    ],
+    "independent_prelaw_seconds": [
+      110.0760286708828,
+      71.46017118287273
+    ],
+    "result": "All four original native-once/prelaw jobs passed and reaped before helper edit. No failures or native replay; independent preparation supplied directly by peer23."
+  },
+  "author": {
+    "mode": "Separate production/fixture SL507 cuts",
+    "source_count": 2,
+    "source_seconds": [
+      44.71802476304583,
+      54.05869320593774
+    ],
+    "fixtures": [
+      {
+        "selection": "fixture-own-v1",
+        "assertions": 214,
+        "seconds": 50.01802508998662,
+        "source_credit": 0
+      },
+      {
+        "selection": "fixture-inherited-v1",
+        "assertions": 241,
+        "seconds": 54.348629034124315,
+        "source_credit": 0
+      }
+    ],
+    "result": "Source2 reusing saved natives once and214/241 assertions PASS stable/quiet/exit0/no timeout; all jobs reaped; no failures.",
+    "source_reports": [
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/author/source-v1/methodclosure-static-raw-concat-not-tree-own-namespaced-cv-coalesce/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/author/source-v1/methodclosure-static-raw-concat-not-tree-inherited-clone-private-coalesce-assignment/report.json"
+    ],
+    "fixture_reports": [
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/author/fixture-own-v1/launch.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/author/fixture-inherited-v1/launch.json"
+    ]
+  },
+  "review": {
+    "reviewer": "recover23_get_concat_not_review",
+    "decision": "WHOLE6 FULLCLEAR exact61aa135c/c1c5cf65/basea48 +462/-0; no semantic findings.",
+    "static": "Actual outer/root/every-descendant source metadata and PCFIELD0, nonNUL String truth, recursive priorDouble fallback and disjoint site arms preserve old literal guards; source407 remains923e30cd/556457c2.",
+    "source_count": 2,
+    "source_seconds": [
+      140.0499182259664,
+      95.74338098894805
+    ],
+    "fixtures": [
+      {
+        "selection": "fixture-cv-empty-v1",
+        "assertions": 382,
+        "seconds": 204.89154414786026,
+        "source_credit": 0,
+        "launch_sha256": "9901dff196ec5105e6e15624f38258ed64b86bdb56959dc07fcb05aeaca8086f"
+      },
+      {
+        "selection": "fixture-literal-origins-v2",
+        "assertions": 270,
+        "seconds": 288.9176291851327,
+        "source_credit": 0,
+        "launch_sha256": "97909347a4cb48936214bf9aa4432eb99537adb323be54928411f9bc2a5492db"
+      },
+      {
+        "selection": "fixture-literal-controls-v2",
+        "assertions": 127,
+        "seconds": 118.6257197400555,
+        "source_credit": 0,
+        "launch_sha256": "fa59e47b2c0b4bb7cb87ba4b651bf3fd10ba5dc3aa1624ac69d6cd335dbce5ac"
+      }
+    ],
+    "result": "Separate SL507 source2 and382/270/127 fixture cuts PASS stable/quiet/exit0/no timeout/all reaped. Saved natives reused; accepted author/source/CV cuts not repeated.",
+    "source_reports": [
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/independent/source-v1/methodclosure-static-raw-concat-not-tree-cv-empty-own-child-retired-sources/report.json",
+      "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/independent/source-v1/methodclosure-static-raw-concat-not-tree-literal-empty-inherited-retired-sources-receiver-throw/report.json"
+    ],
+    "whole_fullclear": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/independent/whole-fullclear-v2.json"
+  },
+  "actual_main": {
+    "commit": "76d007f867b9361c90b9621db46f723fea84e6f7",
+    "tree": "bafa2abcecf5a74be58e799b668305bc9cd9006d",
+    "base": "50b4eb9133e6cbf64b64b6e36b17b6508594b44e",
+    "composition": "Exact6/+462-0; five full non-Makefile payloads byteequal source61aa135c, Makefile full prior plus exact4 registrations.",
+    "production_load": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main71-mixed-nan-concat-selector-joined-v1/report.json",
+      "report_sha256": "8e9ee08b09f5d953ee098afa2e69cb73a53083324bcb62f2b01b8aa8cbc3204d",
+      "mode": "production SL_mode",
+      "modules": 508,
+      "seconds": 17.04232957609929,
+      "cap_seconds": 60,
+      "source_credit": 0,
+      "result": "PASS trueLF/quiet/stable/reaped; tested revision and revision-after76d007, input maps before=after.",
+      "argv_entries": 511,
+      "file_arguments": 509,
+      "watched": 512
+    },
+    "implementation_sha256": "556457c245c4ae631afc512216a0d6b9d30fc0449f9f70789046f8f0cbb469cd",
+    "independent_read": "recover23_get_concat_not_review ONE actual composition/SAME CLEAR; supplied tuple bound without author canonical reread or renewed execution."
+  },
+  "partial": [
+    "Mixed INT/keyword/sign children under NOT(CONCAT)",
+    "CV/FLOAT/NUL, triple NOT and wider producers",
+    "Wider owners/lifetimes; all exact held boundaries unchanged"
+  ],
+  "evidence": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get",
+  "unrun": "Curated Makefile controller/registrations unexecuted/source0. Fixture assertions and prelaw Unsupported controls carry source0. Original monolithic literal timeout retains0.",
+  "preserved_inconclusive": {
+    "selection": "independent/fixture-literal-empty-v1",
+    "seconds": 297.10332,
+    "timeout": true,
+    "stable": true,
+    "records": 0,
+    "source_credit": 0,
+    "execution_credit": 0,
+    "correction": "Only literal fixture selection changed. Same original bytes/stage, ordered old361 checks equal origins264 + controls121 minus shared24 header once; CV whole case376 unchanged. New270/127 assertion cuts include renderer overhead. Existing297-second outer cap unchanged.",
+    "partition": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-not-tree-quiet-get/independent/literal-partition-v2.json"
+  }
+}
