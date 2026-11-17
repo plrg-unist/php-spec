@@ -146,11 +146,15 @@ refused_pairs = [(boolean, '<=>', 'NULL'), ('NULL', '<', boolean),
                  (boolean, '>', '"1"'), ('"0"', '<=>', boolean)]
 refused = base + ['|pfunction.SIGNATURE.PARAMETERS| = 4']
 for index in range(4):
+    admitted = {0: 'PINT 0', 1: 'PBOOL false'}.get(index)
     refused += [
         f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
         f'~$lossy_optional_integer_phase_safe(S,pfunction.ENV,pdefault_{index}.ORIGIN)',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ({admitted})'
+         if admitted is not None else
+         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps'),
+        (f'$lossy_optional_integer_deferred(S,pfunction,{index})' if admitted is not None else
+         f'~$lossy_optional_integer_deferred(S,pfunction,{index})'),
     ]
 
 stage = ('S.CURRENT = (pcallcontext) -- if pcallcontext.FUNCTION = porigin_function '

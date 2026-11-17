@@ -140,7 +140,7 @@ for index, (_, constructor, _, _, left, right) in enumerate(unsupported_pairs):
         unsupported.append(f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD {field}])) = {expected}')
     if index in (2, 3):
         unsupported.append(f'$pfcast_nan(PFLOAT n_nan_{index})')
-    admitted = {0: 'false', 1: 'true', 2: 'false', 3: 'true'}.get(index)
+    admitted = {0: 'false', 1: 'true', 2: 'false', 3: 'true', 4: 'false'}.get(index)
     unsupported += [
         (f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PBOOL {admitted})'
          if admitted is not None else

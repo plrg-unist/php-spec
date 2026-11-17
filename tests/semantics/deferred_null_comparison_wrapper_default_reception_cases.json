@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-comparison-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullComparison289($p0 = (NULL < (-((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p1 = ((-((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) < NULL), $p2 = (NULL <= ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((+(-((float)(+(E_WARNING === E_ERROR))))) >= NULL), $p4 = (NULL > (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) > NULL), $p6 = (NULL >= ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) <= NULL), $p8 = (NULL <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p9 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> NULL), $p10 = (NULL <=> (-(+(-((float)(+(E_WARNING === E_ERROR))))))), $p11 = ((-((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) <=> NULL), $p12 = (NULL < (INF + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p13 = ((-INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) >= NULL), $p14 = (NULL <=> ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : true)), $p15 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) > NULL)) {\n    echo 'raw:', $p0 === true, \":\", $p1 === false, \":\", $p2 === true, \":\", $p3 === true, \":\", $p4 === false, \":\", $p5 === false, \":\", $p6 === true, \":\", $p7 === false, \":\", $p8 === -1, \":\", $p9 === 1, \":\", $p10 === 0, \":\", $p11 === 1, \":\", $p12 === true, \":\", $p13 === true, \":\", $p14 === 0, \":\", $p15 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n    $p12 = 31;\n    $p13 = 32;\n    $p14 = 33;\n    $p15 = 34;\n}\nrawNullComparison289();\nrawNullComparison289();\n",
+    "purpose": "Discriminating NULL relations/SPACE with exact numeric and BOOL siblings; negative numbers, signedzero, quiet NaN, both NULL and raw typed results before cold/warm cache reuse.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "e4d81e588b4fb68c94494cde772a352c704a11639a7e7b967e32e107f60d4496"
+  },
+  {
+    "id": "deferred-null-comparison-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullComparison289;\nuse const E_WARNING as Base289;\nuse const E_ERROR as One289;\nuse const NAN as Nan289;\nfunction warning289($errno, $message, $file, $line) {\n    global $x289;\n    echo 'warning:', $message, '|';\n    defaults289(2);\n    $x289 = 3.5;\n}\nfunction defaults289(int $first, int &$nullNegative = (int)(NULL < (-((int)(!((bool)(+(-((float)(+(Base289 === One289)))))))))), int &$negativeNull = (int)((-((int)(!((bool)(+(-((float)(+(Base289 === One289))))))))) <=> NULL), int &$nullNan = (int)(NULL <=> (Nan289 + (+(-((float)(+(Base289 === One289))))))), int &$nanNull = (int)((Nan289 + (+(-((float)(+(Base289 === One289)))))) >= NULL), int $last = 7) {\n    echo 'body:', $first, ':', $nullNegative, ':', $negativeNull, ':', $nullNan, ':', $nanNull, ':', $last, '|';\n    $nullNegative = 19;\n    $negativeNull = 20;\n    $nullNan = 21;\n    $nanNull = 22;\n}\n\\set_error_handler('NullComparison289\\\\warning289');\n$x289 = 1.5;\n$last289 = 8;\ndefaults289(last: $last289, first: $x289);\necho 'outer:x=', $x289, '|';\n",
+    "purpose": "Alias-compiled NULL relations/SPACE preserve original operand demand and private INT-parent BYREF reception through first-argument Warning handler reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:-1:1:7|body:1:1:1:-1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "4185f009f8929c1b7a1d64bd7a7aed61d7d245a80a8a070d3897c8645b330414"
+  }
+]
