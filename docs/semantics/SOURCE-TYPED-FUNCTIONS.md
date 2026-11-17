@@ -1298,9 +1298,21 @@ Skipped FIELD2 names keep their source occurrences without demanded bindings.
 Shared raw caches and private integer recipients survive cold/warm calls and
 named coercion-handler reentry. Two originals and separate author/independent
 state cuts pass; the actual SL509 load remains a distinct zero-source-credit cut.
-Named/computed infinity predicates, NaN conditions, owning results and wider
-contexts remain partial. Prior finite FLOAT and literal STRING certificates
+Named infinity, wider computed predicates, NaN conditions, owning results and
+wider contexts remain partial. Prior finite FLOAT and literal STRING certificates
 retain their existing scope and evidence.
+
+[Computed-infinity full-ternary defaults](../../coverage/semantics/deferred-computed-infinite-float-full-ternary-redirect-wrapper-default-reception-review.json)
+admit one ADD/SUBTRACT/MULTIPLY/DIVIDE over raw FLOAT literals or unary sign
+chains when the pure binary result and actual condition VALUE have identical
+INFINITE bits. Both exact operand SOURCE trees and FLOAT pools remain required,
+with no executable CODE, read or redirect at operand/condition roots. The receipt
+shares the existing unique proper FIELD1 redirect with binding pruning and
+scalar VALUE transport; literal-infinity and finite-FLOAT helpers are unchanged.
+Skipped names, raw selected tags, Shared caches and private integer reception
+retain their existing bounds through cold/warm calls and named handler reentry.
+Named or wider computed operands, NaN predicates, owning results and wider
+contexts remain partial; prior accepted cuts retain their original identities.
 
 ## Source metadata and resumed states
 

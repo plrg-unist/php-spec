@@ -1,0 +1,271 @@
+{
+  "milestone": "COMP334",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "complete_core": false,
+  "scope": "Finite pure nominal unions of three or more quiet ordinary/FQ/namespace-relative names, including aliases; aligned complete raw and normalized singleton PTCLASS list recursion and full quiet PTOK retain exact order and all defining source/owner/body/return guards. No upper arity cap; existing pair and class/builtin helpers remain literal. No16/backend/runtime consumer/owner/native fallback change.",
+  "source_revision": "c6fc1197657c6a1310da5c4e84c76a65d050d369",
+  "source_tree": "e28419f8805798e444f8879a75a27aea406b042b",
+  "source_parent": "d3f3e77f1b36e117ec7b83286e49073e0cf14287",
+  "law_revision": "fa7b23395e8c3a2854e3327518ec21cad9078687",
+  "source_postimages": {
+    "exact_paths": [
+      "Makefile",
+      "docs/semantics/SOURCE-PROPERTIES.md",
+      "spec/semantics/382-backed-get-hooks.watsup",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook/cases.json",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook/five-imported-permuted.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook/four-local-relative.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook/hashes.json",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook/three-fully-qualified.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_protocol.py",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review/cases.json",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review/hashes.json",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review/strict-five-imported-permuted.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review/strict-four-relative-reordered.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review/strict-three-fq-reordered.php",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review_protocol.py",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review_sources.py",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_review_state.py",
+      "tests/semantics/nominal_union_parentless_short_reference_get_hook_sources.py"
+    ],
+    "literal_posts": 16,
+    "Makefile_addition_lines": 9,
+    "source_properties_addition_lines": 8,
+    "new_module_lines": 14,
+    "new_OR_arms": 2,
+    "module382": "a2d67610ea4bc29c213a81c3f5f267988e5cb601e672e5919fba851fbd90aa45",
+    "previous_module382": "a2092dada701921cf5e3c3ab98d813b4d6b96e48860c3399bc0905d55dc4cd55",
+    "full_module_and_curated_parent_inverses": true,
+    "manifest": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp334/independent-ready.json",
+      "sha256": "5312ae01ef80f5055eb8bbdc30ff4d04b0a0a6550698a26fed455dad781dcacb"
+    }
+  },
+  "semantic_review": [
+    "CLEAR: structural recursion strictly consumes both finite lists together; only singleton class branches pass; full quiet normalization binds exact resolved bytes/order and rejects duplicates/diagnostics.",
+    "All previous pair/builtin/body/source/owner guards remain literal; no16/backend/runtime consumer/native fallback change.",
+    "Zend/zend_compile.c:zend_compile_typename_ex allocates/list-walks union children",
+    "Zend/zend_execute.c:zend_check_and_resolve_property_or_class_constant_class_type iterates object alternatives before scalar coercion in i_zend_verify_type_assignable_zval",
+    "16 ptunionfold,95 typed_class_type/typed_class_chain/typed_object_exact and138 propref_class remain unchanged"
+  ],
+  "validation": {
+    "native_current_originals_once": 6,
+    "new_native_after_law": 0,
+    "prelaw_expected_unsupported": 6,
+    "prelaw_source_agreement_credit": 0,
+    "source_agreements": 6,
+    "source_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp334/weak-source-nominal-union/report.json",
+        "sha256": "b83a7401be501ac6b1506c4638bca519c8bc750bec12e492527e2dca9d0e3179",
+        "revision": "fa7b23395e8c3a2854e3327518ec21cad9078687",
+        "agreements": 3,
+        "native_executions": 0,
+        "reused_native_observations": 3,
+        "elapsed_seconds": [
+          59.98445105552673,
+          70.99330401420593,
+          88.04187369346619
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp334/strict-source-nominal-union-v2/report.json",
+        "sha256": "7012b7a87e5fa4c93e0ae4e980395ff3df0ca592cf0d4d1340648f96bdd32f0d",
+        "revision": "7134f0a04cfc3ac4cde680892527baf62b01a0a9",
+        "agreements": 3,
+        "native_executions": 0,
+        "reused_native_observations": 3,
+        "elapsed_seconds": [
+          60.223536252975464,
+          71.09989905357361,
+          92.40601229667664
+        ]
+      }
+    ],
+    "author_state_assertions": [
+      258,
+      283,
+      306
+    ],
+    "author_state_seconds": [
+      150.62012434005737,
+      190.46527457237244,
+      264.95802879333496
+    ],
+    "independent_header_assertions": 178,
+    "independent_header_seconds": 15.884204626083374,
+    "header_local_finite_positive_arities": [
+      3,
+      4,
+      5,
+      8,
+      17
+    ],
+    "independent_state_assertions": [
+      258,
+      283,
+      306
+    ],
+    "independent_state_seconds": [
+      145.5240442752838,
+      180.65900921821594,
+      272.25537514686584
+    ],
+    "fixture_mode": "SL",
+    "fixture_module_count": 508,
+    "caps": {
+      "native_seconds": 15,
+      "source_outer_seconds": 140,
+      "source_inner_seconds": 120,
+      "source_steps": 100000,
+      "header_seconds": 60,
+      "state_seconds": 360
+    },
+    "first_required_passes": true,
+    "quiet_stable_reaped": true,
+    "source_program_fixture_corrections": 0,
+    "state_or_header_fixture_failures": 0,
+    "semantic_discrepancies": 0,
+    "timeouts": 0,
+    "required_unrun": 0,
+    "required_incomplete": 0,
+    "compatibility_bridges": [
+      "Author source3 and state258/283/306 retain fa7 identities through descendantc6fc: only the independent hash manifest filename keys change; no executed author module/PHP/cases/fixture/protocol/runtime/profile/cap changes.",
+      "Peer native3/prelaw3 retain b60 identity. Cursor preparation changes before any state execution changed no PHP/cases/observations; subsequenta5 imports the law/ownprotocol plus curated Make/doc only. Filename-key correction7134 changes only three hash-manifest keys, not values or any original PHP/argv/profile; postlaw saved-native reuse verifies the exact source SHA256 and native argv/caps. No native/prelaw/source replay."
+    ]
+  },
+  "preserved_zero_credit": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/author-state-preparation-error.txt",
+      "sha256": "4a4785cb69c133beafd8a3e4fb6cd1a898878917b8bfdf09e9017ed4ad15fd68",
+      "kind": "author Python fields initial_tag KeyError before any frontend/model/DSL/state execution",
+      "execution_credit": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/reviewer32-source-hash-preparation-failure.json",
+      "sha256": "3ddc3c44ffef55ad7936cfb29f55a804fd2f66cfa5312696800a7fa54e30a2fb",
+      "kind": "peer hash manifest filename-key launcher failure before any frontend/model/DSL/native execution",
+      "execution_credit": 0,
+      "source_agreement_credit": 0,
+      "raw_stderr": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp334/reviewer32-source-hash-preparation-failure.stderr",
+        "sha256": "cd9d42721aaf8791859019d4b2cbded8db5a367aabd03f3b4058511225d58458"
+      }
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/placement-plan-preparation-failure.json",
+      "sha256": "2b490d598791c2000202accc9485f06bb8aa41667ee7913ae5ee6746b324c4d3",
+      "kind": "source placement recorder PLAN JS-dollar AssertionError before any MAIN write/stage/commit/runtime; helper-only correction",
+      "execution_credit": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/reviewer32-actual-dependency-preparation-failure.json",
+      "sha256": "be14e4bbc317e2e6a7743c16c240094b382360052fbe7a637c88a2cb103710b0",
+      "kind": "overstrict whole-file95 dependency equality assertion; exact singletonPTCLASS identity bridge resolves existing shared difference",
+      "execution_credit": 0,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/metadata-common-preparation-failure.json",
+      "sha256": "057406dfcc33c10e2b242e886516a6eb64fdaf28b95afd7369d4820574f6dbcf",
+      "kind": "Metadata common-key preflight included a role-specific recorder label; attribution made identical before staging, all semantic facts unchanged.",
+      "execution_credit": 0,
+      "source_agreement_credit": 0
+    }
+  ],
+  "holds": {
+    "paused": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned REQUEST-NUL source release",
+      "undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw comparison crash"
+    ],
+    "precision": "No blanket Stringable/callback/NUL hold.",
+    "reserve": "93807cdd6/255",
+    "inventory": "169 constructors/306 runtime obligations;closed0constructors+1runtime unchanged",
+    "withdrawn": "finite-PFLOAT a547 remains zero"
+  },
+  "remaining": "Mixtures of multiple nominal arms and builtin arms, DNF/intersections/iterable and wider source/value/modifier/signature/owner/lifetime contexts remain partial. Complete core remains unfinished.",
+  "engine_bug_or_intentional_divergence": null,
+  "preparation_failure_count": 5,
+  "actual_composition_peer": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp334/independent-main99-assessment.json",
+    "sha256": "0ef8d57b6f90e0d8f517874c334b6a1310505aa60b285fa7101b3a94d6d147f8"
+  },
+  "composition": {
+    "actual_revision": "d7439f7a66af305e54673cb2d76d352499900acd",
+    "actual_tree": "53cd55db50f1eb8c045b75ae7fe043aea9ff511a",
+    "parent": "bd38e6b84167a860436d97d62901ce3c2f342a5a",
+    "parent_tree": "02903f658ac3fac58a03d0d41a59f2c5fd40ad00",
+    "placement": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp334/main-bd38-placement.json",
+      "sha256": "e457e49068e4fc8fa4a8a85b56461d295bcbd43e72ec0e89fcc9b159bb2cc7bc"
+    },
+    "source_composition": {
+      "exact_paths": 18,
+      "literal_posts": 16,
+      "new_absent_paths": 15,
+      "unique_Make_lines": 9,
+      "document_lines": 8,
+      "full_current_parent_inverse": true,
+      "new_module_lines": 14,
+      "same_two_OR_additions": 2,
+      "module382": "a2d67610ea4bc29c213a81c3f5f267988e5cb601e672e5919fba851fbd90aa45",
+      "previous_module382": "a2092dada701921cf5e3c3ab98d813b4d6b96e48860c3399bc0905d55dc4cd55",
+      "private_roots_protected": true,
+      "source_validation_completed_before_static_dependency_assertion": true
+    },
+    "shared_dependency_bridge": {
+      "16_static_types_identical": true,
+      "138_property_references_identical": true,
+      "95_only_change": "typed_class_branch uses existing ptclassview before the same class-name casefold comparison",
+      "full_95_inverse_after_reverting_that_rule": true,
+      "ptclassview": "Only PTBUILTIN iterable maps to PTCLASS Traversable; otherwise identity. Every COMP334 admitted branch is singleton PTCLASS, so the new rule is pointwise identical throughout the admitted finite list domain.",
+      "new_runtime_or_source_evidence_required": false
+    },
+    "canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main99-comp334-canonical-v1/report.json",
+      "sha256": "67a71b4289eb4d64e376c5b43df8b62057c0863aad77fde8d0041d3383b86b26",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "ordered_argv_exact": true,
+      "all_committed_input_hashes_bound_to_fixed_actual": true,
+      "exit": 0,
+      "timeout": false,
+      "elapsed_seconds": 16.631538211833686,
+      "cap_seconds": 60,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "quiet": true,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "fixture": "dec $main() : bool\ndef $main() = true\n"
+    },
+    "canonical_executions": 1,
+    "saved_canonical_physical_reads": 1,
+    "placement_map_physical_reads": 1,
+    "author_raw_actual_map_canonical_reads": 0,
+    "new_source_native_header_state_executions": 0,
+    "HEAD_refreshes": 0,
+    "private_whole_renewed": false,
+    "preparation_failure_count_at_fixed_actual_review": 4
+  },
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup",
+    "tests/semantics/nominal_union_parentless_short_reference_get_hook_protocol.py",
+    "tests/semantics/nominal_union_parentless_short_reference_get_hook_review_protocol.py",
+    "tests/semantics/nominal_union_parentless_short_reference_get_hook_review_state.py"
+  ],
+  "decision": "INDEPENDENT_PRIVATE_WHOLE_AND_FIXED_ACTUAL_CLEAR",
+  "private_whole_reviewer": "/root/recover32_compiler_pair_review",
+  "actual_and_canonical_reviewer": "/root/recover32_compiler_pair_review",
+  "recorded_by": "/root/recover33_compiler_recursive_impl from immutable reviewed cuts and fixed assessment",
+  "findings": [],
+  "new_semantic_runs": 0
+}
