@@ -1740,3 +1740,14 @@ Quiet emitted one-byte STRING BitwiseNot shorthand conditions preserve the truth
 Quiet emitted one-byte STRING AND/OR/XOR shorthand conditions preserve the truth-selected exact INTERNED condition or emitted CASTSTRING fallback header and frozen raw CV keys through returning Warnings. Root/condition read-eps and SAME NORMAL VALUE retain the existing two-one-byte/non-NUL/source/CODE/precision/full-state bounds. Native6 once/source6, author418/328 and peer440/340 retain separate cuts; focused prior integer author57/corrected peer52 promote only three receipts without old375/447 renewal, and original external peer51 binding failure stays0. Actualf0d29515d and sole joinedb6520ec050 SL50816.682934401s/source0 are independently clear through one immutable tuple. Wider forms, lifetimes and all exact holds remain partial. [Review](../../coverage/semantics/string-offset-runtime-string-binary-string-cast-shorthand-base-initial-raw-leading-key-review.json).
 
 Quiet emitted false conditions from all eight scalar comparisons select an emitted CASTSTRING fallback with its exact INTERNED header and frozen raw CV keys through returning Warnings. Root/condition read-eps, explicit PBOOLfalse and SAME NORMAL VALUE retain existing source/CODE/precision/typed-pool/full-state comparison guards, including reversed GREATER operands and the nonliteral compiler-attestation boundary. Native8 once/source8, prelaw288, author332/242 and peer455/355 retain separate first-pass cuts; the corrected peer draft was wholly unrun, so no failure is created. Actual=SAME4618bd0f72 and sole SL50815.980985944s/source0 are independently clear through one immutable tuple. Wider forms, lifetimes and all exact holds remain partial. [Review](../../coverage/semantics/string-offset-runtime-comparison-string-cast-shorthand-base-initial-raw-leading-key-review.json).
+
+
+Quiet emitted LOGICALXOR conditions returning false select the exact INTERNED
+CASTSTRING shorthand fallback and preserve frozen raw CV keys through returning
+Warnings. Both ordered quiet truth conversions and existing source/CODE/precision
+and full-state authority remain required; true roots stay nonstring. Native2
+once/source2, prelaw72, author332/242, corrected peer388/288 and focused48 retain
+separate cuts; the original peer elaboration failure stays0. Actual/SAME2319feef89
+and its sole joined SL50816.482216466s/source0 are independently clear through
+one immutable tuple. Wider forms, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-logical-xor-string-cast-shorthand-base-initial-raw-leading-key-review.json).
