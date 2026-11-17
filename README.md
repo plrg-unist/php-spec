@@ -16,10 +16,12 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover quiet NaN equality, integer and one-byte STRING
-bitwise-NOT shorthand bases, nullable-iterable multi-CV returns and phase-safe
-Boolean default leaves. Exact source, type, cache and ownership bounds remain. The [current checkpoint](PROGRESS.md) separates source agreements,
-fixture checks and combined production loads; complete core remains unfinished.
+Recent reviewed extensions cover ordered builtin reference Get unions, recursive
+Boolean selector trees, STRING bitwise shorthand bases, ordered NaN comparisons,
+iterable-null producer returns, composite Boolean defaults and integer bitwise
+output-handler returns. Exact source, type, cache and ownership bounds remain.
+The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
+and combined production loads; complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
 `PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,
 namespace fallback and typed defaults. Other startup values remain partial.
