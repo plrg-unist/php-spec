@@ -936,6 +936,28 @@ def $string_read_runtime_instanceof_operand(S, PORIGIN n pcpath) = (PFLOAT n_bit
   -- if $string_read_runtime_instanceof_operand(S, porigin_true) = (PFLOAT n_bits)
   -- if $pfcast_nan(PFLOAT n_bits)
   -- if $resolve_at(S, KNOWN (PFLOAT n_bits), z_line) = S[.RESULT = KNOWN (PFLOAT n_bits)]
+;; A quiet false shorthand condition selects only its fallback NaN.
+def $string_read_runtime_instanceof_operand(S, PORIGIN n pcpath) = (PFLOAT n_bits)
+  -- if S.COMPLETION = NORMAL
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFTERNARY expression_cond ABSENT expression_false
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 2]) = (porigin_false)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
+  -- if $origin_node(S.SOURCES, porigin_false) = (expression_false)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_cond)) = (z_precision)
+  -- if $string_read_runtime_value(S, porigin_cond) = (pvalue_cond)
+  -- if ~$truth(S, pvalue_cond)
+  -- if $truth_value(S, pvalue_cond, z_line) = S[.RESULT = KNOWN (PBOOL false)]
+  -- if $compiled_precision(S, (porigin_false)) = (z_precision)
+  -- if $string_read_runtime_instanceof_operand(S, porigin_false) = (PFLOAT n_bits)
+  -- if $pfcast_nan(PFLOAT n_bits)
+  -- if $resolve_at(S, KNOWN (PFLOAT n_bits), z_line) = S[.RESULT = KNOWN (PFLOAT n_bits)]
 def $string_read_runtime_instanceof_operand(S, PORIGIN n pcpath) = (PFLOAT n_bits)
   -- if S.COMPLETION = NORMAL
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
