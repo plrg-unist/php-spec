@@ -49,7 +49,7 @@ def conditions(program, path):
         controls.append('~$string_unset_warning_literal(NScalarFloat (FLOAT "' + raw + '") eps, PFLOAT ' + str(value) + ')')
     for value in ('PNULL', '(PBOOL true)', '(PINT 1)'):
         controls.append('~$string_unset_warning_literal(NScalarFloat (FLOAT "3ff0000000000000") eps, ' + value + ')')
-    controls.append('~$string_unset_warning_literal(NExprUnaryMinus (NScalarFloat (FLOAT "0000000000000000") eps) eps, PFLOAT 9223372036854775808)')
+    controls.append('~$string_unset_warning_literal(NExprUnaryPlus (NScalarFloat (FLOAT "0000000000000000") eps) eps, PFLOAT 0)')
     if INDEX == 2:
         assert program.count('"3ff8000000000000"') == 1
         zero = program.replace('"3ff8000000000000"', '"0000000000000000"')

@@ -1068,6 +1068,12 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_float_warning_protocol.py --index 5 --source-report "$$nested_unset_float_warning_out/source/report.json" --output "$$nested_unset_float_warning_out/throw-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_float_warning_review_state.py --index 2 --source-report "$$nested_unset_float_warning_out/source/report.json" --output "$$nested_unset_float_warning_out/peer-return-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_float_warning_review_state.py --index 5 --source-report "$$nested_unset_float_warning_out/source/report.json" --output "$$nested_unset_float_warning_out/peer-throw-state"
+	@nested_unset_negative_float_warning_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-negative-float-warning-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_negative_float_warning_sources.py --output "$$nested_unset_negative_float_warning_out/source" && \
+		python3 -B tests/semantics/string_offset_nested_unset_negative_float_warning_protocol.py --index 2 --source-report "$$nested_unset_negative_float_warning_out/source/report.json" --output "$$nested_unset_negative_float_warning_out/return-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_negative_float_warning_protocol.py --index 5 --source-report "$$nested_unset_negative_float_warning_out/source/report.json" --output "$$nested_unset_negative_float_warning_out/throw-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_negative_float_warning_review_state.py --index 2 --source-report "$$nested_unset_negative_float_warning_out/source/report.json" --output "$$nested_unset_negative_float_warning_out/peer-return-state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_negative_float_warning_review_state.py --index 5 --source-report "$$nested_unset_negative_float_warning_out/source/report.json" --output "$$nested_unset_negative_float_warning_out/peer-throw-state"
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"

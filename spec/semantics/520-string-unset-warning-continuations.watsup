@@ -6,6 +6,11 @@ def $string_unset_warning_literal(NScalarFloat (FLOAT text) metadata, PFLOAT n) 
   -- if n = $hex_bits(text, 0)
   -- if $(n < 18446744073709551616)
   -- if ~$fparts_nan($float_decode(n))
+def $string_unset_warning_literal(NExprUnaryMinus (NScalarFloat (FLOAT text) metadata_float) metadata, PFLOAT n) = true
+  -- if n_child = $hex_bits(text, 0)
+  -- if $(n_child < 18446744073709551616)
+  -- if ~$fparts_nan($float_decode(n_child))
+  -- if n = $float_neg(n_child)
 def $string_unset_warning_literal(expression, pvalue) = false -- otherwise
 
 dec $string_unset_warning_source(pstate, porigin, int) : (ptbytes, int)?
