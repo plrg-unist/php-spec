@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-nonzero-integer-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNonzeroIntegerRedirect302($p0 = ((1) ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_INTEGER302_0), $p1 = ((-1) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_INTEGER302_1), $p2 = ((1) ? ((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_INTEGER302_2), $p3 = ((-1) ? (-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_INTEGER302_3), $p4 = ((1) ? (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) : SKIPPED_INTEGER302_4), $p5 = ((-1) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_INTEGER302_5), $p6 = ((1) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false) : SKIPPED_INTEGER302_6), $p7 = ((-1) ? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_INTEGER302_7)) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawNonzeroIntegerRedirect302();\nrawNonzeroIntegerRedirect302();\n",
+    "purpose": "Literal nonzero signed64 INT1/-1 conditions select exact emitted FIELD1 scalar tags while unresolved FIELD2 names remain undemanded.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "1994f2409f8ec6c6fe4d98f3b9c2cb0ce13859343d0ee97cb29d39371655a7cc"
+  },
+  {
+    "id": "deferred-nonzero-integer-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NonzeroIntegerRedirect302;\nuse const E_WARNING as Base302;\nuse const E_ERROR as One302;\nuse const Unavailable302\\Payload as Skipped302;\nfunction warning302($errno, $message, $file, $line) {\n    global $x302;\n    echo 'warning:', $message, '|';\n    defaults302(2);\n    $x302 = 3.5;\n}\nfunction defaults302(int $first, int &$selectedBool = (int)((1) ? (((bool)(+(-((float)(+(Base302 === One302))))))) : Skipped302), int &$selectedInt = (int)((-1) ? ((int)(!((bool)(+(-((float)(+(Base302 === One302)))))))) : Skipped302), int &$negativeZero = (int)((1) ? (-((float)((bool)(+(-((float)(+(Base302 === One302)))))))) : Skipped302), int &$selectedNull = (int)((-1) ? ((!((bool)(+(-((float)(+(Base302 === One302))))))) ? NULL : false) : Skipped302), int $last = 7) {\n    echo 'body:', $first, ':', $selectedBool, ':', $selectedInt, ':', $negativeZero, ':', $selectedNull, ':', $last, '|';\n    $selectedBool = 19;\n    $selectedInt = 20;\n    $negativeZero = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('NonzeroIntegerRedirect302\\\\warning302');\n$x302 = 1.5;\n$last302 = 8;\ndefaults302(last: $last302, first: $x302);\necho 'outer:x=', $x302, '|';\n",
+    "purpose": "Literal nonzero INT1/-1 conditions retain selected aliases, Shared cache and private INT reception before named Warning reentry, skipping FIELD2 names.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "15d5294b5af0ff4d8be50c053fe2f8d039e2e6e82fd4d960505df61953766b75"
+  }
+]
