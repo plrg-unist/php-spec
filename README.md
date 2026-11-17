@@ -16,6 +16,14 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Folded literal-false shorthand defaults retain certified emitted scalar results, including quiet NaN and negative zero, before existing private reception. Wider conditions, owning results, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-false-short-redirect-wrapper-default-reception-review.json).
+
+Ordinary NaN-CV inner unset keys share the source-only FLOAT Warning task while retaining reached PFLOAT identity and entry/source/owner guards. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-nan-cv-warning-review.json).
+
+[Global plain stdClass return names](coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json) use the producer declaration context, exact decoded class bytes and the existing private Notice-cell bounds. Namespace/import contexts, nullable/union names and wider lifetimes remain partial.
+
+Quiet signed64 PINT SPACESHIP results cross nested handler casts as normalized -1/0/1 under the existing source, quiet-state and ownership guards. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-review.json).
+
 Direct unary-minus raw nonNaN FLOAT intermediate unset keys preserve exact child/folded/captured bits and value-free Warning resume. [Review](coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
 
 Own public parentless short reference Get admits exact Class|null and null|Class headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw/normalized order, defining source/class/property authority and existing alias/owner bounds remain. Wider unions, warningful headers and lifetimes stay partial. [Review](coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
@@ -38,6 +46,9 @@ fallback; quiet truthy strings retain their selected header. Wider producers,
 carriers and lifetimes remain partial.
 [Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
 [truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Folded raw STRING CONCAT coalesce left operands preserve their exact INTERNED header and frozen raw CV offset through returning Warnings with a nonliteral emitted RHS, including falsey "0". Wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 
 Literal nonnull STRING coalesce left operands preserve their exact INTERNED header and frozen raw CV offsets with an emitted full-ternary RHS, including falsey "0". Returning Warning handlers retain current/reference-key behavior; wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-string-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 

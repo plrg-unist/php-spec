@@ -1,0 +1,153 @@
+{
+  "milestone": "ENUM296 finite-scalar literal-false shorthand redirect defaults",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "A folded literal-false shorthand preserves its actual emitted fallback NULL/BOOL/signed64 INT/bits64 FLOAT tag, including negative zero and quiet NaN, before existing private default reception.",
+  "implementation": "The existing294 NULL-only arm becomes a 17-line finite-scalar certificate: +3/-2 changes only its return and recursive RHS result to pvalue and adds the existing finite-value gate. Every exact false-leaf, source, phase, CODE, pool, read and unique proper FIELD2 false-redirect guard remains unchanged. No truth, cast, kernel, state, cache or ownership rule changes.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_compile.c::zend_eval_const_expr ZEND_AST_CONDITIONAL selects the actual fallback for literal false. Zend/zend_ast.c::zend_ast_evaluate_ex copies that result without truth conversion; unary minus of FLOAT(F) produces the genuinely emitted negative-zero RHS.",
+  "author_source": {
+    "revision": "3f6cbb552aae3da8beb196db367d3a9c0d3fd7b2",
+    "tree": "d2e32db5e2aa62f7bca24f93da9a09c2caaea6fc",
+    "base": "765e438947365debcd6623b92e54695e6e2a472e"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/source-final-v1.patch",
+    "sha256": "f8652162db223238eb1340281d51e04476983e978c8facb07bf6520aef519017",
+    "bytes": 28418,
+    "files": 7,
+    "added": 291,
+    "removed": 4
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/source-final-v1-manifest.json",
+    "sha256": "b1d06d09bd93bcf2a6cf1b1a1ba57e74dc08c3c7dddaff844fde37233170663d",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/native-final.json",
+    "sha256": "a3e402c1f58df0d500fb29c3c5fe5db69cc76e63e69a9905a9c1606f9c9da915",
+    "fresh_originals": 2,
+    "saved_originals": 0,
+    "native_reexecutions": 0,
+    "stable": true
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/baseline-v1/report.json",
+    "sha256": "f13933355c90258b4d254372a93cc0dc5047f1315afca174fc69bf6daf1a3ddf",
+    "revision": "637f37505b9328a86e8cf346d4fc24eb1204db99",
+    "expected_unsupported": 1,
+    "source_credit": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/source-v1/report.json",
+    "sha256": "5f28190a27a298acc0f7ea8da2b8baaf0859396cdeac125f6bf61f96a1bccd83",
+    "revision": "1de714e98d3c6f138443e589e8e9192fdfe29384",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 2,
+    "elapsed_seconds": [
+      39.956311599118635,
+      33.65549290715717
+    ],
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/author-v1/closure-call-protocol-9wgmfxrt/report.json",
+    "sha256": "4c6e19146265ec6bebbf76c3944ca2630bb956a803bfefded8babfbea6a67b2b",
+    "revision": "e92a6404379fb8cfb99469ebf745575ae8eed824",
+    "cuts": [
+      166,
+      65,
+      51
+    ],
+    "conditions": 282,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 900,
+    "elapsed_seconds": 127.53963112831116,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "affected_older_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/affected-v1/closure-call-protocol-b1s1gi2s/report.json",
+    "sha256": "b64bd3627b529bf8d765af6a620fc5f525c0276bc866c44c14bf21511b614daa",
+    "revision": "e92a6404379fb8cfb99469ebf745575ae8eed824",
+    "conditions": 13,
+    "selection": "Only old294 boundary row0: prefix4 plus selected row3 plus setup6. Two generated assertions change to PBOOLtrue/full admission; all sources, stages and other rows are unchanged.",
+    "per_fixture_cap": 300,
+    "outer_cap": 300,
+    "elapsed_seconds": 19.67386245727539,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-false-short-redirect-wrapper-default-reception-296/peer-v1/closure-call-protocol-q4ij4o7_/report.json",
+    "sha256": "bbbbb8f62fbd907a75a23f7e300906be170498ce2a943aa2a980b347049fbd7c",
+    "revision": "9be439a02d8ebe1b59de8ceb4f54787680d555f4",
+    "cuts": [
+      137,
+      36,
+      32,
+      22,
+      13
+    ],
+    "conditions": 240,
+    "body": 210,
+    "setup": 30,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 1500,
+    "elapsed_seconds": 186.992473602,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "scope": "Raw tags and bit-sensitive cache poisoning, negative-zero preconversion/private recipient, nested false-short/coalesce quietness with an observable unexpected-warning handler, retained refusal boundaries and focused13."
+  },
+  "independent_review": "WHOLE7 FULLCLEAR23 binds all complete posts and separate source2/A282/affected13/peer240 cuts. Successor24 inherited that review without duplication and independently cleared ONE actual plus the SAME saved canonical report. Thin metadata uses only the supplied immutable tuple.",
+  "actual_source": {
+    "revision": "77ffe697515092c20c3e45dee81911710d4a81e8",
+    "tree": "1d3ef04737d1fc1b745d56516c163c89b8125648",
+    "parent": "9ab7f6249d806193a81baf04dfff1e8c871bd783"
+  },
+  "canonical": {
+    "revision": "77ffe697515092c20c3e45dee81911710d4a81e8",
+    "tree": "1d3ef04737d1fc1b745d56516c163c89b8125648"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main86-enum296-v1/report.json",
+    "sha256": "2a9b0bce9eeb6b57a71a90b9640cf8eb291d691373dc2fcef0c4fd7602b5fcc6",
+    "mode": "production SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "fixtures": 1,
+    "cap": 60,
+    "elapsed_seconds": 16.63161684386432,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main86-enum296-composition-v1/map.json",
+    "sha256": "31e4b11c5cbddd766f21572701481a953e86c167b60728ff7141f693f71d82d7",
+    "scope": "Six complete literal source/test posts equal donor3f6cbb552; Make contains only the three owned recipes. Exact seven-file +291/-4 source projection and actual parent/tree pins match, with stable canonical fingerprints."
+  },
+  "scope_limits": [
+    "Numeric-zero, NULL and FLOAT-zero shorthand conditions, owning fallback values and wider headers/producers/lifetimes remain partial.",
+    "No full shorthand, default-reception, engine-equivalence or PHP-core closure is claimed."
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Native2 ran once; source2 reused their exact original bytes, paths, argv and profile. A282, focused13 and independent240 are separate fixture cuts with source0/native0. Baseline Unsupported stays0. There are no failures/timeouts, incomplete or unrun cuts counted, or accepted/source/native replay."
+}

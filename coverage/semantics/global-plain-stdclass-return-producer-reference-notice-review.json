@@ -1,0 +1,182 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; source34308a6666b2d489c509541ea9befea9e2b42348; local oracle b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "scope": "Completed fixed-required ordinary-CV producers with one bare raw NName stdClass RETURN, retained declaration ENV.NAMESPACE=eps and ENV.CLASSES=eps. Exact decoded raw bytes equal normalized singleton PTCLASS bytes; case-folded identity is stdclass.",
+  "implementation": {
+    "revision": "8aa194c74a1becaf7abe6e7d2daface143df40b9",
+    "tree": "65c0e7c1f5970e54f485e7d1632498c0380e16b7",
+    "source_files": 9,
+    "rule": "Only207: a scoped wrapper preserves the old context-independent header fallback and adds the bounded plain RETURN arm; named and positional ingress pass pfunction_producer.ENV. Existing argument/formal proof, BYREF/generator/source guards, actual receive/return verification, retired producer frame, finite quiet payload and private Notice-cell ownership/lifetimes remain.",
+    "patch": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/thin-source9-and-family-v1.patch",
+    "patch_sha256": "49a6e126531541ddc407288616c6c9e4415aee332dbe0f1a16d17a30de6e56be",
+    "manifest": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/source9-manifest-v1.json",
+    "manifest_sha256": "506732a83610b2f28dc488bf9da8eae4e69bb281ab0c9bba1513fef63597a952"
+  },
+  "engine_sources": [
+    {
+      "file": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": [
+        "zend_compile_single_typename",
+        "zend_resolve_class_name_ast",
+        "zend_resolve_class_name",
+        "zend_prefix_with_ns",
+        "zend_compile_return"
+      ],
+      "reason": "Nominal type resolution consults imports then namespace, while return verification is emitted before the by-value return."
+    },
+    {
+      "file": "vendor/php-src/Zend/zend_vm_def.h",
+      "symbols": [
+        "ZEND_SEND_VAR_NO_REF",
+        "ZEND_SEND_VAR_NO_REF_EX"
+      ],
+      "reason": "A nonreference result becomes a fresh argument reference before the Notice; the ordinary continuation handles handler completion."
+    },
+    {
+      "file": "spec/semantics/78-function-compiler.watsup",
+      "symbols": [
+        "$ppfunction_context",
+        "$ppfunction_finish"
+      ],
+      "reason": "Retained function ENV is the declaration context used to normalize its return signature."
+    }
+  ],
+  "native": {
+    "author": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/native-complete-v2/report.json",
+      "sha256": "4a92c2c53a17c4aef2a07153fe827111f418aea24eeabb98766387791e52c801",
+      "originals": 4,
+      "executions_once": true
+    },
+    "peer": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/peer/native-first-v1/report.json",
+      "sha256": "96fc143c64e835ca06c81ac12f9c75a6d986426a09788de282f947250bc653b8",
+      "originals": 3,
+      "executions_once": true
+    },
+    "correction": "First native recorder stopped after two observations because the adapted multi-CV expected Notice line8 was stale; original frozen bytes report line9 at the final CV. Only expectations/state lines changed, the first two native observations were reused, and only unrun originals3/4 then executed. The failed native-first-v1 report retains zero whole-packet credit.",
+    "failed": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/native-first-v1/report.json",
+      "sha256": "3040d5ff5967e30913da903beffd8312d92ad15696caea11716cd30bae995446",
+      "credit": 0
+    }
+  },
+  "private_validation": {
+    "author": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/whole-affected-correction-v3.json",
+      "sha256": "b9f7a8bd764f48a8c6c3de69193c3ea21f9c1ae7e240175cb3a4bc74fc0ab400",
+      "source_agreements": 7,
+      "author_fixture": {
+        "conditions": 618,
+        "reached": 434,
+        "derived": 184
+      },
+      "peer_fixture": {
+        "conditions": 194,
+        "reached": 120,
+        "derived": 74
+      },
+      "unique_aggregate_claim": false
+    },
+    "failure_disposition": "The first whole packet retains source7 and author618 individual passing cuts at755effbf0, but has zero whole credit after peer194 failed compilation on unbound metadata. The affected-only v2 then failed a synthetic untyped-signature fallback expectation. Only those new derived fixture controls changed; affected194v3 passes at8aa194c74, with identical shared input fingerprints and no source/author-state/native replay. Both original fixture failures remain zero credit.",
+    "operational_donors": {
+      "scope": "Existing unchanged project-local state helpers, copied only into the independent private checkout before its cold import check; canonical main already contains both exact files.",
+      "tests/semantics/cv_fqn_stdclass_producer_reference_notice_state.py": "cc716419f268f7ee6bac7b6bcfc904e9e4d32179197de1a1e69cb00122adc8a1",
+      "tests/semantics/cv_object_producer_reference_notice_state.py": "2519373a19234c710281969e29e2d7e31b86118c4fd9a5e1fd43b9af83a8362b"
+    },
+    "independent": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/peer/whole-summary-v1.json",
+      "sha256": "123320770e14e4f01af1a5b7e3b9e934b1f53bc59929171be847ac7e3c9f26e4",
+      "revision": "b26dbd0fdf088de836457e0db61f551986506e42",
+      "tree": "c13c09ade1cd484d31572dc0bffa9bd4de56daf3",
+      "source_agreements": 7,
+      "author_fixture": {
+        "conditions": 618,
+        "reached": 434,
+        "derived": 184
+      },
+      "peer_fixture": {
+        "conditions": 194,
+        "reached": 120,
+        "derived": 74
+      },
+      "module_count": 507,
+      "native_fresh_executions": 0,
+      "first_complete_packet": true,
+      "elapsed_seconds": 297.4807035923004
+    }
+  },
+  "prelaw": {
+    "author_front": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/prelaw-front-v1/report.json",
+      "sha256": "d1d42d0a8b99972eb00c3e25c1d1b952b29f2de7768aa38fea7e93b299386185",
+      "conditions": 306,
+      "reached": 306,
+      "derived": 0,
+      "source_credit": 0
+    },
+    "peer_front": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/peer/prelaw-front-v1/report.json",
+      "sha256": "1d77ed1c25ddf778e4c6768ba09e32fc859f38ce963e4ea9292453cd33f71928",
+      "conditions": 81,
+      "reached": 81,
+      "derived": 0,
+      "source_credit": 0
+    },
+    "author_source": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/author/prelaw-source-v1-4ghdy6i3/report.json",
+      "sha256": "46e6c10190c97fb16a9a48da1e7c17121845724e59c63ba2e21a2d1b54aa5568",
+      "unsupported": 1,
+      "remaining_unrun": 3,
+      "source_credit": 0
+    },
+    "peer_source": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/peer/prelaw-source-v1-9rybdq06/report.json",
+      "sha256": "2388049e466a4fc52f90c7a8e401ffee1c3e77c990dfc7da7b3145de06df3cdc",
+      "unsupported": 1,
+      "remaining_unrun": 2,
+      "source_credit": 0
+    }
+  },
+  "limits": [
+    "Plain FORMAL names, nullable/union plain returns, namespace/import declaration contexts and wider classes remain partial. Existing FQN/builtin headers and shared folds stay unchanged.",
+    "Payload, actual-source/backing, ownership/GC/lifetime and other held lanes are not broadened. Exact holds, reserve93807cdd6/255 and inventory169/306 remain unchanged.",
+    "Makefile controller entry is prepared; no Make-wide campaign or full-core closure is claimed."
+  ],
+  "composition": {
+    "status": "actual and same saved canonical independently reviewed; final projection pending",
+    "actual_revision": "499ef16fc798be9abc8b757a2c4a92050afc73cb",
+    "joined_revision": "499ef16fc798be9abc8b757a2c4a92050afc73cb",
+    "joined_tree": "00a170b2d7170d42cb2888a98419b9159cec201c",
+    "map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main86-nan-ref115-composition-v1/map.json",
+      "sha256": "6b098cc73847a72e397a5d69d64b258d57123927e97db9e06df3de95ca16fce9",
+      "checks": "Exact source9 placement and actual diff membership; 207 complete-parent exact copy; seven new tests exact; one unique anchored Make recipe whose removal recovers complete source/main parents. Actual equals joined revision."
+    },
+    "canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main86-nan-ref115-v1/report.json",
+      "sha256": "b77af436a52eb66cc8898e77b3770b33338067523596063812c6a6f05c89710e",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "fixture_count": 1,
+      "elapsed_seconds": 16.43195145111531,
+      "cap_seconds": 60,
+      "exit": 0,
+      "timeout": false,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "pgid": 3351643,
+      "group_absent": true
+    },
+    "independent_review": {
+      "report": "../php-spec-evidence-archive/global-plain-stdclass-return-producer-reference-notice-115/peer/actual-and-canonical-review33-v1.json",
+      "sha256": "0108e41323b0edfde22476867cd3201f72a65af7e30652be5569cc7e5da35d8c"
+    },
+    "source_credit": 0,
+    "new_runtime_runs": 0
+  }
+}

@@ -1315,6 +1315,18 @@ callers/producers/owners and lifetimes remain partial; all exact holds,
 reserve93807cdd6/255 and inventory169/306 are unchanged.
 [FLOAT-CV Warning review](../../coverage/semantics/string-offset-nested-unset-float-cv-warning-review.json).
 
+Genuine ordinary NaN CV keys now share that source-only FLOAT Warning task,
+retaining exact reached PFLOAT bits and the same entry-cell/source/owner guards.
+The converted index stays unused; handler mutation adds no value owner or second
+conversion. Native4 once/source4, author SL119/30-derived+107/18-derived and peer
+AL81/11-derived+85/11-derived keep separate first-pass cuts. Prelaw missing-H
+mismatches4 remain0; failures0. Actual `1b0792394`, joined `499ef16fc` and sole
+production-SL509 `b77af436` pass 16.431951451s/source0, independently clear through
+one immutable tuple. Existing610 cuts are unrenewed; initial reference/released
+keys, wider forms and every exact hold, reserve93807cdd6/255 and inventory169/306
+remain partial/unchanged.
+[NaN-CV Warning review](../../coverage/semantics/string-offset-nested-unset-nan-cv-warning-review.json).
+
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
 offsets` without converting the key. The carrier arm requires a known bounded
@@ -1895,3 +1907,5 @@ Literal ordinary NULL keyword/PNULL reads select emitted RHS child1/read-eps typ
 Two emitted ordinary coalesce operands retain the certified selected INTERNED header before initial raw leading CV keys through returning Warnings. NULL selects an emitted full-ternary RHS; nonnull empty/"0" strings retain their own header. Both child/read-eps guards and the existing literal-byte exclusion preserve the separate raw STRING/pure literal-CONCAT mandatory-header route. Whole typed NORMAL/source/CODE/precision, selected-only demands, quiet-location exclusions, ownership and continuation bounds remain. Wider forms and lifetimes stay partial. [Review](../../coverage/semantics/string-offset-runtime-scalar-pair-coalesce-base-initial-raw-leading-key-review.json).
 
 Literal nonnull STRING coalesce left operands preserve their exact compiled INTERNED header and frozen raw leading CV key through returning Warnings with a nonliteral emitted RHS, including a full ternary. Falsey "0" and empty strings stay nonnull. Exact raw left bytes/read/header, both child origins/read kinds and the whole typed NORMAL runtime certificate remain mandatory; immediate RHS source remains authenticated while deeper skipped values/CODE/precision stay undemanded. The literal-byte exclusion preserves mandatory raw-literal RHS proofs. Carrier, ownership, key-cell and continuation bounds remain; wider forms/lifetimes stay partial. [Review](../../coverage/semantics/string-offset-literal-string-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+Folded pure raw STRING CONCAT coalesce left operands preserve their exact INTERNED header and frozen raw leading CV key through returning Warnings with a nonliteral emitted RHS, including a full ternary. Actual folded root CODE/PSTRING read/header/precision and exact full SOURCE subtree identity authenticate the value without child CODE/pools/precision facts. Falsey "0" remains nonnull. Immediate RHS source stays authenticated while deeper skipped facts stay undemanded; existing literal RHS header proofs, key-cell, owner and continuation bounds remain. Mixed/coerced leaves, wider forms and lifetimes stay partial. [Review](../../coverage/semantics/string-offset-literal-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).

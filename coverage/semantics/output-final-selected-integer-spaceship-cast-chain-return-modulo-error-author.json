@@ -1,0 +1,160 @@
+{
+  "family": "output-final-selected-integer-spaceship-cast-chain-return-modulo-error",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "status": "validated bounded extension; family remains partial",
+  "implementation_revision": "d11b3b7ab697f20fd2ea9bb965b317e2ed46d81f",
+  "scope": "Existing nested BOOL/INT/FLOAT handler casts admit SPACESHIP over two recursively certified proper signed64 PINT children. Its actual normalized PINT -1/0/1 result must preserve exact quiet NORMAL full-state equality. Independent child source/CODE lines, RHS terminal line, conjunction folding, own folded fact or emitted read-eps, nonownership and the two-cast gate remain unchanged. Six originals strictly witness inner PINT tags before outer casts, including emitted MIN/MAX order.",
+  "engine_basis": {
+    "pin": "vendor/php-src PHP8.5.10 34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_vm_def.h::ZEND_SPACESHIP",
+      "Zend/zend_operators.c::compare_function",
+      "Zend/zend_operators.c::zend_compare",
+      "Zend/zend_compile.c::zend_compile_binary_op",
+      "Zend/zend_compile.c::zend_try_ct_eval_binary_op"
+    ],
+    "model": "LONG/LONG comparison normalizes through comparisons rather than subtraction. Authored pure compare_int/value_order_effect/comparison_value/binary_apply supplies semantic answers."
+  },
+  "native": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/native-01/report.json",
+    "sha256": "497444cd3c9f5d6e624a74d5ee89b0feb579cf2efd9d00fe579b0ed13015b0b5",
+    "tested_revision": "13af0e96107ef459bb017205efc62820df2484f9",
+    "originals": 6,
+    "runs": 1,
+    "result": "Exact original bytes/file/cwd/profile/streams/status retained; native observations reused without replay."
+  },
+  "baseline": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/before-01/report.json",
+    "sha256": "5c0e3cc32175a80750245757cfc3c670cf3f2b0df3c73250c8cec9f37f87c983",
+    "tested_revision": "13af0e96107ef459bb017205efc62820df2484f9",
+    "selection": [
+      2,
+      6
+    ],
+    "unsupported": 2,
+    "other_unrun": 4,
+    "agreement_credit": 0
+  },
+  "source": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/after-01/report.json",
+    "sha256": "e8e0a42bc0b2c3219f213c087ee5d7e1a853c90752782f38d7b5a2514a796194",
+    "tested_revision": "d11b3b7ab697f20fd2ea9bb965b317e2ed46d81f",
+    "originals": 6,
+    "elapsed_seconds": 323.5961443660781,
+    "result": "Exact saved native stdoutP/stderr/status255 and structured MOD diagnostics at lines11/9/11/9/11/9. Strict FALSE alone keeps two default deprecations; inner PINT and outer cast witnesses include emitted MIN/MAX."
+  },
+  "frontier": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/front-01/report.json",
+    "sha256": "023b1c468889c00d475594d30b3d82d0892e4cfe78d18e4e86be516cd7b2c933",
+    "tested_revision": "d11b3b7ab697f20fd2ea9bb965b317e2ed46d81f",
+    "assertions": 30,
+    "groups": [
+      11,
+      11,
+      8
+    ],
+    "elapsed_seconds": 275.0726817760151,
+    "source_credit": 0
+  },
+  "lifecycle": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/life-01/report.json",
+    "sha256": "cef003d3466fd5e7fafa95bf59cfbe6dd909a5216e402ec6220de3c915ef26bf",
+    "tested_revision": "d11b3b7ab697f20fd2ea9bb965b317e2ed46d81f",
+    "assertions": 20,
+    "groups": [
+      7,
+      7,
+      6
+    ],
+    "elapsed_seconds": 392.80047714407556,
+    "source_credit": 0
+  },
+  "independent": {
+    "frontier": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/peer-front-01/report.json",
+      "sha256": "35c36e33cd4922bfaaf4c10e3ac014f0342b39d0d7479e6c394d6ab96765b910",
+      "tested_revision": "9fa92a83bae4cda602913a15450badc938839ba0",
+      "assertions": 146,
+      "groups": [
+        63,
+        39,
+        44
+      ],
+      "elapsed_seconds": 287.9696357899811,
+      "source_credit": 0
+    },
+    "lifecycle": {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/peer-life-01/report.json",
+      "sha256": "5a00eb7e53a67785d85ddaaad9e3a5c6fa4c248bd602c42c9eac422bb1a065ed",
+      "tested_revision": "9fa92a83bae4cda602913a15450badc938839ba0",
+      "assertions": 22,
+      "groups": [
+        7,
+        7,
+        8
+      ],
+      "elapsed_seconds": 401.6827642209828,
+      "source_credit": 0
+    },
+    "whole_review": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/whole-source-review.json",
+    "whole_review_sha256": "33e0f318be0d9290024ac56920d8c804937dc7b84bf9d4766a1c1db34d85572f",
+    "controls": "15 signed equal/reversed/MIN/MAX orders; two fitting raw differences refuse normalized facts; four genuine quiet BOOL/NULL/FLOAT/STRING operands refuse two-PINT authority; three genuine PBOOL EQUAL/LESS/GREATER results retain separate operator/result-tag fences. Exact source/CODE/fold/read/BODY/UNIT/BUDGET/bare/single-cast and real formal/native-cell retirement controls pass.",
+    "review": "CLEAR31: primary semantics, complete five-file bindings, all retained raw cuts, counterexamples and reliability; clean/reaped jobs0.",
+    "source_credit": 0
+  },
+  "affected_predecessors": "None. Bounded selectedcast helper search finds SPACESHIP queries only in the new140 helpers; no old campaign replay.",
+  "compatibility": "Native6/baseline2 retain13af; source6/A30/20 retaind11b; independent146/22 retain9fa. Private fixture SL508/cache=false/det=true cuts retain original identities, full stable input maps, quiet stderr and reaped empty groups under original300/660 caps. Native10/source90/120/660 caps unchanged.",
+  "failures": 0,
+  "corrections": 0,
+  "publication": {
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/ready-source-140-reviewed-manifest.json",
+    "manifest_sha256": "0fd99e578ef9f92d5903cfa54ba3981219df7d0267a7d721052867b8c585bb1e",
+    "patch": "../php-spec-evidence-archive/new/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-140/ready-source-140-reviewed.patch",
+    "patch_sha256": "adf604a0c0ed05cc3da9d45c584d8e4cd53a520d99c00aa9b6cf8a653af06b15",
+    "parent": "45894f112e7ea21800a42f59d05ae06cfabd7d43",
+    "revision": "9fa92a83bae4cda602913a15450badc938839ba0",
+    "file_count": 5,
+    "insertions": 259,
+    "deletions": 1
+  },
+  "composition": {
+    "revision": "de4a1e4fcc6ae47ee2e8e9fbd372d1b1bcf9a2ae",
+    "tree": "d4afa0c1d7f3355c3e2c23d9f2b75c104d0fa864",
+    "parent": "499ef16fc798be9abc8b757a2c4a92050afc73cb",
+    "map": "../php-spec-evidence-archive/resumed-main-20261112/main87-output140-composition-v1/map.json",
+    "map_sha256": "2029a42a14202b3ee86043d9716fe4a40a88aa4c24c08351dfad24bac7007f54",
+    "makefile_sha256": "8b1dda3fa9fb32df692f85255e2c66b7181c05f89717c39824c7aec44d4184a6",
+    "makefile_git_blob": "0daf7437cdef2c6f8e5eddd8717e82ce359e2cbb",
+    "placement_review": "Actual=joined/tested.456 complete parent exact; new3 literal; Make4 complete unique recipes reverse to the complete MAIN parent, preserving all foreign bytes.",
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main87-output140-v1/report.json",
+      "sha256": "91096d0716ae6d5a36b9f78b3a816678473046d85eff6af3db1739d52f493366",
+      "tested_revision": "de4a1e4fcc6ae47ee2e8e9fbd372d1b1bcf9a2ae",
+      "mode": "production_SL",
+      "module_count": 509,
+      "ordered_arguments": 512,
+      "watched_inputs": 513,
+      "fixture_count": 1,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.431164181092754,
+      "runner": "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+      "cwd": "/home/user/workspace/php-spec",
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "timeout": false,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable_revision_and_all_inputs": true,
+      "reaped_leader_and_empty_group": true,
+      "process_group": 3352313,
+      "source_credit": 0
+    },
+    "compatibility": "Actual/joined509 and SAME canonical are a separate source0 cut. Accepted private508 execution is not replayed.",
+    "disposition": "CLEAR31. Author consumes immutable tuple only without reading MAIN artifacts."
+  },
+  "limits": "Only proper PINT operands admitted. Implicit BOOL/NULL/FLOAT/STRING operands, Boolean-result comparisons and wider handler returns/owners/lifetimes remain partial. Unsupported/unrun/fixture/canonical cuts retain zero source agreement credit. Exact holds/reserve93807cdd6/255, OB31 and inventory169/306 unchanged; no engine bug, intentional divergence or full-core/Rocq/BOLA completion claim.",
+  "metadata_semantic_runs": 0
+}

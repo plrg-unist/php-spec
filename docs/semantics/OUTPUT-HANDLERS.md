@@ -1680,3 +1680,18 @@ load in16.531488447 s/source0. FLOAT promotion, negative/deprecated powers,
 implicit operands, wider handlers/owners/lifetimes and every exact hold stay partial.
 [Integer power evidence](../../coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-power-cast-chain-return-modulo-error-review.json).
+
+Quiet signed64 INT SPACESHIP also composes in those nested casts. Two proper
+PINT children retain their source/CODE/terminal-line/fold/read authority; the
+actual normalized PINT -1/0/1 result preserves quiet NORMAL full-state equality,
+nonownership and the two-cast gate. Six originals assert inner PINT tags before
+outer casts, including emitted MIN/MAX order, reusing native6 once. Author30/20
+and independent146/22 retain separate private508 SL/source0 cuts. Fifteen signed
+endpoint orders distinguish comparison from subtraction; wrong differences,
+non-PINT children and Boolean-result operators retain their own refusals.
+Prelaw Unsupported2/other4unrun retain0; no failures, corrections or predecessor
+campaign replay occurred. Actual/joined composition and SAME `de4a1e4fcc6`
+pass the separate MAIN509 load in16.431164181 s/source0. Implicit operands,
+wider handlers/owners/lifetimes and every exact hold remain partial.
+[Integer spaceship evidence](../../coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-review.json).
