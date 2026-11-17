@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Direct unary-minus raw nonNaN FLOAT intermediate unset keys preserve exact child/folded/captured bits and value-free Warning resume. [Review](coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
+
 Own public parentless short reference Get admits exact Class|null and null|Class headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw/normalized order, defining source/class/property authority and existing alias/owner bounds remain. Wider unions, warningful headers and lifetimes stay partial. [Review](coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
 
 Raw nonNaN FLOAT intermediate string-offset unset literals preserve the cast-Warning handler's return or throw through exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-float-warning-review.json)).

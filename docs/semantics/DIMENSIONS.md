@@ -1272,13 +1272,24 @@ wider keys, callers, callback producers, owners and lifetimes remain partial.
 
 Raw nonNaN FLOAT literals use the same Warning continuation, retaining exact
 raw bits, compiled-read/identity and captured-key equality. Range precedes partial
-decoding; NaN, UnaryMinus, CV and owning forms keep their fences. Native6 once/source6,
+decoding; at that cut NaN, UnaryMinus, CV and owning forms kept their fences. Native6 once/source6,
 author SL110/27+100/17 and independent AL146/70+108/32 retain separate first-pass
 cuts; derived zero/subnormal authentication has no source agreement. Prelaw wrong-Error
 mismatches6 remain0, with no new failures. Actual `2b9bfac66` retains its five literal
 family posts at joined `b9cb2a675`; the sole production-SL509 load `ba4cfad1`
 passes 15.831819022s/source0. Wider forms and every exact hold remain unchanged.
 [Raw FLOAT Warning review](../../coverage/semantics/string-offset-nested-unset-float-warning-review.json).
+
+Immediate unary minus over a raw nonNaN FLOAT now admits the same Warning route.
+The raw child is range-checked before decoding; its exact sign-flipped bits must
+equal the folded read/identity and captured key. Resume remains value-free and
+source-only. Native6 once/source6, author SL122/37-derived+93/8-derived and independent
+AL162/82-derived+116/36-derived retain separate first-pass cuts. Derived negative-zero
+and negative-subnormal authentication has no source agreement. Prelaw mismatches6
+remain0. Actual=SAME `2dee14a2b` and the sole production-SL509 load `10c02954`
+pass 16.540540201s/source0. UnaryPlus/nested unary, CV, NaN, owning and wider forms,
+every exact hold, reserve93807cdd6/255 and inventory169/306 remain unchanged.
+[Negative FLOAT Warning review](../../coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
 
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
