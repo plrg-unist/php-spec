@@ -2791,3 +2791,13 @@ Actual and joined `76ceffde6` preserve the exact source additions. Their sole
 production-SL509 load (16.039205513 s, source0) is independently clear through
 immutable peer tuple `762467d5`. Wider forms and all exact holds remain.
 [Independent review](../../coverage/semantics/class-true-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/bool unions on that short reference producer retain both raw
+orders, `Class|bool` and `bool|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier bool require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. Both Boolean literals are admitted; weak scalar writes retain
+the existing Boolean conversion, while strict writes reject those scalars.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-bool-union-parentless-short-reference-get-hook-review.json).
