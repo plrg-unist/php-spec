@@ -553,6 +553,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
   -- if (b /\ n_bytes* = n_true*) \/ (~b /\ n_bytes* = n_false*)
+;; Full ternaries with two emitted string-cast arms retain the selected header.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond (NExprCastString expression_true metadata_true) (NExprCastString expression_false metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; JMP_SET keeps a truthy literal header; a false one selects the fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NScalarString (BYTES text_cond) metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
