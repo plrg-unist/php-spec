@@ -18,8 +18,10 @@ retains the existing raw STRING leaf route.
 `zend_compile_coalesce`, `ZEND_COALESCE` and `ZEND_QM_ASSIGN` establish the
 nonnull selection. The immediate emitted RHS source stays authenticated while
 its deeper skipped facts remain undemanded. Existing literal RHS header proofs
-remain mandatory. Mixed INT/FLOAT leaves, metadata-only SOURCE substitutions,
-wrong root values/precision and raw or REQUEST result carriers reject.
+remain mandatory. At frozen source531, mixed INT/FLOAT leaves reject. The later
+[raw-integer extension](STRING-OFFSET-LITERAL-INTEGER-CONCAT-RUNTIME-SCALAR-COALESCE-BASE-INITIAL-RAW-LEADING-KEY.md)
+promotes its reviewed integer scope. Metadata-only SOURCE substitutions, wrong
+root values/precision and raw or REQUEST result carriers still reject.
 
 Two original sources reuse two native executions collected once. Baseline
 Unsupported2 and prelaw120 retain zero source credit. Author263/173 and

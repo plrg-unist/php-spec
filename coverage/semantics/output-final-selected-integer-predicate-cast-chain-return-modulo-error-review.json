@@ -1,0 +1,251 @@
+{
+  "family": "output-final-selected-integer-predicate-cast-chain-return-modulo-error",
+  "status": "independently reviewed bounded slice",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendored 34308a6666b2d489c509541ea9befea9e2b42348",
+  "source_revision": "567862a696ce9c243902dfabeb4f3627cedb5144",
+  "source_base": "32f35a6a38f9f65f8218193f89deab4672c0493b",
+  "whole_source": {
+    "files": 6,
+    "insertions": 299,
+    "deletions": 2,
+    "passed": true,
+    "production_change": "A separate 20-line PBOOL clause; the existing PINT clause is unchanged.",
+    "make_additions": 4,
+    "new_sources_sha256": "1c85b272a165febd8eaf1e16b5b2e147607473029f5d1227840b85d23581ab38",
+    "author_state_sha256": "24951a60c17f437046df90335dff87de7fbf795515daa50af9063472b8d51824",
+    "review_state_sha256": "4adab156b255bc79e524eca76ec52e41c09cb53b543a28a9f2d961063b8a244b",
+    "old140_review_sha256": "9ee4543a79845e1c41baa7ac23d944220fd337fce8e3a6f5b670179a80a5d617",
+    "old140_correction": "Only the existing EQUAL(2,2), LESS(1,2), GREATER(1,2) generator loop result and label now require genuine PBOOL success. The three actual old builders were exercised once; no old campaign was replayed."
+  },
+  "contract": {
+    "operators": [
+      "IDENTICAL",
+      "NOTIDENTICAL",
+      "EQUAL",
+      "NOTEQUAL",
+      "LESS",
+      "LESSEQUAL",
+      "GREATER",
+      "GREATEREQUAL",
+      "LOGICALXOR"
+    ],
+    "operands": "Two recursively certified signed64 PINT proper children.",
+    "result": "Exact PBOOL before the existing outer casts.",
+    "preserved": [
+      "Exact source identity and proper children",
+      "Independent child CODE lines and RHS terminal line",
+      "Conjunction fold flag",
+      "Own exact folded PBOOL fact or emitted compiled-read eps",
+      "Quiet NORMAL full-state equality",
+      "Nonowning scalar results",
+      "Existing two-cast handler boundary, CODE UNIT and BODY"
+    ],
+    "engine_routes": [
+      "Zend/zend_compile.c: zend_compile_greater retains left-to-right compilation before reversed VM operands",
+      "Zend/zend_vm_def.h: identity/equality/order handlers return bool",
+      "Zend/zend_operators.c: boolean_xor_function uses operand truth"
+    ]
+  },
+  "native": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/native-01/report.json",
+    "sha256": "1098da8a5ca82026b0e673d0cd6dc08390d9937d44af59720236af14e83fb5d8",
+    "revision": "9fa92a83bae4cda602913a15450badc938839ba0",
+    "cases": 9,
+    "runs_per_original": 1,
+    "watched_paths": 20,
+    "source_credit": 0
+  },
+  "prelaw": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/before-01/report.json",
+    "sha256": "40d8871a5e1657bd8fa105a33f86f0fa0f4a90e032d7729c880955c43f8137f6",
+    "revision": "9fa92a83bae4cda602913a15450badc938839ba0",
+    "selection": [
+      1,
+      9
+    ],
+    "expected_unsupported": 2,
+    "other_unrun": 7,
+    "watched_paths": 540,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/after-01/report.json",
+    "sha256": "750afabdd13b6a4cd2c7e8ffcc9b09948a43d712d5c044280e2b7809b5f65259",
+    "revision": "45e5d5ecf0cb9e879e56ce361f8cb0f094efab0b",
+    "cases": 9,
+    "watched_paths": 568,
+    "seconds": 506.954845482,
+    "source_credit": 9,
+    "native_reused_without_replay": true,
+    "independent_reader": "Original byte hashes; full before/after maps and revision; exact P stdout and native stderr; structured DivisionByZeroError, message and status255; quiet/reaped/empty groups."
+  },
+  "fixture_profile": {
+    "mode": "SL_mode/cache=false/det=true",
+    "module_count": 508,
+    "per_fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660
+  },
+  "author_fixtures": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/front-01/report.json",
+      "sha256": "bf86dca9b2a81b0ed8543290fae42c0cee753f128c05420a3c289291e8c1799c",
+      "launch_sha256": "fed41eee276a32fbf667c5e5632d76bc45cfe973ea7ba0d1e48cf16fe4003fba",
+      "revision": "45e5d5ecf0cb9e879e56ce361f8cb0f094efab0b",
+      "groups": 30,
+      "partition": [
+        11,
+        11,
+        8
+      ],
+      "watched_paths_per_fixture": 589,
+      "seconds": 267.8380704529118,
+      "passed": true,
+      "full_before_after_maps_equal": true,
+      "all_observed_true": true,
+      "quiet": true,
+      "reaped": true,
+      "process_group_empty": true,
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/life-01/report.json",
+      "sha256": "50dfd6490ab0c1fea065eb03a6c67bfeb9c37ee7aeda7a4e682c88bdcaacf145",
+      "launch_sha256": "daef381f7cd23a006694aab30a257d14ce2f73c0b1d56541326733c69b2f2494",
+      "revision": "45e5d5ecf0cb9e879e56ce361f8cb0f094efab0b",
+      "groups": 20,
+      "partition": [
+        7,
+        7,
+        6
+      ],
+      "watched_paths_per_fixture": 589,
+      "seconds": 396.88478756998666,
+      "passed": true,
+      "full_before_after_maps_equal": true,
+      "all_observed_true": true,
+      "quiet": true,
+      "reaped": true,
+      "process_group_empty": true,
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "independent_fixtures": [
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/peer-front-01/report.json",
+      "sha256": "a6d0dcd70c47059bbd5188a3b93a1ce3ad51acad878b0d3a6843abdc8565c137",
+      "launch_sha256": "d230addd5d563d24063d77b0f53568af324f7e2e32275736f62260e42b59187c",
+      "revision": "567862a696ce9c243902dfabeb4f3627cedb5144",
+      "groups": 254,
+      "partition": [
+        131,
+        39,
+        42,
+        42
+      ],
+      "watched_paths_per_fixture": 608,
+      "seconds": 420.82617740519345,
+      "passed": true,
+      "full_before_after_maps_equal": true,
+      "all_observed_true": true,
+      "quiet": true,
+      "reaped": true,
+      "process_group_empty": true,
+      "source_credit": 0,
+      "native_credit": 0
+    },
+    {
+      "report": "../php-spec-evidence-archive/new/output-final-selected-integer-predicate-cast-chain-return-modulo-error-141/peer-life-01/report.json",
+      "sha256": "d0e53a89934bfadc06432cbc7e9fdf883e26529dc484e1f0c7ef4e7e7c411590",
+      "launch_sha256": "0402f358449d7e0a4bf23c62c2d7fcebe4856eaed3db549671ae9815f48fdb5a",
+      "revision": "567862a696ce9c243902dfabeb4f3627cedb5144",
+      "groups": 34,
+      "partition": [
+        8,
+        8,
+        9,
+        9
+      ],
+      "watched_paths_per_fixture": 608,
+      "seconds": 533.1268248460256,
+      "passed": true,
+      "full_before_after_maps_equal": true,
+      "all_observed_true": true,
+      "quiet": true,
+      "reaped": true,
+      "process_group_empty": true,
+      "source_credit": 0,
+      "native_credit": 0
+    }
+  ],
+  "independent_controls": {
+    "order_endpoint_truth_queries": 62,
+    "wrong_int_or_bool_folded_facts": 18,
+    "genuine_mixed_children": 5,
+    "float_wrong_tag": 1,
+    "out_of_range_child": 1,
+    "actual_old140_builders": 3,
+    "actual_variants": [
+      "folded LESS",
+      "emitted GT",
+      "emitted GE",
+      "emitted XOR"
+    ],
+    "other": [
+      "Strict BOOL versus same-truth INT",
+      "XOR zero/nonzero truth versus bitwise/parity",
+      "GT/GE source order and terminal line",
+      "Source/CODE/fold/read/BODY/UNIT/BUDGET controls",
+      "Bare and single-cast refusals",
+      "Real callback formal/native-cell retirement"
+    ]
+  },
+  "composition": {
+    "actual_revision": "a292a451e00d7065e094355d72cf56b94f0da142",
+    "joined_revision": "a292a451e00d7065e094355d72cf56b94f0da142",
+    "tree": "a5cab486df28b2c70d6b0cae9633b8760b48d23e",
+    "main_parent": "0e9cdabbb405f576d383a7d46618c9986b900150",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main88-output141-composition-v1/map.json",
+    "sha256": "69aa2ac5375f1ae614e7c773863c73cd3e2dbd6d212edd8e412e1efa1f61c069",
+    "source_manifest_sha256": "f1dbfedcb24a9d074ce378a994909eced5e3f058255c575c182270c0bef9f9e2",
+    "passed": true,
+    "independent_check": "Exactly six paths; complete equal parents and exact posts for456/old140 review; new3 literal absent copies; Make4 unique recipe with full source-post and MAIN inverses.",
+    "cached_make": {
+      "source_post_sha256": "29795c65bcb7cfafe0eb19dcd3afe17782db35e4aa39f4cb188efc5e1605333c",
+      "source_post_blob": "6a473698c47141d440e3b33038ec0f0c77836902",
+      "actual_post_sha256": "e662a80ea2049a6dd1f3313c5427e4eb2bbdde8f46803d7dddefd527f65bf484",
+      "actual_post_blob": "d946a3785e65b801fd9212b0ba8c4a81575657b8"
+    }
+  },
+  "same_production": {
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main88-output141-v1/report.json",
+    "sha256": "a114e604ebc8f117b402eceffce54cdaa62b718db01e941c778ba2aa6b74954e",
+    "tested_revision": "a292a451e00d7065e094355d72cf56b94f0da142",
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_entries": 512,
+    "watched_paths": 513,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.440706251887605,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "stable": true,
+    "reaped": true,
+    "passed": true,
+    "source_credit": 0
+  },
+  "disposition": {
+    "passed": true,
+    "execution_failures": 0,
+    "timeouts": 0,
+    "fixture_corrections": 0,
+    "prelaw_and_unrun_credit": 0,
+    "native_or_old_campaign_replays": 0,
+    "actual_and_same_reads": 1,
+    "reviewer_jobs": 0,
+    "boundaries": "Mixed/coercive or owning operands, wider handlers and lifetimes remain partial. OB31 and every exact hold, reserve93807cdd6/255 and inventory169/306/closed0+1 are unchanged. No full-core completion claim."
+  }
+}

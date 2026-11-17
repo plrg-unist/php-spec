@@ -1687,11 +1687,26 @@ actual normalized PINT -1/0/1 result preserves quiet NORMAL full-state equality,
 nonownership and the two-cast gate. Six originals assert inner PINT tags before
 outer casts, including emitted MIN/MAX order, reusing native6 once. Author30/20
 and independent146/22 retain separate private508 SL/source0 cuts. Fifteen signed
-endpoint orders distinguish comparison from subtraction; wrong differences,
-non-PINT children and Boolean-result operators retain their own refusals.
+endpoint orders distinguish comparison from subtraction; wrong differences
+and non-PINT children retain their own refusals.
 Prelaw Unsupported2/other4unrun retain0; no failures, corrections or predecessor
 campaign replay occurred. Actual/joined composition and SAME `de4a1e4fcc6`
 pass the separate MAIN509 load in16.431164181 s/source0. Implicit operands,
 wider handlers/owners/lifetimes and every exact hold remain partial.
 [Integer spaceship evidence](../../coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-review.json).
+
+Quiet integer predicates also supply PBOOL within those casts: strict identity,
+equality, ordering and logical XOR over two certified signed64 PINT children.
+A separate Boolean clause retains the source/CODE/terminal-line/fold/read,
+quiet NORMAL full-state, nonownership and two-cast guards; the PINT arm is unchanged.
+Nine originals strictly assert inner PBOOL and outer cast tags, including emitted
+GT/GE and parenthesized XOR with zero/nonzero truth witnesses, reusing native9 once.
+Author30/20 and independent254/34 retain separate private508 SL/source0 cuts.
+Exactly three old140 Boolean queries are promoted through their actual builders;
+no old campaign is replayed. Prelaw Unsupported2/other7unrun retain0, with no
+failures, timeouts or corrections. Actual/joined `a292a451e00` and SAME MAIN509
+loading pass separately in16.440706252 s/source0. Mixed/coercive operands and
+wider handlers/owners/lifetimes remain partial; every exact hold remains.
+[Integer predicate evidence](../../coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-review.json).

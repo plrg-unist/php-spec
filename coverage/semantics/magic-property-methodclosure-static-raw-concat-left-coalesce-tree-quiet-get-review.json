@@ -1,0 +1,135 @@
+{
+  "feature": "Quiet static USER method-closure selectors with CONCAT-left coalesces",
+  "status": "Reviewed bounded increment; family and full core remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64, engine34308a6666b2d489c509541ea9befea9e2b42348; project-local oracleb9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "source": {
+    "source_revision": "935415b639bdefdc48b5c566ea55df927028880e",
+    "source_tree": "5ad96b181f6f83b7d0e9e083c531fb388c49b6d7",
+    "source_parent": "c021c2220bad117c0743487cd978545d45af0cf4",
+    "source_packet_sha256": "5da588f4807ef0add7a4c30e6a99caa87841bbe7ef0e1f0e5c2b8f3d37b19e32"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-left-coalesce-tree-quiet-get/author/source-packet-v1.json",
+    "sha256": "5da588f4807ef0add7a4c30e6a99caa87841bbe7ef0e1f0e5c2b8f3d37b19e32"
+  },
+  "implementation": {
+    "module": "spec/semantics/407-magic-property-isset.watsup",
+    "sha256": "72c028913463f6cb5ddeabf3810b4b6d2b54614b948e7fb0c4876b184b125f33",
+    "additions": 48,
+    "earlier_rule_bodies": "literal unchanged",
+    "make_recipes": 4,
+    "make_execution_credit": 0
+  },
+  "behavior": "CONCAT-left retains PSTRING identity even for empty/ASCII0/00/01 from false or NULL components. NULL primitive fallback selects new RHS. Exact SOURCE/name-child, non-NUL, old-domain disjointness and actual emitted CODE/read/pool/redirect/effect authority hold; no owner/cache/carrier changes.",
+  "engine_routes": [
+    "Zend/zend_operators.c:concat_function and __zval_get_string_func",
+    "Zend/zend_compile.c:zend_compile_binary_op and zend_compile_coalesce",
+    "Zend/zend_vm_def.h:ZEND_CONCAT and ZEND_COALESCE"
+  ],
+  "author_evidence": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-left-coalesce-tree-quiet-get/author/author-evidence-v1.json",
+    "sha256": "3d042f2e03400c0440a758a56188e7b8a1f085c5c08b628e4b58f1e8bb3fd2af",
+    "source_cases": 2,
+    "fixture_cuts": [
+      146,
+      152
+    ],
+    "initial407_sha256": "e0251705a4141e6f2aef89b83f7ded8ed1501b5cb628cc1e465aff996f8185b2"
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-left-coalesce-tree-quiet-get/independent/whole-review-v1.json",
+    "sha256": "de69fa6ae13eed11e91de7abd0c3f04373a91b68a60867cffa4244c2d8271f31",
+    "reviewer": "/root/recover27_get_coalesce_review",
+    "result": "CLEAR",
+    "source_cases": 2,
+    "fixture_cuts": [
+      23,
+      23,
+      23,
+      23,
+      7,
+      53,
+      75,
+      38,
+      31,
+      45,
+      45
+    ]
+  },
+  "validation": {
+    "private_SL_module_cut": 507,
+    "author_native_originals_once": 2,
+    "independent_native_originals_once": 2,
+    "native_replays": 0,
+    "prelaw_expected_Unsupported": 4,
+    "prelaw_source_credit": 0,
+    "compiler_root_observations": 4,
+    "compiler_root_assertion_credit": 0,
+    "compiler_root_source_credit": 0,
+    "fixture_source_credit": 0,
+    "execution_failures": 0,
+    "timeouts": 0,
+    "limits": {
+      "address_space_bytes": 3221225472,
+      "fixture_seconds": 297,
+      "model_inner_seconds": 280,
+      "model_outer_seconds": 290
+    },
+    "accounting": "Each cut remains separate; repeated stage/binding premises are not unique obligations. Fixtures, compiler facts, Make recipes and WHOLE have source credit0. Saved native originals reused; no native or old-family replay."
+  },
+  "corrections": {
+    "static_non_NUL_guard": 1,
+    "accepted_bridge": "Removing exactly this new premise reproduces e0251705 exactly. Own146 at e025 authenticates all four source1 CONCAT-left values: empty,1,0,1; final own152 authenticates all five source2 values: className,01,1,empty,1. All values satisfy the sole added guard. Primitive NULL fallback, earlier providers, SOURCE/CODE and owners are unchanged. Accept author source2 and first146 with their original e025 identities; final152 and peer final72c source2+guards supplement them without replay.",
+    "review_metadata_note": "An initial local stat assertion used the pre-guard47 estimate. Exact final48/runtime and511/source7 additions were verified without changing inputs or rerunning semantics."
+  },
+  "integration": {
+    "actual_revision": "3732546ebad6b97daf81804681cf5b687a8bc63b",
+    "actual_tree": "668b9a2008b0c8fcfc0dbe1277609d21b1d34ad2",
+    "actual_parent": "01bd187cddbb1791de04493966d6237d7e0a814b",
+    "same_canonical_revision": "3732546ebad6b97daf81804681cf5b687a8bc63b",
+    "same_canonical_tree": "668b9a2008b0c8fcfc0dbe1277609d21b1d34ad2",
+    "independent_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-concat-left-coalesce-tree-quiet-get/independent/actual-composition-review27-v1.json",
+      "sha256": "984b506658efb2c27e924dded5284d2b612e1b13fb3a2058ddee1d02a3a9c09d"
+    },
+    "composition_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main88-bool-enum-get-composition-v1/GETconcatleftcoalesce.json",
+      "sha256": "50049d73f5d4e084771c5ce893ff746ee19ff0e9125c5599fea5b7a51af1b402"
+    },
+    "composition": {
+      "custody_mutations": 0,
+      "method": "Immutable Git objects only: exact changed7, whole SOURCE407 parent equality and final72c exact post, five exact new literal files absent at actual parent, four unique Make recipes and removal recovers complete source and actual parents. Actual equals joined SAME.",
+      "result": "CLEAR",
+      "source_credit": 0,
+      "tested_final407_sha256": "72c028913463f6cb5ddeabf3810b4b6d2b54614b948e7fb0c4876b184b125f33"
+    },
+    "saved_canonical": {
+      "argv_entries": 512,
+      "cap_seconds": 60,
+      "exit": 0,
+      "input_sha256_after_count": 513,
+      "input_sha256_count": 513,
+      "mode": "production_SL",
+      "module_count": 509,
+      "pass": true,
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main88-bool-enum-get-v1/report.json",
+      "read_count": 1,
+      "reaped": true,
+      "revision_after": "3732546ebad6b97daf81804681cf5b687a8bc63b",
+      "seconds": 16.43180726794526,
+      "sha256": "c0971a39575d25bdb1e1494dfdf1ec1017d0b7be20eb8b917e8ecacda994c8d8",
+      "source_credit": 0,
+      "stable": true,
+      "stderr_hex": "",
+      "stdout_hex": "747275650a",
+      "tested_revision": "3732546ebad6b97daf81804681cf5b687a8bc63b",
+      "timeout": false
+    },
+    "metadata_normalization_note": "The first and only saved-report read printed and verified the digest, revision/mode/pass/stable/reaped/streams/source0 fields and displayed argv512 plus input_sha256/input_sha256_after counts513. A local normalizer expected the older inputs_before field name and stopped afterward. This record uses the observed original header and authoritative stable flag with the actual schema; no saved canonical reread or runtime action occurred. No explicit separate per-entry input-map audit is claimed.",
+    "author_consumption": "Immutable independent tuple only; no MAIN source, canonical-report read, runtime execution or accepted-family renewal."
+  },
+  "remaining": "NEW within left CONCAT, NEW below outer NOT/Boolean/ternary, FLOAT/CV/nonquiet/NUL selectors, wider producers/owners/lifetimes and all held lanes remain partial. No family/full-core completion claim.",
+  "holds": "Exact holds, reserve93807cdd6/255 and inventory169/306 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}

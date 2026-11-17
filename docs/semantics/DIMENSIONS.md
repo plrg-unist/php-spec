@@ -1293,7 +1293,8 @@ every exact hold, reserve93807cdd6/255 and inventory169/306 remain unchanged.
 
 Ordinary initialized BOOL CV keys now use a separate Warning task carrying their
 borrowed entry-cell identity. Source/CODE/read-eps and actual late reads remain exact;
-normal and pending-throw completion require that same unwrapped, unreleased BOOL cell.
+At its initial cut, normal and pending-throw completion required that same
+unwrapped, unreleased BOOL cell.
 Changed, removed, rebound or owning completion stays explicitly Unsupported after H.
 Native6 once gives three new Warning agreements, one quiet delayed-INT agreement
 and two Unsupported controls0. Author SL114/25-derived+103/14-derived and peer
@@ -1302,6 +1303,19 @@ compile failures6 and one author fixture parse failure remain0. Actual=SAME `a02
 and sole production-SL509 `7207eea2` pass 16.431716288s/source0; exact holds,
 reserve93807cdd6/255 and inventory169/306 remain unchanged.
 [BOOL-CV Warning review](../../coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
+
+That BOOL continuation now also admits quiet NULL and signed64 INT writes to
+the same ordinary cell after the Warning. Its separate post-value/cell proof
+retains saved-n identity, no reference/released marker and exact whole-state quiet
+read; entry remains BOOL-only. Genuine direct GLOBALS writes establish those
+postconditions before the law changes. Native4 once/source4, author SL173/123-derived+
+192/131-derived and peer AL130/68-derived+144/70-derived retain separate first-pass
+cuts; prelaw Unsupported4 stays0 and failures0. Actual `f24f264e4`, joined
+`3732546eb` and sole production-SL509 `c0971a39` pass 16.431807268s/source0,
+independently clear through one immutable tuple. Wider postvalues, cells and
+lifetimes remain partial; exact holds, reserve93807cdd6/255 and inventory169/306
+remain unchanged.
+[Quiet post-value review](../../coverage/semantics/string-offset-nested-unset-bool-cv-quiet-post-review.json).
 
 Ordinary nonNaN FLOAT CV keys now have their own source-only Warning task.
 The fixed native CV slot survives handler mutation/unset; DOUBLE's silent cast
@@ -1909,3 +1923,5 @@ Two emitted ordinary coalesce operands retain the certified selected INTERNED he
 Literal nonnull STRING coalesce left operands preserve their exact compiled INTERNED header and frozen raw leading CV key through returning Warnings with a nonliteral emitted RHS, including a full ternary. Falsey "0" and empty strings stay nonnull. Exact raw left bytes/read/header, both child origins/read kinds and the whole typed NORMAL runtime certificate remain mandatory; immediate RHS source remains authenticated while deeper skipped values/CODE/precision stay undemanded. The literal-byte exclusion preserves mandatory raw-literal RHS proofs. Carrier, ownership, key-cell and continuation bounds remain; wider forms/lifetimes stay partial. [Review](../../coverage/semantics/string-offset-literal-string-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
 Folded pure raw STRING CONCAT coalesce left operands preserve their exact INTERNED header and frozen raw leading CV key through returning Warnings with a nonliteral emitted RHS, including a full ternary. Actual folded root CODE/PSTRING read/header/precision and exact full SOURCE subtree identity authenticate the value without child CODE/pools/precision facts. Falsey "0" remains nonnull. Immediate RHS source stays authenticated while deeper skipped facts stay undemanded; existing literal RHS header proofs, key-cell, owner and continuation bounds remain. Mixed/coerced leaves, wider forms and lifetimes stay partial. [Review](../../coverage/semantics/string-offset-literal-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+Folded raw STRING/fitting signed64 NScalarInt CONCAT coalesce left operands preserve exact INTERNED headers and frozen raw leading CV keys through returning Warnings with a nonliteral emitted RHS. A separate long_range/decimal_integer classifier keeps the original STRING-only literal_bytes and RHS exclusions unchanged; actual folded root CODE/read/header/precision and exact complete SOURCE identity remain required. Current/reference-cell capture, ownership and continuation bounds remain. Unary signs, FLOAT/Boolean/null/coerced leaves, wider forms and lifetimes stay partial at this cut. [Review](../../coverage/semantics/string-offset-literal-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).

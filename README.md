@@ -20,11 +20,17 @@ Own public parentless short reference Get admits exact `Class|bool` and `bool|Cl
 
 Folded literal-false shorthand defaults retain certified emitted scalar results, including quiet NaN and negative zero, before existing private reception. Wider conditions, owning results, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-false-short-redirect-wrapper-default-reception-review.json).
 
+Folded shorthand defaults now admit certified NULL, integer zero and both FLOAT zeros alongside false, retaining exact typed condition pools and finite emitted fallback values. Wider conditions, owners and lifetimes remain partial. [Review](coverage/semantics/deferred-falsey-short-redirect-wrapper-default-reception-review.json).
+
 Ordinary NaN-CV inner unset keys share the source-only FLOAT Warning task while retaining reached PFLOAT identity and entry/source/owner guards. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-nan-cv-warning-review.json).
 
-[Global plain stdClass return names](coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json) use the producer declaration context, exact decoded class bytes and the existing private Notice-cell bounds. Namespace/import contexts, nullable/union names and wider lifetimes remain partial.
+[Global plain stdClass return names](coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json) use the producer declaration context, exact decoded class bytes and the existing private Notice-cell bounds. Namespace/import contexts, explicit union names and wider lifetimes remain partial.
+
+[Nullable bare stdClass producer returns](coverage/semantics/global-plain-nullable-stdclass-return-producer-reference-notice-review.json) use the retained global declaration context and exact class/null header before existing return checks and private Notice cells; wider names, contexts and lifetimes remain partial.
 
 Quiet signed64 PINT SPACESHIP results cross nested handler casts as normalized -1/0/1 under the existing source, quiet-state and ownership guards. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-spaceship-cast-chain-return-modulo-error-review.json).
+
+Quiet Boolean identity, equality, ordering and logical XOR of two signed64 integer children cross nested handler casts with exact Boolean results and existing quiet-state and ownership guards. Wider operands, handlers and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-predicate-cast-chain-return-modulo-error-review.json).
 
 Direct unary-minus raw nonNaN FLOAT intermediate unset keys preserve exact child/folded/captured bits and value-free Warning resume. [Review](coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
 
@@ -48,6 +54,9 @@ fallback; quiet truthy strings retain their selected header. Wider producers,
 carriers and lifetimes remain partial.
 [Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
 [truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Folded raw integer/STRING CONCAT coalesce left operands preserve exact INTERNED headers and frozen raw CV offsets through returning Warnings, including falsey "0" and a MAX prefix. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 
 Folded raw STRING CONCAT coalesce left operands preserve their exact INTERNED header and frozen raw CV offset through returning Warnings with a nonliteral emitted RHS, including falsey "0". Wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
@@ -76,7 +85,9 @@ Completed one- or multiple-required ordinary-CV producers admit exact ordered it
 
 Literal true/false intermediate string-offset unset keys preserve the cast-Warning handler's return or throw before the fixed nested Error under exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-bool-warning-review.json)).
 
-Ordinary initialized BOOL-CV inner unset keys retain their physical entry cell through Warning callbacks; replacement cells, changed types or owning poststates remain Unsupported. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
+Ordinary initialized BOOL-CV inner unset keys retain their physical entry cell through Warning callbacks; replacement cells or owning poststates remain Unsupported. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
+
+The saved BOOL-CV cell may hold quiet NULL, BOOL or signed64 INT after its Warning handler. Exact cell identity, quiet reads and owner bounds remain; wider postvalues and lifetimes stay partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-quiet-post-review.json).
 
 The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
 and combined production loads; complete core remains unfinished.
@@ -11682,6 +11693,8 @@ preserve their distinct scope, argument priorities and error traces.
 Fixed-required ordinary-CV producers admit ordered builtin FORMAL unions of2–8 members containing iterable, preserving exact raw/normalized order, unique builtin/Boolean kinds and pointwise Param/BYREF authority. Explicit nullable-pair exclusions retain existing admission; RETURN/payload/owner/lifetime rules remain. [Review](coverage/semantics/cv-builtin-union-iterable-formal-producer-reference-notice-review.json).
 
 Quiet static USER method selectors admit raw primitive-left coalesces: NULL selects the right bytes, while false, zero and empty String retain their left echo. Exact SOURCE/name-child and measured emitted-root authority preserve existing quiet Get ownership/cleanup; wider forms/lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-primitive-coalesce-tree-quiet-get-review.json).
+
+[Quiet CONCAT-left coalesces](docs/semantics/METHODCLOSURE-STATIC-RAW-CONCAT-LEFT-COALESCE-TREE-QUIET-GET.md) preserve nonnull String identity in bounded static USER method selectors, including empty and "0"; wider forms remain partial.
 
 Literal-NULL coalesce redirects preserve their emitted RHS scalar tags, including quiet NaN and negative zero. Wider folded leaves, owning RHS values, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-null-coalesce-redirect-wrapper-default-reception-review.json).
 
