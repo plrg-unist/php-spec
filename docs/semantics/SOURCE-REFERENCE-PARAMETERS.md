@@ -901,6 +901,18 @@ union and multiple-CV iterable returns, new iterable formals, Traversable Notice
 payloads, wider lifetimes and exact holds remain partial. Make/joined source
 replay remain unexecuted; metadata adds no source credit.
 
+Completed one-CV producers also admit raw `?iterable`, `iterable|null` and
+`null|iterable` returns over the existing required formal shapes. Exact normalized
+order, return verification and frame retirement precede finite array/NULL Notice
+operands and separate unconstrained private cells. The
+[nullable iterable-return review](../../coverage/semantics/singleton-cv-nullable-iterable-return-producer-reference-notice-review.json)
+retains accepted native4+3 once/source7 (five admissions/two priority controls),
+author327/peer240 fixture-SL507 and the READY `3ab066f12` source signature.
+Actual `734571e0c` composition is independently clear; sole joined loading remains
+a separate zero-source cut. Metadata adds no execution credit. Multiple-CV iterable
+returns, new iterable formals, Traversable Notice payloads, wider lifetimes and
+every exact hold remain partial at this cut.
+
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
 case-folded stdClass identity, member order, unique builtins, one class and at
