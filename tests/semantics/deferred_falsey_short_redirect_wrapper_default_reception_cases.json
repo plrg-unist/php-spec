@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-falsey-short-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawFalseyRedirect297($p0 = (false ?: (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = (0 ?: ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = (NULL ?: (((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p3 = (0.0 ?: ((-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p4 = (-0.0 ?: ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (NULL ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p6 = (0.0 ?: (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false))), $p7 = (-0.0 ?: (((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawFalseyRedirect297();\nrawFalseyRedirect297();\n",
+    "purpose": "Matching folded false/INT0/NULL/FLOAT+0/FLOAT-0 conditions select genuinely emitted scalar RHS values without changing result tags; BOOLfalse is a prior-route contrast.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "ffdf0e9800dc79ce6b482cc8f4a7569880eeea32e92bfe54b67278c42122b83c"
+  },
+  {
+    "id": "deferred-falsey-short-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace FalseyRedirect297;\nuse const E_WARNING as Base297;\nuse const E_ERROR as One297;\nfunction warning297($errno, $message, $file, $line) {\n    global $x297;\n    echo 'warning:', $message, '|';\n    defaults297(2);\n    $x297 = 3.5;\n}\nfunction defaults297(int $first, int &$zeroBool = (int)(0 ?: (((bool)(+(-((float)(+(Base297 === One297)))))))), int &$nullInt = (int)(NULL ?: (((int)(!((bool)(+(-((float)(+(Base297 === One297)))))))))), int &$positiveZero = (int)(0.0 ?: (((float)((bool)(+(-((float)(+(Base297 === One297))))))))), int &$negativeZero = (int)(-0.0 ?: ((-((float)((bool)(+(-((float)(+(Base297 === One297)))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $zeroBool, ':', $nullInt, ':', $positiveZero, ':', $negativeZero, ':', $last, '|';\n    $zeroBool = 19;\n    $nullInt = 20;\n    $positiveZero = 21;\n    $negativeZero = 22;\n}\n\\set_error_handler('FalseyRedirect297\\\\warning297');\n$x297 = 1.5;\n$last297 = 8;\ndefaults297(last: $last297, first: $x297);\necho 'outer:x=', $x297, '|';\n",
+    "purpose": "Folded INT0/NULL/FLOAT+0/FLOAT-0 predicates retain exact source/pool tags before FIELD2 selection, INT private BYREF reception and precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "ee9477c7ecbd6be16cf5502a5a40ef1dd0d0a95f0755bbc27826e59ba2025027"
+  }
+]

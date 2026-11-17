@@ -1581,8 +1581,9 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pva
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
-  -- if $lossy_optional_integer_special(plenv, expression_cond) = (PBOOL false)
-  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL false)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue_cond)
+  -- if pvalue_cond <- [PBOOL false, PNULL, PINT 0, PFLOAT 0, PFLOAT 9223372036854775808]
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue_cond)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
   -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = eps
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0]) = 0
