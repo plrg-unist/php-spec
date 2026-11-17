@@ -1097,6 +1097,16 @@ Prelaw front254/271 and first Unsupported/other unrun cuts retain zero source
 credit. Wider headers, actual forms, payloads and lifetimes remain partial; all
 exact holds stay unchanged.
 
+Global producer declarations without class imports also admit a bare `stdClass`
+RETURN name. The scoped header uses the producer's retained declaration
+environment, exact decoded raw/normalized class bytes and case-folded `stdClass`
+identity. Both Notice ingress sites reuse the existing required ordinary-CV
+argument proof, return verification, frame retirement and private-cell bounds.
+The [plain-name return review](../../coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json)
+records the source and state evidence. Namespaced/imported declarations, plain
+formal names, nullable/union plain returns and wider payload/lifetime histories
+remain partial; the older context-independent header stays unchanged.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags
