@@ -1561,3 +1561,15 @@ Unsupported, fixture failures and unrun cases retain0. Actual MAIN508 loading at
 owners, bare/single-cast handlers, lifetimes and every exact hold remain partial.
 [Certified NOT evidence](../../coverage/semantics/output-final-selected-certified-not-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-certified-not-cast-chain-return-modulo-error-review.json).
+
+Numeric unary +/- now composes over already certified signed64 INT or non-NaN
+FLOAT children within those nested casts. Exact child source/CODE/line authority
+and its folding flag, unchanged numeric type, full NORMAL state equality and
+nonownership remain required; folded signs need their own fact and emitted signs
+need read-eps. Six originals reuse six native observations once. Author affected2,
+frontier30/lifecycle20 and independent112/21 retain separate fixture source0 cuts;
+baseline Unsupported2/unrun4 retain0. Actual MAIN508 loading at `d7347f16d`
+passes separately in16.842721109 s/source0. Coercive signs, integer promotion,
+NaNs, wider handlers/owners/lifetimes and every exact hold remain partial.
+[Recursive sign evidence](../../coverage/semantics/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-review.json).

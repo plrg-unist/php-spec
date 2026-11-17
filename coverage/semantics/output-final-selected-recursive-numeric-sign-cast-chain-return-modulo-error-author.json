@@ -1,0 +1,110 @@
+{
+  "family": "OUTPUT131",
+  "status": "bounded implementation independently reviewed and integrated; output family remains partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; vendor/php-src 34308a6666b2d489c509541ea9befea9e2b42348; tests/semantics/profile.json",
+  "implementation": "spec/semantics/456-output-object-returns.watsup:$ob_object_cast_chain_value",
+  "contract": "Nested canonical BOOL/INT/FLOAT handler-return casts compose numeric unary +/- over already certified signed64 INT or nonNaN FLOAT children. Proper child SOURCE, unit, CODE and line remain exact; the sign parent uses the actual child folding flag. Bind completed S_signed and its typed result, require unchanged numeric type, bounds, full NORMAL state equality and nonownership. Folded signs need their own exact raw fact; emitted signs need read-eps.",
+  "engine_authority": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_unary_pm, zend_try_ct_eval_unary_pm, zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h:ZEND_MUL",
+    "vendor/php-src/Zend/zend_operators.c:mul_function_fast",
+    "spec/semantics/35-scalar-operations.watsup:$unary_apply"
+  ],
+  "source_package": {
+    "author_revision": "9bce648c30889519227f7b36467fad168b028011",
+    "parent": "5e4283fa6c27a3ff3090657c24bdc9c13861af21",
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-131/ready-source-131-manifest.json",
+    "manifest_sha256": "0f33f6b8dfeef5548395511ae885cd327216f0c8076f069569f13e58c9e35b01",
+    "patch_sha256": "e6a6bcaf0b0dd2521cfbb2165d91b532618132bdb0a66339f6f49d1682c06d8b",
+    "files": 7,
+    "insertions": 391,
+    "deletions": 8,
+    "independent_whole": "FULLCLEAR27 after first independent frontier112 and lifecycle21"
+  },
+  "evidence_root": "../php-spec-evidence-archive/new/output-final-selected-recursive-numeric-sign-cast-chain-return-modulo-error-131",
+  "accepted_author_cuts": [
+    {
+      "report": "native-01/report.json",
+      "sha256": "e88de170762108ff5e84d41ce344ddb84612f7c6cbdc89570ff7b3e272968533",
+      "revision": "9c486f2af968d8b1cb5fe8f1edb875ff10ccfdf9",
+      "native_originals_once": 6,
+      "source_credit": 0
+    },
+    {
+      "report": "before-01/report.json",
+      "sha256": "5162cf413b7354691b5e17c952ba8d6a7439d4f4397ea0cd18b71f3eb466b0a6",
+      "revision": "9c486f2af968d8b1cb5fe8f1edb875ff10ccfdf9",
+      "expected_unsupported": 2,
+      "other_prelaw_originals_unrun": 4,
+      "source_credit": 0
+    },
+    {
+      "report": "after-01/report.json",
+      "sha256": "f3e038bb9e675ee8c36bd3dfd480ebb46985e03f6c08c2414686a561a4865797",
+      "revision": "216289d60f95a2d060fa26d187dbdaa48adc213c",
+      "production_SL_source_agreements": 6,
+      "saved_native_originals_reused_once": 6,
+      "seconds": 328.25442492892034,
+      "outcome": "exact typed witnesses and native MOD-zero Error/255 observations"
+    },
+    {
+      "report": "affected-01/report.json",
+      "sha256": "d1a8216445aabbbb2ceb36a3d47dd920814e152726148f7ca32856fe25826036",
+      "revision": "a28bdd3ef204ab1680549f2fefe0f9430516b350",
+      "fixture_assertions": 2,
+      "source_credit": 0,
+      "selection": "only newly positive coherent nested-sign NOT and retained raw numeric-STRING sign refusal from saved130 state"
+    },
+    {
+      "report": "front-01/report.json",
+      "sha256": "1f18850a347e2ddbbead5622d740663b38f85b2a9386fc6b39e8ae6c2731f0d3",
+      "revision": "a28bdd3ef204ab1680549f2fefe0f9430516b350",
+      "fixture_assertions": 30,
+      "per_case": [
+        11,
+        8,
+        11
+      ],
+      "source_credit": 0
+    },
+    {
+      "report": "life-01/report.json",
+      "sha256": "4daee7be713384c104ca45f1f6a1a31be5dfa6ed5839dc974463fe75eddb8fdf",
+      "revision": "9bce648c30889519227f7b36467fad168b028011",
+      "fixture_assertions": 20,
+      "per_case": [
+        7,
+        6,
+        7
+      ],
+      "source_credit": 0
+    }
+  ],
+  "execution_contract": "Production source SL508/cache=false/det=true with CLI cap90/outer cap660; fixture SL508/cache=false/det=true with per-fixture cap300/outer cap660. Accepted runs were quiet, stable and fully reaped with empty process groups. Fixture cuts add no source/native agreement credit.",
+  "compatibility": "Source6 retains216; later Make/peer-fixture changes are outside its imported closure. Author frontier30 retainsa28; the later ten reviewer lines are outside its imported closure. Runtime, source producer and author fixture stay exact216. Old129 changes only a label for its unchanged missing-grandchild refusal and was not rerun.",
+  "actual_main": {
+    "revision": "d7347f16d74ed66b827da68b8390a0dcf37ab3f6",
+    "tree": "09be03abdc7aff2fc7c03c2a54edb04ade6019ef",
+    "composition": "../php-spec-evidence-archive/resumed-main-20261112/main74-output131-composition-v1/composition.json",
+    "composition_sha256": "e2e41355d4f0f147c2537b40112d4f97a160b04b23272239a9de4c8e3f66040a",
+    "independent_actual": "FULLCLEAR27: exact seven paths; six complete parent/postimage identities; four Make recipe insertions preserve every existing main byte",
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main74-output131-v1/report.json",
+      "sha256": "1ac529057b2a2ad7c729812359ab0f0dc856413c6d514212503439dacc0424ae",
+      "tested_revision": "d7347f16d74ed66b827da68b8390a0dcf37ab3f6",
+      "seconds": 16.84272110904567,
+      "mode": "production_SL",
+      "modules": 508,
+      "ordered_arguments": 511,
+      "watched_inputs": 512,
+      "cap_seconds": 60,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0
+    }
+  },
+  "remaining": "Direct BOOL/NULL/raw STRING or Boolean NOT values under numeric signs, INT_MIN promotion, NaNs and owning values remain outside this certificate. New recursive children do not broaden bare/single-cast handler routes. Wider handlers, producers and lifetimes remain partial; every standing hold and reserve93807cdd6/255 stays unchanged."
+}
