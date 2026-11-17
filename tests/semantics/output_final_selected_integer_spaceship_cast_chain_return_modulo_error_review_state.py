@@ -129,8 +129,8 @@ def frontier(name, fixture, path):
                      for side, child, typed in zip(['left', 'right'], children, values)]
             proof += ['$binary_apply(' + state + '[.RESULT = KNOWN (' + values[1] + ')], SPACESHIP, ' +
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
-                      value(state, expression, function=function) + ' = eps']
-            checks += [('source0 genuine quiet BOOL/NULL/FLOAT/STRING comparisons cannot borrow two-PINT child authority', current.CONJ.join(proof))]
+                      value(state, expression, function=function) + (' = (' + result + ')' if result.startswith('PINT ') else ' = eps')]
+            checks += [('source0 proper primitive children keep exact quiet signed PINT results and refuse FLOAT results', current.CONJ.join(proof))]
         for constructor, operator, left, right, result in [
                 ('NExprBinaryOpEqual', 'EQUAL', '2', '2', 'PBOOL true'),
                 ('NExprBinaryOpSmaller', 'LESS', '1', '2', 'PBOOL true'),
