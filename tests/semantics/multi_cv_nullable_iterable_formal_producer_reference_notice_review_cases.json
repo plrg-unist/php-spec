@@ -1,0 +1,118 @@
+[
+  {
+    "id": "first-nullable-iterable-generator-byref-second-int-null-return-private-cell-cow",
+    "namespace": "ReviewFirstGeneratorNullableIterableFormal100",
+    "formal_kind": "iterable",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "generator",
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace ReviewFirstGeneratorNullableIterableFormal100;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x=['n'=>23];echo 'H:',$line,';';return true;}\nfunction make(?iTeRaBlE &$saved,int $stamp):?array{echo 'S:',$stamp,';';echo 'M:',(int)($saved instanceof \\Traversable),';';$saved=null;return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=produce();$copy=$x;$kept=$copy;$alias=&$x;set_error_handler('ReviewFirstGeneratorNullableIterableFormal100\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x['n'],':',$alias['n'],':',(int)($copy===$kept),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===$kept),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:1;H:9;F:1;R:41:23:23:1;C:43:41;D:done:41:1;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "cf6fea9dcc44acab1417c92c6a52659b643d5b93ec348a3bdb71e4130e607024",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "first-iterable-generator-byref-second-int-null-return-private-cell-cow",
+      "source_sha256": "2e92a20e8894a2e2a1135ae3116228f7029ab545457327d5ede57d23c6be6a4c",
+      "edits": "Fresh namespace and canonical raw nullable iterable first formal; existing second CV, multiline diagnostics, array/null returns, private cells and lifetimes unchanged."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 9,
+    "last_actual_source_line": 10,
+    "first_actual_source_line": 9
+  },
+  {
+    "id": "first-nullable-iterable-array-byref-second-int-handler-throw-retirement",
+    "namespace": "ReviewFirstArrayNullableIterableFormal100",
+    "formal_kind": "iterable",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "array"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstArrayNullableIterableFormal100;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(?iTeRaBlE &$saved,int $stamp):null|array{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewFirstArrayNullableIterableFormal100\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "409e4090f71d91b16f97b2d9290699f4cc40cb6d30c7dfd5094068c776071d4c",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "first-iterable-array-byref-second-int-handler-throw-retirement",
+      "source_sha256": "345b4ac0f8536a56576bc503da7136f0c290c667318030450a35f9a8b815d9ff",
+      "edits": "Fresh namespace and canonical raw nullable iterable first formal; existing second CV, multiline diagnostics, array/null returns, private cells and lifetimes unchanged."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  },
+  {
+    "id": "weak-first-nullable-iterable-string-receive-priority-before-second-int-body-and-notice",
+    "namespace": "ReviewWeakFirstNullableIterablePriority100",
+    "formal_kind": "iterable",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "caller_kind": "string",
+    "priority_control": true,
+    "return_shape": "union",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewWeakFirstNullableIterablePriority100;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;echo 'BAD-H;';return true;}\nfunction make(?iTeRaBlE $saved,int $stamp):array|null{echo 'S:',$stamp,';';echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewWeakFirstNullableIterablePriority100\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;Z:7;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "3b12e93bf8ec547fce9b3eeff5413f4c3f80f088887d169fefb6e4a343fee475",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "weak-first-iterable-string-receive-priority-before-second-int-body-and-notice",
+      "source_sha256": "bf0d5b37bc3be11ae755fa10879a447b87f50fa5e45bbb4fd4283083e1c6a489",
+      "edits": "Fresh namespace and canonical raw nullable iterable first formal; existing second CV, multiline diagnostics, array/null returns, private cells and lifetimes unchanged."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  }
+]

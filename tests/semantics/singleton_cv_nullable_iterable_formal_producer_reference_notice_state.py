@@ -80,7 +80,7 @@ def controls(case):
     raw = '(NIdentifier (BYTES text_formal) metadata_formal)'
     lines = []
     for line in prior.controls(case):
-        if line.startswith('$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual])'):
+        if case['formal_shape'] == 'union' and line.startswith('$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual])'):
             line = '~' + line
         elif line.startswith('~' + header) and '(NNullableType ' + raw + ' metadata_formal)' in line and case['formal_members'] == ['iterable', 'null']:
             line = line[1:]

@@ -1,0 +1,184 @@
+[
+  {
+    "id": "later-nullable-iterable-byref-formal-scalar-prefix-embedded-alias-and-private-cell",
+    "namespace": "MultiCvLaterNullableIterableFormal100",
+    "formal_kind": "iterable",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvLaterNullableIterableFormal100 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H:',$line,';';return true;}\nfunction make(int $stamp,?iTeRaBlE &$input):?array{$saved=$input;$input=17;echo 'M:',$input,':',$stamp,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvLaterNullableIterableFormal100\\\\h',8);echo 'A;';\n$r=&take(make(\n    $stamp, // first actual\n    $source // final actual\n));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17:5;H:9;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "later-iterable-byref-formal-scalar-prefix-embedded-alias-and-private-cell",
+      "source_sha256": "340563430a340f61181b84aa7e1f95356e67034317e1cbd540c38fd5d642d79f",
+      "edits": "Fresh namespace; required iterable formals become canonical raw ?iterable with normalized [iterable, null]. The third case uses a genuine NULL input. Existing multiple ordinary CVs, returns, payloads, private cells and priority observations remain."
+    },
+    "source_sha256": "2e7b819b320f74a5162af7a4bea5676e2b4667947268f2a6173cc6542395b04c",
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "input",
+    "caller_kind": "array",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "other_value_kind": "integer",
+    "other_integer": 5,
+    "expected_notice_line": 9,
+    "notice_line_candidates": [
+      9,
+      10
+    ],
+    "last_actual_source_line": 10,
+    "line_observation": "Existing compiled namespace-fallback direct-CV argument-list line, distinct from final physical actual line; no source-line runtime change.",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "duplicate-nullable-iterable-byval-formals-cow-and-private-cell",
+    "namespace": "MultiCvDuplicateNullableIterableFormal100",
+    "formal_kind": "iterable",
+    "formal_byref": false,
+    "source": "<?php\nnamespace MultiCvDuplicateNullableIterableFormal100;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H:',$line,';';return true;}\nfunction make(?ItErAbLe $saved,?ItErAbLe $again):array|null{$saved['n']=7;echo 'M:',$again['n'],';';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('MultiCvDuplicateNullableIterableFormal100\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x, // first actual\n    $x // final actual\n));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H:8;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "duplicate-iterable-byval-formals-cow-and-private-cell",
+      "source_sha256": "014190a0217993fa1b90adc75a623d09ddea35b33588317a49fcd21d3e5411d5",
+      "edits": "Fresh namespace; required iterable formals become canonical raw ?iterable with normalized [iterable, null]. The third case uses a genuine NULL input. Existing multiple ordinary CVs, returns, payloads, private cells and priority observations remain."
+    },
+    "source_sha256": "c9ef83ed9cf03598054eaaad94ec7d236c272b8c7b6ac8d90be4d01ba8adad34",
+    "return_shape": "union",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "saved",
+    "caller_kind": "array",
+    "iterable_index": 0,
+    "other_kind": "iterable",
+    "other_name": "again",
+    "other_actual_name": "x",
+    "other_byref": false,
+    "other_value_kind": "array",
+    "duplicate_cv": true,
+    "expected_notice_line": 8,
+    "notice_line_candidates": [
+      8,
+      9
+    ],
+    "last_actual_source_line": 9,
+    "line_observation": "Existing compiled namespace-fallback direct-CV argument-list line, distinct from final physical actual line; no source-line runtime change.",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "other_formal_shape": "nullable",
+    "other_formal_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "later-null-nullable-iterable-byval-formal-scalar-prefix-null-return",
+    "namespace": "MultiCvGeneratorNullableIterableFormal100",
+    "formal_kind": "iterable",
+    "formal_name": "saved",
+    "formal_byref": false,
+    "caller_kind": "null",
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "array"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace MultiCvGeneratorNullableIterableFormal100;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H:',$line,';';return true;}\nfunction make(int $stamp,?iterable $saved):null|array{echo 'M:',$stamp,';';return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value='done';return $value;}\n$stamp=7;$x=null;$copy=$x;$kept=$copy;set_error_handler('MultiCvGeneratorNullableIterableFormal100\\\\h',8);echo 'A;';\n$r=&take(make(\n    $stamp, // first actual\n    $x // final actual\n));echo 'R:',$r,':',$x,':',(int)($copy===$kept),';';\n$snapshot=$r;$r=13;echo 'C:',$r,':',$snapshot,';';$r=29;echo 'D:',$r,':',(int)($copy===$kept),';';\n",
+    "native_stdout": "A;M:7;H:8;F:1;R:done:23:1;C:13:done;D:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "later-generator-iterable-byval-formal-scalar-prefix-null-return",
+      "source_sha256": "3fc4c5f144c3889d238bf2ae5160c52a67addb38e4bcaec8d8464aedbfb9fdcd",
+      "edits": "Fresh namespace; required iterable formals become canonical raw ?iterable with normalized [iterable, null]. The third case uses a genuine NULL input. Existing multiple ordinary CVs, returns, payloads, private cells and priority observations remain."
+    },
+    "source_sha256": "f326307fe29caa7e4c1de89c929ef8023984693228a359304eb50026332a4768",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "other_value_kind": "integer",
+    "other_integer": 7,
+    "expected_notice_line": 8,
+    "notice_line_candidates": [
+      8,
+      9
+    ],
+    "last_actual_source_line": 9,
+    "line_observation": "Existing compiled namespace-fallback direct-CV argument-list line, distinct from final physical actual line; no source-line runtime change.",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "strict-later-nullable-iterable-receive-error-retires-prefix-constraint",
+    "namespace": "MultiCvNullableIterableReceivePriority100",
+    "formal_kind": "iterable",
+    "formal_name": "input",
+    "formal_byref": true,
+    "caller_kind": "integer",
+    "receive_priority_control": true,
+    "return_shape": "nullable",
+    "return_members": [
+      "array",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvNullableIterableReceivePriority100;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int &$stamp,?iterable &$input):?array{echo 'BAD-M;';return [];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=5;$stampAlias=&$stamp;$source=17;$sourceAlias=&$source;$r='old';set_error_handler('MultiCvNullableIterableReceivePriority100\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $stamp, // first actual\n    $source // final actual\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';$stamp='done';echo 'S:',$stamp,':',$stampAlias,';';\n",
+    "native_stdout": "A;T:1:17:17;Q:19;S:done:done;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "strict-later-iterable-receive-error-retires-prefix-constraint",
+      "source_sha256": "f9c2267e02e6121c0f44079b735583cde56d764da22ed059f038901f2bbcf6af",
+      "edits": "Fresh namespace; required iterable formals become canonical raw ?iterable with normalized [iterable, null]. The third case uses a genuine NULL input. Existing multiple ordinary CVs, returns, payloads, private cells and priority observations remain."
+    },
+    "source_sha256": "4ae67a066933a919a8f3bab5a27a88d5beb479a0ecceb93414884481dade17b0",
+    "iterable_index": 1,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": true,
+    "other_value_kind": "integer",
+    "other_integer": 5,
+    "expected_notice_line": 9,
+    "notice_line_candidates": [
+      9,
+      10
+    ],
+    "last_actual_source_line": 10,
+    "line_observation": "Existing compiled namespace-fallback direct-CV argument-list line, distinct from final physical actual line; no source-line runtime change.",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  }
+]
