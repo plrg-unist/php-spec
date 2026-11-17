@@ -614,12 +614,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
-;; JMP_SET preserves an emitted string cast's exact truthy INTERNED header.
+;; JMP_SET preserves a certified emitted string's exact truthy INTERNED header.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprCastString expression_child metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
   -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
-  -- if $origin_node(S.SOURCES, porigin_cond) = (NExprCastString expression_child metadata_cond)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
   -- if $compiled_read(S, porigin_cond) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_cond) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
