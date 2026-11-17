@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
+
 Fully qualified true/false/null leaves and their direct plus/minus forms preserve
 exact INTERNED CONCAT coalesce headers and frozen raw CV offsets through returning
 Warnings. Original source names and demanded typed compiler facts remain authoritative;

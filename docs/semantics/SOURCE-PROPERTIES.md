@@ -2859,3 +2859,13 @@ bounds remain. Primitive string tags and their existing carrier checks stay inta
 Eligible weak Boolean, integer and FLOAT writes convert; strict scalars reject.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
+
+Six current originals run once; seven native runs retain one old BAD at zero.
+Author179/180/180 and independent411/178/178/178 keep separate SL508 cuts.
+Prelaw Unsupported6, the original FQ179 failure and projection retain source0.
+Two affected fixture corrections followed execution; semantic rules stayed unchanged.
+Actual and joined `000a1da69` and the sole production-SL509 load
+`0b39e351` (16.131188343s, source0) are independently clear through one fixed
+actual/SAME saved-report read. No native/source/fixture evidence is renewed.
+Wider forms and weak Stringable conversion remain partial; exact holds stay unchanged.
+[Independent review](../../coverage/semantics/class-string-union-parentless-short-reference-get-hook-peer-review.json).
