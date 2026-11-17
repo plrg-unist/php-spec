@@ -2773,3 +2773,13 @@ distinct identities. Their composition and the sole joined production-SL509
 load (16.639534996 s, source0) are independently clear through the immutable
 tuple. Wider forms and all exact holds remain.
 [Independent review](../../coverage/semantics/class-false-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/true unions on that short reference producer retain both raw
+orders, `Class|true` and `true|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier true require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. True is an exact literal type: false, NULL and truthy scalars
+do not gain weak Boolean conversion. Both raw orders display `Class|true`.
+Broader headers, warningful names and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-true-union-parentless-short-reference-get-hook-review.json).
