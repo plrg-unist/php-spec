@@ -18,8 +18,9 @@ remains later research.
 
 Recent reviewed extensions cover nullable iterable producer formals and returns,
 ordered short reference Get unions, raw and double BooleanNot method selectors,
-emitted string bitwise, coalesce and two-cast ternary bases, selected NaN full and false shorthand
-ternaries in named `instanceof`, signed BooleanNot handler casts and mixed
+emitted string bitwise and coalesce bases, full and shorthand ternary bases with
+two string casts, selected NaN ternaries in named `instanceof`, signed BooleanNot
+handler casts and mixed
 Boolean/integer or Boolean/FLOAT strict-identity defaults, plus NaN/FLOAT identity.
 The [current checkpoint](PROGRESS.md) separates
 source agreements, fixture checks and combined production loads; complete core
