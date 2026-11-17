@@ -1,0 +1,113 @@
+[
+  {
+    "id": "multiple-cv-array-byref-object-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "MultiCvArrayObjectIterableReturn111",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvArrayObjectIterableReturn111 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(int $stamp,aRrAy &$input):oBjEcT|iTeRaBlE{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvArrayObjectIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make($stamp,$source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_literal_bool_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-array-byref-ordered-literal-false-iterable-return-embedded-alias-and-private-cell",
+      "source_sha256": "dd1ce9b2fd63098093b9cc77ba1e7e380326d1bcdeda203aa2954bd355fec810",
+      "edits": "Fresh namespace and dedicated ordered builtin/iterable RETURN declaration. Preserve required ordinary CVs, formals, finite payload and ownership observations; the weak priority witness returns NULL and must reject before the outer Notice."
+    },
+    "source_sha256": "8212837614f19b75a7086d654c7f1e761c871acf65fa22ec47fc364f779c827d",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "object",
+      "iterable"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-untyped-callable-iterable-return-cow-and-private-cell",
+    "namespace": "SingleCvUntypedCallableIterableReturn111",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace SingleCvUntypedCallableIterableReturn111;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved):cAlLaBlE|iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('SingleCvUntypedCallableIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_literal_bool_iterable_return_producer_reference_notice_cases.json",
+      "id": "single-cv-untyped-byval-ordered-literal-false-iterable-return-cow-and-private-cell",
+      "source_sha256": "89f6647c8ee1d8db23bf25af059e8a9c2f2f472252485c9e165fb67dccc701ef",
+      "edits": "Fresh namespace and dedicated ordered builtin/iterable RETURN declaration. Preserve required ordinary CVs, formals, finite payload and ownership observations; the weak priority witness returns NULL and must reject before the outer Notice."
+    },
+    "source_sha256": "446be06a9d6d3e9c58d9924e28c8d7aab375149fc81545de7553f371de3f33b8",
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "callable",
+      "iterable"
+    ],
+    "cv_arity": 1
+  },
+  {
+    "id": "multiple-cv-strict-eight-member-builtin-iterable-return-and-private-cell",
+    "namespace": "MultiCvStrictEightMemberIterableReturn111",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvStrictEightMemberIterableReturn111;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved,int $stamp):iTeRaBlE|int|float|bool|string|null|object|callable{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('MultiCvStrictEightMemberIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_literal_bool_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-strict-int-byval-ordered-literal-true-iterable-return-and-private-cell",
+      "source_sha256": "7482de5c6494fa6ccb7e7eb1a8fad20d27553cb9475324ca91b3de372cb550bc",
+      "edits": "Fresh namespace and dedicated ordered builtin/iterable RETURN declaration. Preserve required ordinary CVs, formals, finite payload and ownership observations; the weak priority witness returns NULL and must reject before the outer Notice."
+    },
+    "source_sha256": "e51694bef022bf455c194ae88f464190a31741e88ddc99d70b1b32ea370c9da0",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "int",
+      "float",
+      "bool",
+      "string",
+      "null",
+      "object",
+      "callable"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-weak-null-builtin-iterable-return-type-error-precedes-outer-notice",
+    "namespace": "SingleCvWeakNullBuiltinIterableReturnPriority111",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\nnamespace SingleCvWeakNullBuiltinIterableReturnPriority111 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input):iterable|callable|float{$input=17;echo 'M;';return null;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=[];$sourceAlias=&$source;$r='old';set_error_handler('SingleCvWeakNullBuiltinIterableReturnPriority111\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_literal_bool_iterable_return_producer_reference_notice_cases.json",
+      "id": "single-cv-ordered-literal-true-iterable-return-type-error-precedes-outer-notice",
+      "source_sha256": "91889aa2e04d33621258add125164a98e3485a01a768b5f7bce9c872f43bb92b",
+      "edits": "Fresh namespace and dedicated ordered builtin/iterable RETURN declaration. Preserve required ordinary CVs, formals, finite payload and ownership observations; the weak priority witness returns NULL and must reject before the outer Notice."
+    },
+    "source_sha256": "7b2047930913fb796d61657e07ddf236f4f8a79488c8bebb1c2641601ba10458",
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "callable",
+      "float"
+    ],
+    "callee_strict": false,
+    "cv_arity": 1
+  }
+]

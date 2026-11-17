@@ -89,7 +89,7 @@ def controls(case):
             ['iterable', 'iterable'], ['int', 'int'], ['iterable', 'int', 'null']):
         nodes = ['NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_int' for kind in members]
         raw = 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return_union'
-        polarity = '' if members in (['iterable', 'int'], ['int', 'iterable'], ['iterable', 'float'], ['float', 'iterable'], ['iterable', 'bool'], ['bool', 'iterable']) else '~'
+        polarity = '' if members in (['iterable', 'int'], ['int', 'iterable'], ['iterable', 'float'], ['float', 'iterable'], ['iterable', 'bool'], ['bool', 'iterable'], ['iterable', 'int', 'null']) else '~'
         lines.append(polarity + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     if case['formal_kind'] == 'array':
         iterable = 'NIdentifier (BYTES "aXRlcmFibGU=") metadata_parameter'

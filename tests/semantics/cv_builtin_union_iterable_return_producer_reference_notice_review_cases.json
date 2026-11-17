@@ -1,0 +1,97 @@
+[
+  {
+    "id": "one-cv-quiet-object-iterable-return-private-cell",
+    "namespace": "ReviewObjectBuiltinIterableReturn111",
+    "return_members": [
+      "iterable",
+      "object"
+    ],
+    "value_kind": "object",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "object",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewObjectBuiltinIterableReturn111;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):iTeRaBlE|oBjEcT{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->v===13),';';$value->v=37;$value=['n'=>41];return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ReviewObjectBuiltinIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy->v===37),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy->v===37),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "d5b3495f17f7cdd230be2cf2df5f66cd0957bb9405acac6afc57a2f31902693e",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-weak-int-string-iterable-return-interned-private-cell",
+      "source_sha256": "8b9d09c61e02feedae6250665f34d6a18a63aa68ea66ae72fbd4f2d4501ada44",
+      "edits": "Fresh namespace and builtin iterable return union. Observe a quiet stdClass identity through mutation, a registered USER callable String without invoking it, or decimal numeric-string selection of FLOAT under int|float. Existing private-cell rewrite, caller copies, COW and handler protocols remain."
+    },
+    "cv_arity": 1,
+    "input_value": "POBJECT n_old"
+  },
+  {
+    "id": "two-cv-registered-callable-iterable-return-private-cell",
+    "namespace": "ReviewCallableBuiltinIterableReturn111",
+    "return_members": [
+      "iterable",
+      "callable"
+    ],
+    "value_kind": "callable",
+    "formal_kind": "callable",
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 9,
+    "source": "<?php\nnamespace ReviewCallableBuiltinIterableReturn111;function target(){echo 'BAD-CB;';}\nfunction h($n,$m,$file,$line){global $stamp,$x;$stamp=13;$x='new';echo 'H:',$line,';';return true;}\nfunction make(cAlLaBlE $saved,int $stamp):iTeRaBlE|CaLlAbLe{echo 'M:',$stamp,';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='\\\\ReviewCallableBuiltinIterableReturn111\\\\TaRgEt'),';';$value=['n'=>41];return $value;}\n$stamp=7;$x='\\\\ReviewCallableBuiltinIterableReturn111\\\\TaRgEt';$copy=$x;$alias=&$x;set_error_handler('ReviewCallableBuiltinIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',(int)($x==='new'),':',(int)($alias==='new'),':',(int)($copy==='\\\\ReviewCallableBuiltinIterableReturn111\\\\TaRgEt'),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy==='\\\\ReviewCallableBuiltinIterableReturn111\\\\TaRgEt'),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;M:7;H:8;F:1;R:41:1:1:1;C:43:41;D:done:41:1;Z:13;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6be1fef02644148f675da8d2c7f64aaac5c761048db9d42f58963aab926a9ff1",
+    "cv_arity": 2,
+    "callee_strict": false,
+    "formal_members": [
+      "callable"
+    ],
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "two-cv-weak-false-iterable-string-return-empty-interned-private-cell",
+      "source_sha256": "126d3d6c281702c5fc2d1867f339d2d0e5d7dac0442d176e857666fdf75d1a85",
+      "edits": "Fresh namespace and builtin iterable return union. Observe a quiet stdClass identity through mutation, a registered USER callable String without invoking it, or decimal numeric-string selection of FLOAT under int|float. Existing private-cell rewrite, caller copies, COW and handler protocols remain."
+    },
+    "input_value": "PBOOL false",
+    "value_name": "\\ReviewCallableBuiltinIterableReturn111\\TaRgEt"
+  },
+  {
+    "id": "one-cv-weak-numeric-string-iterable-int-float-return-private-cell",
+    "namespace": "ReviewNumericBuiltinIterableReturn111",
+    "return_members": [
+      "iterable",
+      "int",
+      "float"
+    ],
+    "value_kind": "float",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewNumericBuiltinIterableReturn111;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):iTeRaBlE|iNt|fLoAt{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17.5),';';$value=['n'=>41];return $value;}\n$x='17.5';$copy=$x;$alias=&$x;set_error_handler('ReviewNumericBuiltinIterableReturn111\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy==='17.5'),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy==='17.5'),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "87c29022056e93f0d1cdfb040f55fa7a1db0c8adc624750e0e277353216a8130",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_union_string_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-weak-int-string-iterable-return-interned-private-cell",
+      "source_sha256": "8b9d09c61e02feedae6250665f34d6a18a63aa68ea66ae72fbd4f2d4501ada44",
+      "edits": "Fresh namespace and builtin iterable return union. Observe a quiet stdClass identity through mutation, a registered USER callable String without invoking it, or decimal numeric-string selection of FLOAT under int|float. Existing private-cell rewrite, caller copies, COW and handler protocols remain."
+    },
+    "cv_arity": 1,
+    "input_value": "PINT 7",
+    "float_input_kind": "string",
+    "return_float_bits": 4625619029774565376
+  }
+]

@@ -52,7 +52,7 @@ def controls(case):
     for members in (['iterable', 'bool'], ['bool', 'iterable']):
         lines.append(header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for members in (['iterable', 'string'], ['string', 'iterable'], ['bool', 'bool'], ['iterable', 'bool', 'int'], ['iterable', 'false'], ['true', 'iterable']):
-        polarity = '' if members in (['iterable', 'string'], ['string', 'iterable'], ['iterable', 'false'], ['true', 'iterable']) else '~'
+        polarity = '' if members in (['iterable', 'string'], ['string', 'iterable'], ['iterable', 'false'], ['true', 'iterable'], ['iterable', 'bool', 'int']) else '~'
         lines.append(polarity + header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     return lines
 

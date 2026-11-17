@@ -750,6 +750,15 @@ def $reference_notice_producer_union_members((NIdentifier (BYTES text_type) meta
   -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
 def $reference_notice_producer_union_members(phpType69*, ptbranch*, text_seen*) = false -- otherwise
 
+dec $reference_notice_producer_iterable_return_union_members(phpType69*, ptbranch*, text*) : bool
+def $reference_notice_producer_iterable_return_union_members(eps, eps, text_seen*) = ("iterable" <- text_seen*)
+def $reference_notice_producer_iterable_return_union_members((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTBUILTIN text_kind])) :: ptbranch*, text_seen*) = $reference_notice_producer_iterable_return_union_members(phpType69*, ptbranch*, text_kind :: text_seen*)
+  -- if text_kind <- ["iterable", "int", "float", "bool", "string", "null", "false", "true", "object", "callable"]
+  -- if ~(text_kind <- text_seen*)
+  -- if ~(text_kind <- ["bool", "false", "true"]) \/ ~("bool" <- text_seen* \/ "false" <- text_seen* \/ "true" <- text_seen*)
+  -- if $ptlc($base64(text_type)) = $ptascii(text_kind)
+def $reference_notice_producer_iterable_return_union_members(phpType69*, ptbranch*, text_seen*) = false -- otherwise
+
 dec $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, bool, text*) : bool
 def $reference_notice_producer_stdclass_union_members(eps, eps, b_class, text_seen*) = b_class
 def $reference_notice_producer_stdclass_union_members((NNameFullyQualified (BYTES text_type) metadata_member) :: phpType69*, (PTBRANCH ([PTCLASS preqbytes_type])) :: ptbranch*, false, text_seen*) = $reference_notice_producer_stdclass_union_members(phpType69*, ptbranch*, true, text_seen*)
@@ -1061,6 +1070,16 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if (text_first_type =/= "callable" /\ text_second_type =/= "callable") \/ text_first_type <- ["array", "object", "string", "int", "float", "bool", "true", "false"] \/ text_second_type <- ["array", "object", "string", "int", "float", "bool", "true", "false"]
   -- if ~(text_first_type <- ["bool", "false", "true"] /\ text_second_type <- ["bool", "false", "true"])
   -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first, NIdentifier (BYTES text_second) metadata_second])) metadata_union, pssignature) = true
+  -- if $(|phpType7*| > 0)
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
+  -- if (text_first_type = "iterable" /\ text_second_type <- ["object", "callable"]) \/ (text_first_type <- ["object", "callable"] /\ text_second_type = "iterable")
+  -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
+  -- if $(|phpType7*| > 0) /\ $(|phpType69*| > 2)
+  -- if $reference_notice_producer_iterable_return_union_members(phpType69*, pssignature.RETURNS, eps)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
   -- if $(|phpType7*| > 0) /\ $(|phpType69*| > 2)

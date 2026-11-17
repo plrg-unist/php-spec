@@ -57,7 +57,7 @@ def controls(case):
     for polarity, members in (('', ['iterable', 'false']), ('', ['false', 'iterable']),
             ('', ['iterable', 'true']), ('', ['true', 'iterable']),
             ('~', ['false', 'false']), ('~', ['true', 'true']), ('~', ['true', 'false']),
-            ('~', ['iterable', 'object']), ('~', ['object', 'iterable']),
+            ('', ['iterable', 'object']), ('', ['object', 'iterable']),
             ('~', ['iterable', 'false', 'true'])):
         nodes = ['NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_literal' for kind in members]
         raw = 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return_union'

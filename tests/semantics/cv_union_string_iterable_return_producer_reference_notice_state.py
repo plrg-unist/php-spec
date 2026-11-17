@@ -58,7 +58,7 @@ def controls(case):
     for members in (['iterable', 'false'], ['true', 'iterable'], ['string', 'string'], ['iterable', 'string', 'int']):
         nodes = ['NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_string' for kind in members]
         raw = 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return_union'
-        polarity = '' if members in (['iterable', 'false'], ['true', 'iterable']) else '~'
+        polarity = '' if members in (['iterable', 'false'], ['true', 'iterable'], ['iterable', 'string', 'int']) else '~'
         lines.append(polarity + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for history in (old_float, old_bool, old_bool_review):
         previous = history.controls(dict(case, value_kind='array'))
