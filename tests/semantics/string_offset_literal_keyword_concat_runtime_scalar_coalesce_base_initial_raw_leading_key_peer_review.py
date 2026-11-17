@@ -152,14 +152,15 @@ $string_byte_read(S,$ptascii("1bc"),2,18) = S[.RESULT = KNOWN (PSTRING_CARRIER I
                    f'$string_read_runtime_value({state},porigin_base) = (pvalue_base)',
                    f'$string_read_raw_known_base({state},porigin_base,pvalue_base)']
     # Coherent constructed source changes add no original-source credit.
-    for label, spelling, value, text in (
-            ('true', 'TrUe', 'PBOOL true', '1bc'),
-            ('false', 'FALSE', 'PBOOL false', 'bc'),
-            ('null', 'NuLl', 'PNULL', 'bc')):
+    for label, constructor, spelling, value, text in (
+            ('true', 'NName', 'TrUe', 'PBOOL true', '1bc'),
+            ('false', 'NName', 'FALSE', 'PBOOL false', 'bc'),
+            ('null', 'NName', 'NuLl', 'PNULL', 'bc'),
+            ('fqn', 'NNameFullyQualified', 'TrUe', 'PBOOL true', '1bc')):
         encoded = base64.b64encode(spelling.encode()).decode()
         primitive_text = '1' if value == 'PBOOL true' else ''
         checks += lines(f'''
-name_keyword_{label} = NName (BYTES "{encoded}") metadata_name
+name_keyword_{label} = {constructor} (BYTES "{encoded}") metadata_name
 expression_keyword_{label}_head = NExprConstFetch name_keyword_{label} metadata_head
 expression_keyword_{label}_left = NExprBinaryOpConcat expression_keyword_{label}_head expression_tail metadata_left
 expression_keyword_{label}_base = NExprBinaryOpCoalesce expression_keyword_{label}_left expression_right metadata_base
@@ -177,7 +178,6 @@ $string_read_raw_known_base(S_keyword_{label},porigin_base,PSTRING_CARRIER INTER
     for label, name in (
             ('ordinary', 'NName (BYTES "b3JkaW5hcnk=") metadata_name'),
             ('empty', 'NName (BYTES "") metadata_name'),
-            ('fqn', 'NNameFullyQualified (BYTES "dHJ1ZQ==") metadata_name'),
             ('relative', 'NNameRelative (BYTES "dHJ1ZQ==") metadata_name')):
         checks += lines(f'''
 name_keyword_bad_{label} = {name}

@@ -84,7 +84,8 @@ $string_read_runtime_value(S_unary_keyword_name_shadow,porigin_left) = eps
     for constructor, sign in (('NExprUnaryPlus', ''), ('NExprUnaryMinus', '-')):
         for encoded, value in (('VFJVRQ==', sign + '1'), ('RkFMU0U=', '0'), ('TlVMTA==', '0')):
             checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch (NName (BYTES "{encoded}") eps) eps) eps) = ($ptascii("{value}"))')
-        for name in ('NNameFullyQualified', 'NNameRelative'):
+        checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch (NNameFullyQualified (BYTES "dHJ1ZQ==") eps) eps) eps) = ($ptascii("{sign}1"))')
+        for name in ('NNameRelative',):
             checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch ({name} (BYTES "dHJ1ZQ==") eps) eps) eps) = eps')
         checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch (NName (BYTES "Zm9v") eps) eps) eps) = eps')
     body += ''.join('  -- if ' + check + '\n' for check in checks)

@@ -944,6 +944,10 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
 ;; These literals and direct quiet signs need no floating-point formatting.
+;; Fully qualified reserved tags share byte conversion without changing SOURCE.
+def $string_read_folded_concat_bytes(NExprConstFetch (NNameFullyQualified (BYTES text) metadata_name) metadata) = $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata)
+def $string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NNameFullyQualified (BYTES text) metadata_name) metadata_child) metadata) = $string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata)
+def $string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NNameFullyQualified (BYTES text) metadata_name) metadata_child) metadata) = $string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata)
 def $string_read_folded_concat_bytes(NScalarString (BYTES text) metadata) = ($base64(text))
 def $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($ptascii("1"))
   -- if $ptlc($base64(text)) = $ptascii("true")

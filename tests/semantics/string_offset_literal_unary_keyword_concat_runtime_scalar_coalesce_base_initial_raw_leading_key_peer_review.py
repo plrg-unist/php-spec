@@ -198,8 +198,8 @@ $string_read_raw_known_base(S_folded_budget,porigin_base,pvalue_base)
                 encoded = base64.b64encode(word.encode()).decode()
                 operand = f'NExprConstFetch (NName (BYTES "{encoded}") eps) eps'
                 checks.append(f'$string_read_folded_concat_bytes({constructor} ({operand}) eps) = ($ptascii("{integer * sign}"))')
+        checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch (NNameFullyQualified (BYTES "dHJ1ZQ==") eps) eps) eps) = ($ptascii("{sign}"))')
         for name in ['NName (BYTES "b3JkaW5hcnk=") eps',
-                     'NNameFullyQualified (BYTES "dHJ1ZQ==") eps',
                      'NNameRelative (BYTES "dHJ1ZQ==") eps']:
             checks.append(f'$string_read_folded_concat_bytes({constructor} (NExprConstFetch ({name}) eps) eps) = eps')
         for child in ['NExprUnaryPlus expression_plus_true_cf eps',

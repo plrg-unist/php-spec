@@ -85,7 +85,7 @@ $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "VFJVRQ==") eps) 
 $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "RkFMU0U=") eps) eps) = (eps)
 $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "TlVMTA==") eps) eps) = (eps)
 $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES "Zm9v") eps) eps) = eps
-$string_read_folded_concat_bytes(NExprConstFetch (NNameFullyQualified (BYTES "dHJ1ZQ==") eps) eps) = eps
+$string_read_folded_concat_bytes(NExprConstFetch (NNameFullyQualified (BYTES "dHJ1ZQ==") eps) eps) = ($ptascii("1"))
 $string_read_folded_concat_bytes(NExprConstFetch (NNameRelative (BYTES "dHJ1ZQ==") eps) eps) = eps
 ''')
     for label in ('false', 'null'):
