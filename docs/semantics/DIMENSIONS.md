@@ -529,8 +529,20 @@ module51 selected tasks retain the existing owners and completion histories.
 Four originals reuse natives once through explicit retained-three/affected-fourth
 cuts; author SL1466/129-derived and independent SL1786/449-derived are separate
 in the [review](../../coverage/semantics/string-offset-request-base-runtime-full-ternary-nan-instanceof-review.json).
-The two earlier CLI deadlines remain0. General runtime NaN VALUE/BYTE/truth,
-quiet false shorthand selection and wider lifetimes retain their existing bounds.
+The two earlier CLI deadlines remain0. General runtime NaN VALUE/BYTE/truth
+and wider lifetimes retain their existing bounds.
+
+Quiet false shorthand ternaries also select an exact recursive NaN operand for
+named `instanceof`. The actual ABSENT/source/CODE/read/precision facts and
+whole-state quiet false truth authenticate only the fallback; module51 keeps
+true-arm line0, fallback tasks and the original tail. Native4 once/source4,
+author SL1391/129-derived and independent SL1748/486-derived remain separate.
+The namespace-control failure is retained0; only its affected fixture and the
+three unrun fixtures followed the two-line qualification correction. Actual
+`d7f06936e` preserves exact6/+343; the same saved `64b6c7981` production-SL508
+load passes16.141001238953322s/source0. General NaN VALUE/BYTE/truth, null-left
+selection and wider lifetimes remain partial.
+[Quiet false shorthand review](../../coverage/semantics/string-offset-request-base-runtime-false-shorthand-nan-instanceof-review.json).
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
@@ -1580,6 +1592,8 @@ Shared scalar truth now admits BitwiseNot over certified signed64 PINT children,
 Emitted CASTSTRING coalesce bases preserve their exact nonnull INTERNED header, including falsey strings, and frozen initial raw CV keys through returning Warnings. Exact root/read-eps and SAME NORMAL runtime VALUE proofs retain the cast carrier; the skipped literal fallback still needs exact source and pool authority. Native2 once/source2, author179/77-derived and independent402/302-derived retain separate accepted cuts. Actual9d8d8bd896 and the sole combined0d0f5d75b SL508 load16.642528873s/source0 are independently clear; wider producers and lifetimes remain partial, with all holds unchanged. [Review](../../coverage/semantics/string-offset-runtime-string-cast-coalesce-base-initial-raw-leading-key-review.json).
 
 Coalesce with both operands outer emitted CASTSTRING preserves the exact nonnull left INTERNED header, including falsey "0", through returning raw-key Warnings. Root read-eps and SAME NORMAL VALUE retain own/both child source, own/left precision and left value; skipped right CODE/precision/VALUE/descendant mapping stay undemanded. Native2 once/source2, reached prelaw40, author252/162-derived and independent327/227-derived keep distinct cuts; one corrected prelaw fixture binding failure retains zero credit. Actualfc20cf54f5 and its sole SL508 load16.741985100s/source0 are independently clear. Wider producers/carriers and lifetimes remain partial; every exact hold remains unchanged. [Review](../../coverage/semantics/string-offset-runtime-string-cast-pair-coalesce-base-initial-raw-leading-key-review.json).
+
+Full ternaries with both present arms outer emitted CASTSTRING retain the exact truth-selected INTERNED header through returning raw-key Warnings. Root read-eps and SAME NORMAL VALUE preserve all three immediate child sources, condition truth and selected-arm authority; skipped arm CODE/precision/VALUE/deep mapping stay undemanded. Native2 once/source2, reached prelaw42, author283/193-derived and independent354/254-derived retain distinct cuts, with no family failures. Actualf6d812132b and the sole SL508 load16.945511707s/source0 are independently clear. Shorthand ABSENT, older raw-arm rules and all exact holds remain unchanged; wider producers/carriers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-string-cast-pair-ternary-base-initial-raw-leading-key-review.json).
 
 Direct emitted CONCAT bases preserve an exact INTERNED header through the existing quiet VALUE proof when an empty operand is nonconstant. Raw CONST-empty beside emitted nonempty remains a REQUEST allocation and is refused in both orientations. Native2 once/source2, reached prelaw26, author234/144-derived and independent363/263-derived retain separate cuts; actual6bd25d811b and its sole SL508 load16.440858809s/source0 are independently clear. Frozen raw keys, Warning cleanup and held boundaries remain unchanged; wider producers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-empty-concat-base-initial-raw-leading-key-review.json).
 

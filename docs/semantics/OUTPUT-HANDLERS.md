@@ -1535,3 +1535,14 @@ cuts. Baseline Unsupported2 and the pre-execution binding failure retain0;
 actual MAIN508 loading stays separate/source0. Wider children and lifetimes remain.
 [Numeric NOT evidence](../../coverage/semantics/output-final-selected-numeric-not-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-numeric-not-cast-chain-return-modulo-error-review.json).
+
+Numeric NOT also accepts the existing authenticated one-sign numeric certificate.
+Raw and signed source/CODE/fact authority, intrinsic non-NaN truth, strict PBOOL
+results and full unary/Boolean-state equality remain required. INT NOT stays
+folded and FLOAT NOT stays emitted; the outer nested-cast handler gate is unchanged.
+Four originals reuse native observations once. Author16/12 and independent128/23
+retain separate fixture source0 cuts; baseline Unsupported2/unrun2 retain0.
+Actual MAIN508 loading stays separate/source0. Wider children, owners, handlers,
+lifetimes and every exact hold remain partial.
+[Signed numeric NOT evidence](../../coverage/semantics/output-final-selected-signed-numeric-not-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-signed-numeric-not-cast-chain-return-modulo-error-review.json).
