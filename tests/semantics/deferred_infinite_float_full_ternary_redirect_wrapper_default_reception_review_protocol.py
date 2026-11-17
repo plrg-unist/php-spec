@@ -157,7 +157,7 @@ for name, expression in [
         f'S_{name} = S_source_{name}[.POOLS = [ppool[.CONSTANTS = ([(PCONSTANT (pcpath_0 ++ [PCFIELD 0]) (PFLOAT 9218868437227405312)), (PCONSTANT (pcpath_0 ++ [PCFIELD 0,PCFIELD 0]) (PFLOAT 9218868437227405312)), (PCONSTANT (pcpath_0 ++ [PCFIELD 0,PCFIELD 1]) (PFLOAT 0))] ++ ppool.CONSTANTS)]]]',
         f'$lossy_optional_integer_float_literal(expression_{name}) = eps',
         f'$lossy_optional_integer_infinite_float_full_redirect(S_{name},pfunction.ENV,pdefault_0.ORIGIN) = eps',
-        f'$lossy_optional_integer_deferred_value_at(S_{name},pfunction.ENV,pdefault_0.ORIGIN) = eps',
+        f'$lossy_optional_integer_deferred_value_at(S_{name},pfunction.ENV,pdefault_0.ORIGIN) = ' + ('(PINT 0)' if name == 'computed' else 'eps'),
         f'~$lossy_optional_integer_deferred(S_{name},pfunction,0)']
 forgeries += ['$lossy_optional_integer_deferred_value_at(S_computed,pfunction.ENV,porigin_cond_0) = (PFLOAT 9218868437227405312)']
 named += ['S_wrong_bool = S[.DEFAULTCACHE = $default_cache_put(S.DEFAULTCACHE,pdefaultcache_1[.VALUE = PBOOL false])]',

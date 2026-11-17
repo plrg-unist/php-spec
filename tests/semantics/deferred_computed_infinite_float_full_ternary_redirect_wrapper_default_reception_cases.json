@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-computed-infinite-float-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawComputedInfiniteFloatRedirect306($p0 = ((1.0e308 + 1.0e308) ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_FLOAT306_0), $p1 = ((-1.0e308 + (-1.0e308)) ? (!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_FLOAT306_1), $p2 = ((1.0e308 - (-1.0e308)) ? ((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_FLOAT306_2), $p3 = ((-1.0e308 - 1.0e308) ? (-((float)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_FLOAT306_3), $p4 = ((+(1.0e308) * 2.0) ? (NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) : SKIPPED_FLOAT306_4), $p5 = ((-1.0e308 * 2.0) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_FLOAT306_5), $p6 = ((+(-(-1.0e309)) / 2.0) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false) : SKIPPED_FLOAT306_6), $p7 = ((-1.0e309 / 2.0) ? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) : SKIPPED_FLOAT306_7)) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawComputedInfiniteFloatRedirect306();\nrawComputedInfiniteFloatRedirect306();\n",
+    "purpose": "Both infinite result signs for FLOAT-only ADD/SUBTRACT/MULTIPLY/DIVIDE select exact raw scalar FIELD1 tags, skip unresolved FIELD2 names and retain cold/warm cache reception.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "53e3cb36a514cb5f852b3f7091aa5faeaea97b89c0a38a4b3503f8324b4045b1"
+  },
+  {
+    "id": "deferred-computed-infinite-float-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace ComputedInfiniteFloatRedirect306;\nuse const E_WARNING as Base306;\nuse const E_ERROR as One306;\nuse const Unavailable306\\Payload as Skipped306;\nfunction coercion306($errno, $message, $file, $line) {\n    global $x306;\n    echo 'coercion:', $message, '|';\n    defaults306(2);\n    $x306 = 3.5;\n}\nfunction defaults306(int $first, int &$selectedBool = (int)((1.0e308 + 1.0e308) ? (((bool)(+(-((float)(+(Base306 === One306))))))) : Skipped306), int &$selectedInt = (int)((-1.0e308 - 1.0e308) ? ((int)(!((bool)(+(-((float)(+(Base306 === One306)))))))) : Skipped306), int &$negativeZero = (int)((+(1.0e308) * 2.0) ? (-((float)((bool)(+(-((float)(+(Base306 === One306)))))))) : Skipped306), int &$selectedNull = (int)((-1.0e309 / 2.0) ? ((!((bool)(+(-((float)(+(Base306 === One306))))))) ? NULL : false) : Skipped306), int $last = 7) {\n    echo 'body:', $first, ':', $selectedBool, ':', $selectedInt, ':', $negativeZero, ':', $selectedNull, ':', $last, '|';\n    $selectedBool = 19;\n    $selectedInt = 20;\n    $negativeZero = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('ComputedInfiniteFloatRedirect306\\\\coercion306');\n$x306 = 1.5;\n$last306 = 8;\ndefaults306(last: $last306, first: $x306);\necho 'outer:x=', $x306, '|';\n",
+    "purpose": "Four FLOAT-only binary predicates preserve declaration aliases, shared caches and private integer reception through named E_DEPRECATED coercion-handler reentry.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:0:7|body:1:0:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 300,
+    "source_sha256": "cc53b4eb82a947111bba1dd07be4a3bb78822c2477d0d5a2ed69450b97f26d25"
+  }
+]

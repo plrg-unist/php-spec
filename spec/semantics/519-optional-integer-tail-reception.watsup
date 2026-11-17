@@ -706,6 +706,41 @@ def $lossy_optional_integer_infinite_float_full_redirect(S, plenv, PORIGIN n pcp
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_selected, false, z))
 def $lossy_optional_integer_infinite_float_full_redirect(S, plenv, porigin) = eps -- otherwise
 
+;; Quiet FLOAT-literal arithmetic authenticates both operands before selection.
+dec $lossy_optional_integer_computed_infinite_float_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
+def $lossy_optional_integer_computed_infinite_float_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_selected expression_skipped metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_selected)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_skipped)
+  -- if $pfshape(expression_cond) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 1])) = (expression_right)
+  -- if $lossy_optional_integer_float_literal(expression_left) = (n_left)
+  -- if $lossy_optional_integer_float_literal(expression_right) = (n_right)
+  -- if $number_binary(pbin, NFLOAT n_left, NFLOAT n_right) = NUM (NFLOAT n_bits)
+  -- if $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PFLOAT n_bits)
+  -- if $float_decode(n_bits) = INFINITE n_sign
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PFLOAT n_bits)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0])) = (PFLOAT n_left)
+  -- if $pool_value(S.POOLS, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 1])) = (PFLOAT n_right)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0, PCFIELD 0]) = eps
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0, PCFIELD 1]) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0])) = eps /\ $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 1])) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0, PCFIELD 0]) = 0
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0, PCFIELD 1]) = 0
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath ++ [PCFIELD 0]) = eps
+  -- if $compiled_read(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath ++ [PCFIELD 0]) = 0
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_selected, false, z))
+def $lossy_optional_integer_computed_infinite_float_full_redirect(S, plenv, porigin) = eps -- otherwise
+
 ;; Literal STRING truth authenticates borrowed compiler data, without numeric
 ;; coercion or a general string VALUE producer. Declaration bindings stay outside.
 dec $lossy_optional_integer_truthy_literal_string_full_redirect(pstate, porigin) : (porigin, porigin)?
@@ -734,6 +769,8 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, 
   -- if $lossy_optional_integer_truthy_literal_string_full_redirect(S, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_infinite_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_computed_infinite_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_finite_nonzero_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
@@ -1792,6 +1829,11 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
   -- if $lossy_optional_integer_infinite_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
+def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
+  -- if $lossy_optional_integer_computed_infinite_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
