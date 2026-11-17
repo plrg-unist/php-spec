@@ -141,8 +141,8 @@ def frontier(name, fixture, path):
                      for side, child, typed in zip(['left', 'right'], children, values)]
             proof += ['$binary_apply(' + state + '[.RESULT = KNOWN (' + values[1] + ')], ' + operator + ', ' +
                       values[0] + ', ' + values[1] + ', z_value_right) = ' + state + '[.RESULT = KNOWN (' + result + ')]',
-                      value(state, expression, function=function) + ' = eps']
-            checks += [('source0 genuine quiet PBOOL comparison results retain their separate operator and result-tag fences', current.CONJ.join(proof))]
+                      value(state, expression, function=function) + ' = (' + result + ')']
+            checks += [('source0 genuine quiet PBOOL comparison results are now admitted with exact Boolean tags', current.CONJ.join(proof))]
     bare = 'NStmtReturn (' + current.expression(name, 'value') + ') metadata_cast_return'
     single = nodes['cast_1'][0] + ' (' + current.expression(name, 'value') + ') metadata_cast_1'
     statement = 'NStmtReturn (' + single + ') metadata_cast_return'
