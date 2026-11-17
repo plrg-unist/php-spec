@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+COMP325 originals and separate native-once/source/fixture cuts remain in `../php-spec-evidence-archive/comp325/`; `source-ready.json` (b7b3f8ea, source63b9/parent2937, exact18/Make9), `independent-ready.json` (e9f3365e) and immutable actual tuple2a100b6b retain their identities through the [review](../coverage/semantics/class-false-union-parentless-short-reference-get-hook-review.json).
+
 Exact integer-division output-handler originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/new/output-final-selected-integer-division-cast-chain-return-modulo-error-136/`; the [review](../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json) retains the accepted actual/SAME tuple and preserved zero-credit cuts.
 
 Emitted NULL full-ternary base originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-null-truth-base-initial-raw-leading-key-{author43,author44,peer40,peer41}-20261117/`; the [review](../coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json) retains the original identities and accepted actual/SAME tuple.

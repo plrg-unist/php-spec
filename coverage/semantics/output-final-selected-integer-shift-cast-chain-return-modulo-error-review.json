@@ -1,0 +1,158 @@
+{
+  "reviewer": "recover31_output_integer_division_review",
+  "decision": "Independent bounded source, semantic, counterexample, raw validation, actual-composition and SAME saved canonical review CLEAR.",
+  "target": "PHP 8.5.10 CLI NTS signed64; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "revision": "f5df6f93613e7a24225e98c80e5e0d41b9f77eb5",
+    "rule": "spec/semantics/456-output-object-returns.watsup: $ob_object_cast_chain_value",
+    "scope": "Only SHIFTLEFT/SHIFTRIGHT are added to the existing integer binary certificate. Two proper recursively certified signed64 PINT children, a fitting actual PINT result and complete quiet NORMAL state equality remain required through canonical nested BOOL/INT/FLOAT handler return casts."
+  },
+  "semantic_review": [
+    "Pinned shift_left_function/ZEND_SL use unsigned64 wrapping. shift_right_function/ZEND_SR preserve signed arithmetic floor. Counts>=64 yield0 for left shifts and0/-1 by dividend sign for right shifts; negative counts throw ArithmeticError.",
+    "Pure long_shl/long_shr implement those guards and results without Zend evaluation or oversized-count exponentiation. Actual PINT results remain distinct from the outer FLOAT representation of MIN.",
+    "Each child retains its own source/CODE unit, compiler line/flag and value authority; the parent keeps the RHS terminal line, conjunction folding and its exact own folded fact or emitted read-eps.",
+    "Exact BODY/UNIT, NORMAL completion, nonownership, canonical two-cast shape, strict-FALSE default reporting and real callback/native formal retirement remain unchanged."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_binary_op / zend_try_ct_eval_binary_op",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_SL / ZEND_SR",
+    "vendor/php-src/Zend/zend_operators.c: shift_left_function / shift_right_function",
+    "spec/semantics/01-integer.watsup: long_shl / long_shr"
+  ],
+  "evidence_archive": "../php-spec-evidence-archive/new/output-final-selected-integer-shift-cast-chain-return-modulo-error-138/",
+  "retained_source": {
+    "native6_once": {
+      "report": "native-01/report.json",
+      "sha256": "db2310b5e4673c49d6208d8c9f7d939ef7c665121aed264f0fb8747967ee6644",
+      "revision": "1dd15ef39bb4247acd1c26df6ac86586c7aa781b",
+      "originals": 6
+    },
+    "baseline": {
+      "report": "before-01/report.json",
+      "sha256": "24921063d7f25ef6a65cef2fa6b24c0c2123cecd497ea913202aa8628d40bfbc",
+      "revision": "1dd15ef39bb4247acd1c26df6ac86586c7aa781b",
+      "unsupported": 2,
+      "other_unrun": 4,
+      "credit": 0
+    },
+    "saved_native_source6": {
+      "report": "after-01/report.json",
+      "sha256": "2230e99e4cbc7deb1cdd61fc8f7be06e694b5cb7e8179b7ca2faa933be6d0f03",
+      "revision": "f5df6f93613e7a24225e98c80e5e0d41b9f77eb5",
+      "originals": 6,
+      "retained_credit": 6
+    },
+    "review": "All six original hashes/argv/cwd/env/profile, raw stdoutP/stderr, exit255 and structured MOD diagnostics at lines10/8/10/8/10/8 bind. Only strict FALSE retains both default Deprecated events. Folded and emitted1<<63 preserve the strict FLOAT-MIN witness. Saved556 inputs are stable; changed module/source helper match this cut. No native/source execution is repeated; independent reads add0."
+  },
+  "fixtures": {
+    "mode": "Private SL508/cache=false/det=true; original300-second fixture and660-second outer caps",
+    "author_frontier": {
+      "report": "front-01/report.json",
+      "sha256": "8d6e3b4e4bf31a4e0e86b1d6d7b345804072ba822a763fe79675add5c30229e7",
+      "revision": "f5df6f93613e7a24225e98c80e5e0d41b9f77eb5",
+      "vectors": [
+        11,
+        11,
+        8
+      ]
+    },
+    "author_lifecycle": {
+      "report": "life-01/report.json",
+      "sha256": "441313ef79185ad35b9e183dffcae70dc6e2808bb1eee7a7f1df0e164bb86d4d",
+      "launch_sha256": "1840ef28e34c36e582d045b4493df70057e3ae675d83ae345d66b577f897d9b1",
+      "vectors": [
+        7,
+        7,
+        6
+      ],
+      "revision": "f5df6f93613e7a24225e98c80e5e0d41b9f77eb5",
+      "seconds": 378.40390524291433
+    },
+    "independent_fixture": "tests/semantics/output_final_selected_integer_shift_cast_chain_return_modulo_error_review_state.py",
+    "independent_fixture_sha256": "5bd41489f99eaf079ddfbad9c3318df388bdae17e5b723dc22ed277dc42142c4",
+    "independent_frontier": {
+      "report": "peer-front-01/report.json",
+      "sha256": "ded93e797729527d8c123beb82c3939be67692f1e058be9dc29a139ed5d78ceb",
+      "launch_sha256": "dcd36defc8cd964e79f9cc41d30e3b4a82419b7ccdab9f7f2f4fcf2418304580",
+      "vectors": [
+        75,
+        34,
+        44
+      ],
+      "revision": "88ea03a16938a2bea4239b2bd928605037f71b1a",
+      "seconds": 274.07810070412233
+    },
+    "independent_lifecycle": {
+      "report": "peer-life-01/report.json",
+      "sha256": "89a632fadd1e9078fe157f2879e0c952e6e0b75aa3003f009d20cd0f124e2639",
+      "launch_sha256": "5f794c8f8a4535da4280a45dddbef7054d7ee2204c7f73609c1bf292b9c81dcf",
+      "vectors": [
+        7,
+        7,
+        8
+      ],
+      "revision": "88ea03a16938a2bea4239b2bd928605037f71b1a",
+      "seconds": 392.3368929750286
+    },
+    "fixture_revision": "88ea03a16938a2bea4239b2bd928605037f71b1a",
+    "result": "FIRST153/22 pass: raw75/34/44 and7/7/8 true vectors, exits0 and quiet stderr. Author589 and independent605 watched inputs are equal before/after each fixture; stable wrappers/revisions and reaped empty groups. Source/native credit0.",
+    "counterexamples": [
+      "Twenty-one actual signed64 cases distinguish unsigned left wrap, negative right floor, signed endpoints and counts0/63/64/65/huge.",
+      "Both proper children and genuine ArithmeticError precede refusal for count-1 and MIN in each shift direction.",
+      "Two fitting but wrong folded PINT results cannot replace actual MIN wrapping or negative arithmetic floor.",
+      "Eight genuine quiet BOOL/NULL/FLOAT/STRING operand cases refuse the integer-child certificate; genuine integer POWER remains outside this scope.",
+      "Per-node source/CODE/line/flag/fact, global compiled-read and owning-fact fences remain active. Bare/single-cast handlers refuse; exact returns survive real formal/native-cell retirement separately from restored NULL scratch."
+    ]
+  },
+  "source_packet": {
+    "parent": "2b1e3ebbc9e06a03f0653d22e6277a469342cc80",
+    "revision": "88ea03a16938a2bea4239b2bd928605037f71b1a",
+    "files": 5,
+    "insertions": 275,
+    "deletions": 1,
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-integer-shift-cast-chain-return-modulo-error-138/ready-source-138-reviewed-manifest.json",
+    "manifest_sha256": "5efe82cea07d97dc2422155b3e0470bd3751de5936fed49060de994de5484dfa",
+    "patch_sha256": "ad942989bfe381d394b997217fb6c330defc049b430d50edd726cc928a71bf46",
+    "whole_review": "../php-spec-evidence-archive/new/output-final-selected-integer-shift-cast-chain-return-modulo-error-138/whole-source-review.json",
+    "whole_review_sha256": "6f8f8414f148c3a8b1eccd8830750a4aa853353c681d1698da9a99318c74bb96",
+    "review": "All five complete parent/post/current bytes, lengths and Git blobs bind. Make adds four standard recipes after137; production adds only the two shift alternatives; three new helpers are literal. No predecessor expectation or earlier campaign is renewed."
+  },
+  "actual_and_same": {
+    "revision": "5f1c9de3180a3d29c970180ee8eecc724f86b178",
+    "tree": "a0b970d8fbc3f3e648b3d982f3a8d149c7e85234",
+    "parent": "5c7f1dc9be6487a0d1d94e68f75110bf05195dc2",
+    "map": "../php-spec-evidence-archive/resumed-main-20261112/main84-output138-composition-v1/map.json",
+    "map_sha256": "c1fad7a62991963b0722d53476096836faecd29545bbeb90c07948c6d9c0bd9c",
+    "makefile_sha256": "0f44259fdc2953ef8e8496932574375e11ab97bf757994017ec22aeb22716b18",
+    "makefile_git_blob": "0a3aa585d42c6b9604c3c4b9d178c509bd15471f",
+    "preservation": "Complete456 parent matches exactly, and four non-Make postimages/Git blobs are literal. Three new files were absent. Make preserves every current-parent byte and inserts only four unique complete recipes after the exact137 peer-lifecycle command.",
+    "canonical_report": "../php-spec-evidence-archive/resumed-main-20261112/main84-output138-v1/report.json",
+    "canonical_sha256": "f4a4a56a1113cf0c37bc9228e80e9c4ed57bb291cad834033bd57982d0796f69",
+    "canonical": {
+      "tested_revision": "5f1c9de3180a3d29c970180ee8eecc724f86b178",
+      "mode": "production_SL",
+      "module_count": 509,
+      "ordered_arguments": 512,
+      "watched_inputs": 513,
+      "fixture_count": 1,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.434022737899795,
+      "runner": "/home/user/workspace/php-spec/tests/semantics/_build/default/numeric_runner.exe",
+      "cwd": "/home/user/workspace/php-spec",
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "timeout": false,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable_revision_and_all_inputs": true,
+      "reaped_leader_and_empty_group": true,
+      "source_credit": 0
+    },
+    "compatibility": "Native6/baseline2 retain1dd; source6/author30/20 retainf5df; independent153/22 retain88ea. Their private508 cuts keep their identities. The SAME saved509-module load is separate source0 evidence. The author receives only this consumed immutable tuple and reads no MAIN artifacts."
+  },
+  "preserved_zero": "Baseline selection2/6 retains Unsupported2 and other4unrun0. Syntax-only preparation, constructed-state fixtures, whole/source-packet reads and canonical loading add0 source agreement credit. Author and independent semantic runs pass on their first attempts under original caps; no earlier campaign is replayed.",
+  "limits": "Implicitly coercive or owning shift children, negative-count handler returns, other operations, noncanonical/bare/single-cast handlers and wider owners/lifetimes remain partial on this handler route. Exact holds, reserve93807cdd6/255 and OB31 remain unchanged; inventory stays169 constructors/306 obligations with no added closure. Full core PHP, Rocq interaction trees and BOLA/CRIS remain unfinished; no engine bug or intentional divergence is claimed."
+}

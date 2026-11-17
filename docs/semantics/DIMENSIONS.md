@@ -1291,6 +1291,18 @@ pass 16.540540201s/source0. UnaryPlus/nested unary, CV, NaN, owning and wider fo
 every exact hold, reserve93807cdd6/255 and inventory169/306 remain unchanged.
 [Negative FLOAT Warning review](../../coverage/semantics/string-offset-nested-unset-negative-float-warning-review.json).
 
+Ordinary initialized BOOL CV keys now use a separate Warning task carrying their
+borrowed entry-cell identity. Source/CODE/read-eps and actual late reads remain exact;
+normal and pending-throw completion require that same unwrapped, unreleased BOOL cell.
+Changed, removed, rebound or owning completion stays explicitly Unsupported after H.
+Native6 once gives three new Warning agreements, one quiet delayed-INT agreement
+and two Unsupported controls0. Author SL114/25-derived+103/14-derived and peer
+AL160/84-derived+162/78-derived retain separate cuts. Prelaw mismatches5, source
+compile failures6 and one author fixture parse failure remain0. Actual=SAME `a020af541`
+and sole production-SL509 `7207eea2` pass 16.431716288s/source0; exact holds,
+reserve93807cdd6/255 and inventory169/306 remain unchanged.
+[BOOL-CV Warning review](../../coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
+
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
 offsets` without converting the key. The carrier arm requires a known bounded
@@ -1863,3 +1875,7 @@ INTERNED header remain mandatory even when its value is skipped. Emitted root/le
 reads, source/CODE/precision, typed NORMAL full-state results, quiet-location
 exclusions and existing ownership/continuation bounds remain; wider forms and
 lifetimes stay partial. [Review](../../coverage/semantics/string-offset-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+Emitted LEFT child0/read-eps coalesce bases retain an exact RHS CASTSTRING certificate and typed whole-state result. NULL demands RHS source/CODE/precision/child/header authority; nonnull STRING authenticates the immediate RHS and skips deeper facts. The raw-literal RHS mandatory-header route remains unchanged. Wider forms and lifetimes stay partial. [Review](../../coverage/semantics/string-offset-runtime-scalar-coalesce-string-cast-base-initial-raw-leading-key-review.json).
+
+Literal ordinary NULL keyword/PNULL reads select emitted RHS child1/read-eps typed whole-state results with demanded source/CODE/precision/header authority. Full ternaries authenticate both immediate arms and skip unchosen deeper values. Raw-literal RHS mandatory-header and emitted-left routes remain disjoint; wider forms and lifetimes stay partial. [Review](../../coverage/semantics/string-offset-null-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).

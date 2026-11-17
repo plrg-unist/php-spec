@@ -20,6 +20,8 @@ Direct unary-minus raw nonNaN FLOAT intermediate unset keys preserve exact child
 
 Own public parentless short reference Get admits exact Class|null and null|Class headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw/normalized order, defining source/class/property authority and existing alias/owner bounds remain. Wider unions, warningful headers and lifetimes stay partial. [Review](coverage/semantics/class-null-union-parentless-short-reference-get-hook-review.json).
 
+Own public parentless short reference Get admits exact Class|false and false|Class headers with one quiet ordinary, fully qualified or namespace-relative class name. False retains literal identity without weak Boolean conversion; canonical defining authority and existing alias/owner bounds remain. Wider headers and lifetimes stay partial. [Review](coverage/semantics/class-false-union-parentless-short-reference-get-hook-review.json).
+
 Raw nonNaN FLOAT intermediate string-offset unset literals preserve the cast-Warning handler's return or throw through exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-float-warning-review.json)).
 
 Quiet full and shorthand ternaries compose through Boolean/NOT/CONCAT static USER method selectors, retaining exact source bytes, String truth, guarded emitted-root authority and existing quiet Get ownership/cleanup. Wider forms and lifetimes remain partial. [Ternary selector review](coverage/semantics/magic-property-methodclosure-static-raw-ternary-boolean-not-concat-tree-quiet-get-review.json).
@@ -27,6 +29,8 @@ Quiet full and shorthand ternaries compose through Boolean/NOT/CONCAT static USE
 Emitted NULL-left coalesce demands the certified RHS and preserves its actual NULL/BOOL/numeric tag before private integer reception. Exact source, declaration bindings, Shared caches and recipient ownership remain required. Redirected or owning producers and wider lifetimes remain partial. [NULL coalesce review](coverage/semantics/deferred-null-coalesce-wrapper-default-reception-review.json).
 
 Completed required ordinary-CV producers admit exact ordered FQN stdClass/iterable RETURN unions of2–8 members, preserving decoded class bytes, raw/normalized order, distinct permitted builtins and oneBoolean kind. Actual return verification, frame retirement and finite private Notice-cell payload/owner bounds remain; FORMALS/wider class names, Traversable payloads and lifetimes stay partial. [Review](coverage/semantics/cv-fqn-stdclass-iterable-return-producer-reference-notice-review.json).
+
+Completed fixed-required ordinary-CV producers admit exact ordered FQN stdClass/iterable FORMAL unions of2–8 members through the unchanged structural fold. Raw/normalized bytes/order, pointwise BYREF, reception/RETURN priority, frame retirement and finite private Notice-cell bounds remain. Other iterable formals, wider names, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-fqn-stdclass-iterable-formal-producer-reference-notice-review.json).
 
 Certified emitted `?:` conditions preserve exact INTERNED headers and frozen raw
 CV keys through returning Warnings. Quiet falsey scalar values select a literal
@@ -37,9 +41,15 @@ carriers and lifetimes remain partial.
 
 Certified emitted NULL/STRING coalesce left values with a raw literal RHS preserve their nullness-selected INTERNED header and frozen raw CV key through returning Warnings, including empty/"0" nonnull strings. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 
+Quiet emitted NULL/STRING coalesce left values admit an exact emitted string-cast RHS, preserving the selected INTERNED header and frozen raw CV offset through returning Warnings. NULL demands the RHS certificate; nonnull STRING skips its deeper facts. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-scalar-coalesce-string-cast-base-initial-raw-leading-key-review.json).
+
+Literal NULL selects certified emitted RHS INTERNED headers, including quiet full ternaries, preserving frozen raw CV offsets through returning Warnings. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-null-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 Completed one- or multiple-required ordinary-CV producers admit exact object|iterable/iterable|object and callable|iterable/iterable|callable returns, plus longer ordered distinct builtin unions containing iterable. Dedicated RETURN-only folding preserves raw Identifier/normalized order and count, rejects array/duplicate/Boolean overlaps, and retains shared FORMALS, existing pairs/epsilon, actual return verification and finite private Notice cells. Class-bearing iterable unions and wider payload/lifetime contexts remain partial. [Review](coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).
 
 Canonical emitted BOOL casts and NOT of certified NULL children preserve exact false/true results before private integer default reception. Exact source, declaration bindings, Shared caches and recipient ownership remain required. Folded literal-false shorthand redirects, wider producers and lifetimes remain partial. [NULL truth review](coverage/semantics/deferred-null-truth-wrapper-default-reception-review.json).
+
+Folded literal-false shorthand defaults retain their exact FIELD2 NULL redirect before existing BOOL/INT private reception. Wider redirects, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-null-short-redirect-wrapper-default-reception-review.json).
 
 Quiet exact signed64 INT DIVIDE composes in nested output-handler casts through two authenticated PINT children, exact quiet NORMAL full-state equality and the two-cast gate. Terminal CODE lines, fold/read authority, source and ownership guards remain; FLOAT results, zero divisors, coercive or owning children and wider handlers/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
 
@@ -48,6 +58,8 @@ Certified emitted NULL conditions select exact literal INTERNED full-ternary bas
 Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|false/false|iterable and iterable|true/true|iterable returns, retaining raw/normalized order, unchanged formals, actual return verification, frame retirement and finite private Notice cells. Weak mismatched Boolean/scalar returns reject before the outer Notice; wider headers, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-union-literal-bool-iterable-return-producer-reference-notice-review.json).
 
 Literal true/false intermediate string-offset unset keys preserve the cast-Warning handler's return or throw before the fixed nested Error under exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-bool-warning-review.json)).
+
+Ordinary initialized BOOL-CV inner unset keys retain their physical entry cell through Warning callbacks; replacement cells, changed types or owning poststates remain Unsupported. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-warning-review.json).
 
 The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
 and combined production loads; complete core remains unfinished.

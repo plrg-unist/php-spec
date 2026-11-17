@@ -1,0 +1,154 @@
+{
+  "milestone": "ENUM294 folded-false NULL shorthand redirect default reception",
+  "decision": "accepted bounded increment; core remains partial",
+  "target": "PHP 8.5.10 CLI NTS signed64; pinned project-local oracle and baseline profile",
+  "scope": "A folded literal-false shorthand redirects to its actual certified emitted NULL fallback, preserving NULL before existing BOOL/INT private default reception.",
+  "implementation": "Only one 16-line Module519 value certificate is added. Exact own/condition/fallback occurrences, phase-unsafe own CODE(z,false), absent own pool/read, special false condition with pool false and absent CODE/read/redirect, one exact same-unit FIELD2 false redirect and recursively certified PNULL are required. Declaration, bindings, cache, recipient, state and ownership rules are unchanged.",
+  "engine_provenance": "Pinned vendor/php-src/Zend/zend_compile.c::zend_eval_const_expr ZEND_AST_CONDITIONAL selects the literal-false fallback; Zend/zend_ast.c::zend_ast_evaluate_ex retains its NULL value. Existing RECV_INIT/private-reception rules retain cache and cell behavior.",
+  "author_source": {
+    "revision": "f8c9389cda5e4ac924307273356181382638e717",
+    "tree": "df3edeb7cbb777af2955dc84593f50364d95af76",
+    "base": "7c666e273de869d211103d06fea4f7895f396c17"
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/source-final-v1.patch",
+    "sha256": "bc469d0442fb5eec1dd56b0de0d35ed60527aea91a1a8fc0bd31bdb010141779",
+    "bytes": 25248,
+    "files": 7,
+    "added": 277,
+    "removed": 6
+  },
+  "full_postimages": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/source-final-v1-manifest.json",
+    "sha256": "c1f0005b6dc84f74b5bb63ba3897301f9840b16447b8730ba3333e86632d8b2f",
+    "independent_whole_clear": true
+  },
+  "native_once": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/native-final.json",
+    "sha256": "58ba84c6d3775e70831dab53d3210bc99373fb2752673c24c944321b14ddcb2d",
+    "saved_originals": 1,
+    "fresh_originals": 0,
+    "native_reexecutions": 0,
+    "scope": "Exact original named292 source366d, filename, argv, cwd, binary, profile and raw native streams reused once."
+  },
+  "baseline": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/baseline-reference.json",
+    "sha256": "4a4beff4929bfac2ceab4f624c1c11a291615cf197d41a1ffd73a5cd1b8e86d4",
+    "revision": "32d3a4422ab980b4f581bc47674018e1b8120f24",
+    "expected_unsupported": 1,
+    "source_credit": 0,
+    "scope": "Retains original Unsupported and the disjoint coalesce-only compatibility bridge without baseline renewal."
+  },
+  "source_execution": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/source-v1/report.json",
+    "sha256": "7c631b8b7e6dd71ace0741f14a57c5c2549d19a0b110f949c5aa14b1e11a36c2",
+    "revision": "e0e7c1ac358e472de84e49613c99679223dbf28b",
+    "mode": "production SL_mode",
+    "modules": 508,
+    "exact_normal_agreements": 1,
+    "elapsed_seconds": 177.90687992190942,
+    "native_reexecutions": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "author_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/author-v1/closure-call-protocol-gjrjksvu/report.json",
+    "sha256": "6d0f7c848a3f15c8244e970ae7fa973670c235aca3971e2222c93d24437d4105",
+    "revision": "f8c9389cda5e4ac924307273356181382638e717",
+    "cuts": [
+      67,
+      44
+    ],
+    "conditions": 111,
+    "body": 99,
+    "setup": 12,
+    "mode": "fixture SL_mode",
+    "modules": 508,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "elapsed_seconds": 301.5931906700134,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "affected_older_fixture": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/affected-v1/closure-call-protocol-j3th1ro0/report.json",
+    "sha256": "03f89b711195e9beb6ea399f1c3feefc2f8e90c7155bb6b131b48c259260dae3",
+    "revision": "f8c9389cda5e4ac924307273356181382638e717",
+    "conditions": 37,
+    "selection": "Old292 raw prefix5 plus rows2 and3 at13 each plus setup6; only six affected helper assertions changed.",
+    "per_fixture_cap": 300,
+    "outer_cap": 300,
+    "elapsed_seconds": 59.193262577056885,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "independent_retained": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/peer-v2/closure-call-protocol-edhm_oiy/report.json",
+    "sha256": "dc76d4e3c3e650cdf5abad2a0c89b44a416437f84349b2d8b2b91d0747714e84",
+    "revision": "62ea17658f96468f04d5c5705b86ec07aac86de8",
+    "cuts": [
+      26,
+      22,
+      37
+    ],
+    "retained_pass_conditions": 85,
+    "whole_result": "fail",
+    "failed_early_conditions": 70,
+    "source_credit": 0,
+    "stable": true,
+    "reaped": true
+  },
+  "independent_corrected": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-null-short-redirect-wrapper-default-reception-294/peer-certificate-v3/closure-call-protocol-0c7o5um7/report.json",
+    "sha256": "dadcb04d26c033b50540ab18e0495f4cef32c9c5435f1edb212838b4493a4139",
+    "revision": "4acaa470dd9b0377ff8e71740a7e8852d62ee913",
+    "conditions": 70,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "elapsed_seconds": 39.119835377,
+    "source_credit": 0,
+    "stable": true,
+    "reaped": true,
+    "correction": "Only failed early stage changed from unreachable ARGC2/TYPE_RECEIVE0 to actual named ARGC6/NAMED_PREFLIGHT0. Retained85 did not rerun; no whole155 pass is claimed."
+  },
+  "review": "Independent WHOLE7 FULLCLEAR23: exact seven full postimages, author111 and affected37; retained85 and corrected70 bridge final106 through the sole stage correction. ONE actual and SAME saved report read are clear; metadata uses only the supplied immutable tuple.",
+  "actual_source": {
+    "revision": "99aea256296d2bc8c081f12c911be6f0eb41be35",
+    "tree": "b581dd2c2c29b56e714e9fcdfd61a1be891b4e54",
+    "parent": "96cb13aa6dbcafa203e2c0cd8c5488310f2217b6"
+  },
+  "canonical": {
+    "revision": "99aea256296d2bc8c081f12c911be6f0eb41be35",
+    "tree": "b581dd2c2c29b56e714e9fcdfd61a1be891b4e54"
+  },
+  "canonical_load": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main85-three-source-v1/report.json",
+    "sha256": "09457573f71cfc0a2ea0b0a8d37ef2754074d2986ab5e25c2e6821b50797115c",
+    "mode": "production SL_mode",
+    "modules": 509,
+    "argv": 512,
+    "watch": 513,
+    "cap": 60,
+    "elapsed_seconds": 16.639534995891154,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0
+  },
+  "composition": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main85-three-source-composition-v1/map.json",
+    "sha256": "01d0e1203a590644925edf69e796ef14a3a6d4d8fb76c442fc2ed907c742dee5",
+    "scope": "Exact seven posts; complete519 and old292 parents exact, six literal incoming posts, three unique Make commands at293 anchor, deletion restores full actual parent. Joined33 posts exact; foreign REF113 module207 is preserved."
+  },
+  "scope_limits": [
+    "Literal-NULL coalesce redirects, non-NULL shorthand transport, wider headers/producers and lifetimes remain partial.",
+    "No full shorthand, default-reception, engine-equivalence or PHP-core closure is claimed."
+  ],
+  "exact_holds_unchanged": true,
+  "reserve_255_93807cdd6_untouched": true,
+  "inventory_counts_unchanged": true,
+  "core_complete": false,
+  "zero_scope": "Author111, affected37, retained85 and corrected70 are separate fixture cuts with source0/native0. The pre-model startup failure, original unreachable early70 and whole155 failure remain zero; no accepted execution was replayed. The unrun author no-redirect refusal was corrected before execution to a positive prior-route PNULL/admission contrast."
+}

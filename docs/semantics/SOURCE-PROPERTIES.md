@@ -2764,3 +2764,12 @@ bounds remain. False is an exact literal type: NULL, true and nonfalse scalars
 do not gain weak Boolean conversion. Both raw orders display `Class|false`.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-false-union-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using saved native observations without native replay.
+Separate author148/149/149 and independent288/156/156/156 fixture-SL508
+cuts retain source0; prelaw Unsupported6 stays0, with no execution failures,
+timeouts or corrections. Placement `17c22de41` and joined `99aea2562` retain
+distinct identities. Their composition and the sole joined production-SL509
+load (16.639534996 s, source0) are independently clear through the immutable
+tuple. Wider forms and all exact holds remain.
+[Independent review](../../coverage/semantics/class-false-union-parentless-short-reference-get-hook-peer-review.json).

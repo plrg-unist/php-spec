@@ -1651,3 +1651,17 @@ Implicitly coercive operands, zero-divisor handler returns, wider operations,
 owners/lifetimes and every exact hold remain partial.
 [Integer remainder evidence](../../coverage/semantics/output-final-selected-integer-remainder-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-remainder-cast-chain-return-modulo-error-review.json).
+
+Quiet signed64 INT SHIFTLEFT/SHIFTRIGHT also compose in those nested casts.
+Two proper certified PINT children retain independent source/CODE authority,
+RHS terminal lines, folding/read proofs and nonownership; actual fitting PINT
+results must preserve quiet NORMAL full-state equality and the two-cast gate.
+Six originals cover left wrap, arithmetic-right floor and oversized counts,
+reusing native6 once. Author30/20 and independent153/22 retain separate
+private508 SL fixture source0 cuts; prelaw Unsupported2/other4unrun retain0.
+No predecessor campaign is renewed. Actual composition and SAME
+`5f1c9de3180` pass the separate MAIN509 load in16.434022738 s/source0.
+Negative-count handler returns, implicit coercions, wider operations,
+owners/lifetimes and every exact hold remain partial.
+[Integer shift evidence](../../coverage/semantics/output-final-selected-integer-shift-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-shift-cast-chain-return-modulo-error-review.json).

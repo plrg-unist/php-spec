@@ -1073,6 +1073,18 @@ production-SL508 load pass in16.240492338s/source0, independently closed.
 Controller/Make remain unexecuted/source0; wider class spellings, contexts and
 every exact hold stay partial.
 
+Exact ordered FQN `stdClass`/`iterable` unions of two through eight members also
+admit fixed required ordinary-CV formals. The unchanged structural return fold
+preserves decoded class bytes, raw/normalized order, unique permitted builtins and
+one Boolean kind. Pointwise BYREF, ordinary-CV/source authority, actual reception
+and return verification, frame retirement and finite private Notice-cell bounds
+remain required. The [formal-union review](../../coverage/semantics/cv-fqn-stdclass-iterable-formal-producer-reference-notice-review.json)
+keeps seven native originals once and separate author/independent source7 with
+942/759 fixture-SL507 cuts distinct from the actual composition and sole joined
+production-SL509 load. Original fixture failure, Unsupported and unrun cuts retain
+zero credit. Other iterable formals, wider class names, Traversable Notice payloads
+and lifetimes remain partial; every exact hold stays unchanged.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags

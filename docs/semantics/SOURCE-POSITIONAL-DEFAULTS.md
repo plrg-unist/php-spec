@@ -212,3 +212,5 @@ typed and genuine frontiers at `738d2a3b1`/345. Its exact 1697-byte original at
 with normal exit 0, exact output and empty stderr. The source and 46-byte tuple
 are retained in `tests/semantics/compiler_composed_retry_cases.json` for combined
 and offline checks; those runs and wider producers remain open.
+
+Folded literal-false shorthand defaults retain an exact compiler redirect to a certified emitted NULL fallback. Existing BOOL/INT reception preserves Shared cache values and fresh private cells through precision-Warning reentry and retirement; broader redirects, producers and lifetimes remain partial. [Review](../../coverage/semantics/deferred-null-short-redirect-wrapper-default-reception-review.json).
