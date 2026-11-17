@@ -74,7 +74,7 @@ def controls():
         derived.append(check(members, accepted=False))
     for kind in ('object', 'mixed', 'void', 'never', 'callable', 'iterable', 'INTEGER'):
         members = ['class', 'int', kind]
-        derived += [check(members, accepted=kind == 'callable'), ('' if kind == 'callable' else '~') + header + raw_union(members) + ', pfunction_producer.SIGNATURE[.RETURNS = ' + ordered(members) + '])']
+        derived += [check(members, accepted=kind == 'callable'), ('' if kind in ('callable', 'iterable') else '~') + header + raw_union(members) + ', pfunction_producer.SIGNATURE[.RETURNS = ' + ordered(members) + '])']
     raw = raw_union(['class', 'float', 'int'])
     normalized = ordered(['class', 'float', 'int'])
     parameter = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw + ') (BOOLEAN false) (BOOLEAN false) phpType10_first ABSENT (SEQUENCE eps) metadata_first_parameter'

@@ -1,0 +1,99 @@
+[
+  {
+    "id": "one-cv-quiet-fqn-stdclass-iterable-return-private-cell",
+    "namespace": "ReviewQuietFqnStdClassIterableReturn112",
+    "return_members": [
+      "iterable",
+      "class"
+    ],
+    "value_kind": "object",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "object",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewQuietFqnStdClassIterableReturn112;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):iTeRaBlE|\\sTdClAsS{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->v===13),';';$value->v=37;$value=['n'=>41];return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ReviewQuietFqnStdClassIterableReturn112\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy->v===37),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy->v===37),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "716011e45e54810ee4827163d3595ab000d7b7dbf1b7e19bf3088443f49c3f8b",
+    "derived_from": {
+      "catalogue": "cv_builtin_union_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-quiet-object-iterable-return-private-cell",
+      "source_sha256": "d5b3495f17f7cdd230be2cf2df5f66cd0957bb9405acac6afc57a2f31902693e",
+      "edits": "Fresh namespace and exact fully qualified stdClass/iterable RETURN union. Retain original payload, observations, private-cell rewrite and lifetime bounds."
+    },
+    "cv_arity": 1,
+    "input_value": "POBJECT n_old",
+    "class_return": "sTdClAsS"
+  },
+  {
+    "id": "one-cv-weak-numeric-string-fqn-stdclass-iterable-float-int-return-private-cell",
+    "namespace": "ReviewNumericFqnStdClassIterableReturn112",
+    "return_members": [
+      "float",
+      "class",
+      "iterable",
+      "int"
+    ],
+    "value_kind": "float",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewNumericFqnStdClassIterableReturn112;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):fLoAt|\\StDcLaSs|iTeRaBlE|iNt{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17.5),';';$value=['n'=>41];return $value;}\n$x='17.5';$copy=$x;$alias=&$x;set_error_handler('ReviewNumericFqnStdClassIterableReturn112\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy==='17.5'),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy==='17.5'),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "8352e249a1f8dfeaf8b9f724fd293525d1c3c023bd886a838c08b655cc5b223d",
+    "derived_from": {
+      "catalogue": "cv_builtin_union_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-weak-numeric-string-iterable-int-float-return-private-cell",
+      "source_sha256": "87c29022056e93f0d1cdfb040f55fa7a1db0c8adc624750e0e277353216a8130",
+      "edits": "Fresh namespace and exact fully qualified stdClass/iterable RETURN union. Retain original payload, observations, private-cell rewrite and lifetime bounds."
+    },
+    "cv_arity": 1,
+    "input_value": "PINT 7",
+    "float_input_kind": "string",
+    "return_float_bits": 4625619029774565376,
+    "class_return": "StDcLaSs"
+  },
+  {
+    "id": "one-cv-strict-byref-scalar-fqn-stdclass-iterable-return-rejection-before-notice",
+    "namespace": "ReviewStrictByrefFqnStdClassIterableReturn112",
+    "return_shape": "union",
+    "return_members": [
+      "int",
+      "class",
+      "iterable",
+      "float"
+    ],
+    "class_return": "STDclass",
+    "value_kind": "int",
+    "formal_kind": "string",
+    "formal_members": [
+      "string"
+    ],
+    "formal_byref": true,
+    "caller_kind": "string",
+    "callee_strict": true,
+    "cv_arity": 1,
+    "priority_control": true,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewStrictByrefFqnStdClassIterableReturn112;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(string &$saved):iNt|\\STDclass|iTeRaBlE|fLoAt{$saved='17.5';echo 'M;';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x='old';$alias=&$x;$r=11;set_error_handler('ReviewStrictByrefFqnStdClassIterableReturn112\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',$alias,';';}$x=23;echo 'Q:',$alias,';';\n",
+    "source_sha256": "0e1928df9f1d2916cc8b78440f97371dc309d52eb96cddcf122b52fdefc6858d",
+    "native_stdout": "A;M;T:11:17.5;Q:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "singleton_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "edits": "Strict return rejection with required ordinary string BYREF formal; mutate the actual cell to decimal text before return, preserve outer target and alias, then write an integer after the failed return to show no persistent parameter constraint.",
+      "id": "single-cv-strict-ordered-iterable-int-return-error-precedes-outer-notice",
+      "source_sha256": "f19b161b8ddf6d4204d567270788a719335f8f726d71a216fe3ae13b514c1856"
+    }
+  }
+]
