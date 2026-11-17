@@ -1,0 +1,123 @@
+[
+  {
+    "id": "nullable-iterable-byref-formal-nullable-return-embedded-alias-and-private-cell",
+    "namespace": "CvArrayNullableIterableFormal98",
+    "formal_kind": "iterable",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace CvArrayNullableIterableFormal98 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(?iTeRaBlE &$input):?iTeRaBlE{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('CvArrayNullableIterableFormal98\\\\h',8);echo 'A;';\n$r=&take(make($source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "iterable-byref-formal-nullable-return-embedded-alias-and-private-cell",
+      "source_sha256": "cbdd20abe79587e21bb3d40f9422bf49d4dd2a9731d4736e1f5c50871f7ae98c",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, finite array/NULL Notice payload and lifetime bounds."
+    },
+    "source_sha256": "59da9777f4a97e90513c980071a66ffd7b836d999b992755d3f913507e6d7e27",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "input",
+    "caller_kind": "array",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "ordered-iterable-null-byval-formal-ordered-return-cow-and-private-cell",
+    "namespace": "CvCopyUnionIterableFormal98",
+    "formal_kind": "iterable",
+    "formal_byref": false,
+    "source": "<?php\nnamespace CvCopyUnionIterableFormal98;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make(ItErAbLe|null $saved):iterable|null{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('CvCopyUnionIterableFormal98\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "iterable-byval-formal-ordered-return-cow-and-private-cell",
+      "source_sha256": "6293a21cde72de45b93c6e6a66a79f1cc81534df32e13bae170738f2c4585acd",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, finite array/NULL Notice payload and lifetime bounds."
+    },
+    "source_sha256": "c4791c444b80250dd5b058aa0632bfb8052d55d495a24f33a8d01d5527a1fc0d",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "array",
+    "formal_name": "saved",
+    "caller_kind": "array",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  },
+  {
+    "id": "ordered-null-iterable-byref-formal-null-input-and-private-cell",
+    "namespace": "CvNullUnionIterableFormal98",
+    "formal_kind": "iterable",
+    "formal_name": "saved",
+    "formal_byref": true,
+    "caller_kind": "null",
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "iterable"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace CvNullUnionIterableFormal98;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(null|iterable &$saved):null|iterable{echo 'M;';return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value='done';return $value;}\n$x=null;$copy=$x;$kept=$copy;set_error_handler('CvNullUnionIterableFormal98\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r,':',$x,':',(int)($copy===$kept),';';\n$snapshot=$r;$r=13;echo 'C:',$r,':',$snapshot,';';$r=29;echo 'D:',$r,':',(int)($copy===$kept),';';\n",
+    "native_stdout": "A;M;H;F:1;R:done:23:1;C:13:done;D:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "generator-iterable-byval-formal-null-return-retained-input",
+      "source_sha256": "2a449c55acca9c1cbbfa6f458a78ed15e08d356582ac28446cf3ca749d6b2c76",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, finite array/NULL Notice payload and lifetime bounds. The ordered-null BYREF case supplies actual NULL instead of a Generator."
+    },
+    "source_sha256": "6a6dd0426729741cd8690ded082122b10902140314bb17b46ae4257a5af0a837",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ]
+  },
+  {
+    "id": "strict-nullable-iterable-formal-receive-error-precedes-producer-and-notice",
+    "namespace": "CvNullableIterableReceivePriority98",
+    "formal_kind": "iterable",
+    "formal_name": "input",
+    "formal_byref": true,
+    "caller_kind": "integer",
+    "receive_priority_control": true,
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace CvNullableIterableReceivePriority98;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(?iterable &$input):?iterable{echo 'BAD-M;';return [];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=17;$sourceAlias=&$source;$r='old';set_error_handler('CvNullableIterableReceivePriority98\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n",
+    "native_stdout": "A;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_cases.json",
+      "id": "strict-iterable-formal-receive-error-precedes-producer-and-notice",
+      "source_sha256": "045b86389b5b218d38491911f7ba5c0b2ada724db8155cb482ccc168bb9f9ab1",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, finite array/NULL Notice payload and lifetime bounds."
+    },
+    "source_sha256": "3f667af1e4c80fa076f6ec7e6aa03e1d8fc5c2b9320a135675aa73289f04a486",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ]
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "id": "generator-byref-nullable-iterable-formal-null-return-private-cell-cow",
+    "namespace": "ReviewGeneratorNullableIterableFormal98",
+    "formal_kind": "iterable",
+    "formal_shape": "nullable",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "generator",
+    "return_shape": "nullable",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "null",
+    "source": "<?php\nnamespace ReviewGeneratorNullableIterableFormal98;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $x;$x=['n'=>23];echo 'H;';return true;}\nfunction make(?iTeRaBlE &$saved):?iterable{echo 'M:',(int)($saved instanceof \\Traversable),';';$saved=null;return null;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$x=produce();$copy=$x;$kept=$copy;$alias=&$x;set_error_handler('ReviewGeneratorNullableIterableFormal98\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$alias['n'],':',(int)($copy===$kept),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===$kept),';';\n",
+    "native_stdout": "A;M:1;H;F:1;R:41:23:23:1;C:43:41;D:done:41:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0cbef0d18cf672a1a9da3443a4b2d7ce671df873e5704ed38bbd2dc63ead2a42",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "generator-byref-iterable-formal-null-return-private-cell-cow",
+      "source_sha256": "ea417160c99e7fdee8562a57e8927ed3791feb9a0368a927327f346c47aa64c4",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, retained input, finite Notice payload and lifetime observations unchanged."
+    }
+  },
+  {
+    "id": "array-byref-null-iterable-formal-ordered-return-handler-throw-retirement",
+    "namespace": "ReviewArrayUnionIterableFormal98",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "null",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewArrayUnionIterableFormal98;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';throw new \\Exception('stop');}\nfunction make(nUlL|ItErAbLe &$saved):null|iterable{$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewArrayUnionIterableFormal98\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\n",
+    "native_stdout": "A;M:5;H;T:11:23:3;Q:29:11:3;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "75219c570c9c8b221696a08dea280a1462d372a67c54e9197030341b2bab2483",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "array-byref-iterable-formal-ordered-return-handler-throw-retirement",
+      "source_sha256": "34e4e02eec4cef1b50b26647792d00ace73580348f0c084ea34fe2bd5467e77c",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, retained input, finite Notice payload and lifetime observations unchanged."
+    }
+  },
+  {
+    "id": "weak-string-iterable-null-formal-receive-error-precedes-producer-and-notice",
+    "namespace": "ReviewWeakUnionIterablePriority98",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "caller_kind": "string",
+    "priority_control": true,
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "null"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewWeakUnionIterablePriority98;\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(iTeRaBlE|NuLl $saved):iterable|null{echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewWeakUnionIterablePriority98\\\\h',8);echo 'A;';\ntry{$r=&take(make($x));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b567745e5149a7d4d3bc89568ccfb9f473b535c71b06d0f9da3a7c4e52a326ee",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "weak-string-iterable-formal-receive-error-precedes-producer-and-notice",
+      "source_sha256": "e579c2e22bab0365b22fba2aa2eef812278461d901c86ddf37a9b9ceb73c8eef",
+      "edits": "Fresh namespace and canonical nullable/ordered-null iterable required formal; existing return, retained input, finite Notice payload and lifetime observations unchanged."
+    }
+  }
+]

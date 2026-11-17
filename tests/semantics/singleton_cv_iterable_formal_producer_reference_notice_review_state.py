@@ -86,7 +86,7 @@ def controls(case):
             '(NNullableType ' + raw + ' metadata_formal)'):
         lines += ['~' + header + 'SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) ' + replacement + ' (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, ' + signature + ')']
     lines += ['~' + header + 'phpType16, phpType18, ' + signature + '[.PARAMETERS = [psparam[.TYPE = ' + prior.branches(['array']) + ']]])',
-        '~' + header + 'SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NNullableType ' + raw + ' metadata_formal) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, ' + signature + '[.PARAMETERS = [psparam[.TYPE = ' + prior.branches(['iterable', 'null']) + ']]])',
+        header + 'SEQUENCE ([NParam (SEQUENCE eps) (INTEGER 0) (NNullableType ' + raw + ' metadata_formal) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter]), phpType18, ' + signature + '[.PARAMETERS = [psparam[.TYPE = ' + prior.branches(['iterable', 'null']) + ']]])',
         '~$reference_notice_producer_arguments(phpType6_producer, phpType16, ' + signature + '[.PARAMETERS = eps][.RETURNS = eps])']
     return lines
 

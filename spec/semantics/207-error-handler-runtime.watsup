@@ -872,6 +872,31 @@ def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*
   -- if text_parameter <- ["array", "iterable"] /\ $ptlc($base64(text_type)) = $ptascii(text_parameter)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
 def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
+  -- if |phpType7*| = 1 /\ |phpType17*| = 1
+  -- if phpType7*[0] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) (NNullableType (NIdentifier (BYTES text_type) metadata_type) metadata_nullable) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN "iterable"])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if $ptlc($base64(text_type)) = $ptascii("iterable")
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
+def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
+  -- if |phpType7*| = 1 /\ |phpType17*| = 1
+  -- if phpType7*[0] = NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if phpType17*[0] = NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE ([NIdentifier (BYTES text_first) metadata_first, NIdentifier (BYTES text_second) metadata_second])) metadata_union) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter
+  -- if pssignature.PARAMETERS = [psparam]
+  -- if psparam.TYPE = [(PTBRANCH ([PTBUILTIN text_first_type])), (PTBRANCH ([PTBUILTIN text_second_type]))]
+  -- if text_first_type <- ["iterable", "null"] /\ text_second_type <- ["iterable", "null"] /\ text_first_type =/= text_second_type
+  -- if $ptlc($base64(text_first)) = $ptascii(text_first_type) /\ $ptlc($base64(text_second)) = $ptascii(text_second_type)
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE /\ pssignature.RETURNS = eps
+def $reference_notice_producer_arguments(SEQUENCE phpType7*, SEQUENCE phpType17*, pssignature) = true
   -- if |phpType7*| = 1 /\ |phpType17*| = 1 /\ pssignature.RETURNS = eps
   -- if pssignature.PARAMETERS = [psparam]
   -- if psparam.TYPE =/= eps /\ psparam.TYPE =/= [(PTBRANCH ([PTBUILTIN "array"]))]
