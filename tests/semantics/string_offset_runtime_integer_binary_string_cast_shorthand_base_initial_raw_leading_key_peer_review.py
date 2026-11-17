@@ -159,7 +159,7 @@ expression_string_base = NExprTernary expression_string_cond ABSENT expression_f
 S_string_integer = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_string_base) :: (PCOCCURRENCE pcpath_cond expression_string_cond) :: (PCOCCURRENCE pcpath_left expression_string_left) :: (PCOCCURRENCE pcpath_right expression_string_right) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_left (PSTRING ([48]))) :: (PCONSTANT pcpath_right (PSTRING ([48]))) :: ppool.CONSTANTS]]][.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_left 18 true) :: pcode.EXPRESSIONS]]]
 $string_read_runtime_value(S_string_integer,porigin_cond) = (PSTRING_CARRIER INTERNED_STRING ([48]))
 $string_read_runtime_value(S_string_integer,porigin_base) = (pvalue_base)
-~$string_read_raw_known_base(S_string_integer,porigin_base,pvalue_base)
+$string_read_raw_known_base(S_string_integer,porigin_base,pvalue_base)
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)

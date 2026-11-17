@@ -132,6 +132,6 @@ S_zero_mod_budget = S_zero_mod[.COMPLETION = BUDGET][.RESULT = KNOWN pkeyread.BA
                    f'S_{label}_string = S_capture[.SOURCES = [pcunit[.OCCURRENCES = (PCOCCURRENCE pcpath_base expression_{label}_base) :: (PCOCCURRENCE pcpath_cond expression_{label}_cond) :: (PCOCCURRENCE pcpath_cond_leaf expression_{label}_left) :: (PCOCCURRENCE pcpath_cond_right expression_{label}_right) :: pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_cond_leaf (PSTRING ({value}))) :: (PCONSTANT pcpath_cond_right (PSTRING ({value}))) :: ppool.CONSTANTS]]][.CODE = [pcode[.EXPRESSIONS = (CODEEXPR pcpath_cond_leaf 12 true) :: pcode.EXPRESSIONS]]]',
                    f'$string_read_runtime_value(S_{label}_string,porigin_cond) = (PSTRING_CARRIER INTERNED_STRING ({value}))',
                    f'$string_read_runtime_value(S_{label}_string,porigin_base) = (pkeyread.BASE)',
-                   f'~$string_read_raw_known_base(S_{label}_string,porigin_base,pkeyread.BASE)']
+                   f'$string_read_raw_known_base(S_{label}_string,porigin_base,pkeyread.BASE)']
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)
