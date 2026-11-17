@@ -1183,6 +1183,21 @@ separates object BYVAL/BYREF, array COW and eight-member source evidence from an
 unchanged strict reception control and preserves all three fixture failures.
 Other names/contexts and wider payloads/owners/lifetimes remain partial; exact holds stay unchanged.
 
+Singleton `NName` FORMALs also use their declaration namespace and class imports
+when valid, quiet, builtin-first type resolution yields exact global `stdClass`.
+A proof-only Param view changes the authenticated alias spelling and tag to that
+canonical fully qualified name, preserving every other field and all metadata;
+the original source and declaration stay intact. A nonempty declaration context
+keeps this arm disjoint from the unchanged global view. Nonempty actuals and a
+changed parameter vector still precede the existing header proof, reception,
+return verification, retirement and finite private Notice cells.
+The [scoped-formal review](../../coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json)
+keeps four Notice originals and one unchanged strict reception control separate,
+including the original semantic overlap failure and saved line-expectation correction.
+FQN returns isolate formal authority in these originals. Scoped nullable/union/
+relative forms, other resolved spellings and wider owners/lifetimes remain partial;
+all exact holds stay unchanged.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags

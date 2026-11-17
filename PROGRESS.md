@@ -8,6 +8,21 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Singleton nominal FORMALs of completed required ordinary-CV producers now use quiet
+builtin-first declaration resolution to exact global `stdClass` in imported
+namespace and unrelated-import global contexts. Native5 once/source5 distinguish
+four Notice positives from one unchanged strict reception control/newcredit0.
+Retained author436/affected418 and first independent WHOLE5+436/418 keep their
+separate cuts; the disjoint-context correction preserves the original semantic
+overlap failure0 and saved H9-to-H8 native expectation correction0 without replay.
+Actual/SAME7af4af741 and sole SL509/512argv/513watch16.131483867s/source0 are
+independently clear through immutableae281dc2. Scoped nullable/union/relative forms,
+other resolved spellings and wider owners/lifetimes remain partial; all exact holds,
+reserve93807cdd6/255 and inventory169/306/closed0+1 are unchanged.
+[Review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json).
+
+Already-certified quiet PINT producers feed allocated STRING casts through a complete indexed child SOURCE walk. Existing false parent CODE/no-read/positive line, equal own/child precision, signed64/outside0..9, exact decimal/prefix/cast_apply and genuine non-NUL REQUEST KNOWN ownership remain. Folded signs and emitted ternary-backed arithmetic retain exact REQUEST3 prefixes and frozen raw CV offsets through returning Warnings. Native3 once/source3savedreuse, author277/117-derived plus302/127-derived and independent453/353-derived SL508 keep separate first-pass cuts. WHOLE12 and actualcb0cf98ca/sole66ab9b2d productionSL50916.589039046s/source0 are independently clear through immutableb5647c31/one saved-report read; author canonical/map/actual-source reads0. Source/fixture failures/corrections/timeouts0; separate MAIN2/reviewer1 preparation assertions retain0. Existing quiet typed VALUE extensions and the old literal singleton bridge remain preserved/unrenewed. Wider uncertified producers/lifetimes, exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 stay partial/unchanged. [Review](coverage/semantics/string-offset-runtime-allocated-integer-producer-cast-base-initial-raw-leading-key-review.json).
+
 Nonfinite FLOAT postvalues in the same saved ordinary initialized NULL/BOOL CV now stage the existing copied-bit range Warning, preserving default reporting and pending versus replacing exceptions. Only two FINITE premises change; fitting-only quiet reception and source/cell/handler/context/owner bounds remain literal. Native7 once/source7, prelaw author61/70 and peer76/88, author118/25+142/32+118/25+107/25+118/25+118/25 and peer153/29+141/29 retain separate SL180 cuts. Original fixture/compiler and metadata-preparation failures keep0 without runtime renewal. Actual=SAME87fe9d899, sole23413570 productionSL50916.782590839s/source0, and immutable71dc5eed are independently clear with one saved-report read cached by44 and author rawactual/canonical/map0. Wider forms/lifetimes, all exact holds, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged. See [nonfinite postvalue review](coverage/semantics/string-offset-nested-unset-bool-cv-nonfinite-post-review.json).
 
 Flat ordered bare global `stdClass` required ordinary-CV FORMAL unions preserve exact raw bytes/order and every member/union/Param field through the existing scoped view and FQN folds. Native5 once/source5 distinguishes Notice positives4 from strict reception control1/newcredit0. Retained author source5, corrected433(266+167)/378(252+126) and first independent WHOLE5+433/378 SL507 keep separate revision cuts; the three fixture-only failures retain0 through narrow helper bridges, without source/native or passed-author-fixture replay. Actual=SAME779e22359 and sole productionSL509/512argv/513watch15.981450341s/cap60/source0 are independently clear through immutable73e94995 and one cached saved-report read; author raw reads0. Other names/contexts, wider payloads/owners/lifetimes and exact holds remain partial/unchanged; reserve93807cdd6/255 and inventory169/306/closed0+1 stay unchanged. [Review](coverage/semantics/global-plain-ordered-stdclass-formal-producer-reference-notice-review.json).

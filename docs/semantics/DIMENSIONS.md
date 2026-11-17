@@ -2088,3 +2088,16 @@ solece125816 productionSL50916.883331442s/source0 are clear through immutablebfa
 and one saved-report read; original B syntax rejection retains0/runtimeUNRUN.
 Wider forms/lifetimes, Owned-NUL release and all exact holds remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-allocated-folded-scalar-concat-suffix-base-initial-raw-leading-key-review.json).
+
+Allocated STRING casts accept already-certified quiet PINT children through a full
+indexed child SOURCE walk. Parent falseCODE/line/no-read, own/child precision,
+signed64/outside0..9, decimal/prefix/cast_apply and genuine non-NUL REQUEST KNOWN
+bounds remain. Indexed SOURCE shadows refuse even when unary VALUE survives;
+unused raw-leaf pool/precision is not newly demanded. Native3 once/source3,
+author277/117-derived plus302/127-derived and independent453/353-derived SL508 keep
+separate first-pass cuts. WHOLE12 and actualcb0cf98ca/sole66ab9b2d productionSL509
+16.589039046s/source0 are clear through immutableb5647c31/one saved-report read.
+Preserved foreign VALUE helpers retain the quiet typed contract; MAIN2/reviewer1
+prep assertions retain0. Wider uncertified/FLOAT/owning/nonquiet producers and
+lifetimes remain partial; all exact holds stay unchanged.
+[Review](../../coverage/semantics/string-offset-runtime-allocated-integer-producer-cast-base-initial-raw-leading-key-review.json).

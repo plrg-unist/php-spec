@@ -47,13 +47,15 @@ Completed ordinary-CV producers admit flat `stdClass` return unions with the bui
 
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
-Allocated raw-integer string casts and finite left-associated literal CONCAT chains,
+String casts from certified quiet integer producers and finite left-associated
+literal CONCAT chains,
 including folded raw STRING-only and certified scalar-CONCAT suffix trees,
 preserve their exact
 non-NUL REQUEST temporary and frozen raw CV offset through returning Warnings,
 both directly and as coalesce-left operands. Separate entry freshness and saved
 ownership preserve later callback allocations. Source, state and integration
 evidence retain their separate scopes; wider producers and lifetimes remain partial.
+[Integer producer cast review](coverage/semantics/string-offset-runtime-allocated-integer-producer-cast-base-initial-raw-leading-key-review.json),
 [Scalar suffix review](coverage/semantics/string-offset-runtime-allocated-folded-scalar-concat-suffix-base-initial-raw-leading-key-review.json),
 [Folded suffix review](coverage/semantics/string-offset-runtime-allocated-folded-string-concat-suffix-base-initial-raw-leading-key-review.json),
 [chain review](coverage/semantics/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-review.json),
@@ -429,6 +431,11 @@ Canonical fully qualified `\stdClass` required formals and returns also retain e
 Raw `?\stdClass` formals and returns also preserve exact class bytes and `[class,null]` order under the existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain separate evidence; explicit unions, plain/imported/wider classes and all exact holds remain partial. [Nullable FQN review](coverage/semantics/cv-nullable-fqn-stdclass-producer-reference-notice-review.json).
 
 Explicit `\stdClass|null` and `null|\stdClass` formals/returns preserve exact raw/normalized order and existing quiet payload/owner bounds. Native6 once/source6, independent fixtures and the sole composed SL508 load retain distinct evidence; wider class/builtin unions, plain/imported classes and all exact holds stay partial. [Ordered FQN/null review](coverage/semantics/cv-union-fqn-stdclass-producer-reference-notice-review.json).
+
+Completed ordinary-CV producers can also use singleton nominal formals whose
+declaration imports resolve quietly to exact global `stdClass` before a
+reference-send Notice. The [scoped-formal review](coverage/semantics/scoped-stdclass-formal-producer-reference-notice-review.json)
+records reception, return verification, private cells and unchanged lifetime bounds.
 
 Ordinary typed property references now remove the first matching declaration
 source when distinct instances share that declaration, preserving native
