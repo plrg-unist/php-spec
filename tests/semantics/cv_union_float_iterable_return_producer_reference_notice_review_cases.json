@@ -1,0 +1,106 @@
+[
+  {
+    "id": "one-cv-weak-numeric-string-float-iterable-return-and-private-cell",
+    "namespace": "ReviewWeakCvUnionFloatIterableReturn107",
+    "return_members": [
+      "float",
+      "iterable"
+    ],
+    "value_kind": "float",
+    "formal_kind": null,
+    "formal_byref": false,
+    "caller_kind": "string",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewWeakCvUnionFloatIterableReturn107;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make($saved):fLoAt|iTeRaBlE{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17.5),';';$value=['n'=>41];return $value;}\n$x='17.5';$copy=$x;$alias=&$x;set_error_handler('ReviewWeakCvUnionFloatIterableReturn107\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',$copy,';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',$copy,';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:17.5;C:43:41;D:done:41:17.5;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "98429c6860f05c2fd0ea92d672c844960a9ee9fe421d89552cfed45048472c56",
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "weak-int-result-single-cv-ordered-int-iterable-return-and-private-cell",
+      "source_sha256": "e1e622cecb0e8d31b99ed4006997871094b5a698fbfad3a07dcb5dd97ede6777",
+      "edits": "Fresh namespace; int|iterable becomes float|iterable, caller text '17' becomes '17.5', and strict value observation tests 17.5. One required ordinary CV, caller/private-cell separation and later untyped writes remain."
+    },
+    "float_input_kind": "string",
+    "return_float_bits": 4625619029774565376,
+    "cv_arity": 1
+  },
+  {
+    "id": "two-cv-strict-int-iterable-float-return-widening-and-private-cell",
+    "namespace": "ReviewStrictIntCvUnionFloatIterableReturn107",
+    "return_members": [
+      "iterable",
+      "float"
+    ],
+    "value_kind": "float",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "caller_kind": "int",
+    "expected_notice_line": 9,
+    "first_actual_source_line": 9,
+    "last_actual_source_line": 10,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace ReviewStrictIntCvUnionFloatIterableReturn107;\nfunction h($n,$m,$file,$line){global $stamp,$x;$stamp=13;$x='new';echo 'H:',$line,';';return true;}\nfunction make(int $saved,int $stamp):iTeRaBlE|fLoAt{echo 'M:',$stamp,';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17.0),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=17;$copy=$x;$alias=&$x;set_error_handler('ReviewStrictIntCvUnionFloatIterableReturn107\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x,':',$alias,':',$copy,';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',$copy,';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;M:7;H:9;F:1;R:41:new:new:17;C:43:41;D:done:41:17;Z:13;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "5d218e098287a3ccd8620e3b792cac53867f07f4c26b1cb416555a834a939523",
+    "float_input_kind": "int",
+    "return_float_bits": 4625478292286210048,
+    "cv_arity": 2,
+    "callee_strict": true,
+    "formal_members": [
+      "int"
+    ],
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "weak-int-result-second-cv-ordered-int-iterable-return-and-untyped-private-cell",
+      "source_sha256": "319a8d08df9b84ffc2dc8f884fc463511905ce44da1bf97c01dd6e0696582d58",
+      "edits": "Fresh namespace; enable strict typing, make saved a required int formal and the caller literal integer17, use iterable|float return and a strict comparison with17.0. Two ordinary CV positions, later caller/private-cell observations and COW remain."
+    }
+  },
+  {
+    "id": "two-cv-array-byref-float-iterable-return-handler-throw-retirement",
+    "namespace": "ReviewThrowCvUnionFloatIterableReturn107",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "union",
+    "return_members": [
+      "float",
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewThrowCvUnionFloatIterableReturn107;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved,int $stamp):fLoAt|iTeRaBlE{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewThrowCvUnionFloatIterableReturn107\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6f6592aa4409d14a3941dbc459840dccda2f57fccaae912fe50d4c46128b7396",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "first-ordered-formal-int-iterable-return-array-byref-second-int-handler-throw-retirement",
+      "source_sha256": "fb11898d765e700f1559987ac64ce8f10c340c8ef8ae40a1686a7c26549f5802",
+      "edits": "Fresh namespace; int|iterable return becomes float|iterable. Required ordered iterable|null BYREF formal, second int position, array result, handler throw and actual retirement observations remain."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8,
+    "cv_arity": 2
+  }
+]

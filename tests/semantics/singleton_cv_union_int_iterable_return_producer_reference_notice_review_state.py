@@ -143,7 +143,8 @@ def controls(case):
     for members in (['iterable', 'int'], ['int', 'iterable'], ['iterable', 'null'], ['null', 'iterable']):
         lines.append(header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for members in (['iterable', 'float'], ['float', 'iterable'], ['iterable', 'array'], ['array', 'iterable'], ['iterable', 'iterable'], ['int', 'int'], ['iterable', 'int', 'null']):
-        lines.append('~' + header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
+        polarity = '' if members in (['iterable', 'float'], ['float', 'iterable']) else '~'
+        lines.append(polarity + header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for members in (list(reversed(case['return_members'])), ['array', 'int']):
         lines.append('~' + header + 'phpType18, ' + signature + '[.RETURNS = ' + branches(members) + '])')
     for edit in ('REQUIRED = false', 'VARIADIC = true', 'BYREF = ' + str(not case['formal_byref']).lower(), 'DEFAULT = PSDEFAULTUNSUPPORTED "forged producer default"'):

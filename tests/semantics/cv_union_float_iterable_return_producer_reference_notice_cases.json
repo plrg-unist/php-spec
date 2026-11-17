@@ -1,0 +1,107 @@
+[
+  {
+    "id": "multiple-cv-array-byref-ordered-float-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "MultiCvArrayOrderedFloatIterableReturn107",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvArrayOrderedFloatIterableReturn107 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(int $stamp,aRrAy &$input):iTeRaBlE|fLoAt{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvArrayOrderedFloatIterableReturn107\\\\h',8);echo 'A;';\n$r=&take(make($stamp,$source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-array-byref-ordered-int-iterable-return-embedded-alias-and-private-cell",
+      "source_sha256": "42f34ecc1b2ef08d783725784b2d5bc811c74980200f6df7573fee53c09df979",
+      "edits": "Fresh namespace and exact ordered iterable|float/float|iterable return replace the ordered-int return. Existing one/two-CV formals, array results, observations and ownership operations stay unchanged; priority source uses strict numeric-string return rejection."
+    },
+    "source_sha256": "9a95381261010df11e1104440ea08de5ef785864472b4f6d0a6648fd7772004d",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "float"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-untyped-byval-ordered-float-iterable-return-cow-and-private-cell",
+    "namespace": "SingleCvUntypedOrderedFloatIterableReturn107",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace SingleCvUntypedOrderedFloatIterableReturn107;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved):FlOaT|iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$x=['n'=>5];$copy=$x;set_error_handler('SingleCvUntypedOrderedFloatIterableReturn107\\\\h',8);echo 'A;';\n$r=&take(make($x));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_union_int_iterable_return_producer_reference_notice_cases.json",
+      "id": "single-cv-untyped-byval-ordered-int-iterable-return-cow-and-private-cell",
+      "source_sha256": "30e0d9905b3e420ec1d4a568c1b097f8dfed65b484b332b0d46306abd661a6db",
+      "edits": "Fresh namespace and exact ordered iterable|float/float|iterable return replace the ordered-int return. Existing one/two-CV formals, array results, observations and ownership operations stay unchanged; priority source uses strict numeric-string return rejection."
+    },
+    "source_sha256": "6d4e48f1fcd509a489a410ed38657b0a192f012d6cf7ebe6afdf0de5a5880c4c",
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "float",
+      "iterable"
+    ],
+    "cv_arity": 1
+  },
+  {
+    "id": "multiple-cv-strict-int-byval-ordered-float-iterable-return-and-private-cell",
+    "namespace": "MultiCvIntOrderedFloatIterableReturn107",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvIntOrderedFloatIterableReturn107;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved,int $stamp):iterable|fLoAt{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('MultiCvIntOrderedFloatIterableReturn107\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_int_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-strict-int-byval-ordered-int-iterable-return-and-private-cell",
+      "source_sha256": "1089ae72af680b4097a2077217fcf6a3ce5dc269e1ce94dd3f382b4615f4fb4b",
+      "edits": "Fresh namespace and exact ordered iterable|float/float|iterable return replace the ordered-int return. Existing one/two-CV formals, array results, observations and ownership operations stay unchanged; priority source uses strict numeric-string return rejection."
+    },
+    "source_sha256": "48af423350d27958120ffaaec52ce5cd0e769273a0020b7ceb40ce8aef8ae9a9",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "float"
+    ],
+    "cv_arity": 2
+  },
+  {
+    "id": "single-cv-ordered-float-iterable-return-type-error-precedes-outer-notice",
+    "namespace": "SingleCvOrderedFloatIterableReturnPriority107",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace SingleCvOrderedFloatIterableReturnPriority107 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(array &$input):fLoAt|iterable{$input=17;echo 'M;';return '17.5';}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$source=[];$sourceAlias=&$source;$r='old';set_error_handler('SingleCvOrderedFloatIterableReturnPriority107\\\\h',8);echo 'A;';\ntry{$r=&take(make($source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_union_int_iterable_return_producer_reference_notice_cases.json",
+      "id": "single-cv-ordered-int-iterable-return-type-error-precedes-outer-notice",
+      "source_sha256": "146e765eab5f0a36bd788d4b4c133babc1b47614928671082923e0846e9bd4b9",
+      "edits": "Fresh namespace and exact ordered iterable|float/float|iterable return replace the ordered-int return. Existing one/two-CV formals, array results, observations and ownership operations stay unchanged; priority source uses strict numeric-string return rejection."
+    },
+    "source_sha256": "2a40f93b6f4597853bbc48d1e79b79a36d02a2fbd4064ca24caffbecc1660228",
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "float",
+      "iterable"
+    ],
+    "priority_bad_return": true,
+    "callee_strict": true,
+    "cv_arity": 1
+  }
+]
