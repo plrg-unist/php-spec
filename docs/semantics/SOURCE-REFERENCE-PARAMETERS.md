@@ -942,8 +942,9 @@ control is promoted using current reached states, without historical replay.
 Actual `045573120` and sole joined `d124d90a` SL508 loading
 (16.332717621 s/source0) are independently clear and remain separate from
 the original source and fixture cuts.
-Multiple-CV ordered iterable formals and iterable returns, Traversable
-Notice operands, wider headers, owners/lifetimes and every exact hold remain partial.
+Multiple-CV iterable formals are extended below. Iterable returns with multiple
+CVs, Traversable Notice operands, wider headers, owners/lifetimes and every exact
+hold remain partial.
 
 Multiple required ordinary-CV formals can now include raw bare `iterable`
 Identifiers, authenticated against normalized builtin tags by the existing
@@ -957,8 +958,8 @@ records seven originals, native4+3 once and separate 451/345 fixture-SL507 suite
 The first Unsupported source, original line-expectation failure and stale literal
 occurrence assertion remain separate zero-credit cuts; the fixture correction
 reruns only its affected suite. Bare duplicated argument controls are promoted;
-canonical nullable duplicated formals are extended below; ordered duplicated
-formals and multi-CV iterable-return headers stay refused.
+canonical nullable and ordered duplicated formals are extended below;
+multi-CV iterable-return headers stay refused.
 Wider headers, Traversable Notice operands, owners/lifetimes and exact holds remain partial.
 
 Canonical raw `?iterable` required formals now also use the multiple-CV fold.
@@ -970,10 +971,25 @@ cells; Generator bodies stay unentered. The
 [multiple-CV nullable iterable-formal review](../../coverage/semantics/multi-cv-nullable-iterable-formal-producer-reference-notice-review.json)
 records native4+3 once, seven source originals and separate 459/367 fixture-SL507
 suites. Prelaw fronts269/205 and first-source Unsupported keep zero credit.
-Only canonical nullable duplicated/forged argument controls are promoted; ordered
-multi-CV controls stay refused without replaying older campaigns. Multiple-CV
-ordered iterable formals and iterable returns, broader headers, Traversable Notice
-operands, owners/lifetimes and all exact holds remain partial.
+Canonical nullable duplicated/forged argument controls are promoted; the ordered
+counterparts are extended below without replaying older campaigns. Multiple-CV
+iterable returns, broader headers, Traversable Notice operands, owners/lifetimes
+and all exact holds remain partial.
+
+Exact raw two-member `iterable|null` and `null|iterable` required formals now use
+that multiple-CV fold through one dedicated arm. The existing generic union lists
+stay unchanged. Pointwise raw/normalized order, Identifier casefolding, BYREF and
+required/nonvariadic guards preserve mixed positions and duplicate CVs. Array,
+NULL and retained Generator inputs preserve return checks, producer retirement,
+COW and separate private Notice cells; Generator bodies stay unentered.
+The [ordered-null multiple-CV iterable-formal review](../../coverage/semantics/multi-cv-union-null-iterable-formal-producer-reference-notice-review.json)
+records native4+3 once, seven source originals and separate author505/peer381
+fixture-SL507 suites in both independently passed whole packets. Prelaw fronts
+273/205, first-source Unsupported and the literal projection comparison failure
+keep zero credit. Only five affected older fixture bridges and the Makefile entry
+change alongside the new tests; historical campaigns are not renewed. Wider
+iterable unions, multiple-CV iterable returns, headers, Notice payloads,
+owners/lifetimes and every exact hold remain partial.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
