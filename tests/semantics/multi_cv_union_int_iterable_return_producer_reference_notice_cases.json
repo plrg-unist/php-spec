@@ -1,0 +1,104 @@
+[
+  {
+    "id": "multiple-cv-array-byref-ordered-int-iterable-return-embedded-alias-and-private-cell",
+    "namespace": "MultiCvArrayOrderedIntIterableReturn105",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace MultiCvArrayOrderedIntIterableReturn105 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(int $stamp,aRrAy &$input):iTeRaBlE|iNt{$saved=$input;$input=17;echo 'M:',$input,';';return $saved;}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$stamp=5;$leaf=5;$source=['leaf'=>&$leaf];$sourceAlias=&$source;$copy=$source;set_error_handler('MultiCvArrayOrderedIntIterableReturn105\\\\h',8);echo 'A;';\n$r=&take(make($stamp,$source));echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-array-byref-ordered-null-iterable-return-embedded-alias-and-private-cell",
+      "source_sha256": "a9ce93219e7fb54724855e025558a123bcdcaf5ec0e6b64f22f94515ceb575f7",
+      "edits": "Fresh namespace and exact ordered iterable|int/int|iterable return replace the ordered-null return. Array-result programs retain their observations and ownership operations. The priority original returns a nonnumeric string to keep return TypeError before the outer Notice."
+    },
+    "source_sha256": "42f34ecc1b2ef08d783725784b2d5bc811c74980200f6df7573fee53c09df979",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "int"
+    ]
+  },
+  {
+    "id": "multiple-cv-untyped-byval-ordered-int-iterable-return-cow-and-private-cell",
+    "namespace": "MultiCvUntypedOrderedIntIterableReturn105",
+    "formal_kind": null,
+    "formal_byref": false,
+    "source": "<?php\nnamespace MultiCvUntypedOrderedIntIterableReturn105;\nfunction h($n,$m,$file,$line){global $x;$x['n']=23;echo 'H;';return true;}\nfunction make($saved,int $stamp):InT|iterable{$saved['n']=7;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=['n'=>5];$copy=$x;set_error_handler('MultiCvUntypedOrderedIntIterableReturn105\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x['n'],':',$copy['n'],';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M;H;F:7;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-untyped-byval-ordered-null-iterable-return-cow-and-private-cell",
+      "source_sha256": "6f9a509a460b18c210e808bcb4d7da3ce80c1de8c14c2fe33b346ce6b3215701",
+      "edits": "Fresh namespace and exact ordered iterable|int/int|iterable return replace the ordered-null return. Array-result programs retain their observations and ownership operations. The priority original returns a nonnumeric string to keep return TypeError before the outer Notice."
+    },
+    "source_sha256": "e45364d487c6b8287086d3ce4b9ba50ec27b1ec51555dd8dd142008c0ee9b25d",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "int",
+      "iterable"
+    ]
+  },
+  {
+    "id": "multiple-cv-strict-int-byval-ordered-int-iterable-return-and-private-cell",
+    "namespace": "MultiCvIntOrderedIntIterableReturn105",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "source": "<?php\ndeclare(strict_types=1);\nnamespace MultiCvIntOrderedIntIterableReturn105;\nfunction h($n,$m,$file,$line){global $x;$x=23;echo 'H;';return true;}\nfunction make(int $saved,int $stamp):iterable|iNt{echo 'M:',$saved,';';return ['n'=>$saved];}\nfunction &take(&$value){echo 'F:',$value['n'],';';$value['n']=11;return $value;}\n$stamp=5;$x=5;$copy=$x;set_error_handler('MultiCvIntOrderedIntIterableReturn105\\\\h',8);echo 'A;';\n$r=&take(make($x,$stamp));echo 'R:',$r['n'],':',$x,':',$copy,';';\n$snapshot=$r;$r['n']=13;echo 'C:',$r['n'],':',$snapshot['n'],';';$r=29;echo 'D:',$r,':',$snapshot['n'],';';\n",
+    "native_stdout": "A;M:5;H;F:5;R:11:23:5;C:13:11;D:29:11;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-strict-int-byval-ordered-null-iterable-return-and-private-cell",
+      "source_sha256": "c57db0b61a53f440be832cdafa682f1382100e6f94d6398850c4a09006e22ca4",
+      "edits": "Fresh namespace and exact ordered iterable|int/int|iterable return replace the ordered-null return. Array-result programs retain their observations and ownership operations. The priority original returns a nonnumeric string to keep return TypeError before the outer Notice."
+    },
+    "source_sha256": "1089ae72af680b4097a2077217fcf6a3ce5dc269e1ce94dd3f382b4615f4fb4b",
+    "formal_index": 0,
+    "formal_name": "saved",
+    "caller_name": "x",
+    "return_shape": "union",
+    "return_members": [
+      "iterable",
+      "int"
+    ]
+  },
+  {
+    "id": "multiple-cv-ordered-int-iterable-return-type-error-precedes-outer-notice",
+    "namespace": "MultiCvOrderedIntIterableReturnPriority105",
+    "formal_kind": "array",
+    "formal_byref": true,
+    "priority_control": true,
+    "source": "<?php\nnamespace MultiCvOrderedIntIterableReturnPriority105 {\nfunction h($n,$m,$file,$line){echo 'BAD-H;';return true;}\nfunction make(int $stamp,array &$input):iNt|iterable{$input=17;echo 'M;';return 'bad';}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=5;$source=[];$sourceAlias=&$source;$r='old';set_error_handler('MultiCvOrderedIntIterableReturnPriority105\\\\h',8);echo 'A;';\ntry{$r=&take(make($stamp,$source));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',(int)($r==='old'),':',$source,':',$sourceAlias,';';}$source=19;echo 'Q:',$sourceAlias,';';\n}\n",
+    "native_stdout": "A;M;T:1:17:17;Q:19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_return_producer_reference_notice_cases.json",
+      "id": "multiple-cv-ordered-null-iterable-return-type-error-precedes-outer-notice",
+      "source_sha256": "4e9f5925b36af37081069692de9cf549be8d81a461933fc64daa544553f29005",
+      "edits": "Fresh namespace and exact ordered iterable|int/int|iterable return replace the ordered-null return. Array-result programs retain their observations and ownership operations. The priority original returns a nonnumeric string to keep return TypeError before the outer Notice."
+    },
+    "source_sha256": "163c5bc3699ba0939afd4b00730192092a5f051883292dc9a0aa058dc0b19c5f",
+    "formal_index": 1,
+    "formal_name": "input",
+    "caller_name": "source",
+    "return_shape": "union",
+    "return_members": [
+      "int",
+      "iterable"
+    ],
+    "priority_bad_return": true
+  }
+]

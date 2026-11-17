@@ -58,7 +58,8 @@ def controls(case):
             ['iterable', 'array'], ['array', 'iterable'], ['iterable', 'null', 'int']):
         nodes = [prior.RAW if kind == 'iterable' else 'NIdentifier (BYTES ' + json.dumps(base64.b64encode(kind.encode()).decode()) + ') metadata_return_null' for kind in members]
         raw = 'NUnionType (SEQUENCE ([' + ', '.join(nodes) + '])) metadata_return_union'
-        lines.append('~' + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
+        polarity = '' if members in (['iterable', 'int'], ['int', 'iterable']) else '~'
+        lines.append(polarity + header + raw + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     return lines
 
 

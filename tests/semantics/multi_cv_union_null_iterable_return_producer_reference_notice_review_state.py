@@ -63,7 +63,8 @@ def controls(case):
     lines.append(header + 'NNullableType (' + bare + ') metadata_return, ' + signature + '[.RETURNS = ' + nullable + '])')
     for members in (['iterable', 'false'], ['false', 'iterable'], ['iterable', 'int'], ['int', 'iterable'],
             ['iterable', 'array'], ['array', 'iterable'], ['iterable', 'iterable'], ['iterable', 'null', 'int']):
-        lines.append('~' + header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
+        polarity = '' if members in (['iterable', 'int'], ['int', 'iterable']) else '~'
+        lines.append(polarity + header + raw(members) + ', ' + signature + '[.RETURNS = ' + branches(members) + '])')
     if case['caller_kind'] == 'generator':
         lines.append('~$named_reference_notice_operand(S_pre, KNOWN (POBJECT n_generator))')
     return lines
