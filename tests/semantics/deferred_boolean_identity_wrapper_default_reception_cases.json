@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-boolean-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawBooleanIdentity275($p0 = (((!(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p1 = (((!(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p2 = ((((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p3 = ((((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) === ((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p4 = (((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== (+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) !== (+(-((float)(+(E_WARNING === E_ERROR))))))) !== (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p6 = (((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === (+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((!(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p7 = (((((int)(!(+(-((float)(+(E_WARNING === E_ERROR))))))) === (+(-((float)(+(E_WARNING === E_ERROR))))))) !== (((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) {\n    echo 'raw:', $p0 === true, ':', $p1 === false, ':', $p2 === false, ':', $p3 === true, ':', $p4 === false, ':', $p5 === true, ':', $p6 === true, ':', $p7 === false, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawBooleanIdentity275();\nrawBooleanIdentity275();\n",
+    "purpose": "All Boolean operand pairs under both strict identity operators preserve raw Boolean tags, with actual quiet FLOAT truth and certified mixed numeric identity producers across cold/warm receives.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "e4e73be6012b66dafaff47149667566b34f1026ce8258a3b2407aa05e2b136da"
+  },
+  {
+    "id": "deferred-boolean-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanIdentity275;\nuse const E_WARNING as Base275;\nuse const E_ERROR as One275;\nfunction warning275($errno, $message, $file, $line) {\n    global $x275;\n    echo 'warning:', $message, '|';\n    defaults275(2);\n    $x275 = 3.5;\n}\nfunction defaults275(int $first, int &$same = (int)(((!(+(-((float)(+(Base275 === One275))))))) === ((((int)(!(+(-((float)(+(Base275 === One275))))))) !== (+(-((float)(+(Base275 === One275)))))))), int &$different = (int)(((!(+(-((float)(+(Base275 === One275))))))) === ((((int)(!(+(-((float)(+(Base275 === One275))))))) === (+(-((float)(+(Base275 === One275)))))))), int &$notSame = (int)(((((int)(!(+(-((float)(+(Base275 === One275))))))) !== (+(-((float)(+(Base275 === One275))))))) !== ((!(+(-((float)(+(Base275 === One275)))))))), int &$notDifferent = (int)(((((int)(!(+(-((float)(+(Base275 === One275))))))) !== (+(-((float)(+(Base275 === One275))))))) !== (((bool)(+(-((float)(+(Base275 === One275)))))))), int $last = 7) {\n    echo 'body:', $first, ':', $same, ':', $different, ':', $notSame, ':', $notDifferent, ':', $last, '|';\n    $same = 19;\n    $different = 20;\n    $notSame = 21;\n    $notDifferent = 22;\n}\n\\set_error_handler('BooleanIdentity275\\\\warning275');\n$x275 = 1.5;\n$last275 = 8;\ndefaults275(last: $last275, first: $x275);\necho 'outer:x=', $x275, '|';\n",
+    "purpose": "Imported names, existing INT parents, four BYREF named holes and Warning reentry retain private integer caches from actual Boolean strict identity.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:0:0:1:7|body:1:1:0:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "2bd7c3f5be95fc6b45a3ad203583209a3d79713f7325f3322ba0f74304ca07d2"
+  },
+  {
+    "id": "deferred-boolean-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryBooleanIdentity275(int &$value = (int)(E_WARNING === E_ERROR)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryBooleanIdentity275();\n",
+    "purpose": "The existing phase-safe numeric identity INT parent remains a separate ordinary control.",
+    "expected_normal_stdout": "ordinary:0|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "e3c65561cb1cf2b07269d02e33d1564be2b236ddd2579eb0c62d08f1dbba059b"
+  }
+]
