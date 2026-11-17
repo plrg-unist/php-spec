@@ -908,8 +908,8 @@ operands and separate unconstrained private cells. The
 [nullable iterable-return review](../../coverage/semantics/singleton-cv-nullable-iterable-return-producer-reference-notice-review.json)
 retains accepted native4+3 once/source7 (five admissions/two priority controls),
 author327/peer240 fixture-SL507 and the READY `3ab066f12` source signature.
-Actual `734571e0c` composition is independently clear; sole joined loading remains
-a separate zero-source cut. Metadata adds no execution credit. Multiple-CV iterable
+Actual `734571e0c` composition and the sole joined `0d0f5d75b` SL508 load
+(16.642528873 s/source0) are independently clear and retain separate cuts. Metadata adds no execution credit. Multiple-CV iterable
 returns, new iterable formals, Traversable Notice payloads, wider lifetimes and
 every exact hold remain partial at this cut.
 
@@ -923,7 +923,8 @@ The [iterable-formal review](../../coverage/semantics/singleton-cv-iterable-form
 binds native4+3 once/7 unique originals to author and independent whole packets,
 with separate author326/peer283 fixture-SL507 suites. Prelaw fronts174/143,
 the initial Unsupported source and two binding diagnostics retain zero credit.
-Actual `6e59bd311` review and sole joined loading remain separate. Nullable/union
+Actual `6e59bd311` composition and its sole SL508 load17.034237165s/source0
+are independently clear and retain separate cuts. Nullable/union
 and multiple-CV iterable formals, multiple-CV iterable returns, Traversable Notice
 payloads, wider producers/lifetimes and every exact hold remain partial.
 

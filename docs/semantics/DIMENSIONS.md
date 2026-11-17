@@ -518,8 +518,9 @@ compiler certificate. Four originals reuse native observations once; author
 SL1236/129-derived and independent SL1758/651-derived retain separate cuts in
 the [review](../../coverage/semantics/string-offset-request-base-runtime-nonnull-nan-coalesce-instanceof-review.json).
 The missing fourth peer process remains incomplete0; only that fixture was
-recovered. General NaN VALUE/BYTE/truth, null-left selection and wider lifetimes
-retain their existing bounds.
+recovered. Actual `8a008c964` and the sole joined `266b8eab90` SL508 load
+(16.444075383 s/source0) are independently clear. General NaN VALUE/BYTE/truth,
+null-left selection and wider lifetimes retain their existing bounds.
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
