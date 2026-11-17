@@ -16,14 +16,15 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover phase-safe NULL defaults and strict identity,
-quiet scalar full-ternary and Boolean/zero-spaceship shorthand string bases,
-Boolean static method selectors and nested output-handler arithmetic. Canonical
-defining scopes authenticate quiet class reference Get headers; completed CV
-producers retain ordered iterable/string returns. Literal NULL intermediate
-string-offset unset preserves Warning-handler return or throw before the nested
-Error. Exact source, type, cache and ownership bounds remain. The
-[current checkpoint](PROGRESS.md) separates source agreements, fixture checks
+Quiet exact signed64 INT DIVIDE composes in nested output-handler casts through two authenticated PINT children, exact quiet NORMAL full-state equality and the two-cast gate. Terminal CODE lines, fold/read authority, source and ownership guards remain; FLOAT results, zero divisors, coercive or owning children and wider handlers/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
+
+Certified emitted NULL conditions select exact literal INTERNED full-ternary bases and preserve frozen raw CV keys through returning Warnings. Existing source, quiet truth, precision, selected demand and ownership guards remain; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json).
+
+Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|false/false|iterable and iterable|true/true|iterable returns, retaining raw/normalized order, unchanged formals, actual return verification, frame retirement and finite private Notice cells. Weak mismatched Boolean/scalar returns reject before the outer Notice; wider headers, payloads and lifetimes remain partial. [Review](coverage/semantics/cv-union-literal-bool-iterable-return-producer-reference-notice-review.json).
+
+Literal true/false intermediate string-offset unset keys preserve the cast-Warning handler's return or throw before the fixed nested Error under exact source/value and ownership bounds ([review](coverage/semantics/string-offset-nested-unset-bool-warning-review.json)).
+
+The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
 and combined production loads; complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
 `PHP_FLOAT_MAX` and normal `PHP_FLOAT_MIN` values through existing constant lookup,

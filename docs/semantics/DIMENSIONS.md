@@ -1260,6 +1260,16 @@ the sole production-SL509 load `4ac834e0605` pass 16.536198805s/source0. Wider k
 callers, callback producers, owners and lifetimes remain partial; exact holds stay unchanged.
 [NULL Warning review](../../coverage/semantics/string-offset-nested-unset-null-warning-review.json).
 
+Literal true/false intermediate keys reuse that Warning continuation with exact
+raw-keyword, compiled-read/identity and captured-key equality. Opposite BOOL,
+NULL/INT0/1, forged pool values and disabled key CODE phases stay refused.
+Native4 once/source4, author SL85/4 twice and independent AL119/43+105/29 retain
+separate first-pass cuts; prelaw wrong-Error mismatches4 remain0, with no new failures.
+Actual=SAME `30095b2d1` and the sole joined production-SL509 load `efcada7e`
+pass 16.131729199s/source0. NULL valid states remain compatible without renewal;
+wider keys, callers, callback producers, owners and lifetimes remain partial.
+[Boolean Warning review](../../coverage/semantics/string-offset-nested-unset-bool-warning-review.json).
+
 Terminal string unset has a separate dispatch after its R-key read: valid
 non-NUL interned and authenticated REQUEST bases produce `Cannot unset string
 offsets` without converting the key. The carrier arm requires a known bounded
@@ -1793,3 +1803,13 @@ Actualcbdf1276/SAMEb1344f07 and the sole joined SL50816.742874468s/source0 are
 independently clear through one immutable tuple. Wider producers, carriers,
 contexts, lifetimes and every exact hold remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-scalar-truth-base-initial-raw-leading-key-review.json).
+
+Certified emitted NULL conditions select the exact literal INTERNED full-ternary
+base and preserve frozen raw CV keys through returning Warnings. Existing typed
+VALUE, NORMAL quiet truth, source/CODE/precision, selected-child demand and both
+literal-arm header proofs remain; only the null type word is added. Native2
+once/source2, prelaw100, author241/108 and independent288/166 retain separate
+first-pass cuts. Actual/SAME7795982829 and the sole SL50916.281187734s/source0
+are independently clear through one immutable tuple. Wider producers, carriers,
+contexts, lifetimes and every exact hold remain partial.
+[Review](../../coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json).

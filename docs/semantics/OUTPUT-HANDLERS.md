@@ -1623,3 +1623,17 @@ coercive/owning children, other operations and wider handlers/lifetimes remain
 partial; all exact holds remain.
 [Integer arithmetic evidence](../../coverage/semantics/output-final-selected-integer-arithmetic-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-arithmetic-cast-chain-return-modulo-error-review.json).
+
+Quiet exact signed64 INT DIVIDE also composes in those nested casts. Two proper
+PINT children retain their own source/CODE authority; the quotient must remain
+an in-range PINT with exact quiet NORMAL full-state equality. RHS terminal lines,
+fold/read authority, nonownership and the two-cast gate remain. Six originals
+reuse native6 once; author30/20 and independent127/22 retain separate private508
+SL fixture source0 cuts. The actual old135 DIV4/2 query is promoted once in127.
+Prelaw Unsupported2/other4unrun0 and the peer preparation failure retain0.
+Actual composition and SAME `93416bc4846` pass the separate MAIN509 load
+in16.591031378 s/source0. Fractional or MIN/-1 FLOAT results, zero-divisor throws,
+coercive/owning children and wider operations/handlers/lifetimes remain partial;
+all exact holds remain.
+[Exact division evidence](../../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json).
