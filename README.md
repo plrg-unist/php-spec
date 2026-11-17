@@ -31,12 +31,13 @@ Completed ordinary-CV producers admit flat `stdClass` return unions with the bui
 
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
-Allocated raw-integer string casts and optional literal CONCAT coalesce bases preserve
-their exact non-NUL REQUEST temporary and frozen raw CV offset through returning
-Warnings. Separate entry freshness and saved ownership preserve later callback
-allocations. Source and independent validation plus the joined integration check
-are clear; wider producers and lifetimes remain partial.
-[Review](coverage/semantics/string-offset-runtime-allocated-string-base-initial-raw-leading-key-review.json).
+Allocated raw-integer string casts and optional literal CONCAT preserve their exact
+non-NUL REQUEST temporary and frozen raw CV offset through returning Warnings,
+both directly and as coalesce-left operands. Separate entry freshness and saved
+ownership preserve later callback allocations. Source, independent state and fixed
+integration checks are clear; wider producers and lifetimes remain partial.
+[Direct review](coverage/semantics/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-review.json),
+[coalesce review](coverage/semantics/string-offset-runtime-allocated-string-base-initial-raw-leading-key-review.json).
 
 Fully qualified true/false/null leaves and their direct plus/minus forms preserve
 exact INTERNED CONCAT coalesce headers and frozen raw CV offsets through returning

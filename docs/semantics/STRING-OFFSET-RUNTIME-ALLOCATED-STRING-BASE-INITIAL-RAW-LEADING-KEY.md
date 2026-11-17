@@ -40,7 +40,8 @@ zero source credit. One physical saved-report read checked all509 module
 hashes/order and complete foreign425/Make preservation. Author50 records only
 the immutable actual/SAME tuple; no canonical replay or campaign renewal occurs.
 
-Direct noncoalesce bases, wider producers, casts, contexts, owners and lifetimes
-remain partial. Owned-NUL
+[Direct noncoalesce bases](STRING-OFFSET-RUNTIME-DIRECT-ALLOCATED-STRING-BASE-INITIAL-RAW-LEADING-KEY.md)
+now reuse this allocation certificate. Wider producers, casts, contexts, owners
+and lifetimes remain partial. Owned-NUL
 release and all exact holds, reserve93807cdd6/255, inventory169/306 and closed0+1
 remain unchanged; complete core is unfinished.

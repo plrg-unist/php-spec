@@ -1,0 +1,184 @@
+{
+  "feature": "string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key",
+  "status": "accepted bounded scope; string-offset family and full core remain partial",
+  "scope": "Direct raw NScalarInt signed64-to-STRING allocation outside0..9, optionally followed by one literal STRING CONCAT RHS, retains exact non-NUL REQUEST KNOWN temporary ownership and frozen raw CV leading offset through a returning Warning. Negative-literal UnaryMinus syntax remains outside this clause.",
+  "implementation": {
+    "runtime_revision": "02d1fea00efa39dee79e31a97edbedc0096a89ca",
+    "source_capture": "94d93c692bbebe232a125c4b4d2e0c8603a2055d",
+    "semantic_file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "semantic_sha256": "304bade5c5b67c5f406529c27fd1b376028b10cb407ab06c472df8038a004b84",
+    "change": "Direct allocated_base delegates to existing allocated_value with NORMAL probe completion. Existing coalesce certificate, producer replay, pure runtime values, entry freshness, saved provider and ownership rules remain literal. No schema, native, machine field, CV, BASECELL or ADDREF change.",
+    "revision": "9bd6402d810ed7eadcfb5a9b950e0ea085e502a4",
+    "tree": "99a883753017edf92095014fd07ae5e401ab1299",
+    "freeze_manifest": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author51-20261118/source-twelve-author-manifest.json",
+    "freeze_manifest_sha256": "841b427f94c0eb1c792db6d52c556467cb0b5f4d5ed26b4ccec38af3e7b1d593",
+    "source_files": 12
+  },
+  "source_provenance": {
+    "target": "PHP 8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "route": "Zend ZEND_FETCH_DIM_R in zend_vm_def.h frees TMP operands after the slow read/callback; zend_fetch_dimension_address_read caches string and leading offset before Warning. ZEND_CAST/zend_long_to_str allocates nondigit integer text; source-aware ZEND_CONCAT supplies its literal-RHS producer.",
+    "measured_facts": "Direct REQUEST_STRING1 bytes10 and registry[512,10]; CONCAT REQUEST_STRING2 bytes10bc and registry[512,10,10bc]. Root and cast CODEfalse/read-eps, precision14, typed raw-int10 and literal-bc facts, KNOWN/TODO KEY_READ_DIM at lines12/18.",
+    "discriminator": "Direct saved0 reads1. Reference saved2 readsb after current key becomes3, whose byte isc."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author50-20261118/native-baseline/report.json",
+      "sha256": "a40d2203b656f1eb2cc18122aba36719c5de32d6e58c5949809afae78dfc90b8",
+      "executions_once": 2,
+      "new_executions": 0
+    },
+    "prelaw": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author50-20261118/baseline-v1/report.json",
+      "sha256": "68be40c98c8de06b3ff80046b3684fb7e343119602ccfedd82bcfff5fcfd585f",
+      "Unsupported": 2,
+      "source_credit": 0,
+      "model_seconds": [
+        19.26348567008972,
+        19.721445083618164
+      ]
+    },
+    "fact_probe": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author50-20261118/facts-observe-constants-v1/report.json",
+      "sha256": "c6aed4b06975249826f53eb1f7a173e130ba3fcb56f83a1e0cc480afb2c07c1d",
+      "runtime_seconds": 23.19148302078247,
+      "source_credit": 0,
+      "fixture_credit": 0,
+      "scope": "Actual ingress carrier/compiler observations only; no callback-completion agreement."
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author51-20261118/source-v1/report.json",
+      "sha256": "30587d2d8195e2e283e7df0fb6dc9140fe25bb3d6e0bf23fb2a4bec1e3404de8",
+      "revision": "02d1fea00efa39dee79e31a97edbedc0096a89ca",
+      "agreements": 2,
+      "native_observations_reused": true,
+      "new_native_executions": 0,
+      "source_sha256": [
+        "ba696ca3b4269fda19165200f69bb1bd7c4cabc3450b3b07858cf663f7da8fb1",
+        "9f0b93ab231788100dfad3ec3f01a704568b14794f3588cab5ad43238c9e404f"
+      ],
+      "model_seconds": [
+        21.49492907524109,
+        23.91883158683777
+      ]
+    },
+    "author": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author51-20261118/author-current-v1/report.json",
+        "sha256": "58236f781d24645b1135445478fc74a8e5f412179f1eb6f60d82b7fc0f488087",
+        "revision": "02d1fea00efa39dee79e31a97edbedc0096a89ca",
+        "conditions": 186,
+        "derived": 86,
+        "source_credit": 0,
+        "compiler_seconds": 13.635937213897705,
+        "runtime_seconds": 21.98573088645935,
+        "first_pass": true
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-author51-20261118/author-reference-v1/report.json",
+        "sha256": "aa3e8f99e0c694ea03ea2a04535c2084b6de7e3f63e45ddbbe48bc5f8401409e",
+        "revision": "02d1fea00efa39dee79e31a97edbedc0096a89ca",
+        "conditions": 216,
+        "derived": 104,
+        "source_credit": 0,
+        "compiler_seconds": 13.650160074234009,
+        "runtime_seconds": 24.67749309539795,
+        "first_pass": true
+      }
+    ],
+    "private_runner": {
+      "mode": "SL",
+      "modules": 508,
+      "compiler_cap_seconds": 120,
+      "runtime_cap_seconds": 180,
+      "source_model_cap_seconds": 90,
+      "source_outer_cap_seconds": 120
+    },
+    "fixture_failures": [],
+    "semantic_failures": [],
+    "timeouts": [],
+    "input_bridge": "Source2 and both author fixtures ran fixed02d1fea00 with stable HEAD, watched inputs and generated fixtures. Peer donor0c7fcf79 imported unchanged72e70bfe5; only the new --peer renderer selection and its transitive watch list differ from A driver. Runtime425, original cases and author renderer remain exact successful A postimages. Final peer driver/helper match successful B; metadata-only finalization causes no semantic rerun.",
+    "independent": {
+      "reviewer": "recover46",
+      "revision": "0c7fcf79d1df9e71e459f1cf5b85f34cbfe3a153",
+      "imported_revision": "72e70bfe5242aa0516594ff11e4cfca084a5c397",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-peer46-20261118/peer-state-v1/report.json",
+      "sha256": "a7590043ba3022481e3dda18111c601ffd120bbaed3eeac1e054f0ce5382ea81",
+      "conditions": 314,
+      "derived": 214,
+      "source_credit": 0,
+      "compiler_seconds": 13.638665676116943,
+      "runtime_seconds": 24.703274488449097,
+      "first_pass": true
+    },
+    "independent_whole": {
+      "reviewer": "recover46",
+      "decision": "CLEAR",
+      "revision": "9bd6402d810ed7eadcfb5a9b950e0ea085e502a4",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-peer46-20261118/whole-twelve-clear.json",
+      "sha256": "45cd7703aa05f3e292dc61284870642df4b8e2c52d1a918246523b0b7723febd",
+      "complete_files": 12,
+      "binding": "Complete twelve source pre/postimages and exact forward/inverse patches preserve runtime/case/A/B and private foreign parents. Five actual-fill metadata proposals plus the static old-document link are finalized once from the immutable actual/SAME tuple."
+    },
+    "integration": {
+      "actual_revision": "9a1f4608ae34ef256ffcb02b774c28ab5ab6773a",
+      "joined_revision": "9a1f4608ae34ef256ffcb02b774c28ab5ab6773a",
+      "actual_tree": "eb080ecd3f96e728a8d0feddd0837168705de6f9",
+      "main_parent": "f735bb584947329ce4535c0d29ccfe85d8b9b6d1",
+      "composition_map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main94-dynamic-direct-placement-v1/placement.json",
+      "composition_map_sha256": "965ce4bc227fe8da96c519989cc362162c62813fb4dd289de271d5c02c00b6d0",
+      "source_paths": 6,
+      "preservation": "The exact authored three-line425 hunk and two separate Make recipes restore each entire current foreign MAIN parent when removed. All other source paths remain exact; six metadata paths are deferred to this one additive final batch.",
+      "canonical": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main94-dynamic-direct-canonical-v1/report.json",
+        "sha256": "ed0912c52c345747019d3dfca7d1bafd8cba9a61ddcec5f9e6341f6179d851e1",
+        "physical_saved_report_reads": 1,
+        "tested_revision": "9a1f4608ae34ef256ffcb02b774c28ab5ab6773a",
+        "mode": "production_SL",
+        "modules": 509,
+        "argv": 512,
+        "watched_inputs": 513,
+        "cap_seconds": 60,
+        "elapsed": 16.888294965960085,
+        "exit": 0,
+        "timeout": false,
+        "true_lf": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true,
+        "matching_processes_absent": true,
+        "source_credit": 0
+      },
+      "immutable_review": {
+        "reviewer": "recover46",
+        "decision": "CLEAR",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-peer46-20261118/actual-same-clear.json",
+        "sha256": "747c7e2885e150a6aaa24c33209ca00475b23518ca67c78b4fd1ac0fbe41bd98",
+        "source_credit": 0
+      },
+      "report_read_policy": "Only recover46 read the one saved canonical report, once. Author51 consumes only this immutable tuple; no raw canonical/map reread, new execution or later-HEAD refresh."
+    },
+    "static_inventory": {
+      "constructors": 169,
+      "runtime_obligations": 306,
+      "closed_constructors": 0,
+      "closed_obligations": 1,
+      "result": "consistent",
+      "source_credit": 0
+    },
+    "preserved_preparation": [
+      "The first lightweight inventory check preceded import of the reserved peer helper and reported that missing path. This preparation result has zero semantic/fixture credit; the affected inventory check is repeated after import.",
+      "Two Python-only independent reviewer checks initially counted PREFIX premises or expected compiler def main without its authored $ spelling. The assertions were corrected without fixture, semantic-input or executed-B changes; the single B result remains first-pass.",
+      "Full425 literal-parent guard stopped before mutation; exact three-line shared hunk preserves current foreign parent.",
+      "Contiguous-Make assumption stopped after exact two recipes were applied; corrected separate-line inverse equals full parent; no patch correction or execution.",
+      "Reviewer preparation: Expected-module checker initially prepended spec/php.watsup even though the fixed modules.json already includes it. Corrected the list construction using cached fixed data; original report read once and no source or execution changed."
+    ]
+  },
+  "preserved_limits": [
+    "Owned-NUL source-release stays held.",
+    "Entry requires the newest request allocation; saved continuations retain later registry rows. Equal bytes or registry membership alone supplies no owner.",
+    "Wider producers, integer formatting, signs, contexts, owners and lifetimes remain partial.",
+    "All exact holds and reserve93807cdd6/255 remain unchanged; no constructor or runtime obligation closes."
+  ],
+  "prohibited_renewal": "The accepted coalesce source/native/A/B/WHOLE and prior actual/SAME integration retain their original cuts. This direct slice uses its disjoint original sources and never replays their fresh native observations."
+}
