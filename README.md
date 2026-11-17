@@ -39,11 +39,12 @@ Completed ordinary-CV producers admit flat `stdClass` return unions with the bui
 
 Own public parentless short reference Get admits exact `Class|string` and `string|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Raw empty defaults and reached string carriers retain defining authority and existing alias/owner bounds. Quiet weak scalars convert; strict non-string scalars reject. Wider headers, Stringable conversion and lifetimes remain partial. [Review](coverage/semantics/class-string-union-parentless-short-reference-get-hook-review.json).
 
-Allocated raw-integer string casts and optional literal CONCAT preserve their exact
+Allocated raw-integer string casts and finite left-associated literal CONCAT chains preserve their exact
 non-NUL REQUEST temporary and frozen raw CV offset through returning Warnings,
 both directly and as coalesce-left operands. Separate entry freshness and saved
-ownership preserve later callback allocations. Source, independent state and fixed
-integration checks are clear; wider producers and lifetimes remain partial.
+ownership preserve later callback allocations. Source, state and integration
+evidence retain their separate scopes; wider producers and lifetimes remain partial.
+[Chain review](coverage/semantics/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-review.json),
 [Direct review](coverage/semantics/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-review.json),
 [coalesce review](coverage/semantics/string-offset-runtime-allocated-string-base-initial-raw-leading-key-review.json).
 

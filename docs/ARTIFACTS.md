@@ -8,6 +8,14 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Allocated literal CONCAT-chain originals, native-once observations, saved-native
+source comparisons, author fixtures and the original compiler failure remain in
+`../php-spec-evidence-archive/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-author51-20261118/`.
+Independent state evidence is in the matching `-peer46-20261118/` archive.
+The [review](../coverage/semantics/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-review.json)
+binds exact report hashes, source identities and separate zero-credit controls;
+the archive is evidence, not a build/runtime input.
+
 Computed-TRUE deferred ternary evidence is under `../php-spec-evidence-archive/enum-deferred-computed-true-full-ternary-redirect-wrapper-default-reception-301/`; the [review](../coverage/semantics/deferred-computed-true-full-ternary-redirect-wrapper-default-reception-review.json) binds source226dc, distinct private cuts and actual49e4/sole6c8c4728 source0.
 
 Boolean/coalesce static-selector evidence is under `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get/{author,independent}/`; the [review](../coverage/semantics/magic-property-methodclosure-static-raw-boolean-not-concat-left-coalesce-tree-quiet-get-review.json) retains the one-guard bridge, separate source/fixture cuts and actualfc62/sole87e27959 source0.
