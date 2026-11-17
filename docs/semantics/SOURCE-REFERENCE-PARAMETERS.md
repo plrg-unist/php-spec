@@ -1034,7 +1034,7 @@ Exact raw two-member `iterable|int` and `int|iterable` returns now authenticate
 for completed multi-CV producers through a separate dedicated arm. Matching
 ordered normalized branches and Identifier casefolding reuse the existing
 required ordinary-CV formal proof. Weak numeric-string returns become integers
-before private Notice-cell creation while caller/formal values remain unchanged;
+before private Notice-cell creation while caller values remain unchanged;
 the returned alias has no persistent return-type constraint. Strict return
 rejection precedes the outer Notice and assignment. The
 [multiple-CV integer/iterable-return review](../../coverage/semantics/multi-cv-union-int-iterable-return-producer-reference-notice-review.json)
