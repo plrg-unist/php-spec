@@ -655,6 +655,17 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $type_bytes(pvalue_cond) <- [$ptascii("bool"), $ptascii("null"), $ptascii("int"), $ptascii("float")]
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; Quiet emitted nonstring casts select an emitted string fallback when falsey.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary expression_cond ABSENT (NExprCastString expression_false metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_node(S.SOURCES, porigin_cond) = (expression_cond)
+  -- if $pfshape(expression_cond) = PFCAST pcast expression_child
+  -- if pcast <- [CASTBOOL, CASTINT, CASTFLOAT]
+  -- if $compiled_read(S, porigin_cond) = eps
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; FLOAT NOT retains its emitted source/CODE proof; folded NOT uses raw truth.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_child metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
