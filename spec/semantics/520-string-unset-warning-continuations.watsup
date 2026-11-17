@@ -146,6 +146,24 @@ def $string_unset_bool_cv_post_value(PFLOAT n) = true
   -- if $(n < 18446744073709551616)
 def $string_unset_bool_cv_post_value(pvalue) = false -- otherwise
 
+;; Array conversion is quiet, but a payload alone does not authenticate storage.
+dec $string_unset_bool_cv_post_empty_array(pstate, nat) : bool
+def $string_unset_bool_cv_post_empty_array(S, n_cell) = true
+  -- if $(n_cell < |S.STORE|)
+  -- if S.STORE[n_cell] = DEFINED (PARRAY n_array)
+  -- if $(n_array < |S.ARRAYS|)
+  -- if S.ARRAYS[n_array].ITEMS = eps
+  -- if H = $heap_graph(S)
+  -- if $heap_valid(H)
+  -- if $heap_member(HCELL n_cell, H.NODES)
+  -- if $heap_member(HCELL n_cell, H.ROOTS)
+  -- if $heap_member(HARRAY n_array, H.NODES)
+  -- if $node_children(S, HCELL n_cell) = [HARRAY n_array]
+  -- if $node_children(S, HARRAY n_array) = eps
+  -- if $heap_edge_owners(HARRAY n_array, H.EDGES, [HCELL n_cell]) = 1
+  -- if $($heap_owners(H, HARRAY n_array) > 0)
+def $string_unset_bool_cv_post_empty_array(S, n_cell) = false -- otherwise
+
 dec $string_unset_bool_cv_post_cell(pstate, ptbytes, int, nat) : bool
 def $string_unset_bool_cv_post_cell(S, n_name*, z, n) = true
   -- if ~$environment_blocked(S, n_name*)
@@ -154,7 +172,7 @@ def $string_unset_bool_cv_post_cell(S, n_name*, z, n) = true
   -- if ~(n <- S.REFCELLS)
   -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $string_unset_bool_cv_post_value(pvalue)
+  -- if $string_unset_bool_cv_post_value(pvalue) \/ $string_unset_bool_cv_post_empty_array(S, n)
   -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN pvalue]
 def $string_unset_bool_cv_post_cell(S, ptbytes, z, n) = false -- otherwise
 
@@ -172,7 +190,7 @@ dec $string_unset_bool_cv_post_normal_cell(pstate, ptbytes, int, nat) : bool
 def $string_unset_bool_cv_post_normal_cell(S, n_name*, z, n) = true
   -- if $string_unset_bool_cv_post_cell(S, n_name*, z, n)
   -- if S.STORE[n] = DEFINED pvalue
-  -- if $string_unset_bool_cv_post_normal_value(pvalue)
+  -- if $string_unset_bool_cv_post_normal_value(pvalue) \/ $string_unset_bool_cv_post_empty_array(S, n)
 def $string_unset_bool_cv_post_normal_cell(S, ptbytes, z, n) = false -- otherwise
 
 dec $string_unset_bool_cv_post_discard_cell(pstate, ptbytes, int, nat) : bool
