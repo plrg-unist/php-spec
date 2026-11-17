@@ -61,7 +61,18 @@ def unsafe_checks(state, throwing):
             checks += ['$lookup(' + name + '.ENV, n_key_name*) = (n_rebound)',
                 '$heap_valid($heap_graph(' + name + '))',
                 '$string_unset_bool_cv_cell(' + name + ', n_key_name*, z_key, n_rebound)']
-        if throwing:
+        if tag == 'integer':
+            checks += ['$string_unset_bool_cv_post_cell(' + name + ', n_key_name*, z_key, n_key)']
+            if throwing:
+                checks += ['$error_read_discard(' + name + ', perrorcall_entered.RESUME) = ' + name,
+                    'PhpStep: ' + name + ' ~> ' + name + '_next',
+                    name + '_next.COMPLETION = NORMAL',
+                    name + '_next.ERRORHANDLER.CALLBACK = (pvalue_callback)',
+                    name + '_next.OBJECTS[n_throwable] = ' + state + '.OBJECTS[n_throwable]']
+            else:
+                checks += ['PhpStep: ' + name + ' ~> ' + name + '_next',
+                    name + '_next.COMPLETION = THROWN "Error" ($ptascii("Cannot use string offset as an array")) z']
+        elif throwing:
             checks += ['PhpStep: ' + name + ' ~> ' + name + '_next',
                 name + '_next.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"',
                 name + '_next.ERRORHANDLER.CALLBACK = (pvalue_callback)',
