@@ -1,0 +1,152 @@
+{
+  "status": "implemented-partial; independently reviewed",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "cli",
+    "nts": true,
+    "integer_bytes": 8,
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed producers with one required ordinary-CV argument; exact two-Identifier iterable|int or int|iterable returns, matching ordered normalized singleton branches and casefolded raw names. Existing multi-CV admission remains.",
+  "implementation": {
+    "revision": "7a78debfbbe82855ea20d2cb6ef718af3b9764e2",
+    "tree": "17f6f81ae0321e8184b499ede8c814ae1f0f2aec",
+    "source_files": 10,
+    "manifest": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/source10-manifest-v1.json",
+    "manifest_sha256": "67113781094e82079e290b081d812e3c999e7ea43c412f56f3602a4f923346e2",
+    "rule": "Existing exact int/iterable RETURN pair arm admits one or more arguments. Generic singleton ARGUMENTS fallback excludes exactly [iterable], [iterable,null], [null,iterable], leaving dedicated raw forms disjoint. Existing epsilon admission, generic union lists, required/BYREF/default/variadic proofs and return/frame/private-cell/payload/owner guards remain."
+  },
+  "engine_sources": [
+    "Zend/zend_compile.c: zend_compile_single_typename, zend_compile_typename_ex",
+    "Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_RETURN, ZEND_SEND_VAR_NO_REF_EX",
+    "Zend/zend_execute.c: zend_check_type_slow, zend_verify_return_error"
+  ],
+  "native": {
+    "unique_originals": 7,
+    "executions_once": [
+      4,
+      3
+    ],
+    "reports": [
+      {
+        "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/native-first-v1/report.json",
+        "sha256": "8563bc105d26f18a9557369018cfb8a1430b0c22c832dbf65ce2a06fdc0b7744"
+      },
+      {
+        "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/peer/native-first-v1/report.json",
+        "sha256": "5616171c9295dd272766620754e04bb9356bd7a81f3065c3a68aadb763a70f24"
+      }
+    ]
+  },
+  "private_validation": {
+    "source_mode": "production-SL/cache=false/det=true",
+    "fixture_mode": "fixture-SL/cache=false/det=true",
+    "module_count": 507,
+    "source_agreements_per_packet": 7,
+    "fixture_conditions_per_packet": [
+      388,
+      256
+    ],
+    "fixture_reached_per_packet": [
+      269,
+      191
+    ],
+    "fixture_derived_per_packet": [
+      119,
+      65
+    ],
+    "fixture_source_agreements": 0,
+    "stable_inputs_and_heads": true,
+    "quiet_stderr": true,
+    "timeouts": false,
+    "remaining_process_groups": [],
+    "packets": [
+      {
+        "role": "author",
+        "revision": "7a78debfbbe82855ea20d2cb6ef718af3b9764e2",
+        "root": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/whole-packet-v1/",
+        "source_report": "sources-4ss0zvxd/report.json",
+        "source_sha256": "22aa07b1e75c85ebb2a8fbe086b2019b570a4a5ce99fd886e56afe6daa9a895c",
+        "author_fixture_sha256": "19c4b2976c490177d43f33f1e7aa09f7de3d6b006df5e06e37f755349501c69c",
+        "peer_fixture_sha256": "ae0c8c219360fefacc004a5b2af27092681265166237b93a9f3c9805da6a8dcb",
+        "controller": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/whole-command-v1.json",
+        "elapsed_seconds": 263.6126961708069
+      },
+      {
+        "role": "independent",
+        "revision": "cfca10eb1580a1df417650e9d4a8ffbecfe11959",
+        "tree": "0ebc57eec4c45474cf021640b33c2028c2c80d96",
+        "root": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/peer/whole-v1/",
+        "source_report": "sources-f4gzkkn8/report.json",
+        "source_sha256": "4926429852d9759c0a83acab03b080a028b3e2e330320d4fe2b78488c66be0d0",
+        "author_fixture_sha256": "f25679d0b752e6eeb983bf2e110d17af8e9487a738f99ab1ccf40a3953cfe4aa",
+        "peer_fixture_sha256": "4fc661f2c4f3d6b99d49f5071d7cbf61109f1714c16bb66aaeb4d0e9e8d655bf",
+        "controller": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/peer/whole-controller-v1.exit.json",
+        "controller_sha256": "f94816b2bac51c1ab3e09a417d481ae2c19b86a2f62bdb11dc0f7ae58b7b6d50",
+        "elapsed_seconds": 268.85597372055054
+      }
+    ]
+  },
+  "prelaw": {
+    "source_agreements": 0,
+    "successful_front_conditions": [
+      182
+    ],
+    "front_reports": [
+      {
+        "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/prelaw-state-v1/report.json",
+        "sha256": "d24aa9f3037ac30ca4bad821dd5afd81b268e24a91125b176506ad6da63d8713"
+      }
+    ],
+    "first_sources": [
+      {
+        "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/author/prelaw-source-v1-moh7r59g/report.json",
+        "sha256": "edc2c9eab975366debd8fbf79a2f69d63d414ac8cd98a22de25c93b1c714050e",
+        "outcome": "Unsupported; no source agreement"
+      },
+      {
+        "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/peer/prelaw-source-v1-xacvh5ec/report.json",
+        "sha256": "511a6211013749adae05dfc49e926550fddb5ec8288515054b60ff4e3a0a52ab",
+        "outcome": "Unsupported; no source agreement"
+      }
+    ],
+    "failed_front": {
+      "path": "../php-spec-evidence-archive/singleton-cv-union-int-iterable-return-producer-reference-notice-106/peer/prelaw-state-v1/report.json",
+      "sha256": "63b37b64d4286b083502063f2b42fd459d26fa939367ae48ea7bdad43825e8d4",
+      "generated_conditions": 147,
+      "executed_conditions": null,
+      "outcome": "Runtime-model ARGUMENTS dispatch overlap stopped case 2; case 3 tail was unrun. Incomplete failure, not acceptance.",
+      "source_agreements": 0
+    }
+  },
+  "composition": {
+    "actual_revision": "2319feef89f56715665198667d587263c9f41a12",
+    "actual_tree": "b8160f99ecd0ab160d89a2c1044c39eb4b380793",
+    "parent": "ab1ec858ae6a7fdf8e03eec3533db63229b22052",
+    "same_revision": "2319feef89f56715665198667d587263c9f41a12",
+    "source_files": 10,
+    "literal_postimages": 9,
+    "make": "Sole insertion after the 105 recipe preserves every other current-parent byte.",
+    "report": "../php-spec-evidence-archive/resumed-main-20261112/main79-ref106-composition-v1/composition.json",
+    "sha256": "e2dee34c9e8d805e48a455d9d9931c777b6e29f8d7ae81e86c14b6f6e1344f51",
+    "joined_source_files": 21,
+    "joined_report": "../php-spec-evidence-archive/resumed-main-20261112/main79-enum-xor-ref-joined-composition-v1/composition.json",
+    "joined_sha256": "f2a274791879f4a41661d56f412b0375554b6dc8e4bc7aa94fd433b235b507f6",
+    "saved_load": {
+      "path": "../php-spec-evidence-archive/resumed-main-20261112/main79-enum-xor-ref-joined-v1/report.json",
+      "sha256": "d963b98fcd7c838fb9c806a2ce6470a6749aa93fbb3a17874ee52823f2090742",
+      "mode": "production-SL/cache=false/det=true",
+      "module_count": 508,
+      "elapsed_seconds": 16.482216466218233,
+      "exit": 0,
+      "stable_inputs_and_head": true,
+      "quiet_stderr": true,
+      "timeout": false,
+      "remaining_process_groups": [],
+      "source_agreements": 0
+    },
+    "review": "Independent saved actual/SAME read by REF29; no execution renewal."
+  },
+  "limits": "Other iterable union partners, longer unions, wider producer headers, Traversable Notice payloads and wider ownership/lifetime contexts remain partial. Existing zero-argument behavior, every standing hold and reserved boundary stay unchanged. Repeated packets do not add unique-source credit.",
+  "model_correction": "A genuine singleton nullable-union formal exposed overlapping dedicated/generic ARGUMENTS rules. Three exact normalized exclusions restore deterministic dispatch; four source-reached derived checks exercise bare iterable, nullable iterable and both ordered nullable raw forms. This is a model correction, not an engine bug."
+}

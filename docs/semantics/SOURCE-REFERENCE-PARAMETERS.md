@@ -1042,9 +1042,25 @@ records native4+3 once and two independently passed source7/fixture525/285
 packets. Prelaw fronts260/172, the first source Unsupported and the corrected
 peer-fixture failures keep zero credit. Only two older fixture bridges for
 matching integer-pair HEADERs and the Makefile entry change alongside the new tests; generic
-union lists and all return/frame/private-cell/payload guards remain. The one-CV
-counterpart, other partners, wider headers and lifetimes remain partial; every
-exact hold stays unchanged.
+union lists and all return/frame/private-cell/payload guards remain. At that cut,
+the one-CV counterpart, other partners, wider headers and lifetimes remain partial;
+every exact hold stays unchanged.
+
+One-CV producers now also admit exact raw `iterable|int` and `int|iterable`
+returns through the same ordered-pair arm. Generic singleton formal fallback
+excludes exactly normalized `[iterable]`, `[iterable, null]` and
+`[null, iterable]`; their dedicated raw bare, nullable and ordered checks remain
+the sole routes. A genuine nullable-union source exposed their previous overlap.
+Four source-reached derived checks cover those raw forms under SL determinism.
+The [single-CV integer/iterable-return review](../../coverage/semantics/singleton-cv-union-int-iterable-return-producer-reference-notice-review.json)
+records native4+3 once and two independently passed source7/fixture388/256
+packets, including weak conversion, strict rejection, alias/COW and throw cleanup.
+Author front182, the incomplete peer-front failure and both first-source
+Unsupported results keep zero credit. One older singleton HEADER bridge and
+the Makefile entry accompany the new tests. Existing zero-argument admission,
+generic union lists and private-cell/payload/owner bounds remain unchanged.
+Other partners, wider headers and lifetimes remain partial; every exact hold
+stays unchanged.
 
 Exact FQN stdClass/callable unions of two through eight members also admit
 required ordinary-CV producer formals and returns. Raw/normalized class bytes,
