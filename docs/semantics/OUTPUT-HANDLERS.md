@@ -1525,3 +1525,13 @@ fixture source0 cuts. Original failures retain0, and actual MAIN508 loading stay
 separate/source0. Wider producers, owners, noisy conversions and exact holds remain.
 [Signed numeric evidence](../../coverage/semantics/output-final-selected-signed-numeric-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-signed-numeric-cast-chain-return-modulo-error-review.json).
+
+Raw numeric logical NOT also composes with these nested casts. INT NOT requires
+its own folded strict PBOOL; FLOAT NOT requires an emitted node, read-eps and
+intrinsic non-NaN truth even under reporting masks. Exact source/CODE authority
+and full Boolean-state equality remain required. Four originals reuse native
+observations once; author16/12 and independent127/23 keep separate fixture source0
+cuts. Baseline Unsupported2 and the pre-execution binding failure retain0;
+actual MAIN508 loading stays separate/source0. Wider children and lifetimes remain.
+[Numeric NOT evidence](../../coverage/semantics/output-final-selected-numeric-not-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-numeric-not-cast-chain-return-modulo-error-review.json).

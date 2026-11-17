@@ -522,6 +522,16 @@ recovered. Actual `8a008c964` and the sole joined `266b8eab90` SL508 load
 (16.444075383 s/source0) are independently clear. General NaN VALUE/BYTE/truth,
 null-left selection and wider lifetimes retain their existing bounds.
 
+Full ternaries also preserve an exact selected NaN operand for named `instanceof`
+under an existing quiet condition. Both source arms remain authenticated; only
+the selected arm supplies code, precision and value. Whole-state truth, copy and
+module51 selected tasks retain the existing owners and completion histories.
+Four originals reuse natives once through explicit retained-three/affected-fourth
+cuts; author SL1466/129-derived and independent SL1786/449-derived are separate
+in the [review](../../coverage/semantics/string-offset-request-base-runtime-full-ternary-nan-instanceof-review.json).
+The two earlier CLI deadlines remain0. General runtime NaN VALUE/BYTE/truth,
+quiet false shorthand selection and wider lifetimes retain their existing bounds.
+
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
 certificates, both quiet numeric conversions, a successful pure numeric result
@@ -1572,6 +1582,8 @@ Emitted CASTSTRING coalesce bases preserve their exact nonnull INTERNED header, 
 Direct emitted CONCAT bases preserve an exact INTERNED header through the existing quiet VALUE proof when an empty operand is nonconstant. Raw CONST-empty beside emitted nonempty remains a REQUEST allocation and is refused in both orientations. Native2 once/source2, reached prelaw26, author234/144-derived and independent363/263-derived retain separate cuts; actual6bd25d811b and its sole SL508 load16.440858809s/source0 are independently clear. Frozen raw keys, Warning cleanup and held boundaries remain unchanged; wider producers and lifetimes remain partial. [Review](../../coverage/semantics/string-offset-runtime-empty-concat-base-initial-raw-leading-key-review.json).
 
 Literal NULL coalesce selects the emitted CASTSTRING fallback's exact INTERNED carrier through the existing SAME NORMAL VALUE proof, preserving root read-eps, compiled-left PNULL and frozen initial raw CV keys through returning Warnings. Native2 once/source2, genuine prelaw34, author239/149-derived and independent362/262-derived retain separate cuts. Actuala71c5b7ea and the sole combinedcf2631241 SL508 load16.481702748s/source0 are independently clear. Wider producers, owners and lifetimes remain partial; every exact hold remains unchanged. [Review](../../coverage/semantics/string-offset-null-runtime-string-cast-coalesce-base-initial-raw-leading-key-review.json).
+
+Direct emitted one-byte STRING AND/OR/XOR bases preserve exact INTERNED carriers and frozen initial raw CV keys through returning Warnings. Root read-eps and the existing SAME NORMAL VALUE proof retain source/CODE/precision, one-byte children and quiet full-state operator authority. Native2 once/source2, reached prelaw38, author236/146-derived and independent360/260-derived keep separate cuts; an already-started extra peer model cut reuses those same two originals with native0. Actual5aebf1d410 and its sole SL508 load17.345459139s/source0 are independently clear. Wider producers, unary admission and lifetimes remain partial at this cut; every exact hold remains unchanged. [Review](../../coverage/semantics/string-offset-runtime-string-bitwise-base-initial-raw-leading-key-review.json).
 
 Finite FLOAT unary signs also admit certified integer children, including minimum-integer negation overflow, with exact source and quiet typed-result checks. Recursive children and the full unary result use the same NORMAL probe. Wider producers and full core remain partial. [Review](../../coverage/semantics/string-offset-numeric-unary-truth-base-initial-raw-leading-key-review.json).
 
