@@ -1117,6 +1117,12 @@ test-semantics: build
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
 		python3 tests/semantics/string_offset_terminal_unset_review_state.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/review-state"
+	@terminal_unset_handler_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-handler-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_terminal_unset_registered_handler_sources.py --output "$$terminal_unset_handler_out/source" && \
+		python3 -B tests/semantics/string_offset_terminal_unset_registered_handler_protocol.py --index 0 --source-report "$$terminal_unset_handler_out/source/report.json" --output "$$terminal_unset_handler_out/interned-state" && \
+		python3 -B tests/semantics/string_offset_terminal_unset_registered_handler_protocol.py --index 1 --source-report "$$terminal_unset_handler_out/source/report.json" --output "$$terminal_unset_handler_out/request-state" && \
+		python3 -B tests/semantics/string_offset_terminal_unset_registered_handler_review_state.py --index 0 --source-report "$$terminal_unset_handler_out/source/report.json" --output "$$terminal_unset_handler_out/peer-interned-state" && \
+		python3 -B tests/semantics/string_offset_terminal_unset_registered_handler_review_state.py --index 1 --source-report "$$terminal_unset_handler_out/source/report.json" --output "$$terminal_unset_handler_out/peer-request-state"
 	@retained_carrier_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-retained-carrier-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_retained_carrier_sources.py --output "$$retained_carrier_out/source" && \
 		python3 tests/semantics/string_offset_retained_carrier_protocol.py --source-report "$$retained_carrier_out/source/report.json" --output "$$retained_carrier_out/author-state" && \

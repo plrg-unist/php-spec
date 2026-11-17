@@ -112,8 +112,8 @@ $unset_terminal_nonarray(S_b[.RESULT = KNOWN (POBJECT 0)], pvalue_a, 9) = S_b[.R
 $unset_terminal_nonarray(S_b[.RESULT = KNOWN (PSTRING ([0]))], pvalue_a, 9) = S_b[.RESULT = KNOWN (PSTRING ([0]))][.COMPLETION = THROWN "Error" ptbytes_old 9]
 $unset_terminal_nonarray(S_b[.RESULT = REFERENCE n_b], pvalue_b, 9) = S_b[.RESULT = REFERENCE n_b][.COMPLETION = THROWN "Error" ptbytes_old 9]
 S_callback = S_key[.ERRORHANDLER.CALLBACK = (PSTRING ($ptascii("heldHandler")))][.ERRORHANDLER.LEVELS = 2]
-$unset_terminal_nonarray(S_callback, pvalue_a, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
-$unset_terminal_nonarray(S_callback, pvalue_b, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_old 9]
+$unset_terminal_nonarray(S_callback, pvalue_a, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_message 9]
+$unset_terminal_nonarray(S_callback, pvalue_b, 9) = S_callback[.COMPLETION = THROWN "Error" ptbytes_message 9]
 $lookup(S_b.ENV, $ptascii("missing")) = eps
 $unset_final(S_b, pvalue_b, ROOT n_b, VARIABLE ($ptascii("missing")) 9, 9) = S_b[.RESULT = KNOWN PNULL][.EVENTS = S_b.EVENTS ++ [WARNING ($ptascii("missing")) 9]][.COMPLETION = THROWN "Error" ptbytes_message 9]
 $unset_terminal_nonarray(S_b[.RESULT = KNOWN (PARRAY 0)], PSTRING ($ptascii("ab")), 9) = S_b[.RESULT = KNOWN (PARRAY 0)][.COMPLETION = THROWN "Error" ptbytes_message 9]

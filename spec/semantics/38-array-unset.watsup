@@ -182,7 +182,6 @@ def $unset_nonarray(S, pvalue, z) = $throw_scalar(S, "Error", ([67,97,110,110,11
 dec $unset_terminal_nonarray(pstate, pvalue, int) : pstate
 def $unset_terminal_nonarray(S, PSTRING_CARRIER pstringidentity n*, z) = $unset_nonarray(S, PSTRING n*, z)
   -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n*) /\ $c_string(n*) = n*
-  -- if S.ERRORHANDLER.CALLBACK = eps
   -- if S.RESULT = KNOWN pvalue_key
   -- if $unset_terminal_key(S, pvalue_key)
 def $unset_terminal_nonarray(S, pvalue, z) = $unset_nonarray(S, pvalue, z) -- otherwise
