@@ -1,0 +1,70 @@
+{
+  "scope": "Own public parentless sole short reference Get with all six raw float/bool/string union orders. Partial core.",
+  "target": "PHP 8.5.10 CLI NTS64; pinned .tools/php/bin/php; tests/semantics/profile.json plus include_path=.:, LC_ALL=C, TZ=UTC.",
+  "artifact_root": "../php-spec-evidence-archive/comp315",
+  "implementation": {
+    "source_commit": "2fe5137f1e8f352a005b20bbdabb32e612668ae8",
+    "source_tree": "084853d16057e5eaa6f67fa523f5de7028fb7f78",
+    "file": "spec/semantics/382-backed-get-hooks.watsup",
+    "sha256": "91f1e10a9f1f3384a354e80e94efc31effd1a3dddf48a63845049eb32def72c9",
+    "ready_manifest": "source-ready.json",
+    "ready_sha256": "2f784bc0f042d2ab92f17c810de5235b95b44c8433b48b1eb52bff8663633b02",
+    "change": "One exact three-Identifier union clause preserves raw branch order, three distinct builtin members and the implicit return signature. Two now-supported sibling refusal tuples retire; retained premises remain literal. Runtime conversion, ownership and cleanup laws are unchanged."
+  },
+  "engine_evidence": [
+    "Zend/zend_compile.c::zend_compile_property_hooks lowers short Get to return and supplies the property's return type; zend_compile_func_decl_ex preserves declaration strictness.",
+    "Zend/zend_execute.c::i_zend_verify_type_assignable_zval and zend_verify_ref_assignable_zval prioritize exact scalar tags, preserve strict integer-to-float widening and reject incompatible writes.",
+    "Zend/zend_objects.c::zend_object_dtor_property removes the real property source while surviving aliases keep the cell."
+  ],
+  "behavior": "FLOAT, BOOL and STRING Get returns preserve exact tags, independent copies and real aliases. Numeric/plain/empty/zero strings remain strings. Integer writes widen to FLOAT in both strict modes. Rejections preserve the stored value; quiet receiver retirement removes the type source before unconstrained alias writes. Raw order, return/CODE/line forgeries, owners and 0/1-step joins remain checked.",
+  "source_agreements": {
+    "author_report": "weak-sources/report.json",
+    "author_accepted_sha256_prefix": "959cb8a7",
+    "author_normal": 3,
+    "independent_report": "strict-sources/report.json",
+    "independent_accepted_sha256_prefix": "2179742f",
+    "independent_normal": 3,
+    "native_originals_once": 6,
+    "native_replayed": false,
+    "accepted_cut_policy": "Existing source/native reports retain their original tested revisions and input identities; no metadata rerun or renewed credit."
+  },
+  "fixture_cuts": [
+    {"report": "weak-protocol-float-bool-string/report.json", "sha256": "a97c71b905eb93590ccc3162e6967f362be89206ff715e1a471028fd4258c655", "premises": 779, "seconds": 194.65848994255066},
+    {"report": "weak-protocol-bool-string-float/report.json", "sha256": "af7041ab20f8cfea0dd7f4a32e5c1f39972f51d1e5b227ebe3c7ff274e805047", "premises": 498, "seconds": 277.2547926902771},
+    {"report": "weak-protocol-string-float-bool/report.json", "sha256": "42d0704fd1069d25d004af803047668ab554317dbc528dbff2a4e5665d39a491", "premises": 464, "seconds": 189.33820414543152},
+    {"report": "strict-protocol-float-string-bool/report.json", "premises": 848, "seconds": 201.81962990760803},
+    {"report": "strict-protocol-bool-float-string/report.json", "premises": 473, "seconds": 192.28203415870667},
+    {"report": "strict-protocol-string-bool-float-recover22/report.json", "sha256": "a6b257dd9a88c739a43124e6b1792928e5a10a9cba54651c1305f9f49f6e873a", "premises": 507, "seconds": 268.7001061439514}
+  ],
+  "fixture_contract": "Separate stable, quiet, reaped fixture-SL508 cuts at source2fe5137f; cap360; source_agreement_credit=0. No unique or combined condition-count claim.",
+  "preserved_zero_credit": [
+    "weak-prelaw/report.json at2530d1ef6: Unsupported3/native0/source0, accepted SHA prefix c2e99.",
+    "strict-protocol-string-bool-float: original507 process record only; no final report or passing credit. The missing final check alone was rerun at the unchanged source cut."
+  ],
+  "independent_review": "recover22: inherited exact18/Make8 static CLEAR and accepted source cuts; recovered473, completed only missing507; WHOLE/FULLCLEAR and actual composition CLEAR.",
+  "actual_composition": {
+    "head": "0d0f5d75b56a3031a949ebb5b807b9d42f71f0f5",
+    "tree": "fe5223b12c03b31ae764b2550b8e10f73bffb4cd",
+    "comparison_base": "53d0e96c4",
+    "exact_paths": 18,
+    "patch_sha256": "a731cfe1f2211cd5054748c6389cdb515a2b6b5d4905662e46c0e2977fe51172",
+    "report": "../resumed-main-20261112/main69-cast-coalesce-iterable-handler-hook-joined-v1/report.json",
+    "sha256": "93f699129db140099a928431aab6d7abc7f783ddc0a2d6c5de7808a3d20cc879",
+    "mode": "production-SL",
+    "module_count": 508,
+    "ordered_arguments": 511,
+    "watched_inputs": 512,
+    "cap_seconds": 60,
+    "seconds": 16.642528872936964,
+    "exit": 0,
+    "timeout": false,
+    "stdout_hex": "747275650a",
+    "stderr_empty": true,
+    "stable": true,
+    "reaped": true,
+    "source_agreement_credit": 0,
+    "acceptance": "Sole saved SAME report read once by independent recover22; author uses the supplied accepted tuple without reading or rerunning the canonical report."
+  },
+  "remaining": "Four-scalar and wider headers, producers, owners and lifetimes remain partial at this cut. Preserve exact COMP192/193 Generator-close private Closure cache/This release, COMP123 pendingException/recursiveError, COMP88 supplied Stringable throw, V110, GC35, I106, OP12, source47, owned-NUL, undefined by-reference LIST and other standing holds; callbacks and whole families are not globally held.",
+  "engine_bug_or_intentional_divergence": null
+}

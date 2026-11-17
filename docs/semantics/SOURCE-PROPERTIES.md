@@ -147,6 +147,16 @@ and earlier copy distinct. Destination rebinding still calls Get before its
 overloaded-object Error. Three original-source agreements and 214 Boolean checks
 plus three raw transitions are in the
 [untyped reference-Get review](../../coverage/semantics/untyped-reference-get-hooks-review.json).
+
+Own public parentless sole short `&get` headers also admit all six raw
+`float|bool|string` orders. Exact source order and the implicit return signature
+preserve FLOAT/BOOL/STRING tags, numeric strings, copies, alias constraints and
+quiet type-source removal; integer writes widen to FLOAT in either strict mode.
+Six original sources agree. Author and independent fixture-SL cuts and the actual
+508-module joined load retain separate identities. Wider headers, producers,
+owners and lifetimes remain partial; exact standing holds remain unchanged.
+[Review](../../coverage/semantics/float-bool-string-parentless-short-reference-get-hook-review.json).
+
 The same Parent declaration now serves a direct Child with no property
 redeclaration. The Parent getter runs with the Child receiver and Parent lexical
 scope; the inherited physical slot carries a typed source only when Parent's
