@@ -1727,3 +1727,21 @@ Wider producers, operators, handlers, owners/lifetimes and every exact hold rema
 partial.
 [Primitive predicate evidence](../../coverage/semantics/output-final-selected-primitive-predicate-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-primitive-predicate-cast-chain-return-modulo-error-review.json).
+
+The PINT arm also consumes proper primitive children across its twelve operators,
+retaining a fitting signed result, explicit child nonownership and exact quiet
+NORMAL full-state equality. Source/CODE/terminal-line/fold/read and two-cast guards
+remain; the PBOOL arm is unchanged. Nine originals strictly assert inner PINT and
+outer cast tags, including emitted BOOL children, integral FLOAT coercions and
+nested bitwise/POWER/SPACESHIP trees, reusing native9 once. Author30/20 and
+independent237/26 retain separate private508 SL/source0 cuts. All28 actual prior
+mixed-child queries run once:25 PINT admissions and3 retained FLOAT refusals.
+Source0 controls preserve typed STRING/FLOAT results, genuine errors and visible
+or handler-eligible coercion effects; masked unhandled effects require exact
+whole-state equality and compiler authority. No prior campaign is renewed.
+Actual `82038176ff8` and SAME MAIN509 loading pass separately in16.431293294 s,
+with stable/reaped source0 evidence.
+Wider results, producers, handlers, owners/lifetimes and every exact hold remain
+partial.
+[Primitive integer evidence](../../coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-review.json).
