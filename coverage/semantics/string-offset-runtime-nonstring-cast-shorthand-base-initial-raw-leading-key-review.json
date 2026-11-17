@@ -1,0 +1,119 @@
+{
+  "scope": "Quiet emitted BOOL/INT/FLOAT casts as shorthand conditions selecting recursive emitted CASTSTRING fallbacks and retaining frozen initial raw CV keys through returning Warnings.",
+  "status": "Independently accepted bounded milestone; wider producers, carriers and lifetimes remain partial.",
+  "target": "PHP 8.5.10 CLI, NTS, signed64; tests/semantics/profile.json",
+  "implementation": {
+    "head": "3b6af40f04c924604170498ee4c44a8b0d10bc77",
+    "tree": "4928119ff3f6d839a66d3a646e07e34d6ff9b421",
+    "source_files": 6,
+    "added": 331,
+    "removed": 2,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/source-six-manifest.json",
+    "manifest_sha256": "832e586f7d19697ff5c6b12c6a2cf648bf655822e632af61137e878b78b1b340",
+    "patch_sha256": "c658768e351dee73e8dd52ef7771e41d3ed30eea3fff94685b98079c02a42539"
+  },
+  "contract": [
+    "Exact shorthand NExprTernary with ABSENT true and an outer NExprCastString fallback, with root compiled_read eps.",
+    "Actual immediate condition source has PFCAST kind CASTBOOL, CASTINT or CASTFLOAT and compiled_read eps. Compiled primitive and CASTSTRING condition routes stay disjoint.",
+    "The existing SAME-state NORMAL runtime-value certificate authenticates condition/child source, emitted CODE/positive line, equal precision, quiet whole-state cast and truth, demanded fallback and exact INTERNED header.",
+    "Truthy nonstring values cannot satisfy the requested string result. Installed ConstFetch child pools retain inherited typed compiler-output authority; no spelling recomputation is claimed.",
+    "Current-key replacement and initial-reference rebinding preserve frozen raw bytes/index. Numerics, compiler, ownership, formatting and all exact holds remain unchanged."
+  ],
+  "provenance": {
+    "php_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_cast",
+      "Zend/zend_compile.c::zend_compile_shorthand_conditional",
+      "Zend/zend_vm_def.h::ZEND_BOOL",
+      "Zend/zend_vm_def.h::ZEND_CAST",
+      "Zend/zend_vm_def.h::ZEND_JMP_SET"
+    ],
+    "rules": [
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_raw_known_base",
+      "spec/semantics/425-string-offset-read-continuations.watsup::$string_read_runtime_value"
+    ]
+  },
+  "source_evidence": {
+    "native_once_baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/baseline/report.json",
+      "sha256": "b16a1534468a446196d16a7b66544c1f4ff47d624c6123d9c91d3cf9a124b39f",
+      "head": "631a57e4dfce4d95a96075be72d968e0aae77ff2",
+      "native_executions": 4,
+      "unsupported": 4,
+      "agreement_credit": 0
+    },
+    "source_agreements": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/source-v1/report.json",
+      "sha256": "7221751951b2ee74991472403a4ca511404a89a1d4508a862c17f07e20b26503",
+      "head": "f703717ab78446424af921d4ee74675dd96a00ca",
+      "originals": 4,
+      "native_executions": 0,
+      "agreement_credit": 4,
+      "first_pass": true,
+      "result": "Normal completion, exact saved native stdout/stderr and process status; stable inputs and reaped groups."
+    }
+  },
+  "fixture_evidence": [
+    {
+      "kind": "reached prelaw",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/prelaw-v2/report.json",
+      "sha256": "73ac9b0b246575c07b290322bf216ad9db3617a26b7fe7abe1c4d6b0ade8bee7",
+      "head": "631a57e4dfce4d95a96075be72d968e0aae77ff2",
+      "conditions": 112,
+      "mode": "production SL fixture",
+      "source_credit": 0
+    },
+    {
+      "kind": "author continuation and guards",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/author-state-v1/report.json",
+      "sha256": "0fce2d959b3d47faebf1065d7d4592d52d1e37d4b72f6cfb190b4ec7ecf2dc88",
+      "head": "900b89e70a907458742f1f82b50b8f88c85464bb",
+      "conditions": 295,
+      "derived_conditions": 205,
+      "first_pass": true,
+      "mode": "production SL fixture",
+      "source_credit": 0
+    },
+    {
+      "kind": "independent reference-rebinding continuation and guards",
+      "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-peer36-20261117/fixture-v1/report.json",
+      "sha256": "e87ef69b4ef895d851b8b02ff1d93dfc9c06308b688f1d9017ee3bb48f4d8b8a",
+      "head": "41ba5c74b808c2dce22796abbd949204eec108dc",
+      "conditions": 334,
+      "derived_conditions": 234,
+      "first_pass": true,
+      "mode": "production SL fixture",
+      "source_credit": 0
+    }
+  ],
+  "preserved_failure": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-author39-20261117/prelaw-v1/report.json",
+    "sha256": "9a0f1de6e76f7db3fb816fac222b932f6502e736b700b7970a1935d0244feeb5",
+    "cause": "The prelaw generator left one RHS state variable unsuffixed; the compiler reported an invalid binding before fixture execution. Only the generator binding was corrected; exact failed driver and generated fixture remain with the original report.",
+    "source_credit": 0
+  },
+  "independent_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-nonstring-cast-shorthand-base-initial-raw-leading-key-peer36-20261117/whole-six-clear.json",
+    "sha256": "3d01907311f86f76a1fea40aa12c10e5558e468b17843eba242aaf7646df5120",
+    "result": "FULL CLEAR: all six author/frozen/reviewer postimages and four original source agreements bound; distinct fixture cuts retained."
+  },
+  "integration": {
+    "actual_head": "4c5914820c075709e7825c6f50651a99ac4ea2ad",
+    "actual_tree": "60fb8e98f5a163b1faf76ba48e30ee32295991b7",
+    "same_head": "4c5914820c075709e7825c6f50651a99ac4ea2ad",
+    "same_tree": "60fb8e98f5a163b1faf76ba48e30ee32295991b7",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main73-nonstring-cast-v1/report.json",
+    "sha256": "3274c49dc811602daff7440b37f9a9947982b8cdb4762352c6c2a5ad869c249a",
+    "mode": "SL",
+    "module_arguments": 508,
+    "argv_count": 511,
+    "watched_paths": 512,
+    "cap_seconds": 60,
+    "elapsed_seconds": 16.892457014182582,
+    "source_credit": 0,
+    "result": "The sole actual/SAME load returns true LF with quiet stderr, exit0, stable HEAD/inputs and reaped group. Four test-driver postimages are exact; Makefile+2 and module425+11 retain complete MAIN parents.",
+    "independent_review": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main73-nonstring-cast-peer36-clear.json",
+    "independent_review_sha256": "26a57ada39f0c551cbdfabbbdd43b443f9ba43ea2af05918f6f3d7afda7d15d1"
+  },
+  "remaining": "Wider emitted conditions, producer/carrier/owner/lifetime forms and full core remain partial. All exact holds, reserve93807cdd6/255 and inventory169/306 remain unchanged."
+}
