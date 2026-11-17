@@ -17,9 +17,10 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 Recent reviewed extensions cover ordered builtin reference Get unions, recursive
-Boolean selector trees, STRING bitwise shorthand bases, ordered NaN comparisons,
-iterable-null producer returns, composite Boolean defaults and integer bitwise
-output-handler returns. Exact source, type, cache and ownership bounds remain.
+Boolean selector trees, STRING bitwise and false-comparison shorthand bases,
+ordered NaN comparisons, iterable union producer returns, composite Boolean
+defaults, integer bitwise output-handler returns and terminal string-offset unset
+with registered handlers. Exact source, type, cache and ownership bounds remain.
 The [current checkpoint](PROGRESS.md) separates source agreements, fixture checks
 and combined production loads; complete core remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,
