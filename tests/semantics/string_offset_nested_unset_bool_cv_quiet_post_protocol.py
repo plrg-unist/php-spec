@@ -62,7 +62,7 @@ def conditions(program, path):
     name = tuple(cases.CASES)[INDEX]
     throwing = INDEX >= 2
     checks = front_checks(program, path) + [
-        '~$string_unset_bool_cv_cell(S_P, n_key_name*, z_key, n_key)',
+        ('' if cases.POST_VALUES[name] == 'PNULL' else '~') + '$string_unset_bool_cv_cell(S_P, n_key_name*, z_key, n_key)',
         '$string_unset_bool_cv_post_cell(S_P, n_key_name*, z_key, n_key)',
         '$call_task_valid(S_P, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key)',
     ]

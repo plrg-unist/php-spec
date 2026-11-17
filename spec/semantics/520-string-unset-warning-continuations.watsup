@@ -120,6 +120,11 @@ def $string_unset_bool_cv_source(S, PORIGIN 0 pcpath, z) = ((n_base_name*, z_out
   -- if $(z > 0 /\ z_outer > 0 /\ z_key > 0 /\ z_name > 0)
 def $string_unset_bool_cv_source(S, porigin, z) = eps -- otherwise
 
+dec $string_unset_bool_cv_entry_value(pvalue) : bool
+def $string_unset_bool_cv_entry_value(PNULL) = true
+def $string_unset_bool_cv_entry_value(PBOOL b) = true
+def $string_unset_bool_cv_entry_value(pvalue) = false -- otherwise
+
 dec $string_unset_bool_cv_cell(pstate, ptbytes, int, nat) : bool
 def $string_unset_bool_cv_cell(S, n_name*, z, n) = true
   -- if ~$environment_blocked(S, n_name*)
@@ -127,8 +132,9 @@ def $string_unset_bool_cv_cell(S, n_name*, z, n) = true
   -- if $(n < |S.STORE|)
   -- if ~(n <- S.REFCELLS)
   -- if ~$foreach_released_cell(S, n) /\ ~$typed_cv_string_released_cell(S, n) /\ ~$update_released_cell(S, n)
-  -- if S.STORE[n] = DEFINED (PBOOL b)
-  -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN (PBOOL b)]
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $string_unset_bool_cv_entry_value(pvalue)
+  -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN pvalue]
 def $string_unset_bool_cv_cell(S, ptbytes, z, n) = false -- otherwise
 
 dec $string_unset_bool_cv_post_value(pvalue) : bool

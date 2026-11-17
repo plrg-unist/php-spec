@@ -94,7 +94,7 @@ def conditions(program, path):
         'pvalue_post = ' + cases.POST_VALUES[name],
         'S_quiet_P.STORE[n_key] = DEFINED pvalue_post',
         '$resolve_at(S_quiet_P, VARIABLE n_key_name* z_key, z_key) = S_quiet_P[.RESULT = KNOWN pvalue_post]',
-        '~$string_unset_bool_cv_cell(S_quiet_P, n_key_name*, z_key, n_key)',
+        ('' if cases.POST_VALUES[name] == 'PNULL' else '~') + '$string_unset_bool_cv_cell(S_quiet_P, n_key_name*, z_key, n_key)',
         '$string_unset_bool_cv_post_value(pvalue_post)',
         '$string_unset_bool_cv_post_cell(S_quiet_P, n_key_name*, z_key, n_key)',
         '$call_task_valid(S_quiet_P, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key)',
@@ -112,7 +112,8 @@ def conditions(program, path):
                   '(PSTRING ($ptascii("7")))', '(PARRAY 0)', '(POBJECT 0)'):
         derived.append('~$string_unset_bool_cv_post_value(' + value + ')')
     for value in ('PNULL', '(PINT 7)'):
-        derived += ['$string_unset_bool_cv_plan(S_quiet_E[.STORE[n_key] = DEFINED ' + value + ']) = eps',
+        derived += ['$string_unset_bool_cv_plan(S_quiet_E[.STORE[n_key] = DEFINED ' + value + ']) = '
+                    + ('((porigin_site, z, n_key))' if value == 'PNULL' else 'eps'),
             '$string_unset_bool_cv_post_cell(S_quiet_E[.STORE[n_key] = DEFINED ' + value + '], n_key_name*, z_key, n_key)']
     if throwing:
         checks += [
