@@ -1,0 +1,277 @@
+{
+  "family": "output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error",
+  "obligation": "lifecycle.output-buffer-callbacks",
+  "status": "independently reviewed guarded partial extension",
+  "target": "PHP 8.5.10 CLI NTS64 / vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": {
+    "operators": [
+      "BITAND",
+      "BITOR",
+      "BITXOR"
+    ],
+    "result": "Source-authenticated folded plain PSTRING; scalar CASTINT/CASTBOOL/CASTFLOAT consumers",
+    "guards": [
+      "Recursively certified proper STRING children with independent SOURCE/CODE/UNIT/lines and no value owners",
+      "Both child compiler flags and own node remain true, retaining terminal RHS line",
+      "Pure byte_binary result, exact own plain pool value and no attached compiler effects",
+      "compiled_string_value preserves the plain tag; actual constant-entry state equals the original state apart from RESULT",
+      "NORMAL and existing two-cast, source BODY and retirement bounds remain"
+    ],
+    "producer_distinction": "Runtime ZVAL_CHAR is INTERNED only when BOTH operand lengths are one; other bytewise lengths retain REQUEST_STRING and append STRINGDATA, even when the result has one byte or is empty. No REQUEST-to-INTERNED/plain normalization is introduced.",
+    "nul": "A folded XOR may produce NUL bytes; NUL is truthy, while empty and zero-text are falsey. Existing literal-NUL/REQUEST and owned-NUL release fences remain unchanged.",
+    "excluded": "CONCAT and emitted STRING producers remain outside this rule.",
+    "independent_controls": "17 explicit byte/length/order/high-byte cases, separate runtime producer checks, exact three affected old143 builders, wrong typed/pool facts, effect/global-read/UNIT/BODY/BUDGET/two-cast/source/owner/retirement fences",
+    "source_observations": "Six originals observe exact inner STRING bytes and outer scalar tags; internal producer identity controls carry source0 credit."
+  },
+  "source": {
+    "base": "d84e2d99e3eaa861eeee45e0d6a3dc42df422bd3",
+    "revision": "a35c5072209acd7aec7445113fea5941e94b4502",
+    "tree": "6f573e1ea17491f96cf4ce9a997ebf8ea4fc099f",
+    "file_count": 6,
+    "insertions": 290,
+    "deletions": 2,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/ready-source-145-reviewed-manifest.json",
+    "manifest_sha256": "9636734e869424fd863a9c157cef91459a4a66ec6810c4e99fa30fef8d3621ca",
+    "patch_sha256": "d29d434d1517debf0932afda499f6cfa3801598b47dc61ebbbf74368a1d776ce"
+  },
+  "validation": {
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/native-01/report.json",
+      "sha256": "039a30a8e73f745081340cc7eb29048b09ab9051d75b59479aaa78d8d9426026",
+      "revision": "df856c289ac7bed6ce9c3ea06e59b6354f3132ff",
+      "seconds": 0.012895840918645263,
+      "source_credit": 0,
+      "watched_inputs": 20,
+      "selection": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "prelaw": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/before-01/report.json",
+      "sha256": "44fd4a0a6bb39a5ac9e31b20a2bdda7492a3ae9f40e1c5f530fb54ba7ad0bd56",
+      "revision": "df856c289ac7bed6ce9c3ea06e59b6354f3132ff",
+      "seconds": 77.23876300104894,
+      "source_credit": 0,
+      "watched_inputs": 540,
+      "selection": [
+        1,
+        4
+      ],
+      "unsupported": 2,
+      "unrun_zero": 4
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/after-01/report.json",
+      "sha256": "35d67cd43f559d1bba4bd831fb1caf32460ffd612340580204f5a2de7a90f3db",
+      "revision": "3e38b8a86304766728cc4e3836343f1f0a34aedd",
+      "seconds": 316.5995292039588,
+      "source_credit": 6,
+      "watched_inputs": 556
+    },
+    "author_front": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/front-01/report.json",
+      "sha256": "65ffb89ce05a34013e748674b39cdf5e127032f7976e93b187f2e377d235e386",
+      "revision": "3e38b8a86304766728cc4e3836343f1f0a34aedd",
+      "seconds": 260.40695464704186,
+      "source_credit": 0,
+      "assertions": 27,
+      "groups": [
+        8,
+        8,
+        11
+      ],
+      "watched_inputs": [
+        587,
+        587,
+        587
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/front-launch-01.json",
+      "launch_sha256": "e2dd6c4e517c37a0c33b08bb445922197ccb55bdd0f3c21ea3286415f743d59d"
+    },
+    "author_life": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/life-01/report.json",
+      "sha256": "76fb549a033213e79e24dd99c4a9fb58b7e62f7bf657d4fed90cef7767c6f164",
+      "revision": "3e38b8a86304766728cc4e3836343f1f0a34aedd",
+      "seconds": 380.3314055989031,
+      "source_credit": 0,
+      "assertions": 19,
+      "groups": [
+        6,
+        6,
+        7
+      ],
+      "watched_inputs": [
+        587,
+        587,
+        587
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/life-launch-01.json",
+      "launch_sha256": "96f4d9ac57d6e2e2589c30f59c8b4c0a8b939fdfe56404af0528279b8a633d12"
+    },
+    "independent_front": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-03/report.json",
+      "sha256": "286e67994b3f40d69ab9c8fcc6dd70832e93ba9cda2b947e9b0873b9da1e12b2",
+      "revision": "a35c5072209acd7aec7445113fea5941e94b4502",
+      "seconds": 300.75532388710417,
+      "source_credit": 0,
+      "assertions": 198,
+      "groups": [
+        100,
+        43,
+        55
+      ],
+      "watched_inputs": [
+        629,
+        629,
+        629
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-launch-03.json",
+      "launch_sha256": "12efd4432ed5870782e65e4e12ccff8d6a2874f908897e7cc17169b15985ac07"
+    },
+    "independent_life": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-life-01/report.json",
+      "sha256": "c731fc45d6779f5137069ffe44287e2cd2131ea5da741894d96c144f195dd850",
+      "revision": "a35c5072209acd7aec7445113fea5941e94b4502",
+      "seconds": 404.21016109595075,
+      "source_credit": 0,
+      "assertions": 26,
+      "groups": [
+        8,
+        9,
+        9
+      ],
+      "watched_inputs": [
+        629,
+        629,
+        629
+      ],
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-life-launch-01.json",
+      "launch_sha256": "f76dfb9c8e1550e7f696e192614a40ff7c8a0379716498dc4bc8c116f4bd8e11"
+    }
+  },
+  "reliability": {
+    "fixture_failures": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-01/report.json",
+        "sha256": "df7be82c2ad5f1c032cf552a2c7f4cc3acf7deff6d620011bffe887a03d3c178",
+        "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-launch-01.json",
+        "launch_sha256": "97fdd4c747d2c832dac98c744f224cba6978d023721555d12ea2a53689490b1f",
+        "revision": "3e38b8a86304766728cc4e3836343f1f0a34aedd",
+        "seconds": 0.7995710410177708,
+        "reaped": true,
+        "group_empty": true,
+        "stable": true,
+        "classification": "fixture wrong-fact literal syntax; parser stopped before main semantic evaluation",
+        "fixture_failures": 1,
+        "semantic_evaluations": 0,
+        "source_credit": 0,
+        "further_front_unrun_zero": 2,
+        "life_unrun_zero_at_failure": 3,
+        "raw_stderr": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-01/warning-right-cv-pair-single-or-three/state.stderr",
+        "raw_stderr_sha256": "68124ea99c844031577d707e1bbb206a38cca8537c9bc224261da9b54b6455a8",
+        "correction": "one parenthesized byte-list literal; affected frontier retry only"
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-02/report.json",
+        "sha256": "d4d7a016adb57122a8c97b6b46d9a531a35fc6a870d536e59a9def93b0d83d1f",
+        "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-launch-02.json",
+        "launch_sha256": "b2bb62940839ee55c5587f06ad5c0569a203240e62723434575a43485fcee443",
+        "revision": "ff08087667f16e784fc802ae746d71b0450084c2",
+        "seconds": 12.138547089183703,
+        "reaped": true,
+        "group_empty": true,
+        "stable": true,
+        "classification": "fixture forged REQUEST byte argument elaboration; stopped before main semantic evaluation",
+        "fixture_failures": 1,
+        "semantic_evaluations": 0,
+        "source_credit": 0,
+        "further_front_unrun_zero": 2,
+        "life_unrun_zero_at_failure": 3,
+        "raw_stderr": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/peer-front-02/warning-right-cv-pair-single-or-three/state.stderr",
+        "raw_stderr_sha256": "2c1b1da33505666583e22639afd8444376785fa0d06c284cd43292cf57fe96ee",
+        "correction": "parenthesize remaining REQUEST byte arguments; unrun B3 expected NUL tag normalized; affected frontier retry only"
+      }
+    ],
+    "fixture_correction_rounds": 2,
+    "parenthesized_literals": 4,
+    "semantic_disagreements": 0,
+    "timeouts": 0,
+    "incomplete": 0,
+    "current_independent_unrun": 0,
+    "original_per_fixture_cap_seconds": 300,
+    "original_outer_cap_seconds": 660,
+    "native_replays": 0,
+    "accepted_author_byte_bridge": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-145/author-fixture-byte-bridge-03.json",
+      "sha256": "6645a3f8a23bb425af97edec1bec998d4ccc2c1043bccbafbd2b919af30a8de3",
+      "accepted_revision": "3e38b8a86304766728cc4e3836343f1f0a34aedd",
+      "revision": "a35c5072209acd7aec7445113fea5941e94b4502",
+      "generated_frontier_lifecycle_fixtures": 6,
+      "identical": true,
+      "semantic_runs": 0,
+      "source_credit": 0
+    },
+    "compatibility": "Source/oracle/production and old-three assertions were unchanged by helper-only literal syntax corrections; accepted source6 and A27/19 retain their original cuts without execution renewal.",
+    "drivers": {
+      "source_sha256": "163d30100e5d0a9fef8474d3991f9024092cee5342e8ac4d89262b7feb35f573",
+      "original_peer_sha256": "df7f3e3a82110878d39df4ec16bdc39a20d1aa9677fd9ed9dd4d59956f434189",
+      "front_retry02_sha256": "c6d308002532c8676ca391f72ed6560eeac5ab144bda2d7272baaa19613517e8",
+      "front_retry03_sha256": "5a67921e0f9b1e4bf1467f45ed5bf49008cf9a14c4e417732e48aa5760ddf3bb"
+    }
+  },
+  "actual_composition": {
+    "actual": "bb03050b1f18a155b73de22848cd590202d8dfc9",
+    "tree": "054ca307ee99f73942164f8af7136f23f029e152",
+    "parent": "7d7850824dcbc9ebc7893e728beeeb95c14ddbb0",
+    "placement_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main94-output145-placement-v1/placement.json",
+    "placement_sha256": "e6024268c9a22f272f4b4ab8c9242d6fb5d6a23200705750614e6bd215c9a1be",
+    "source_manifest_sha256": "9636734e869424fd863a9c157cef91459a4a66ec6810c4e99fa30fef8d3621ca",
+    "source_revision": "a35c5072209acd7aec7445113fea5941e94b4502",
+    "runtime_sha256": "1e786dc7bb58f5de117a7670d058848f26e4c29a96a48b1fd4ef43b03e7c2ecb",
+    "Make": {
+      "path": "Makefile",
+      "post_sha256": "e1a64cf121fed146c9e106b87825d2b69545d52d32675c8dfbc476976fac4395",
+      "post_blob": "aad5cee7ce907387b61f49ffe12745c76cc24c3f",
+      "bytes": 593732,
+      "parent_sha256": "473db714a863433fa70d19410d64b009112452dfaa483031f39d0ece99d47f33",
+      "parent_blob": "d120d388d3ac459a5a33b9a8c9ff8b5a3f53ae56",
+      "recipe_count": 1,
+      "recipe_lines": 4,
+      "recipe_sha256": "4ac86f96b7eb4d0091916bfaaf1e0eac18c18f875605b1095dea18e7c28ba8fd",
+      "full_foreign_parent_inverse": true
+    },
+    "canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main94-output145-canonical-v1/report.json",
+      "sha256": "4327a26676926680612286a25a5ee5f9d88a2b0af3d87716744588d299b55af0",
+      "production_modules": 509,
+      "ordered_arguments": 512,
+      "argv_sha256": "8998c43d001d7275f1f6a3cd9f5daaf73b6baa06340381003432d979d88d63b9",
+      "watched_inputs": 513,
+      "map_sha256": "938035bc887d440c6ff6086874464fc400a148c0f360318269d292cb120f758e",
+      "cap_seconds": 60,
+      "seconds": 16.337688378058374,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "process_group": 3458439,
+      "group_empty": true,
+      "process_json_sha256": "4cc55d5ce425a665d9363f71364ee1df287a4c8df9fe1ff0e2e9540c27b0deac",
+      "source_credit": 0
+    },
+    "disposition": "ONE actual composition and physically saved SAME canonical CLEAR; no rerun or HEAD refresh"
+  },
+  "limits": [
+    "The six finite source comparisons are bounded observations; constructed identity and forged-state controls carry no source/native agreement credit.",
+    "Only the three affected old query instances were exercised; unrelated accepted campaigns were not replayed.",
+    "Output callbacks, broader producers/handlers/owners/lifetimes and OB31 remain partial. All holds/reserve93807cdd6/255 and inventory169/306 closed0+1 are unchanged.",
+    "Complete core PHP, interaction-tree/Rocq/CRIS semantics and BOLA proofs remain unfinished."
+  ],
+  "metadata_semantic_runs": 0
+}

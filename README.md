@@ -49,6 +49,8 @@ Recursive BooleanNot composes over bounded CONCAT-left-coalesce static USER sele
 
 Nested output-handler casts admit proper primitive children for twelve integer-result operators when the actual result fits signed64 and the whole state remains quiet and unchanged. Exact source, nonownership and two-cast guards remain; FLOAT or STRING results and wider lifetimes stay partial. [Review](coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-review.json).
 
+Compiler-folded STRING AND/OR/XOR trees feed nested INT/BOOL/FLOAT selected MOD handler returns through exact plain pool bytes, source/compiler/terminal-line authority, empty effects and unchanged state. Produced NUL, zero text and empty bytes retain distinct cast behavior. Emitted STRING/REQUEST producers, CONCAT and wider owners/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-review.json).
+
 [Bare stdClass/int producer returns](coverage/semantics/global-plain-union-int-stdclass-return-producer-reference-notice-review.json) preserve object identity or a verified INT through return checks, frame retirement and private Notice cells in the retained global declaration context; wider unions, formals and lifetimes remain partial.
 
 Initialized ordinary NULL-CV inner unset keys share the saved-cell Warning route

@@ -1765,3 +1765,21 @@ Wider producers, operators, handlers, owners/lifetimes and every exact hold rema
 partial.
 [Primitive float evidence](../../coverage/semantics/output-final-selected-primitive-float-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-primitive-float-cast-chain-return-modulo-error-review.json).
+
+Folded STRING AND/OR/XOR trees now feed the existing nested INT/BOOL/FLOAT
+handler-return casts before MOD-zero errors. Both proper STRING children retain
+SOURCE/CODE/UNIT, independent lines and true folding flags; the parent keeps the
+terminal RHS line. Pure byte results must match the own plain PSTRING pool fact.
+Empty compiler effects, unchanged plain identity, full NORMAL compiled-entry
+state equality apart from RESULT and child/result nonownership remain required.
+Produced NUL is admitted as a nonowning compiled result; literal-NUL, REQUEST,
+CONCAT and held Owned-NUL release retain their boundaries.
+Source6 retains private `3e38b8a86`, reusing native6 observed once at `df856c289`.
+Author27/19 retain that SL508/source0 cut with an exact six-fixture byte bridge;
+independent198/26 retain `a35c50722`. Both pre-main fixture failures retain zero
+agreement credit.
+Actual `bb03050b1f` and SAME MAIN509 loading pass separately in16.337688378 s,
+with stable/quiet/reaped source0 evidence. Wider producers, handlers, owners and
+lifetimes remain partial; all exact holds remain unchanged.
+[Folded STRING evidence](../../coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error-review.json).
