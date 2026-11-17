@@ -877,12 +877,12 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $c_string(n_bytes*) = n_bytes*
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $cast_apply(S_before, CASTSTRING, PINT i, z_line) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; A literal RHS keeps its actual constant flag, including an empty literal.
+;; A string-literal RHS tree keeps its actual constant flag, including empty bytes.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
   -- if $(n_identity > 0)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
-  -- if expression_right = NScalarString (BYTES text_right) metadata_right
+  -- if $string_read_literal_bytes(expression_right) =/= eps
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
