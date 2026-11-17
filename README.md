@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Own public parentless short reference Get admits exact `Class|int` and `int|Class` headers with one quiet ordinary, fully qualified or namespace-relative class name. Exact integer tags, weak scalar conversion and strict rejection retain defining authority and existing alias/owner bounds. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-int-union-parentless-short-reference-get-hook-review.json).
+
 Own public parentless short reference Get admits exact `Class|bool` and `bool|Class` raw/normalized orders with one quiet ordinary, fully qualified or namespace-relative class name. Both Boolean tags remain valid; existing weak scalar conversion and strict rejection preserve defining authority and owner bounds. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-bool-union-parentless-short-reference-get-hook-review.json).
 
 Folded literal-false shorthand defaults retain certified emitted scalar results, including quiet NaN and negative zero, before existing private reception. Wider conditions, owning results, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-false-short-redirect-wrapper-default-reception-review.json).
@@ -54,6 +56,12 @@ fallback; quiet truthy strings retain their selected header. Wider producers,
 carriers and lifetimes remain partial.
 [Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
 [truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Folded direct raw-integer plus CONCAT bases preserve signed64 identity, exact INTERNED coalesce headers and frozen raw CV offsets through returning Warnings, including falsey "0" and a MAX prefix. Wider signs and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-unary-plus-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
+
+Folded direct raw-integer negation CONCAT bases preserve exact INTERNED coalesce headers and frozen raw CV offsets through returning Warnings. Input/result signed64 bounds retain integer identity; wider signs and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 
 Folded raw integer/STRING CONCAT coalesce left operands preserve exact INTERNED headers and frozen raw CV offsets through returning Warnings, including falsey "0" and a MAX prefix. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-literal-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
 

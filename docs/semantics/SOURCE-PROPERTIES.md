@@ -2820,3 +2820,12 @@ bounds remain. Existing integer checking admits integer values, converts
 eligible weak scalars and rejects strict non-integer scalar writes atomically.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-int-union-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using native observations once. Separate author151/152/152
+and independent361/163/163/163 fixture-SL508 cuts retain source0; prelaw
+Unsupported6 stays0, with no execution failures, timeouts or corrections.
+Actual and joined `cb5c64bfd` and the sole production-SL509 load
+(16.631941198 s, source0) are independently clear through immutable `7255539c`.
+The recorded second physical read completed the same saved report's fingerprint
+comparison without a new semantic run. Wider forms and all exact holds remain.
+[Independent review](../../coverage/semantics/class-int-union-parentless-short-reference-get-hook-peer-review.json).

@@ -34,7 +34,9 @@ with source credit0. Metadata creates no execution credit. The
 [review record](../../coverage/semantics/string-offset-literal-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json)
 binds all revisions, hashes and external evidence.
 
-Unary signs, FLOAT/Boolean/null/coerced leaves, wider producers, carriers,
-owners and lifetimes remain partial at this cut. All exact holds,
+At frozen source5d530, unary signs remain partial. The later
+[direct-minus extension](STRING-OFFSET-LITERAL-SIGNED-INTEGER-CONCAT-RUNTIME-SCALAR-COALESCE-BASE-INITIAL-RAW-LEADING-KEY.md)
+covers its reviewed scope. FLOAT/Boolean/null/coerced leaves, wider producers,
+carriers, owners and lifetimes remain partial. All exact holds,
 reserve93807cdd6/255 and inventory169/306 remain unchanged. Full core remains
 unfinished.

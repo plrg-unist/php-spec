@@ -1,0 +1,235 @@
+{
+  "milestone": "COMP328",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Exactly ordered raw nominal Class|int and int|Class unions with one quiet ordinary/FQ/relative class and raw Identifier int; exact full normalized order, initial PINT0 and existing weak integer conversion versus strict non-integer rejection. Existing canonical defining source/class/property/context, by-reference/copy/detach and owner bounds remain. All older generic/scoped/class-null/class-false/class-true/class-bool predicates are unchanged. No16/backend/runtime-consumer change or native fallback.",
+  "complete_core": false,
+  "holds": "Exact holds, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bug_or_intentional_divergence": null,
+  "status": "BOUNDED_IMPLEMENTED_REVIEWED_VALIDATED_INTEGRATED",
+  "source_revision": "f2534d6f8ec5813cb247fa9cd32ca1d86e1ac134",
+  "source_manifest": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp328/source-ready.json",
+    "sha256": "374c53e9621d0d9f076203cf47c5b94152a75807e41dee51f2c94d8fc9d01257"
+  },
+  "implementation_authors": [
+    "recover28_compiler_true_union_impl"
+  ],
+  "recorded_by": "recover29_compiler_class_union_impl",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_class_int_header",
+    "spec/semantics/382-backed-get-hooks.watsup:$pphook_body_compile",
+    "spec/semantics/382-backed-get-hooks.watsup:$property_hook_short_reference_header"
+  ],
+  "zend_authority": {
+    "revision": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c:zend_compile_typename, zend_compile_property_hooks",
+      "Zend/zend_execute.c:i_zend_verify_type_assignable_zval, zend_verify_ref_assignable_zval, zend_verify_weak_scalar_type_hint",
+      "Zend/zend_API.c:zend_parse_arg_long_weak"
+    ]
+  },
+  "independent_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp328/independent-ready.json",
+    "sha256": "cfa5e64c5c29e00bbe8c23b01c811da3698197ca3b6f20eb34ac2e76b6696f85"
+  },
+  "actual_composition_peer": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/comp328/actual-composition-peer.json",
+    "sha256": "7255539cb483cc444c47403a299a42adca84098f495cda120b6f425fc2add510"
+  },
+  "validation": {
+    "native_originals_once": 6,
+    "native_evidence": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/weak-native-once/report.json",
+        "sha256": "0ce1043f0d921ab55df4934afc99770a85e26ced92b8dcff785bb93aa746a9d9",
+        "head": "52da4e3919de6b1309a40ac5ca97b38897f89404",
+        "cases": 3,
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/strict-native-once/report.json",
+        "sha256": "b1e9e42bc3f9cb55851621b522c399a3e19244c662acfc82bc527d91fec448f4",
+        "head": "ad37910f8fbd27af816e0e900b5051889de6fe7d",
+        "cases": 3,
+        "source_agreement_credit": 0
+      }
+    ],
+    "new_native_after_law": 0,
+    "prelaw_expected_unsupported_zero_credit": 6,
+    "prelaw_evidence": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/weak-prelaw/report.json",
+        "sha256": "2a0352f417e446ed2e2630be79a6fe24a2ac793728207ff7bd1b8a9615015ced",
+        "head": "52da4e3919de6b1309a40ac5ca97b38897f89404",
+        "cases": 3,
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/strict-prelaw/report.json",
+        "sha256": "97ce80a680f72930e54a89ad145f4a6e78a6e50e35955fbc12d172807893a59c",
+        "head": "ad37910f8fbd27af816e0e900b5051889de6fe7d",
+        "cases": 3,
+        "source_agreement_credit": 0
+      }
+    ],
+    "author_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp328/weak-source-class-int/report.json",
+      "sha256": "3c5d3c28fce9407cdcb1e6c33161cdfe8012ef0caff459fcf326a40089670f18",
+      "head": "f2534d6f8ec5813cb247fa9cd32ca1d86e1ac134",
+      "normal": 3,
+      "new_native": 0,
+      "reused_native": 3,
+      "module_count": 508
+    },
+    "independent_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp328/strict-source-class-int/report.json",
+      "sha256": "e897672ae2da849dc641c874dbb4d9895395133ea4636db71bea6b3f3d1fad19",
+      "head": "c6025d53eff7085b865d651d9ba0b256e7e57768",
+      "passed": true,
+      "stable": true,
+      "agreements": 3,
+      "native_observations": 0,
+      "reused_native_observations": 3
+    },
+    "author_fixture_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/author-fq-class-int-state/report.json",
+        "sha256": "abd4f794ff995add6814552f56e9ace15d94256b17e8b5975ee378b56ba8487e",
+        "head": "f2534d6f8ec5813cb247fa9cd32ca1d86e1ac134",
+        "premises": 151,
+        "module_count": 508,
+        "elapsed_seconds": 202.78003072738647,
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/author-int-local-class-state/report.json",
+        "sha256": "cbfdae6776362a9a993306d9bd43b1bdfdc89982b600e9e5872e022720c3c6dc",
+        "head": "f2534d6f8ec5813cb247fa9cd32ca1d86e1ac134",
+        "premises": 152,
+        "module_count": 508,
+        "elapsed_seconds": 205.2294909954071,
+        "source_agreement_credit": 0
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/author-imported-class-int-state/report.json",
+        "sha256": "8abff7c5ba2eefa909a00e8c97ada57ca4f7accdb4c963334f7a6a7f24fb2a3f",
+        "head": "f2534d6f8ec5813cb247fa9cd32ca1d86e1ac134",
+        "premises": 152,
+        "module_count": 508,
+        "elapsed_seconds": 231.2493462562561,
+        "source_agreement_credit": 0
+      }
+    ],
+    "independent_headers": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp328/independent-headers/report.json",
+      "sha256": "eb65b3a46b66af145017c1bd03241a7de89e82c9e1cb2a9892ea573b57f897e0",
+      "head": "c6025d53eff7085b865d651d9ba0b256e7e57768",
+      "passed": true,
+      "stable": true,
+      "native_observations": 0,
+      "module_count": 508,
+      "mode": "fixture-SL",
+      "premises": 361,
+      "source_agreement_credit": 0,
+      "elapsed_seconds": 15.629785537719727,
+      "cap_seconds": 60
+    },
+    "independent_state_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/independent-state-strict-int-fq-case-literal/report.json",
+        "sha256": "694b4285b908717294a181e79a15a8bd1a91253506464ec2d2fc6327dcf14236",
+        "head": "c6025d53eff7085b865d651d9ba0b256e7e57768",
+        "premises": 163,
+        "module_count": 508,
+        "mode": "fixture-SL",
+        "elapsed_seconds": 193.02812480926514,
+        "cap_seconds": 360,
+        "source_agreement_credit": 0,
+        "passed": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/independent-state-strict-relative-class-int-literal/report.json",
+        "sha256": "9ac2a2c2939f20098f4f8325b4f6898b2e4ffd71ac4b0671863bf877c91b3516",
+        "head": "c6025d53eff7085b865d651d9ba0b256e7e57768",
+        "premises": 163,
+        "module_count": 508,
+        "mode": "fixture-SL",
+        "elapsed_seconds": 200.65113973617554,
+        "cap_seconds": 360,
+        "source_agreement_credit": 0,
+        "passed": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp328/independent-state-strict-int-imported-alias-literal/report.json",
+        "sha256": "e5de09073ba0fa1de1ad7fd45655f7347c693b2b73f1af24e032b73441b8b067",
+        "head": "c6025d53eff7085b865d651d9ba0b256e7e57768",
+        "premises": 163,
+        "module_count": 508,
+        "mode": "fixture-SL",
+        "elapsed_seconds": 235.10336303710938,
+        "cap_seconds": 360,
+        "source_agreement_credit": 0,
+        "passed": true,
+        "quiet": true,
+        "stable": true,
+        "reaped": true
+      }
+    ],
+    "caps": {
+      "native_seconds": 15,
+      "source_outer_seconds": 140,
+      "source_inner_seconds": 120,
+      "source_steps": 100000,
+      "headers_seconds": 60,
+      "state_seconds": 360
+    }
+  },
+  "semantic_review": [
+    "Exact two raw arms and full quiet PTOK normalization preserve raw/normalized order, decoded spelling and declaring namespace/import authority; builtin/scope/warningful/malformed/extra-member/forged normalized cases reject.",
+    "Zend zend_compile_typename supplies class/builtin type normalization; i_zend_verify_type_assignable_zval and zend_verify_ref_assignable_zval preserve exact class/int acceptance, strict rejection and staged coercion before shared-cell commit.",
+    "zend_verify_weak_scalar_type_hint and zend_parse_arg_long_weak support the selected quiet bool, exact FLOAT and numeric STRING 0/1 conversions to PINT; no broader warningful conversion claim is added.",
+    "Source originals prove integer tags with strict identity, two shared aliases, object copy/identity independence, atomic failed writes, real declaring-owner retirement and type-source detachment.",
+    "State fixtures exercise canonical raw source/class/property/file/positive-line authority, exact initial PINT0, genuine field-cell sources, physical ownership/retirement, malformed source/state refusals and zero/one-step resumption.",
+    "Native observations execute once per exact original bytes/ROOT/argv. Saved reuse checks exact command and source hash; PHP outcome, Unsupported baseline, fixture assertions and tool failures remain separate."
+  ],
+  "composition": {
+    "actual_revision": "cb5c64bfdca239b05806d341a7815d0557647635",
+    "joined_revision": "cb5c64bfdca239b05806d341a7815d0557647635",
+    "tree": "2efd602dc316800c11fab2d342c402eed2761d8c",
+    "composition_map_sha256": "b815a9f8b08250276c301f25681eb19cff1c17a29abb0719dfd4f850d6d06e23",
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main88-comp328-v1/report.json",
+    "canonical_report_sha256": "696efc18ea5b8fd226114235300aa154b5ada068ac40345ced695068eefad62f",
+    "production_modules": 509,
+    "argv": 512,
+    "watched": 513,
+    "elapsed_seconds": 16.63194119813852,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "actual_composition_assessments": 1,
+    "canonical_file_reads": 2,
+    "metadata_read_correction": "First pinned content inspection summarized the full fingerprint dictionaries without comparing their specially named input_sha256/input_sha256_after pair. One bounded second read of the identical hash completed that comparison. No new semantic run or HEAD refresh.",
+    "new_semantic_runs": 0,
+    "prior_native_source_evidence_renewed": false
+  },
+  "compatibility_bridge": [
+    "Exact18 scope retains16 literal source postimages and unique additive Make9/family10 fragments. Removing the new helper and two admissions restores all older382 bytes; no module16/backend/runtime-consumer change.",
+    "Private source/fixture508 and the sole actual production509 load retain separate cuts and credits. The fixed actual/SAME assessment binds all513 watched fingerprints and exact512 argv without semantic replay.",
+    "This metadata records immutable source/test cuts; it does not renew native, source, fixture or closed COMP327 evidence."
+  ],
+  "prep_only_correction": "Before any header execution, a14d7d379 changed only the extra-builtin negative from a duplicate int arm to a distinct float arm. Header361 count and framework main=true/trueLF are retained; no source/native/semantic input changed.",
+  "preserved_zero_credit_failures": [],
+  "corrections_after_execution": 0,
+  "semantic_failures": 0,
+  "source_failures": 0,
+  "unresolved_failures": [],
+  "timeouts": 0,
+  "incomplete": 0,
+  "unrun_required_checks": [],
+  "remaining": "Broader headers, warningful names, wider owners/modifiers/signatures/lifetimes and complete core remain partial."
+}

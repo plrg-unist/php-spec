@@ -1,0 +1,105 @@
+{
+  "status": "independently reviewed bounded slice; family and full core partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pinned project-local oracle/profile",
+  "scope": "Direct UnaryMinus(NScalarInt) leaves in folded integer/STRING CONCAT coalesce-left preserve exact INTERNED headers and initial raw leading CV Warning continuations; both input and result fit signed64.",
+  "implementation_author": "recover47_dynamic_concat_impl",
+  "independent_reviewer": "recover45_dynamic_signed_concat_review",
+  "source_revision": "4794071a24ea6c2788da793f6a64c8e731e0d3d8",
+  "source_tree": "a128973981aa08eae35cb9ce2347471dcdcc202e",
+  "source_manifest": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-author47-20261117/source-eight-author-manifest.json",
+    "sha256": "48b5f075419da7ccc4f32ee021fdd08a91f402ffb39523343ddfc50796fea16f"
+  },
+  "semantic_basis": [
+    "Zend/zend_compile.c:zend_compile_unary_pm, zend_try_ct_eval_unary_pm; Zend/zend_operators.c:mul_function_fast. Negation multiplies by -1 and promotes overflow to DOUBLE, requiring both integer range guards.",
+    "425 adds only the direct raw-integer negation leaf. Existing root folded CODE/read/header/precision and complete SOURCE proof, STRING-only literal_bytes, RHS exclusions and33 API remain unchanged.",
+    "Actual prefix/unary/atom/tail CODE and typed pools are retained; nested STRING tail leaves are pruned. Poisoning retained facts preserves root PSTRING read but loses INTERNED authority through compiled_string_value, so VALUE/base refuse.",
+    "Only two affected oldINT helper expectations are promoted; archived earlier cuts remain unchanged."
+  ],
+  "validation": {
+    "native_executions_once": 2,
+    "source_agreements_saved_native_reuse": 2,
+    "source_revision": "303ba8d7408ca7094fe9085da65f484a3749b787",
+    "baseline_Unsupported": 2,
+    "observational_probes": 2,
+    "probe_source_credit": 0,
+    "author_fixture": {
+      "revision": "2f2e977a5a1f17d04ba46273a2351269bf1d8937",
+      "conditions": 313,
+      "derived": 223,
+      "module_arguments": 508,
+      "compiler_seconds": 13.397088050842285,
+      "runtime_seconds": 23.522536277770996,
+      "compiler_cap_seconds": 120,
+      "runtime_cap_seconds": 180,
+      "passed": true,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-peer45-20261117/peer-state-v1/report.json",
+      "sha256": "b9a25d498fd414dbd86da785144168223143fb6d60170042b52f584c35802498",
+      "conditions": 494,
+      "derived": 394,
+      "module_arguments": 508,
+      "compiler_seconds": 13.796860457,
+      "runtime_seconds": 27.904584169,
+      "compiler_cap_seconds": 120,
+      "runtime_cap_seconds": 180,
+      "first_pass": true,
+      "true_lf": true,
+      "quiet": true,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "timing_precision": "Rounded independent checkpoint; exact timings remain in hashed report."
+    },
+    "independent_whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-peer45-20261117/whole-eight-clear.json",
+      "sha256": "82582f7d1e0802e2e1220bc216ffeeeaf4b6a5b01c04909ea14d558da6308795"
+    },
+    "bridges": [
+      "After source2 passed only signed A correction and cold B changed; runtime/original bytes remain identical, with no source/native repetition.",
+      "After corrected A passed only cold B changed, unimported/unwatched by A; no A repetition."
+    ],
+    "preserved_zero_credit": [
+      "Original author311/221: inherited positive retained-child poison expectation failed after compiler PASS/runtime exit1; source/fixture credit0. Correct three outcomes and add two distinguishing assertions only.",
+      "Cold independent B root/head/atom/NUL-tail pools corrected before FIRST compiler/runtime; old cold post remains preserved."
+    ],
+    "source_discriminator": "NegativeMAX savedindex1 byte9 differs from actual reboundcurrentkey2 byte2.",
+    "semantic_failures": []
+  },
+  "integration": {
+    "actual_revision": "b88fac2ff198985a1e692055160382472fd6203f",
+    "joined_revision": "b88fac2ff198985a1e692055160382472fd6203f",
+    "joined_tree": "b8e82a255636cbcd136bb3f2b776f245b6397766",
+    "main_parent": "bebd599c9c812a845ec6a8a347da789e6af9e1d2",
+    "composition_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main88-signed-int-concat-composition-v1/map.json",
+      "sha256": "0472091308f68577fad6ddb892081a033dd22bd8c8e3cc92d4a099b522922fa0"
+    },
+    "immutable_independent_actual_and_same": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-literal-signed-integer-concat-runtime-scalar-coalesce-base-initial-raw-leading-key-peer45-20261117/actual-same-clear.json",
+      "sha256": "33c08af7a17468afe670f90fb96fa9d6ffe36493c707cfc5b3cbbe0240355bc4"
+    },
+    "composition": "Complete source8 posts and source/MAIN inverse; unique Make/spec identities, complete existing helper parents/posts, exact new3 helpers and foreign NaN bytes preserved.",
+    "same_saved_canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main88-signed-int-concat-v1/report.json",
+      "sha256": "15872f294944a53ea00579372ba690c200c51ae57a1de984bafce3b4054a64a6",
+      "mode": "production_SL",
+      "modules": 509,
+      "argv": 512,
+      "watched": 513,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.792048722039908,
+      "exit": 0,
+      "timeout": false,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0
+    },
+    "metadata_fresh_executions": 0
+  },
+  "remaining": "UnaryPlus/nested signs, FLOAT/Boolean/null/string-coerced/name leaves, wider producers/ownership/lifetimes remain partial at this cut; -MIN promotion excluded. Exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 unchanged."
+}
