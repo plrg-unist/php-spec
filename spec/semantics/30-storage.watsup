@@ -649,6 +649,7 @@ syntax ptask = ENUM_IS_CALLABLE_EXIT_RESTORE penumqueryoutput int | ENUM_IS_CALL
   | NUMBER_COMPARE_RESULT pnumbercompare
   | AT porigin ptask | ORIGIN_RETURN porigin? | DISCARD | UNSET_ARRAY | STRING_UNSET_WARNING_RESULT porigin int | ASSIGN_PREP expression expression | ASSIGN_ARRAY pbase int bool | DIM_APPEND int
   | STRING_UNSET_BOOL_CV_WARNING_RESULT porigin int nat
+  | STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin int
   | REF_ARRAY_PREP expression int | REF_ARRAY_CAPTURE pbase int | REF_ARRAY pbase nat int | REF_ARRAY_CV pbase nat* int
   | ARRAY_NEXT nat phpType13* | ARRAY_KEY nat expression phpType13* | ARRAY_VALUE nat poperand? phpType13* int
   | ARRAY_REF_KEY nat expression phpType13* | ARRAY_REF_VALUE nat poperand? phpType13* int

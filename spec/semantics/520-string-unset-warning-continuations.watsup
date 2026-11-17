@@ -191,3 +191,65 @@ def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = S[
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
   -- if ~$string_unset_bool_cv_cell(S, n_key_name*, z_name, n)
+
+;; DOUBLE uses a silent cast of the fixed CV slot's union after the handler.
+;; It never dispatches on a changed type; the converted index is unused.
+dec $string_unset_float_cv_cell(pstate, ptbytes, int, nat) : bool
+def $string_unset_float_cv_cell(S, n_name*, z, n_cell) = true
+  -- if ~$environment_blocked(S, n_name*)
+  -- if $lookup(S.ENV, n_name*) = (n_cell)
+  -- if $(n_cell < |S.STORE|)
+  -- if ~(n_cell <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_cell) /\ ~$typed_cv_string_released_cell(S, n_cell) /\ ~$update_released_cell(S, n_cell)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $(n_bits < 18446744073709551616)
+  -- if ~$fparts_nan($float_decode(n_bits))
+  -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN (PFLOAT n_bits)]
+def $string_unset_float_cv_cell(S, ptbytes, z, n) = false -- otherwise
+
+dec $string_unset_float_cv_plan(pstate) : (porigin, int)?
+def $string_unset_float_cv_plan(S) = ((porigin, z))
+  -- if S.COMPLETION = NORMAL
+  -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
+  -- if S.TODO = UNSET_ARRAY :: ptask_tail*
+  -- if S.BASE = BASE_DIM (BASE_DIM (BASE_VALUE (VARIABLE n_base_name* z_base)) (VARIABLE n_key_name* z_name) z) (KNOWN (PINT i_final)) z_outer
+  -- if $long_range(i_final)
+  -- if S.ORIGIN = (porigin)
+  -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
+  -- if $lookup(S.ENV, n_key_name*) = (n_key)
+  -- if $string_unset_float_cv_cell(S, n_key_name*, z_name, n_key)
+  -- if ~$environment_blocked(S, n_base_name*)
+  -- if $lookup(S.ENV, n_base_name*) = (n_base)
+  -- if $(n_base < |S.STORE|)
+  -- if ~(n_base <- S.REFCELLS)
+  -- if ~$foreach_released_cell(S, n_base) /\ ~$typed_cv_string_released_cell(S, n_base) /\ ~$update_released_cell(S, n_base)
+  -- if S.STORE[n_base] = DEFINED (PSTRING_CARRIER pstringidentity n_bytes*)
+  -- if $string_carrier_valid(S, PSTRING_CARRIER pstringidentity n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
+  -- if $base_find(S, BASE_VALUE (VARIABLE n_base_name* z_base), z) = S[.LOCATION = ROOT n_base][.RESULT = KNOWN (PSTRING_CARRIER pstringidentity n_bytes*)]
+  -- if $hold_task_inputs(S) = S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $error_handler_eligible(S, 2)
+  -- if S.ERRORHANDLER.CALLBACK = (pvalue_callback)
+  -- if $type_bytes(pvalue_callback) = $ptascii("string")
+  -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
+def $string_unset_float_cv_plan(S) = eps -- otherwise
+
+def $string_unset_warning_pending(S) = true
+  -- if $string_unset_float_cv_plan(S) = ((porigin, z))
+
+rule PhpStep/string-unset-floating-cv-warning-start: S ~> $error_dispatch(S[.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], 2, $ptascii("String offset cast occurred"), z, DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z, STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z)
+  -- if $string_unset_float_cv_plan(S) = ((porigin, z))
+
+def $call_task_valid(S, STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z) = (S.ORIGIN = (porigin) /\ $string_unset_bool_cv_source(S, porigin, z) =/= eps)
+def $error_call_valid(S, perrorcall) = true
+  -- if perrorcall.RESUME = STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z
+  -- if $call_task_valid(S, perrorcall.RESUME)
+  -- if perrorcall.SITE = porigin /\ perrorcall.LINE = z /\ perrorcall.LEVEL = 2
+  -- if perrorcall.MESSAGE = $ptascii("String offset cast occurred")
+  -- if perrorcall.EVENT = DIAGNOSTIC "Warning" ($ptascii("String offset cast occurred")) z
+def $task_nodes(STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z) = eps
+
+rule PhpStep/string-unset-floating-cv-warning-result: S ~> $throw_scalar(S[.TODO = ptask_tail*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE], "Error", $ptascii("Cannot use string offset as an array"), z)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z) :: ptask_tail*
+  -- if $call_task_valid(S, STRING_UNSET_FLOAT_CV_WARNING_RESULT porigin z)
