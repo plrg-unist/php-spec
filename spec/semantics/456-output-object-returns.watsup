@@ -1414,13 +1414,12 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $ob_object_cast_chain_sign_kind(expression)
   -- if $pfshape(expression) = PFUNARY punary expression_child
   -- if punary = POSITIVE \/ punary = NEGATIVE
-  -- if z = $expression_line(expression_child)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
   -- if $ob_object_cast_chain_sign_number(pvalue_child)
   -- if porigin_child = PORIGIN n_child pcpath_child
   -- if pfunction.CODE.UNIT = n_child
-  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z_child, b_child))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_child)
   -- if S_signed = $unary_apply(S[.RESULT = KNOWN pvalue_child], punary, pvalue_child, z)
   -- if S_signed.RESULT = KNOWN pvalue
@@ -1429,13 +1428,11 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if S_signed = S[.RESULT = KNOWN pvalue]
   -- if (b_child /\ $compiled_read(S, porigin) = (pvalue)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(pvalue) = eps
-;; Both binary children share one source/compiler line. Differently lined
-;; recursive trees remain outside this bounded return certificate.
+;; Both children authenticate their own lines; the parent retains the terminal
+;; RHS compiler line, including through recursive multiline children.
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_result)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR
-  -- if z = $expression_line(expression_right)
-  -- if $expression_line(expression_left) = z
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (PINT i_left)
@@ -1444,7 +1441,7 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_res
   -- if porigin_left = PORIGIN n_child pcpath_left
   -- if porigin_right = PORIGIN n_child pcpath_right
   -- if pfunction.CODE.UNIT = n_child
-  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z, b_left))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, b_left))
   -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z, b_right))
   -- if b_fold = (b_left /\ b_right)
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_fold)
@@ -1455,13 +1452,12 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_res
   -- if (b_fold /\ $compiled_read(S, porigin) = (PINT i_result)) \/ (~b_fold /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(PINT i_result) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expression_child metadata) = (PINT i_result)
-  -- if z = $expression_line(expression_child)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (PINT i_child)
   -- if $long_range(i_child)
   -- if porigin_child = PORIGIN n_child pcpath_child
   -- if pfunction.CODE.UNIT = n_child
-  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z_child, b_child))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBitwiseNot expression_child metadata, z, b_child)
   -- if S_not = $bitnot_apply(S[.RESULT = KNOWN (PINT i_child)], PINT i_child, z)
   -- if S_not.RESULT = KNOWN (PINT i_result)
@@ -1470,13 +1466,12 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expressio
   -- if (b_child /\ $compiled_read(S, porigin) = (PINT i_result)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(PINT i_result) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
-  -- if z = $expression_line(expression_child)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
   -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_child)
   -- if porigin_child = PORIGIN n_child pcpath_child
   -- if pfunction.CODE.UNIT = n_child
-  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z_child, b_child))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
   -- if b_fold = (b_child /\ $type_bytes(pvalue_child) =/= [102,108,111,97,116])
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBooleanNot expression_child metadata, z, b_fold)
   -- if S_not = $boolean_result(S[.RESULT = KNOWN pvalue_child], true, z)
@@ -1486,11 +1481,13 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expressio
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $ob_object_cast_chain_kind(expression)
   -- if $pfshape(expression) = PFCAST pcast expression_child
-  -- if z = $expression_line(expression_child)
-  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, false)
-  -- if $compiled_read(S, porigin) = eps
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if porigin_child = PORIGIN n_child pcpath_child
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, false)
+  -- if $compiled_read(S, porigin) = eps
   -- if $ob_object_cast_chain_quiet(pcast, pvalue_child)
   -- if S_child = S[.RESULT = KNOWN pvalue_child]
   -- if S_cast = $cast_apply(S_child, pcast, pvalue_child, z)
