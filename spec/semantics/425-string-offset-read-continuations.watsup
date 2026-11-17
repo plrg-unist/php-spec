@@ -791,10 +791,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_right) = (PSTRING n_right*)
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
   -- if n_bytes* = n_left*
-;; COALESCE preserves an emitted string cast's nonnull immutable header.
+;; COALESCE preserves a certified result from an emitted left expression.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NExprCastString expression_child metadata_left) (NScalarString (BYTES text_right) metadata_right) metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left (NScalarString (BYTES text_right) metadata_right) metadata)
   -- if $compiled_read(S, porigin) = eps
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $compiled_read(S, porigin_left) = eps
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
   -- if n_right* = $base64(text_right)
