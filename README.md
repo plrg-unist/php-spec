@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Own public parentless short reference Get admits exact `Class|bool` and `bool|Class` raw/normalized orders with one quiet ordinary, fully qualified or namespace-relative class name. Both Boolean tags remain valid; existing weak scalar conversion and strict rejection preserve defining authority and owner bounds. Wider headers and lifetimes remain partial. [Review](coverage/semantics/class-bool-union-parentless-short-reference-get-hook-review.json).
+
 Folded literal-false shorthand defaults retain certified emitted scalar results, including quiet NaN and negative zero, before existing private reception. Wider conditions, owning results, producers and lifetimes remain partial. [Review](coverage/semantics/deferred-false-short-redirect-wrapper-default-reception-review.json).
 
 Ordinary NaN-CV inner unset keys share the source-only FLOAT Warning task while retaining reached PFLOAT identity and entry/source/owner guards. Wider keys, owners and lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-nan-cv-warning-review.json).

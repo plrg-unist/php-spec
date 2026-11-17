@@ -1,0 +1,279 @@
+{
+  "milestone": "COMP327",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Exactly ordered raw nominal Class|bool and bool|Class unions with one ordinary/FQ/relative class and raw Identifier bool; exact quiet full normalized order, both literal Boolean tags, existing weak scalar conversion and strict scalar rejection. Existing canonical defining source/class/property/context, by-reference/copy/detach and owner bounds remain. All older generic/scoped/class-null/class-false/class-true predicates are unchanged. No16/backend/runtime-consumer change or native fallback.",
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-ready.json",
+    "sha256": "8bbed6c3b470bdd3a794a516201d91f42125557a2a2678136a79c7aa256bfd67"
+  },
+  "actual_composition_peer": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp327/actual-composition-peer.json",
+    "sha256": "60ede2a78146b1ccb8b85a55452c5d22584e47adb016cbda31c101992d77caa0"
+  },
+  "complete_core": false,
+  "holds": "Exact standing holds, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bug_or_intentional_divergence": null,
+  "status": "BOUNDED_IMPLEMENTED_REVIEWED_VALIDATED_INTEGRATED",
+  "source_revision": "b4f2a1eecb51f5c365190c3d87b4bfb12e1bd605",
+  "source_manifest": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp327/source-ready-v2.json",
+    "sha256": "168c5c6fec1ffec58ffd1bce88ce30720d0593c693def0aec2265c9179c7c9c4"
+  },
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup:$hook_short_reference_class_bool_header",
+    "spec/semantics/382-backed-get-hooks.watsup:$pphook_body_compile",
+    "spec/semantics/382-backed-get-hooks.watsup:$property_hook_short_reference_header"
+  ],
+  "zend_authority": [
+    "Zend/zend_compile.c:zend_compile_typename",
+    "Zend/zend_execute.c:i_zend_verify_type_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_ref_assignable_zval",
+    "Zend/zend_execute.c:zend_verify_weak_scalar_type_hint"
+  ],
+  "validation": {
+    "native_originals_once": 6,
+    "normal_originals": 6,
+    "new_native_after_law": 0,
+    "saved_native_reuses": 6,
+    "prelaw_expected_unsupported_zero_credit": 6,
+    "mode": "fixture-SL",
+    "private_modules": 508,
+    "source_cuts": {
+      "author": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/weak-source-class-bool/report.json",
+        "sha256": "39da4bd4d81e8a106882424aa187ddd32d1bf58a44aff73f6cf201d85fa69a2b",
+        "head": "74c0de47698058391d69b346f689d1ee7eff589b",
+        "premises": 0,
+        "agreements": 3,
+        "elapsed_seconds": [
+          104.56030201911926,
+          108.37200117111206,
+          119.18453669548035
+        ],
+        "caps_seconds": [
+          140,
+          140,
+          140
+        ]
+      },
+      "independent": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/strict-source-class-bool/report.json",
+        "sha256": "71b1a2bfcf0e389a51672f4884dce95b50e83db232cb55aabc908edec7a928e6",
+        "head": "2cc8a972d266c622494c5ff878adc286b2d1c71b",
+        "premises": 0,
+        "agreements": 3,
+        "elapsed_seconds": [
+          94.82327842712402,
+          96.55132913589478,
+          106.53915762901306
+        ],
+        "caps_seconds": [
+          140,
+          140,
+          140
+        ]
+      }
+    },
+    "author_separate_fixture_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/author-fq-class-bool-state/report.json",
+        "sha256": "004154ea12669b3d1324ff2351843f19995ef03cb0268eca97c203585b81133e",
+        "head": "74c0de47698058391d69b346f689d1ee7eff589b",
+        "premises": 150,
+        "agreements": 0,
+        "elapsed_seconds": [
+          227.62758564949036
+        ],
+        "caps_seconds": [
+          360
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/author-bool-local-class-state/report.json",
+        "sha256": "b99927c442564809c92aed982952e8fbfa73abeba39de8c6cfde584e9c241588",
+        "head": "74c0de47698058391d69b346f689d1ee7eff589b",
+        "premises": 151,
+        "agreements": 0,
+        "elapsed_seconds": [
+          245.36489248275757
+        ],
+        "caps_seconds": [
+          360
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/author-imported-class-bool-state/report.json",
+        "sha256": "a9baa6be0dd9008d78fed28069584c796ddfdf53160814eb3ec3a757065376f1",
+        "head": "74c0de47698058391d69b346f689d1ee7eff589b",
+        "premises": 151,
+        "agreements": 0,
+        "elapsed_seconds": [
+          263.6654107570648
+        ],
+        "caps_seconds": [
+          360
+        ]
+      }
+    ],
+    "independent_separate_fixture_cuts": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-headers-v2/report.json",
+        "sha256": "f2684a09d0fcf7abfae6bf09463fe0c509374c3d2c1d7fb23b8f172ad2e3da93",
+        "head": "0a87c61b719ebc3bee7adbc7c1566d14d1c74c34",
+        "premises": 336,
+        "agreements": 0,
+        "elapsed_seconds": [
+          15.538051128387451
+        ],
+        "caps_seconds": [
+          60
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-state-strict-bool-fq-case-literal/report.json",
+        "sha256": "815f4f799c1f273523b8f37aa84cf0c732b60bfc555c10ce2bc0a27c9bdc5256",
+        "head": "0a87c61b719ebc3bee7adbc7c1566d14d1c74c34",
+        "premises": 160,
+        "agreements": 0,
+        "elapsed_seconds": [
+          189.78110456466675
+        ],
+        "caps_seconds": [
+          360
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-state-strict-relative-class-bool-literal/report.json",
+        "sha256": "23e5b256663e822ffaf2400cd8cfa907671d94238db6425aeb9da5e3828a9dab",
+        "head": "0a87c61b719ebc3bee7adbc7c1566d14d1c74c34",
+        "premises": 160,
+        "agreements": 0,
+        "elapsed_seconds": [
+          216.57329678535461
+        ],
+        "caps_seconds": [
+          360
+        ]
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-state-strict-bool-imported-alias-literal/report.json",
+        "sha256": "1073d5c8a6ba8cf2c59ac7dd67460f8fb818cc9e45eedc9c352908d6df8dd79f",
+        "head": "0a87c61b719ebc3bee7adbc7c1566d14d1c74c34",
+        "premises": 160,
+        "agreements": 0,
+        "elapsed_seconds": [
+          242.28967094421387
+        ],
+        "caps_seconds": [
+          360
+        ]
+      }
+    ],
+    "fixture_source_agreement_credit": 0,
+    "caps_seconds": {
+      "native": 15,
+      "source_outer": 140,
+      "source_inner": 120,
+      "source_steps": 100000,
+      "headers": 60,
+      "state": 360
+    }
+  },
+  "semantic_review": [
+    "Exactly two raw union arms, one quiet ordinary/FQ/relative nominal class and raw Identifier bool, retain both raw and normalized orders under full quiet PTOK normalization.",
+    "Both Boolean tags remain valid. Weak exact integer/float/string writes retain existing Boolean conversion; strict int1/float1.0/string1, NULL, arrays and wrong objects reject before mutation.",
+    "Existing singleton class proof and defining source/class/property/file/positive-line authority reject malformed, warningful, scope/builtin, broader and forged normalized forms. Older generic/scoped/class-null/class-false/class-true predicates remain unchanged.",
+    "Initial PBOOLfalse backing, literaltrue and false reset, genuine reference cells/property sources, two aliases, object identity, atomic failed writes, real detach, physical retirement and zero/one-step resumption are validated.",
+    "Only module382 helper and two existing OR admissions change semantics. Static types, backend and runtime consumers remain unchanged.",
+    "The sole two-line header-generator correction leaves all336 premise strings, seventeen other postimages and all semantic/native/source inputs unchanged. Only the affected header was rerun; all original successful cuts retain identities."
+  ],
+  "compatibility_bridge": {
+    "retained_semantic_revision": "74c0de47698058391d69b346f689d1ee7eff589b",
+    "corrected_source_revision": "b4f2a1eecb51f5c365190c3d87b4bfb12e1bd605",
+    "only_changed_path": "tests/semantics/class_bool_union_parentless_short_reference_get_hook_review_protocol.py",
+    "changed_lines": {
+      "removed": 2,
+      "added": 2
+    },
+    "scope": "Header fixture generator mainresult and expected stdout only. All other17 source postimages, all336 premises, native source bytes/argv, semantic modules, author source3 and150/151/151 state cuts retain original inputs and credit; no semantic/native/source replay."
+  },
+  "preserved_zero_credit_failures": {
+    "header_generator": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-headers/report.json",
+        "sha256": "3fa91f6b676847da7bc1519908a71ff15630ece5a8985024c41af609de6f495d",
+        "head": "2cc8a972d266c622494c5ff878adc286b2d1c71b",
+        "phase": "fixture elaboration before assertions",
+        "generated_premises": 336,
+        "assertions_evaluated": 0,
+        "source_agreement_credit": 0,
+        "reason": "Generator mainresult and stdout check incorrectly used bool instead of true; only those two lines changed.",
+        "resolved_by": "/home/user/workspace/php-spec-evidence-archive/comp327/independent-headers-v2/report.json",
+        "stable_reaped": true
+      }
+    ],
+    "copy_preparation": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main87-comp327-composition-v1/placement-first-error.txt",
+      "sha256": "6ac9c58fa9874a248234f69d8f21140839acc406731f1649389e14796a196ad8",
+      "phase": "copy before semantic run",
+      "reason": "New fixture directory absent; the three prepared postimages were retained, directory created, and the same18 completed.",
+      "semantic_runs_before_recovery": 0,
+      "source_agreement_credit": 0,
+      "resolved": true
+    }
+  },
+  "corrections_after_execution": 1,
+  "semantic_failures": 0,
+  "source_failures": 0,
+  "unresolved_failures": 0,
+  "timeouts": 0,
+  "incomplete": 0,
+  "unrun_required_checks": 0,
+  "composition": {
+    "actual_revision": "80c2caa844b45f2f07c373031c2f413a6cd4aa37",
+    "actual_tree": "9c83f181845da912ad3f1607936f76539b3383ee",
+    "joined_revision": "80c2caa844b45f2f07c373031c2f413a6cd4aa37",
+    "composition_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main87-comp327-composition-v1/map.json",
+      "sha256": "df58a161a79261fac852fdf14415a9a93b08e909406986af142410911603d116"
+    },
+    "source_file_count": 18,
+    "literal_postimages": 16,
+    "curated": {
+      "Makefile": {
+        "unique_addition_lines": 9,
+        "complete_source_parent_removal": true,
+        "complete_main_parent_removal": true,
+        "all_foreign_bytes_preserved": true
+      },
+      "docs/semantics/SOURCE-PROPERTIES.md": {
+        "unique_addition_lines": 10,
+        "complete_source_parent_removal": true,
+        "complete_main_parent_removal": true,
+        "all_foreign_bytes_preserved": true
+      }
+    },
+    "canonical_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main87-comp327-v1/report.json",
+      "sha256": "ba851c6e02158cd1105b8e9f74ad7a268938c479c97df734ce0aef821de30209",
+      "tested_revision": "80c2caa844b45f2f07c373031c2f413a6cd4aa37",
+      "mode": "production_SL",
+      "production_modules": 509,
+      "argv": 512,
+      "watched": 513,
+      "fixture_count": 1,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.38111656298861,
+      "exit": 0,
+      "passed": true,
+      "quiet": true,
+      "stable": true,
+      "reaped": true,
+      "full_input_fingerprints_equal": true,
+      "command_matches_pinned_git_module_list": true,
+      "module382_fingerprint_matches_tested_review": true,
+      "source_credit": 0
+    }
+  },
+  "remaining": "Broader headers, warningful names, wider owners/modifiers/signatures/lifetimes and complete core remain partial."
+}

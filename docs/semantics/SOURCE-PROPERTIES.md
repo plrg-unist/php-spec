@@ -2801,3 +2801,12 @@ bounds remain. Both Boolean literals are admitted; weak scalar writes retain
 the existing Boolean conversion, while strict writes reject those scalars.
 Broader headers, warningful names and wider owners/lifetimes remain partial.
 [Review](../../coverage/semantics/class-bool-union-parentless-short-reference-get-hook-review.json).
+
+Six originals agree using native observations once. Separate author150/151/151
+and independent336/160/160/160 fixture-SL508 cuts retain source0; prelaw
+Unsupported6 stays0. The header-generator elaboration failure and placement
+preparation failure retain0; only two generator lines changed, with the original
+successful source/state cuts preserved. Actual and joined `80c2caa8` and their
+sole production-SL509 load (16.381116563 s, source0) are independently clear
+through immutable peer tuple `60ede2a7`. Wider forms and all exact holds remain.
+[Independent review](../../coverage/semantics/class-bool-union-parentless-short-reference-get-hook-peer-review.json).
