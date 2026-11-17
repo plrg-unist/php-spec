@@ -1,0 +1,224 @@
+{
+  "scope": "Bounded static USER method-Closure quiet Get: finite quiet scalar NOT/CONCAT trees in class/method selector CONCAT, through CV coalesce, private coalesce assignment and literal/CV Empty.",
+  "status": "Implemented and independently reviewed, including actual MAIN composition and sole joined load. Entire family/core remain partial.",
+  "target": {
+    "version": "8.5.10",
+    "sapi": "cli",
+    "integer_bytes": 8,
+    "zts": false,
+    "extensions": [
+      "Core",
+      "date",
+      "pcre",
+      "ctype",
+      "hash",
+      "json",
+      "lexbor",
+      "mbstring",
+      "Zend OPcache",
+      "random",
+      "Reflection",
+      "uri",
+      "SPL",
+      "tokenizer",
+      "standard"
+    ]
+  },
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "implementation": {
+    "commit": "cc08d73f7c61ecb3dc53c2a7452cddf95098849b",
+    "tree": "01032813cf3cd9a38cf730f529b56acb8945848a",
+    "base": "090bdfcf23ab93f095a2ae33d43164d994b56204",
+    "paths": [
+      {
+        "path": "Makefile",
+        "blob": "f62d99ccd166829e3cd5adcd4dcec804db23d4dc",
+        "sha256": "023eb56e227046b2d5844ec2ac2fc79a3b2619a6df5ff76680f1fbda106af46f"
+      },
+      {
+        "path": "spec/semantics/407-magic-property-isset.watsup",
+        "blob": "1c68c872950d8afa2244c23e1a5517f80f536619",
+        "sha256": "ef79f01c50752349d2017873d4e3737e6648f34ccdff678950a7c876f30828be"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_cases.json",
+        "blob": "588e9867bc86eb7ac9ed2d3afa6d583d62106855",
+        "sha256": "80da19ff895ba054564f0146b470fd99ab9278e75f185c08557b46fa0f9db6c7"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_protocol.py",
+        "blob": "45525c456082e53128c8b08347635dab48876d56",
+        "sha256": "0d25cf3616a60788aa6c3180c636b6360dcf4625b206856b85d485803bfddb1d"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_review_cases.json",
+        "blob": "b1522765ece4268edad4c5bb5d880a81138d539e",
+        "sha256": "ad6c8226b063a512a6c4821b31cda28423a2784b847c124da96a29b455401ba7"
+      },
+      {
+        "path": "tests/semantics/magic_property_methodclosure_static_raw_recursive_not_concat_tree_quiet_get_review_protocol.py",
+        "blob": "73a46e1e6cbb3120049796eea00f2dc488051fb6",
+        "sha256": "9a895b48fbab4783ebdf5627eefcc24bffebf5696cc602242f91c046de14ec1c"
+      }
+    ],
+    "patch_sha256": "e0bb7482a98a7271098250a21dca9ad86b97cb990d53a8b11c8019ed43b655d5"
+  },
+  "source_manifest": {
+    "path": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/.tools/methodclosure-static-raw-recursive-not-concat-tree-quiet-get-ready/whole-packet-v1.json",
+    "sha256": "1b528ab07c54e2da584799ac8f2a9de29cc6258bd79bcb5a0f566c47239c6a9f"
+  },
+  "semantics": "Finite actual BooleanNot/CONCAT recursion over certified quiet STRING/signed64 INT/BoolNull and quiet fitting INT UnaryPlus leaves. Returned bytes equal echo(value) and actual value truth equals String truth of those bytes; NOT yields PBOOL echo, CONCAT yields actual STRING. Every node/full metadata/PCFIELD authenticated. Each newly handled NOT explicitly rejects NUL-containing child text; literal currentText fallback retains raw byte behavior, so no blanket helper-output NUL claim. Actual CONCAT selector root, exact rootPSTRING/no child pools, class normalization after full join/methodcasefold, newSome/priorTextNone site arms. FLOAT (including signedzero/NaN), CV/arithmetic/UnaryMinus/nonquiet/out-of-range+ and wider owners/holds remain excluded.",
+  "preparation": {
+    "native_once": 4,
+    "prelaw_expected_unsupported": 4,
+    "all_before_edit": true,
+    "author_prelaw_seconds": [
+      35.48993370612152,
+      43.30024468712509
+    ],
+    "peer_prelaw_seconds": [
+      123.043512132,
+      75.080207269
+    ],
+    "raw_reference": {
+      "path": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/.tools/methodclosure-static-raw-recursive-not-concat-tree-quiet-get-ready/whole-packet-v1.json",
+      "sha256": "1b528ab07c54e2da584799ac8f2a9de29cc6258bd79bcb5a0f566c47239c6a9f"
+    },
+    "source_credit": 0
+  },
+  "author": {
+    "mode": "Separate production/fixture SL507 cuts",
+    "source_count": 2,
+    "source_seconds": [
+      46.549228029092774,
+      55.37348149297759
+    ],
+    "fixtures": [
+      {
+        "selection": "fixture-own-v1",
+        "assertions": 222,
+        "seconds": 83.25765847391449,
+        "source_credit": 0
+      },
+      {
+        "selection": "fixture-inherited-v1",
+        "assertions": 333,
+        "seconds": 83.42895526997745,
+        "source_credit": 0
+      }
+    ],
+    "result": "All source/fixture cuts PASS stable/quiet/reaped; exact saved native originals reused once."
+  },
+  "review": {
+    "reviewer": "recover25_get_text_concat_review",
+    "status": "Independent WHOLE6 FULLCLEAR",
+    "whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-recursive-not-concat-tree-quiet-get/independent/whole-fullclear-v1.json",
+      "sha256": "f9eb5c666e0b761cffd0b3226204f606eda744a88eeb404f284d2200a93c182b"
+    },
+    "static": "Finite recursion and truth-of-echo invariant reviewed against the pinned engine. Exact node/full metadata/PCFIELD proofs, each-NOT-child non-NUL guard, literal prior fallback and disjoint site arms retain all prior owner/source/cache bounds. No blanket helper-output NUL claim.",
+    "source_count": 2,
+    "source_seconds": [
+      184.664634556,
+      138.354781205
+    ],
+    "fixtures": [
+      {
+        "assertions": 105,
+        "seconds": 159.083407155,
+        "source_credit": 0
+      },
+      {
+        "assertions": 102,
+        "seconds": 250.333775682,
+        "source_credit": 0
+      },
+      {
+        "assertions": 54,
+        "seconds": 132.410064362,
+        "source_credit": 0
+      }
+    ],
+    "result": "All focused source/fixture cuts PASS stable/quiet/reaped with no failures or timeouts."
+  },
+  "actual_main": {
+    "status": "Independent actual composition and SAME saved sole canonical CLEAR",
+    "reviewed_by": "recover25_get_text_concat_review",
+    "source_commit": "cc08d73f7c61ecb3dc53c2a7452cddf95098849b",
+    "commit": "b6520ec050cbf97a1bca284a704fd7563b07a828",
+    "tree": "7a7fbe90fb6ae543e133c028b2b917d95055777e",
+    "parent": "f0d29515dbd3e349066de43200e20d994db64f8a",
+    "files": 6,
+    "additions": 427,
+    "deletions": 0,
+    "composition": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main77-get-recursive-composition-v1/composition.json",
+      "sha256": "ad4bf329a706c624c1ab10f9104c55f179828e1571032bb936bd0b63add90822"
+    },
+    "postimages": "All five complete non-Make parents equal sourcebaseText090b and full postimages equal sourcecc08, including407EF79 and peerprotocol9a895. Make adds exactly four reviewed unique recipes and preserves every current line. Joined207/425/407 changes are disjoint; only Make shared.",
+    "batch": {
+      "commit": "b6520ec050cbf97a1bca284a704fd7563b07a828",
+      "tree": "7a7fbe90fb6ae543e133c028b2b917d95055777e",
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main77-ref104-string-binary-get-joined-composition-v1/batch.json",
+      "sha256": "1f23024efccc85692d4c410bb720c5dfc1c6045e868ef034389ac990798b0906",
+      "files": 27,
+      "changed_module_inputs": [
+        {
+          "path": "spec/semantics/207-error-handler-runtime.watsup",
+          "sha256": "11572a1bd5bcae58e41433a09ffc625d0b32c3627123189eedfa225e1b44deff"
+        },
+        {
+          "path": "spec/semantics/407-magic-property-isset.watsup",
+          "sha256": "ef79f01c50752349d2017873d4e3737e6648f34ccdff678950a7c876f30828be"
+        },
+        {
+          "path": "spec/semantics/425-string-offset-read-continuations.watsup",
+          "sha256": "12acc1a7647962a11c2cb84995ee1e1a379b3f2fcee5d881c58d4775e5f2d801"
+        }
+      ]
+    },
+    "canonical": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main77-ref104-string-binary-get-joined-v1/report.json",
+      "sha256": "1dd58813133f57d37efacb46f477e005277934c7a1c1a4fe2d516f0c16ceaff1",
+      "seconds": 16.682934400858358,
+      "source_credit": 0,
+      "runner_identity": "productionSL508/argv511/watch512",
+      "cap_seconds": 60,
+      "true_lf": true,
+      "input_hashes_equal": true,
+      "ordered_command_verified": true,
+      "changed_module_inputs_match_git": true,
+      "group_absent": 3220689,
+      "result": "PASS quiet/stable/reaped; SAME sole saved load accepted without execution rerun"
+    },
+    "source_credit": 0,
+    "provenance": "One actual/SAME acceptance on the unchanged saved load. Reviewer metadata adapter corrected the batch final_revision key and module-list syntax entry before completing validation; no new load or accepted source/native/fixture/WHOLE renewal. Author copies only this immutable accepted tuple."
+  },
+  "actual_main_record": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-recursive-not-concat-tree-quiet-get/independent/main77-composition-review-v1.json",
+    "sha256": "5108dcab955887f63cdb2205342f32414ae1bd8ac11739f62e11b8a7973e9503"
+  },
+  "partial": [
+    "At this recursive NOT/CONCAT cut: Boolean binary operators and wider producer expressions.",
+    "FLOAT including signed zero/NaN, CV/arithmetic/UnaryMinus and nonquiet/out-of-range UnaryPlus.",
+    "NUL-containing NOT inputs, wider owners/lifetimes and all exact held boundaries remain outside."
+  ],
+  "evidence": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-recursive-not-concat-tree-quiet-get",
+  "unrun": "Curated Makefile four registrations/controller unexecuted/source0. Fixture/synthetic assertions and prelaw Unsupported are not source agreements. Full core, fresh copied-path validation and Rocq/BOLA remain unfinished.",
+  "provenance": "Actual/SAME acceptance copied only from the immutable peer tuple; author did not read the canonical report."
+}
