@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-boolean-literal-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawBooleanLiteral285($p0 = (false == (+(-((float)(+(E_WARNING === E_ERROR)))))), $p1 = ((+(-((float)(+(E_WARNING === E_ERROR))))) != false), $p2 = (true == (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) != true), $p4 = (false < (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <= true), $p6 = (true > (INF + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((-INF + (+(-((float)(+(E_WARNING === E_ERROR)))))) >= false), $p8 = (false <=> (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p9 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) <=> true), $p10 = (true <=> (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p11 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) <=> false), $p12 = (false === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p13 = ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) !== false), $p14 = (true === ((int)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p15 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== false)) {\n    echo 'raw:', $p0 === true, \":\", $p1 === false, \":\", $p2 === true, \":\", $p3 === false, \":\", $p4 === true, \":\", $p5 === true, \":\", $p6 === false, \":\", $p7 === true, \":\", $p8 === -1, \":\", $p9 === -1, \":\", $p10 === 0, \":\", $p11 === 1, \":\", $p12 === true, \":\", $p13 === true, \":\", $p14 === false, \":\", $p15 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n    $p12 = 31;\n    $p13 = 32;\n    $p14 = 33;\n    $p15 = 34;\n}\nrawBooleanLiteral285();\nrawBooleanLiteral285();\n",
+    "purpose": "Bare true/false retain PBOOL as actual children of emitted equality, order, spaceship and strict identity in both orientations through cold/warm defaults; signed orders and quiet NaN compatibility remain distinct from numeric or integer tags.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "fc4456341f27a868b5fab6c7d9d195d83706704fa8d176782f30985982797333"
+  },
+  {
+    "id": "deferred-boolean-literal-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace BooleanLiteral285;\nuse const E_WARNING as Base285;\nuse const E_ERROR as One285;\nuse const NAN as Nan285;\nfunction warning285($errno, $message, $file, $line) {\n    global $x285;\n    echo 'warning:', $message, '|';\n    defaults285(2);\n    $x285 = 3.5;\n}\nfunction defaults285(int $first, int &$boolZero = (int)(false == ((int)(+(-((float)(+(Base285 === One285))))))), int &$nanLeft = (int)((Nan285 + (+(-((float)(+(Base285 === One285)))))) >= true), int &$nanSpace = (int)(true <=> (Nan285 + (+(-((float)(+(Base285 === One285))))))), int &$nanIdentity = (int)((Nan285 + (+(-((float)(+(Base285 === One285)))))) !== true), int $last = 7) {\n    echo 'body:', $first, ':', $boolZero, ':', $nanLeft, ':', $nanSpace, ':', $nanIdentity, ':', $last, '|';\n    $boolZero = 19;\n    $nanLeft = 20;\n    $nanSpace = 21;\n    $nanIdentity = 22;\n}\n\\set_error_handler('BooleanLiteral285\\\\warning285');\n$x285 = 1.5;\n$last285 = 8;\ndefaults285(last: $last285, first: $x285);\necho 'outer:x=', $x285, '|';\n",
+    "purpose": "Literal BOOL leaves in emitted comparisons feed INT-parent BYREF named defaults and private caches under imported ENV and registered diagnostic-handler reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:1:1:0:1:7|body:1:1:1:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "fb642ee1bd32c7718c0c4b9ef20f5c5e17dd533a130d67df84f1c5cdc7832a94"
+  }
+]
