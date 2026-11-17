@@ -1266,6 +1266,16 @@ independent396/34 retain separate cuts and original failures0. Truthy/NaN
 conditions, wider strings, owning results and wider contexts remain partial;
 quiet-shape/no-DIM, declaration, cache, recipient and owner bounds remain.
 
+[Literal-TRUE full-ternary defaults](../../coverage/semantics/deferred-true-full-ternary-redirect-wrapper-default-reception-review.json)
+carry selected FIELD1 scalar tags through an exact source/pool/redirect certificate.
+The selected value keeps its BOOLfalse, NULL, long or binary64 type; the condition
+must resolve to TRUE with a matching plain Boolean pool and no executable leaf.
+Existing binding pruning skips unresolved FIELD2 names, while every source
+occurrence remains authenticated. Two originals reuse native observations once;
+prelaw162, author244/206/62 and independent280/76/32/28 pass at separate cuts.
+Computed-TRUE and wider truthy predicates, owning results and wider contexts remain
+partial; declaration, quiet-shape/no-DIM, cache, recipient and owner bounds remain.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

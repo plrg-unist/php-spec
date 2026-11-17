@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Literal-TRUE full-ternary defaults retain the selected scalar tag while existing binding pruning skips unresolved names in the other arm. Exact source, Boolean pool and selected-child redirect remain required; computed truthy conditions, owning results and wider contexts stay partial. [Review](coverage/semantics/deferred-true-full-ternary-redirect-wrapper-default-reception-review.json).
+
 Recursive BooleanNot composes over bounded CONCAT-left-coalesce static USER selectors while preserving exact source and emitted-root authority. A shared syntax witness avoids forty impossible legacy alternatives; existing raw providers and folded cases retain their behavior. Wider forms and lifetimes remain partial. [Review](coverage/semantics/magic-property-methodclosure-static-raw-not-concat-left-coalesce-tree-quiet-get-review.json).
 
 Nested output-handler casts admit proper primitive children for twelve integer-result operators when the actual result fits signed64 and the whole state remains quiet and unchanged. Exact source, nonownership and two-cast guards remain; FLOAT or STRING results and wider lifetimes stay partial. [Review](coverage/semantics/output-final-selected-primitive-integer-cast-chain-return-modulo-error-review.json).
