@@ -1,0 +1,314 @@
+{
+  "version": 1,
+  "milestone": "COMP335",
+  "decision": "CLEAR",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless same-field short reference Get admits finite quiet flat unions with at least two nominal arms and at least one compatible builtin arm.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source": {
+    "commit": "d4204af061819544ebf5ec0d39803ea5d400e385",
+    "parent": "c1fea0e80ad560880881c950b9697fe3d45002a8",
+    "path": "spec/semantics/382-backed-get-hooks.watsup",
+    "blob": "64ded3e983473ea2e30d98d197b5a837c5428922",
+    "sha256": "c951571479e38f498e9ad20558c60cfb525a96a3b8a51adcbe221bf7ed0d3f35",
+    "change": "17 new helper lines plus the same predicate appended to two existing OR guards; sole source path.",
+    "old_module_restored_byte_for_byte_after_removing_new_helper_and_two_OR_tails": true,
+    "old_module_sha256": "a2d67610ea4bc29c213a81c3f5f267988e5cb601e672e5919fba851fbd90aa45",
+    "unchanged": [
+      "spec/semantics/95-type-values.watsup",
+      "spec/semantics/95-typed-calls.watsup",
+      "spec/semantics/138-property-references.watsup",
+      "all existing ownership/runtime rules"
+    ]
+  },
+  "source_bundle": {
+    "revision": "983597d99087fd186be953bc476a8fb9e67a7ad3",
+    "parent": "850ae38647efcf2e97196182a262b73fcae49360",
+    "paths": 18,
+    "record": "/home/user/workspace/php-spec-evidence-archive/comp335/source-ready.json",
+    "sha256": "cf5a1040273c82414b644074e25e73fd5f6cabb1eba97a67156ccd3300fdd2af"
+  },
+  "semantics": "A pure optional count pair consumes complete raw/normalized singleton lists in lockstep. The closed array/int/float/string/null/bool/false/true alphabet and whole quiet PTOK retain exact order, compatibility and resolved defining names. Existing source/body/CODE/implicit reference return, typed value, property-source and owner/lifetime guards remain.",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_typename_ex, zend_compile_property_hooks",
+    "vendor/php-src/Zend/zend_execute.c:zend_check_type_slow, zend_verify_ref_assignable_zval"
+  ],
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_observations_total_once": 6,
+    "new_reviewer_native_observations": 0,
+    "same_original_bytes_argv_profile_reused": true
+  },
+  "source_agreements": 6,
+  "validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/weak-source-mixed-nominal-union/report.json",
+      "sha256": "77f4f3a8278fd77658deb10a3298cebed32400ca574aedb7d9eeb1d4d7d56aeb",
+      "revision": "6191d305be38e99e4c017f018b9335f39a1abaec",
+      "passed": true,
+      "original_source_agreements": 3,
+      "native_observations": 0,
+      "saved_native_reuse": 3,
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "two-fq-int",
+        "two-relative-array-null",
+        "three-imported-float-string-false"
+      ],
+      "elapsed_seconds": [
+        65.51800322532654,
+        82.17463970184326,
+        88.7616457939148
+      ]
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/strict-source-mixed-nominal-union/report.json",
+      "sha256": "638c0ffca5fe2b8e92c1238dd12e0995294f860c897f69704af449261fc5063a",
+      "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+      "passed": true,
+      "original_source_agreements": 3,
+      "native_observations": 0,
+      "saved_native_reuse": 3,
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "two-fq-bool",
+        "three-relative-true-string",
+        "two-imported-float-array-null"
+      ],
+      "elapsed_seconds": [
+        58.545058488845825,
+        66.60870456695557,
+        84.1196756362915
+      ]
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/author-two-fq-int-state/report.json",
+      "sha256": "1471df1d3b09b97d238e19339de5914945e236b34b8ff3294506fd26079787a5",
+      "revision": "ae593209165198d0a2e6324f40d0c665fc8f1e0e",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 268,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 138.19755101203918
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/author-two-relative-array-null-state-corrected/report.json",
+      "sha256": "634364386552b6a526001be3a39555c35ec9a2604dd705f5c9084f20662779ac",
+      "revision": "4f9f707d5fe34cb8d4a1336911f80f7a60d38a27",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 285,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 205.17912578582764
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/author-three-imported-float-string-false-state/report.json",
+      "sha256": "3ad912ea887803a96577136d6ab6aa4ab8cc438727d2cc04be645ad5d8e32d71",
+      "revision": "4f9f707d5fe34cb8d4a1336911f80f7a60d38a27",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 317,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 246.78683519363403
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/review-headers/report.json",
+      "sha256": "c53aedc31f1afbcc37350663c43d0750b1aecde624e90bb5e0c4d05da73c6365",
+      "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 237,
+      "source_agreement_credit": 0,
+      "cap_seconds": 60,
+      "elapsed_seconds": 15.618993282318115
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/review-two-fq-bool-state/report.json",
+      "sha256": "df44eeaf1c4d0f12bf7d5449c444d8885aeea24990c019e643608b0031232903",
+      "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 267,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 137.89055967330933
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/review-three-relative-true-string-state/report.json",
+      "sha256": "3b00118f05b2859f7a49e96a9c6ee18d0c0666d764dc205f4cd386baff68aa29",
+      "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 293,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 176.5666308403015
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/review-two-imported-float-array-null-state/report.json",
+      "sha256": "f524bf0cb16cd6540f577bf4b06c2fb2a251b6d915ab94ba2de1553edb7bea2b",
+      "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 297,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 221.13469696044922
+    }
+  ],
+  "private_spec_manifest": {
+    "modules": 508,
+    "common_recorded_inputs": 509,
+    "canonical_json_sha256": "3e477d65006cae35ba48f08d0745f3f8abbdd5ce5a94888524776d9e717cc12a",
+    "modules_json_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "all_nine_accepted_report_maps_equal": true
+  },
+  "native_and_prelaw_records": [
+    {
+      "kind": "weak-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp335/weak-native-once/report.json",
+      "sha256": "e1fdede81abdd051dd69cf9be0b1eca6705cba2360e06abe9e64fa914fba3709",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp335/strict-native-once/report.json",
+      "sha256": "ca24e36756f8cddef2df31378df1bd036d6b75373405130e3f3332df4a59e2d1",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "weak-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp335/weak-prelaw/report.json",
+      "sha256": "13232137bef0fb176713ec5740e44b84b4a45108c92c2f8d4d39b785c4bcc72c",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp335/strict-prelaw/report.json",
+      "sha256": "6e6647755baa14ab65197688817d4e9ee559f515b00e6f47812b699a8982a5f6",
+      "source_agreement_credit": 0
+    }
+  ],
+  "independent_whole_source_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp335/independent-whole-source-clearance.json",
+    "sha256": "09615cb14de8177ca59b85f0f0c427ba16cb5d234372d2e9fd5e91ac408956f4",
+    "revision": "1fd369bad07d86c6745b2731a9e317e9fa0f44a7",
+    "decision": "CLEAR"
+  },
+  "carry_forward": "382 and all executable modules/runner/frontend/adapter/profile unchanged since weak source6191; 268 projection unchanged by the two array marker-premise corrections. Independent new scripts imported byte-for-byte, with no semantic replay.",
+  "actual_acceptance": {
+    "decision": "CLEAR",
+    "provided_by": "/root/recover33_compiler_mixed_review",
+    "actual_revision": "1be5e546c6acabcffe59149d9ce520f1e3599f41",
+    "same_revision": "1be5e546c6acabcffe59149d9ce520f1e3599f41",
+    "actual_tree": "d63d65a1b60b2a67ef5e98fec8c480286400a484",
+    "actual_parent": "d2222bc050a378b3add5a68d365c1143e869343f",
+    "source_382_blob": "64ded3e983473ea2e30d98d197b5a837c5428922",
+    "source_382_sha256": "c951571479e38f498e9ad20558c60cfb525a96a3b8a51adcbe221bf7ed0d3f35",
+    "actual_composition_checks": 1,
+    "own_paths": 18,
+    "Makefile_added_lines": 9,
+    "property_doc_added_lines": 8,
+    "exact_full_posts_and_current_parent_inverses": true,
+    "canonical_executions": 1,
+    "canonical_report_sha256": "10def6f1045379a58b8f975a1222da8d7a92b45c9f640abc299f6b7293dec5de",
+    "actual_map_sha256": "ec0c0ae6802e1feddc834b5e32f61b6343913a0da95f296395a92dd6828fb09e",
+    "mode": "production-SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "input_vectors_count": 513,
+    "input_vectors_equal": true,
+    "tested_revision": "1be5e546c6acabcffe59149d9ce520f1e3599f41",
+    "revision_after": "1be5e546c6acabcffe59149d9ce520f1e3599f41",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed_seconds": 16.030700812116265,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "reviewer_original_report_physical_reads": 1,
+    "reviewer_original_map_physical_reads": 1,
+    "subsequent_reads_used_parsed_cache": true,
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/comp335/reviewer-main101-originals-cache.json",
+    "author_actual_map_report_cache_reads": 0,
+    "semantic_or_native_or_fixture_or_canonical_replays": 0,
+    "reader_preparation": {
+      "kind": "KeyError from assumed nested process fields; corrected from already parsed top-level fields",
+      "executions": 0,
+      "original_report_or_map_rereads": 0,
+      "source_agreement_credit": 0
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "expected prelaw Unsupported6",
+      "reports": [
+        "/home/user/workspace/php-spec-evidence-archive/comp335/weak-prelaw/report.json",
+        "/home/user/workspace/php-spec-evidence-archive/comp335/strict-prelaw/report.json"
+      ]
+    },
+    {
+      "kind": "state285 daemon incomplete; no terminal/report",
+      "record": "/home/user/workspace/php-spec-evidence-archive/comp335/author-state-daemon-interruption.json"
+    },
+    {
+      "kind": "state285 original recovered nonpass; UNSET is not an assignment phase",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp335/author-two-relative-array-null-state-recovered/report.json"
+    },
+    {
+      "kind": "EOF formatting preparation failure before frontend/model execution",
+      "record": "/home/user/workspace/php-spec-evidence-archive/comp335/author-state-format-preparation-failure.json"
+    },
+    {
+      "kind": "fixture marker correction and zero-execution projection preparation assertion",
+      "record": "/home/user/workspace/php-spec-evidence-archive/comp335/array-unset-marker-correction.json"
+    },
+    {
+      "kind": "actual reader preparation KeyError; corrected from parsed cache",
+      "executions": 0,
+      "original_report_or_map_rereads": 0,
+      "source_agreement_credit": 0
+    }
+  ],
+  "failures": {
+    "source_or_native_semantic_failures": 0,
+    "author_fixture_nonpass": 1,
+    "author_daemon_incomplete": 1,
+    "reviewer_fixture_failures": 0,
+    "timeouts": 0,
+    "native_replays": 0
+  },
+  "holds": {
+    "paused": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned REQUEST-NUL source release",
+      "undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw comparison crash"
+    ],
+    "precision": "No blanket Stringable/callback/NUL hold.",
+    "reserve": "93807cdd6/255",
+    "inventory": "169 constructors/306 runtime obligations; closed0 constructors+1 runtime unchanged",
+    "withdrawn": "finite-PFLOAT a547 remains zero"
+  },
+  "remaining": "DNF/intersections/iterable and wider source/value/modifier/signature/owner/lifetime contexts remain partial. Complete core remains unfinished.",
+  "engine_bug_or_intentional_divergence": null
+}

@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+COMP335 mixed nominal/builtin Get originals, native-once observations and separate source/header/state cuts remain in `../php-spec-evidence-archive/comp335/`. `source-ready.json` and `independent-whole-source-clearance.json` bind the source bundle and preserved incomplete/nonpass/preparation zeros. The [review](../coverage/semantics/mixed-nominal-union-parentless-short-reference-get-hook-review.json) records fixed actual1be5e546c and the sole cached canonical acceptance; these archives are evidence, not build/runtime inputs.
+
 Quiet NULL-left allocated-RHS evidence remains under `../php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-{author56,peer48}-20261118/`; the [review](../coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json) binds exact source6, guard/protocol bridges, separate native/source/state cuts and immutable0b86358d. Original failures and preparation refusals retain zero credit. These archives are evidence rather than operational inputs.
 
 Nonempty postarray evidence remains in `../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/`; the [review](../coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json) binds source8, distinct cuts and fixed696426e8/solecf4a8e11.
