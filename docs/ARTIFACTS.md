@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet NULL-left allocated-RHS evidence remains under `../php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-{author56,peer48}-20261118/`; the [review](../coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json) binds exact source6, guard/protocol bridges, separate native/source/state cuts and immutable0b86358d. Original failures and preparation refusals retain zero credit. These archives are evidence rather than operational inputs.
+
 Nonempty postarray evidence remains in `../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/`; the [review](../coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json) binds source8, distinct cuts and fixed696426e8/solecf4a8e11.
 
 Parser-FLOAT handler CONCAT evidence remains in `../php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/`; the [review](../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json) preserves original failures, reviewed-fixed source8 and fixed82c8b045/sole896ba7fb.

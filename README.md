@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Quiet NULL-left coalesces preserve existing certified allocated string RHS headers and saved leading offsets through returning Warnings. Exact SOURCE, precision and unchanged full-state authority retain existing non-NUL REQUEST and ownership bounds; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json).
+
 Saved ordinary NULL/BOOL CVs retain bounded live nonempty arrays after nested-unset Warnings, preserving actual descendants, aliases and cleanup. Deeper/cyclic arrays, object fields and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).
 
 Parser-literal CONCAT trees admit canonical nonnegative finite raw FLOAT leaves alongside STRING/INT leaves in selected handler return casts. Exact source, precision, pure formatting and ownership guards remain; wider forms stay partial. [Review](coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json).

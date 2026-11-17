@@ -1,0 +1,259 @@
+{
+  "feature": "string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key",
+  "status": "implemented and independently reviewed; fixed source integration validated",
+  "scope": "Quiet ordinary COALESCE PNULL left selects an RHS covered by the existing allocated_value certificate, preserving the exact non-NUL REQUEST temporary and frozen raw CV leading key through returning Warnings. Full family/core remain partial.",
+  "implementation": {
+    "source_capture": "769b447c6578480a672686cd339c27196f60b2fa",
+    "runtime_source_comparison_revision": "964bf514dcfa35e71a60f6731773c2892adcf224",
+    "runtime_revision": "b2b88d36e805279c0bc11668dddb2cd593f37e04",
+    "author_driver_revision": "46970e989352aa40c2c47b9c332e91d907e8a80d",
+    "semantic_file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "change": "Separate20-line BASE arm: whole root pcwalk SOURCE, non-lvalue ordinary left, own emitted CODE/read/line, matching root/left/right precision, typed PNULL and existing RHS allocation on the same completion-normalized full state. All old runtime helpers remain byte-literal under the full inverse.",
+    "termination": "The new BASE arm invokes existing VALUE at the proper RHS child. A STRING VALUE may invoke BASE only at its own proper child. The checked AST is finite.",
+    "source_ready_revision": "3c37445e1f184230be4e82d8a88601920843cc9b",
+    "source_ready_tree": "f997906cb96519121ac833dbe4a57ba66510f1ff",
+    "source_parent": "d88a7778432a4e1e39a4c7a6a3a8b16d359d9828"
+  },
+  "source_provenance": {
+    "target": "PHP8.5.10 CLI NTS signed64",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "route": "zend_compile_coalesce emits COALESCE then RHS and QM_ASSIGN. ZEND_COALESCE PNULL falls through, ZEND_QM_ASSIGN moves the selected RHS TMP without a second string allocation. The existing CAST/CONCAT certificates replay exact pure spec operations on contiguous registry prefixes.",
+    "discriminator": "Integer10bcde direct reads1 at frozen0. Finite-10.5bcde reference reads dot at frozen3 while callback-rebound current4 would read5. Both retain REQUEST3/four registry rows.",
+    "boundary": "Ordinary VALUE must establish PNULL, preserving BP_VAR_IS lvalue exclusion. Full root SOURCE includes skipped NULL-producer descendants; skipped CODE/pool/precision remain undemanded. Actual RHS certificate retains numeric/live precision, prefix, exact header and non-NUL authority."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/native-baseline/report.json",
+      "sha256": "382b5b0be05061305aafea2251916a8b1b214d62a6c7a6b63dca0792bffb9c14",
+      "revision": "769b447c6578480a672686cd339c27196f60b2fa",
+      "source_credit": 0,
+      "new_native_executions": 2
+    },
+    "prelaw": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/baseline-v1/report.json",
+      "sha256": "8a74dce589145654832dc3063514cb6699bccbdd0ed9ca068b80e07e48f8ef86",
+      "revision": "769b447c6578480a672686cd339c27196f60b2fa",
+      "source_credit": 0,
+      "new_native_executions": 0
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/source-v1/report.json",
+      "sha256": "9a63991406a1a64ccf90e4d35f64bec7836fa952139f6fdd0257744076cee7db",
+      "revision": "964bf514dcfa35e71a60f6731773c2892adcf224",
+      "source_credit": 2,
+      "new_native_executions": 0
+    },
+    "source_bridge": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/source-to-fixtures-bridge.json",
+      "sha256": "70c1030ec9ae5266b1db915edede01e9cf4c72ddb11c8ea147fa1c0b336c9bae"
+    },
+    "prelaw_actual_facts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/prelaw-facts-v1/report.json",
+      "sha256": "3bbb8d4afd35ac09777f13515c00e3dbc559c22696b50bd6585f900850399437",
+      "revision": "769b447c6578480a672686cd339c27196f60b2fa",
+      "conditions": 74,
+      "derived": 0,
+      "passed": true,
+      "source_credit": 0,
+      "compiler": {
+        "exit": 0,
+        "seconds": 13.575625896453857,
+        "cap_seconds": 120,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "exit": 0,
+        "seconds": 20.333062887191772,
+        "cap_seconds": 180,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "stable": true,
+      "module_arguments": 508
+    },
+    "author": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/author-current-v2/report.json",
+        "sha256": "86b23a6c3b1a4a0e0413cb234c3fd23f76849623b21c8fe6070239453368fa7b",
+        "revision": "46970e989352aa40c2c47b9c332e91d907e8a80d",
+        "conditions": 391,
+        "derived": 194,
+        "passed": true,
+        "source_credit": 0,
+        "compiler": {
+          "exit": 0,
+          "seconds": 13.514526128768921,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "seconds": 27.626574516296387,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "stable": true,
+        "module_arguments": 508
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/author-reference-v1/report.json",
+        "sha256": "65d6ecf58e9a4515184801f351e15ded31ca41924951f6b0202125603e72d36a",
+        "revision": "46970e989352aa40c2c47b9c332e91d907e8a80d",
+        "conditions": 441,
+        "derived": 218,
+        "passed": true,
+        "source_credit": 0,
+        "compiler": {
+          "exit": 0,
+          "seconds": 13.571808576583862,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "seconds": 32.00042510032654,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "stable": true,
+        "module_arguments": 508
+      }
+    ],
+    "preserved_failures": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-author56-20261118/author-current-v1/report.json",
+        "sha256": "74a58a77f55528ecdaa8e2ef1236c167a60caca074dab08a1f1760f2f81da5b3",
+        "revision": "b2b88d36e805279c0bc11668dddb2cd593f37e04",
+        "conditions": 385,
+        "derived": 188,
+        "passed": false,
+        "source_credit": 0,
+        "compiler": {
+          "exit": 0,
+          "seconds": 13.640594959259033,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 1,
+          "seconds": 27.316712379455566,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "stable": true,
+        "module_arguments": 508
+      }
+    ],
+    "failure_disposition": "author-current-v1 385/188 at b2b fails only fabricated compiled NULL beneath ternary SOURCE; corrected fixture uses raw ConstFetch source. No law/source/native change or replay. Planned then-unrun reference435 has no credit; first actually executed reference441 passes.",
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-peer48-20261118/state-v2/report.json",
+      "sha256": "44895b5a0d8f13423fcb93bdf58d0ef23eb74107d51dc485a3252b57412cafe1",
+      "conditions": 583,
+      "derived_conditions": 169,
+      "compiler": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 13.80859375,
+        "cap_seconds": 120,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 40.02153515815735,
+        "cap_seconds": 180,
+        "interruption": null,
+        "group_after": []
+      },
+      "stable": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "literal_null_control": "Actual checked original-derived program compiled and executed; no native execution.",
+      "empty_string_control": "Coherent SOURCE/pool substitution yields falsey interned empty STRING; RHS remains allocated but BASE refuses exact nonnull selection.",
+      "revision": "a79e1c08e07b33915fbd4d1681cc9fe7bceafcd3"
+    },
+    "whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-peer48-20261118/whole6-review.json",
+      "sha256": "89a2fab9f57a59a942e40cd7757e0f7792f03d0ee26e39067e55d03f9f93d123",
+      "source_files": 6,
+      "runtime_full_parent_inverse": true,
+      "make_full_parent_inverse": true,
+      "foreign_parent_bytes_preserved": true
+    },
+    "actual": {
+      "review_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-peer48-20261118/main101-immutable-clear.json",
+      "review_sha256": "0b86358d7b33227b94865fbf5e397ae279116e56c2b7438bc06115013f062482",
+      "fixed_actual": "30d8487b9492728626fb4368f520bd01fcafc795",
+      "fixed_tree": "4ef43a18cc7fcf46f30e25eeff3d5f193b58b2b2",
+      "actual_map_sha256": "002be783b519d9a4207b7c3e59f10fd3bca1ce9f6824f8c879ed025e7a68807e",
+      "canonical_report_sha256": "82d7a68e58a637e4416690c3c707018a2b7e818e2b9623a4aa262c5cb4eb465b",
+      "canonical": {
+        "argv_count": 512,
+        "before_after_watched": 513,
+        "cap_seconds": 60,
+        "elapsed": 16.089429325889796,
+        "executions": 1,
+        "fixture_count": 1,
+        "manifest_modules": 509,
+        "pass": true,
+        "source_credit": 0
+      },
+      "physical_original_reads": {
+        "map": 1,
+        "report": 1
+      },
+      "author_raw_actual_canonical_map_reads": 0
+    },
+    "preserved_independent_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-peer48-20261118/state-v1/report.json",
+      "sha256": "0af5e423567dcf8b1dd6608bbe6761f4c91b5afa0f1560de02da6b154c1df34f",
+      "conditions": 583,
+      "derived_conditions": 169,
+      "source_credit": 0,
+      "reason": "Review expected KEYREF=false to invalidate frozen leading offset. Helper intentionally ignores that flag after index capture; one expectation corrected to saved3. Law/source/native unchanged."
+    },
+    "preparation_failures": [
+      {
+        "count": 1,
+        "source_credit": 0,
+        "semantic_executions": 0,
+        "reason": "WHOLE predicate omitted the hyphenated CLI flag spelling; corrected before artifacts were written."
+      },
+      {
+        "count": 2,
+        "scope": "reviewer fixed-actual checker",
+        "source_credit": 0,
+        "semantic_executions": 0,
+        "reason": "Two cache-only checker shape/key corrections; original report/map reads remain one each."
+      },
+      {
+        "count": 1,
+        "scope": "MAIN Make insertion grouping preflight",
+        "source_credit": 0,
+        "semantic_executions": 0,
+        "reason": "Two separate one-line Make insertions were initially grouped as one block; corrected before MAIN source writes or runtime."
+      }
+    ],
+    "protocol_compatibility": "The final independent-driver transfer adds only peer-only literal-null source creation and derived-source labeling. Author469 used peer=false, so both accepted author fixture derivations retain identical runtime/renderer/source inputs without replay."
+  },
+  "invariants": "Owned-NUL source release; OP12 inc/dec dimension Warnings; Source47 low-precision DEFINE-name NaN; undefined byref LIST key; COMP88 Stringable supplied-throw; V110/GC35/I106/COMP123 and all paused lanes. reserve93807cdd6/255; inventory169/306closed0constructors+1runtime unchanged.",
+  "remaining": "Effectful/lvalue NULL lefts, RHS producers outside the existing allocated VALUE certificate, selected NUL, broader precision histories, owners and lifetimes remain partial.",
+  "family_status": "partial; complete PHP core remains unfinished",
+  "metadata_projection": "One shared README/PROGRESS/inventory projection; immutable fixed actual above, with no later HEAD refresh or semantic rerun."
+}
