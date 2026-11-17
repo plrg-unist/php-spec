@@ -17,9 +17,9 @@ The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
 Recent reviewed extensions cover nullable iterable producer returns, ordered short
-reference Get unions, raw integer BooleanNot method selectors, immutable string
-bases, NaN coalesce operands in named `instanceof`, signed handler cast returns
-and strict-identity defaults. The [current checkpoint](PROGRESS.md) separates
+reference Get unions, raw String and Integer BooleanNot method selectors, immutable
+NULL-coalesce string bases, NaN operands in named `instanceof`, signed handler
+cast returns and Boolean strict-identity defaults. The [current checkpoint](PROGRESS.md) separates
 source agreements, fixture checks and combined production loads; complete core
 remains unfinished.
 The pinned startup environment supplies exact `PHP_FLOAT_DIG`, `PHP_FLOAT_EPSILON`,

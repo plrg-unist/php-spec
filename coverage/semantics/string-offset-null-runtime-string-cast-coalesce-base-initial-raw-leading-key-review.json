@@ -1,0 +1,83 @@
+{
+  "family": "string-offset-null-runtime-string-cast-coalesce-base-initial-raw-leading-key",
+  "status": "accepted bounded semantics; wider forms and complete core remain partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure authored watsup; production SL",
+  "scope": "Literal NULL selects an emitted string cast's exact INTERNED fallback carrier, preserving frozen initial raw CV keys through returning Warnings.",
+  "invariants": [
+    "The root is exact coalesce syntax with a simple-name case-insensitive NULL left and an emitted CASTSTRING right. Root read-eps and the compiled PNULL left are required.",
+    "The existing runtime VALUE certificate runs under the same NORMAL probe and returns the exact INTERNED carrier; own and child source, CODE/read, captured precision and quiet full-state conversion guards remain unchanged.",
+    "No helper, compiler, old route, ownership or cleanup rule is widened. Ordinary key replacement, initial-reference rebinding and budget rejoining retain their existing rules."
+  ],
+  "provenance": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_coalesce",
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_cast",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_COALESCE and ZEND_QM_ASSIGN"
+  ],
+  "source": {
+    "head": "30da686bcdc80786f77954215553834fd8469b1e",
+    "tree": "9f6297b0c09ba9f958670f36b5f9de3b73e50d30",
+    "base": "5098ff93d",
+    "paths": 6,
+    "added": 281,
+    "removed": 2,
+    "patch_sha256": "83176828e27a8d6b94b3e3ed556f6778304f7a3e40aa74218f22b0699cbb8a65",
+    "scope": "The exact six source/test paths in source-six-manifest.json; earlier coalesce and empty-CONCAT metadata proposals remain separate.",
+    "tests": "tests/semantics/string_offset_null_runtime_string_cast_coalesce_base_initial_raw_leading_key_cases.py",
+    "execution_evidence": "Native/source/prelaw/author/independent cuts retain separate identities. Metadata and MAIN composition do not renew execution credit."
+  },
+  "actual_main": {
+    "head": "a71c5b7ea6e662211240cfd538027ac5993019c4",
+    "tree": "e54d1df9131d7bc407b5d5b1c886fc7de0409323",
+    "canonical_head": "cf2631241493883036780826a6d8c38bcc8544a8",
+    "canonical_tree": "7a2a175d21d12c64843a4e6ad253b52ec237775a",
+    "composition": "Exact six-path packet, +281/-2 versus 7518d3ff9. The complete prior module425 is preserved byte-for-byte except for the accepted nine-line clause; helpers/compiler/owners are unchanged. The combined image preserves the five non-Make files and both Make targets alongside unrelated ENUM275.",
+    "same_report": "resumed-main-20261112/main69-null-string-fallback-boolean-identity-joined-v1/report.json",
+    "same_report_sha256": "129317cad2d4190ac591c7331712a53fd6ee9b91de72b382f25474230157fdd8",
+    "load_seconds": 16.481702747987583,
+    "modules": 508,
+    "argv": 511,
+    "watched": 512,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "result": "PASS exit0/trueLF/quiet/stable/reaped; source composition and the sole saved SAME report independently CLEAR by reviewer32 with one actual review/report read and no execution renewal."
+  },
+  "reviewer": "/root/recover32_dynamic_empty_concat_review",
+  "raw_archive": "/home/user/workspace/php-spec-evidence-archive/string-offset-null-runtime-string-cast-coalesce-base-initial-raw-leading-key-author35-20261117",
+  "validation": {
+    "native_once_prelaw": {
+      "report": "baseline/report.json",
+      "sha256": "5185ec8d79f419762202781f5389475edc1502275d2d9a541b038e3dd67bc4f4",
+      "native": 2,
+      "unsupported": 2,
+      "source_credit": 0
+    },
+    "genuine_reached_prelaw": {
+      "report": "prelaw-v1/report.json",
+      "sha256": "5c364d66d1d2776dc191145edcdcffb9ebe2bb97a5aa85634c5fd462a332b3c5",
+      "conditions": 34,
+      "source_credit": 0
+    },
+    "saved_native_source": {
+      "report": "source-v1/report.json",
+      "sha256": "d589fbd8e0167132d53ae3b083630fd55c17db57c57ebb55b610454c5f8a3e4d",
+      "agreements": 2,
+      "native_reexecutions": 0
+    },
+    "author_fixture": {
+      "report": "author-state-v1/report.json",
+      "sha256": "439ae53558cd25fde4f45934d46c5d79061aa929baedae9e84282dc7d3767b19",
+      "conditions": 239,
+      "derived": 149,
+      "source_credit": 0
+    },
+    "independent_fixture": {
+      "archive": "string-offset-null-runtime-string-cast-coalesce-base-initial-raw-leading-key-peer32-20261117",
+      "report": "peer-state-v1/report.json",
+      "sha256": "845d0be6b4d5c8527fd79208c9672b9e8b6555bdb1949be6b73d9ae8f336155e",
+      "conditions": 362,
+      "derived": 262,
+      "source_credit": 0
+    }
+  },
+  "remaining": "Wider fallback producers/carriers, owned-NUL release, broader contexts, ownership and lifetimes remain partial. Every exact held boundary remains unchanged; no full-core obligation closes."
+}
