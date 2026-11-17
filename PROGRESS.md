@@ -8,6 +8,17 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Required ordinary-CV producer formals admit canonical bare `stdClass` when the
+declaration has no namespace or class imports. Ordinary BYREF rebinding stays
+unconstrained after reception, and returned objects retain identity across frame
+retirement and private Notice cells. Three new Notice originals and one separate
+scalar reception control agree using four native originals once. Author 396 and
+peer 164 fixtures retain distinct private cuts, the unchanged-source bridge and
+original expectation failures. Actual `387030b02` SL509 loading passes separately
+in 16.839470754 s with zero source credit. Bare nullable/union formals, wider
+contexts/lifetimes and all holds remain partial; reserve `93807cdd6`/255 and
+inventory 169/306/closed 0+1 are unchanged. [Review](coverage/semantics/global-plain-stdclass-formal-producer-reference-notice-review.json).
+
 Quiet pooled nonzero signed64 PINT full-ternary conditions retain exact selected FIELD1 scalar tags and skipped FIELD2 names through shared source/pool/absent-leaf/unique-proper-redirect authority. Native2 once/source2, prelaw483, author555+old80 and independent480+old80 retain distinct first-pass cuts; baseline Unsupported1 stays0. Actual=SAMEb47f2dc70 productionSL50916.286086295s/source0 is independently clear through one cached saved-report read and immutable tupleedea48de. Unrun author preparation and corrected reader-assumption checks retain0. Other truthy domains, owning values and wider contexts remain partial; held207, exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 stay unchanged. [Review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Direct raw NScalarInt-to-STRING and optional literal CONCAT bases reuse the bounded allocation certificate, preserving exact non-NUL REQUEST identities and genuine KNOWN temporary ownership through returning leading-key Warnings. Native2 once/source2savedreuse, author186/86-derived plus216/104-derived and independent314/214-derived SL508 retain separate first-pass cuts. WHOLE12 and actual=joined9a1f4608/soleed0912c5 productionSL50916.888294965960s/source0 are independently clear through immutable747c7e28 with one saved-report read. Baseline Unsupported2 and observation-only probe stay0, failures/timeouts0. Wider producers/contexts/lifetimes, owned-NUL source-release and exact holds/reserve93807cdd6/255/inventory169/306/closed0+1 remain partial/unchanged. [Review](coverage/semantics/string-offset-runtime-direct-allocated-string-base-initial-raw-leading-key-review.json).

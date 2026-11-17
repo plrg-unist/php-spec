@@ -1149,6 +1149,17 @@ The [ordered plain-union review](../../coverage/semantics/global-plain-ordered-s
 records scalar priority, object identity, runtime-array COW and private Notice cells.
 Wider class names, declaration contexts, payloads and lifetimes remain partial.
 
+Required ordinary-CV producer formals now admit canonical bare `stdClass` types
+when the declaration has no namespace or class imports. A pure raw Param view
+changes only the authenticated type tag and preserves every other field and
+metadata. It requires nonempty actuals and a changed tag before delegating to the
+existing header proof. Reception, return verification, frame retirement and private
+Notice-cell ownership retain their existing rules. The
+[bare-formal review](../../coverage/semantics/global-plain-stdclass-formal-producer-reference-notice-review.json)
+keeps fresh BYVAL/BYREF singleton and multiple-CV originals separate from the scalar
+rejection control and old pure expectation promotions, with no historical reruns.
+Bare nullable/union formals, other names/contexts and wider owners/lifetimes remain partial.
+
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
 order, unique members and at most one Boolean kind remain required. Exact tags
