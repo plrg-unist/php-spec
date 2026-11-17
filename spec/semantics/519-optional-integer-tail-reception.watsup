@@ -1293,11 +1293,11 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue_right)
   -- if $power_warning_number(pvalue_right) = (pnumber_right)
   -- if $comparison_value(pbin, $num_compare(pnumber_right, pnumber_left)) = PBOOL b
-def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [EQUAL, NOTEQUAL]
+  -- if pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, SPACESHIP]
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
   -- if $code_at(S.CODE, n) = (pcode)
@@ -1306,12 +1306,12 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b_left)
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
-  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = PBOOL b
-def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = pvalue
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [EQUAL, NOTEQUAL]
+  -- if pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, SPACESHIP]
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
   -- if $code_at(S.CODE, n) = (pcode)
@@ -1322,12 +1322,12 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue_right)
   -- if $power_warning_number(pvalue_right) = (pnumber_right)
   -- if $number_bool(pnumber_right) = (b_right, b_nan)
-  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = PBOOL b
-def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = pvalue
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin <- [EQUAL, NOTEQUAL]
+  -- if pbin <- [EQUAL, NOTEQUAL, LESS, LESSEQUAL, SPACESHIP]
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
   -- if $code_at(S.CODE, n) = (pcode)
@@ -1338,7 +1338,53 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBO
   -- if $power_warning_number(pvalue_left) = (pnumber_left)
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
   -- if $number_bool(pnumber_left) = (b_left, b_nan)
-  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = PBOOL b
+  -- if $comparison_value(pbin, $bool_order(b_left, b_right)) = pvalue
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [GREATER, GREATEREQUAL]
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b_left)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
+  -- if $comparison_value(pbin, $bool_order(b_right, b_left)) = PBOOL b
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [GREATER, GREATEREQUAL]
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PBOOL b_left)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue_right)
+  -- if $power_warning_number(pvalue_right) = (pnumber_right)
+  -- if $number_bool(pnumber_right) = (b_right, b_nan)
+  -- if $comparison_value(pbin, $bool_order(b_right, b_left)) = PBOOL b
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PBOOL b)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [GREATER, GREATEREQUAL]
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue_left)
+  -- if $power_warning_number(pvalue_left) = (pnumber_left)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (PBOOL b_right)
+  -- if $number_bool(pnumber_left) = (b_left, b_nan)
+  -- if $comparison_value(pbin, $bool_order(b_right, b_left)) = PBOOL b
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = eps -- otherwise
 
 dec $lossy_optional_integer_deferred(pstate, pfunction, nat) : bool

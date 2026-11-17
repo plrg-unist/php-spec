@@ -126,8 +126,8 @@ for index, (_, _, left, right) in enumerate(unsupported_pairs):
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 0])) = ({left})',
         f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,PORIGIN n_unit (pcpath_{index} ++ [PCFIELD 1])) = ({right})',
         f'$pfcast_nan(PFLOAT n_nan_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = eps',
-        f'~$lossy_optional_integer_deferred(S,pfunction,{index})',
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = (PINT {"$(-1)" if index == 0 else "1"})',
+        f'$lossy_optional_integer_deferred(S,pfunction,{index})',
     ]
 
 CASES = {
