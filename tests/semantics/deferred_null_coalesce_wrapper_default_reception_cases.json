@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-coalesce-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullCoalesce293($p0 = (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) ?? ((int)(+((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p1 = ((((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL) ?? (!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))), $p2 = (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) ?? ((float)(+(E_WARNING === E_ERROR)))), $p3 = ((((bool)(-((float)(+(E_WARNING === E_ERROR))))) ? true : NULL) ?? (+(-((float)(+(E_WARNING === E_ERROR)))))), $p4 = (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) ?? (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p5 = ((((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL) ?? NULL), $p6 = (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) ?? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? true : false)), $p7 = ((((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL) ?? ((int)(!((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))) {\n    echo 'raw:', $p0 === 0, \":\", $p1 === true, \":\", $p2 === 0.0, \":\", $p3 === 0.0, \":\", $p4 !== $p4, \":\", $p5 === NULL, \":\", $p6 === true, \":\", $p7 === 1, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawNullCoalesce293();\nrawNullCoalesce293();\n",
+    "purpose": "Emitted NULL-left coalesce retains the demanded actual RHS NULL/BOOL/INT/FLOAT, including positive FLOAT zero and quiet NaN, before cold/warm default-cache reuse.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "6735dd9b7db87ff8c93c52347e728391db7d0889c14d2ed208d4ec3355d8a128"
+  },
+  {
+    "id": "deferred-null-coalesce-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullCoalesce293;\nuse const E_WARNING as Base293;\nuse const E_ERROR as One293;\nfunction warning293($errno, $message, $file, $line) {\n    global $x293;\n    echo 'warning:', $message, '|';\n    defaults293(2);\n    $x293 = 3.5;\n}\nfunction defaults293(int $first, int &$nullBool = (int)(((!((bool)(+(-((float)(+(Base293 === One293))))))) ? NULL : false) ?? ((bool)(+(-((float)(+(Base293 === One293))))))), int &$nullInt = (int)((((bool)(+(-((float)(+(Base293 === One293)))))) ? true : NULL) ?? ((int)(!((bool)(+(-((float)(+(Base293 === One293))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $nullBool, ':', $nullInt, ':', $last, '|';\n    $nullBool = 19;\n    $nullInt = 20;\n}\n\\set_error_handler('NullCoalesce293\\\\warning293');\n$x293 = 1.5;\n$last293 = 8;\ndefaults293(last: $last293, first: $x293);\necho 'outer:x=', $x293, '|';\n",
+    "purpose": "Certified emitted NULL-left coalesce demands its actual BOOL or INT RHS before INT-parent private BYREF reception and named precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:7|body:1:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "e45a0962828adc974d5e06827a7342373950c29e81ca473c9ccd1b4b6a2824db"
+  }
+]

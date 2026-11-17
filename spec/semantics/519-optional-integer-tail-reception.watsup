@@ -1111,6 +1111,18 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pva
   -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (pvalue)
   -- if pvalue =/= PNULL
+def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (pvalue)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0])) = (PNULL)
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 1])) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
 def $lossy_optional_integer_deferred_value_at(S, plenv, PORIGIN n pcpath) = (PINT $num_compare(NINT i_left, NINT i_right))
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpSpaceship expression_left expression_right metadata)
