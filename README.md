@@ -18,7 +18,7 @@ remains later research.
 
 Own public parentless short reference Get admits one quiet ordinary, fully qualified or namespace-relative class plus two to six compatible builtin union arms in exact source order. Whole quiet normalization, defining authority, scalar rank, aliases and array COW retain existing guards. Multiple classes, intersections and wider owners/lifetimes remain partial. [Review](coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
 
-Completed required ordinary-CV producers admit canonical bare `?stdClass` formals in global declarations without class imports. Exact class/null order and raw metadata retain ordinary object/NULL reception, unconstrained BYREF rebinding, return verification and private Notice-cell identity. Explicit bare union formals, other names/contexts and wider owners/lifetimes remain partial. [Review](coverage/semantics/global-plain-nullable-stdclass-formal-producer-reference-notice-review.json).
+Completed required ordinary-CV producers admit canonical bare `stdClass`, `?stdClass`, and flat ordered bare-`stdClass` union formals in global declarations without class imports. Exact bytes/order/metadata and the existing two-through-eight-member FQN folds retain reception with caller strictness, ordinary BYREF rebinding, return verification, frame retirement and private Notice-cell identity. Other names/contexts and wider owners/lifetimes remain partial. [Review](coverage/semantics/global-plain-ordered-stdclass-formal-producer-reference-notice-review.json).
 
 Completed ordinary-CV producers admit canonical bare `stdClass` formals in global
 declarations without class imports. Exact raw/normalized bytes, ordinary BYREF

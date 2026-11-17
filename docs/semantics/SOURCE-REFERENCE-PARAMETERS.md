@@ -1158,7 +1158,7 @@ Notice-cell ownership retain their existing rules. The
 [bare-formal review](../../coverage/semantics/global-plain-stdclass-formal-producer-reference-notice-review.json)
 keeps fresh BYVAL/BYREF singleton and multiple-CV originals separate from the scalar
 rejection control and old pure expectation promotions, with no historical reruns.
-Explicit bare union formals, other names/contexts and wider owners/lifetimes remain partial.
+Flat bare union formals are extended below; other names/contexts and wider owners/lifetimes remain partial.
 
 Canonical raw `?stdClass` formals use the same global declaration context and
 required ordinary-CV proof. The nullable Param view changes only the inner class
@@ -1167,9 +1167,21 @@ FQN nullable fold authenticates exact `[class, null]` order before ordinary
 reception, return verification, frame retirement and private Notice cells. The
 [nullable bare-formal review](../../coverage/semantics/global-plain-nullable-stdclass-formal-producer-reference-notice-review.json)
 keeps object BYVAL/BYREF and NULL originals separate from the scalar reception
-control and the earlier pure expectation change. Explicit bare unions, other names
-and declaration contexts, and wider payloads/owners/lifetimes remain partial;
+control and the earlier pure expectation change. Flat bare unions are extended
+below; other names and declaration contexts, and wider payloads/owners/lifetimes remain partial;
 exact holds stay unchanged.
+
+Flat ordered bare `stdClass` FORMAL unions use the same global declaration context.
+The Param view reuses the pure union view, preserving member bytes/order and all
+member/union/Param metadata and fields before the existing FQN header proof.
+Exactly one class, distinct builtin kinds and at most one Boolean kind admit the
+existing two-through-eight-member forms, with `array` or `iterable`. Required
+ordinary-CV reception, return verification, frame retirement and private Notice
+cells retain their existing rules. The
+[ordered bare-formal review](../../coverage/semantics/global-plain-ordered-stdclass-formal-producer-reference-notice-review.json)
+separates object BYVAL/BYREF, array COW and eight-member source evidence from an
+unchanged strict reception control and preserves all three fixture failures.
+Other names/contexts and wider payloads/owners/lifetimes remain partial; exact holds stay unchanged.
 
 Distinct ordered builtin unions of three through eight members also admit
 `callable` in required ordinary-CV producer formals and returns. Raw/normalized
