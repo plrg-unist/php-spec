@@ -2869,3 +2869,13 @@ Actual and joined `000a1da69` and the sole production-SL509 load
 actual/SAME saved-report read. No native/source/fixture evidence is renewed.
 Wider forms and weak Stringable conversion remain partial; exact holds stay unchanged.
 [Independent review](../../coverage/semantics/class-string-union-parentless-short-reference-get-hook-peer-review.json).
+
+Exact class/array unions on that short reference producer retain both raw
+orders, `Class|array` and `array|Class`, with matching normalized branches.
+One ordinary, fully qualified or namespace-relative class name and one raw
+Identifier array require the existing singleton class proof and quiet full
+normalization. Defining source/class/property authority and existing owner
+bounds remain. Empty/singleton scalar arrays retain alias and copy-on-write checks.
+Wrong ordinary objects, null and scalars reject without changing shared values.
+Broader headers, array graphs and wider owners/lifetimes remain partial.
+[Review](../../coverage/semantics/class-array-union-parentless-short-reference-get-hook-review.json).
