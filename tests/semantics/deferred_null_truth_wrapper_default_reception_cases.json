@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-truth-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullTruth292($p0 = ((bool)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false)), $p1 = (!(((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL)), $p2 = ((bool)(false ?: ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p3 = (!(false ?: ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))), $p4 = ((bool)(!((bool)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false)))), $p5 = (!(!(((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL))), $p6 = (((bool)((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false)) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((!(((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) ? true : NULL)) !== ((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) {\n    echo 'raw:', $p0 === false, \":\", $p1 === true, \":\", $p2 === false, \":\", $p3 === true, \":\", $p4 === true, \":\", $p5 === false, \":\", $p6 === true, \":\", $p7 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawNullTruth292();\nrawNullTruth292();\n",
+    "purpose": "Raw NULL BOOL casts and BooleanNot preserve PHP result tags for full/shorthand NULL selections and nested Boolean composition. Folded shorthand observations are ordinary execution controls; callback certificates retain their redirect boundary.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "669549d0e5b3f47aa090f97c6b51499bc3f990a046a2204a8480dc7f869d603b"
+  },
+  {
+    "id": "deferred-null-truth-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullTruth292;\nuse const E_WARNING as Base292;\nuse const E_ERROR as One292;\nfunction warning292($errno, $message, $file, $line) {\n    global $x292;\n    echo 'warning:', $message, '|';\n    defaults292(2);\n    $x292 = 3.5;\n}\nfunction defaults292(int $first, int &$castNull = (int)((bool)((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : false)), int &$notNull = (int)(!(((bool)(+(-((float)(+(Base292 === One292)))))) ? true : NULL)), int &$shortNull = (int)((bool)(((bool)(+(-((float)(+(Base292 === One292)))))) ?: ((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : false))), int &$selectedNull = (int)(!((!((bool)(+(-((float)(+(Base292 === One292))))))) ? NULL : Missing292)), int $last = 7) {\n    echo 'body:', $first, ':', $castNull, ':', $notNull, ':', $shortNull, ':', $selectedNull, ':', $last, '|';\n    $castNull = 19;\n    $notNull = 20;\n    $shortNull = 21;\n    $selectedNull = 22;\n}\n\\set_error_handler('NullTruth292\\\\warning292');\n$x292 = 1.5;\n$last292 = 8;\ndefaults292(last: $last292, first: $x292);\necho 'outer:x=', $x292, '|';\n",
+    "purpose": "NULL-only BOOL cast/NOT results remain typed before INT-parent private BYREF reception, including emitted shorthand NULL selection and a skipped Missing-name branch through named precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:0:1:7|body:1:0:1:0:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "942cef1370e20dea26442c73c68e69482798ba78f5b8cdc7990e9ec2760363d6"
+  }
+]
