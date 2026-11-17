@@ -1427,7 +1427,7 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if $unary_apply(S_child, punary, pvalue_child, z) = S[.RESULT = KNOWN pvalue]
   -- if $value_nodes(pvalue) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
-  -- if $ob_object_cast_chain_sign_literal(expression_child)
+  -- if $ob_object_cast_chain_sign_literal(expression_child) \/ $ob_object_cast_chain_sign_kind(expression_child)
   -- if z = $expression_line(expression_child)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
