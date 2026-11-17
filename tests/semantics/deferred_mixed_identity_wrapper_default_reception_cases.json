@@ -1,0 +1,29 @@
+[
+  {
+    "id": "deferred-mixed-identity-wrapper-raw-booleans",
+    "source": "<?php\nfunction rawMixedIdentity274($p0 = ((((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) === (+(-((float)(+(E_WARNING === E_ERROR)))))), $p1 = ((+(-((float)(+(E_WARNING === E_ERROR))))) === (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p2 = ((((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))) !== (+(-((float)(+(E_WARNING === E_ERROR)))))), $p3 = ((+(-((float)(+(E_WARNING === E_ERROR))))) !== (((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))), $p4 = (((PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) === ((((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p5 = (((((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR))))))) === ((PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))))), $p6 = (((PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))) !== ((((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR)))))))), $p7 = (((((float)PHP_INT_MAX) + (+(-((float)(+(E_WARNING === E_ERROR))))))) !== ((PHP_INT_MAX + ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))))))) {\n    echo 'raw:', $p0 === false, ':', $p1 === false, ':', $p2 === true, ':', $p3 === true, ':', $p4 === false, ':', $p5 === false, ':', $p6 === true, ':', $p7 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n}\nrawMixedIdentity274();\nrawMixedIdentity274();\n",
+    "purpose": "Both strict identity operators reject actual signed64 INT/nonNaN FLOAT pairs in either orientation without numeric coercion, including zero and MAX versus its rounded FLOAT; raw Boolean tags and cold/warm caches remain exact.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "adac42e3d027885702972afac5c406ffc48c666039b3c521e67a4e095f7e9c15"
+  },
+  {
+    "id": "deferred-mixed-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace MixedIdentity274;\nuse const E_WARNING as Base274;\nuse const E_ERROR as One274;\nuse const PHP_INT_MAX as Max274;\nuse const INF as Inf274;\nfunction warning274($errno, $message, $file, $line) {\n    global $x274;\n    echo 'warning:', $message, '|';\n    defaults274(2);\n    $x274 = 3.5;\n}\nfunction defaults274(int $first, int &$intFloat = (int)(((Max274 + ((int)((bool)(+(-((float)(+(Base274 === One274))))))))) === ((((float)Max274) + (+(-((float)(+(Base274 === One274)))))))), int &$floatInt = (int)(((((float)Max274) + (+(-((float)(+(Base274 === One274))))))) === ((Max274 + ((int)((bool)(+(-((float)(+(Base274 === One274)))))))))), int &$notIntFloat = (int)((((int)(!(+(-((float)(+(Base274 === One274)))))))) !== ((Inf274 + (+(-((float)(+(Base274 === One274)))))))), int &$notFloatInt = (int)(((-Inf274 + (+(-((float)(+(Base274 === One274))))))) !== (((int)((bool)(+(-((float)(+(Base274 === One274))))))))), int $last = 7) {\n    echo 'body:', $first, ':', $intFloat, ':', $floatInt, ':', $notIntFloat, ':', $notFloatInt, ':', $last, '|';\n    $intFloat = 19;\n    $floatInt = 20;\n    $notIntFloat = 21;\n    $notFloatInt = 22;\n}\n\\set_error_handler('MixedIdentity274\\\\warning274');\n$x274 = 1.5;\n$last274 = 8;\ndefaults274(last: $last274, first: $x274);\necho 'outer:x=', $x274, '|';\n",
+    "purpose": "Imported Base/One/MAX/INF aliases, four BYREF INT parents and Warning reentry retain raw mixed-type strict identity before private integer reception, including finite and infinite operands.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:0:1:1:7|body:1:0:0:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "4633e131db8c5930fe50c75681689f8cf9503ee9a0bea08de02b57a77f719e19"
+  },
+  {
+    "id": "deferred-mixed-identity-wrapper-ordinary-control",
+    "source": "<?php\nfunction ordinaryMixedIdentity274(int &$value = (int)(PHP_INT_MAX === (float)PHP_INT_MAX)) {\n    echo 'ordinary:', $value, '|';\n}\nordinaryMixedIdentity274();\n",
+    "purpose": "The existing phase-safe mixed strict-identity INT parent retains false despite MAX rounding to float(MAX).",
+    "expected_normal_stdout": "ordinary:0|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "c96be95014d8361bd4da5d9d06f5ff20e975e0abc0d69483832998b259b55692"
+  }
+]
