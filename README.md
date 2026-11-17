@@ -16,8 +16,9 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Recent reviewed extensions cover ordered builtin reference Get unions, recursive
-Boolean selector trees, STRING bitwise and false-comparison shorthand bases,
+Recent reviewed extensions cover ordered builtin reference Get unions including
+literal Boolean members, recursive Boolean selector trees, STRING bitwise and
+false-comparison shorthand bases,
 ordered NaN comparisons, iterable union producer returns, composite Boolean
 defaults, integer bitwise output-handler returns and terminal string-offset unset
 with registered handlers. Exact source, type, cache and ownership bounds remain.

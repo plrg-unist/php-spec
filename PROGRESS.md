@@ -8,6 +8,8 @@ and current family documents identify implemented routes and remaining obligatio
 
 ## Current checkpoint
 
+Own public parentless short reference Get admits distinct ordered builtin unions of length2..7 containing one literal Boolean kind, retaining exact raw/normalized order and rejecting Boolean overlaps. Six originals agree using native observations once; separate author747/271/272/293 and independent747/271/290/293 fixture cuts retain source0. Six prelaw Unsupported controls stay0, with no failed COMP321 execution cut. Actual0efbd08e6 and solefd47e213 SL50815.888344376s/source0 are independently clear. Wider headers, owners and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/literal-boolean-union-parentless-short-reference-get-hook-review.json).
+
 Terminal string-offset unset preserves the correct Error with a registered error handler, without converting the existing bounded known key or invoking the handler. Authenticated non-NUL INTERNED/REQUEST carriers retain the existing source/read/abrupt guards. Native2 once/source2, separate author59/14-derived each and independent124/79-derived each retain their cuts; original NORMAL wrong-Error mismatches2, the overstrong58/13 fixture, diagnostic and then-unrun request cut stay0. Actual6917d71ae and soled6effbcb SL50816.340705161s/source0 are independently clear. Intermediate/undefined/owning-key contexts and wider producers or lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/string-offset-terminal-unset-registered-handler-review.json).
 
 Completed multi-CV producers admit exact ordered iterable|int/int|iterable returns through a dedicated header arm, preserving pointwise raw/normalized order, ordinary formals, return verification, frame retirement and finite private Notice cells. Native4+3 once/seven originals and separate author/independent whole source7 with525/285 fixture-SL507 cuts retain their identities; prelaw Unsupported remains0. Actual0e085671a and soleb4204126 SL50816.281065802s/source0 are independently clear. Other unions, wider headers, payloads and lifetimes remain partial; exact holds stay unchanged. [Review](coverage/semantics/multi-cv-union-int-iterable-return-producer-reference-notice-review.json).
@@ -1000,13 +1002,13 @@ first-match behavior and source-zero credit.
 [Lookup review](coverage/semantics/compiler-lookup-tail-review.json) records the separate cuts. ENUM220 retains its separate current
 precision/pending source cuts and earlier quiet cut; old timeouts remain zero credit.
 
-The latest reviewed source integration is `6917d71ae92f86b0c4280be63235c2b922f0f1f0`
-(tree `effdbb6c0462b48b446e70ed812e5abbb665b8e6`). Its sole 508-module production
-SL load passes in 16.340705160982907 s under the unchanged 60-second cap, with
+The latest reviewed source integration is `0efbd08e6d37ddf97b91008c7d36c977201136e2`
+(tree `a6f78d14c7559dbb9939728883f7da46d2d2fcaa`). Its sole 508-module production
+SL load passes in 15.888344375882298 s under the unchanged 60-second cap, with
 511 ordered arguments, 512 stable watched inputs, `true` plus LF, quiet stderr
 and fully reaped processes, adding zero source credit. Raw report:
-`../php-spec-evidence-archive/resumed-main-20261112/main78-terminal-unset-v1/report.json`
-(SHA-256 `d6effbcbae7d899ee5a4cb81cc4910c4fa42ffef146475cee98644203a377891`).
+`../php-spec-evidence-archive/resumed-main-20261112/main78-comp321-v1/report.json`
+(SHA-256 `fd47e21322a749f356d90e94191dbcc5e7172578f4b7adee12e5a250ee94649b`).
 Earlier source, fixture and load cuts retain their original identities in family
 records. Metadata changes renew no execution credit; inventory statuses remain
 169/306 with zero closed constructors and one closed runtime obligation.
