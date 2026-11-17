@@ -10,7 +10,7 @@ Required JSON oracle inputs remain in their original locations.
 
 Exact integer-division output-handler originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/new/output-final-selected-integer-division-cast-chain-return-modulo-error-136/`; the [review](../coverage/semantics/output-final-selected-integer-division-cast-chain-return-modulo-error-review.json) retains the accepted actual/SAME tuple and preserved zero-credit cuts.
 
-Emitted NULL full-ternary base originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-null-truth-base-initial-raw-leading-key-{author44,peer41}-20261117/`; the [review](../coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json) retains the original identities and accepted actual/SAME tuple.
+Emitted NULL full-ternary base originals and separate native-once, source and fixture cuts remain in `../php-spec-evidence-archive/string-offset-runtime-null-truth-base-initial-raw-leading-key-{author43,author44,peer40,peer41}-20261117/`; the [review](../coverage/semantics/string-offset-runtime-null-truth-base-initial-raw-leading-key-review.json) retains the original identities and accepted actual/SAME tuple.
 
 Literal-Boolean iterable-return originals and separate cuts remain in `../php-spec-evidence-archive/cv-union-literal-bool-iterable-return-producer-reference-notice-110/`; recover `author/source17-manifest-v2`, `author/whole-summary-v2`, `peer/whole-summary-v1` and the original `author/whole-failure-cut-v1` through the [review](../coverage/semantics/cv-union-literal-bool-iterable-return-producer-reference-notice-review.json).
 
