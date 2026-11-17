@@ -121,8 +121,8 @@ def frontier(name, fixture, path):
         proof = [value(state, child, 'PORIGIN n_cast_handler pcpath_value_' + side, function) + ' = (' + typed + ')'
                  for side, child, typed in zip(['left', 'right'], children, values)]
         proof += ['$binary_apply(' + state + r'[.RESULT = KNOWN (PINT 0)], POWER, PINT 2, PINT 0, z_value_right) = ' +
-                  state + r'[.RESULT = KNOWN (PINT 1)]', value(state, expression, function=function) + ' = eps']
-        checks += [('source0 genuine quiet integer POWER cannot borrow MODULO certificate authority', current.CONJ.join(proof))]
+                  state + r'[.RESULT = KNOWN (PINT 1)]', value(state, expression, function=function) + ' = (PINT 1)']
+        checks += [('source0 quiet integer POWER2**0 is admitted after its proper PINT children', current.CONJ.join(proof))]
         true = ('NExprConstFetch (NName (BYTES "dHJ1ZQ==") {metadata}) {metadata}', 'PBOOL true', 'PBOOL true')
         null = ('NExprConstFetch (NName (BYTES "bnVsbA==") {metadata}) {metadata}', 'PNULL', 'PNULL')
         floating = ('NScalarFloat (FLOAT "3ff0000000000000") {metadata}',
