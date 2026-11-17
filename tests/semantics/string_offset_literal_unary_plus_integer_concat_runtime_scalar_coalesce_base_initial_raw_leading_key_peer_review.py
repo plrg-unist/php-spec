@@ -192,11 +192,11 @@ $string_read_runtime_value(S_plus_bad_{label},porigin_base) = eps
             'NExprUnaryPlus (NExprUnaryPlus expression_integer eps) eps',
             'NExprUnaryPlus (NExprUnaryMinus expression_integer eps) eps',
             'NExprUnaryMinus (NExprUnaryPlus expression_integer eps) eps',
-            'NExprUnaryPlus (NScalarString (BYTES "MQ==") eps) eps',
-            'NExprUnaryPlus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps',
-            'NExprUnaryPlus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps'):
+            'NExprUnaryPlus (NScalarString (BYTES "MQ==") eps) eps'):
         checks.append(f'$string_read_folded_concat_bytes({node}) = eps')
     checks += lines(r'''
+$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps) = ($ptascii("1"))
+$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps) = ($ptascii("0"))
 expression_plus_nul_b = NScalarString (BYTES "AA==") metadata_b
 expression_plus_nul_tail = NExprBinaryOpConcat expression_plus_nul_b expression_c metadata_tail
 expression_plus_nul_left = NExprBinaryOpConcat expression_head expression_plus_nul_tail metadata_left

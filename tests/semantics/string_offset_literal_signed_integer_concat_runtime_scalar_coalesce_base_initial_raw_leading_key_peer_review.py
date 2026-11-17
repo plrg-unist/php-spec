@@ -190,11 +190,11 @@ $string_read_runtime_value(S_signed_bad_{label},porigin_base) = eps
     for node in (
             'NExprUnaryMinus (NExprUnaryMinus expression_integer eps) eps',
             'NExprUnaryMinus (NExprUnaryPlus expression_integer eps) eps',
-            'NExprUnaryMinus (NScalarString (BYTES "MQ==") eps) eps',
-            'NExprUnaryMinus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps',
-            'NExprUnaryMinus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps'):
+            'NExprUnaryMinus (NScalarString (BYTES "MQ==") eps) eps'):
         checks.append(f'$string_read_folded_concat_bytes({node}) = eps')
     checks += lines(r'''
+$string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps) = ($ptascii("-1"))
+$string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps) = ($ptascii("0"))
 expression_signed_nul_b = NScalarString (BYTES "AA==") metadata_b
 expression_signed_nul_tail = NExprBinaryOpConcat expression_signed_nul_b expression_c metadata_tail
 expression_signed_nul_left = NExprBinaryOpConcat expression_head expression_signed_nul_tail metadata_left

@@ -943,11 +943,19 @@ def $string_read_literal_bytes(NExprBinaryOpConcat expression_1 expression_2 met
   -- if $string_read_literal_bytes(expression_1) = (n_1*)
   -- if $string_read_literal_bytes(expression_2) = (n_2*)
 def $string_read_literal_bytes(expression) = eps -- otherwise
-;; These literals and direct integer signs need no floating-point formatting.
+;; These literals and direct quiet signs need no floating-point formatting.
 def $string_read_folded_concat_bytes(NScalarString (BYTES text) metadata) = ($base64(text))
 def $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = ($ptascii("1"))
   -- if $ptlc($base64(text)) = $ptascii("true")
 def $string_read_folded_concat_bytes(NExprConstFetch (NName (BYTES text) metadata_name) metadata) = (eps)
+  -- if $ptlc($base64(text)) <- [$ptascii("false"), $ptascii("null")]
+def $string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata) = ($ptascii("1"))
+  -- if $ptlc($base64(text)) = $ptascii("true")
+def $string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata) = ($ptascii("-1"))
+  -- if $ptlc($base64(text)) = $ptascii("true")
+def $string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata) = ($ptascii("0"))
+  -- if $ptlc($base64(text)) <- [$ptascii("false"), $ptascii("null")]
+def $string_read_folded_concat_bytes(NExprUnaryMinus (NExprConstFetch (NName (BYTES text) metadata_name) metadata_child) metadata) = ($ptascii("0"))
   -- if $ptlc($base64(text)) <- [$ptascii("false"), $ptascii("null")]
 def $string_read_folded_concat_bytes(NScalarInt (INTEGER i) metadata) = ($decimal_integer(i))
   -- if $long_range(i)

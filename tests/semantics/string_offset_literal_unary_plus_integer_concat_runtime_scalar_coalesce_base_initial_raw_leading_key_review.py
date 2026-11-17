@@ -23,8 +23,8 @@ $string_read_folded_concat_bytes(NExprUnaryPlus (NScalarFloat (FLOAT "0000000000
 $string_read_folded_concat_bytes(NExprUnaryPlus expression_prefix eps) = eps
 $string_read_folded_concat_bytes(NExprUnaryPlus (NExprUnaryMinus expression_sign_atom eps) eps) = eps
 $string_read_folded_concat_bytes(NExprUnaryPlus (NExprUnaryPlus expression_sign_atom eps) eps) = eps
-$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps) = eps
-$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps) = eps
+$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "dHJ1ZQ==") eps) eps) eps) = ($ptascii("1"))
+$string_read_folded_concat_bytes(NExprUnaryPlus (NExprConstFetch (NName (BYTES "bnVsbA==") eps) eps) eps) = ($ptascii("0"))
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(checks), derived + len(checks)
