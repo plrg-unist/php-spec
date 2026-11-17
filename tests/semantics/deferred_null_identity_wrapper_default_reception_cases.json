@@ -1,0 +1,20 @@
+[
+  {
+    "id": "deferred-null-identity-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawNullIdentity291($p0 = (NULL === ((int)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p1 = (((int)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== NULL), $p2 = (NULL !== ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p3 = ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) === NULL), $p4 = (NULL === (+(-((float)(+(E_WARNING === E_ERROR)))))), $p5 = ((-(+(-((float)(+(E_WARNING === E_ERROR)))))) !== NULL), $p6 = (NULL === (NAN + (+(-((float)(+(E_WARNING === E_ERROR))))))), $p7 = ((NAN + (+(-((float)(+(E_WARNING === E_ERROR)))))) !== NULL), $p8 = (NULL === ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : true)), $p9 = (((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : true) !== NULL), $p10 = ((true ? NULL : NAN) === ((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))), $p11 = (((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))) !== (false ?: NULL))) {\n    echo 'raw:', $p0 === false, \":\", $p1 === true, \":\", $p2 === true, \":\", $p3 === false, \":\", $p4 === false, \":\", $p5 === true, \":\", $p6 === false, \":\", $p7 === true, \":\", $p8 === true, \":\", $p9 === false, \":\", $p10 === false, \":\", $p11 === true, '|';\n    $p0 = 19;\n    $p1 = 20;\n    $p2 = 21;\n    $p3 = 22;\n    $p4 = 23;\n    $p5 = 24;\n    $p6 = 25;\n    $p7 = 26;\n    $p8 = 27;\n    $p9 = 28;\n    $p10 = 29;\n    $p11 = 30;\n}\nrawNullIdentity291();\nrawNullIdentity291();\n",
+    "purpose": "Actual NULL strict identity against INT/FLOAT/BOOL and a distinct emitted NULL selector; both orders/operators, quiet NaN and typed raw results before cold/warm reuse.",
+    "expected_normal_stdout": "raw:1:1:1:1:1:1:1:1:1:1:1:1|raw:1:1:1:1:1:1:1:1:1:1:1:1|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "5be815ba1ef238548e2c2ee8f1815b03a6c5ed38eb7d24ddaea9684b5c89ce97"
+  },
+  {
+    "id": "deferred-null-identity-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace NullIdentity291;\nuse const E_WARNING as Base291;\nuse const E_ERROR as One291;\nuse const NAN as Nan291;\nfunction warning291($errno, $message, $file, $line) {\n    global $x291;\n    echo 'warning:', $message, '|';\n    defaults291(2);\n    $x291 = 3.5;\n}\nfunction defaults291(int $first, int &$nullZero = (int)(NULL === ((int)(+(-((float)(+(Base291 === One291))))))), int &$nanNull = (int)((Nan291 + (+(-((float)(+(Base291 === One291)))))) !== NULL), int &$bothNull = (int)(NULL === ((!((bool)(+(-((float)(+(Base291 === One291))))))) ? NULL : true)), int &$selectedBool = (int)(((bool)(+(-((float)(+(Base291 === One291)))))) !== (true ? NULL : Missing291)), int $last = 7) {\n    echo 'body:', $first, ':', $nullZero, ':', $nanNull, ':', $bothNull, ':', $selectedBool, ':', $last, '|';\n    $nullZero = 19;\n    $nanNull = 20;\n    $bothNull = 21;\n    $selectedBool = 22;\n}\n\\set_error_handler('NullIdentity291\\\\warning291');\n$x291 = 1.5;\n$last291 = 8;\ndefaults291(last: $last291, first: $x291);\necho 'outer:x=', $x291, '|';\n",
+    "purpose": "Actual NULL identity keeps BOOL result tags distinct before INT-parent BYREF reception, including both-NULL emitted selection and certified skipped missing-name selection through precision Warning reentry.",
+    "expected_normal_stdout": "warning:Implicit conversion from float 1.5 to int loses precision|body:2:0:1:1:1:7|body:1:0:1:1:1:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "model_timeout_seconds": 360,
+    "source_sha256": "1273be965b04b66ee3837cf087a2c07baf46e342f857abb1be7af19ecd0f9a80"
+  }
+]
