@@ -874,6 +874,15 @@ def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) 
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
   -- if $reference_notice_producer_union_members(phpType69*, psparam.TYPE, eps) \/ $reference_notice_producer_stdclass_union_members(phpType69*, psparam.TYPE, false, eps)
   -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
+;; Required CV formals reuse the exact class/iterable structural fold.
+def $reference_notice_producer_multiple((NArg ABSENT expression (BOOLEAN false) (BOOLEAN false) metadata_arg) :: phpType7*, (NParam (SEQUENCE eps) (INTEGER 0) (NUnionType (SEQUENCE phpType69*) metadata_union) (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter) :: phpType17*, psparam :: psparam_tail*) = $reference_notice_producer_multiple(phpType7*, phpType17*, psparam_tail*)
+  -- if $(|phpType69*| > 1)
+  -- if expression = NExprVariable (BYTES text_name) metadata_value
+  -- if $reference_cv(expression) = (n_name*)
+  -- if n_name* =/= $ptascii("http_response_header")
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC
+  -- if $reference_notice_producer_stdclass_iterable_return_union_members(phpType69*, psparam.TYPE, false, eps)
+  -- if psparam.REQUIRED /\ psparam.DEFAULT = PSNONE
 def $reference_notice_producer_multiple(phpType7*, phpType17*, psparam*) = false -- otherwise
 
 dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool

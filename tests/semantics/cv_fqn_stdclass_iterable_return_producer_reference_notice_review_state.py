@@ -107,7 +107,7 @@ def controls(case):
     lines += ['~' + header + raw(members, name) + ', ' + signature + '[.RETURNS = ' + branches(members, name.upper()) + '])',
         '~' + header + raw(members, 'OtherClass') + ', ' + signature + '[.RETURNS = ' + branches(members, 'OtherClass') + '])']
     formal = 'NParam (SEQUENCE eps) (INTEGER 0) (' + raw(members, name) + ') (BOOLEAN false) (BOOLEAN false) phpType10 ABSENT (SEQUENCE eps) metadata_parameter'
-    lines.append('~$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + formal + ']), ' + signature +
+    lines.append('$reference_notice_producer_arguments(phpType6_producer, SEQUENCE ([' + formal + ']), ' + signature +
         '[.RETURNS = eps][.PARAMETERS = [psparam[.TYPE = ' + branches(members, name) + ']]])')
     return lines
 

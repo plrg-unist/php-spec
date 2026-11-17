@@ -1,0 +1,120 @@
+[
+  {
+    "id": "one-cv-quiet-fqn-stdclass-iterable-formal-object-identity-private-cell",
+    "namespace": "ReviewQuietFqnClassIterableFormal113",
+    "return_members": [
+      "iterable",
+      "class"
+    ],
+    "value_kind": "object",
+    "formal_kind": "class",
+    "formal_byref": false,
+    "caller_kind": "object",
+    "expected_notice_line": 8,
+    "first_actual_source_line": 8,
+    "last_actual_source_line": 8,
+    "source": "<?php\nnamespace ReviewQuietFqnClassIterableFormal113;\nfunction h($n,$m,$file,$line){global $x;$x='new';echo 'H:',$line,';';return true;}\nfunction make(\\sTdClAsS|iterable $saved):iTeRaBlE|\\sTdClAsS{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value->v===13),';';$value->v=37;$value=['n'=>41];return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ReviewQuietFqnClassIterableFormal113\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x\n));echo 'R:',$r['n'],':',$x,':',$alias,':',(int)($copy->v===37),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy->v===37),';';\n\n",
+    "native_stdout": "A;M;H:8;F:1;R:41:new:new:1;C:43:41;D:done:41:1;",
+    "return_shape": "union",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b23b3e1897ac34e982fe147627ff7aead4edcd5ed1778f397b310e5846118bf3",
+    "derived_from": {
+      "catalogue": "cv_fqn_stdclass_iterable_return_producer_reference_notice_review_cases.json",
+      "id": "one-cv-quiet-fqn-stdclass-iterable-return-private-cell",
+      "source_sha256": "716011e45e54810ee4827163d3595ab000d7b7dbf1b7e19bf3088443f49c3f8b",
+      "edits": "Fresh namespace and required FQN stdClass/iterable BYVAL formal. Preserve actual quiet object, return header, identity, caller rebinding, private rewrite and final observations."
+    },
+    "cv_arity": 1,
+    "input_value": "POBJECT n_old",
+    "class_return": "sTdClAsS",
+    "role": "object",
+    "formal_members": [
+      "class",
+      "iterable"
+    ],
+    "class_formal": "sTdClAsS"
+  },
+  {
+    "id": "two-cv-weak-fqn-class-iterable-formals-byval-and-byref-coercion-private-cell",
+    "source": "<?php\nnamespace ReviewMixedFqnClassIterableFormal113 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(\\sTdClAsS|iterable|float|InT $saved,int|\\sTdClAsS|iterable|fLoAt &$changed):int|\\stdClass|float{echo 'M:',(int)($saved===17),':',(int)($changed===17.5),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===17.5),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=(string)17;$snapshot=$x;$seed=17.5;$y=(string)$seed;unset($seed);$ySnapshot=$y;$yAlias=&$y;set_error_handler('ReviewMixedFqnClassIterableFormal113\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='17.5'),';';\n}\n",
+    "source_sha256": "e03127de27be1658fe4072a2ee0bc938a7ae1f2dd9081a5d33c9ec64da5524f2",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "int",
+      "float"
+    ],
+    "caller_strict": false,
+    "formal_others": [
+      "float",
+      "int"
+    ],
+    "formal_other_first": [
+      true,
+      true
+    ],
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_members": [
+      [
+        "class",
+        "iterable",
+        "float",
+        "int"
+      ],
+      [
+        "int",
+        "class",
+        "iterable",
+        "float"
+      ]
+    ],
+    "return_members": [
+      "int",
+      "class",
+      "float"
+    ],
+    "derived_from": {
+      "catalogue": "cv_primitive_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "weak-fqn-class-triple-numeric-priority-and-private-notice",
+      "source_sha256": "f841aa3ed3f5f256d56729de6195bf691b12d1e9f36d13669fc3a0219d047185",
+      "edits": "Fresh namespace; add iterable at distinct positions in both required class/int/float formals. Preserve both conversion observations, caller copies, ordinary BYREF unconstrained writes, return header, private Notice cell and cleanup."
+    },
+    "namespace": "ReviewMixedFqnClassIterableFormal113",
+    "role": "mixed",
+    "class_formal": "sTdClAsS"
+  },
+  {
+    "id": "one-cv-strict-fqn-class-iterable-formal-receive-priority-before-body-notice",
+    "source": "<?php declare(strict_types=1);\nnamespace ReviewStrictFqnClassIterableFormal113\\ReceivePriority;\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(iterable|\\StDcLaSs|int|float &$saved):mixed{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=(string)17;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('ReviewStrictFqnClassIterableFormal113\\\\ReceivePriority\\\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "95250c45ddb74ce27a4ccb94ec65f13cdc311d2f72ddb909102cf58ec8ac74a9",
+    "derived_from": {
+      "catalogue": "cv_primitive_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "strict-request-fqn-class-int-float-receive-priority",
+      "source_sha256": "914d752e8dd9b0e8192e834892057e2039e8c91cafdca4d343aa88763d5f2c48",
+      "edits": "Fresh namespace and required ordered iterable/FQN stdClass/int/float BYREF formal. Preserve strict caller, original numeric string/copy/alias, receive rejection before body or Notice, old target, later untyped writes and explicit cleanup."
+    },
+    "namespace": "ReviewStrictFqnClassIterableFormal113\\ReceivePriority",
+    "role": "receive",
+    "formal_members": [
+      "iterable",
+      "class",
+      "int",
+      "float"
+    ],
+    "class_formal": "StDcLaSs",
+    "formal_byref": true,
+    "caller_strict": true
+  }
+]
