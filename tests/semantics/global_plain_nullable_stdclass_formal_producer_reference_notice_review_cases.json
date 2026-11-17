@@ -1,0 +1,31 @@
+[
+  {
+    "id": "strict-global-bare-nullable-stdclass-null-byval-formal-fqn-return",
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===null),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(?sTdClAsS $saved):?\\stdClass{echo 'M:',(int)($saved===null),';';return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',(int)($value===null),';';$value=19;$prefix=31;return $value;}\n$x=null;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot,':',$x,':',(int)($copy===null),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "source_sha256": "403c8c74b2db962995ef9578175881d34728b6cdf430322ddd6dee3188c0db62",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:1;R:23:19:17:1:31;D:41:19:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_nullable_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "named-nullable-fqn-stdclass-null-byval-and-nullable-return",
+      "source_sha256": "45316642a970af6002cb93a3fb31eb9731fb771881108080be04909a6ecb2ace",
+      "edits": "Replace namespace physical line2 by a global comment; remove only the stdClass FORMAL slash; select global h. Preserve nullable FQN RETURN, runtime statements and physical lines."
+    },
+    "notice_line": 8
+  },
+  {
+    "id": "scalar-global-bare-nullable-stdclass-byref-receive-before-body-and-notice",
+    "source": "<?php\n// Global producer declaration, no class imports.\n// Scalar argument rejects before the producer body.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(?stdClass &$saved):?\\stdClass{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=19;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "source_sha256": "907a098fc1a0b80ae8020fbcc614d3613fe8f0bd288f320a64ab79cfcb1f70fb",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_nullable_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "wrong-class-nullable-fqn-stdclass-byref-receive-before-body-and-notice",
+      "source_sha256": "122836b86e17046a29c2a432a129055cd4ef8cf95013525000d40af62a0f113f",
+      "edits": "Replace namespace physical line2 by a global comment, class Other line by a scalar-control comment, and x initializer by integer19; remove the FORMAL slash, replace :mixed RETURN by nullable FQN :?\\stdClass, and select global h. Preserve physical lines and all remaining runtime statements."
+    }
+  }
+]

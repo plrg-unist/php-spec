@@ -59,7 +59,7 @@ for name, expression, value in [
         f'S_{name} = S_source_{name}[.POOLS = [ppool[.CONSTANTS = ([(PCONSTANT (pcpath_0 ++ [PCFIELD 0]) ({value})){child_fact}] ++ ppool.CONSTANTS)]]]',
         f'$lossy_optional_integer_deferred_value_at(S_{name},pfunction.ENV,porigin_cond_0) = ({value})',
         f'$compiled_redirect(S_{name},pdefault_0.ORIGIN) = ((porigin_selected_0,expression_selected_0,false,z_0))',
-        f'$lossy_optional_integer_deferred_value_at(S_{name},pfunction.ENV,pdefault_0.ORIGIN) = ' + ('(PINT 0)' if name == 'one' else 'eps'),
+        f'$lossy_optional_integer_deferred_value_at(S_{name},pfunction.ENV,pdefault_0.ORIGIN) = ' + ('(PINT 0)' if name in ('one', 'float_one') else 'eps'),
         f'~$lossy_optional_integer_deferred(S_{name},pfunction,0)']
 raw += ['~$lossy_optional_integer_deferred_bindings(S_computed_false,pfunction.ENV,pdefault_0.ORIGIN)',
     'S_lie = S_computed_false[.POOLS = [ppool[.CONSTANTS = ([(PCONSTANT (pcpath_0 ++ [PCFIELD 0]) (PBOOL true))] ++ ppool.CONSTANTS)]]]',
@@ -154,8 +154,8 @@ expressions = [f'1 ? {false} : Missing301', f'((float)1) ? {false} : Missing301'
 boundary = base + [f'|pfunction.SIGNATURE.PARAMETERS| = {len(expressions)}']
 for index in range(len(expressions)):
     boundary += [f'$default_at(pfunction.DEFAULTS,{index}) = (pdefault_{index})',
-        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PBOOL false)' if index == 0 else 'eps'),
-        ('' if index == 0 else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
+        f'$lossy_optional_integer_deferred_value_at(S,pfunction.ENV,pdefault_{index}.ORIGIN) = ' + ('(PBOOL false)' if index in (0, 1) else 'eps'),
+        ('' if index in (0, 1) else '~') + f'$lossy_optional_integer_deferred(S,pfunction,{index})']
 context = ('S.CURRENT = (pcallcontext) -- if pcallcontext.ARGC = 0 -- if pcallcontext.FUNCTION = porigin_function '
     '-- if $function_at(S.FUNCTIONS,porigin_function) = (pfunction) ')
 CASES = {

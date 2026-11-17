@@ -1136,6 +1136,8 @@ def $reference_notice_producer_global_union_view(phpType69*, b_class) = eps -- o
 dec $reference_notice_producer_global_parameter_view(phpType17) : phpType17
 def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if $ptlc($base64(text_type)) = $ptascii("stdclass")
+def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 (NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNullableType (NNameFullyQualified (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+  -- if $ptlc($base64(text_type)) = $ptascii("stdclass")
 def $reference_notice_producer_global_parameter_view(phpType17) = phpType17 -- otherwise
 
 dec $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) : bool

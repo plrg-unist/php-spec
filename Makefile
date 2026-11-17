@@ -806,6 +806,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_folded_string_bitwise_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_folded_string_bitwise_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_folded_string_bitwise_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitwise-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_folded_string_bitnot_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-folded-string-bitnot-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -1305,6 +1309,7 @@ test-semantics: build
 	python3 -B tests/semantics/global_plain_union_float_stdclass_return_producer_reference_notice_run.py
 	python3 -B tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_run.py
 	python3 -B tests/semantics/global_plain_stdclass_formal_producer_reference_notice_run.py
+	python3 -B tests/semantics/global_plain_nullable_stdclass_formal_producer_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \
@@ -2149,6 +2154,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_nonzero_integer_full_ternary_redirect_wrapper_default_reception.py
 	python3 tests/semantics/deferred_nonzero_integer_full_ternary_redirect_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_nonzero_integer_full_ternary_redirect_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception.py
+	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_finite_nonzero_float_full_ternary_redirect_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py

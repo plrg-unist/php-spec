@@ -1517,6 +1517,21 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PBOOL b_re
   -- if S_binary = S[.RESULT = KNOWN (PBOOL b_result)]
   -- if (b_fold /\ $compiled_read(S, porigin) = (PBOOL b_result)) \/ (~b_fold /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(PBOOL b_result) = eps
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expression_child metadata) = (PSTRING n_result*)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if $string_bytes(pvalue_child) = (n_bytes*)
+  -- if $value_nodes(pvalue_child) = eps
+  -- if porigin_child = PORIGIN n_unit pcpath_child
+  -- if pfunction.CODE.UNIT = n_unit
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, true))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBitwiseNot expression_child metadata, z, true)
+  -- if n_result* = $string_not(n_bytes*)
+  -- if $compiled_read(S, porigin) = (PSTRING n_result*)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $compiled_string_value(S, porigin, PSTRING n_result*) = PSTRING n_result*
+  -- if $enter_compiled_task(S, porigin, EVAL (NExprBitwiseNot expression_child metadata), S.TODO) = S[.RESULT = KNOWN (PSTRING n_result*)]
+  -- if $value_nodes(PSTRING n_result*) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expression_child metadata) = (PINT i_result)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (PINT i_child)
