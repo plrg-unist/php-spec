@@ -245,6 +245,23 @@ def $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits) = true
   -- if $string_unset_cv_range_bits(n_bits)
 def $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits) = false -- otherwise
 
+;; A nonfatal default Warning does not replace an already pending Throwable.
+dec $string_unset_cv_range_discard(pstate, ptask) : bool
+def $string_unset_cv_range_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n_cell) = true
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if $(n_throwable < |S.OBJECTS|)
+  -- if $throwable_member(S, n_throwable)
+  -- if S.REQUEST = eps /\ S.CURRENT = eps /\ S.FRAMES = eps
+  -- if S.SOURCEPENDING = eps /\ S.CONSTCONTEXT = eps /\ S.HELD = eps
+  -- if S.RESULT = KNOWN PNULL
+  -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n_cell)
+  -- if S.STORE[n_cell] = DEFINED (PFLOAT n_bits)
+  -- if $string_unset_cv_range_snapshot(S, porigin, z, n_cell, n_bits)
+  -- if $arithmetic_add_named(S) /\ ~$error_handler_eligible(S, 2)
+  -- if ~$eval_compile_recorded_error(S, 2) /\ ~$recorded_runtime_pending(S, 2)
+def $string_unset_cv_range_discard(S, ptask) = false -- otherwise
+
 dec $string_unset_cv_range_plan(pstate) : (porigin, int, nat, nat)?
 def $string_unset_cv_range_plan(S) = ((porigin, z, n_cell, n_bits))
   -- if S.COMPLETION = NORMAL
@@ -293,10 +310,16 @@ rule PhpStep/string-unset-boolean-cv-warning-result-unsupported: S ~> S[.TODO = 
   -- if ~$string_unset_bool_cv_post_normal_cell(S, n_key_name*, z_name, n)
   -- if $string_unset_cv_range_plan(S) = eps
 
+def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = $error_dispatch(S, 2, n_message*, z, DIAGNOSTIC "Warning" n_message* z, THROW_SEARCH n_throwable)
+  -- if $string_unset_cv_range_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if S.STORE[n] = DEFINED (PFLOAT n_bits)
+  -- if $integer_float_notices([RANGEWARNING], n_bits) = [(2, n_message*)]
 def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = S[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
   -- if ~$string_unset_bool_cv_post_discard_cell(S, n_key_name*, z_name, n)
+  -- if ~$string_unset_cv_range_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
 
 ;; DOUBLE uses a silent cast of the fixed CV slot's union after the handler.
 ;; It never dispatches on a changed type; the converted index is unused.

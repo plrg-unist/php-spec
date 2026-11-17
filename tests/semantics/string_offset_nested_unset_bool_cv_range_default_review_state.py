@@ -12,6 +12,7 @@ import string_offset_nested_unset_bool_cv_range_default_cases as cases
 
 PREFIX = shared.PREFIX
 FRONT_ONLY = False
+PENDING_ONLY = False
 
 
 def conditions(program, path):
@@ -100,6 +101,18 @@ def conditions(program, path):
             'PhpStep: S_P ~> S_unsupported',
             'S_unsupported = S_P[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
         ], 0
+    if PENDING_ONLY:
+        checks += [
+            'ptask_range = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits',
+            'S_default = S_P[.TODO = ptask_range :: ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.ERRORFATALTRACE = eps][.EVENTS = S_P.EVENTS ++ [pevent_range]]',
+            'S_Q = $drive_steps(S_default, 1)',
+            'S_pending = S_Q[.COMPLETION = NORMAL]',
+            'S_pending.TODO = (THROW_SEARCH n_error) :: ptask_after*',
+            'S_pending.OBJECTS[n_error] = THROWABLE pthrowable',
+            'pthrowable.KIND = "Error"',
+        ]
+        changed = pending_checks()
+        return checks + changed, len(changed)
     checks += [
         '$lookup(S_P.ENV, n_base_name*) = (n_base)',
         '$lookup(S_P.ENV, $ptascii("last")) = (n_last)',
@@ -147,10 +160,7 @@ def conditions(program, path):
         'PhpStep: S_unreported ~> S_unreported_next',
         'S_unreported_next = S_default[.REPORTING = 0][.REPORTINGINI = $ptascii("0")][.REPORTINGMODIFIED = true][.EVENTS = S_P.EVENTS]',
         'S_pending = S_Q[.COMPLETION = NORMAL]',
-        '$string_unset_cv_range_plan(S_pending) = eps',
-        '~$string_unset_bool_cv_post_discard_cell(S_pending, n_key_name*, z_key, n_key)',
-        '$error_read_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key) = S_pending[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]',
-    ]
+    ] + pending_checks()
     derived = len(checks) - reached
     checks += [
         'S_done = $drive_steps(S_Q[.COMPLETION = NORMAL], 2000)',
@@ -173,10 +183,21 @@ def conditions(program, path):
     return checks, derived
 
 
+def pending_checks():
+    return ['$string_unset_cv_range_plan(S_pending) = eps',
+        '~$string_unset_bool_cv_post_discard_cell(S_pending, n_key_name*, z_key, n_key)',
+        '$string_unset_cv_range_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key)',
+        '$error_read_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key) = S_pending[.EVENTS = S_pending.EVENTS ++ [pevent_range]]']
+
+
 if __name__ == '__main__':
     FRONT_ONLY = '--front-only' in sys.argv
     if FRONT_ONLY:
         sys.argv.remove('--front-only')
+    PENDING_ONLY = '--pending-only' in sys.argv
+    if PENDING_ONLY:
+        sys.argv.remove('--pending-only')
+        assert not FRONT_ONLY
     own = Path(__file__).resolve()
     watched = [own, Path(shared.__file__), Path(shared.seek.__file__), Path(shared.sl.__file__),
                Path(cases.prior.__file__), Path(cases.prior.prior.__file__),
@@ -198,11 +219,15 @@ if __name__ == '__main__':
         'matching stderr initialization, reporting and existing default renderer facts precede the '
         'old exact Unsupported step. No future plan premise proves reachability. Source0/native0; '
         'the two fresh normal native identities are reused without execution.' if FRONT_ONLY else
+        'Only the prior manual pending-Error discard assertion now invokes the separate default '
+        'range reporter, preserving full pending state and tail. No closed normal whole campaign '
+        'is renewed. Source0/native0; exact saved native reused.' if PENDING_ONLY else
         'Actual NORMAL first-handler return restores the original named callback with mask0. The '
         'existing default dispatcher appends one source-anchored stderr Warning, retains the copied '
         'nonowning task and entire caller tail without another callback, then raises the fixed Error. '
         'Exact raw/public states, real Error identity/line, no added owners, source storage and whole/split '
-        'are retained. Absent/nonfinite and pending masked discard stay outside admission; reporting0 '
+        'are retained. Absent/nonfinite remain refused and pending masked discard uses its separate '
+        'default-reporting route; reporting0 '
         'uses the existing suppression rule. Source0/native0; exact fresh native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

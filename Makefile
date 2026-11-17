@@ -1163,8 +1163,7 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_protocol.py --index 0 --source-report "$$nested_unset_bool_cv_float_post_out/source/report.json" --output "$$nested_unset_bool_cv_float_post_out/return-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_protocol.py --index 3 --source-report "$$nested_unset_bool_cv_float_post_out/source/report.json" --output "$$nested_unset_bool_cv_float_post_out/throw-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_review_state.py --index 1 --source-report "$$nested_unset_bool_cv_float_post_out/source/report.json" --output "$$nested_unset_bool_cv_float_post_out/peer-throw-state" && \
-		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_review_state.py --index 2 --source-report "$$nested_unset_bool_cv_float_post_out/source/report.json" --output "$$nested_unset_bool_cv_float_post_out/peer-return-state" && \
-		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_frontier_sources.py --unsupported --output "$$nested_unset_bool_cv_float_post_out/frontier"
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_float_post_review_state.py --index 2 --source-report "$$nested_unset_bool_cv_float_post_out/source/report.json" --output "$$nested_unset_bool_cv_float_post_out/peer-return-state"
 	@nested_unset_null_cv_warning_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-null-cv-warning-test-XXXXXX")" && \
 		python3 -B tests/semantics/string_offset_nested_unset_null_cv_warning_sources.py --output "$$nested_unset_null_cv_warning_out/source" && \
 		python3 -B tests/semantics/string_offset_nested_unset_null_cv_warning_protocol.py --index 0 --source-report "$$nested_unset_null_cv_warning_out/source/report.json" --output "$$nested_unset_null_cv_warning_out/return-state" && \
@@ -1179,6 +1178,10 @@ test-semantics: build
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_sources.py --output "$$nested_unset_cv_range_default_out/source" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_protocol.py --source-report "$$nested_unset_cv_range_default_out/source/report.json" --output "$$nested_unset_cv_range_default_out/other-mask-state" && \
 		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_range_default_review_state.py --source-report "$$nested_unset_cv_range_default_out/source/report.json" --output "$$nested_unset_cv_range_default_out/restored-mask-state"
+	@nested_unset_cv_pending_range_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-pending-range-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_sources.py --output "$$nested_unset_cv_pending_range_out/source" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_protocol.py --source-report "$$nested_unset_cv_pending_range_out/source/report.json" --output "$$nested_unset_cv_pending_range_out/state" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_pending_range_review_state.py --source-report "$$nested_unset_cv_pending_range_out/source/report.json" --output "$$nested_unset_cv_pending_range_out/peer-state"
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"

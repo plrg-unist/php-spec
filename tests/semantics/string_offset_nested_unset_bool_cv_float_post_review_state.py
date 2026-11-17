@@ -16,6 +16,7 @@ import string_offset_nested_unset_bool_cv_float_post_cases as cases
 INDEX = 1
 FRONT_ONLY = False
 RANGE_ONLY = False
+PENDING_ONLY = False
 term = lambda data: '$base64(' + json.dumps(base64.b64encode(data).decode()) + ')'
 PREFIX = seek.PREFIX + r'''
 dec $float_post_output(pevent) : bool
@@ -95,10 +96,40 @@ def normal_range_checks():
     return checks
 
 
+def pending_mask_checks():
+    checks = ['$integer_float_notices([RANGEWARNING], 4906019910204099648) = [(2, n_range_message*)]',
+        'pevent_pending_range = DIAGNOSTIC "Warning" n_range_message* z']
+    for mask in (0, 512):
+        state = 'S_float_range_mask_' + str(mask)
+        checks += [state + ' = S_float_R[.ERRORHANDLER.LEVELS = ' + str(mask) + ']',
+            '~$string_unset_bool_cv_post_discard_cell(' + state + ', n_key_name*, z_key, n_key)',
+            '$string_unset_cv_range_discard(' + state + ', perrorcall_entered.RESUME)',
+            '$error_read_discard(' + state + ', perrorcall_entered.RESUME) = ' + state + '[.EVENTS = ' + state + '.EVENTS ++ [pevent_pending_range]]']
+    return checks
+
+
 def conditions(program, path):
     checks = front(program, path)
     if FRONT_ONLY:
         return checks, 0
+    if PENDING_ONLY:
+        assert INDEX == 1
+        checks += [
+            'S_float_P.TODO = (THROW_SEARCH n_throwable) :: (ERROR_HANDLER_RESULT perrorcall_entered) :: ptask_after*',
+            'perrorcall_entered.RESUME = STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key',
+            'S_float_P.OBJECTS[n_throwable] = THROWABLE pthrowable',
+            'pthrowable.KIND = "Exception"',
+            'S_float_P.ERRORHANDLER.CALLBACK = eps',
+            'PhpStep: S_float_P ~> S_float_next',
+            'S_float_next.TODO = (THROW_SEARCH n_throwable) :: ptask_after*',
+            'S_float_next.ERRORHANDLER = S_float_E.ERRORHANDLER',
+            'S_float_next.OBJECTS[n_throwable] = S_float_P.OBJECTS[n_throwable]',
+            'S_float_next.EVENTS = S_float_P.EVENTS',
+            'S_float_R = S_float_next[.STORE[n_key] = DEFINED (PFLOAT 4906019910204099648)]',
+            'S_float_R.RESULT = KNOWN PNULL',
+        ]
+        changed = pending_mask_checks()
+        return checks + changed, len(changed)
     if RANGE_ONLY:
         assert INDEX == 2
         changed = normal_range_checks()
@@ -156,9 +187,8 @@ def conditions(program, path):
             '$error_read_discard(S_float_R, perrorcall_entered.RESUME) = S_float_R',
             'n_no_throwable = |S_float_R.OBJECTS|',
         ]
+        checks += pending_mask_checks()
         for tag, changed in (
-            ('mask_zero', 'S_float_R[.ERRORHANDLER.LEVELS = 0]'),
-            ('mask_other', 'S_float_R[.ERRORHANDLER.LEVELS = 512]'),
             ('no_callback', 'S_float_R[.ERRORHANDLER.CALLBACK = eps]'),
             ('budget', 'S_float_R[.COMPLETION = BUDGET]'),
             ('no_throw', 'S_float_R[.TODO = eps]'),
@@ -237,6 +267,10 @@ if __name__ == '__main__':
     if RANGE_ONLY:
         sys.argv.remove('--range-only')
         assert INDEX == 2 and not FRONT_ONLY
+    PENDING_ONLY = '--pending-only' in sys.argv
+    if PENDING_ONLY:
+        sys.argv.remove('--pending-only')
+        assert INDEX == 1 and not FRONT_ONLY and not RANGE_ONLY
     runner.NAME = tuple(cases.CASES)[INDEX]
     runner.OUTPUT = cases.OUTPUTS[runner.NAME]
     runner.cases, runner.conditions, runner.PREFIX = cases, conditions, PREFIX
@@ -249,13 +283,17 @@ if __name__ == '__main__':
     report['mode'], report['raw_unset_steps'] = 'SL', 1
     report['scope'] = ('Independent actual saved-cell identity, in-bounds ordinary unreferenced/unreleased '
         'CV and unchanged-state PFLOAT read with exact finite bits, before any finite law.' if FRONT_ONLY else
+        'Only two prior pending finite-OOB mask controls now use existing default Warning reporting '
+        'without changing their real Throwable or complete pending tail. No closed whole/discard '
+        'campaign is renewed. Source0/native0; saved native reused.' if PENDING_ONLY else
         'Only three formerly refused normal finite-OOB controls from the peer negative-zero return '
         'front dispatch copied range Warning tasks with their entire original caller tail. '
         'Closed fitting/discard/whole campaigns are not renewed. Source0/native0; saved native reused.' if RANGE_ONLY else
         'Independent fitting normal PFLOAT resume and finite OOB discard only under a genuine pending '
         'Throwable and restored eligible Warning handler. Exact Error or same Exception, callback/mask '
         'priority, no extra owners/diagnostics and whole/split; eligible normal OOB starts the new '
-        'secondary Warning with copied bits and the complete caller tail, while masked OOB discard, forged '
+        'secondary Warning with copied bits and the complete caller tail; pending mask0/512 controls '
+        'use default reporting, while forged '
         'pending object/context and nonfinite/out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

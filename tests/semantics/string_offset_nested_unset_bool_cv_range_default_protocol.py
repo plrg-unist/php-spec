@@ -13,6 +13,7 @@ import string_offset_nested_unset_bool_cv_warning_review_state as shared
 import string_offset_nested_unset_bool_cv_range_default_cases as cases
 
 NAME = tuple(cases.CASES)[0]
+PENDING_ONLY = False
 
 
 def front(program, path):
@@ -81,6 +82,17 @@ def front(program, path):
 
 
 def conditions(program, path):
+    if PENDING_ONLY:
+        checks = front(program, path) + [
+            'S_report = S_R[.TODO = (STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits) :: ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.ERRORFATALTRACE = eps][.EVENTS = S_R.EVENTS ++ [pevent_range]]',
+            'S_pending_budget = $drive_steps(S_report, 1)',
+            'S_pending = $review_cv_running(S_pending_budget)',
+            'S_pending.TODO = (THROW_SEARCH n_error) :: ptask_after*',
+            'S_pending.OBJECTS[n_error] = THROWABLE pthrowable',
+            'pthrowable.KIND = "Error"',
+        ]
+        changed = pending_checks()
+        return checks + changed, len(changed)
     checks = front(program, path) + [
         '$string_unset_cv_range_plan(S_R) = ((porigin_site, z, n_key, n_bits))',
         'ptask_range = STRING_UNSET_CV_RANGE_WARNING_RESULT porigin_site z n_key n_bits',
@@ -138,14 +150,23 @@ def conditions(program, path):
         'S_pending.TODO = (THROW_SEARCH n_error) :: ptask_after*',
         'S_pending.OBJECTS[n_error] = THROWABLE pthrowable',
         'pthrowable.KIND = "Error"',
-        '$string_unset_cv_range_plan(S_pending) = eps',
-        '~$string_unset_bool_cv_post_discard_cell(S_pending, n_key_name*, z_key, n_key)',
-        '$error_read_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key).COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"',
-    ]
+    ] + pending_checks()
     return checks, len(checks) - reached
 
 
+def pending_checks():
+    return [
+        '$string_unset_cv_range_plan(S_pending) = eps',
+        '~$string_unset_bool_cv_post_discard_cell(S_pending, n_key_name*, z_key, n_key)',
+        '$string_unset_cv_range_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key)',
+        '$error_read_discard(S_pending, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin_site z n_key) = S_pending[.EVENTS = S_pending.EVENTS ++ [pevent_range]]',
+    ]
+
+
 if __name__ == '__main__':
+    PENDING_ONLY = '--pending-only' in sys.argv
+    if PENDING_ONLY:
+        sys.argv.remove('--pending-only')
     own = Path(__file__).resolve()
     watched = [own, Path(shared.__file__), Path(sl.__file__), Path(cases.prior.__file__)]
     before = {str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in watched}
@@ -157,11 +178,13 @@ if __name__ == '__main__':
     report = json.loads(report_path.read_bytes())
     report['inputs'].update(before)
     report['mode'], report['raw_unset_steps'] = 'SL', 1
-    report['scope'] = ('Actual NORMAL first-handler resume has the saved ordinary CV/finite OOB bits, '
+    report['scope'] = ('Only the prior manual pending-Error discard assertion now uses the existing default Warning '
+        'while preserving its entire state and tail. Actual normal source/front remains unchanged; source0/native0.' if PENDING_ONLY else
+        'Actual NORMAL first-handler resume has the saved ordinary CV/finite OOB bits, '
         'exact source/CODE/quiet read and restored same named callback with live512 mask. Existing '
         'stderr/reporting/source renderer produces exactly one range event before the copied nonowning '
         'resume raises the fixed Error, preserving the complete caller tail, state/heap and whole/split. '
         'Reporting0/display0 remain quiet; absent/nonnamed/nonfinite/owning/ref/source forgeries and '
-        'pending ineligible OOB remain outside admission. Source0/native0, exact saved native reused.')
+        'pending discard uses its separate finite-OOB default-reporting route. Source0/native0, exact saved native reused.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)
