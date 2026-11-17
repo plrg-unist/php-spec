@@ -567,6 +567,19 @@ production-SL508 load passes16.94508742284961s/source0. All earlier failures,
 timeouts and unrun selections retain0. General NaN VALUE/BYTE/truth and wider
 producers/lifetimes remain partial; exact holds stay unchanged.
 [Runtime NaN identity review](../../coverage/semantics/string-offset-request-base-runtime-nan-identity-review.json).
+Quiet emitted weak equality also consumes exact recursive NaNs through a
+disjoint NORMAL/at-least-one-NaN certificate. Exact source/CODE/read/precision
+and unchanged whole-state comparison retain typed Booleans; `NaN == true`
+uses quiet comparison-specific dispatch while strict identity remains false.
+Native4 once/source4, author1244/94-derived and independent1714/564-derived
+retain separate cuts, including30 source0 controls and a separate fourth
+compiled-root fixture with no callback/owner/bounds/resumption renewal. Actual
+`a1a654f00` preserves exact6/+373; the sole shared `0eb7faa51` production-SL508
+load passes16.892486110096797s/source0. General NaN VALUE/BYTE/truth, other
+operators and wider producers/lifetimes remain partial. Exact holds stay unchanged.
+[Runtime NaN equality review](../../coverage/semantics/string-offset-request-base-runtime-nan-equality-review.json).
+
+
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
 trees. Each actual arithmetic node and child needs its own compiled fact; child
