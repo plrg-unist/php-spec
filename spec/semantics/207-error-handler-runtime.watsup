@@ -1122,6 +1122,17 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
+dec $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) : bool
+def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = true
+  -- if $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature)
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NName (BYTES text_type) metadata_type, pssignature) = true
+  -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
+  -- if $(|phpType7*| > 0)
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type]))]
+  -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = false -- otherwise
+
 dec $reference_notice_producer_target(pstate, porigin) : pfunction?
 def $reference_notice_producer_target(S, porigin) = $call_target(S, preqbytes, eps)
   -- if $exit_fixed(S, porigin) = ((preqbytes, eps))
@@ -1158,7 +1169,7 @@ def $named_reference_notice_source(S, porigin_function, n, (porigin)) = true
   -- if $reference_notice_producer_target(S, porigin_argument) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
-  -- if $reference_notice_producer_header(phpType6_producer, phpType16_producer, phpType18_producer, pfunction_producer.SIGNATURE)
+  -- if $reference_notice_producer_scoped_header(pfunction_producer.ENV, phpType6_producer, phpType16_producer, phpType18_producer, pfunction_producer.SIGNATURE)
   -- if ~$arginfo_tmp_origin(S, (porigin_argument)) /\ ~$arginfo_nullsafe_origin(S, (porigin_argument))
   -- if pnamedtarget = $named_arg_target(pfunction, $named_source(S, (porigin), n), n)
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, $named_index(pfunction.SIGNATURE.PARAMETERS, pnamedtarget)) = (psparam)
@@ -1231,7 +1242,7 @@ def $positional_reference_notice_source(S, porigin_function, n, (porigin)) = tru
   -- if $reference_notice_producer_target(S, porigin_argument) = (pfunction_producer)
   -- if $origin_node(S.SOURCES, pfunction_producer.ORIGIN) = (NStmtFunction (SEQUENCE eps) (BOOLEAN false) phpType11_producer phpType16_producer phpType18_producer phpType23_producer metadata_producer)
   -- if ~pfunction_producer.SIGNATURE.BYREF /\ ~$function_generator(S, pfunction_producer)
-  -- if $reference_notice_producer_header(phpType6_producer, phpType16_producer, phpType18_producer, pfunction_producer.SIGNATURE)
+  -- if $reference_notice_producer_scoped_header(pfunction_producer.ENV, phpType6_producer, phpType16_producer, phpType18_producer, pfunction_producer.SIGNATURE)
   -- if ~$arginfo_tmp_origin(S, (porigin_argument)) /\ ~$arginfo_nullsafe_origin(S, (porigin_argument))
   -- if $call_parameter_at(pfunction.SIGNATURE.PARAMETERS, n) = (psparam)
   -- if psparam.BYREF /\ psparam.TYPE = eps

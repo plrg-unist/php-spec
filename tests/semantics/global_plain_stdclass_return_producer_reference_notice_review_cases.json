@@ -1,0 +1,64 @@
+[
+  {
+    "id": "global-plain-stdclass-named-byref-rebind-and-private-return-cell",
+    "source": "<?php\n// Global declaration context for the plain stdClass return.\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\sTdClAsS &$saved):stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "eecc19a26b451a86f7d53168a2cfa091179c2662a2a162023274d9e6cbf71a34",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "named-fqn-stdclass-byref-rebind-and-canonical-return",
+      "source_sha256": "b3f11403b340ec76a920e0f507e6b85cd6da9baa077eaec3d058444e01600080",
+      "edits": "Keep line positions and observations; replace the namespace declaration by a global-context comment and the handler by global h; select bare plain stdClass RETURN. The receive-priority control also replaces mixed RETURN by stdClass, after an unchanged rejecting formal."
+    },
+    "namespace": "",
+    "scope_controls": [
+      {
+        "id": "namespaced-imported-plain-stdclass-return",
+        "namespace": "ReviewPlainScope115",
+        "source": "<?php\nnamespace ReviewPlainScope115;\nuse \\stdClass;\nfunction make(\\sTdClAsS &$saved):stdClass{return $saved;}\n",
+        "source_sha256": "6e94a8ac8ff22ccf30cec33551bb66246bcdfc8a5cdc282bcbf1613e1c878dc8",
+        "source_agreements": 0
+      },
+      {
+        "id": "global-explicit-class-import-plain-stdclass-return",
+        "namespace": "",
+        "source": "<?php\nuse \\stdClass as stdClass;\nfunction make(\\sTdClAsS &$saved):stdClass{return $saved;}\n",
+        "source_sha256": "8a9baaa2a32a5d02ccafbf30afcc0f0d3ae4d984f8a36d843578fbb973c2c2f2",
+        "source_agreements": 0
+      }
+    ]
+  },
+  {
+    "id": "global-plain-stdclass-receive-error-before-body-return-and-notice",
+    "source": "<?php\n// Global declaration context for the plain stdClass return.\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make(\\stdClass &$saved):stdClass{echo 'BADM;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "3557f3ade6fde2e4a87933fa14fdd7994e26d886cc97e02bc3233ab74cf0e8ff",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "wrong-class-fqn-stdclass-byref-receive-before-body-and-notice",
+      "source_sha256": "02a173025bde3fa3cc1dacfe23113cd9a48fb7bdf3f75c699fa2bbdbecbe876c",
+      "edits": "Keep line positions and observations; replace the namespace declaration by a global-context comment and the handler by global h; select bare plain stdClass RETURN. The receive-priority control also replaces mixed RETURN by stdClass, after an unchanged rejecting formal."
+    },
+    "namespace": ""
+  },
+  {
+    "id": "global-plain-stdclass-return-error-before-outer-notice",
+    "source": "<?php\n// Global declaration context for the plain stdClass return.\nclass Other{}\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):stdClass{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=new Other;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "fd09a5b76a3247b92bf6f5ac11df5df270714f727efb70d7178edefb8d1bd8ee",
+    "derived_from": {
+      "catalogue": "tests/semantics/cv_fqn_stdclass_producer_reference_notice_review_cases.json",
+      "id": "wrong-class-fqn-stdclass-return-before-notice",
+      "source_sha256": "f00dc75f4019be6a0e87d7473adeb05183b13e6abc4bacb40bd83485d328a5c6",
+      "edits": "Keep line positions and observations; replace the namespace declaration by a global-context comment and the handler by global h; select bare plain stdClass RETURN. The receive-priority control also replaces mixed RETURN by stdClass, after an unchanged rejecting formal."
+    },
+    "namespace": ""
+  }
+]
