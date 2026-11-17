@@ -95,7 +95,7 @@ def frontier(name, fixture, path):
                 ('add', '9223372036854775807', '1', 'PFLOAT 4890909195324358656', False),
                 ('sub', '$(-9223372036854775808)', '1', 'PFLOAT 14114281232179134464', False),
                 ('mul', '$(-9223372036854775808)', '$(-1)', 'PFLOAT 4890909195324358656', False),
-                ('div', '4', '2', 'PINT 2', False)]:
+                ('div', '4', '2', 'PINT 2', True)]:
             state, expression, function, operator, children, values = binary(kind, integer(left), integer(right), result)
             proof = [value(state, child, 'PORIGIN n_cast_handler pcpath_value_' + side, function) + ' = (' + typed + ')'
                      for side, child, typed in zip(['left', 'right'], children, values)]

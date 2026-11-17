@@ -1432,7 +1432,7 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
 ;; RHS compiler line, including through recursive multiline children.
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_result)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
-  -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR \/ pbin = ADD \/ pbin = SUBTRACT \/ pbin = MULTIPLY
+  -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR \/ pbin = ADD \/ pbin = SUBTRACT \/ pbin = MULTIPLY \/ pbin = DIVIDE
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (PINT i_left)
