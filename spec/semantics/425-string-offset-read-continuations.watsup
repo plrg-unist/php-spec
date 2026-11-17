@@ -975,6 +975,26 @@ def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
   -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
   -- if $compiled_precision(S, (porigin_left)) = (z_precision)
   -- if $string_read_allocated_value(S[.COMPLETION = NORMAL], porigin_left, pvalue)
+;; A quiet NULL left selects an allocated RHS without a new row.
+;; Demand the full source tree and both operands' captured precision.
+def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprBinaryOpCoalesce expression_left expression_right metadata
+  -- if ~$coalesce_quiet_operand(expression_left)
+  -- if $pcwalk([PCOCCURRENCE pcpath expression]) = (PCOCCURRENCE pcpath_desc pcnode_desc)*
+  -- (if $origin_node(S.SOURCES, PORIGIN n pcpath_desc) = (pcnode_desc))*
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
+  -- if $(z_line > 0)
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin_left) = (PNULL)
+  -- if $string_read_allocated_value(S_probe, porigin_right, pvalue)
 def $string_read_allocated_base(S, porigin, pvalue) = false -- otherwise
 def $string_read_allocated_leading(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_base*, PSTRING n_key*) = (i)
   -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_base*)
