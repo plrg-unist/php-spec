@@ -60,10 +60,10 @@ n_float = $hex_bits("c024000000000000",0)
 S_float = S_capture[.SOURCES = [pcunit[.OCCURRENCES = pcoccurrence_float* ++ pcunit.OCCURRENCES]]][.POOLS = [ppool[.CONSTANTS = (PCONSTANT pcpath_atom (PFLOAT n_float)) :: ppool.CONSTANTS]]]
 $string_read_runtime_value(S_float,porigin_atom) = (PFLOAT n_float)
 $compiled_precision(S_float,(porigin_atom)) = (14)
-~$string_read_allocated_value(S_float,porigin_cast,pvalue_cast)
-~$string_read_allocated_base(S_float,porigin_base,pvalue_base)
-$string_read_raw_capture(S_float,poperand,pvalue_base) = eps
-$string_read_plan(S_float) = eps
+$string_read_allocated_value(S_float,porigin_cast,pvalue_cast)
+$string_read_allocated_base(S_float,porigin_base,pvalue_base)
+$string_read_raw_capture(S_float,poperand,pvalue_base) = ((pvalue_raw,pstringread.KEYCELL))
+$string_read_plan(S_float) = (pstringread)
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in derived)
     main = body.split('def $main() = true\n', 1)[1]
