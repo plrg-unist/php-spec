@@ -112,6 +112,45 @@ def conditions(program, path):
             'S_float_error = S_float_P[.TODO = ptask_after*][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)][.LOCATION = NOWHERE][.COMPLETION = THROWN "Error" ($ptascii("Cannot use string offset as an array")) z]',
         ]
     reached = len(checks)
+    checks += ['$string_unset_bool_cv_post_normal_cell(S_float_P, n_key_name*, z_key, n_key)']
+    for bits in (4890909195324358655, 14114281232179134464):
+        checks += ['$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')',
+            '$string_unset_bool_cv_post_normal_cell(S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')], n_key_name*, z_key, n_key)']
+    if throwing:
+        checks += [
+            'S_float_fit_mask = S_float_P[.ERRORHANDLER.LEVELS = 0]',
+            '$string_unset_bool_cv_post_discard_cell(S_float_fit_mask, n_key_name*, z_key, n_key)',
+            'PhpStep: S_float_fit_mask ~> S_float_fit_mask_next',
+            'S_float_fit_mask_next = S_float_next[.ERRORHANDLER.LEVELS = 0]',
+            'S_float_R = S_float_next[.STORE[n_key] = DEFINED (PFLOAT 4906019910204099648)]',
+            '$string_unset_bool_cv_post_cell(S_float_R, n_key_name*, z_key, n_key)',
+            '~$string_unset_bool_cv_post_normal_cell(S_float_R, n_key_name*, z_key, n_key)',
+            '$string_unset_bool_cv_post_discard_cell(S_float_R, n_key_name*, z_key, n_key)',
+            '$error_read_discard(S_float_R, perrorcall_entered.RESUME) = S_float_R',
+            'n_no_throwable = |S_float_R.OBJECTS|',
+        ]
+        for tag, changed in (
+            ('mask_zero', 'S_float_R[.ERRORHANDLER.LEVELS = 0]'),
+            ('mask_other', 'S_float_R[.ERRORHANDLER.LEVELS = 512]'),
+            ('no_callback', 'S_float_R[.ERRORHANDLER.CALLBACK = eps]'),
+            ('budget', 'S_float_R[.COMPLETION = BUDGET]'),
+            ('no_throw', 'S_float_R[.TODO = eps]'),
+            ('object_bound', 'S_float_R[.TODO = [THROW_SEARCH n_no_throwable]]'),
+            ('object_kind', 'S_float_R[.OBJECTS[n_throwable] = THROWABLE pthrowable[.KIND = "stdClass"]]'),
+        ):
+            state = 'S_float_range_' + tag
+            checks += [state + ' = ' + changed,
+                '~$string_unset_bool_cv_post_discard_cell(' + state + ', n_key_name*, z_key, n_key)',
+                '$error_read_discard(' + state + ', perrorcall_entered.RESUME) = ' + state + '[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
+    else:
+        for bits in (4890909195324358656, 14114281232179134465, 9218868437227405311):
+            state = 'S_float_range_' + str(bits)
+            checks += [state + ' = S_float_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
+                '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+                '~$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')',
+                '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
+                'PhpStep: ' + state + ' ~> ' + state + '_next',
+                state + '_next = ' + state + '[.TODO = ptask_after*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]']
     for bits in (0, 1, 9223372036854775808, 9223372036854775809,
                  9218868437227405311, 18442240474082181119):
         checks += ['$string_unset_bool_cv_post_value(PFLOAT ' + str(bits) + ')',
@@ -186,8 +225,9 @@ if __name__ == '__main__':
     report['mode'], report['raw_unset_steps'] = 'SL', 1
     report['scope'] = ('Independent actual saved-cell identity, in-bounds ordinary unreferenced/unreleased '
         'CV and unchanged-state PFLOAT read with exact finite bits, before any finite law.' if FRONT_ONLY else
-        'Independent finite PFLOAT resume from direct GLOBALS on the saved ordinary CV. Exact Error or '
-        'same Exception, restored callback, no extra owners/diagnostics and whole/split equality; finite '
-        'boundaries admitted, nonfinite/out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
+        'Independent fitting normal PFLOAT resume and finite OOB discard only under a genuine pending '
+        'Throwable and restored eligible Warning handler. Exact Error or same Exception, callback/mask '
+        'priority, no extra owners/diagnostics and whole/split; normal OOB, masked OOB discard, forged '
+        'pending object/context and nonfinite/out-of-bits/ref/rebind/owning forms refused. Source0/native0.')
     report_path.write_text(json.dumps(report, indent=2) + '\n')
     raise SystemExit(0 if passed else 1)

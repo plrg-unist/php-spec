@@ -152,6 +152,35 @@ def $string_unset_bool_cv_post_cell(S, n_name*, z, n) = true
   -- if $resolve_at(S, VARIABLE n_name* z, z) = S[.RESULT = KNOWN pvalue]
 def $string_unset_bool_cv_post_cell(S, ptbytes, z, n) = false -- otherwise
 
+dec $string_unset_bool_cv_post_normal_value(pvalue) : bool
+def $string_unset_bool_cv_post_normal_value(PNULL) = true
+def $string_unset_bool_cv_post_normal_value(PBOOL b) = true
+def $string_unset_bool_cv_post_normal_value(PINT i) = $long_range(i)
+def $string_unset_bool_cv_post_normal_value(PFLOAT n) = true
+  -- if $(n < 18446744073709551616)
+  -- if $fparts_fits($float_decode(n))
+def $string_unset_bool_cv_post_normal_value(pvalue) = false -- otherwise
+
+dec $string_unset_bool_cv_post_normal_cell(pstate, ptbytes, int, nat) : bool
+def $string_unset_bool_cv_post_normal_cell(S, n_name*, z, n) = true
+  -- if $string_unset_bool_cv_post_cell(S, n_name*, z, n)
+  -- if S.STORE[n] = DEFINED pvalue
+  -- if $string_unset_bool_cv_post_normal_value(pvalue)
+def $string_unset_bool_cv_post_normal_cell(S, ptbytes, z, n) = false -- otherwise
+
+dec $string_unset_bool_cv_post_discard_cell(pstate, ptbytes, int, nat) : bool
+def $string_unset_bool_cv_post_discard_cell(S, n_name*, z, n) = true
+  -- if $string_unset_bool_cv_post_normal_cell(S, n_name*, z, n)
+def $string_unset_bool_cv_post_discard_cell(S, n_name*, z, n) = true
+  -- if $string_unset_bool_cv_post_cell(S, n_name*, z, n)
+  -- if ~$string_unset_bool_cv_post_normal_cell(S, n_name*, z, n)
+  -- if S.COMPLETION = NORMAL
+  -- if S.TODO = (THROW_SEARCH n_throwable) :: ptask_tail*
+  -- if $(n_throwable < |S.OBJECTS|)
+  -- if $throwable_member(S, n_throwable)
+  -- if $error_handler_eligible(S, 2)
+def $string_unset_bool_cv_post_discard_cell(S, ptbytes, z, n) = false -- otherwise
+
 dec $string_unset_bool_cv_plan(pstate) : (porigin, int, nat)?
 def $string_unset_bool_cv_plan(S) = ((porigin, z, n_key))
   -- if S.COMPLETION = NORMAL
@@ -199,19 +228,19 @@ rule PhpStep/string-unset-boolean-cv-warning-result: S ~> $throw_scalar(S[.TODO 
   -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) :: ptask_tail*
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
-  -- if $string_unset_bool_cv_post_cell(S, n_key_name*, z_name, n)
+  -- if $string_unset_bool_cv_post_normal_cell(S, n_key_name*, z_name, n)
 
 rule PhpStep/string-unset-boolean-cv-warning-result-unsupported: S ~> S[.TODO = ptask_tail*][.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
   -- if S.COMPLETION = NORMAL
   -- if S.TODO = (STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) :: ptask_tail*
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
-  -- if ~$string_unset_bool_cv_post_cell(S, n_key_name*, z_name, n)
+  -- if ~$string_unset_bool_cv_post_normal_cell(S, n_key_name*, z_name, n)
 
 def $error_read_discard(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n) = S[.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"]
   -- if $call_task_valid(S, STRING_UNSET_BOOL_CV_WARNING_RESULT porigin z n)
   -- if $string_unset_bool_cv_source(S, porigin, z) = ((n_base_name*, z_outer, n_key_name*, z_name))
-  -- if ~$string_unset_bool_cv_post_cell(S, n_key_name*, z_name, n)
+  -- if ~$string_unset_bool_cv_post_discard_cell(S, n_key_name*, z_name, n)
 
 ;; DOUBLE uses a silent cast of the fixed CV slot's union after the handler.
 ;; It never dispatches on a changed type; the converted index is unused.

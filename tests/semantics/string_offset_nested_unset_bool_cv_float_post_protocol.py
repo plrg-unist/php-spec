@@ -27,6 +27,43 @@ def conditions(program, path):
     assert INDEX in (0, 3)
     prior.INDEX, prior.cases = INDEX, cases
     checks, derived = prior.conditions(program, path)
+    if INDEX == 3:
+        old = '$error_read_discard(S_P, perrorcall_entered.RESUME) = S_P'
+        assert checks.count(old) == 1
+        checks[checks.index(old)] = '$error_read_discard(S_P, perrorcall_entered.RESUME).COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"'
+        controls = [
+            '~$string_unset_bool_cv_post_normal_cell(S_P, n_key_name*, z_key, n_key)',
+            '$string_unset_bool_cv_post_discard_cell(S_next, n_key_name*, z_key, n_key)',
+            '$error_read_discard(S_next, perrorcall_entered.RESUME) = S_next',
+        ]
+        for mask in (0, 512):
+            state = 'S_mask_' + str(mask)
+            controls += [state + ' = S_P[.ERRORHANDLER.LEVELS = ' + str(mask) + ']',
+                'PhpStep: ' + state + ' ~> ' + state + '_next',
+                state + '_next.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"',
+                state + '_next.ERRORHANDLER.CALLBACK = (pvalue_callback)',
+                state + '_next.ERRORHANDLER.LEVELS = ' + str(mask),
+                state + '_next.STORE = ' + state + '.STORE',
+                state + '_next.EVENTS = ' + state + '.EVENTS',
+                state + '_next.OBJECTS[n_throwable] = S_P.OBJECTS[n_throwable]']
+        checks += controls
+        derived += len(controls)
+    else:
+        controls = []
+        for tag, bits in (('maximum_fit', 4890909195324358655),
+                          ('minimum_fit', 14114281232179134464)):
+            controls += ['$string_unset_bool_cv_post_normal_value(PFLOAT ' + str(bits) + ')']
+        for tag, bits in (('positive_boundary', 4890909195324358656),
+                          ('below_minimum', 14114281232179134465)):
+            state = 'S_oob_' + tag
+            controls += [state + ' = S_P[.STORE[n_key] = DEFINED (PFLOAT ' + str(bits) + ')]',
+                '$string_unset_bool_cv_post_cell(' + state + ', n_key_name*, z_key, n_key)',
+                '~$string_unset_bool_cv_post_normal_cell(' + state + ', n_key_name*, z_key, n_key)',
+                'PhpStep: ' + state + ' ~> ' + state + '_next',
+                state + '_next.COMPLETION = UNSUPPORTED "post-warning Boolean CV conversion"',
+                state + '_next.EVENTS = ' + state + '.EVENTS']
+        checks += controls
+        derived += len(controls)
     return checks + finite_checks(), derived
 
 
