@@ -791,12 +791,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $compiled_read(S, porigin_right) = (PSTRING n_right*)
   -- if $compiled_string_value(S, porigin_right, PSTRING n_right*) = PSTRING_CARRIER INTERNED_STRING n_right*
   -- if n_bytes* = n_left*
-;; A literal nonnull string skips a certified emitted coalesce fallback.
+;; A folded literal string tree skips a certified emitted coalesce fallback.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
-  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce (NScalarString (BYTES text_left) metadata_left) expression_right metadata)
+  -- if $origin_node(S.SOURCES, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $string_read_literal_bytes(expression_left) = (n_bytes*)
   -- if $string_read_literal_bytes(expression_right) = eps
   -- if $compiled_read(S, porigin) = eps
-  -- if n_bytes* = $base64(text_left)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
   -- if $compiled_read(S, porigin_left) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin_left, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
@@ -972,6 +972,22 @@ def $string_read_runtime_value(S, porigin) = (PSTRING_CARRIER INTERNED_STRING n_
   -- if $compiled_read(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_identity_value(S, porigin) = (PSTRING n_bytes*)
   -- if $compiled_string_value(S, porigin, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
+;; Parser-folded raw string CONCAT trees have source children without child code.
+def $string_read_runtime_value(S, PORIGIN n pcpath) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
+  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if expression = NExprBinaryOpConcat expression_left expression_right metadata
+  -- if $string_read_literal_bytes(expression) = (n_bytes*)
+  -- if $pcwalk([PCOCCURRENCE pcpath expression]) = (PCOCCURRENCE pcpath_child pcnode_child)*
+  -- (if $origin_node(S.SOURCES, PORIGIN n pcpath_child) = (pcnode_child))*
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, true))
+  -- if $(z_line > 0)
+  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
+  -- if $compiled_read(S, PORIGIN n pcpath) = (PSTRING n_bytes*)
+  -- if $compiled_string_value(S, PORIGIN n pcpath, PSTRING n_bytes*) = PSTRING_CARRIER INTERNED_STRING n_bytes*
+  -- if $startup_bytes(n_bytes*) /\ $c_string(n_bytes*) = n_bytes*
   -- if $string_carrier_valid(S, PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; Instanceof consumes authenticated NaNs without truth conversion.
 def $string_read_runtime_instanceof_operand(S, porigin) = (PFLOAT n_bits)
