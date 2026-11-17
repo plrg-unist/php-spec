@@ -1855,3 +1855,11 @@ and independent322/201 retain separate cuts; original author failure stays0.
 Actual/SAME6c0f1a6f59 and sole SL50916.690098264s/source0 are independently clear
 through one immutable tuple. Wider forms, lifetimes and every exact hold remain
 partial. [Review](../../coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
+
+Certified emitted NULL/STRING coalesce left values with a raw literal RHS preserve
+the nullness-selected exact INTERNED header and frozen raw CV key through returning
+Warnings, including empty and "0" nonnull strings. The raw RHS source, pool and
+INTERNED header remain mandatory even when its value is skipped. Emitted root/left
+reads, source/CODE/precision, typed NORMAL full-state results, quiet-location
+exclusions and existing ownership/continuation bounds remain; wider forms and
+lifetimes stay partial. [Review](../../coverage/semantics/string-offset-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).

@@ -35,6 +35,8 @@ carriers and lifetimes remain partial.
 [Falsey review](coverage/semantics/string-offset-runtime-null-shorthand-base-initial-raw-leading-key-review.json),
 [truthy review](coverage/semantics/string-offset-runtime-string-truthy-shorthand-base-initial-raw-leading-key-review.json).
 
+Certified emitted NULL/STRING coalesce left values with a raw literal RHS preserve their nullness-selected INTERNED header and frozen raw CV key through returning Warnings, including empty/"0" nonnull strings. Wider forms and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-scalar-coalesce-base-initial-raw-leading-key-review.json).
+
 Completed one- or multiple-required ordinary-CV producers admit exact object|iterable/iterable|object and callable|iterable/iterable|callable returns, plus longer ordered distinct builtin unions containing iterable. Dedicated RETURN-only folding preserves raw Identifier/normalized order and count, rejects array/duplicate/Boolean overlaps, and retains shared FORMALS, existing pairs/epsilon, actual return verification and finite private Notice cells. Class-bearing iterable unions and wider payload/lifetime contexts remain partial. [Review](coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).
 
 Canonical emitted BOOL casts and NOT of certified NULL children preserve exact false/true results before private integer default reception. Exact source, declaration bindings, Shared caches and recipient ownership remain required. Folded literal-false shorthand redirects, wider producers and lifetimes remain partial. [NULL truth review](coverage/semantics/deferred-null-truth-wrapper-default-reception-review.json).
