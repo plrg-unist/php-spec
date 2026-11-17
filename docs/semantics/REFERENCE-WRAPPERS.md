@@ -403,6 +403,3 @@ callbacks and genuine array-reference assignment. Captured source cells own once
 simple source CVs stay delayed until target acquisition. Raw typed DIM_OP array
 backing records its source in `CONTAINERINITS`, adding no owner or ordinary type
 permission. Pointer COW transports that backing; whole-cell stores clear it.
-
-Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|string/string|iterable returns, preserving raw/normalized order, unchanged formal reception, actual return verification, frame retirement and finite private Notice cells. Wider headers, payloads and lifetimes remain partial.
-[Ordered iterable/string return review](../../coverage/semantics/cv-union-string-iterable-return-producer-reference-notice-review.json).

@@ -1360,3 +1360,6 @@ keeps seven originals/native4+3 once and separate author/independent source7 wit
 The sole saved production-SL508 load passes in16.440659384s/source0. Other iterable
 union partners, wider headers, payloads and lifetimes remain partial; every exact
 hold stays unchanged.
+
+Completed one- or multiple-required ordinary-CV producers admit exact ordered iterable|string/string|iterable returns, preserving raw/normalized order, unchanged formal reception, actual return verification, frame retirement and finite private Notice cells. Wider headers, payloads and lifetimes remain partial.
+[Ordered iterable/string return review](../../coverage/semantics/cv-union-string-iterable-return-producer-reference-notice-review.json).
