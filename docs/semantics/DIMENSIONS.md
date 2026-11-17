@@ -2157,3 +2157,23 @@ without failures/corrections/timeouts. WHOLE12 and actual=joined5879941ed/sole70
 with source0 and reviewer47’s one cached saved-report/map read. General NULL-selected RHS, uncertified/CV
 children, changed precision histories, NUL and lifetimes remain partial.
 [Review](../../coverage/semantics/string-offset-runtime-allocated-coalesce-string-cast-base-initial-raw-leading-key-review.json).
+
+Saved ordinary NULL/BOOL CVs also retain bounded live nonempty arrays after the
+nested-unset Warning. A separate stateful proof retains the rooted key cell,
+valid full heap and real array edge. Entries admit existing quiet leaves,
+authenticated non-NUL REQUEST text, one level of flat child arrays, plain scalar
+reference cells and fieldless stdClass identities. The saved-cell, exact quiet
+read, source and continuation guards remain; pure PARRAY admission stays false.
+Normal return raises the fixed Error, while pending throw preserves its Throwable
+and complete caller tail. The mixed source witnesses ordered children, a distinct surviving
+alias, runtime CONCAT text and the sole object owner; after key retirement its
+WeakReference observes NULL. Native4 once/source4 and separate author/independent
+state cuts pass. Exactly two old empty-suite [7] counter rows promote; affected
+legacy6/150 retains all three fake-PARRAY0 refusals. The corrected hypothetical
+tail fixture failure retains zero credit. Independent WHOLE8 and fixed actual
+696426e8c/solecf4a8e11 productionSL509 pass16.782376936s/source0 through immutable
+b0752419. One canonical execution remains distinct from two physical report/map
+reads after a wrapper cache failure and ROOT-authorized retry; author raw reads
+remain0. Deeper/cyclic arrays, object fields, wider payloads/cells/lifetimes and
+all exact holds remain partial/unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).

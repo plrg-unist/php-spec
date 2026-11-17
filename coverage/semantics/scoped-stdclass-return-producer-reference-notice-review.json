@@ -1,0 +1,133 @@
+{
+  "family": "REF127",
+  "status": "bounded implementation independently reviewed and integrated; family remains partial",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "CLI",
+    "zts": false,
+    "bits": 64,
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Ordinary singleton NName RETURN aliases resolving quietly to exact canonical global stdClass under a nonempty retained declaration namespace/import environment. Existing changed-Param normalization runs first; the new arm requires its Param view unchanged, nonempty actuals and exact nonempty normalized RETURN before delegating to the FQN header. Original source/metadata, independent return verification, frame retirement and private Notice-cell ownership remain.",
+  "source_revision": "e937b5cebff5b96330ef281a29f342481bdbcb22",
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/author/source-packet-v1.json",
+    "sha256": "3198ac3dd26a2bce3367d11eec535d45c83e83ad767d79d5df8c8e7b7cd30b5c",
+    "paths": 9,
+    "source_207_parent_sha256": "87989883aede638c0d3299e63a7c2c18ac5fa22bc8d37e7bcc27e422acc4e1e2",
+    "source_207_post_sha256": "86ab526f6747e28cf751490ceb5065a6f302da4c6f95c236e18bd8472dad575b",
+    "parent_inverses_verified": true,
+    "unique_shared_make_literal": true
+  },
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_resolve_class_name, zend_compile_typename, zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF"
+  ],
+  "native": {
+    "author_originals_once": 2,
+    "peer_originals_once": 2,
+    "replays": 0,
+    "author_report": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/author/author-native.json",
+    "author_report_sha256": "7ce77191d46341c97ead6488708650845a3afef26d0aeb89cc05a27313d135bd",
+    "peer_report": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/review/peer-native.json",
+    "peer_report_sha256": "bc02d58c4af5166369bb3e54406939ddcc29859fd655dd67ab2649a923b93953"
+  },
+  "prelaw": {
+    "author_summary": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/author/prelaw-summary-v2.json",
+    "author_summary_sha256": "98aa2b6e686a5014d0bd224549f955eda26132359a394296ce1fb898a89c0e79",
+    "author_front": [
+      155,
+      155,
+      0
+    ],
+    "author_first_source": "Unsupported; second source unrun; both zero new credit",
+    "peer_summary": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/review/prelaw-summary-v1.json",
+    "peer_summary_sha256": "6e34a81b4a224d5e67557e5c58d242045dd35e570349908aed6cc8c5ace6d537",
+    "peer_front": [
+      86,
+      86,
+      0
+    ],
+    "peer_sources": "Positive Unsupported and unchanged NULL control normal; both zero new credit",
+    "module_count": 507,
+    "disjointness": "Existing generic RETURNS=eps and zero-actual helper success are retained; exact canonical nonempty RETURN and >0 actual guards prevent new-arm overlap."
+  },
+  "author_validation": {
+    "revision": "a6654a29b019251ca95cf28dac183b844bfad3e7",
+    "summary": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/author/postlaw-summary-v1.json",
+    "summary_sha256": "8a40edad0b7b155ca1515e3c4645c1a11fba5c5be90639a2ff708f51175f6c02",
+    "source_agreements": 2,
+    "state_conditions": 340,
+    "reached_conditions": 217,
+    "derived_conditions": 123,
+    "module_count": 507,
+    "passed": true
+  },
+  "independent_whole": {
+    "revision": "dc190a91f474ab21a23ca18f45dfb1bc16f0ca88",
+    "summary": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/review/whole-summary-v1.json",
+    "summary_sha256": "e3b67a9bf684423ed1811aaf7b40915f78e56e8189d98dc83db2a19affb58c3e",
+    "first_attempt": true,
+    "source_agreements": 4,
+    "new_notice_positives": 3,
+    "unchanged_null_return_control": 1,
+    "control_new_support_credit": 0,
+    "author_state": [
+      340,
+      217,
+      123
+    ],
+    "peer_state": [
+      191,
+      124,
+      67
+    ],
+    "module_count": 507,
+    "elapsed_seconds": 191.274222,
+    "outer_cap_seconds": 1200,
+    "inputs_and_head_stable": true,
+    "exit": 0,
+    "timeout": false,
+    "groups_after": [],
+    "passed": true
+  },
+  "fixed_actual": {
+    "actual": "00a431631e74d269d1c4c331c297ce8fa057fcb2",
+    "tree": "b1b61f5acebe789b1cf7f906e1dab5d31d2658aa",
+    "source": "e937b5cebff5b96330ef281a29f342481bdbcb22",
+    "module_count": 509,
+    "argv_count": 512,
+    "watch_count": 513,
+    "canonical_report_sha256": "ae71ca00aed165f1f6971befb8a12767c513366bf1097adb5f1a86df862074b6",
+    "map_sha256": "843b4bf72d4f87476393604dc7713aa3ff9758553accbb568fb697fa7d1a1176",
+    "elapsed_seconds": 16.18790603405796,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "executions": 1,
+    "physical_report_reads": 1,
+    "physical_map_reads": 1,
+    "author_raw_actual_report_map_reads": 0,
+    "clear_tuple": "/home/user/workspace/php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/review/fixed-actual-clear-v1.json",
+    "clear_tuple_sha256": "d6b196743baf869c9c494faca0b942bdf2e38990a67f56e18aa0465fe16b576a",
+    "passed": true
+  },
+  "preserved_zero_credit": [
+    "Author prelaw-front-v1 emitted namespace escape: compiler rejection, runtime unrun. Corrected front only; native and source refusal were not repeated.",
+    "One author zero-actual helper expectation corrected before postlaw fixtures to preserve existing generic behavior.",
+    "Two independent reader schema assertions corrected using cached bytes; no second physical report/map read or execution.",
+    "Earlier REF126 and other accepted source/native/fixture cuts remain unrenewed."
+  ],
+  "tests": [
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_cases.json",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_review_cases.json",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_sources.py",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_review_sources.py",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_state.py",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_review_state.py",
+    "tests/semantics/scoped_stdclass_return_producer_reference_notice_run.py"
+  ],
+  "remaining": "Nullable/union/relative scoped RETURNs, other resolved classes and wider payloads, owners and lifetimes remain partial. NULL does not succeed under this nonnullable RETURN.",
+  "holds": "Exact holds, 13 inherited donors/symlinks, operations57\u201362/90\u201393, reserve93807cdd6/255 and inventory169/306/closed0constructors+1runtime unchanged.",
+  "engine_bugs_or_intentional_divergences": []
+}

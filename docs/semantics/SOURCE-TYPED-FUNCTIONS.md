@@ -1311,8 +1311,20 @@ shares the existing unique proper FIELD1 redirect with binding pruning and
 scalar VALUE transport; literal-infinity and finite-FLOAT helpers are unchanged.
 Skipped names, raw selected tags, Shared caches and private integer reception
 retain their existing bounds through cold/warm calls and named handler reentry.
-Named or wider computed operands, NaN predicates, owning results and wider
-contexts remain partial; prior accepted cuts retain their original identities.
+INT-left, named or wider computed operands, NaN predicates, owning results and
+wider contexts remain partial; prior accepted cuts retain their original identities.
+
+[FLOAT-left/INT-right infinite defaults](../../coverage/semantics/deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-review.json)
+admit one ADD/SUBTRACT/MULTIPLY/DIVIDE with a raw FLOAT/sign left operand and
+raw signed64 INT/sign right operand. The integer recognizer checks every sign
+step; unary overflow receives no INT receipt. Exact FLOAT/PINT pools, matching
+pure and actual INFINITE result bits, full SOURCE/bindings and operand/condition
+root CODE/read/redirect absence share the unchanged proper FIELD1 redirect proof.
+Selected NULL/BOOL/INT/FLOAT tags, Shared caches and private integer reception
+retain their existing bounds through cold/warm calls and named handler reentry.
+INT-left, names, STRING or computed operands, NaN predicates, owning results and
+wider contexts remain partial. Earlier FLOAT-only receipts and accepted cuts
+retain their original identities.
 
 ## Source metadata and resumed states
 

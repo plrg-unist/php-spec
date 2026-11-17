@@ -1,0 +1,214 @@
+{
+  "family": "output-final-selected-parser-float-concat-cast-chain-return-modulo-error",
+  "target": "PHP8.5.10 CLI NTS64; vendored34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "Independently reviewed bounded extension; family remains partial",
+  "scope": "Existing selected Warning/Deprecated two INT/BOOL/FLOAT return casts admit parser-literal CONCAT trees mixing non-NUL STRING, nonnegative signed64 INT and canonical nonnegative finite raw FLOAT leaves. Each FLOAT requires exact indexed SOURCE, 16 lowercase hex digits, bits below positive infinity and authenticated source precision; pure parser_literal_text_at supplies bytes. Indexed child SOURCE is authenticated without requiring child CODE/read; the actual parser fixtures retain their absence. Existing own concat line/true folding flag, plain pool, empty effects, exact INTERNED identity, full NORMAL compiled-entry equality and nonownership guards remain.",
+  "engine_basis": "Pinned Zend zend_ast_create_concat_op folds two scalar ZVAL children through concat_function. FLOAT conversion uses zend_double_to_str and zend_gcvt with EG(precision); source-time formatting is distinct from live INI and PCC precision. The new nine-line456 leaf guard reuses authored parser_literal_text_at without native evaluation.",
+  "source_package": {
+    "parent": "5c98a8d6fb1901d52f49afaf2d035a9496563100",
+    "revision": "bcaacaa59fa0412617d773a6b4c59d43f3c8900d",
+    "tree": "87fc2dc7abbd34ba0725b6ba3428791db1426347",
+    "files": 8,
+    "production_added_lines": 9,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/ready-source-149-reviewed-fixed-manifest.json",
+    "manifest_sha256": "7be86711525b40770e7e66a1625c4bfdacba09a5484cdbfc49b846a782194146",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/ready-source-149-reviewed-fixed.patch",
+    "patch_sha256": "7b55c26cc0075859e66a9310d0c7c4146dada7e94ba4e16863b47ab25358ccb9",
+    "make_inserted_recipes": 5,
+    "independent_whole": {
+      "receipt": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-source-whole-01.json",
+      "sha256": "0fd8e505d785b45a44c49309c3ba87648a745a96e1d1818fa85c6d4d2ebd72eb",
+      "scope": "All8 complete current/saved/committed posts, four complete and four absent parents, forward/inverse reconstruction and exact Make5 deletion; 313+/6-/production9+, no extra paths."
+    },
+    "make_inserted_sha256": "77050b8580d97eef3057c0d28bc40ce68b8b445cf50d6c15f387d76147e69875",
+    "make_complete_parent_inverse": true
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-float-concat-assessment-149/report.json",
+    "sha256": "daad8f17e98301540025579733049a7eb7916e7ea12df90ae7b4aa87191e5f75",
+    "source_bytes": 485,
+    "source_sha256": "5f7d5082343ad508e45979a61c9817c6102b1ee359cbe2d2e93e3a4424793314",
+    "source_credit": 0,
+    "native_observed_once": true
+  },
+  "pre_rule": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/pre-02/report.json",
+    "sha256": "b7cebc6f413b0a25c7264e3da7b1be37506e2937d2d173c81287e67fc4aaac73",
+    "revision": "0aef80ca6164366f749868f9fe56f160a9f5747c",
+    "passed": true,
+    "compiler_facts": 10,
+    "groups": [
+      5,
+      5
+    ],
+    "source_credit": 0,
+    "note": "Corrected original precode expectations distinguish unchanged source14/live1 from PCC1 identity for changed versus byte-identical text. The original pre01 and diagnostic01 failed Boolean vectors remain preserved with zero credit."
+  },
+  "native_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/native-01/report.json",
+    "sha256": "fdb9a7e438f276007c32ceb2101bb2f760e9a3c95737c87a3f37446f4d963715",
+    "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+    "passed": true,
+    "new_observations": 5,
+    "saved_original_reused": 1,
+    "source_credit": 0,
+    "note": "Saved original path/bytes/argv/profile/raw streams are reused without replay; top-level native_reused_without_replay=false is the native-mode flag, while row1 explicitly records saved reuse."
+  },
+  "source_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/after-01/report.json",
+    "sha256": "1e4555c66b1564c9127830ed3aa7d1d96731f0e5cb10235390d4086ef3828907",
+    "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+    "passed": true,
+    "agreements": 6,
+    "source_credit": 6,
+    "seconds": 315.4054099060595,
+    "note": "Six original byte/path/profile comparisons preserve strict STRING and scalar-cast witnesses; no native replay."
+  },
+  "source_startup_precision": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/precision-01/report.json",
+    "sha256": "d438d2546960a86ce59f287e9ad1bbb80f7221c8f598a946a43135eb4aad627b",
+    "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+    "passed": true,
+    "agreements": 1,
+    "source_credit": 1,
+    "profile": "Separate startup precision1 original; native once and source once. Not merged with the default6 cut."
+  },
+  "author_front": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/front-01/report.json",
+    "sha256": "1131bc01131ade07cd7b3746d2f4772170700708d061f8a9c87d6c6b42775b28",
+    "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+    "passed": true,
+    "assertions": 27,
+    "groups": [
+      8,
+      8,
+      11
+    ],
+    "source_credit": 0
+  },
+  "author_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/life-01/report.json",
+    "sha256": "baa7fc7ffec787de5cb5b39c9f5af62ed78920f7eeb7089c7a521280e49d1b7a",
+    "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+    "passed": true,
+    "assertions": 19,
+    "groups": [
+      6,
+      6,
+      7
+    ],
+    "source_credit": 0
+  },
+  "independent_front": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-front-02/report.json",
+    "sha256": "16797da607e862e3bc9ef0f24c5aa565960534ccfaaf19b2279ae3b1e8e51b7d",
+    "revision": "bcaacaa59fa0412617d773a6b4c59d43f3c8900d",
+    "passed": true,
+    "assertions": 92,
+    "groups": [
+      47,
+      22,
+      23
+    ],
+    "source_credit": 0,
+    "controller": "Original outer controller interrupted; its incomplete launch record is preserved without an inferred exit. The completed per-fixture report has alltrue vectors, unchanged input maps and revision; recovery observed wrapper and children gone."
+  },
+  "reliability": {
+    "first_peer_failure": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-front-01/report.json",
+      "sha256": "a7f2093f130998ea629bacd784f45799604574441e30e3c59bdf388c4889c238",
+      "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+      "passed": false,
+      "classification": "hex_digit tool failure in constructed malformed-payload controls, before a Boolean vector; later22/23 and first lifecycle23 unrun at that cut",
+      "source_credit": 0
+    },
+    "guard_diagnostic": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-malformed-diagnostic-01/report.json",
+      "sha256": "3f31c6c6fc801af37886c6eb299a178c748c95981f63c7e14ae31e5d5a264226",
+      "revision": "0287a4304d1f972982621b5dc3743acbcb88ec27",
+      "passed": true,
+      "checks": 7,
+      "note": "Three canonical NaN controls use the guarded value route; four malformed controls use the new parser-string guard. Exact eager-fallback cause is an inference from the original trace.",
+      "source_credit": 0
+    },
+    "fixture_correction": "Only four malformed payload controls route through ob_object_parser_string; production, all92/23 selections and seven other complete source postimages are unchanged. Corrected peer file is absent from accepted native/source/startup/author input maps; accepted cuts are not renewed.",
+    "recovery_preparation": "A self-matching process scan stopped before launch/runtime0; corrected to argv[0]. No duplicate semantic run.",
+    "accepted_campaign_reruns": 0,
+    "canonical_reader_assertion_corrections": 1,
+    "canonical_reader_correction_runtime": 0
+  },
+  "affected_prior_queries": "Only exact old147 and old148 raw FLOAT1.5 query expectations are promoted through their original query/compiled builders; old campaigns are not replayed.",
+  "independent_review": "coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json",
+  "limits": "Unary signs, nonfinite/raw negative FLOAT, malformed payloads, NUL literals, emitted CONCAT and wider producers/handlers/owners/lifetimes remain outside this guard. Exact holds including Source47, Owned-NUL release, NaNBYTE and COMP88, reserve93807cdd6/255, inventory169/306/closed0+1 and unfinishedOB31 remain unchanged. Full core and later Rocq/CRIS/BOLA work remain unfinished.",
+  "metadata_semantic_runs": 0,
+  "independent_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-life-01/report.json",
+    "sha256": "666c306b201a4fe21432a3c5407072f448d705637b3a5d3578d8f9d91549fed7",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-life-launch-01.json",
+    "launch_sha256": "b73efa658b08daf4bd274c95634b48996801fbe5b122ed09cfb33400b4512574",
+    "revision": "bcaacaa59fa0412617d773a6b4c59d43f3c8900d",
+    "passed": true,
+    "assertions": 23,
+    "groups": [
+      7,
+      8,
+      8
+    ],
+    "source_credit": 0,
+    "outer_seconds": 390.9849913320504,
+    "per_fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660,
+    "exit": 0,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true
+  },
+  "fixtures": "Separate SL508/cache=false/det=true cuts; only affected corrected peer frontier and first peer lifecycle ran after the four-route fixture correction. No accepted native/source/startup/author, old147 or old148 campaign replay.",
+  "composition": {
+    "actual_joined_revision": "82c8b04553719dfd4045efbc24c342ec4227c00a",
+    "actual_joined_tree": "7dabfd627c3fc3c1a27f3242cd951830acb5362b",
+    "assessment": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/peer-final-clear-01.json",
+    "assessment_sha256": "69903d3b9a0d1e57f55ea80675510359c96a5c59b4232bb22487ced6cc73e84f",
+    "source_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main101-get-output149-enum307-source-map-v1.json",
+      "sha256": "351b66ed5cf9410ddfa5eb659a6cacaeeff9fc0920c26209776da54699548aa9",
+      "physical_reads": 1,
+      "records": 23,
+      "unique_paths": 20,
+      "output149_records": 8
+    },
+    "canonical": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main101-get-output149-enum307-canonical-v1/report.json",
+      "sha256": "896ba7fbf60aee0d9347a232937cd916f1146a5a2d5f25cccf1d84928fed00bb",
+      "physical_reads": 1,
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "input_map_before_equals_after": true,
+      "ordered_modules_match_fixed_actual_manifest": true,
+      "mode": "production_SL",
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "cwd": "/home/user/workspace/php-spec",
+      "exit": 0,
+      "reaped": true,
+      "stable": true,
+      "timeout": false,
+      "passed": true,
+      "seconds": 16.131891957949847,
+      "cap_seconds": 60,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "source_credit": 0,
+      "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "production456_sha256": "bfdab21f2ca808798ed8ae8afd55ea6c064e857b007fd2c3f3e2c2389c3fa488"
+    },
+    "author_raw_actual_map_report_reads": 0,
+    "reader_reliability": "Initial output was truncated after complete cache creation; bounded cache-only reads recovered facts. One list assertion incorrectly prepended spec/php.watsup already present in the509-entry modules manifest; corrected assertion passes. Raw report/map each read once; no new execution.",
+    "metadata_semantic_runs": 0,
+    "later_head_refreshes": 0,
+    "final_policy": "One fixed actual and sole saved canonical result; the independent reviewer read raw report/map once each and cached this tuple. No later source/HEAD/report refresh or renewed execution."
+  }
+}

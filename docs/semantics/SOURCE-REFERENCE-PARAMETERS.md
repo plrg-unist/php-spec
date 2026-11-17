@@ -1103,9 +1103,9 @@ environment, exact decoded raw/normalized class bytes and case-folded `stdClass`
 identity. Both Notice ingress sites reuse the existing required ordinary-CV
 argument proof, return verification, frame retirement and private-cell bounds.
 The [plain-name return review](../../coverage/semantics/global-plain-stdclass-return-producer-reference-notice-review.json)
-records the source and state evidence. Namespaced/imported declarations, plain
-formal names, other explicit union plain returns and wider payload/lifetime histories
-remain partial; the older context-independent header stays unchanged.
+records the source and state evidence. Scoped singleton RETURNs are extended below;
+plain formal names, other explicit union plain returns and wider payload/lifetime
+histories remain partial; the older context-independent header stays unchanged.
 
 Nullable bare `?stdClass` RETURN names use the same bounded declaration context.
 Exact decoded class bytes and normalized class-then-null order retain ordinary
@@ -1148,6 +1148,26 @@ array/iterable folds retain their existing bounds; FORMAL and lifetime rules sta
 The [ordered plain-union review](../../coverage/semantics/global-plain-ordered-stdclass-return-producer-reference-notice-review.json)
 records scalar priority, object identity, runtime-array COW and private Notice cells.
 Wider class names, declaration contexts, payloads and lifetimes remain partial.
+
+Singleton ordinary `NName` RETURN aliases also use their declaration namespace
+and class imports when quiet builtin-first resolution yields exact global
+`stdClass`. The existing Param-view recursion runs first; the RETURN arm requires
+an unchanged parameter vector, nonempty declaration context and actuals, and the
+exact canonical normalized singleton RETURN. It changes only the proof name and
+tag, retaining metadata and delegating to the existing FQN header. The original
+source, independent RETURN verification, frame retirement and private Notice-cell
+ownership retain their rules. Exact RETURN and actual-count guards separate the
+new arm from existing helper success with empty normalized RETURN types or zero
+actuals.
+The [scoped singleton-return review](../../coverage/semantics/scoped-stdclass-return-producer-reference-notice-review.json)
+separates fresh object BYVAL and multiple-BYREF originals with FQN formal
+isolators from a combined FORMAL/RETURN alias original and the unchanged NULL
+TypeError-before-Notice control. Four native originals ran once; author source2
+and state340, independent whole4 with state340/191, and the fixed production
+load retain separate identities. One emitted-name compiler rejection and two
+reader preparation assertions keep zero credit. Nullable, union and relative
+RETURNs, other resolved classes and wider payloads/owners/lifetimes remain partial;
+all exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view

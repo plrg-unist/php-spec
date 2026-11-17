@@ -1833,3 +1833,24 @@ Unary/FLOAT, overflow, NUL, emitted CONCAT and wider producers/handlers/lifetime
 remain partial; every exact hold remains unchanged.
 [Parser integer CONCAT evidence](../../coverage/semantics/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-parser-integer-concat-cast-chain-return-modulo-error-review.json).
+
+Canonical nonnegative finite raw FLOAT leaves also compose with parser STRING/INT
+CONCAT trees in the selected handler return casts. Each leaf retains its indexed
+SOURCE, sixteen lowercase hexadecimal payload digits, finite bits and source
+precision; the existing pure parser formatter supplies its bytes. Child SOURCE
+requires no child compiler entry; actual parser fixtures preserve absent CODE/read.
+Existing parent, pool, INTERNED, whole NORMAL entry and nonownership guards remain.
+Six default source comparisons reuse one saved and five new native observations,
+each observed once. A separate original at startup precision 1 adds one source
+comparison. Author frontier/lifecycle checks (27/19) and independent checks (92/23)
+retain separate private SL508 cuts. Four malformed-payload controls were moved
+to the guarded parser helper; production and accepted source/native/author cuts
+remain unchanged. Original failed fixtures and the interrupted frontier controller
+retain zero credit; its completed corrected frontier report passes 92 predicates.
+The sole production SL509 load at actual/joined `82c8b0455` passes in
+16.131891958 seconds under the original cap of 60 seconds, with zero source credit.
+Independent review uses one saved report/map read each and a fixed cached tuple.
+Unary signs, nonfinite or malformed leaves, NUL, emitted CONCAT and wider
+producers/handlers/lifetimes remain partial; every exact hold remains unchanged.
+[Parser FLOAT CONCAT evidence](../../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json).

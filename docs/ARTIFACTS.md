@@ -8,6 +8,16 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Nonempty postarray evidence remains in `../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/`; the [review](../coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json) binds source8, distinct cuts and fixed696426e8/solecf4a8e11.
+
+Parser-FLOAT handler CONCAT evidence remains in `../php-spec-evidence-archive/new/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-149/`; the [review](../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json) preserves original failures, reviewed-fixed source8 and fixed82c8b045/sole896ba7fb.
+
+FLOAT-left/INT-right deferred-default evidence remains in `../php-spec-evidence-archive/enum-deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-307/`; the [review](../coverage/semantics/deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-review.json) binds both source packets, WHOLE472/affected31 and immutable70e70c3e.
+
+Scoped singleton-return evidence remains in `../php-spec-evidence-archive/scoped-stdclass-return-producer-reference-notice-127/`; the [review](../coverage/semantics/scoped-stdclass-return-producer-reference-notice-review.json) binds native-once/prelaw/author/WHOLE records and fixed00a431631/soleae71ca00. These archives remain evidence rather than operational inputs.
+
+Nested FULL/SHORT typed-operand selector originals, native-once/source comparisons, separate fixture cuts and preserved syntax/minor-GC failures remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-nested-operand-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-nested-operand-typed-ternary-left-coalesce-quiet-get-review.json) binds source/evidence packets, independent WHOLE and immutable actual/joined tuple; these archives are evidence rather than build/runtime inputs.
+
 Allocated literal CONCAT-chain originals, native-once observations, saved-native
 source comparisons, author fixtures and the original compiler failure remain in
 `../php-spec-evidence-archive/string-offset-runtime-allocated-literal-concat-chain-base-initial-raw-leading-key-author51-20261118/`.

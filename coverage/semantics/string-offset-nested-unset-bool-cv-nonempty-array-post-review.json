@@ -1,0 +1,144 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-nonempty-array-post",
+  "status": "Independent source8 WHOLE and fixed actual/canonical review clear. Complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Bounded live nonempty-array postvalues in the same saved ordinary initialized NULL/BOOL CV after a nested-unset Warning, through the fixed Error or the same pending Throwable and complete caller tail.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "fbf90b88408383b2e6777a80284b8d21d1208be8902085fd1442c61cd3bb12a1",
+    "law_revision": "2b2d5bdf89ad2daf3fae729cb31d17d793c82dea",
+    "law": "A separate stateful alternative requires an in-bounds stored nonempty array, valid full heap, ENV-rooted HCELL and its actual HARRAY ownership edge. Entries admit existing quiet scalar/string leaves, authenticated non-NUL REQUEST text, one level of flat child arrays, real plain scalar reference cells and live fieldless stdClass identities. Existing current-name, saved-cell, reference/released, exact quiet read, source and task guards remain. Pure PARRAY value admission stays false."
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_execute.c: zend_check_string_offset, zend_fetch_dimension_address, zend_wrong_string_offset_error",
+      "Zend/zend_operators.c: zval_get_long_func",
+      "Zend/zend_vm_def.h: ZEND_FETCH_DIM_UNSET; CV FREE_OP2 behavior"
+    ],
+    "reason": "The saved CV is reread after the NULL/BOOL Warning. Array-to-long conversion quietly tests element count; nested unset discards the index without releasing the borrowed CV. A pending Exception suppresses the fixed nested Error."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post",
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/author-source8-freeze41-v1/manifest.json",
+    "sha256": "a84944385b0ea9628a0b24af3c2aba3041d9540e0c1b2c3562e726f2f8611b4f",
+    "revision": "8a4bb6a38d10c1d5d3a0eab754e2c09a32229c56",
+    "paths": 8,
+    "contains": "Exact operational posts, complete parents, forward/inverse patches and report hashes. Metadata changes do not renew execution credit.",
+    "make_added_lines": 6,
+    "make_block_sha256": "a4501a8e4218c6008c0511094432b31359be14e0a475895a3b7d39bb817d313d"
+  },
+  "native_baseline": {
+    "report": "author-baseline41-v1/report.json",
+    "native_originals_once": 4,
+    "model_unsupported": 4,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "author-source41-v1/report.json",
+    "agreements": 4,
+    "native_reused": 4,
+    "new_native": 0,
+    "cases": "Scalar [7] and mixed [7, [8], real alias, fieldless stdClass, runtime-CONCAT REQUEST text], each under normal NULL-entry return and pending BOOL-entry throw.",
+    "mode": "production_SL",
+    "cap_seconds": 120,
+    "seconds": [19.241596221923828, 21.726853370666504, 35.85710906982422, 40.50365209579468]
+  },
+  "prelaw": {
+    "author_conditions": [76, 85, 117, 126],
+    "independent_report": "peer-prelaw45-v1.json",
+    "independent_report_sha256": "7c45205f25f985a3fbb1baec0e6905c8026ba9ad1c4428ce0188a796eb3aff66",
+    "independent_conditions": [97, 111, 149, 163],
+    "result": "Source, ordered children, alias identity, sole object owner, WeakReference nonownership, REQUEST header, full heap and exact quiet read precede the law. Derived caller-tail completion is separate from whole-source reachability.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "author_states": {
+    "reports": ["author-state41-index0-v1/report.json", "author-state41-index1-v1/report.json", "author-state41-index2-v2/report.json", "author-state41-index3-v1/report.json"],
+    "conditions": [150, 154, 212, 216],
+    "derived": [55, 54, 76, 75],
+    "seconds": [27.422385692596436, 31.504860639572144, 75.08821511268616, 76.32132363319397],
+    "mode": "SL",
+    "cap_seconds": 180,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "independent_states": {
+    "reports": ["peer-state45-index0-v1/report.json", "peer-state45-index1-v1/report.json", "peer-state45-index2-v1/report.json", "peer-state45-index3-v1/report.json"],
+    "conditions": [121, 129, 199, 181],
+    "derived": [12, 12, 38, 12],
+    "seconds": [25.014618635177612, 27.260610342025757, 55.79632568359375, 59.57153797149658],
+    "mode": "SL",
+    "cap_seconds": 180,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "state_scope": "Exact raw Error or unchanged pending Throwable/caller tail, unchanged full heap and payloads, public zero/one/split budgets, whole-state source equality, final source observers, key retirement, WeakReference NULL and the distinct surviving alias. Malformed payload/owner/source controls are derived and separately counted.",
+  "affected_legacy": {
+    "report": "peer-legacy45-v1/report.json",
+    "fronts": 6,
+    "conditions": 150,
+    "seconds": 32.61035394668579,
+    "cap_seconds": 180,
+    "result": "Only the two former empty-suite [7] counter rows promote, with fresh scalar controls. Three old fake-PARRAY0 negatives remain literal: pending trace outer/frame/args reach a third array level excluded by the one-child-level proof.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "preserved_zero_credit": {
+    "author-state41-index2-v1/report.json": "Hypothetical normal tail omitted LOCATION=NOWHERE. Corrected to actual S_next; law and source/native observations unchanged. Only the affected query reran as index2-v2.",
+    "author-whole-difference41-index2-v1/report.json": "Diagnostic comparison only; no source/native/semantic-agreement credit.",
+    "actual_reader_preparation": "The first physical source-map/report read completed, but the wrapper rejected an undefined session ID before exposing the JSON. One ROOT-authorized retry persisted a parsed cache. Factual physical reads are two per original map/report; the canonical execution remains one. No semantic, native, source or state check was renewed.",
+    "other": "Unsupported baselines, derived controls, failures and unrun source selections retain distinct zero credit. Accepted source/native/state checks were not replayed during recovery."
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/peer-whole46-v1.json",
+    "sha256": "0aad25c92406b626f74e9ea2b686a5642e3650661922d62c0b2e8e8037579e0d",
+    "verdict": "CLEAR",
+    "scope": "All eight frozen fullposts and committed bytes, complete parents, in-memory forward/inverse reconstruction, unique six-line Make addition, report/source-byte bindings and semantic/ownership/source/cleanup/counterexample review.",
+    "new_executions": 0
+  },
+  "actual_integration": {
+    "revision": "696426e8c46e16be2b21dc900064d9e39120c4b1",
+    "tree": "985a199ad0c2ed71d4ccc2e9332c50ac16ff222b",
+    "source_map_sha256": "491cd84734aa77bab72bdfe7569adcd64a32c7a589a65eef8b5ff15a3c7555c2",
+    "eight_path_delta": true,
+    "seven_nonmake_fullposts_exact": true,
+    "complete_current_parent_inverse": true,
+    "make_added_lines_unique_and_reversible": 6,
+    "source_credit": 0
+  },
+  "canonical": {
+    "report_sha256": "cf4a8e11cf9386f39b6d55a515878e5ffb169bbccf7b94f6a94195d922df0e3f",
+    "tested_revision": "696426e8c46e16be2b21dc900064d9e39120c4b1",
+    "same_actual_revision": true,
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watch_count": 513,
+    "before_after_hashes_equal": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "seconds": 16.782376935938373,
+    "cap_seconds": 60,
+    "executions": 1,
+    "physical_saved_report_reads": 2,
+    "physical_source_map_reads": 2,
+    "source_credit": 0
+  },
+  "actual_canonical_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/peer-actual46-v1.json",
+    "sha256": "b0752419c8d7f41a067f16ccfb0b4398b91b662c1c1e978e9aa5f7ebfe072ea6",
+    "verdict": "CLEAR",
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-nonempty-array-post/peer-reader46-cache-v1.json",
+    "parsed_cache_sha256": "1343c0be6bad2230eaf9e95cb1f2205063ac7424ce8723e4774874478eada589",
+    "use": "Immutable independent tuple; original report/map paths and commands are recoverable from the assessment/cache. No later original report/map or HEAD refresh."
+  },
+  "author_raw_actual_canonical_map_reads": 0,
+  "remaining": "Deeper or cyclic arrays, object fields, wider alias payloads, references/released/rebound key cells, unknown/NUL string payloads and wider callback/owner/lifetime histories remain partial.",
+  "holds": "All exact holds, Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": []
+}
