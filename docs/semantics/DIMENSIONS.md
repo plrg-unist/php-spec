@@ -579,6 +579,17 @@ load passes16.892486110096797s/source0. General NaN VALUE/BYTE/truth, other
 operators and wider producers/lifetimes remain partial. Exact holds stay unchanged.
 [Runtime NaN equality review](../../coverage/semantics/string-offset-request-base-runtime-nan-equality-review.json).
 
+Quiet emitted ordered comparisons also consume exact recursive NaNs under
+NORMAL/source/CODE/read/precision and unchanged whole-state comparison. Greater
+uses the actual reversed operands, preserving unordered +1 in both numeric/string
+directions; spaceship retains its PINT result. Native4 once/source4, author1292/94-derived
+and independent1857/659-derived retain separate cuts, with three reached histories
+and a fourth compiled-root fixture without callback/owner/bounds/resumption renewal.
+Actual=SAME `76639477f` and sole joined `cf7f471f` production-SL508 load pass
+16.082620611s/source0. General NaN VALUE/BYTE/truth and wider lifetimes remain
+partial; all exact holds stay unchanged.
+[Runtime NaN ordered review](../../coverage/semantics/string-offset-request-base-runtime-nan-ordered-review.json).
+
 
 
 Quiet bare ADD/SUB/MUL/DIV children now compose with those authenticated CONCAT
