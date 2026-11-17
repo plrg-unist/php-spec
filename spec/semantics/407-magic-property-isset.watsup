@@ -746,6 +746,102 @@ def $property_magic_cv_emitted_boolean_not_concat_left_coalesce_concat_value(S, 
   -- if $compiled_effects(S, porigin) = eps
 def $property_magic_cv_emitted_boolean_not_concat_left_coalesce_concat_value(S, porigin, expression) = eps -- otherwise
 
+;; Existing certificates contain no coalesce below a ternary along closed paths.
+;; NOT, CONCAT and Boolean operators propagate rather than introduce this context.
+dec $property_magic_cv_coalesce_under_ternary(expression, bool) : bool
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprBooleanNot expression metadata, bool) = $property_magic_cv_coalesce_under_ternary(expression, bool)
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpBooleanAnd expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpLogicalAnd expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpBooleanOr expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpLogicalOr expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpLogicalXor expression_left expression_right metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_left, bool) \/ $property_magic_cv_coalesce_under_ternary(expression_right, bool))
+def $property_magic_cv_coalesce_under_ternary(NExprTernary expression_cond expression_true expression_false metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_cond, true) \/ $property_magic_cv_coalesce_under_ternary(expression_true, true) \/ $property_magic_cv_coalesce_under_ternary(expression_false, true))
+def $property_magic_cv_coalesce_under_ternary(NExprTernary expression_cond ABSENT expression_false metadata, bool) = ($property_magic_cv_coalesce_under_ternary(expression_cond, true) \/ $property_magic_cv_coalesce_under_ternary(expression_false, true))
+def $property_magic_cv_coalesce_under_ternary(NExprBinaryOpCoalesce expression_left expression_right metadata, bool) = bool
+def $property_magic_cv_coalesce_under_ternary(expression, bool) = false -- otherwise
+
+;; Full ternaries select a present arm; shorthand true retains the condition echo.
+dec $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) : ptbytes?
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBooleanNot expression metadata) = ($echo_value(PBOOL (ptbytes = eps \/ ptbytes = [48])))
+  -- if $origin_node(pcunit*, porigin) = (NExprBooleanNot expression metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_child, expression) = (ptbytes)
+  -- if ~(0 <- ptbytes)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes_left ++ ptbytes_right)
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpConcat expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = ($echo_value(PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) /\ (ptbytes_right =/= eps /\ ptbytes_right =/= [48]))))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpBooleanAnd expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = ($echo_value(PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) /\ (ptbytes_right =/= eps /\ ptbytes_right =/= [48]))))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalAnd expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = ($echo_value(PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) \/ (ptbytes_right =/= eps /\ ptbytes_right =/= [48]))))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpBooleanOr expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = ($echo_value(PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) \/ (ptbytes_right =/= eps /\ ptbytes_right =/= [48]))))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalOr expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = ($echo_value(PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) =/= (ptbytes_right =/= eps /\ ptbytes_right =/= [48]))))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalXor expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_left, expression_left) = (ptbytes_left)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_right, expression_right) = (ptbytes_right)
+  -- if ~(0 <- ptbytes_left) /\ ~(0 <- ptbytes_right)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprTernary expression_cond expression_true expression_false metadata) = ($property_magic_cv_raw_ternary_select(ptbytes_cond =/= eps /\ ptbytes_cond =/= [48], ptbytes_true, ptbytes_false))
+  -- if $origin_node(pcunit*, porigin) = (NExprTernary expression_cond expression_true expression_false metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_cond, expression_cond) = (ptbytes_cond)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_true, expression_true) = (ptbytes_true)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_false, expression_false) = (ptbytes_false)
+  -- if ~(0 <- ptbytes_cond) /\ ~(0 <- ptbytes_true) /\ ~(0 <- ptbytes_false)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprTernary expression_cond ABSENT expression_false metadata) = ($property_magic_cv_raw_ternary_select(ptbytes_cond =/= eps /\ ptbytes_cond =/= [48], ptbytes_cond, ptbytes_false))
+  -- if $origin_node(pcunit*, porigin) = (NExprTernary expression_cond ABSENT expression_false metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_cond, expression_cond) = (ptbytes_cond)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin_false, expression_false) = (ptbytes_false)
+  -- if ~(0 <- ptbytes_cond) /\ ~(0 <- ptbytes_false)
+def $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) = $property_magic_cv_raw_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) -- otherwise
+;; Measured branch/child facts require only the genuine emitted CONCAT root facts.
+dec $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(pstate, porigin, expression) : pvalue?
+def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(S.SOURCES, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes)
+  -- if $property_magic_cv_raw_boolean_not_concat_left_coalesce_tree(S.SOURCES, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = eps
+  -- if porigin = PORIGIN n_unit pcpath
+  -- if $code_at(S.CODE, n_unit) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $(z > 0)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $pool_value(S.POOLS, porigin) = eps
+  -- if $code_redirect(pcode.REDIRECTS, pcpath) = eps
+  -- if $compiled_effects(S, porigin) = eps
+def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin, expression) = eps -- otherwise
+
 ;; Genuine emitted primitive-coalesce CONCAT roots retain typed byte provenance.
 dec $property_magic_cv_emitted_primitive_coalesce_concat_value(pstate, porigin, expression) : pvalue?
 def $property_magic_cv_emitted_primitive_coalesce_concat_value(S, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
@@ -798,6 +894,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~($property_magic_cv_raw_string_leaf(expression_left) /\ $property_magic_cv_raw_string_leaf(expression_right))
@@ -807,6 +904,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -816,6 +914,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -825,6 +924,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -834,6 +934,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -843,6 +944,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -852,6 +954,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -861,6 +964,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -870,6 +974,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -879,6 +984,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -888,6 +994,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -897,6 +1004,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -906,6 +1014,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -915,6 +1024,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -924,6 +1034,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -933,6 +1044,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -942,6 +1054,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -951,6 +1064,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -958,6 +1072,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -965,6 +1080,7 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
@@ -972,14 +1088,21 @@ def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryO
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
   -- if $property_magic_cv_emitted_not_concat_left_coalesce_concat_value(S, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
   -- if $property_magic_cv_emitted_boolean_not_concat_left_coalesce_concat_value(S, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
+  -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
+  -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
+def $property_magic_cv_static_method_site_selector(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, porigin_requested, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 0]) = (porigin_selector)
+  -- if $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin_selector, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc($ppcall_literal_name(ptbytes_raw)) = $ptlc(ptbytes)
   -- if $class_named(S.CLASSNAMES, $ptlc($ppcall_literal_name(ptbytes_raw))) = (porigin_requested)
 def $property_magic_cv_static_method_site_selector(S, porigin_site, phpType19, porigin_requested, ptbytes) = false -- otherwise
@@ -1003,6 +1126,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if ptbytes_raw = $base64(text_left) ++ $base64(text_right)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~($property_magic_cv_raw_string_leaf(expression_left) /\ $property_magic_cv_raw_string_leaf(expression_right))
@@ -1011,6 +1135,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1019,6 +1144,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1027,6 +1153,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1035,6 +1162,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1043,6 +1171,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1051,6 +1180,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1059,6 +1189,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1067,6 +1198,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1075,6 +1207,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1083,6 +1216,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1091,6 +1225,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1099,6 +1234,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1107,6 +1243,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1115,6 +1252,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1123,6 +1261,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1131,6 +1270,7 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
@@ -1139,31 +1279,40 @@ def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpCon
   -- if $compiled_read(S, porigin_name) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_ternary_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_primitive_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_not(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_concat_left_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if ~$property_magic_cv_coalesce_under_boolean(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_not_concat_left_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if ~$property_magic_cv_coalesce_under_ternary(NExprBinaryOpConcat expression_left expression_right metadata, false)
   -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
   -- if $property_magic_cv_emitted_boolean_not_concat_left_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
+  -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
+def $property_magic_cv_static_method_site_name(S, porigin_site, NExprBinaryOpConcat expression_left expression_right metadata, ptbytes) = true
+  -- if $origin_child((porigin_site), [PCFIELD 1]) = (porigin_name)
+  -- if $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin_name, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes_raw)
   -- if $ptlc(ptbytes_raw) = $ptlc(ptbytes)
 def $property_magic_cv_static_method_site_name(S, porigin_site, phpType20, ptbytes) = false -- otherwise
 ;; Direct parent labels retain descriptor bytes before class-name lookup.
