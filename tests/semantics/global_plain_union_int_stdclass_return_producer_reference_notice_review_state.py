@@ -87,8 +87,8 @@ def normal(initial, case, index, front):
                 raw = previous.raw_union(json.dumps(base64.b64encode(kind.upper().encode()).decode()), 'return', first, 'NName', class_text=encoded_name)
                 signature = 'pfunction_producer.SIGNATURE[.RETURNS = ' + previous.ordered(kind, first, name) + ']'
                 proof = header + raw + ', ' + signature + ')'
-                derived += [('' if kind in ('int', 'null', 'float') else '~') + proof]
-                if kind in ('int', 'null', 'float'):
+                derived += [('' if kind in ('int', 'null', 'float', 'bool', 'string', 'array', 'false', 'true', 'iterable', 'callable') else '~') + proof]
+                if kind in ('int', 'null', 'float', 'bool', 'string', 'array', 'false', 'true', 'iterable', 'callable'):
                     derived += ['~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.NAMESPACE = $ptascii("Other")],', 1),
                         '~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                         '~' + proof.replace(previous.ordered(kind, first, name), previous.ordered(kind, not first, name)),

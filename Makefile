@@ -1292,6 +1292,7 @@ test-semantics: build
 	python3 -B tests/semantics/global_plain_union_null_stdclass_return_producer_reference_notice_run.py
 	python3 -B tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_run.py
 	python3 -B tests/semantics/global_plain_union_float_stdclass_return_producer_reference_notice_run.py
+	python3 -B tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \

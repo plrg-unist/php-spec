@@ -1122,6 +1122,16 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType 
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
+;; A global return view changes only one authenticated bare class tag.
+dec $reference_notice_producer_global_union_view(phpType69*, bool) : phpType69*?
+def $reference_notice_producer_global_union_view(eps, true) = (eps)
+def $reference_notice_producer_global_union_view((NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES text_type) metadata_member) :: phpType69_view*)
+  -- if $ptlc($base64(text_type)) = $ptascii("stdclass")
+  -- if $reference_notice_producer_global_union_view(phpType69*, true) = (phpType69_view*)
+def $reference_notice_producer_global_union_view((NIdentifier (BYTES text_type) metadata_member) :: phpType69*, b_class) = ((NIdentifier (BYTES text_type) metadata_member) :: phpType69_view*)
+  -- if $reference_notice_producer_global_union_view(phpType69*, b_class) = (phpType69_view*)
+def $reference_notice_producer_global_union_view(phpType69*, b_class) = eps -- otherwise
+
 dec $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) : bool
 def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = true
   -- if $reference_notice_producer_header(phpType6, phpType16, phpType18, pssignature)
@@ -1137,22 +1147,11 @@ def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType1
   -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN "null"]))]
   -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
-def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NName (BYTES text_type) metadata_type, NIdentifier (BYTES text_builtin) metadata_builtin])) metadata_union, pssignature) = true
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
   -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
   -- if $(|phpType7*| > 0)
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN text_builtin_type]))]
-  -- if text_builtin_type <- ["null", "int", "float"]
-  -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
-  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
-def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE ([NIdentifier (BYTES text_builtin) metadata_builtin, NName (BYTES text_type) metadata_type])) metadata_union, pssignature) = true
-  -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
-  -- if $(|phpType7*| > 0)
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_builtin_type])), (PTBRANCH ([PTCLASS preqbytes_type]))]
-  -- if text_builtin_type <- ["null", "int", "float"]
-  -- if $base64(text_type) = preqbytes_type /\ $ptlc(preqbytes_type) = $ptascii("stdclass")
-  -- if $ptlc($base64(text_builtin)) = $ptascii(text_builtin_type)
-  -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
+  -- if $reference_notice_producer_global_union_view(phpType69*, false) = (phpType69_view*)
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NUnionType (SEQUENCE phpType69_view*) metadata_union, pssignature)
 def $reference_notice_producer_scoped_header(plenv, phpType6, phpType16, phpType18, pssignature) = false -- otherwise
 
 dec $reference_notice_producer_target(pstate, porigin) : pfunction?

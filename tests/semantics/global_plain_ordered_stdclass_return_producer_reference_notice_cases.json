@@ -1,0 +1,87 @@
+[
+  {
+    "id": "weak-global-class-bool-return-private-cell",
+    "kind": "bool",
+    "return_members": [
+      "class",
+      "bool"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='0'),';';$x=17;return true;}\nfunction make($saved):stdClass|bool{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=[$value];$value[0]=41;return $value;}\n$x='0';$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "96584c240e517b8a3e4306746734d025149cb84332eb5f8d6bc607dd795f5ab7",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:0:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "0"
+  },
+  {
+    "id": "weak-global-string-class-return-private-cell",
+    "kind": "string",
+    "return_members": [
+      "string",
+      "class"
+    ],
+    "class_return": "STDCLASS",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===37),';';$x=17;return true;}\nfunction make($saved):string|STDCLASS{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='37'),';';$value=[$value];$value[0]=41;return $value;}\n$x=37;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "f492b0cff0dfccc103bb6aa2f6b0407678ba263f339ba2d171ea74197614298f",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:37:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "37"
+  },
+  {
+    "id": "weak-global-float-int-class-numeric-string-return-priority",
+    "kind": "int",
+    "return_members": [
+      "float",
+      "int",
+      "class"
+    ],
+    "class_return": "sTdClAsS",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='37'),';';$x=17;return true;}\nfunction make($saved):float|int|sTdClAsS{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===37),';';$value=[$value];$value[0]=41;return $value;}\n$x='37';$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "2cd72ae933d23dea86f8c5b0e919a59ce57261242443603bc959d6471bbbfea1",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:37:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "37"
+  },
+  {
+    "id": "strict-global-class-iterable-runtime-array-return-cow",
+    "kind": "array",
+    "return_members": [
+      "class",
+      "iterable"
+    ],
+    "class_return": "StDcLaSs",
+    "callee_strict": true,
+    "notice_line": 8,
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x[0]===13),';';$x=17;return true;}\nfunction make($saved):StDcLaSs|iterable{$saved[1]=17;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value[0],':',$value[1],';';$value[0]=23;return $value;}\n$x=[];$x[0]=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r[0],':',$r[1],':',$copy[0],':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$snapshot[0],':',$snapshot[1],':',$x,';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "57d6f70b16b83966266fd40edfb7d28ba0e50ebfcb19ed6a600556b6ce7882b2",
+    "native_stdout": "N;M;H:8:1;F:13:17;R:23:17:13:17:1;D:43:23:17:17;",
+    "native_stderr": "",
+    "native_exit": 0
+  },
+  {
+    "id": "strict-global-bool-class-string-object-return-identity",
+    "kind": "object",
+    "return_members": [
+      "bool",
+      "class",
+      "string"
+    ],
+    "class_return": "StDcLaSs",
+    "callee_strict": true,
+    "notice_line": 8,
+    "source": "<?php declare(strict_types=1);\n// Global producer declaration, no class imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):bool|StDcLaSs|string{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=43;echo 'D:',$r,':',$snapshot->v,':',$x,';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "db3769fcb2d42f9487044216c442e26a30833cd7fb6dedd4db5e7733adbae789",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:43:23:17;",
+    "native_stderr": "",
+    "native_exit": 0
+  }
+]
