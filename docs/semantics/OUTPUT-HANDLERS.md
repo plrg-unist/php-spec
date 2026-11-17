@@ -1585,3 +1585,16 @@ MAIN508 load at `eb5aa70f8`, passing in16.833466227 s/source0. Coercive or ownin
 children, bare/single-cast handlers, wider lifetimes and every exact hold remain partial.
 [Integer NOT evidence](../../coverage/semantics/output-final-selected-integer-bitnot-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integer-bitnot-cast-chain-return-modulo-error-review.json).
+
+Signed64 INT AND/OR/XOR compose over two already certified proper children within
+those nested casts. Both child syntax and actual CODE lines equal the binary RHS
+line, and the parent folding flag is their conjunction. Exact own integer facts
+or emitted read-eps, unchanged NORMAL full-state results and nonownership remain
+required. Six originals reuse six native observations once; author30/20 and
+independent154/22 retain separate fixture source0 cuts. Baseline Unsupported2/unrun4
+and failed peer preparations/frontiers retain0. Actual composition and SAME
+`7438b02d23a` pass the separate MAIN508 load in16.591714751 s/source0. Multiline
+trees, coercive or owning children, other operations, bare/single-cast handlers,
+wider lifetimes and every exact hold remain partial.
+[Integer bitwise evidence](../../coverage/semantics/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-review.json).

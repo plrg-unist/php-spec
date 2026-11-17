@@ -1,0 +1,119 @@
+{
+  "family": "output-final-selected-integer-bitwise-cast-chain-return-modulo-error",
+  "target": "PHP 8.5.10 CLI, NTS, 64-bit",
+  "status": "validated bounded extension; family remains partial",
+  "implementation_revision": "9f29ac6665511372a096c14566b98c81c21df9e8",
+  "scope": "Within the existing nested BOOL/INT/FLOAT handler-return cast gate, AND/OR/XOR accept two proper, already-certified signed64 INT children. Both child syntax and CODE lines equal the own RHS syntax line. Folding is the conjunction of the actual child flags; a folded parent needs its exact own integer fact and an emitted parent needs read-eps. Pure binary_apply must preserve the full NORMAL state except RESULT, with a signed64 nonowning integer result.",
+  "engine_basis": {
+    "pin": "vendor/php-src PHP8.5.10, 34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_compile.c::zend_compile_binary_op",
+      "Zend/zend_compile.c::zend_try_ct_eval_binary_op",
+      "Zend/zend_operators.c::bitwise_and_function",
+      "Zend/zend_operators.c::bitwise_or_function",
+      "Zend/zend_operators.c::bitwise_xor_function"
+    ],
+    "model": "Authored .watsup binary_apply and integer bit operations supply all semantic answers; no Zend fallback."
+  },
+  "cases": [
+    "folded AND to zero under BOOL/INT",
+    "folded negative OR under FLOAT/INT",
+    "folded XOR to one under INT/BOOL",
+    "emitted CASTINT-string AND to zero under INT/BOOL",
+    "emitted CASTINT-string negative OR under BOOL/FLOAT",
+    "emitted CASTINT-string XOR to zero under INT/BOOL"
+  ],
+  "native": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/native-01/report.json",
+    "sha256": "8c25a647cf604e47dfe9fa251d8cad0411e169b9a9e322f39f92ae625c7ef33f",
+    "originals": 6,
+    "result": "Six original byte sequences observed once using only the pinned project-local oracle. Saved raw bytes, file/cwd/profile, stderr/stdout/status and source identities are reused thereafter."
+  },
+  "baseline": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/before-01/report.json",
+    "sha256": "56ca060fc2c3edd8f2fa4a4de93bd1aa665ff56d31d1c94224ee6637fb6cfa0e",
+    "selection": [
+      2,
+      6
+    ],
+    "unsupported": 2,
+    "other_unrun": 4,
+    "agreement_credit": 0
+  },
+  "source": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/after-01/report.json",
+    "sha256": "703573663dd4415c0ce42401a73b48af9463c17375a9ea0affda83152f350d27",
+    "originals": 6,
+    "result": "Six actual source outcomes match the saved native observations, including strict FALSE default reporting versus numeric zero, original MOD Error and real handler-formal retirement. Native6 are reused, not rerun."
+  },
+  "frontier": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/front-01/report.json",
+    "sha256": "1af4512666201f5a94b2d90bfb7fa8d8b12f02d9dcba9b03abf314650ebf058c",
+    "assertions": 30,
+    "launch": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/front-launch-01.json",
+    "launch_sha256": "7e0f112103be9942b8fb9355afc9e26b33aa94967dea25f0f36ae471b6149cfe",
+    "source_credit": 0
+  },
+  "lifecycle": {
+    "report": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/life-01/report.json",
+    "sha256": "1b7cb1a709e1f9f69a2c3e3417d315bea588ff9d24dab7b3ecf2ab84aa26fdd8",
+    "assertions": 20,
+    "launch": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/life-launch-01.json",
+    "launch_sha256": "0a013b743528df2133151306a64c53c8b6314a969b5380dbdd43b9b1b4234255",
+    "source_credit": 0
+  },
+  "compatibility": "Accepted source6/author frontier30/lifecycle20 retain original 9f29ac6665511372a096c14566b98c81c21df9e8. The once-only native6 retain their own saved report identity. Its Makefile, production456, source driver and author fixture are byte-identical in final8f681. Only two lines of the independent fixture were corrected: metadata-parenthesis syntax and a synthetic STRINGM token-kind expectation. No production change, native replay, accepted-campaign renewal or cap increase resulted from those fixture corrections.",
+  "publication": {
+    "manifest": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/ready-source-133-reviewed-manifest.json",
+    "manifest_sha256": "4cae79aa0521b83f612253fe569057900f5dfedbd172b2b7de1b69716c971913",
+    "patch": "../php-spec-evidence-archive/new/output-final-selected-integer-bitwise-cast-chain-return-modulo-error-133/ready-source-133-reviewed.patch",
+    "patch_sha256": "976cb35179ba1c17393994784ad1098fb4e8537f4d5960ec2aa503711830ee02",
+    "parent": "ef3ed41f86c4436e3371b0c5a6c4e5efb4a0c00c",
+    "revision": "8f681871120bcf9eef3c61cd8fdc45c0e86982ec",
+    "file_count": 5,
+    "insertions": 445,
+    "deletions": 0,
+    "postimages": {
+      "Makefile": "3649e1cafe766f5e82f238f3b221e42fe1baf50b10284976296a9ed7f3de4182",
+      "spec/semantics/456-output-object-returns.watsup": "b960db35f2549383742ea4d202368a5d5450aa1a53aaf6938021d4fd9e17be00",
+      "tests/semantics/output_final_selected_integer_bitwise_cast_chain_return_modulo_error_sources.py": "52d17dec0805c5674d8eef92aa70994823e39b12b53a761eb084214001b6aaca",
+      "tests/semantics/output_final_selected_integer_bitwise_cast_chain_return_modulo_error_state.py": "a371813ed69460ab7624277424293b0cf54fa3225e1190cd3804c8b4d7b14e84",
+      "tests/semantics/output_final_selected_integer_bitwise_cast_chain_return_modulo_error_review_state.py": "9924e5d83e270dd89455e7ca0594de9f91c69da350777846bb20954a511cdd03"
+    },
+    "whole_review": "Peer28 independently cleared all five complete source postimages, engine correspondence, harness reliability and parent/Git-blob bindings before author READY and MAIN placement. Closed OUTPUT132 metadata is excluded."
+  },
+  "composition": {
+    "actual_revision": "7438b02d23adec4b074b2cae891ccfdca66615a3",
+    "same_revision": "7438b02d23adec4b074b2cae891ccfdca66615a3",
+    "actual_tree": "e03507805c46ad96b20b33d509a4dd42f05a33af",
+    "main_parent": "1c2d888005ecaacae3978107e080a0637b762f11",
+    "map": "../php-spec-evidence-archive/resumed-main-20261112/main78-output133-composition-v1/composition.json",
+    "map_sha256": "5d0df1861d6a780d3a18dfea43bc350412f1b947a1bfeaac442aa3d2e89be744",
+    "review": "Independent actual composition and the same saved canonical result CLEAR29. Four non-Make complete parents and Git postimages equal the reviewed packet. Makefile preserves every current-parent byte and inserts only the same four recipes after the unique complete prior132 peer-lifecycle recipe.",
+    "makefile_actual_sha256": "32ec7e444f64a6b23c425722fa7886097367be02015c7d5f5e31110e70eca8a6",
+    "canonical": {
+      "report": "../php-spec-evidence-archive/resumed-main-20261112/main78-output133-v1/report.json",
+      "sha256": "397100e6750753c026eba942478bf5efecbab8fe8df02b89f0ef4aeb7afe9665",
+      "mode": "production_SL",
+      "module_count": 508,
+      "argv_count": 511,
+      "watch_count": 512,
+      "elapsed_seconds": 16.59171475097537,
+      "cap_seconds": 60,
+      "exit": 0,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "identity": "Before/after saved input maps and revisions are equal. This sole MAIN load is separate from inherited source/native and fixture evidence; no replay or renewed agreement credit."
+    }
+  },
+  "preserved_zero": "Baseline selection2/6 remains Unsupported2 and the other four originals remain unrun0. Peer front01/02 DSL metadata-parenthesis parse failures completed zero assertions. Peer front03 reached 70 assertions with 69 true and one false synthetic STRINGM-kind control; that entire packet remains0 and its tails were unrun. Two preparation failures and the parser-only probe remain0. Corrected front04 and first lifecycle01 have their own passing identities; incomplete packets and preparation establish no source/native agreement.",
+  "limits": "Coercive BOOL/NULL/FLOAT/STRING bitwise operands, other binary operators, differently lined recursive trees, owning values, bare or single-cast handlers, wider handlers and lifetimes remain partial. No full-core, Rocq interaction-tree or BOLA/CRIS completion, engine bug or intentional divergence is claimed. All standing holds and reserve93807cdd6/255 remain unchanged; inventory stays 169 constructors/306 obligations with zero constructors and one obligation closed."
+}
