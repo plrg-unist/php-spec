@@ -152,7 +152,7 @@ def controls(case):
         '~' + header + 'NNameFullyQualified (BYTES text_return) metadata_return, ' + signature + ')',
         header + 'NNullableType (' + raw + ') metadata_return, ' + signature + '[.RETURNS = ' + ITERABLE[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]])',
         '$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
+        '$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
     for suffix in ('null', 'false'):
         atom = '(NIdentifier (BYTES ' + json.dumps(base64.b64encode(suffix.encode()).decode()) + ') metadata_return)'
         for reverse in (False, True):

@@ -933,7 +933,7 @@ def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier (BYTES text_type) metadata_type, pssignature) = true
   -- if $(|phpType7*| > 1)
   -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_return]))]
-  -- if text_return <- ["int", "float", "bool", "string", "object", "callable"]
+  -- if text_return <- ["int", "float", "bool", "string", "object", "callable", "iterable"]
   -- if $ptlc($base64(text_type)) = $ptascii(text_return)
   -- if $reference_notice_producer_arguments(SEQUENCE phpType7*, phpType16, pssignature[.RETURNS = eps])
 def $reference_notice_producer_header(SEQUENCE phpType7*, phpType16, NIdentifier (BYTES text_type) metadata_type, pssignature) = true

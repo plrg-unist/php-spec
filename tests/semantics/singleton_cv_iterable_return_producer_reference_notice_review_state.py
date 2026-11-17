@@ -209,7 +209,7 @@ def controls(case):
             'DEFAULT = PSDEFAULTUNSUPPORTED "forged iterable default"', 'TYPE = ' + branches(['bool'])):
         lines += ['~' + header + raw + ', ' + signature + '[.PARAMETERS = [psparam[.' + edit + ']]])']
     lines += ['$reference_notice_producer_arguments(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), ' + signature + '[.PARAMETERS = [psparam, psparam]][.RETURNS = eps])',
-        '~$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
+        '$reference_notice_producer_header(SEQUENCE ([phpType7_actual, phpType7_actual]), SEQUENCE ([phpType17, phpType17]), phpType18, ' + signature + '[.PARAMETERS = [psparam, psparam]])']
     return lines
 
 

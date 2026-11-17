@@ -1089,6 +1089,7 @@ test-semantics: build
 	python3 -B tests/semantics/multi_cv_iterable_formal_producer_reference_notice_run.py
 	python3 -B tests/semantics/multi_cv_nullable_iterable_formal_producer_reference_notice_run.py
 	python3 -B tests/semantics/multi_cv_union_null_iterable_formal_producer_reference_notice_run.py
+	python3 -B tests/semantics/multi_cv_iterable_return_producer_reference_notice_run.py
 	@terminal_unset_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-terminal-unset-test-XXXXXX")" && \
 		python3 tests/semantics/string_offset_terminal_unset_sources.py --output "$$terminal_unset_out/source" && \
 		python3 tests/semantics/string_offset_terminal_unset_protocol.py --source-report "$$terminal_unset_out/source/report.json" --output "$$terminal_unset_out/author-state" && \

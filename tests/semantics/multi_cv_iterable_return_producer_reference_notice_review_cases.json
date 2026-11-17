@@ -1,0 +1,115 @@
+[
+  {
+    "id": "first-ordered-formal-iterable-return-generator-byref-second-int-array-result-private-cell-cow",
+    "namespace": "ReviewFirstGeneratorMultiCvIterableReturnFormal102",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "generator",
+    "return_shape": "singleton",
+    "return_members": [
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstGeneratorMultiCvIterableReturnFormal102;\nfunction produce(){yield 17;}\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x=['n'=>23];echo 'H:',$line,';';return true;}\nfunction make(null|iTeRaBlE &$saved,int $stamp):iTeRaBlE{echo 'S:',$stamp,';';echo 'M:',(int)($saved instanceof \\Traversable),';';$saved=null;return ['n'=>5];}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=['n'=>41];return $value;}\n$stamp=7;$x=produce();$copy=$x;$kept=$copy;$alias=&$x;set_error_handler('ReviewFirstGeneratorMultiCvIterableReturnFormal102\\\\h',8);echo 'A;';\n$r=&take(make(\n    $x,\n    $stamp\n));echo 'R:',$r['n'],':',$x['n'],':',$alias['n'],':',(int)($copy===$kept),';';\n$snapshot=$r;$r['n']=43;echo 'C:',$r['n'],':',$snapshot['n'],';';$r='done';echo 'D:',$r,':',$snapshot['n'],':',(int)($copy===$kept),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:1;H:9;F:0;R:41:23:23:1;C:43:41;D:done:41:1;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "0836b6e97a3499872244fa26c2762cec5cac67be62e4b8b1efac59df80b310b9",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "first-ordered-null-iterable-generator-byref-second-int-null-return-private-cell-cow",
+      "source_sha256": "ea3d32b356961bcfa8b07dc11aa94fc9bd8927b5d8df7247ba716b3be2a7ba45",
+      "edits": "Fresh namespace and canonical bare iterable return. The retained-Generator input case now returns an actual array; ordered first formal, second int CV, multiline diagnostic locations and ownership operations remain."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 9,
+    "last_actual_source_line": 10,
+    "first_actual_source_line": 9
+  },
+  {
+    "id": "first-ordered-formal-iterable-return-array-byref-second-int-handler-throw-retirement",
+    "namespace": "ReviewFirstArrayMultiCvIterableReturnFormal102",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "iterable",
+      "null"
+    ],
+    "formal_byref": true,
+    "caller_strict": false,
+    "caller_kind": "array",
+    "handler_throws": true,
+    "return_shape": "singleton",
+    "return_members": [
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewFirstArrayMultiCvIterableReturnFormal102;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;global $x;$x['n']=23;echo 'H:',$line,';';throw new \\Exception('stop');}\nfunction make(iTeRaBlE|null &$saved,int $stamp):iTeRaBlE{echo 'S:',$stamp,';';$saved=['n'=>5];echo 'M:',$saved['n'],';';return $saved;}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x=['n'=>3];$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewFirstArrayMultiCvIterableReturnFormal102\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\Exception $e){echo 'T:',$r,':',$alias['n'],':',$copy['n'],';';}unset($e);\nunset($x);$alias['n']=29;echo 'Q:',$alias['n'],':',$r,':',$copy['n'],';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;S:7;M:5;H:8;T:11:23:3;Q:29:11:3;Z:13;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6c202bd13806df508dbd1bd5ba5c8b52a90992c85e9c39dbcbbd1aabf8fc691a",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "first-ordered-null-iterable-array-byref-second-int-handler-throw-retirement",
+      "source_sha256": "5ca49e0314bd6565c0526ffe1d21db308a1392877529dfe99453c234cdf708bf",
+      "edits": "Fresh namespace and canonical bare iterable return. The retained-Generator input case now returns an actual array; ordered first formal, second int CV, multiline diagnostic locations and ownership operations remain."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  },
+  {
+    "id": "weak-first-ordered-formal-iterable-return-string-receive-priority-before-second-int-body-and-notice",
+    "namespace": "ReviewWeakFirstMultiCvIterableReturnPriority102",
+    "formal_kind": "iterable",
+    "formal_shape": "union",
+    "formal_members": [
+      "null",
+      "iterable"
+    ],
+    "formal_byref": false,
+    "caller_strict": false,
+    "caller_kind": "string",
+    "priority_control": true,
+    "return_shape": "singleton",
+    "return_members": [
+      "iterable"
+    ],
+    "value_kind": "array",
+    "source": "<?php\nnamespace ReviewWeakFirstMultiCvIterableReturnPriority102;\nfunction h($n,$m,$file,$line){global $stamp;$stamp=13;echo 'BAD-H;';return true;}\nfunction make(null|iTeRaBlE $saved,int $stamp):iTeRaBlE{echo 'S:',$stamp,';';echo 'BAD-M;';return [$saved];}\nfunction &take(&$value){echo 'BAD-F;';return $value;}\n$stamp=7;$x='17';$copy=$x;$alias=&$x;$r=11;set_error_handler('ReviewWeakFirstMultiCvIterableReturnPriority102\\\\h',8);echo 'A;';\ntry{$r=&take(make(\n    $x,\n    $stamp\n));echo 'BAD;';}catch(\\TypeError $e){echo 'T:',$r,':',(int)($x===$copy),':',(int)($alias===$copy),';';}unset($e);\n$alias=23;echo 'D:',$r,':',$x,':',(int)($copy==='17'),';';\necho 'Z:',$stamp,';';\n",
+    "native_stdout": "A;T:11:1:1;D:11:23:1;Z:7;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "d438497bbddc28f44e238379231f4425fa4b326163577f721d8d0ce5102375d9",
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_union_null_iterable_formal_producer_reference_notice_review_cases.json",
+      "id": "weak-first-ordered-null-iterable-string-receive-priority-before-second-int-body-and-notice",
+      "source_sha256": "fd223f816d478ca1e87db8a7a3ef4c16696ff15e01fe56361a681bb0e11f398d",
+      "edits": "Fresh namespace and canonical bare iterable return. The retained-Generator input case now returns an actual array; ordered first formal, second int CV, multiline diagnostic locations and ownership operations remain."
+    },
+    "iterable_index": 0,
+    "other_kind": "int",
+    "other_name": "stamp",
+    "other_actual_name": "stamp",
+    "other_byref": false,
+    "expected_notice_line": 8,
+    "last_actual_source_line": 9,
+    "first_actual_source_line": 8
+  }
+]
