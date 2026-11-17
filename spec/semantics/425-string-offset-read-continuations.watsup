@@ -622,6 +622,12 @@ def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_by
   -- if $origin_node(S.SOURCES, porigin_false) = (NScalarString (BYTES text_false) metadata_false)
   -- if $compiled_read(S, porigin_false) = (PSTRING n_false*)
   -- if $compiled_string_value(S, porigin_false, PSTRING n_false*) = PSTRING_CARRIER INTERNED_STRING n_false*
+;; String-cast shorthand condition and fallback retain the truth-selected header.
+def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
+  -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprCastString expression_cond metadata_cond) ABSENT (NExprCastString expression_false metadata_false) metadata)
+  -- if $compiled_read(S, porigin) = eps
+  -- if S_probe = S[.COMPLETION = NORMAL]
+  -- if $string_read_runtime_value(S_probe, porigin) = (PSTRING_CARRIER INTERNED_STRING n_bytes*)
 ;; FLOAT NOT retains its emitted source/CODE proof; folded NOT uses raw truth.
 def $string_read_raw_known_base(S, porigin, PSTRING_CARRIER INTERNED_STRING n_bytes*) = true
   -- if $origin_node(S.SOURCES, porigin) = (NExprTernary (NExprBooleanNot expression_child metadata_cond) ABSENT (NScalarString (BYTES text_false) metadata_false) metadata)
