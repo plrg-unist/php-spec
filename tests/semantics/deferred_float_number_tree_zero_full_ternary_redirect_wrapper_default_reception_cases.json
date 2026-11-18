@@ -1,0 +1,52 @@
+[
+  {
+    "id": "deferred-float-number-tree-zero-full-ternary-redirect-wrapper-pure-raw-tagged-results",
+    "source": "<?php\nfunction rawFloatNumberPureTreeZeroRedirect319(\n    $p0 = (((1.0 * (+(-0.0)))) ? SKIPPED_ZERO_TREE319_0 : ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))),\n    $p1 = ((((-1.0) * (+(-0.0)))) ? SKIPPED_ZERO_TREE319_1 : ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))\n) {\n    echo 'values:', (((1.0 * (+(-0.0))))) === 0.0, ':', ((((-1.0) * (+(-0.0))))) === 0.0, '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawFloatNumberPureTreeZeroRedirect319();\nrawFloatNumberPureTreeZeroRedirect319();\n",
+    "purpose": "A direct pure FLOAT MULTIPLY tree certifies both signed FLOAT zeros despite a phase-sensitive +(-0.0) descendant. The false full ternary must select FIELD2 scalar tags and leave FIELD1 names undemanded through Shared caches and private named reception.",
+    "expected_normal_stdout": "values:1:1|raw:1:1|values:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "5ed5324d45efe146f6132aa1fca84c684fe9f143b1edd5d522a2d7ed0f7ff94d",
+    "derived_from": {
+      "source_sha256": "459ecf9c02bc1c54be0666eeed788af0f34c194370cc70d781c2f041a20d85fe",
+      "transformation": "Rename317 to319, replace direct ADD nonzero conditions with MULTIPLY signed zeros, reverse only the outer full-ternary arms to select FIELD2, and use strict FLOAT-zero observers."
+    }
+  },
+  {
+    "id": "deferred-float-number-tree-zero-full-ternary-redirect-wrapper-pure-alias-named-reentry",
+    "source": "<?php\nnamespace FloatNumberPureTreeZeroRedirect319;\nuse const E_WARNING as Base319;\nuse const E_ERROR as One319;\nuse const Unavailable319\\Payload as Skipped319;\nfunction coercion319($errno, $message, $file, $line) {\n    global $x319;\n    echo 'coercion:', $message, '|';\n    defaults319(2);\n    $x319 = 3.5;\n}\nfunction defaults319(\n    int $first,\n    int &$selectedBool = (int)((((-1.0) * (+(-0.0)))) ? Skipped319 : (((bool)(+(-((float)(+(Base319 === One319)))))))),\n    int &$negativeZero = (int)(((1.0 * (+(-0.0)))) ? Skipped319 : (-((float)((bool)(+(-((float)(+(Base319 === One319))))))))),\n    int $last = 7\n) {\n    echo 'values:', ((((-1.0) * (+(-0.0))))) === 0.0, ':', (((1.0 * (+(-0.0))))) === 0.0, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('FloatNumberPureTreeZeroRedirect319\\\\coercion319');\n$x319 = 1.5;\n$last319 = 8;\ndefaults319(last: $last319, first: $x319);\necho 'outer:x=', $x319, '|';\n",
+    "purpose": "A direct pure FLOAT MULTIPLY tree certifies both signed FLOAT zeros despite a phase-sensitive +(-0.0) descendant. The false full ternary must select FIELD2 scalar tags and leave FIELD1 names undemanded through Shared caches and private named reception.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|values:1:1|body:2:0:0:7|values:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "ec43d33e590a8e8d57db1fd552593841972893f45169d0a9f1569d57c31c1fb1",
+    "model_timeout_seconds": 120,
+    "derived_from": {
+      "source_sha256": "05005e829841242b07eb24975a211343c07d8b8c5d6b2e74a38680e81df08a31",
+      "transformation": "Rename317 to319, replace direct ADD nonzero conditions with MULTIPLY signed zeros, reverse only the outer full-ternary arms to select FIELD2, and use strict FLOAT-zero observers."
+    }
+  },
+  {
+    "id": "deferred-float-number-tree-zero-full-ternary-redirect-wrapper-mixed-raw-tagged-results",
+    "source": "<?php\nfunction rawFloatNumberMixedTreeZeroRedirect319(\n    $p0 = (((1 * (+(-0.0)))) ? SKIPPED_ZERO_TREE319_0 : ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))),\n    $p1 = ((((-1) * (+(-0.0)))) ? SKIPPED_ZERO_TREE319_1 : ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))\n) {\n    echo 'values:', (((1 * (+(-0.0))))) === 0.0, ':', ((((-1) * (+(-0.0))))) === 0.0, '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawFloatNumberMixedTreeZeroRedirect319();\nrawFloatNumberMixedTreeZeroRedirect319();\n",
+    "purpose": "A direct mixed INT/FLOAT MULTIPLY tree certifies both signed FLOAT zeros despite a phase-sensitive +(-0.0) descendant. The false full ternary must select FIELD2 scalar tags and leave FIELD1 names undemanded through Shared caches and private named reception.",
+    "expected_normal_stdout": "values:1:1|raw:1:1|values:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "00de4cb5a3672e7980bc42674df49986e13b458906218811ce28776ea1f65f2b",
+    "derived_from": {
+      "source_sha256": "fd7c203cb2b87b3ba679dc170f742773a80abc9aa8f134a23af0844e9496e37f",
+      "transformation": "Rename317 to319, replace direct ADD nonzero conditions with MULTIPLY signed zeros, reverse only the outer full-ternary arms to select FIELD2, and use strict FLOAT-zero observers."
+    }
+  },
+  {
+    "id": "deferred-float-number-tree-zero-full-ternary-redirect-wrapper-mixed-alias-named-reentry",
+    "source": "<?php\nnamespace FloatNumberMixedTreeZeroRedirect319;\nuse const E_WARNING as Base319;\nuse const E_ERROR as One319;\nuse const Unavailable319\\Payload as Skipped319;\nfunction coercion319($errno, $message, $file, $line) {\n    global $x319;\n    echo 'coercion:', $message, '|';\n    defaults319(2);\n    $x319 = 3.5;\n}\nfunction defaults319(\n    int $first,\n    int &$selectedBool = (int)((((-1) * (+(-0.0)))) ? Skipped319 : (((bool)(+(-((float)(+(Base319 === One319)))))))),\n    int &$negativeZero = (int)(((1 * (+(-0.0)))) ? Skipped319 : (-((float)((bool)(+(-((float)(+(Base319 === One319))))))))),\n    int $last = 7\n) {\n    echo 'values:', ((((-1) * (+(-0.0))))) === 0.0, ':', (((1 * (+(-0.0))))) === 0.0, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('FloatNumberMixedTreeZeroRedirect319\\\\coercion319');\n$x319 = 1.5;\n$last319 = 8;\ndefaults319(last: $last319, first: $x319);\necho 'outer:x=', $x319, '|';\n",
+    "purpose": "A direct mixed INT/FLOAT MULTIPLY tree certifies both signed FLOAT zeros despite a phase-sensitive +(-0.0) descendant. The false full ternary must select FIELD2 scalar tags and leave FIELD1 names undemanded through Shared caches and private named reception.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|values:1:1|body:2:0:0:7|values:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "278fbc1a3b8af61034eb6a77c4d419caf1eecaa173df19d68fbdf01602c91db1",
+    "model_timeout_seconds": 120,
+    "derived_from": {
+      "source_sha256": "7e44f2c82700b2edbe5a7c668a835e27134abad4d1183d10369eb7633c47336d",
+      "transformation": "Rename317 to319, replace direct ADD nonzero conditions with MULTIPLY signed zeros, reverse only the outer full-ternary arms to select FIELD2, and use strict FLOAT-zero observers."
+    }
+  }
+]
