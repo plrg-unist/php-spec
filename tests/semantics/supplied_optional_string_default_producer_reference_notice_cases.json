@@ -1,0 +1,68 @@
+[
+  {
+    "id": "optional145-string-byval-supplied-int-default-string",
+    "kind": "singleton",
+    "source": "<?php\nnamespace StringDefault145 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===17),';';$x=23;return true;}\nfunction make(sTrInG $saved='seven'):int{echo 'M:',(int)($saved==='17'),':',(int)($GLOBALS['x']===17),';';return (int)$saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=17;$snapshot=$x;set_error_handler('StringDefault145\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot===17),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot===17),';';\n}\n",
+    "formal_kind": "string",
+    "formal_byref": false,
+    "caller_strict": false,
+    "default": "seven",
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "observed_notice_line": 8,
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-single-bool-byval-supplied-false-default",
+      "source_sha256": "e2fe83ddbf5ab6380865e6662449dc9d23a5bd54ba1f99d7cfecdb13226ca2f4",
+      "edits": "Fresh namespace, plain STRING formal with ASCII string default and supplied INT17. Strict observers distinguish the received STRING from the unchanged caller INT. Return remains INT17."
+    },
+    "source_sha256": "b06f94061d4c70cd4a2bd34dd117062e16e071864ebf0a4f83beaf9a419d8d90"
+  },
+  {
+    "id": "optional145-untyped-byref-array-string-default-and-later-omitted",
+    "kind": "array",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace StringArrayDefault145 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input='seven'):aRrAy{global $leaf;echo 'V:',$input,':',(int)($input==='seven'),';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('StringArrayDefault145\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "default": "seven",
+    "native_stdout": "U;V:3:0;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V:seven:1;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-untyped-byref-array-true-default-and-later-omitted",
+      "source_sha256": "24e07ce7e883407629e0052d57a590787273ebeec0269d38cea37f94c38d0d5a",
+      "edits": "Fresh namespace and ASCII string default. Supplied INT3 keeps its tag; a later omitted call observes the exact STRING default."
+    },
+    "source_sha256": "06d9bc1519c3c4b92b968e5083c313be706678b45ce55dca89a30adbd3d1834e"
+  },
+  {
+    "id": "optional145-omitted-string-default-int-return-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make(sTrInG $saved='7'):int{echo 'M:',(int)($saved==='7'),':',(int)($saved!==7),';';return (int)$saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',(int)($value===7),';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "default": "7",
+    "native_stdout": "O;M:1:1;H;F:1;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0,
+    "source_sha256": "ed04776aea103ce2837dcf5d5de5ea2343a95d450d590e8f5b613832136b5dd2",
+    "corrected_from": {
+      "id": "optional145-omitted-string-default-existing-route",
+      "source_sha256": "5189f88db426c60d902a09c657bb2f4ed6d7074aafc08d2ddfb22c14acbb0b3d",
+      "reason": "The original returned the stored default as a byte-only String, outside existing reference-Notice identity admission. Strict default observers stay; returning cast INT7 uses the established consumer path. Original Unsupported/native evidence is retained."
+    }
+  },
+  {
+    "id": "optional145-int-numeric-string-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(int $input='7'):int{return 9;}\necho 'BAD-PRELUDE;';$input=17;echo make($input);\n",
+    "default": "7",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use string as default value for parameter $input of type int in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0,
+    "source_sha256": "7d28b26f53a4ba9f1af9cb3d2d331bf38c251cbf3754c5127081943bdeb7a05b"
+  }
+]
