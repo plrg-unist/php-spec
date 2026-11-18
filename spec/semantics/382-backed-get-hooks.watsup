@@ -757,6 +757,25 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))
   -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF true})[.RETURNREF = true][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
+;; The source-parent link is checked when this own scoped-self hook is installed.
+def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata, pchheader) = $pphook_finish(P, $pparrow_body(P_hook, pcpath ++ [PCFIELD 5], expression), pcpath, ppropertydesc, true, metadata, pchheader)
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if pchheader.KIND = "class" /\ pchheader.PARENT =/= eps /\ ~pchheader.READONLY
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS pchheader.NAME]))]
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 4, PCINDEX 0]
+  -- if ppropertydesc.ORIGIN = PORIGIN P.FOLD.SOURCE.ID (pcpath_group ++ [PCFIELD 3, PCINDEX 0])
+  -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata])) metadata_group)
+  -- if flags <- [0,1]
+  -- if $ptast(phpType18) = PTNAME ptqual ptbytes_type
+  -- if ptqual <- [PTPLAIN, PTRELATIVE] /\ $ptlc(ptbytes_type) = $ptascii("self")
+  -- if $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group)))
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+  -- if $hook_parameter_facts(metadata) = [false]
+  -- if z = $source_line(metadata)
+  -- if $(z > 0 /\ z <= $source_end_line(metadata))
+  -- if P_hook = $ppfunction_start($pplocate(P[.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))], pcpath, z), pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME), {PARAMETERS eps, RETURNS ppropertydesc.TYPE, BYREF true})[.RETURNREF = true][.RETURNS = ppropertydesc.TYPE][.GOTOROOT = pcpath][.FOLD = P.FOLD[.FUNCTION = pchheader.NAME ++ $ptascii("::") ++ $hook_name(ppropertydesc.NAME)][.CLASSCONTEXT = ($ppmethod_context(P, pchheader, $hook_name(ppropertydesc.NAME), z))][.CLOSURE = false][.DEFAULT = false][.CONSTANT = false][.VALUE = eps]]
 def $pphook_body_compile(P, pcpath, ppropertydesc, phpType38, pchheader) = $ppunsupported(P, "set, by-reference, attributed or defaulted virtual property hook") -- otherwise
 
 def $pphook_finish(P_outer, P_body, pcpath, ppropertydesc, b, metadata, pchheader) = P_body
@@ -2147,6 +2166,38 @@ def $property_hook_reference_decl(S, ppropertydesc) = true
   -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) ABSENT (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook])) metadata)
   -- if flags <- [0,1]
+  -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
+  -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
+  -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME
+  -- if $ptlc($base64(text_get)) = $ptascii("get")
+  -- if $hook_parameter_facts(metadata_hook) = [false]
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME)
+;; A named empty root parent does not change an own scoped-self backing slot.
+def $property_hook_reference_decl(S, ppropertydesc) = true
+  -- if $property_declaring_class(S.CLASSES, ppropertydesc.ORIGIN) = (porigin_owner)
+  -- if $class_at(S.CLASSES, porigin_owner) = (pclassdesc)
+  -- if pclassdesc.KIND = "class" /\ ~pclassdesc.READONLY
+  -- if pclassdesc.PARENT = (ptbytes_parent)
+  -- if $class_named(S.CLASSNAMES, $ptlc(ptbytes_parent)) = (porigin_parent)
+  -- if $class_link_at(S.LINKEDPARENTS, porigin_owner) = (SOURCE_PARENT porigin_parent)
+  -- if $class_at(S.CLASSES, porigin_parent) = (pclassdesc_parent)
+  -- if pclassdesc_parent.KIND = "class" /\ pclassdesc_parent.PARENT = eps
+  -- if ~pclassdesc_parent.ABSTRACT /\ ~pclassdesc_parent.FINAL /\ ~pclassdesc_parent.READONLY
+  -- if pclassdesc_parent.PROPERTIES = eps /\ pclassdesc_parent.METHODS = eps
+  -- if pclassdesc_parent.CONSTANTS = eps /\ pclassdesc_parent.INTERFACES = eps
+  -- if $origin_node(S.SOURCES, pclassdesc_parent.ORIGIN) = (NStmtClass (SEQUENCE eps) (INTEGER 0) (NIdentifier phpType33_parent metadata_parent_name) ABSENT (SEQUENCE eps) (SEQUENCE eps) metadata_parent)
+  -- if $trait_plan(S, pclassdesc).TRAITS = eps /\ $trait_plan(S, pclassdesc_parent).TRAITS = eps
+  -- if $property_hook_pair_source_headers(S, pclassdesc, pclassdesc_parent)
+  -- if ppropertydesc.TYPE = [(PTBRANCH ([PTCLASS pclassdesc.NAME]))]
+  -- if ppropertydesc.ORIGIN = PORIGIN n pcpath
+  -- if $hook_property_at(pclassdesc.PROPERTIES, PORIGIN n pcpath) = (ppropertydesc)
+  -- if $(|pcpath| >= 2)
+  -- if pcpath_group = pcpath[0:$nabs($( |pcpath| - 2))]
+  -- if pcpath = pcpath_group ++ [PCFIELD 3, PCINDEX 0]
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem (NVarLikeIdentifier (BYTES text_name) metadata_name) phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_get) (SEQUENCE eps) expression metadata_hook])) metadata)
+  -- if $ptast(phpType18) = PTNAME ptqual ptbytes_type
+  -- if ptqual <- [PTPLAIN, PTRELATIVE] /\ $ptlc(ptbytes_type) = $ptascii("self")
+  -- if flags <- [0,1] /\ $property_hook_short_reference_header(S, pclassdesc, ppropertydesc, phpType18)
   -- if ppropertydesc.VISIBILITY = PROPERTY_PUBLIC /\ ppropertydesc.SETVISIBILITY = eps
   -- if ~ppropertydesc.STATIC /\ ~ppropertydesc.READONLY /\ ~ppropertydesc.FINAL
   -- if ppropertydesc.NAME = $base64(text_name) /\ ppropertydesc.KEY = ppropertydesc.NAME

@@ -3061,3 +3061,11 @@ source detachment. Existing owner/source guards, normalizer and runtime rules
 retain their bounds. Unknown, trait and anonymous contexts, wider owners and
 lifetimes stay partial.
 [Review](../../coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json).
+
+An own public short reference Get typed exactly `self` or `namespace\self`
+also admits a named empty ordinary root parent. The actual name registry,
+parent link, canonical class headers and empty parent AST authenticate this
+extension; the child retains its own backing slot and existing reference type
+sources. Parent payloads still fail the child's self constraint. Nullable,
+union, intersection, ordinary nominal and `parent` headers, nonempty parents
+and wider owners or lifetimes remain outside this extension.
