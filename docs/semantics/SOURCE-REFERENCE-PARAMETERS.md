@@ -1165,9 +1165,10 @@ isolators from a combined FORMAL/RETURN alias original and the unchanged NULL
 TypeError-before-Notice control. Four native originals ran once; author source2
 and state340, independent whole4 with state340/191, and the fixed production
 load retain separate identities. One emitted-name compiler rejection and two
-reader preparation assertions keep zero credit. Scoped nullable and ordered union
-RETURNs are extended below; relative RETURNs, other resolved classes and wider
-payloads/owners/lifetimes remain partial, with all exact holds unchanged.
+reader preparation assertions keep zero credit. Scoped nullable, ordered union
+and empty-namespace relative singleton RETURNs are extended below; wider relative
+contexts, other classes, payloads and lifetime histories remain partial, with all
+exact holds unchanged.
 
 Nullable `?Alias` RETURNs use the same quiet declaration resolution to exact
 global `stdClass`, after the existing Param-view recursion. The new arm requires
@@ -1206,6 +1207,23 @@ Pure future-helper expectations in eleven files promote through fresh alias and
 self-import proofs, without renewing historical executions. Multiple nominals,
 relative/DNF forms, other resolved classes and wider payloads/owners/lifetimes
 remain partial; exact holds stay unchanged.
+
+An empty declaration namespace also admits the singleton relative RETURN
+`namespace\stdClass`. Quiet `PTRETURN`/`PTRELATIVE` resolution authenticates exact
+canonical normalized `stdClass` before the existing FQN header, preserving the
+name metadata. Relative resolution ignores class imports, including a conflicting
+ordinary-name alias. Nonempty actuals and an unchanged Param view retain the
+existing normalization order and generic-helper disjointness. Independent RETURN
+verification, frame retirement and private Notice-cell ownership remain unchanged.
+The [relative-return review](../../coverage/semantics/relative-stdclass-return-producer-reference-notice-review.json)
+records native4 once, author source2/state333, retained independent source4/state333
+and corrected peer181. The original WHOLE peer fixture compiler rejection retains
+runtime UNRUN0; only its two negative-control metadata bindings were corrected and
+the affected peer suite rerun. There is no first-WHOLE-pass claim or source/native/
+author replay. Two older canonical relative helper expectations promote through
+fresh import-ignorance and Param-first proofs without renewing their campaigns.
+Nullable/union relative forms, nonempty namespaces, other normalized classes and
+wider payloads/owners/lifetimes remain partial; exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
