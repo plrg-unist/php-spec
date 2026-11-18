@@ -2082,3 +2082,13 @@ original report/map/full-cache reads remain0. Prior evidence and holds retain
 their own cuts.
 [Integral-float complement evidence](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json).
+
+Emitted one-byte STRING bitwise NOT also feeds the selected nested return casts.
+The proper child and root must both be emitted; their own SOURCE, CODE and
+terminal line remain authenticated. Absent reads/redirects and empty subtree
+effects precede an exact NORMAL `bitnot_apply` state with an INTERNED character
+result and unchanged STRINGDATA. The permanent character table includes byte
+zero, so a derived NUL is admitted; literal-source NUL and owned REQUEST-NUL
+holds remain. Empty and multibyte results allocate STRINGDATA and stay outside
+this rule even when they carry no heap owner. Folded STRING and numeric arms,
+the two-cast gate, broader contexts and existing held boundaries are unchanged.
