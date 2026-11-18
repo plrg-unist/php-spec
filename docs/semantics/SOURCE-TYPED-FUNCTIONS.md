@@ -1459,6 +1459,22 @@ redirect. Outer signs over computed zero trees, computed unary children inside
 the binary base, nonfinite conditions, owning results and wider contexts remain
 partial. [Zero-tree review](../../coverage/semantics/deferred-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
+One outer PLUS or MINUS also admits a certified FLOAT-zero binary op4 base with
+raw FLOAT presence when the whole condition has phase safety false. Exact own
+and child SOURCE, PFLOAT pools and absent CODE/read/redirects authenticate both
+zero signs; pure multiplication by long +1/-1 precedes the proper FIELD2
+selection. A phase-SAFE binary base remains admissible when its outer PLUS is
+itself phase-sensitive. The direct zero receipt, collectors, selected scalar
+bindings, Shared caches and private recipient bounds remain unchanged.
+
+Four fresh originals observe FLOAT-zero/type and branch behavior; exact signed
+bits are established separately by compiler-source and pool/pure-operation
+certificates. Native4 once/source4, prelaw4/936 and author WHOLE6/1568 retain
+separate cuts. Phase-SAFE ordinary zeros keep their existing falsey route.
+Repeated outer signs, computed unary children inside the binary base, owning
+results and wider contexts/lifetimes remain partial.
+[Unary zero-tree review](../../coverage/semantics/deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
