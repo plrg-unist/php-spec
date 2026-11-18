@@ -2963,3 +2963,11 @@ Raw and literal-string `this` receivers with identifier/quoted fields report
 Compilation stops before body CODEARROW/function installation or source execution.
 Existing runtime predicates and header/value/owner bounds remain literal; wider chains stay partial.
 [Review](../../coverage/semantics/nullsafe-chain-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits bare intersections of two or
+more quiet ordinary, fully qualified or namespace-relative nominal atoms.
+Aligned raw atoms and one normalized branch preserve source order and canonical
+defining namespace/imports through whole quiet normalization.
+Existing runtime conjunction matching enforces every interface, retaining
+aliases, atomic refusal, object copies and real source detachment; DNF/wider contexts stay partial.
+[Review](../../coverage/semantics/nominal-intersection-parentless-short-reference-get-hook-review.json).
