@@ -2071,5 +2071,14 @@ zeros, exact -2^63 and the float below +2^63 keep their own input bits; equal
 rounded outer FLOATs cannot replace exact raw PINT results. Fractional and
 subnormal, nonfinite and out-of-range inputs refuse even under diagnostic
 masks. Wider owners, contexts and every held boundary remain partial.
+Eight originals agree using eight native observations once at their recorded
+cut. Eight saved empty-effect CODEs retain that cut and author19/13 plus
+affected1 after the conservative guard. The original peer65 remains NONPASS:
+63 earlier TRUE checks retain only that absence bridge; corrected35 executes
+the failed2 and previously unrun33, followed by first lifecycle14. WHOLE7 and
+fixed actual2e729e28 are clear; sole production SL509 passes16.691298999s
+under cap60/source0. One original report/map cache binds composition; author
+original report/map/full-cache reads remain0. Prior evidence and holds retain
+their own cuts.
 [Integral-float complement evidence](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json).

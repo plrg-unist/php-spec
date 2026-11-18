@@ -8,6 +8,39 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+ENUM318 counted finite-sign originals, native-once/source4, prelaw1004, author
+WHOLE1730 and independent first-pass WHOLE1708 (new1524/fresh317184) remain in
+`../php-spec-evidence-archive/enum-deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-318/`.
+The [review](../coverage/semantics/deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json)
+binds source parents/posts/inverses, the initial parse-only failure0 and two MAIN
+prewrite preparations0 separately from actual `97bafc471` productionSL509.
+`independent/canonical-independent-tiny-v1.json` binds the full raw+parsed cache
+saved before assertions after one original actual/report/map read each; author
+original raw reads stay0. No accepted source/native or old campaign is renewed.
+
+OUTPUT159 exact integral FLOAT bitwise-NOT originals/native8-once, baseline
+Unsupported1, source8, author19/13 plus affected1, original peer65NONPASS,
+corrected35 and firstlife14 remain under
+`../php-spec-evidence-archive/new/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-159/`.
+The [review](../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json)
+binds source/fixture retention through guard bridge30b0c5f7, WHOLE7
+841da3b6 and actual2e729e28/soleSL50916.691298999s/source0 to original
+canonical74edf1f7 and map2bdc6f54 cached once by the reviewer. Author original
+report/map/full-cache reads0. Preparation failures and the failed peer cut
+remain preserved; no full98 new-runtime or historical campaign renewal.
+Archives are evidence, not build/runtime inputs.
+
+- Raw-FLOAT arithmetic-tree RHS CONCAT: [review](../coverage/semantics/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-review.json), [contract](semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-ARITHMETIC-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md). Native2-once/source2, prelaw86+98, author245/110+263/111 and current-derived59 remain in `../php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-author62-20261118/`. Corrected B473/265, WHOLE14, both original B465 failures and the POWER VALUE-EPS probe remain in the matching `-reviewer51-20261118/` archive. Fixedactual `64274077`/soleSL50917.135575736s/source0 is clear through reviewer52 `actual-review-v1.json` SHA `5fffd4ad8d100c194947754e23a128c0a8d2fb11f96b508c93a3d7073b01111a` and `actual-review-cache-v1/cache-manifest.json` SHA `e3fa3208958dc1aeb3562b80181f701ab08b94b01f6b17858600785e73297cff`, original report/map1 each and author raw/cache0. Preparations retain zero credit; archives supply evidence only.
+
+COMP346 scoped-self mixed nominal/builtin short-reference Get evidence is
+in `../php-spec-evidence-archive/comp346/`: `source-packet38.json` binds
+the five author commits, 20 complete paths and Make7 forward/inverse;
+`peer-ready37.json` binds native/source4, private states278/286/311/297
+and header539. `review38-tiny.json` binds fixed actual6694f75b9 and the
+sole productionSL509 pass; its full raw/parsed cache remains external.
+Prelaw controls and both static preparation failures retain zero credit;
+the family record links hashes and recovery paths.
+
 Quiet integer Add/Subtract selector originals, two intentional overflow controls, source comparisons and fourteen fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) binds SOURCE7, zero legacy updates and independently checked fixed source/canonical/map tuple. Collector-only accounting corrections retain zero semantic credit. Archives are evidence rather than build/runtime inputs.
 
 ENUM317 direct finite numeric-tree originals, native-once/source4, prelaw1092,
@@ -65,6 +98,8 @@ REF140 originals and observations remain in `../php-spec-evidence-archive/suppli
 REF141 evidence remains in `../php-spec-evidence-archive/supplied-optional-float-default-producer-reference-notice-141/`. `author/code-packet-v1.json` retains eight exact posts, full parents and forward/inverse source diffs; `author/validation-cuts-v1.json` separates native4 once, Unsupported/UNRUN, existing controls, source2, front193 and four adapter negatives. `review/whole-v1/report.json` records independent state checks422. The peer full cache preserves the single canonical report/map read; `author/actual-main-v1-tiny.json` records integrated `b97d65ba` with author raw reads0 and labels the saved MAIN diffs as complete plain-unified. Author duplicate-anchor and MAIN Make-projection preparation failures remain runtime0. [Review](../coverage/semantics/supplied-optional-float-default-producer-reference-notice-review.json). These archives are evidence only.
 
 REF142 evidence remains in `../php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/`. `author/code-packet-v1.json` retains seven source posts, complete parents and forward/inverse diffs; `author/validation-cuts-v1.json` separates native4 once, source2, existing controls, front193 and the preserved compiler failure. `review/whole-v1/report.json` records independent390; the full reviewer cache precedes tuple assertions. `author/actual-main-v1-tiny.json` binds integrated `e8caa488` and author raw0; saved MAIN diffs are complete plain unified. [Review](../coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json). Archives are evidence only.
+
+REF143 evidence remains in `../php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/`. `author/code-packet-v1.json` retains eight exact source posts/full parents and diffs; `author/validation-cuts-v1.json` separates native6 once, source3, controls3, original/corrected front and corrected WHOLE767. Original WHOLE failure and diagnostic localizer remain in `review/{whole-v1,localizer-v1}/`. The peer full cache precedes tuple assertions; `author/actual-main-v1-tiny.json` binds integrated `397a0854`, Git full-index MAIN diffs and author raw0. [Review](../coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json). Archives are evidence only.
 
 REF138 evidence remains in `../php-spec-evidence-archive/scoped-case-stdclass-producer-reference-notice-138/`. `author/code-packet-v1.json` binds eleven complete source-parent records and twelve exact posts/inverses; original literal diffs are saved as `author/forward-source-v1.diff` and `author/inverse-source-v1.diff`. `peer/review-v1.json` separates author source6/1121 and independent WHOLE1305 from preserved fixture-only failures. `peer/canonical-read-cache-v1.json` retains the sole parsed canonical report/map read; `author/main110-actual-immutable-tuple-v1.json` records joined9081 acceptance with author raw reads0. The [review](../coverage/semantics/scoped-case-stdclass-producer-reference-notice-review.json) retains exact scopes and unchanged holds. These external archives supply evidence only.
 

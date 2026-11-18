@@ -1,5 +1,15 @@
 # PHP syntax in P4-SpecTec
 
+Exact integral FLOAT operands now admit integer bitwise NOT within bounded
+selected output-handler return casts. Intrinsic notice-free conversion, raw
+integer results, source/compiler facts and empty compiled effects remain
+required; wider contexts stay partial. [Review](coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json).
+
+Own public parentless short reference Get supports finite flat mixed unions
+with scoped `self`, at least two class arms and a compatible builtin, retaining
+exact defining authority, arm order and whole quiet normalization. Scoped-self
+DNF and wider contexts remain partial. [Review](coverage/semantics/self-mixed-nominal-union-parentless-short-reference-get-hook-review.json).
+
 Folded quiet conditions now compose with full and shorthand ternaries in
 bounded selected output-handler return casts. Own source/compiler facts, raw
 selected tags, quiet truth, exact branch copies and real retirement remain
@@ -43,7 +53,7 @@ remains later research.
 
 Ordinary primitive reference cells can back dynamic fields of retained stdClass objects after a nested-unset Warning. Shared field/CV writes, object-alias rebinding and object-only cell retention preserve duplicate field edges through staged retirement. Two source agreements and independent state review bind actual848dfc2fe and its sole production SL load. The authenticated non-NUL STRING alias extension below covers string fields; wider field/lifetime forms remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post-review.json).
 
-Finite trees of unary signs and `(float)` casts over raw FLOATs supply one allocated STRING RHS row for CONCAT offset bases, including signed zero. Exact source/value authority, contiguous REQUEST identities, both nonconstant flags and full state replay preserve frozen raw CV offsets through returning Warnings and reference rebinding. Arithmetic leaves and wider owners, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-CAST-SIGN-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
+Finite raw-FLOAT trees of unary signs, FLOAT casts and `+`, `-`, `*`, `/` supply one allocated STRING RHS row for CONCAT offset bases, preserving negative zero. Exact source/value/precision authority, contiguous REQUEST identities, both nonconstant flags and full state replay preserve saved raw CV offsets through returning Warnings and reference rebinding. Numeric coalesce, wider producers, owners and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-ARITHMETIC-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
 Literal CONCAT suffixes accept certified allocated composite left bases. Full ternary and nested coalesce/shorthand lefts preserve their selected bytes and saved raw CV offset across returning Warnings. Source authority remains delegated to each producer; broader RHS producers, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COMPOSITE-LEFT-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
@@ -132,6 +142,8 @@ Fully supplied optional untyped or plain `float` formals also retain literal FLO
 
 Fully supplied optional untyped or plain `bool` formals retain bare Boolean defaults with exact raw AST, both metadata layers and kind `true` or `false`. Supplied reception, default demand and reference ownership are preserved. Wider defaults, types and lifetimes remain partial. [Review](coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json).
 
+Fully supplied optional literal `true`/`false` formals retain matching bare Boolean defaults with exact raw type, normalized type, default kind and AST metadata. Existing Boolean coercion, default demand and reference ownership stay unchanged. Wider forms remain partial. [Review](coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json).
+
 Quiet pooled nonzero signed64 integer conditions in full ternary defaults preserve the selected FIELD1 scalar tag while skipped names remain undemanded. Exact source, typed pool and redirect receipts retain declaration bindings, Shared-cache values and private recipients through named Warning reentry. Two original source comparisons and separate author/independent fixture cuts pass; wider truthy domains, owning values and lifetimes remain partial. [Review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Quiet full-ternary defaults preserve selected FIELD1 scalar tags for nonzero signed64 integers, finite nonzero FLOATs, literal infinite FLOATs and literal STRINGs other than empty or ASCII "0". Exact source, typed pools, absent executable condition leaves and unique proper redirects preserve declaration bindings, Shared-cache values and private integer reception during named coercion-handler reentry. Literal STRING conditions also require exact decoded bytes and INTERNED compiler data. Literal infinity also requires a raw FLOAT literal or unary sign chain. Computed or owning STRING forms, named/computed infinity predicates, NaN conditions and wider lifetimes remain partial. [Integer review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json), [FLOAT review](coverage/semantics/deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-review.json), [Literal infinity review](coverage/semantics/deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-review.json), [Literal STRING review](coverage/semantics/deferred-truthy-literal-string-full-ternary-redirect-wrapper-default-reception-review.json).
@@ -141,6 +153,13 @@ scalar tags when a phase-sensitive descendant prevents ordinary deferred VALUE.
 Exact recursive source and typed fold receipts retain skipped-name pruning, Shared
 caches and private integer reception through named handler reentry. Wider forms
 and lifetimes remain partial. [Review](coverage/semantics/deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+
+Two or more outer PLUS/MINUS signs also preserve finite nonzero FLOAT
+full-ternary conditions over certified numeric trees with raw FLOAT presence.
+Exact per-sign source/pool/fold receipts retain the original collector, selected
+tags, Shared caches and private reception. Computed unary children inside the
+binary base and wider contexts remain partial.
+[Review](coverage/semantics/deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Computed-TRUE full-ternary defaults preserve the selected scalar tag through exact
 recursive Boolean/source/pool authority and a proper selected-child redirect.

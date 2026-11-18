@@ -1769,3 +1769,13 @@ ownership are preserved. A later omitted call still observes Boolean identity;
 an incompatible `int` formal/default pair rejects before execution. FQN/relative names,
 literal Boolean formals, other defaults and wider contexts remain partial.
 [Review](../../coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json).
+
+Fully supplied optional literal `true`/`false` formals retain matching bare
+Boolean defaults. A separate admission couples the decoded raw Identifier, sole
+normalized literal type and exact checked default kind, preserving the entire
+constant AST and both metadata layers. Required-header proof views preserve live
+signatures, reception and private ownership; the header checks returns separately
+from its erased-return argument view. Literal masks reject integer `0`/`1` even
+in weak calls, and a later omitted call retains Boolean identity. Other names,
+nullable/union formals and wider defaults/lifetimes remain partial.
+[Review](../../coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json).

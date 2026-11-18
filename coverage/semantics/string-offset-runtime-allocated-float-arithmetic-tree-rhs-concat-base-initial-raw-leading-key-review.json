@@ -1,0 +1,253 @@
+{
+  "family": "string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key",
+  "status": "independently reviewed and integrated at the fixed source revision",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "reference": "Pure executable .watsup; no Zend evaluation fallback"
+  },
+  "behavior": {
+    "grammar": "Finite raw-FLOAT trees with unary signs, FLOAT casts and ADD/SUBTRACT/MULTIPLY/DIVIDE; both children recurse",
+    "production_change": "Four syntax-only binary clauses and one comment; complete allocation/SOURCE/typed VALUE/precision/pool/full-state/ownership body literal",
+    "replay": "Numeric math/casts change only RESULT; CASTSTRING adds one RHS REQUEST row before CONCAT adds its final row",
+    "source_results": "Direct -0 and nested emitted/folded -12.5 retain the saved minus byte through returning Warnings and reference rebinding",
+    "meaningful_boundary": "Nonnull numeric COALESCE has actual same FLOAT VALUE and complete one-row replay, while raw grammar/root/BASE/capture/plan refuse",
+    "POWER_limit": "The proposed POWER control has VALUE EPS under the existing POWERDONE-only certificate; its probe and failed original fixtures retain zero credit",
+    "unchanged": "NaN quietness exclusion, prior infinity behavior, installed compiled-pool trust boundary, existing left BASE and owner/lifetime bounds"
+  },
+  "implementation": [
+    "spec/semantics/425-string-offset-read-continuations.watsup"
+  ],
+  "source": {
+    "semantic_commit": "8bc787d3859c4fa1bc32324ac263b2fadf7f0d68",
+    "author_tested_head": "3e1c0874e58de0e8ab5a374c02caf110b9feb92d",
+    "peer_only_protocol_control_commit": "9477f37ee50bba6a9295290681b357a2057d1f05",
+    "candidate_commit": "126e117fa7d1f34e727829f4adada94776571732",
+    "fixed_parent": "e9d9353facf7948896ab64d98af409368dfa2962",
+    "integrated_revision": "64274077b75a4377a8dabf4228539c5663f5087e",
+    "integrated_tree": "f84012bea8aa473a2bc262019123184eacf7ed8c",
+    "source_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-author62-20261118/source-ready-v1/packet.json",
+      "sha256": "5074575cf9bf217926509c503ccb973f91ca606c266958c3fce96214ebe81004"
+    },
+    "source_projection": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/source-projection-clear.json",
+      "sha256": "cc7180b0800f29b6ad713d71c6e3f5cfef18358e832a2982345444f1ba4d815c"
+    }
+  },
+  "validation": {
+    "native_originals_once": 2,
+    "native_reruns": 0,
+    "source_agreements": 2,
+    "baseline_unsupported": 2,
+    "prelaw_premises": [
+      86,
+      98
+    ],
+    "author_premises_and_derived": [
+      [
+        245,
+        110
+      ],
+      [
+        263,
+        111
+      ]
+    ],
+    "current_derived_only": {
+      "total": 59,
+      "helper_conditions": 50,
+      "fresh_pure_queries": 5,
+      "bindings": 3,
+      "helper_call": 1,
+      "historical_main_written_or_executed_conditions": 0,
+      "source_native_credit": 0
+    },
+    "independent_corrected_premises_and_derived": [
+      473,
+      265
+    ],
+    "independent_first_attempt": false,
+    "private_modules": {
+      "production_SL": 508,
+      "all_manifest": true,
+      "exclusions": []
+    },
+    "whole_judgments": 14,
+    "source_mismatches": 0,
+    "timeouts": 0,
+    "historical_accepted_renewals": 0,
+    "all_planned_checks_complete_and_reaped": true,
+    "author_summary": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-author62-20261118/author-summary-v1.json",
+      "sha256": "47bdff12bac1905b0525bdbcfc8aa12ca69f42af9f561336331963b4562fcd2d"
+    },
+    "independent_ready": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/review-ready.json",
+      "sha256": "eab110f503f8bad7bbd6fc9f3cf8b33386be460cab311c83bd169a178e314a14"
+    },
+    "validation_cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-author62-20261118/source-ready-v1/validation-cuts.json",
+      "sha256": "7d9c6e4fc136bdae913ac1bc6bd4bd6623cf31e23afa012e83492002873d0343"
+    }
+  },
+  "failures_zero_credit": {
+    "original_nonpass_B": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer-v1/report.json",
+        "sha256": "227dbbb4b3f0a71062d5e415be902e7c55766909702d690ae111ec1fee2fc320",
+        "head": "b2a30c8e131a47ab7265b21dd2649a82c2c90bf6",
+        "premises": 465,
+        "derived_conditions": 257,
+        "compiler_exit": 0,
+        "execution_exit": 1,
+        "execution_seconds": 22.49675989151001,
+        "credit": 0
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer-v2/report.json",
+        "sha256": "ba6bc1a6568caf947fa5d742ccbbe4c8dc7cb552aab3adb2a5c8487a82006837",
+        "head": "99ce26821bf43815d4f188a8a0fae608508b173d",
+        "premises": 465,
+        "derived_conditions": 257,
+        "compiler_exit": 0,
+        "execution_exit": 1,
+        "execution_seconds": 110.85717988014221,
+        "credit": 0
+      }
+    ],
+    "fixture_corrections": [
+      {
+        "original_report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer-v1/report.json",
+        "original_sha256": "227dbbb4b3f0a71062d5e415be902e7c55766909702d690ae111ec1fee2fc320",
+        "original_head": "b2a30c8e131a47ab7265b21dd2649a82c2c90bf6",
+        "original_premises": 465,
+        "original_derived": 257,
+        "failure": "Two hand-written decimal -25 bits disagreed with the correctly hex-derived VALUE table; first mismatch stopped main before POWER helper execution.",
+        "correction": "Compute both -25 expected literals and the intended wrong -25.5 poison from exact hexadecimal bit strings. Three fixture tokens only; no production/CASE/A/source/native change.",
+        "replacements": [
+          [
+            "13851102128908075008",
+            "13851102128954671104",
+            2
+          ],
+          [
+            "13851242866396430336",
+            "13851242866443026432",
+            1
+          ]
+        ],
+        "runtime_or_source_credit": 0,
+        "native_executions": 0,
+        "affected_rerun": "new B only, same compiler120/runtime180 caps",
+        "original_reaped": true
+      },
+      {
+        "original_report": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer-v2/report.json",
+        "original_sha256": "ba6bc1a6568caf947fa5d742ccbbe4c8dc7cb552aab3adb2a5c8487a82006837",
+        "original_head": "99ce26821bf43815d4f188a8a0fae608508b173d",
+        "original_premises": 465,
+        "original_derived": 257,
+        "original_nonpass": true,
+        "original_runtime_seconds": 110.85717988014221,
+        "original_reaped": true,
+        "power_probe": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/power-value-probe-v1/report.json",
+          "sha256": "8dcd8f4db0ea9b81c70a0c7296e5f3d72e782ce709190a674e2039c94648bde3",
+          "VALUE": "None\n",
+          "source_credit": 0,
+          "native_executions": 0
+        },
+        "reason": "The proposed FLOAT-exponent POWER control is outside the existing POWERDONE-only VALUE certificate; its actual VALUE query at the checked frontier returns EPS/None. Original aggregate remains NONPASS; no standalone main-pass claim.",
+        "correction": "Peer-only control source/report label now use quiet nonnull numeric COALESCE. New peer proves same FLOAT VALUE, emitted facts and full one-row replay, then grammar/refusal; production unchanged.",
+        "protocol_commit": "9477f37ee50bba6a9295290681b357a2057d1f05",
+        "peer_commit": "62c8c23e06db59938357f40a371b490bb712f148",
+        "inactive_flow_bridge": "Protocol changes only new arithmetic flag AND peer path; source/native/A/current-derived args unaffected. All kernel/CASE/A bytes literal.",
+        "source_native_author_fixture_renewals": 0,
+        "credit": 0
+      }
+    ],
+    "POWER_probe": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/power-value-probe-v1/report.json",
+      "sha256": "8dcd8f4db0ea9b81c70a0c7296e5f3d72e782ce709190a674e2039c94648bde3",
+      "actual_VALUE": "EPS/None",
+      "source_native_credit": 0,
+      "original_main_written_executed": 0
+    },
+    "author_preparation": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-author62-20261118/preparation-failures.json",
+      "sha256": "32d7f49a15623ecba2c73db16dcb26286390e624edb5c7aa5aee3ff781f438fc",
+      "count": 1
+    },
+    "actual_reviewer_static_preparation": {
+      "count": 1,
+      "reason": "Initial guessed fixture spelling corrected from already cached exact fixture",
+      "semantic_credit": 0,
+      "runtime_executions": 0
+    },
+    "original_or_standalone_main_pass_claim": false,
+    "source_native_A_current59_or_canonical_renewals": 0
+  },
+  "integration": {
+    "fixed_actual_revision": "64274077b75a4377a8dabf4228539c5663f5087e",
+    "fixed_actual_tree": "f84012bea8aa473a2bc262019123184eacf7ed8c",
+    "canonical": {
+      "mode": "production_SL",
+      "module_count": 509,
+      "fixture_count": 1,
+      "elapsed": 17.13557573594153,
+      "cap_seconds": 60,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "passed": true,
+      "argv_count": 512,
+      "watched_count": 513,
+      "executions": 1,
+      "report_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main115-dyn-arithmetic-canonical-v1/report.json",
+      "report_sha256": "dba6e176fb434749c22ac62af6a8a09466ae23d62a008fe66a0985195da004dd",
+      "map_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main115-dyn-arithmetic-source-map-v1.json",
+      "map_sha256": "bd3824f9b12f47fcc9179c7a947de41f5aac683c995a3c701e91b52518910659"
+    },
+    "independent_cache": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer52-20261118/actual-review-cache-v1/cache-manifest.json",
+      "sha256": "e3fa3208958dc1aeb3562b80181f701ab08b94b01f6b17858600785e73297cff",
+      "full_raw_and_parsed": true,
+      "persisted_before_assertions": true,
+      "author_reads": 0
+    },
+    "physical_original_reads": {
+      "report": 1,
+      "source_map": 1
+    },
+    "author_original_report_map_or_full_cache_reads": 0,
+    "independent_clearance": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-reviewer52-20261118/actual-review-v1.json",
+      "sha256": "5fffd4ad8d100c194947754e23a128c0a8d2fb11f96b508c93a3d7073b01111a"
+    },
+    "metadata_does_not_renew_semantic_acceptance": true
+  },
+  "remaining_partial": [
+    "Nonnull numeric coalesce and wider control-flow roots in this raw grammar",
+    "POWER VALUE limitations and other leaves/casts",
+    "General VALUE producers and multirow RHS allocation",
+    "Wider owners, release and lifetimes",
+    "Complete PHP core, later interaction trees and BOLA/CRIS verification"
+  ],
+  "inherited_unchanged": {
+    "inventory": [
+      169,
+      306
+    ],
+    "closed_obligations": [
+      0,
+      1
+    ],
+    "reserve": "93807cdd6/255",
+    "all_existing_exact_holds": true
+  },
+  "artifacts": "Raw traces and complete evidence remain outside Git and are not build/runtime prerequisites."
+}

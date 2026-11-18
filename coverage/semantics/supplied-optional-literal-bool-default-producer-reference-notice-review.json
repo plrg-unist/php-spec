@@ -1,0 +1,174 @@
+{
+  "family": "supplied-optional-literal-bool-default-producer-reference-notice-143",
+  "status": "independently reviewed partial increment",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed ordinary-CV producers with fully supplied optional literal true/false formals and matching bare Boolean defaults. A separate admission couples decoded raw Identifier, sole normalized literal type and exact checked default kind; whole ConstFetch/Name AST, both metadata layers and decoded default spelling remain exact. Existing untyped/plain bool admission stays literal. Only a required-header proof view erases defaults; reception, default demand, returns, frame retirement and private Notice-cell ownership remain unchanged. Literal masks reject weak integer0/1; a later omitted false call retains Boolean identity.",
+  "implementation": {
+    "author": {
+      "commit": "3319131cd91e58920514dce5e8d451e7b3243913",
+      "tree": "9edea65e9c841e421df60ffe37ae54804f747616"
+    },
+    "rule": {
+      "commit": "16dea1c6416ef2507b6b224ab1b6fa7a0168c562",
+      "tree": "c0e05ef645e98ca5cd11fedd264fad29c36fb06d",
+      "added_lines": 13,
+      "insertions": 2,
+      "encoding_contract": "Raw Identifier and sole normalized literal true/false kind must match the checked default kind; exact whole ConstFetch/Name/both metadata and decoded default spelling remain required."
+    },
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/author/code-packet-v1.json",
+      "sha256": "f5fa1bc10f8dfbd6cf9a447e6b9cd790f23a4c97000cea76dc04949171d1f429"
+    },
+    "source_posts": {
+      "spec/semantics/207-error-handler-runtime.watsup": "095d9e3179a5be5a75bfe6fabdfc71968567562a2157c0339b18689cc7ebe07d",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_review_state.py": "19c9f8415c04549b83c9e3d02a294226f7efa6d8619567d5cb73b0bcfc8ef9cc",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_cases.json": "e63977e9e6f1bee4111d593175f2c2863dd969ae646ba4315371862bf4befddf",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_sources.py": "036cf95a4b01feff94f7a73e09fc02438fbd57b55964ab605cf79bcc9964e3e1",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_state.py": "180ce256decbc61d3f5428cf61c7f2b1fd4f7a53437ea88e5d58608881233347",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_review_state.py": "394436184968eb61df51a81816842b78535a1ec2ab8f535dc3f55f6fbdada55c",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_run.py": "3e1f6a2e88bb0a5d87084e15eb1b008d2d6328dadc6bf29473d44456f0fb6fb7"
+    },
+    "make": "One literal-formal row after the Boolean-default row; MAIN current projection retains all foreign rows.",
+    "production_139_140_141_142_guards_unchanged": true,
+    "old_query_promotion": "Exactly one prior142 pure rawTRUE/soleTRUE/matching-default query becomes positive; historical142 campaign stays closed."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_is_valid_default_value",
+    "vendor/php-src/Zend/zend_execute.c: zend_verify_weak_scalar_type_hint requires both Boolean bits for weak coercion",
+    "spec/semantics/17-signatures.watsup: psdefault, psconstantkind, psacceptdefault",
+    "spec/semantics/95-type-values.watsup: typed_after_string, typed_conversion_at"
+  ],
+  "validation": {
+    "cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/author/validation-cuts-v1.json",
+      "sha256": "93f757873ae65c0a8f8d405ac4482613fef4f337f0c23ca05d7122523727e394"
+    },
+    "native_once": {
+      "invocations": 6,
+      "normal": 5,
+      "static_rejection": 1,
+      "report_sha256": "7c52487e350e49356150bb9ef3b423b9654692d774c124dd61b436c32fa3c4ab"
+    },
+    "supplied_source": {
+      "agreements": 3,
+      "revision": "16dea1c6416ef2507b6b224ab1b6fa7a0168c562",
+      "report_sha256": "ae533e3c1ba04201426fdcd6762965a4abded046c1c2d0f7c5a5fe98511547a1"
+    },
+    "existing_controls": {
+      "caught_wrong_actual_normal": 2,
+      "static_rejection": 1,
+      "new_support_credit": 0,
+      "revision": "e47e6a0f3bf273b97d5d3f4ed4c4c53cf7fc53d1",
+      "report_sha256": "45929da20c603b93eabb464df7b720b2d2fd08188369c9e756cbac39b3b92a38"
+    },
+    "corrected_prelaw_front": {
+      "conditions": 418,
+      "reached": 418,
+      "derived": 0,
+      "modules": 507,
+      "source_agreements": 0,
+      "report_sha256": "6f255b077b1cd05fa857f1592fe1364352df85db8770cb51d6ab6052efad3354"
+    },
+    "corrected_independent_whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/review/whole-v2/report.json",
+      "sha256": "ce58b2fd5b5518a233c63033026cd400f109952d1fbd205d5d22a5f7f371305f",
+      "revision": "4e05e67cc4e28a1b5488db7ad2b8dc683be669ac",
+      "tree": "c8480ee370862159a15730a9c2cc0c07cf7e97fa",
+      "passed": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 767,
+      "reached_conditions": 574,
+      "author_derived_conditions": 36,
+      "independent_derived_conditions": 157,
+      "source_agreements": 0,
+      "process": {
+        "exit": 0,
+        "elapsed": 123.90176224708557,
+        "timeout": false,
+        "cap_seconds": 1200,
+        "group_after": []
+      },
+      "invocations": 2,
+      "corrected_invocations": 1
+    },
+    "author_full_state_invocations": 0,
+    "controller": {
+      "static_syntax_import_and_independent_diff_review": "PASS; prior family shape, family/doc/prefix and 6case/6record/5normal assertions only",
+      "invocations": 0
+    },
+    "patch_checks": {
+      "forward_git_apply_check_exit": 0,
+      "inverse_git_apply_check_exit": 0
+    },
+    "accepted_replays": 0,
+    "historical_campaign_renewals": 0
+  },
+  "retained_failures": {
+    "baseline": "First supplied original Unsupported; other two UNRUN; source0.",
+    "initial_front_compiler": "Original planned413 fixture rejected before any predicate/runtime because default metadata was bound inside a combined flag comparison. Only standalone identity bindings changed; corrected418 passes.",
+    "first_whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/review/whole-v1/report.json",
+      "sha256": "c62c431af764d023ae50d96abae92a647c8077d59dacf619e72f942e8fe6978f",
+      "source_agreements": 0,
+      "classification": "Preserved runtime NONPASS"
+    },
+    "localizer": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/review/localizer-v1/report.json",
+      "sha256": "8a8537522ce330cbf307058df9f70649558ce9dbd57d975d070157b1197c0ff9",
+      "source_agreements": 0,
+      "classification": "Diagnostic only: T,F,T,T,T,T; all155 false_byref independent assertions true"
+    },
+    "fixture_correction": "Only one multiple full-state live typed-return arguments query had incorrect positive polarity. Its negative result is retained; erased-return arguments, authenticated header and pending proof remain positive. All front418, other reached clauses and author36 controls stay literal. Only affected WHOLE reran; production13 required no correction."
+  },
+  "canonical_actual": {
+    "revision": "397a0854baecd50b87d13f05799d56b077448345",
+    "tree": "fc6d82ba9edeb4751f70fece2c459992b88cac8f",
+    "parent": "2e729e28aaeacd4e4d94a42e180da3615053f665",
+    "reviewer": "/root/recover47_reference_defaults_review",
+    "decision": "CLEAR",
+    "actual_executions": 1,
+    "canonical_report_sha256": "88e335f4fc4d18c3b312642c1e4ba76ccfc1628efd01a53eab61e1927766e7b5",
+    "canonical_map_sha256": "861abf22caf941efe13adea65f2c3ba4729a52d430c3909dcc1ce92ffc50eadf",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "d289aacbfde7c36e7b15c30c78c3e15e3594a50d961a6c4969ce6dbd70b377a9",
+    "full_cache_persisted_before_assertions": true,
+    "canonical_original_report_reads_reviewer": 1,
+    "canonical_original_map_reads_reviewer": 1,
+    "canonical_original_reads_author": 0,
+    "source_agreements": 0,
+    "production_modules": 509,
+    "argv_paths": 512,
+    "watched_paths": 513,
+    "elapsed_seconds": 16.290373387979344,
+    "cap_seconds": 60,
+    "passed": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "seven_nonmake_posts_exact": true,
+    "current_make_literal_projection_foreign_preserved": true,
+    "saved_main_diff_format": "Git full-index forward/inverse, exact apply"
+  },
+  "canonical_tiny": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/author/actual-main-v1-tiny.json",
+    "sha256": "1b92bd240fba7ec61cfe3a7348e124a68a96b1056dee119254bffbbee42a525b"
+  },
+  "remaining": [
+    "FQN/relative or general constant defaults",
+    "nullable/union literal formals, other defaults and partial supply",
+    "wider payload/owner/lifetime contexts and complete core",
+    "Rocq interaction-tree transfer and BOLA/CRIS verification"
+  ],
+  "intentional_engine_divergences": [],
+  "artifact_location": "../php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/",
+  "artifact_boundary": "Evidence only; not build/runtime inputs."
+}
