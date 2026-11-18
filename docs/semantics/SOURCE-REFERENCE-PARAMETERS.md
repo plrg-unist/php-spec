@@ -1222,9 +1222,9 @@ runtime UNRUN0; only its two negative-control metadata bindings were corrected a
 the affected peer suite rerun. There is no first-WHOLE-pass claim or source/native/
 author replay. Two older canonical relative helper expectations promote through
 fresh import-ignorance and Param-first proofs without renewing their campaigns.
-Nullable relative RETURNs are extended below; union relative forms, nonempty
-namespaces, other normalized classes and wider payloads/owners/lifetimes remain
-partial; exact holds stay unchanged.
+Nullable and two-member class/null relative RETURNs are extended below; other
+relative unions, nonempty namespaces, other normalized classes and wider payloads/
+owners/lifetimes remain partial; exact holds stay unchanged.
 
 Nullable `?namespace\stdClass` RETURNs use the same empty declaration namespace
 and quiet `PTRETURN`/`PTRELATIVE` authentication, ignoring ordinary class imports.
@@ -1240,8 +1240,30 @@ WHOLE source4 with state337/184 pass in separate SL507 cuts. Genuine prelaw158/8
 and the first Unsupported observations retain zero source credit. Three older
 canonical nullable-relative helper expectations promote through fresh import,
 Param-first and metadata proofs without renewing their historical campaigns.
-Union relative forms, nonempty namespaces, other normalized classes and wider
-payloads/owners/lifetimes remain partial; all exact holds stay unchanged.
+Two-member class/null relative unions are extended below; other relative unions,
+nonempty namespaces, other normalized classes and wider payloads/owners/lifetimes
+remain partial; all exact holds stay unchanged.
+
+Ordered `namespace\stdClass|null` and `null|namespace\stdClass` RETURNs use
+separate exact two-member proof cases under the same empty declaration namespace.
+Each authenticates the matching canonical normalized order, ignores class imports
+and retains Param-first normalization before the existing FQN ordered-union
+delegate. Both member metadata nodes and the union metadata remain intact;
+RETURN verification, frame retirement and private Notice-cell owners keep their
+existing rules.
+The [ordered relative class/null review](../../coverage/semantics/relative-union-null-stdclass-return-producer-reference-notice-review.json)
+keeps the object BYVAL source and the NULL-return source with two CV actuals and
+an ordinary BYREF formal separate from the independent named-BYREF formal alias
+and unchanged scalar-return TypeError control. Native4 ran once; author source2/
+state339 and the first independent
+WHOLE source4 with state339/194 pass in separate SL507 cuts. Prelaw158/85 and the
+first Unsupported observations retain zero source credit. Five older helper
+expectations promote through fresh order/import/Param/metadata proofs without
+renewing117/130/131 campaigns. Two author preparation assertions and one cached
+reader schema correction retain runtime0; fixture and production code needed no
+correction. Other builtin companions, wider
+unions, nonempty namespaces, other normalized classes and wider payloads/owners/
+lifetimes remain partial; all exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
