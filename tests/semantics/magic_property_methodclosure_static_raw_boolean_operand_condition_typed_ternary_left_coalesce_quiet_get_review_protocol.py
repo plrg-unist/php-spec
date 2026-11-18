@@ -154,8 +154,8 @@ def bounds():
         state = 'S_boolean_bound_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (PBOOL true)' if number in (11, 18) else ' = eps'),
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'1') + ')' if number in (11, 18) else ' = eps')]
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (PBOOL true)' if number in (10, 11, 17, 18) else ' = eps'),
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'1') + ')' if number in (10, 11, 17, 18) else ' = eps')]
     expression, _, occurrences = source_tree(('.', ('&&', COALESCE_TRUE, COALESCE_FALSE), string(b'')), 'boolean_concat_parent')
     result += ['S_boolean_concat_parent = ' + raw.source_state(occurrences),
                old_bytes('S_boolean_concat_parent.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',

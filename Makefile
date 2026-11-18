@@ -889,6 +889,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_quiet_coalesce_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_quiet_coalesce_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-quiet-coalesce-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_quiet_coalesce_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-quiet-coalesce-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_quiet_coalesce_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-quiet-coalesce-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -3963,6 +3967,10 @@ test-semantics: build
 	python3 tests/semantics/magic_property_methodclosure_static_raw_plus_operand_condition_typed_ternary_left_coalesce_quiet_get_protocol.py
 	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_plus_operand_condition_typed_ternary_left_coalesce_quiet_get_review_cases_v2.json --model-timeout 280
 	python3 tests/semantics/magic_property_methodclosure_static_raw_plus_operand_condition_typed_ternary_left_coalesce_quiet_get_review_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_minus_operand_condition_typed_ternary_left_coalesce_quiet_get_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_methodclosure_static_raw_minus_operand_condition_typed_ternary_left_coalesce_quiet_get_protocol.py
+	python3 tests/semantics/anonymous_owner_factory_sources.py --catalogue tests/semantics/magic_property_methodclosure_static_raw_minus_operand_condition_typed_ternary_left_coalesce_quiet_get_review_cases.json --model-timeout 280
+	python3 tests/semantics/magic_property_methodclosure_static_raw_minus_operand_condition_typed_ternary_left_coalesce_quiet_get_review_protocol.py
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_no_get_cases.json
 	python3 tests/semantics/magic_coalesce_no_get_protocol.py --revision "$$(git rev-parse HEAD)"
 	python3 tests/semantics/method_runtime.py --catalogue tests/semantics/magic_coalesce_assignment_cases.json

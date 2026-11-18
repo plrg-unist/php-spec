@@ -1796,6 +1796,34 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprTernary expression_c
   -- if S_cond.RESULT = KNOWN (PBOOL b_cond)
   -- if S_cond = S[.RESULT = KNOWN (PBOOL b_cond)]
   -- if $ob_object_cast_chain_shorthand_result(S, pfunction, porigin, pvalue_cond, b_cond, porigin_false, expression_false, z_false) = (pvalue)
+;; Coalesce tests NULL without demanding the retained VALUE's truth.
+dec $ob_object_cast_chain_coalesce_result(pstate, pfunction, porigin, pvalue, porigin, expression, int, int) : pvalue?
+def $ob_object_cast_chain_coalesce_result(S, pfunction, porigin, pvalue_left, porigin_right, expression_right, z_left, z_right) = (pvalue_left)
+  -- if pvalue_left =/= PNULL
+  -- if $ob_object_cast_chain_skipped_line(S, pfunction, porigin_right, expression_right) = (z_right)
+  -- if $coalesce_result(S[.ORIGIN = (porigin)][.RESULT = KNOWN pvalue_left], expression_right, z_left, z_right) = S[.ORIGIN = (porigin)][.RESULT = KNOWN pvalue_left][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $ob_object_cast_chain_coalesce_result(S, pfunction, porigin, PNULL, porigin_right, expression_right, z_left, z_right) = (pvalue)
+  -- if $coalesce_result(S[.ORIGIN = (porigin)][.RESULT = KNOWN PNULL], expression_right, z_left, z_right) = S[.ORIGIN = (porigin)][.TODO = [AT porigin_right (EVAL expression_right), VALUE_COPY z_right] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
+  -- if $resolve_at(S[.RESULT = KNOWN pvalue], KNOWN pvalue, z_right) = S[.RESULT = KNOWN pvalue]
+def $ob_object_cast_chain_coalesce_result(S, pfunction, porigin, pvalue_left, porigin_right, expression_right, z_left, z_right) = eps -- otherwise
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = (pvalue)
+  -- if ~$coalesce_quiet_operand(expression_left)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if porigin_left = PORIGIN n_child pcpath_left
+  -- if porigin_right = PORIGIN n_child pcpath_right
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $value_nodes(pvalue_left) = eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, b_left))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z_right, b_right))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata, z_right, false)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $ob_object_cast_chain_coalesce_result(S, pfunction, porigin, pvalue_left, porigin_right, expression_right, z_left, z_right) = (pvalue)
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)

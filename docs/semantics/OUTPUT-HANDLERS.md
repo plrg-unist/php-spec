@@ -2018,3 +2018,17 @@ report and map reads remain0. Earlier OUTPUT evidence and all held bounds retain
 their own cuts.
 [Shorthand evidence](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-review.json).
+
+Quiet nonvariable coalesce expressions also feed selected nested scalar return
+casts. Both children retain indexed SOURCE and compiled lines; the emitted parent
+keeps the RIGHT terminal line with absent read/redirect and empty effects, even
+when LEFT is folded. One nonowning LEFT VALUE proof selects by strict NULL identity
+without Boolean conversion. Nonnull values retain their raw tags, including zero,
+false and empty strings; their bounded skipped fallback has no lookup or truth
+demand. NULL evaluates and fully copies one certified nonowning fallback VALUE.
+Exact full coalesce-result states retain continuation tails and reset BASE without
+adding owners. Variable/location reads, calls, owning or warningful values and
+wider contexts remain partial. Existing outer-cast/NaN policy, the two-cast gate,
+source/precision authority, held boundaries and OB31 remain unchanged.
+[Coalesce evidence](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-review.json).

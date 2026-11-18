@@ -165,8 +165,8 @@ def bounds():
     expression, _, occurrences = source_tree(('-', ('i', 1)), 'condition_minus_boundary')
     result += ['S_condition_minus_boundary = ' + raw.source_state(occurrences),
                old_bytes('S_condition_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-               operand('S_condition_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-               condition('S_condition_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+               operand('S_condition_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = (PINT (-1))',
+               condition('S_condition_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = (' + payload(b'-1') + ')']
     new = ('??', ('?', TRUE, NULL, FALSE), TRUE)
     parents = [('?', TRUE, new, FALSE), ('.', new, string(b'')), ('and', TRUE, new)]
     for number, shape in enumerate(parents):

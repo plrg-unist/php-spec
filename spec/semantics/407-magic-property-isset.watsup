@@ -854,6 +854,12 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprUn
   -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_child, expression) = (pvalue)
   -- if $coerce_number(pvalue) = COERCED (NINT i) false
   -- if $long_range(i)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprUnaryMinus expression metadata) = (PINT $(0 - i))
+  -- if $origin_node(pcunit*, porigin) = (NExprUnaryMinus expression metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_child, expression) = (pvalue)
+  -- if $coerce_number(pvalue) = COERCED (NINT i) false
+  -- if $long_range($(0 - i))
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING ptbytes)
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (ptbytes)
   -- if ~(0 <- ptbytes)
@@ -935,7 +941,7 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBi
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = eps -- otherwise
 
-;; FULL preserves old condition bytes and admits typed COALESCE, TERNARY, NOT, Boolean and UnaryPlus fallbacks.
+;; FULL preserves old condition bytes and admits typed COALESCE, TERNARY, NOT, Boolean and unary sign fallbacks.
 dec $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) : ptbytes?
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = (ptbytes)
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) = (ptbytes)
@@ -966,6 +972,9 @@ def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, 
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprUnaryPlus expression metadata) = ($echo_value(pvalue))
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprUnaryPlus expression metadata) = eps
   -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprUnaryPlus expression metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprUnaryMinus expression metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprUnaryMinus expression metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprUnaryMinus expression metadata) = (pvalue)
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = eps -- otherwise
 
 ;; Typed ternary-left coalesce keeps NULL distinct from false and empty echo.

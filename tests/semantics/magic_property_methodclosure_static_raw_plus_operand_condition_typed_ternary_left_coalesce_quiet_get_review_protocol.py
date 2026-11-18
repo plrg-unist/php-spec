@@ -172,15 +172,15 @@ def bounds():
         state = 'S_plus_bound_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (PINT (-1))' if number == 12 else ' = eps'),
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'-1') + ')' if number == 12 else ' = eps')]
     for number, shape in enumerate([('-', ('i', 1)),
                                    ('.', ('+', co(TRUE)), string(b''))]):
         expression, _, occurrences = source_tree(shape, 'plus_parent_' + str(number))
         state = 'S_plus_parent_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (PINT (-1))' if number == 0 else ' = eps'),
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'-1') + ')' if number == 0 else ' = eps')]
     expression, _, occurrences = source_tree(('+', string(b'OWNER')), 'plus_owner')
     placeholder = 'NScalarString (BYTES "T1dORVI=") metadata_class'
     child = 'NExprArray (SEQUENCE eps) metadata_class'

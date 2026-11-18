@@ -1,0 +1,109 @@
+#!/usr/bin/env python3
+"""Check exact quiet UnaryMinus INT values at reached static USER selector sources."""
+import argparse
+import hashlib
+import json
+from pathlib import Path
+import sys
+
+sys.dont_write_bytecode = True
+import closure_call_protocol as protocol
+import magic_property_methodclosure_static_raw_plus_operand_condition_typed_ternary_left_coalesce_quiet_get_protocol as prior
+
+source_tree, renderer = prior.source_tree, prior.renderer
+CATALOGUE = Path(__file__).with_name('magic_property_methodclosure_static_raw_minus_operand_condition_typed_ternary_left_coalesce_quiet_get_cases.json')
+ROWS = json.loads(CATALOGUE.read_bytes())['cases']
+for row in ROWS:
+    assert hashlib.sha256(row['source'].encode()).hexdigest() == row['source_sha256']
+string = prior.string
+pint = lambda value: 'PINT ' + (f'$({value})' if value < 0 else str(value))
+
+
+def checks(index):
+    result = prior.checks(index)[:25]
+    sites = ([
+        ('class', (1, 0, 0), True, 'PINT 1'),
+        ('class', (1, 1, 0, 0), False, 'PBOOL false'),
+        ('class', (1, 1, 1, 0), False, 'PSTRING eps'),
+        ('method', (1, 0, 0), True, 'PINT 0'),
+    ] if index == 0 else [
+        ('class', (1, 1, 0, 0, 2), False, 'PBOOL false'),
+        ('class', (1, 1, 1, 0, 0, 2, 1), False, string('01')),
+        ('method', (1, 0, 0, 0, 0, 0, 0), False, string('10')),
+        ('method', (1, 1, 0, 0, 0, 2, 1), False, 'PINT 0'),
+    ])
+    for number, (side, relative, truth, selected) in enumerate(sites):
+        root = 'porigin_class' if side == 'class' else 'porigin_name'
+        site, node = f'porigin_minus_site_{number}', f'expression_minus_site_{number}'
+        origin, condition = f'porigin_minus_condition_{number}', f'expression_minus_condition_{number}'
+        child_origin, child = f'porigin_minus_child_{number}', f'expression_minus_child_{number}'
+        child_value, value, echo = ('PINT 1', pint(-1), '-1') if truth else ('PINT 0', 'PINT 0', '0')
+        result += [
+            f'$origin_child(({root}),{source_tree.path(relative)}) = ({site})',
+            f'$origin_node(S.SOURCES,{site}) = ({node})',
+            f'{node} = NExprTernary {condition} expression_minus_true_{number} expression_minus_false_{number} metadata_minus_site_{number}',
+            f'$origin_child(({site}),[PCFIELD 0]) = ({origin})',
+            f'$origin_node(S.SOURCES,{origin}) = ({condition})',
+            f'{condition} = NExprUnaryMinus {child} metadata_minus_condition_{number}',
+            f'$origin_child(({origin}),[PCFIELD 0]) = ({child_origin})',
+            f'$origin_node(S.SOURCES,{child_origin}) = ({child})',
+            f'$property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(S.SOURCES,{origin},{condition}) = eps',
+            f'$property_magic_cv_raw_typed_ternary_operand_value(S.SOURCES,{child_origin},{child}) = ({child_value})',
+            f'$coerce_number({child_value}) = COERCED (NINT {1 if truth else 0}) false',
+            f'$property_magic_cv_raw_typed_ternary_operand_value(S.SOURCES,{origin},{condition}) = ({value})',
+            f'$property_magic_cv_raw_typed_ternary_full_condition_bytes(S.SOURCES,{origin},{condition}) = ($ptascii("{echo}"))',
+            f'$property_magic_cv_raw_typed_ternary_left_value(S.SOURCES,{site},{node}) = ({selected})']
+        for cut, suffix in enumerate(((), (0,))):
+            path = 'pcpath_site ++ ' + source_tree.path(((0 if side == 'class' else 1),) + relative + (0,) + suffix)
+            state = f'S_minus_condition_missing_{number}_{cut}'
+            result += [f'{state} = S[.SOURCES = [pcunit[.OCCURRENCES = $fqn_keyword_without(pcunit.OCCURRENCES,{path})]]]',
+                       f'$property_magic_cv_raw_typed_ternary_full_condition_bytes({state}.SOURCES,{origin},{condition}) = eps',
+                       f'$property_magic_cv_raw_typed_ternary_left_value({state}.SOURCES,{site},{node}) = eps']
+    if index == 0:
+        for number, (side, relative, child_value, integer) in enumerate([
+            ('class', (1, 0, 0, 1), pint(-1), 1),
+            ('class', (1, 1, 0, 0, 2, 0), 'PINT 10', -10),
+            ('method', (1, 1, 1, 1, 0, 0, 0), pint(-1), 1),
+            ('method', (1, 1, 1, 1, 1, 0, 0, 0, 2, 0), 'PINT 10', -10),
+        ]):
+            root = 'porigin_class' if side == 'class' else 'porigin_name'
+            origin, node = f'porigin_minus_operand_{number}', f'expression_minus_operand_{number}'
+            child_origin, child = f'porigin_minus_operand_child_{number}', f'expression_minus_operand_child_{number}'
+            result += [f'$origin_child(({root}),{source_tree.path(relative)}) = ({origin})',
+                       f'$origin_node(S.SOURCES,{origin}) = ({node})',
+                       f'{node} = NExprUnaryMinus {child} metadata_minus_operand_{number}',
+                       f'$origin_child(({origin}),[PCFIELD 0]) = ({child_origin})',
+                       f'$property_magic_cv_raw_typed_ternary_operand_value(S.SOURCES,{child_origin},{child}) = ({child_value})',
+                       f'$coerce_number({child_value}) = COERCED (NINT {pint(-integer).removeprefix("PINT ")}) false',
+                       f'$property_magic_cv_raw_typed_ternary_operand_value(S.SOURCES,{origin},{node}) = ({pint(integer)})']
+            if integer == 1:
+                grand_origin = f'porigin_minus_operand_grandchild_{number}'
+                result += [f'{child} = NExprUnaryMinus expression_minus_operand_grandchild_{number} metadata_minus_operand_child_{number}',
+                           f'$origin_child(({child_origin}),[PCFIELD 0]) = ({grand_origin})',
+                           f'$property_magic_cv_raw_typed_ternary_operand_value(S.SOURCES,{grand_origin},expression_minus_operand_grandchild_{number}) = (PINT 1)']
+    result += ['S_minus_root_pool = S[.POOLS = [{UNIT n_site,CONSTANTS ([PCONSTANT (pcpath_site ++ [PCFIELD 0]) (PSTRING ptbytes_class)])}]]',
+               '$property_magic_cv_emitted_typed_ternary_left_coalesce_concat_value(S_minus_root_pool,porigin_class,expression_class) = eps',
+               '~' + source_tree.selector('class', 'S_minus_root_pool')]
+    return result
+
+
+CASES = {row['id']: dict(source=row['source'], stage=prior.CASES[row['derived_from']['id']]['stage'],
+                        checks=checks(index)) for index, row in enumerate(ROWS)}
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--case', action='append', choices=sorted(CASES))
+    args = parser.parse_args()
+    base = source_tree.prior.prior.base
+    parents, parent = [], prior
+    while hasattr(parent, 'prior'):
+        parents.append(parent)
+        parent = parent.prior
+    parents += [parent, renderer, source_tree, source_tree.prior, source_tree.prior.prior,
+                base, base.original, base.inherited, base.inherited.prior,
+                base.inherited.prior.prior, base.inherited.prior.prior.prior,
+                renderer.renderer]
+    protocol.run({name: case for name, case in CASES.items() if not args.case or name in args.case},
+                 (Path(__file__), CATALOGUE, *(entry for parent in parents
+                                               for entry in (Path(parent.__file__), parent.CATALOGUE))),
+                 runner_flags=('--sl',), fixture_renderer=renderer.render)

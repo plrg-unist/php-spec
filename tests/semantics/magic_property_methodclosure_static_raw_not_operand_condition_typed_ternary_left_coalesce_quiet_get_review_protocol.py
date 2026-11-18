@@ -194,8 +194,8 @@ def bounds():
     expression, _, occurrences = source_tree(('-', ('i', 1)), 'not_minus_boundary')
     result += ['S_not_minus_boundary = ' + raw.source_state(occurrences),
                old_bytes('S_not_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-               operand('S_not_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-               condition('S_not_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+               operand('S_not_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = (PINT (-1))',
+               condition('S_not_minus_boundary.SOURCES', 'porigin_tree_root_class', expression) + ' = (' + payload(b'-1') + ')']
     new = ('!', ('?', TRUE, ('??', ('?', TRUE, NULL, FALSE), TRUE), FALSE))
     for number, shape in enumerate((('.', new, string(b'')), ('and', TRUE, new),
                                    ('or', FALSE, new), ('xor', TRUE, new))):
