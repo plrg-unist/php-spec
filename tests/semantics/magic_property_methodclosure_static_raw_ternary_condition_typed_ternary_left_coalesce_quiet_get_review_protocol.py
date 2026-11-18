@@ -68,7 +68,7 @@ def actual_sites(index):
             result += [f'{expression_cond} = {constructor} metadata_{label}_cond']
             if value_cond is None:
                 result += [old_bytes('S.SOURCES', cond, expression_cond) + ' = (' + payload(bytes_cond) + ')',
-                           operand('S.SOURCES', cond, expression_cond) + ' = eps']
+                           operand('S.SOURCES', cond, expression_cond) + f' = (PINT {int(bytes_cond)})']
             else:
                 result += [old_bytes('S.SOURCES', cond, expression_cond) + ' = eps',
                            operand('S.SOURCES', cond, expression_cond) + f' = ({value_cond})']
@@ -122,7 +122,7 @@ def values_and_positions():
         state = 'S_retained_condition_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = (' + payload(echo) + ')',
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + f' = (PINT {1 if number == 0 else 0})',
                    condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = (' + payload(echo) + ')']
     expression, _, occurrences = source_tree(coalesce_true, 'retained_coalesce_condition')
     result += ['S_retained_coalesce_condition = ' + raw.source_state(occurrences),

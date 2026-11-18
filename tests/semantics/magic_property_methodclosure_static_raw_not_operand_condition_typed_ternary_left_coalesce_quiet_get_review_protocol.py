@@ -81,7 +81,7 @@ def actual_sites(index):
                 cond = f'porigin_{label}_cond'
                 result += [f'$origin_child(({left}),[PCFIELD 0]) = ({cond})',
                            old_bytes('S.SOURCES', cond, expression_cond) + ' = (' + payload(cond_echo) + ')',
-                           operand('S.SOURCES', cond, expression_cond) + (' = eps' if cond_value is None else f' = ({cond_value})'),
+                           operand('S.SOURCES', cond, expression_cond) + (f' = (PINT {int(cond_echo)})' if cond_value is None else f' = ({cond_value})'),
                            condition('S.SOURCES', cond, expression_cond) + ' = (' + payload(cond_echo) + ')']
             for cut, (parts, not_value, child_value) in enumerate(NOT_SITES[index][side].get(number, [])):
                 prefix = f'{label}_{cut}'
@@ -135,8 +135,8 @@ def values_and_positions():
                    operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + f' = ({selected})']
     # Existing NOT byte branches and UnaryPlus condition bytes carry zero new credit.
     retained = [(('!', FALSE), 'PBOOL true', b'1'), (('!', string(b'0')), 'PBOOL true', b'1'),
-                (('!', string(b'10')), 'PBOOL false', b''), (('+', ('i', 1)), None, b'1'),
-                (('+', ('i', 0)), None, b'0')]
+                (('!', string(b'10')), 'PBOOL false', b''), (('+', ('i', 1)), 'PINT 1', b'1'),
+                (('+', ('i', 0)), 'PINT 0', b'0')]
     for number, (shape, value, echo) in enumerate(retained):
         expression, _, occurrences = source_tree(shape, 'not_retained_' + str(number))
         state = 'S_not_retained_' + str(number)
