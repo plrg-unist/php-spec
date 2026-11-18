@@ -2971,3 +2971,11 @@ defining namespace/imports through whole quiet normalization.
 Existing runtime conjunction matching enforces every interface, retaining
 aliases, atomic refusal, object copies and real source detachment; DNF/wider contexts stay partial.
 [Review](../../coverage/semantics/nominal-intersection-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits finite quiet nominal DNF unions
+with at least two branches and at least one intersection of two or more atoms.
+Aligned raw branches and conjuncts preserve source order and canonical defining
+namespace/imports through whole quiet normalization; builtin arms stay partial.
+Existing runtime disjunction/conjunction matching accepts distinct branch payloads,
+retaining aliases, atomic refusal, object copies and real source detachment; wider contexts stay partial.
+[Review](../../coverage/semantics/nominal-dnf-parentless-short-reference-get-hook-review.json).

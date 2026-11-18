@@ -1,0 +1,150 @@
+{
+  "intersection-or-single-fq": {
+    "source": "intersection-or-single-fq.php",
+    "mode": "source",
+    "status": "normal",
+    "strict": false,
+    "stdout": "I|C|O|M0|M1|M2|S|P|D|F|Z|",
+    "namespace": "W339A",
+    "consumer_namespace": "W339AX",
+    "header": "(\\W339A\\A&\\W339A\\B)|\\W339A\\C",
+    "branches": [
+      [
+        "W339A\\A",
+        "W339A\\B"
+      ],
+      [
+        "W339A\\C"
+      ]
+    ],
+    "raw_branches": [
+      [
+        {
+          "kind": "NNameFullyQualified",
+          "name": "W339A\\A"
+        },
+        {
+          "kind": "NNameFullyQualified",
+          "name": "W339A\\B"
+        }
+      ],
+      [
+        {
+          "kind": "NNameFullyQualified",
+          "name": "W339A\\C"
+        }
+      ]
+    ],
+    "payloads": [
+      {
+        "class": "W339A\\First339",
+        "implements": [
+          "W339A\\A",
+          "W339A\\B"
+        ]
+      },
+      {
+        "class": "W339A\\Second339",
+        "implements": [
+          "W339A\\C"
+        ]
+      }
+    ],
+    "missing": [
+      {
+        "class": "W339A\\Missing0339",
+        "present": [
+          "W339A\\A"
+        ]
+      },
+      {
+        "class": "W339A\\Missing1339",
+        "present": [
+          "W339A\\B"
+        ]
+      },
+      {
+        "class": "W339A\\Missing2339",
+        "present": []
+      }
+    ]
+  },
+  "two-intersections-scoped": {
+    "source": "two-intersections-scoped.php",
+    "mode": "source",
+    "status": "normal",
+    "strict": false,
+    "stdout": "I|C|O|M0|M1|M2|S|P|D|F|Z|",
+    "namespace": "W339B",
+    "consumer_namespace": "W339BX",
+    "header": "(Alpha&Prefix\\B)|(namespace\\C&D)",
+    "branches": [
+      [
+        "P339\\A",
+        "P339\\B"
+      ],
+      [
+        "W339B\\C",
+        "W339B\\D"
+      ]
+    ],
+    "raw_branches": [
+      [
+        {
+          "kind": "NName",
+          "name": "Alpha"
+        },
+        {
+          "kind": "NName",
+          "name": "Prefix\\B"
+        }
+      ],
+      [
+        {
+          "kind": "NNameRelative",
+          "name": "C"
+        },
+        {
+          "kind": "NName",
+          "name": "D"
+        }
+      ]
+    ],
+    "payloads": [
+      {
+        "class": "W339B\\First339",
+        "implements": [
+          "P339\\A",
+          "P339\\B"
+        ]
+      },
+      {
+        "class": "W339B\\Second339",
+        "implements": [
+          "W339B\\C",
+          "W339B\\D"
+        ]
+      }
+    ],
+    "missing": [
+      {
+        "class": "W339B\\Missing0339",
+        "present": [
+          "P339\\A",
+          "W339B\\C"
+        ]
+      },
+      {
+        "class": "W339B\\Missing1339",
+        "present": [
+          "P339\\B",
+          "W339B\\D"
+        ]
+      },
+      {
+        "class": "W339B\\Missing2339",
+        "present": []
+      }
+    ]
+  }
+}
