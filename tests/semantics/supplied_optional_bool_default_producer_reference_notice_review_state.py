@@ -71,7 +71,7 @@ def independent_controls(case):
         lines.append('~' + proof(raws=[raw(**change)]))
     for name in ('int', 'float', 'string', 'mixed', 'array', 'true'):
         normalized = '[(PTBRANCH ([PTBUILTIN ' + json.dumps(name) + ']))]'
-        lines.append('~' + proof([raw(raw_type=typename(name))], [parameter(normalized=normalized)]))
+        lines.append(('' if name == 'true' else '~') + proof([raw(raw_type=typename(name))], [parameter(normalized=normalized)]))
     lines += ['~' + proof([raw(raw_type='ABSENT')]), '~' + proof(parameters=[parameter(normalized='eps')])]
     nullable = boolean[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'
     for raw_type in ('NNullableType (' + typename('bool') + ') eps',
