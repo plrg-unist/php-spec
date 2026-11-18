@@ -58,7 +58,7 @@ def controls(case):
             '~' + proof.replace(normalized, prior.class_type(spelling.swapcase())),
             '~$reference_notice_producer_header(phpType6_producer, phpType16, ' + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])']
         for tag in ('NIdentifier', 'NNameRelative'):
-            lines.append('~' + proof.replace(raw, prior.raw_class(spelling, tag)))
+            lines.append(('' if tag == 'NNameRelative' and spelling == 'stdClass' else '~') + proof.replace(raw, prior.raw_class(spelling, tag)))
         lines += ['~' + proof.replace(raw, 'NNullableType (' + raw + ') metadata_return'),
             '~' + proof.replace(raw, 'NUnionType (SEQUENCE ([' + raw + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return')]
         fully = prior.raw_class(spelling)

@@ -1,0 +1,61 @@
+[
+  {
+    "id": "strict-global-relative-stdclass-return-object-byval",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "stdClass",
+    "source": "<?php declare(strict_types=1);\nuse AuthorRelativeReturn130\\Other as Spare130;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):namespace\\stdClass{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "61c96bac072afc41744cc41147bb391ad7723ba475d6cc2dc8898564503d34fe",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-class-return-identity-and-private-cell",
+      "source_sha256": "cb4fda095eabd82af333c5c4364b064fcd3059e5d423c2c33e3edca7a9cb8675",
+      "edits": "Fresh unrelated qualified class import and namespace-relative singleton RETURN spelling; retain empty namespace, FQN/untyped formals, runtime statements, physical lines, observers and native expectations. Imports are not used by relative resolution."
+    },
+    "return_name": "stdClass",
+    "return_target": "stdClass",
+    "namespace": "",
+    "import_alias": "spare130",
+    "import_target": "AuthorRelativeReturn130\\Other",
+    "new_support_credit": 1
+  },
+  {
+    "id": "weak-global-relative-stdclass-return-multiple-byref",
+    "role_index": 1,
+    "variant": "weak-class-byref",
+    "callee_strict": false,
+    "class_formals": [
+      null,
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "stdClass",
+    "source": "<?php\nuse AuthorRelativeReturn130\\Other as Spare130;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,\\sTdClAsS &$right):namespace\\stdClass{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "6bb8669226f661100aeb79bb6f1b785c6755caae9b155e8b439c824759f88afb",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-global-plain-class-return-byref-rebinding",
+      "source_sha256": "9e9806bc2e7230f7d979e9aa7cf525862aedec99627f305516387131481610bc",
+      "edits": "Fresh unrelated qualified class import and namespace-relative singleton RETURN spelling; retain empty namespace, FQN/untyped formals, runtime statements, physical lines, observers and native expectations. Imports are not used by relative resolution."
+    },
+    "return_name": "stdClass",
+    "return_target": "stdClass",
+    "namespace": "",
+    "import_alias": "spare130",
+    "import_target": "AuthorRelativeReturn130\\Other",
+    "new_support_credit": 1
+  }
+]

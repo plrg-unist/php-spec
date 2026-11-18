@@ -1,0 +1,35 @@
+[
+  {
+    "id": "relative-stdclass-return-import-ignored-named-byref-private-notice",
+    "source": "<?php\nuse PeerRelativeReturn130\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(\\stdClass &$saved):namespace\\stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "a1f973dc7580df5369d5833da5e6372ca5f0960a21b011a3a1972c1375b908cb",
+    "role": "relative-class-object-notice-positive",
+    "new_support_credit": 1,
+    "namespace": "",
+    "formal_alias": "stdClass",
+    "return_alias": "stdClass",
+    "import_alias": "stdClass",
+    "import_target": "PeerRelativeReturn130\\Other",
+    "native_expectation_status": "Prediction until the single native-first observation of these fresh bytes.",
+    "notice_line": 8
+  },
+  {
+    "id": "relative-stdclass-return-scalar-typeerror-before-outer-notice",
+    "source": "<?php\nuse PeerRelativeReturnControl130\\Other as stdClass;\n// A scalar rejects the relative class RETURN before the outer Notice.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):namespace\\stdClass{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=7;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "6b173027e6a55140f43b3570d53590cd1f26137b59da0f436358ab11ef37043e",
+    "role": "unchanged-wrong-return-control",
+    "new_support_credit": 0,
+    "namespace": "",
+    "formal_alias": "stdClass",
+    "return_alias": "stdClass",
+    "import_alias": "stdClass",
+    "import_target": "PeerRelativeReturnControl130\\Other",
+    "native_expectation_status": "Prediction until the single native-first observation of these fresh bytes."
+  }
+]

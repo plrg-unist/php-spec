@@ -60,7 +60,7 @@ def normal(initial, case, index, front):
             'NName (BYTES "T3RoZXI=") metadata_return',
             'NNullableType (NName (BYTES text_return) metadata_return) metadata_return',
             'NUnionType (SEQUENCE ([NName (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return'):
-        derived.append('~' + proof(raw=raw))
+        derived.append(('' if raw.startswith('NNameRelative ') else '~') + proof(raw=raw))
     parameter = next(line.removeprefix('phpType17 = ') for line in reached if line.startswith('phpType17 = '))
     derived.append(scoped.replace('SEQUENCE ([phpType17]),', 'SEQUENCE ([' + parameter.replace('NNameFullyQualified', 'NName') + ']),'))
     return reached, derived
