@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Direct raw FLOAT-to-STRING RHSs compose with allocated CONCAT left bases through one RHS REQUEST row, exact source/compiler facts and full prefix replay. Saved raw CV offsets survive returning Warnings and reference rebinding. General VALUE, unary FLOAT and multirow RHSs, wider release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-RAW-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
+
 Literal CONCAT suffixes accept certified allocated composite left bases. Full ternary and nested coalesce/shorthand lefts preserve their selected bytes and saved raw CV offset across returning Warnings. Source authority remains delegated to each producer; broader RHS producers, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COMPOSITE-LEFT-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
 Quiet NULL coalesces select certified composite RHS allocated headers while preserving full source identity, captured precision and saved raw CV offsets through returning Warnings. Full ternary and nested coalesce/shorthand RHS cases retain their selected REQUEST header. Wider producers, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-NULL-ALLOCATED-COMPOSITE-RHS-COALESCE-BASE-INITIAL-RAW-LEADING-KEY.md).
