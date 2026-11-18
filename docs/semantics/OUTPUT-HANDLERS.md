@@ -2030,5 +2030,13 @@ Exact full coalesce-result states retain continuation tails and reset BASE witho
 adding owners. Variable/location reads, calls, owning or warningful values and
 wider contexts remain partial. Existing outer-cast/NaN policy, the two-cast gate,
 source/precision authority, held boundaries and OB31 remain unchanged.
+Eight source agreements reuse one saved and seven new native observations once.
+Author frontier19/first lifecycle13 and independent155/first15 retain separate
+SL508 cuts; the original peer negative-integer parser failure observed0. Only
+its fixture spelling changed. WHOLE6 and fixed actual94f2303d are clear; the sole
+production SL509 load passes in16.881946345 seconds under cap60 with source0.
+One immutable tuple binds exact placement and the original cached report/map;
+author original runtime-source/report/map/full-cache reads remain0. Earlier
+OUTPUT evidence and all held boundaries retain their own cuts.
 [Coalesce evidence](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-review.json).

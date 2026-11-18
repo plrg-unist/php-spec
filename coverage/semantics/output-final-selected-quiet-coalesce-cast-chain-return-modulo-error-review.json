@@ -1,0 +1,301 @@
+{
+  "family": "OUTPUT157 quiet nonvariable coalesce in selected nested return casts",
+  "decision": "CLEAR_LIMITED_SCOPE",
+  "passed": true,
+  "reviewer": "/root/recover39_output_coalesce_review",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "scope": "Existing selected Warning/Deprecated handler contour with two nested scalar casts. Strict NULL selection retains nonnull raw VALUE or evaluates and copies one nonowning fallback; both folded and emitted nonlocation LEFT values retain full SOURCE/CODE authority. Wider PHP core remains partial.",
+  "source_review": {
+    "decision": "CLEAR",
+    "changed_runtime": "spec/semantics/456-output-object-returns.watsup",
+    "added_lines": 28,
+    "engine_basis": [
+      "PHP8.5.10 Zend/zend_compile.c::zend_compile_coalesce compiles both arms, COALESCE and QM_ASSIGN with a temporary result.",
+      "PHP8.5.10 Zend/zend_vm_def.h::ZEND_COALESCE selects by type greater than IS_NULL, retaining raw nonnull tags.",
+      "spec65 coalesce_mode separates nonlocation PPR from location PPIS; spec66 coalesce_result supplies the exact full-state retained or EVAL+VALUE_COPY route."
+    ],
+    "findings": "One authenticated LEFT VALUE proof; no Boolean or generic NaN demand. Both child CODE rows, emitted root RIGHT terminal line, read-eps/redirect-eps/effects-eps, nonowner checks and full fallback resolve are required. Existing outer-cast quietness and two-cast return gate remain intact. Pure authored .watsup; no Zend answer fallback.",
+    "engine_bug_or_intentional_divergence": null
+  },
+  "source_packet": {
+    "revision": "468630ded554ae38ca81344df7e187607926acb1",
+    "parent": "7b9ba82d1ac8ffead17c292557b7281b67bcae93",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/ready-source-157-manifest.json",
+    "manifest_sha256": "84ea4a3883aa60b4b8671b9b27fdf1b9bbecf082d9bf43d7e2cdc63cdd224268",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/ready-source-157.patch",
+    "patch_sha256": "4958fd0920a33d2edcfab18143c72e689c86e471e483be4cbd1f4d47aad7db52",
+    "inverse": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/ready-source-157.inverse.patch",
+    "inverse_sha256": "a48dc56ca20430e006a16e1b2dfcf6d3fdeb5f42b4bcf9574fdd422288d06a92",
+    "full_posts": 6,
+    "full_parents": 3,
+    "absent_parents": 3,
+    "Make4_DOC14_projection": true
+  },
+  "author_evidence": {
+    "baseline": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/baseline-01/report.json",
+      "sha256": "fd025bb5084bf9962f8a00e3740c52ca071aee425256e3dc20696aaa49d831c8",
+      "revision": "7ba73012b5e7d405906cda1d3ece2c5724ce88fd",
+      "model_status": "unsupported",
+      "model_exit": null,
+      "native_once": 1,
+      "native_exit": 255,
+      "seconds": 42.381362844025716,
+      "source_credit": 0,
+      "remaining_variants_initially_unrun": 7
+    },
+    "native": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/native-01/report.json",
+      "sha256": "8790749d472adf187b3bbfcfa74c4dccffe03423d6394d3ebca1bce329c1cffe",
+      "saved_original_reused": 1,
+      "new_observations": 7,
+      "observations_once": 8,
+      "native_replays": 0,
+      "source_credit": 0
+    },
+    "source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/after-01/report.json",
+      "sha256": "56a7acda0f4a629d29c8ab1029cc2e94270e026af8ee98f57b1610498b237cbd",
+      "revision": "b3fe5d9579904de9bf9a01a4b1c28c8f4feaa6cb",
+      "passed": true,
+      "agreements": 8,
+      "seconds": 371.23220560187474,
+      "stable": true,
+      "native_replays": 0,
+      "model_cap_seconds": 90,
+      "outer_cap_seconds": 660
+    },
+    "author_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/front-01/report.json",
+      "sha256": "10b3f90b8308cf1e6d9682365b32b82d05b464ccba994a220a796b7214aaddf3",
+      "revision": "cb244a82e72a577d7468c20ab834327d640d95fe",
+      "passed": true,
+      "assertions": 19,
+      "groups": [
+        8,
+        11
+      ],
+      "seconds": 189.73492525913753,
+      "stable": true,
+      "source_credit": 0,
+      "launch": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/front-launch-01.json",
+        "sha256": "22a404fa5ceec4c07bd3f53db8a28e730482f3ecd1fa5b272d24ff4b613e20c5"
+      }
+    },
+    "author_lifecycle": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/life-01/report.json",
+      "sha256": "6286c4e288c6a5dce6e268bd59905bd566184bccd57dbbd06dcde42536f38f35",
+      "revision": "cb244a82e72a577d7468c20ab834327d640d95fe",
+      "passed": true,
+      "assertions": 13,
+      "groups": [
+        6,
+        7
+      ],
+      "seconds": 279.1889780680649,
+      "stable": true,
+      "source_credit": 0,
+      "launch": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/life-launch-01.json",
+        "sha256": "20a802250b74fbfdb4f030002c584eab5acb88be90f5853aa6218466cbd4890c"
+      }
+    }
+  },
+  "author_evidence_acceptance": {
+    "decision": "CLEAR",
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-author-evidence-acceptance-157.json",
+    "sha256": "b6e479a4dbfb512f3f3eaea8582343429ca6f77c9479f885558399b7143db212",
+    "full_parsed_cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-author-evidence-cache-157.json",
+    "full_parsed_cache_sha256": "2cc64e8b6257d9eeccc93f14574db19e9219d84280f96d91ddcd250edc47f420",
+    "original_report_reads_per_report": 1,
+    "original_report_reopens": 0,
+    "new_semantic_runs": 0,
+    "new_native_runs": 0
+  },
+  "peer_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-front-02/report.json",
+    "sha256": "7c1193d4371e1529820013cde10c753f5482b8f250c226437df10a97730a85a7",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-front-launch-02.json",
+    "launch_sha256": "2a71ae6ad76c49384636ea7d1b67e33c38e319ae70f9d1501613f99f540e4e1e",
+    "full_parsed_cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-peer-front-02-cache.json",
+    "cache_sha256": "2cba9ac01b1e0ccdea5af77e588b64aa5cda93df1e46dccfc7f402b29e676d1c",
+    "revision": "cb244a82e72a577d7468c20ab834327d640d95fe",
+    "groups": [
+      94,
+      61
+    ],
+    "assertions": 155,
+    "seconds": 199.77911571715958,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "peer_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-life-01/report.json",
+    "sha256": "037bcc49247068d95cdf455202e08270b6addfdb2c7ecaa7e492649c37525fed",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-life-launch-01.json",
+    "launch_sha256": "e3603aa6bd2aa9959204c2e2a9596d2a4b2031b373a1e7876e1d0afae8002dc4",
+    "full_parsed_cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-peer-life-01-cache.json",
+    "cache_sha256": "11802dea93b5f019ed8e379586aac98ed9ae30959fa012223d7de210ed411ef0",
+    "revision": "cb244a82e72a577d7468c20ab834327d640d95fe",
+    "groups": [
+      7,
+      8
+    ],
+    "assertions": 15,
+    "seconds": 279.3494491330348,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "independent_controls": [
+    "Strict NULL versus FALSE, integer/float signed zero, empty and zero strings with raw tags before casts.",
+    "Folded and emitted LEFT, recursive coalesce on either side, selected scalar fallback and full-state COPY.",
+    "Both quiet/signaling NaN classes as retained, selected or skipped VALUE without truth demand; outer INT cast still refuses its own nonquiet NaN conversion.",
+    "Exact indexed SOURCE including skipped unresolved name child, CODE line/flag and folded pool facts; root RIGHT terminal line, absent read/redirect, empty effects, NORMAL and handler unit/body.",
+    "Unread forged root pool ignored; fabricated folded reads, CODEEFFECT under reporting masks, owner/request pools, location/call shapes and bare/single-cast returns refuse.",
+    "Live display precision cannot alter strict NULL selection; actual formal/native-cell retirement preserves the selected VALUE and strict return result."
+  ],
+  "peer_fixture": "tests/semantics/output_final_selected_quiet_coalesce_cast_chain_return_modulo_error_review_state.py",
+  "peer_fixture_sha256": "55f17c079a6a079762d4285f012512d25d70c39b1f6b5d0a0d2c9eb20d10a11f",
+  "source_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-source-whole-157.json",
+    "sha256": "33fda188839aafdc64d635fa2dc9ad118d32621d7856005d1708078cdd313d2f",
+    "facts": {
+      "decision": "CLEAR_SOURCE_WHOLE6",
+      "passed": true,
+      "revision": "468630ded554ae38ca81344df7e187607926acb1",
+      "parent": "7b9ba82d1ac8ffead17c292557b7281b67bcae93",
+      "manifest_sha256": "84ea4a3883aa60b4b8671b9b27fdf1b9bbecf082d9bf43d7e2cdc63cdd224268",
+      "patch_sha256": "4958fd0920a33d2edcfab18143c72e689c86e471e483be4cbd1f4d47aad7db52",
+      "inverse_sha256": "a48dc56ca20430e006a16e1b2dfcf6d3fdeb5f42b4bcf9574fdd422288d06a92",
+      "raw_batch_sha256": "36f93ea57e6c6b2fc67490a350c8afc7c29982c3de76b698d934131d3b637f13",
+      "full_posts": 6,
+      "full_parents": 3,
+      "absent_parents": 3,
+      "forward_inverse_exact": true,
+      "private_git_posts_exact": 6,
+      "private_accepted_posts_exact": 4,
+      "full_parent_shared_projection_exact": true,
+      "Make4_unique_literal": true,
+      "documentation_literal_lines": 14,
+      "source_delta_lines": 28,
+      "accepted_source_author_peer_bridge": true,
+      "source_credit": 0,
+      "semantic_runs": 0,
+      "native_runs": 0
+    }
+  },
+  "preserved_failures": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-front-01/report.json",
+      "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer-front-launch-01.json",
+      "outcome": "Parser-only failure before SL execution: INTEGER -1 graph spelling. Parenthesized negative spelling corrected only in new peer fixture; same155 conditions and original300/660 caps.",
+      "observed_conditions": 0,
+      "source_credit": 0,
+      "native_credit": 0,
+      "reaped": true,
+      "group_empty": true
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-evidence-check-preparation-01.json",
+      "outcome": "Cached metadata optional-row KeyError corrected without reopening originals or running semantics.",
+      "semantic_runs": 0,
+      "native_runs": 0
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-whole-check-preparation-01.json",
+      "outcome": "External checker expected Git patch headers before unified forward/inverse parsing. Corrected parser reused one saved Git batch; packet unchanged.",
+      "semantic_runs": 0,
+      "native_runs": 0
+    }
+  ],
+  "limits_and_holds": "Owning or warningful values, location reads, calls and wider producers/contexts/lifetimes remain partial. Existing outer casts, raw tags, source/precision authority and two-cast gate remain. Source47/DEFINE-NaN, NaNBYTE, Owned-REQUEST-NUL release, COMP88, OP12, undefined by-reference LIST, reserve93807cdd6/255, inventory169/306/closed0+1 and OB31 remain held. Complete PHP core, Rocq/CRIS and BOLA remain unfinished.",
+  "counts": "Selected source8 agreements are separate from native8 observations once and fixture-SL author19/13, peer155/15. Fixture counts are group conditions, without unique-count, AL, proof-of-equivalence or BOLA claims.",
+  "own_jobs": 0,
+  "pair_runtime_jobs": 0,
+  "watch_release": true,
+  "source_index_commit_owner": "/root/recover43_output_coalesce_impl",
+  "active_main": "/root/recover76_integrator_113",
+  "new_runtime_or_native_replays": 0,
+  "metadata_semantic_runs": 0,
+  "metadata_author": "/root/recover43_output_coalesce_impl",
+  "metadata_integrator": "/root/recover76_integrator_113",
+  "integration": {
+    "decision": "CLEAR_ACTUAL_OUTPUT157",
+    "passed": true,
+    "fixed_actual_revision": "94f2303d780d07036446a48d23ade20354655b16",
+    "fixed_actual_tree": "d30e7907e11a1beaff8221db28f703fdf8092913",
+    "fixed_actual_parent": "31c60d33dbf88a70eafb22e675e246ecaab3654a",
+    "source_revision": "468630ded554ae38ca81344df7e187607926acb1",
+    "source_parent": "7b9ba82d1ac8ffead17c292557b7281b67bcae93",
+    "manifest_sha256": "84ea4a3883aa60b4b8671b9b27fdf1b9bbecf082d9bf43d7e2cdc63cdd224268",
+    "source_patch_sha256": "4958fd0920a33d2edcfab18143c72e689c86e471e483be4cbd1f4d47aad7db52",
+    "source_whole_sha256": "33fda188839aafdc64d635fa2dc9ad118d32621d7856005d1708078cdd313d2f",
+    "peer_review_sha256": "0792303362711b1062046b5e2a9b27d65c00882c4df502a5880d79537a5e4daf",
+    "composition": {
+      "cohort": "GETMinus + OUTPUT157",
+      "full_cohort_files": 17,
+      "cohort_parents_posts_exact": true,
+      "OUTPUT_private_posts_exact": 4,
+      "OUTPUT_Make4_DOC14_literal_projection": true,
+      "shared_full_parent_forward_inverse_exact": true,
+      "foreign_bytes_preserved": true
+    },
+    "canonical": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main113-get-output157-canonical-v1/report.json",
+      "report_sha256": "243943920de1e7e91774dcf0d13ca3f1ecf3b319c97a393343958f1df754eb4f",
+      "map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main113-get-output157-source-map-v1.json",
+      "map_sha256": "cb7e505ac3918ed3f96df9ac925a221bd2ee890a44af8a2e68f49d976755fac1",
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "cap_seconds": 60,
+      "elapsed": 16.88194634509273,
+      "pass": true,
+      "stable": true,
+      "quiet_stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "reaped": true,
+      "process_group": 3768937,
+      "process_group_absent": true,
+      "canonical_executions": 1,
+      "source_credit": 0
+    },
+    "full_cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-main113-originals-cache-157.json",
+    "full_cache_sha256": "c3738f071ef69e0317cb738b8fb5eed7637f33ba168ca68925fc23a384deb2dc",
+    "full_cache_saved_before_assertions": true,
+    "actual_git_read_count": 1,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "original_reopens": 0,
+    "author_raw_or_cache_reads": 0,
+    "source_native_state_reruns": 0,
+    "metadata_semantic_runs": 0,
+    "own_jobs": 0,
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-integrated-tiny-157.json",
+    "immutable_tuple_sha256": "369cc1c18838de85549e20b787052bea82cc873b98eb3639eabd93a039d1e77a",
+    "author_parsed_tiny": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/author43-integrated-tiny-parsed-157.json",
+    "author_parsed_tiny_sha256": "908844fe8aa2653a73406309035d9db26bfc595d1e5331e1eadfd9bbde268d85"
+  },
+  "private_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-157/peer39-review-157.json",
+    "sha256": "0792303362711b1062046b5e2a9b27d65c00882c4df502a5880d79537a5e4daf"
+  },
+  "metadata_git_reads": {
+    "parent": "9114779f87284237eba8a24e07b6b8eb06a1f223",
+    "complete_metadata_images": 5,
+    "verified_new_absences": 2,
+    "runtime_source_git_reads": 0,
+    "original_canonical_report_map_full_cache_reads": 0,
+    "common4_shared_posts_project_only_named_literals": true
+  }
+}
