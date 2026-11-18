@@ -1165,9 +1165,27 @@ isolators from a combined FORMAL/RETURN alias original and the unchanged NULL
 TypeError-before-Notice control. Four native originals ran once; author source2
 and state340, independent whole4 with state340/191, and the fixed production
 load retain separate identities. One emitted-name compiler rejection and two
-reader preparation assertions keep zero credit. Nullable, union and relative
-RETURNs, other resolved classes and wider payloads/owners/lifetimes remain partial;
-all exact holds stay unchanged.
+reader preparation assertions keep zero credit. Scoped nullable RETURNs are
+extended below; union and relative RETURNs, other resolved classes and wider
+payloads/owners/lifetimes remain partial, with all exact holds unchanged.
+
+Nullable `?Alias` RETURNs use the same quiet declaration resolution to exact
+global `stdClass`, after the existing Param-view recursion. The new arm requires
+an unchanged parameter vector, nonempty declaration context and actuals, and
+exact canonical `[class, null]` normalized order. Its proof view preserves both
+nullable/name metadata nodes before the existing FQN nullable header; independent
+RETURN verification, frame retirement and private Notice-cell ownership stay.
+The [scoped nullable-return review](../../coverage/semantics/scoped-nullable-stdclass-return-producer-reference-notice-review.json)
+separates object and successful NULL isolators from a combined nullable
+FORMAL/RETURN alias original and an unchanged scalar TypeError-before-Notice
+control. Native4 ran once. Author source2/state357 and independent source4/state357
+remain accepted; the first independent WHOLE retains its peer fixture compiler
+rejection/runtime UNRUN0, followed only by corrected peer192. No first-WHOLE-pass
+claim or accepted-source/native/author replay is made. Older pure helper
+expectations in three files promote through fresh nullable/self-import proofs
+without renewing their historical executions. Scoped union/relative RETURNs,
+other resolved classes and wider payloads/owners/lifetimes remain partial;
+exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view

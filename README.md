@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Scoped nullable ?Alias producer RETURNs resolve quietly to canonical global stdClass after Param normalization, preserving exact class-then-null order and both metadata nodes. Object and successful NULL returns retain existing verification, retirement and private Notice-cell rules; scoped union/relative returns and wider lifetimes remain partial. [Review](coverage/semantics/scoped-nullable-stdclass-return-producer-reference-notice-review.json).
+
 Quiet NULL-left coalesces preserve existing certified allocated string RHS headers and saved leading offsets through returning Warnings. Exact SOURCE, precision and unchanged full-state authority retain existing non-NUL REQUEST and ownership bounds; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json).
 
 Saved ordinary NULL/BOOL CVs retain bounded live nonempty arrays after nested-unset Warnings, preserving actual descendants, aliases and cleanup. Deeper/cyclic arrays, object fields and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).
@@ -24,7 +26,7 @@ Parser-literal CONCAT trees admit canonical nonnegative finite raw FLOAT leaves 
 
 One raw FLOAT/sign-left and signed64 INT/sign-right arithmetic predicate selects full-ternary scalar tags when pure and actual result bits are infinite. Every integer sign remains in range; broader operands and contexts stay partial. [Review](coverage/semantics/deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
-Ordinary singleton producer RETURN aliases resolve quietly to exact canonical global stdClass in retained namespace/import contexts. Param normalization runs first; return verification, retirement and private Notice cells remain. Scoped nullable/union/relative RETURNs and wider lifetimes stay partial. [Review](coverage/semantics/scoped-stdclass-return-producer-reference-notice-review.json).
+Ordinary singleton producer RETURN aliases resolve quietly to exact canonical global stdClass in retained namespace/import contexts. Param normalization runs first; return verification, retirement and private Notice cells remain. Scoped union/relative RETURNs and wider lifetimes stay partial. [Review](coverage/semantics/scoped-stdclass-return-producer-reference-notice-review.json).
 
 Own public parentless short reference Get admits ordered class pairs, finite quiet nominal unions, one class with compatible builtin arms, and finite mixtures of at least two classes and one compatible builtin arm. Exact raw/normalized order and defining namespace authority preserve typed aliases, array COW and detachment from the property type source. DNF, iterable and wider source/value/modifier/owner/lifetime contexts remain partial. [Mixed-union review](coverage/semantics/mixed-nominal-union-parentless-short-reference-get-hook-review.json), [finite nominal-union review](coverage/semantics/nominal-union-parentless-short-reference-get-hook-review.json), [pair review](coverage/semantics/nominal-pair-parentless-short-reference-get-hook-review.json), [single-class builtin review](coverage/semantics/class-builtin-union-parentless-short-reference-get-hook-review.json).
 
