@@ -307,6 +307,8 @@ test-semantics: build
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-state-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-peer-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key --output "$$(mktemp -d .tools/string-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-state-XXXXXX)/run"
+	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-peer-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-truthy-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-truthy-shorthand-base-initial-raw-leading-key-reference-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-falsey-shorthand-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-falsey-shorthand-base-initial-raw-leading-key-reference-XXXXXX)/run"
 	python3 -B tests/semantics/string_offset_current_marked_cv_protocol.py --runtime-allocated-full-ternary-base-initial-raw-leading-key --peer --output "$$(mktemp -d .tools/string-runtime-allocated-full-ternary-base-initial-raw-leading-key-reference-XXXXXX)/run"
@@ -2352,6 +2354,9 @@ test-semantics: build
 	python3 tests/semantics/deferred_unary_flat_float_number_tree_infinite_full_ternary_redirect_wrapper_default_reception.py
 	python3 tests/semantics/deferred_unary_flat_float_number_tree_infinite_full_ternary_redirect_wrapper_default_reception_protocol.py
 	python3 tests/semantics/deferred_unary_flat_float_number_tree_infinite_full_ternary_redirect_wrapper_default_reception_review_protocol.py
+	python3 tests/semantics/deferred_unary_float_number_tree_finite_nonzero_full_ternary_redirect_wrapper_default_reception.py
+	python3 tests/semantics/deferred_unary_float_number_tree_finite_nonzero_full_ternary_redirect_wrapper_default_reception_protocol.py
+	python3 tests/semantics/deferred_unary_float_number_tree_finite_nonzero_full_ternary_redirect_wrapper_default_reception_review_protocol.py
 	python3 tests/semantics/callable_returns.py
 	python3 tests/semantics/typed_function_protocol.py
 	python3 tests/semantics/typed_function_state.py

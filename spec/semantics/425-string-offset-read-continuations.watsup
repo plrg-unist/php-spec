@@ -11,6 +11,7 @@ dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
 dec $string_read_raw_leading(pvalue, pvalue) : int?
 dec $string_read_raw_known_base(pstate, porigin, pvalue) : bool
+dec $string_read_raw_float_sign_tree(expression) : bool
 dec $string_read_allocated_value(pstate, porigin, pvalue) : bool
 dec $string_read_allocated_base(pstate, porigin, pvalue) : bool
 dec $string_read_allocated_leading(pstate, pvalue, pvalue) : int?
@@ -953,90 +954,18 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $c_string(n_bytes*) = n_bytes*
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $string_concat(S_before, pvalue_left, pvalue_right, false, true) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; A direct raw FLOAT-to-STRING RHS appends exactly one row before CONCAT.
+;; This syntax-only grammar adds no value, source, pool or allocation authority.
+def $string_read_raw_float_sign_tree(NScalarFloat (FLOAT text_bits) metadata) = true
+def $string_read_raw_float_sign_tree(NExprUnaryPlus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
+def $string_read_raw_float_sign_tree(NExprUnaryMinus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
+def $string_read_raw_float_sign_tree(expression) = false -- otherwise
+;; A raw FLOAT sign-tree cast appends exactly one RHS row before CONCAT.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
   -- if $(n_identity > 1)
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
-  -- if expression_right = NExprCastString (NScalarFloat (FLOAT text_bits) metadata_number) metadata_right
-  -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
-  -- if $(z_line > 0)
-  -- if $compiled_read(S, PORIGIN n pcpath) = eps
-  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
-  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
-  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
-  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
-  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
-  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
-  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
-  -- if n_left_identity = $nabs($(n_identity - 2))
-  -- if n_right_identity = $nabs($(n_identity - 1))
-  -- if $(n_right_identity < |S.STRINGDATA|)
-  -- if n_left* = S.STRINGDATA[n_left_identity]
-  -- if n_right* = S.STRINGDATA[n_right_identity]
-  -- if pvalue_left = PSTRING_CARRIER (REQUEST_STRING n_left_identity) n_left*
-  -- if pvalue_right = PSTRING_CARRIER (REQUEST_STRING n_right_identity) n_right*
-  -- if $string_read_allocated_base(S, porigin_left, pvalue_left)
-  -- if $string_read_allocated_value(S, porigin_right, pvalue_right)
-  -- if $origin_child((porigin_right), [PCFIELD 0]) = (porigin_number)
-  -- if $string_read_runtime_value(S, porigin_number) = (PFLOAT n_bits)
-  -- if porigin_right = PORIGIN n pcpath_right
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath_right) = ((z_right, false))
-  -- if $concat_constant(S, (porigin_left)) = false
-  -- if $concat_constant(S, (porigin_right)) = false
-  -- if n_bytes* = n_left* ++ n_right*
-  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
-  -- if $c_string(n_bytes*) = n_bytes*
-  -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_right_identity]]
-  -- if S_right = $cast_apply(S_before, CASTSTRING, PFLOAT n_bits, z_right)
-  -- if S_right = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_right*]][.RESULT = KNOWN pvalue_right]
-  -- if $string_concat(S_right, pvalue_left, pvalue_right, false, false) = S_right[.STRINGDATA = S_right.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; A single unary-plus raw FLOAT cast retains the same one-row RHS prefix.
-def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
-  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
-  -- if $(n_identity > 1)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
-  -- if expression_right = NExprCastString (NExprUnaryPlus (NScalarFloat (FLOAT text_bits) metadata_number) metadata_unary) metadata_right
-  -- if $code_at(S.CODE, n) = (pcode)
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
-  -- if $(z_line > 0)
-  -- if $compiled_read(S, PORIGIN n pcpath) = eps
-  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 0]) = (porigin_left)
-  -- if $origin_child((PORIGIN n pcpath), [PCFIELD 1]) = (porigin_right)
-  -- if $origin_node(S.SOURCES, porigin_left) = (expression_left)
-  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
-  -- if $compiled_precision(S, (PORIGIN n pcpath)) = (z_precision)
-  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
-  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
-  -- if n_left_identity = $nabs($(n_identity - 2))
-  -- if n_right_identity = $nabs($(n_identity - 1))
-  -- if $(n_right_identity < |S.STRINGDATA|)
-  -- if n_left* = S.STRINGDATA[n_left_identity]
-  -- if n_right* = S.STRINGDATA[n_right_identity]
-  -- if pvalue_left = PSTRING_CARRIER (REQUEST_STRING n_left_identity) n_left*
-  -- if pvalue_right = PSTRING_CARRIER (REQUEST_STRING n_right_identity) n_right*
-  -- if $string_read_allocated_base(S, porigin_left, pvalue_left)
-  -- if $string_read_allocated_value(S, porigin_right, pvalue_right)
-  -- if $origin_child((porigin_right), [PCFIELD 0]) = (porigin_number)
-  -- if $string_read_runtime_value(S, porigin_number) = (PFLOAT n_bits)
-  -- if porigin_right = PORIGIN n pcpath_right
-  -- if $code_expression(pcode.EXPRESSIONS, pcpath_right) = ((z_right, false))
-  -- if $concat_constant(S, (porigin_left)) = false
-  -- if $concat_constant(S, (porigin_right)) = false
-  -- if n_bytes* = n_left* ++ n_right*
-  -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
-  -- if $c_string(n_bytes*) = n_bytes*
-  -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_right_identity]]
-  -- if S_right = $cast_apply(S_before, CASTSTRING, PFLOAT n_bits, z_right)
-  -- if S_right = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_right*]][.RESULT = KNOWN pvalue_right]
-  -- if $string_concat(S_right, pvalue_left, pvalue_right, false, false) = S_right[.STRINGDATA = S_right.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; A single unary-minus raw FLOAT cast retains sign and one RHS prefix row.
-def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
-  -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
-  -- if $(n_identity > 1)
-  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprBinaryOpConcat expression_left expression_right metadata)
-  -- if expression_right = NExprCastString (NExprUnaryMinus (NScalarFloat (FLOAT text_bits) metadata_number) metadata_unary) metadata_right
+  -- if expression_right = NExprCastString expression_number metadata_right
+  -- if $string_read_raw_float_sign_tree(expression_number)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z_line, false))
   -- if $(z_line > 0)
