@@ -93,7 +93,7 @@ def assertions():
                              ('builtin', prior.branches([['PTCLASS ' + names.value(owner)], ['PTBUILTIN "object"']]))]:
             check(kind + '-normalized-' + label, ast, typed, expected=False)
         three = pair(raw_self, other, names.raw(b'Third'))
-        check(kind + '-larger-fold-unchanged', three, mask(owner, b'Other', b'Def343\\Third'), expected=False,
+        check(kind + '-larger-fold-accepted', three, mask(owner, b'Other', b'Def343\\Third'),
               helper='$hook_short_reference_nominal_union_header')
         inter = prior.intersection([raw_self, other])
         inter_type = prior.branches([['PTCLASS ' + names.value(owner), 'PTCLASS ' + names.value(b'Other')]])

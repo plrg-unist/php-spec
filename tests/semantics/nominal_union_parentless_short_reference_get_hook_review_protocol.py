@@ -106,10 +106,10 @@ def assertions():
         ('missing-file', names.context(namespace=b'Header334', file=b'')),
         ('missing-line', names.context(namespace=b'Header334', file=b'original334.php', line=0))):
         check(label, ast, normalized, lexical, False)
-    rows.append({'id': 'members-empty-base', 'expected': True, 'premise': MEMBERS + '(eps,eps)'})
-    rows.append({'id': 'members-empty-raw', 'expected': False, 'premise': '~' + MEMBERS + '(eps,' + normalized + ')'})
+    rows.append({'id': 'members-empty-base', 'expected': True, 'premise': MEMBERS + '(eps,eps,' + plain + ')'})
+    rows.append({'id': 'members-empty-raw', 'expected': False, 'premise': '~' + MEMBERS + '(eps,' + normalized + ',' + plain + ')'})
     rows.append({'id': 'members-empty-normalized', 'expected': False,
-                 'premise': '~' + MEMBERS + '([' + ','.join(raw) + '],eps)'})
+                 'premise': '~' + MEMBERS + '([' + ','.join(raw) + '],eps,' + plain + ')'})
     assert len({row['id'] for row in rows}) == len(rows)
     return rows
 

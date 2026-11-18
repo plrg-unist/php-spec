@@ -1,0 +1,112 @@
+{
+  "weak-self-first-three": {
+    "namespace": "W344A",
+    "consumer_namespace": "W344AX",
+    "class": "W344A\\Box344",
+    "header": "self|\\W344A\\First344|namespace\\Second344",
+    "raw_kind": "NName",
+    "raw_name": "self",
+    "others": [
+      {
+        "class": "W344A\\First344",
+        "raw_kind": "NNameFullyQualified",
+        "raw_name": "W344A\\First344"
+      },
+      {
+        "class": "W344A\\Second344",
+        "raw_kind": "NNameRelative",
+        "raw_name": "Second344"
+      }
+    ],
+    "self_index": 0,
+    "typename": "W344A\\Box344|W344A\\First344|W344A\\Second344",
+    "id": "weak-self-first-three",
+    "source": "weak-self-first-three.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "builtin_first": false,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|A|R|B|R|P|F|Z|",
+    "steps": [
+      {
+        "statement": "$r341 = new \\W344A\\First344();",
+        "check": "$r341 instanceof \\W344A\\First344 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate0",
+        "object": "W344A\\First344",
+        "marker": "A|"
+      },
+      {
+        "statement": "$s341 = new \\W344A\\Second344();",
+        "check": "$r341 instanceof \\W344A\\Second344 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate1",
+        "object": "W344A\\Second344",
+        "marker": "B|"
+      }
+    ]
+  },
+  "weak-relative-self-middle-four": {
+    "namespace": "W344B",
+    "consumer_namespace": "W344BX",
+    "class": "W344B\\Box344",
+    "header": "AliasFirst344|namespace\\SeLf|AliasSecond344|\\W344Payload\\Third344",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "W344Payload\\First344",
+        "raw_kind": "NName",
+        "raw_name": "AliasFirst344"
+      },
+      {
+        "class": "W344Payload\\Second344",
+        "raw_kind": "NName",
+        "raw_name": "AliasSecond344"
+      },
+      {
+        "class": "W344Payload\\Third344",
+        "raw_kind": "NNameFullyQualified",
+        "raw_name": "W344Payload\\Third344"
+      }
+    ],
+    "self_index": 1,
+    "typename": "W344Payload\\First344|W344B\\Box344|W344Payload\\Second344|W344Payload\\Third344",
+    "id": "weak-relative-self-middle-four",
+    "source": "weak-relative-self-middle-four.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "builtin_first": false,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|A|R|B|R|C|R|P|F|Z|",
+    "steps": [
+      {
+        "statement": "$r341 = new \\W344Payload\\First344();",
+        "check": "$r341 instanceof \\W344Payload\\First344 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate0",
+        "object": "W344Payload\\First344",
+        "marker": "A|"
+      },
+      {
+        "statement": "$s341 = new \\W344Payload\\Second344();",
+        "check": "$r341 instanceof \\W344Payload\\Second344 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate1",
+        "object": "W344Payload\\Second344",
+        "marker": "B|"
+      },
+      {
+        "statement": "$r341 = new \\W344Payload\\Third344();",
+        "check": "$r341 instanceof \\W344Payload\\Third344 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate2",
+        "object": "W344Payload\\Third344",
+        "marker": "C|"
+      }
+    ]
+  }
+}

@@ -17,7 +17,11 @@ def fields(fixture, source, case):
     body_line = get_line + 1
     nominal = '(PTBRANCH ([PTCLASS ' + names.value(case['class'].encode()) + ']))'
     branches = [nominal]
-    if case.get('other'):
+    others = case.get('others')
+    if others:
+        branches = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
+        branches.insert(case['self_index'], nominal)
+    elif case.get('other'):
         other = case['other']
         alternate = '(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))'
         branches.insert(0 if other['first'] else 1, alternate)
@@ -28,7 +32,12 @@ def fields(fixture, source, case):
     typed = '[' + ','.join(branches) + ']'
     raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
     raw = raw_self
-    if case.get('other'):
+    if others:
+        raw_members = [other['raw_kind'] + ' (BYTES text_other_' + str(i) + ') metadata_other_' + str(i)
+                       for i, other in enumerate(others)]
+        raw_members.insert(case['self_index'], raw_self)
+        raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
+    elif case.get('other'):
         raw_members = [raw_self]
         raw_members.insert(0 if other['first'] else 1, other['raw_kind'] + ' (BYTES text_other) metadata_other')
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
@@ -117,6 +126,14 @@ def fields(fixture, source, case):
     if case.get('other'):
         checks += ['$base64(text_other) = $base64(' + quoted(other['raw_name']) + ')',
                    '$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
+    if others:
+        checks += ['$base64(text_other_' + str(i) + ') = $base64(' + quoted(other['raw_name']) + ')'
+                   for i, other in enumerate(others)]
+        checks += ['$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                   '~$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                   '~$hook_short_reference_nominal_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)']
+        if any(other['raw_kind'] != 'NNameFullyQualified' for other in others):
+            checks += ['~$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_consumer)']
     checks += payload('S_front', 'n_first', 'first')
     checks += seek('S_return', 'S_front', -1)
     checks += ['$reference_return_source(S_return,' + str(body_line) + ')',
@@ -167,12 +184,15 @@ def fields(fixture, source, case):
                    '$propref_at(' + state + '.PROPREFS,n_field) = (ppropref)']; previous = state
         if 'object' in step:
             obj = step['value'].split()[1]; step_objects.append(obj)
-            checks += [state + '.OBJECTS[' + obj + '] = INSTANCE porigin_alternate',
-                       '$class_at(' + state + '.CLASSES,porigin_alternate) = (pclassdesc_alternate)',
-                       'pclassdesc_alternate.NAME = $base64(' + quoted(step['object']) + ')',
-                       'pclassdesc_alternate.PROPERTIES = eps', 'pclassdesc_alternate.METHODS = eps',
-                       'pclassdesc_alternate.PARENT = eps',
-                       '$typed_object_exact(' + state + ',[' + alternate + '],POBJECT ' + obj + ')',
+            suffix = str(i) if others else ''
+            origin, descriptor = 'porigin_alternate' + suffix, 'pclassdesc_alternate' + suffix
+            step_alternate = '(PTBRANCH ([PTCLASS ' + names.value(step['object'].encode()) + ']))' if others else alternate
+            checks += [state + '.OBJECTS[' + obj + '] = INSTANCE ' + origin,
+                       '$class_at(' + state + '.CLASSES,' + origin + ') = (' + descriptor + ')',
+                       descriptor + '.NAME = $base64(' + quoted(step['object']) + ')',
+                       descriptor + '.PROPERTIES = eps', descriptor + '.METHODS = eps',
+                       descriptor + '.PARENT = eps',
+                       '$typed_object_exact(' + state + ',[' + step_alternate + '],POBJECT ' + obj + ')',
                        '~$typed_object_exact(' + state + ',[' + nominal + '],POBJECT ' + obj + ')',
                        '$heap_owners($heap_graph(' + state + '),HOBJECT ' + obj + ') = 1']
     checks += seek('S_before', previous, -3)

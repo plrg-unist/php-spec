@@ -219,16 +219,16 @@ def $hook_short_reference_nominal_pair_header(NUnionType (SEQUENCE ([phpType69_l
 def $hook_short_reference_nominal_pair_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 
 ;; Finite nominal lists retain every raw and normalized class alternative.
-dec $hook_short_reference_nominal_union_members(phpType69*, ptbranch*) : bool
-def $hook_short_reference_nominal_union_members(eps, eps) = true
-def $hook_short_reference_nominal_union_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*) = true
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes)
-  -- if $hook_short_reference_nominal_union_members(phpType69_tail*, ptbranch_tail*)
-def $hook_short_reference_nominal_union_members(phpType69*, ptbranch*) = false -- otherwise
+dec $hook_short_reference_nominal_union_members(phpType69*, ptbranch*, ptcontext) : bool
+def $hook_short_reference_nominal_union_members(eps, eps, ptcontext) = true
+def $hook_short_reference_nominal_union_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*, ptcontext) = true
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes) \/ $hook_short_reference_scoped_header(phpType69_head, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $hook_short_reference_nominal_union_members(phpType69_tail*, ptbranch_tail*, ptcontext)
+def $hook_short_reference_nominal_union_members(phpType69*, ptbranch*, ptcontext) = false -- otherwise
 dec $hook_short_reference_nominal_union_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_nominal_union_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*, ptcontext) = true
   -- if $(|phpType69*| >= 3)
-  -- if $hook_short_reference_nominal_union_members(phpType69*, ptbranch*)
+  -- if $hook_short_reference_nominal_union_members(phpType69*, ptbranch*, ptcontext)
   -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata, ptcontext) = PTOK ptbranch* eps
 def $hook_short_reference_nominal_union_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 

@@ -3011,3 +3011,12 @@ the raw/normalized order, namespace/import resolution and exact class bytes.
 Existing typed aliases, atomic refusal, object identity and real source detachment
 remain required. Larger self unions, intersections, DNF and wider contexts stay partial.
 [Review](../../coverage/semantics/self-nominal-pair-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits finite flat nominal unions of
+three or more quiet class arms containing `self` or `namespace\self`.
+The existing member fold threads defining context into each singleton proof;
+whole quiet normalization retains exact raw/normalized order and class bytes.
+Distinct alternatives preserve typed aliases, atomic refusal, object identity,
+actual Get reads and real source detachment. Self intersections/DNF and wider
+contexts, owners and lifetimes remain partial.
+[Review](../../coverage/semantics/self-nominal-union-parentless-short-reference-get-hook-review.json).
