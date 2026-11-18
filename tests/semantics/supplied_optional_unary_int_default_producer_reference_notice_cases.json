@@ -1,0 +1,63 @@
+[
+  {
+    "id": "optional146-int-byval-supplied-unary-minus-default",
+    "kind": "singleton",
+    "source": "<?php\nnamespace UnaryIntDefault146 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(InT $saved=-7):int{echo 'M:',(int)($saved===17),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('UnaryIntDefault146\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "default": "-7",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "observed_notice_line": 8,
+    "new_support_credit": 1,
+    "source_sha256": "591e88759d8b4a316d30180a46ad446177a3fa424b4e6c43920ec8979aeba3b0",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_int_default_producer_reference_notice_cases.json",
+      "id": "optional139-single-int-byval-supplied-default7",
+      "source_sha256": "51c5ccfe74133a3bb2786b96191a391b29fab88c6afa17e3b444d1cad836c7cb",
+      "edits": "Fresh namespace and exact one unary sign over INT7. The array producer adds a strict INT7 observer, including its later omitted call; supplied actual/alias/COW behavior is retained."
+    }
+  },
+  {
+    "id": "optional146-untyped-byref-array-unary-plus-default-and-later-omitted",
+    "kind": "array",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace UnaryIntArrayDefault146 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input=+7):aRrAy{global $leaf;echo 'V:',$input,':',(int)($input===7),';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('UnaryIntArrayDefault146\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "default": "+7",
+    "native_stdout": "U;V:3:0;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V:7:1;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 1,
+    "source_sha256": "7c96467e60989a565a301cf2324416af35e4475b5f350b6c34fe738281545f32",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_int_default_producer_reference_notice_cases.json",
+      "id": "optional139-single-untyped-byref-array-return-default-survives",
+      "source_sha256": "eeb0d0c8b00b76f1fd229a94178b745b00c62b41a699aacc66b1c32e108f95f4",
+      "edits": "Fresh namespace and exact one unary sign over INT7. The array producer adds a strict INT7 observer, including its later omitted call; supplied actual/alias/COW behavior is retained."
+    }
+  },
+  {
+    "id": "optional146-omitted-int-unary-minus-default-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make(InT $saved=-7):int{echo 'M:',(int)($saved===-7),':',(int)($saved!==7),';';return $saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',(int)($value===-7),';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "default": "-7",
+    "native_stdout": "O;M:1:1;H;F:1;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0,
+    "source_sha256": "ad63f891f550f9e79138ce5e0c6de1b6338de3d851d010d2be53e4cea56f420a"
+  },
+  {
+    "id": "optional146-array-unary-minus-int-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(array $input=-7):int{return 9;}\necho 'BAD-PRELUDE;';$input=[];echo make($input);\n",
+    "default": "-7",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use int as default value for parameter $input of type array in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0,
+    "source_sha256": "7772b4bdb25079f53c00fbe2a6d84e2639abfa5bb6102a9f37f2854d084e4e67"
+  }
+]
