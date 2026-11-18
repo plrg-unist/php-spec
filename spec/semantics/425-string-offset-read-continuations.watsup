@@ -943,7 +943,7 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $(n_left_identity < |S.STRINGDATA|)
   -- if n_left* = S.STRINGDATA[n_left_identity]
   -- if pvalue_left = PSTRING_CARRIER (REQUEST_STRING n_left_identity) n_left*
-  -- if $string_read_allocated_value(S, porigin_left, pvalue_left)
+  -- if $string_read_allocated_base(S, porigin_left, pvalue_left)
   -- if $string_read_runtime_value(S, porigin_right) = (pvalue_right)
   -- if pvalue_right = PSTRING_CARRIER INTERNED_STRING n_right*
   -- if $concat_constant(S, (porigin_left)) = false
