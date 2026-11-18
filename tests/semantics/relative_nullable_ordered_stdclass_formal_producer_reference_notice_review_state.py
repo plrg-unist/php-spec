@@ -62,7 +62,9 @@ def independent_controls(index, case):
     lines += [view('[' + relative + ', ' + ordinary + ']') + ' = eps',
         view('[' + relative + ', ' + nested + ']') + ' = eps']
     for name in ('"T3RoZXI="', '"U1REQ0xBU1M="', '"c3RkQ2xhc3MA"'):
-        lines.append(view(original.replace('"c3RkQ2xhc3M="', name)) + ' = eps')
+        items = original.replace('"c3RkQ2xhc3M="', name)
+        expected = '(' + items.replace('NNameRelative', 'NNameFullyQualified') + ')' if name == '"U1REQ0xBU1M="' else 'eps'
+        lines.append(view(items) + ' = ' + expected)
     # Identifier validation stays in the unchanged FQN folds, after the view.
     items = members(raw(['class', 'object']))
     lines.append(view(items) + ' = (' + items.replace('NNameRelative', 'NNameFullyQualified') + ')')

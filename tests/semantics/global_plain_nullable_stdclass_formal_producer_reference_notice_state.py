@@ -81,7 +81,7 @@ def controls(index, case):
         lines += [valid, '~' + valid.replace(nullable_type(spelling), nullable_type(spelling.swapcase()))]
     for tag in ('NNameRelative', 'NIdentifier'):
         changed = shape.replace('NName ', tag + ' ', 1)
-        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + proof(changed)]
+        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', ('' if tag == 'NNameRelative' else '~') + proof(changed)]
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         changed = shape.replace('BYTES text_formal', 'BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()))
         lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + proof(changed)]

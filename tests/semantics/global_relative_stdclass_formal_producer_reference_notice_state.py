@@ -57,7 +57,8 @@ def controls(index, case):
     for name in ('Other', 'Other\\stdClass', '\\stdClass', 'namespace\\stdClass',
             'STDCLASS', 'sTdClAsS', 'stdClass\x00', '', 'int', 'mixed', 'self', 'parent', 'static'):
         changed = shape.replace('BYTES text_formal', 'BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()))
-        lines += [converted(changed) + ' = (' + changed + ')', '~' + proof(changed)]
+        expected = changed.replace('NNameRelative ', 'NNameFullyQualified ', 1) if name in ('STDCLASS', 'sTdClAsS') else changed
+        lines += [converted(changed) + ' = (' + expected + ')', '~' + proof(changed)]
     changed = shape.replace('NNameRelative ', 'NIdentifier ')
     lines += [converted(changed) + ' = (' + changed + ')', '~' + proof(changed)]
     for wrapper in ('NNullableType (NNameRelative (BYTES text_formal) metadata_formal) metadata_formal',

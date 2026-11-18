@@ -60,7 +60,7 @@ def normal(initial, case, front):
         derived += [valid, '~' + valid.replace(prior.nullable(spelling), prior.nullable(spelling.swapcase()))]
     for tag in ('NNameRelative', 'NIdentifier'):
         changed = parameter.replace('NName ', tag + ' ', 1)
-        derived += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + raw_proof(changed)]
+        derived += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', ('' if tag == 'NNameRelative' else '~') + raw_proof(changed)]
     for spelling in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         changed = parameter.replace('BYTES text_formal', 'BYTES ' + json.dumps(base64.b64encode(spelling.encode()).decode()))
         derived += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + raw_proof(changed)]

@@ -48,7 +48,7 @@ def normal(initial, case, index, front):
     def raw_proof(value):
         return scoped.replace('SEQUENCE ([phpType17]),', 'SEQUENCE ([' + value + ']),', 1)
     for tag in ('NNameRelative', 'NIdentifier'):
-        derived.append('~' + raw_proof(parameter.replace('NName (BYTES text_formal)', tag + ' (BYTES text_formal)', 1)))
+        derived.append(('' if tag == 'NNameRelative' else '~') + raw_proof(parameter.replace('NName (BYTES text_formal)', tag + ' (BYTES text_formal)', 1)))
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass'):
         value = parameter.replace('NName (BYTES text_formal)', 'NName (BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()) + ')', 1)
         derived.append('~' + raw_proof(value))

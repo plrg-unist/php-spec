@@ -89,7 +89,8 @@ def controls(index, case):
     for name in ('Other', 'Other\\stdClass', '\\stdClass', 'namespace\\stdClass',
             'STDCLASS', 'sTdClAsS', 'stdClass\x00', '', 'int', 'mixed', 'self', 'parent', 'static'):
         changed = param.replace('BYTES text_formal', 'BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()))
-        lines += [converted(changed) + ' = (' + changed + ')', '~' + proof(changed)]
+        expected = changed.replace('NNameRelative ', 'NNameFullyQualified ', 1) if name in ('STDCLASS', 'sTdClAsS') else changed
+        lines += [converted(changed) + ' = (' + expected + ')', '~' + proof(changed)]
     for before, after in ((metadata, 'eps'), ('metadata_formal)', 'eps)'),
             ('metadata_nullable_formal', 'eps'), ('metadata_formal_union', 'eps')):
         lines += [converted(param.replace(before, after)) + ' = (' + viewed.replace(before, after) + ')', proof(param.replace(before, after))]

@@ -94,7 +94,7 @@ def controls(index, case):
         lines.append('~' + typed(shape.replace(typename, raw_type(members, indexed=False)), branches(members)))
     for tag in ('NNameRelative', 'NIdentifier'):
         changed = shape.replace(typename, raw_type(case['formal_members'], tag=tag, indexed=False))
-        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + proof(changed)]
+        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', ('' if tag == 'NNameRelative' else '~') + proof(changed)]
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         changed = shape.replace(typename, raw_type(case['formal_members'], name=name, indexed=False))
         lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + typed(changed, branches(case['formal_members'], name))]

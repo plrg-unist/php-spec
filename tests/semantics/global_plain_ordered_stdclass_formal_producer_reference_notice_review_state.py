@@ -98,7 +98,7 @@ def controls(case):
         lines.append('~' + typed(shape, members))
     for tag in ('NNameRelative', 'NIdentifier'):
         changed = parameter(case['formal_members'], tag=tag)
-        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', '~' + typed(changed, case['formal_members'])]
+        lines += ['$reference_notice_producer_global_parameter_view(' + changed + ') = (' + changed + ')', ('' if tag == 'NNameRelative' else '~') + typed(changed, case['formal_members'])]
     for name in ('Other', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00'):
         changed = parameter(case['formal_members'], name=name)
         rejected = typed(changed, case['formal_members'], name).replace('$ptascii(' + json.dumps(name) + ')', '[' + ', '.join(map(str, name.encode())) + ']')
