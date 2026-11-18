@@ -1351,30 +1351,27 @@ Shared caches, private reception and owner bounds remain unchanged. Mixed numeri
 trees, names, STRING leaves, unary wrappers over computed trees, NaN warning
 continuations and wider declaration/reception/lifetime contexts remain partial.
 
-Proper mixed and all-INT arithmetic trees preserve their typed intermediate
-results through infinite full-ternary predicates. One unary PLUS or MINUS now
-also accepts a proper child containing raw FLOAT leaves, either pure FLOAT or
-mixed INT/FLOAT. Exact SOURCE, typed child pools and absent CODE/read/redirects
-certify the child; the own PFLOAT bits match pure multiplication by long +1/-1.
-Child and result must both be INFINITE. The shared collector, integer-only sign
-root, selected scalar tags, declaration bindings, Shared caches and private
-reception/cleanup remain unchanged.
+One unary PLUS or MINUS accepts an infinite arithmetic child containing raw
+FLOAT leaves, pure FLOAT or mixed INT/FLOAT, including a single binary operation.
+Removing only the former nesting witness retains binary op4, exact recursive
+SOURCE/typed pools/absence, raw leaf flags, child and own INFINITE results and
+pure long +1/-1 multiplication. The collector, integer-only root, selected scalar
+tags, declaration bindings, Shared caches and private reception remain unchanged.
 
-Four fresh native/source comparisons observe all signs through strict identity
-against raw infinities, as well as cold/warm caches and named Warning reentry.
-Prelaw1378 separately verifies actual condition pools, signed-zero phasefalse,
-unavailable ordinary condition VALUE and mixed exact-division PINT2. Author1746,
-independent884 and fresh old31245 pass their semantic checks. One affected-case
-recorder path error occurred before execution; its literal45-case correction
-ran separately, without replaying accepted cuts. The combined 509-module
-production check passes with source0; exact evidence is linked below.
+Four fresh native/source programs divide finite +/-1 by the smallest nonzero
+subnormal and observe both infinity signs through strict identity. Prelaw908
+checks divisor bits1/nonzero, exact pools, phaseSAFE and available ordinary
+condition VALUE. Author1298, independent882 and fresh old31370 pass first attempts.
+Only two old flat-child ROOT queries promote; their other sources/stages/checks
+and old884/source/native evidence remain unchanged. The combined 509-module
+production check passes separately with source0; exact evidence is linked below.
 
-Flat children under signs, repeated wrappers, unary children inside older binary
-roots, names/STRING, NaN warnings and wider contexts remain partial; exact holds
-and inventory counts stay unchanged.
-[Raw-FLOAT sign review](../../coverage/semantics/deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
-[integer-only sign review](../../coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
-[binary-tree review](../../coverage/semantics/deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
+Repeated wrappers, computed unary children inside older binary roots,
+names/STRING, NaN warnings and wider contexts remain partial; exact holds and
+inventory counts stay unchanged.
+[Flat-child review](../../coverage/semantics/deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+[earlier FLOAT-tree review](../../coverage/semantics/deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+[integer-only sign review](../../coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 ## Source metadata and resumed states
 

@@ -1,0 +1,275 @@
+{
+  "milestone": "ENUM314 flat binary children under unary FLOAT default signs",
+  "decision": "CLEAR on fixed9eb2269c through immutablee35dbad9; all planned cuts pass first attempts and are reaped.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and baseline profile",
+  "grammar": "Existing one-sign FLOAT-present numeric-tree root now also admits flat binary op4 child; retain child(NFLOAT,b_int,true), own/childINF, exact source/typedpools/absence and purelong+1/-1. No collector recursion or extra wrappers.",
+  "implementation": "Remove only the proper-grandchild witness from the existing FLOAT-present unary root and adjust its comment. Binary op4 child, raw FLOAT presence, exact recursive source/typed pools/absence, child+own INF and pure long+1/-1 remain. Full inverse restores old313357cd; all other guards, collector and allINT root literal.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr folds the child then zend_try_ct_eval_unary_pm applies ordinary multiplication by long+1/-1; zend_compile_conditional prunes the branch.",
+    "vendor/php-src/Zend/zend_operators.c: div_function_base DOUBLE/DOUBLE and LONG/DOUBLE reject exactly zero divisors and retain DOUBLE quotient. Fresh source division by bits1 overflows to INF; unary multiplication retains its sign."
+  ],
+  "observation_boundary": "Four originals strict-compare duplicated body unary results with raw +/-1e999, while defaults preserve selected tags, cold/warm caches and named reentry. Fresh prelaw separately authenticates actual flat DIV child pools, finite \u00b11 operands, divisor bits1/nonzero, child/own INF and phaseSAFE/ordinary condition VALUE.",
+  "source": {
+    "source_revision": "1a1b0fdd1467430026bc4e65baf44d92c589f1cd",
+    "source_tree": "d24a854446ae05be2e232e75a03c2fae3b09a507",
+    "source_creation_base": "63728bee30adbe8294ea5e9cd8002e698eb78aff",
+    "implementation_immediate_parent": "a7bb3eebdeedae9bc01347399f1cf64b49def354",
+    "model_sha256": "73335715f9526447c94549655572353529c237794c5ad88532c7219c5f5f2cbc",
+    "old313_model_sha256": "357cd9686ca6cb87031cd32aa97f5a7a2f08bfd2fc9218d6e27b5ad38c2e6d6c",
+    "model_inverse": "Reinsert one scoped proper-grandchild witness and restore its comment; complete old313357cd restored, other guards/collector/allINT root literal."
+  },
+  "runtime_identities": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "production_adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "native_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": null
+  },
+  "validation_modes": "Source production_SL and fixtures SL_mode use private508; actual canonical is a separate compilation/source0 cut.",
+  "native_once": {
+    "tested_revision": "a7bb3eebdeedae9bc01347399f1cf64b49def354",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/native-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/native-v1/report.json",
+    "report_sha256": "ceb44fcc380426aac69d5bbb7fda08c060b715a03764c37fa0066507eee76718",
+    "exit": 0,
+    "elapsed_seconds": 0.11475274106487632,
+    "outer_cap": 120,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "baseline": {
+    "tested_revision": "a7bb3eebdeedae9bc01347399f1cf64b49def354",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/baseline-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/baseline-v1/report.json",
+    "report_sha256": "b3359d7d8311c8405923f2748603a31f480640ef37aac7d677e82d1c7c62572b",
+    "exit": 0,
+    "elapsed_seconds": 27.948123591020703,
+    "outer_cap": 660,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "prelaw": {
+    "tested_revision": "a7bb3eebdeedae9bc01347399f1cf64b49def354",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/prelaw-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/prelaw-v1/closure-call-protocol-1y7kxcrz/report.json",
+    "report_sha256": "d723f51bdb6e87af02ab27e1fb4727642ebc1cf8920030202a94db501b1ff081",
+    "exit": 0,
+    "elapsed_seconds": 121.45229327608831,
+    "outer_cap": 900,
+    "stable": true,
+    "reaped_group_absent": true,
+    "watched_inputs": 520,
+    "cuts": [
+      {
+        "id": "pure-float-unary-prelaw-raw",
+        "conditions": 221,
+        "pass": true
+      },
+      {
+        "id": "pure-float-unary-prelaw-named",
+        "conditions": 245,
+        "pass": true
+      },
+      {
+        "id": "mixed-float-unary-prelaw-raw",
+        "conditions": 211,
+        "pass": true
+      },
+      {
+        "id": "mixed-float-unary-prelaw-named",
+        "conditions": 231,
+        "pass": true
+      }
+    ]
+  },
+  "source_execution": {
+    "tested_revision": "1a1b0fdd1467430026bc4e65baf44d92c589f1cd",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/source-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/source-v1/report.json",
+    "report_sha256": "a326865ce1de52625a040c3e7defe5b4bae4bcf1869c3545d9b08e3813e43cad",
+    "exit": 0,
+    "elapsed_seconds": 96.95779277104884,
+    "outer_cap": 1320,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "author_fixtures": {
+    "tested_revision": "1a1b0fdd1467430026bc4e65baf44d92c589f1cd",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/author-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/author-v1/closure-call-protocol-p1sttljj/report.json",
+    "report_sha256": "1fb613fa1014d5e75caeff7b3c2427867066ec4f6ccff12f2c77cb30a577eac9",
+    "exit": 0,
+    "elapsed_seconds": 321.12466566381045,
+    "outer_cap": 900,
+    "stable": true,
+    "reaped_group_absent": true,
+    "watched_inputs": 522,
+    "cuts": [
+      {
+        "id": "pure-unary-flat-float-tree-raw",
+        "conditions": 258,
+        "pass": true
+      },
+      {
+        "id": "pure-unary-flat-float-tree-certificate",
+        "conditions": 348,
+        "pass": true
+      },
+      {
+        "id": "pure-unary-flat-float-tree-private",
+        "conditions": 55,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-flat-float-tree-raw",
+        "conditions": 248,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-flat-float-tree-certificate",
+        "conditions": 334,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-flat-float-tree-private",
+        "conditions": 55,
+        "pass": true
+      }
+    ]
+  },
+  "independent_fixtures": {
+    "conditions": 882,
+    "cuts": [
+      124,
+      184,
+      138,
+      120,
+      184,
+      132
+    ],
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/review-v1/closure-call-protocol-3gkreu09/report.json",
+    "report_sha256": "0897184d508c3aec44980cff43463bcf94848e7d49fec99714abcde9d7077ad9",
+    "elapsed_seconds": 231.62960280501284,
+    "stable_inputs": 522,
+    "per_fixture_cap": 300,
+    "outer_cap": 1200,
+    "firstpass": true,
+    "reaped": true,
+    "group_absent": true
+  },
+  "fresh_affected_old313": {
+    "conditions": 70,
+    "cuts": [
+      35,
+      35
+    ],
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/affected-v1/closure-call-protocol-0tigc8nm/report.json",
+    "report_sha256": "857cb24e7dda67aa9cb02d9ab2549d03c9982fc3a339a24bff1049b9299aee45",
+    "elapsed_seconds": 38.657981985015795,
+    "stable_inputs": 520,
+    "per_fixture_cap": 300,
+    "outer_cap": 600,
+    "firstpass": true,
+    "reaped": true,
+    "group_absent": true,
+    "scope": "Only old313 flat_child ROOT queries promote in both groups; old884/source/native unchanged and unrenewed"
+  },
+  "old_expectation_updates": {
+    "file": "tests/semantics/deferred_unary_float_number_tree_infinite_full_ternary_redirect_wrapper_default_reception_review_protocol.py",
+    "parent_sha256": "65ae777061c40fa0c1fac4cc53f6ddaba54ede4e2babfe022c1b2f5917005bb2",
+    "post_sha256": "2444f7bfbee09e58bbe012b1e2a6f4da3ded0de6843fb6cf319bd469b5d430c4",
+    "generated_query_promotions": 2,
+    "other_sources_stages_checks_literal": true
+  },
+  "source_packets": {
+    "author": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/author-source-packet-v1/manifest.json",
+    "author_sha256": "e691f192fbd4bac7c78d05e221178c6b50a7dc4168dba599cd579ac0926cdac8",
+    "review_ready": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/review-source-ready-v1.json",
+    "review_ready_sha256": "20653f4bcf23fae1b1b46431f0f71d547cb1f9b9eed4a7ff283da588110e6f02",
+    "exact_unique_paths": 7,
+    "Make": "Unique author2+peer1 after intact old3133 on complete current parent; explicit author/current anchor projection; full inverses",
+    "retained_source": {
+      "decision": "RETAINED_SOURCE_INPUTS_CLEAR",
+      "source_revision": "1a1b0fdd1467430026bc4e65baf44d92c589f1cd",
+      "review_revision": "a5e86c7a45f8ac4a9496a4ebc03562cb1a3f86db",
+      "source_report_sha256": "a326865ce1de52625a040c3e7defe5b4bae4bcf1869c3545d9b08e3813e43cad",
+      "source_normal_agreements": 4,
+      "source_elapsed_seconds": [
+        19.812409338075668,
+        36.34528635512106,
+        4.707616842817515,
+        35.78400558815338
+      ],
+      "watched_inputs": 533,
+      "literal_current_matches": 533,
+      "source_stable_reaped": true,
+      "source_process_elapsed_seconds": 96.95779277104884,
+      "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/review-retained-source-parsed-cache-v1.json",
+      "parsed_cache_sha256": "8c4dd2f11e7a1ec9b5c5e5d5753fed9839e8a56acdc0591a09cfefb9644be591",
+      "source_original_report_reads": 1,
+      "source_original_inputs_reads": 1,
+      "source_original_process_reads": 1,
+      "native_source_reexecutions": 0,
+      "new_source_credit": 0
+    },
+    "retained_source_input_bridge_sha256": "48bdfa8b35cc6dd7c8a62a95cd51e6c560d952ee5ca84c909b3234f95091c267"
+  },
+  "condition_accounting": "Native4 once/source4, prelaw908(221+245+211+231), author1298(258+348+55+248+334+55), independent882(124+184+138+120+184+132) and fresh old31370(35+35) pass first attempts at distinct cuts. Baseline Unsupported2/raw-unrun2 carry no source agreement credit. Only2 old flat ROOT expectations promote; old884/source/native remain unrenewed. No unique-condition sum.",
+  "native_originals_once": 4,
+  "source_normal_agreements": 4,
+  "source_elapsed_seconds": [
+    19.812409338075668,
+    36.34528635512106,
+    4.707616842817515,
+    35.78400558815338
+  ],
+  "source_watched_inputs": 533,
+  "all_semantic_cuts_firstpass": true,
+  "failures": 0,
+  "fixture_corrections": 0,
+  "recorder_failures": 0,
+  "timeouts": 0,
+  "old_campaign_renewals": 0,
+  "author_canonical_raw_reads": 0,
+  "remaining": "Repeated wrappers, computed unary inside olderbinary trees, names/STRING, NaN warnings and wider contexts remain partial.",
+  "holds": "OP12; Source47 lowprecisionDEFINE-nameNaN; Owned-NUL source-release; undefined by-reference LIST keys; COMP88; V110/GC35/I106/COMP123/ATTR87/GC87/I140/GC84/held207 unchanged; reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "recovery": "../php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314 preserves exact originals/native once, all private cuts/process records, narrow old-query proof and exact7 parents/posts/inverses. Evidence only, not build/runtime inputs.",
+  "actual_same": {
+    "metadata_base": "9eb2269c81c0ffec9dc4ea3e7a2a54cbaed232e7",
+    "tree": "699ddc6a1c1490853f52499b7299cc5e0d6baa89",
+    "enum_source_placement": "9eb2269c81c0ffec9dc4ea3e7a2a54cbaed232e7",
+    "enum_parent": "3a528f88ef35e4b4cb7623bc7b67b6b2dfc686ee",
+    "exact_source_paths": 7,
+    "model_inverse": true,
+    "Make": "Unique2+1 after intact old3133; complete current-parent inverse; all foreign bytes preserved",
+    "old313_peer": "Only2 flat_child ROOT promotions; all other sources/stages/checks literal; old884 unrenewed",
+    "canonical": {
+      "argv": 512,
+      "cap": 60,
+      "elapsed": 17.03378178109415,
+      "mode": "production_SL",
+      "modules": 509,
+      "reaped": true,
+      "source_credit": 0,
+      "stable": true,
+      "watched": 513
+    },
+    "canonical_report_sha256": "ab9bcc1ab851bbd4e0da0fdf6da912a79847d7e4a8950a31eb30cc0b277aaed1",
+    "source_map_sha256": "ff331a55344a8b63fd2f21f12991f22f72677a077fc0fc457ea153c78f221e67",
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/review-main111-immutable-tuple-v1.json",
+    "immutable_tuple_sha256": "e35dbad9a3eb2e8fb1cf8dd2a08874438402cb1511598de288821d71b45152ff",
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-314/review-main111-canonical-parsed-cache-v1.json",
+    "parsed_cache_sha256": "a723b953ca8c3c94f1b2efba4de4b651595a9a3de1e92b967bdb2797a870e47b",
+    "original_report_physical_reads": 1,
+    "original_map_physical_reads": 1,
+    "author_raw_reads": 0,
+    "execution_replays": 0,
+    "HEAD_refreshes": 0
+  },
+  "metadata_ownership": "One family SOURCE-TYPED-FUNCTIONS/review projection from immutablee35dbad9. MAIN111 alone applies common4 literal operations on fixed9eb2269c. calls.defaults stays partial; all statuses/closures/divergences/counts/exact holds unchanged; metadata renews no execution evidence."
+}

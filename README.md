@@ -54,12 +54,13 @@ Raw signed64 INT/sign-left and FLOAT/sign-right arithmetic predicates preserve s
 
 Properly nested FLOAT arithmetic conditions retain selected full-ternary scalar tags through exact source, pool and compiler checks at every node. Certified folded bits also cover signed-zero leaves whose generic condition value is unavailable. Mixed trees, names, STRING leaves, unary wrappers over computed trees and wider contexts remain partial. [Review](coverage/semantics/deferred-float-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
-Proper arithmetic trees preserve exact intermediate types and raw leaf kinds
-before selecting infinite full-ternary defaults. One unary sign accepts a proper
-all-INT, pure FLOAT or mixed INT/FLOAT infinite child, retaining exact source,
-typed pools, pure sign multiplication, default caches and private reception.
-Flat children, repeated signs, names/STRING and wider contexts remain partial.
-[Raw-FLOAT sign review](coverage/semantics/deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+Arithmetic trees preserve exact intermediate types and raw leaf kinds before
+selecting infinite full-ternary defaults. One unary sign accepts pure FLOAT or
+mixed arithmetic children, including a single binary operation, through exact
+source/pools and pure sign multiplication. Integer-only signs, default caches
+and private reception retain their existing guards. Repeated signs, names/STRING
+and wider contexts remain partial.
+[Flat-child review](coverage/semantics/deferred-unary-flat-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
 [integer sign review](coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Quiet infinite FLOAT casts preserve existing allocated REQUEST string headers and saved leading offsets through returning Warnings. Exact child SOURCE, captured/live precision, pure formatting and full-state replay retain NaN refusal and existing ownership bounds; wider forms remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-review.json).
