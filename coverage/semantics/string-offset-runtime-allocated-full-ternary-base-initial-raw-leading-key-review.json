@@ -1,0 +1,301 @@
+{
+  "feature": "string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key",
+  "status": "implemented and independently reviewed; fixed source integration validated",
+  "scope": "Quiet full ternaries retain the selected existing allocated BASE header and frozen raw CV leading offset through returning Warnings; family and core remain partial.",
+  "target": "PHP8.5.10 CLI NTS signed64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "source_parent": "cbd0b48279a0e000fe6c36e17da0f9a1b488df69",
+    "source_capture_revision": "271995ab9a875c7b64d0339701098bcc73f889ec",
+    "runtime_source_comparison_revision": "179a8c6fdd7b28aa2609b01823748b724ae1367b",
+    "author_fixture_revision": "179a8c6fdd7b28aa2609b01823748b724ae1367b",
+    "source_ready_revision": "25d0ffe34167003af8b55055c0b445f9d11672b0",
+    "source_ready_tree": "635b4c942ace453fef707e1321e5e13ef3fecfcc",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "change": "Add exactly41 lines: two full-ternary BASE truth arms with full root SOURCE, false root CODE/read-eps/positive line, matching root/condition/selected precision, exact normalized quiet truth state, and selected proper-child BASE. Every old runtime rule remains byte-literal.",
+    "recursion": "Both new calls descend to proper FIELD1/FIELD2 children; the finite checked AST prevents a cycle. No new VALUE arm or helper."
+  },
+  "source_provenance": {
+    "symbols": [
+      "zend_compile_conditional",
+      "ZEND_JMPZ",
+      "ZEND_QM_ASSIGN"
+    ],
+    "route": "Conditional compilation branches after the condition and uses QM_ASSIGN for the chosen TMP. A selected string header moves without another allocation. Existing typed VALUE supplies the condition; exact full-state truth replay excludes effects, while selected proper-child BASE carries allocation and owner authority.",
+    "observations": "True INT-cast1 selects10bcde/direct saved0=1 rather than skipped90XYZ=9. False INT-cast0 selects-10.5bcde/reference saved3=. rather than skipped90XYZ index3=Y or rebound current4=5. Each retains REQUEST3/four registry rows; native2 once/source2 on the exact saved original bytes/paths/argv/profile.",
+    "independent_discriminator": "A checked selected-COALESCE source keeps the same header while selected BASE succeeds and VALUE refuses. Full skipped descendant SOURCE remains required; unused skipped CODE/pool/precision remain undemanded."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/native-baseline/report.json",
+      "sha256": "906f48d252b733434f0ae27f15ab6f337a6e396a76a5b6a7c3c4c421796ec15b",
+      "revision": "271995ab9a875c7b64d0339701098bcc73f889ec",
+      "source_credit": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": null,
+          "native_reused": false
+        },
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": null,
+          "native_reused": false
+        }
+      ],
+      "native_executions": 2
+    },
+    "prelaw": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/baseline-v1/report.json",
+      "sha256": "565005f51c7309ac0b3d70aee227374e4335cf98bfbb6cef5f94fd120d879aa8",
+      "revision": "271995ab9a875c7b64d0339701098bcc73f889ec",
+      "source_credit": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": "unsupported",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": "unsupported",
+          "native_reused": true
+        }
+      ],
+      "native_executions": 0
+    },
+    "actual_prelaw_facts": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/prelaw-facts-true-v2/report.json",
+        "sha256": "c965e59ee1870660314cf7301018be9b5622603eccaaf2e5560a5caf53515055",
+        "revision": "271995ab9a875c7b64d0339701098bcc73f889ec",
+        "source_credit": 0,
+        "conditions": 61,
+        "derived": 0,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.680783748626709,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 20.579652786254883,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "native_executions": 0
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/prelaw-facts-false-v1/report.json",
+        "sha256": "eb29551fefa7a8d17f8aeb2dd0d14507161773ce80aa17eb61568d8f0eb9d9d3",
+        "revision": "271995ab9a875c7b64d0339701098bcc73f889ec",
+        "source_credit": 0,
+        "conditions": 61,
+        "derived": 0,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.273244857788086,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 20.139718532562256,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "native_executions": 0
+      }
+    ],
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/source-v1/report.json",
+      "sha256": "46961f49fefb23cf7f199fab5a9c70b9594476710b920f7a945ad3015b1fbaa5",
+      "revision": "179a8c6fdd7b28aa2609b01823748b724ae1367b",
+      "source_credit": 2,
+      "rows": [
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 1,
+          "status": "normal",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-full-ternary-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 1,
+          "status": "normal",
+          "native_reused": true
+        }
+      ],
+      "native_executions": 0
+    },
+    "author": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/author-true-v1/report.json",
+        "sha256": "c9995bf9884b41aaeb5d328d9000ca63fd0ecee2cc7cb0a2f6d0349ab0c428d0",
+        "revision": "179a8c6fdd7b28aa2609b01823748b724ae1367b",
+        "source_credit": 0,
+        "conditions": 304,
+        "derived": 127,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.06845998764038,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 24.383481979370117,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/author-false-v1/report.json",
+        "sha256": "b5fd89e7e10b69df8cbfc22b5f64bf4b6ed9b8265c024368f2d2f81627da4073",
+        "revision": "179a8c6fdd7b28aa2609b01823748b724ae1367b",
+        "source_credit": 0,
+        "conditions": 344,
+        "derived": 145,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.470101118087769,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 28.24594020843506,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      }
+    ],
+    "preparation_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-author57-20261118/prelaw-facts-true-v1/preparation-failure.json",
+      "sha256": "de86a49b77299a25b0b3b35c0882622c4d16ac400b63897dc6ce0368d2b68dff",
+      "source_credit": 0,
+      "semantic_executions": 0,
+      "runtime": "UNRUN; rejected before parser/compiler/runtime"
+    },
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-peer48-20261118/state-v2/report.json",
+      "sha256": "46f3e4ed45b861b7727a59093c0e7043834d265670787a47fa8ec74fbd0fbc60",
+      "conditions": 724,
+      "derived_conditions": 143,
+      "compiler": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 13.085938692092896,
+        "cap_seconds": 120,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 44.61700892448425,
+        "cap_seconds": 180,
+        "interruption": null,
+        "group_after": []
+      },
+      "stable": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "fronts": "Both exact fresh originals plus a checked selected-COALESCE derivative; selected child BASE succeeds while VALUE refuses.",
+      "controls": "True/false SOURCE/CODE/condition+selected precision, full skipped descendants versus skipped CODE/pool/precision non-demand; nested COALESCE fallback SOURCE and proper-child recursion; quiet CV reads and available CV header refusal; NaN truth state, unchanged native prefix/header/owners and zero/one budgets.",
+      "revision": "fbb230b38eaa30e58abaf7e24455193a72d252d3"
+    },
+    "preserved_independent_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-peer48-20261118/state-v1/report.json",
+      "sha256": "001ddc335b823010f4f3a077bcdad281d7a031a1e6ab9e8fdfa1ca60dae59822",
+      "conditions": 723,
+      "derived_conditions": 142,
+      "compiler": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 12.795896768569946,
+        "cap_seconds": 120,
+        "interruption": null,
+        "group_after": []
+      },
+      "runtime": "UNRUN; zero credit",
+      "source_credit": 0,
+      "reason": "Independent prefix trimming omitted the inherited late skipped-path binding; one explicit binding restored before updates. Law/source/native/A unchanged."
+    },
+    "whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-peer48-20261118/whole6-review.json",
+      "sha256": "f0946e8ca96d1b402926c84b2dbbd52de30a8fb0fa2288a2daf85048f349b93a",
+      "source_files": 6,
+      "runtime_added_lines": 41,
+      "runtime_parent_inverse": true,
+      "all_old_helpers_literal": true,
+      "make_parent_inverse": true,
+      "foreign_parent_bytes_preserved": true
+    },
+    "actual": {
+      "review_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-peer48-20261118/main102-immutable-clear.json",
+      "review_sha256": "ca0b8a104ce1eef75b9181e86198eadb871ab1704a32e94e3207a77d796cb97e",
+      "fixed_actual": "af4048d25260d0b849f27d0221ce09a831be00b4",
+      "fixed_tree": "f635e8d721e156004fe47622601661963decc333",
+      "actual_map_sha256": "9643eb5ff579c00bddab1fcbeb39afabe9cf3cbf9d39bb5c048c17bc9b1763d5",
+      "canonical_report_sha256": "197f567753544a95867557a6c8634154cdc7c39ba17099fd0b14986859b633de",
+      "canonical": {
+        "argv_count": 512,
+        "before_after_watched": 513,
+        "cap_seconds": 60,
+        "elapsed": 16.086717176018283,
+        "executions": 1,
+        "fixture_count": 1,
+        "manifest_modules": 509,
+        "pass": true,
+        "source_credit": 0
+      },
+      "physical_original_reads": {
+        "map": 1,
+        "report": 1
+      },
+      "author_raw_actual_canonical_map_reads": 0,
+      "surgical_runtime41_MAIN_parent_preserved": true
+    },
+    "protocol_compatibility": "Peer-only extra true-original and selected-COALESCE input setup/labels do not execute in accepted author peer=false cuts; no author/source/native rerun.",
+    "failure_disposition": "One borrowed wrapper flag rejects before parser/compiler/runtime and has zero semantic credit. Independent723/142 compiler rejection/runtimeUNRUN remains preserved; one explicit skipped-path binding gives corrected724/143. Runtime law, native originals, source2 and both passing A cuts stay unchanged and unrenewed."
+  },
+  "invariants": "Source47 low-precision DEFINE-name NaN; NaNBYTE; Owned-NUL source release; OP12 inc/dec dimension Warnings; undefined byref LIST key; COMP88 Stringable supplied-throw; V110/GC35/I106/COMP123 and all paused lanes. reserve93807cdd6/255; inventory169/306closed0constructors+1runtime unchanged.",
+  "remaining": "Shorthand forms, CV/effectful/owning conditions, selected producers outside the existing BASE certificate, NaN, selected NUL and broader precision histories/owners/lifetimes remain partial.",
+  "family_status": "partial; complete PHP core remains unfinished",
+  "metadata_projection": {
+    "metadata_base": "39379702707ac5585f14f6924f1b60bdb1da2bd7",
+    "policy": "Family2 plus one shared README/PROGRESS/features/ARTIFACTS projection; common physical writes0 by author, immutable fixed actual, no later HEAD refresh or semantic rerun."
+  }
+}

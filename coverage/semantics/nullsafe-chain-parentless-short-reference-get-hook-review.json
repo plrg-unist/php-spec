@@ -1,0 +1,283 @@
+{
+  "version": 1,
+  "milestone": "COMP337",
+  "decision": "CLEAR",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless short reference Get rejects direct nullsafe same-field raw/literal-string this receivers with the existing CompileError at the actual body line before any source execution.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source": {
+    "commit": "d7bf69aa1c0dfea590e00cabd9cbc3730f7c53ef",
+    "parent": "4b860ef1507ef2e5fb3e559ce4d60f557e8e636e",
+    "path": "spec/semantics/382-backed-get-hooks.watsup",
+    "blob": "cf629c865473c77830b68175f1b1b79f538cd4d4",
+    "sha256": "310f9f797aa75912147bd9c6a3d152cd4a1becdc38a94ba6855c98229275c54a",
+    "change": "Exact7-line direct-nullsafe predicate plus one OR at the existing parentless compiler body gate.",
+    "old_module_restored_byte_for_byte": true,
+    "old_module_sha256": "ff256d7461367ffe9e84d5f55e9a5ef58fec8e375a9c546e5c21aedc77542b8a",
+    "unchanged": "Runtime body/declaration/implicit-return gates, owners, all header guards and98/117 remain literal."
+  },
+  "source_bundle": {
+    "revision": "f10f94033c3d9a5a85d283f005f37083e1da1d14",
+    "parent": "dcbb8b923a779f9e43dd113421395ce40c2c6b69",
+    "paths": 16,
+    "record": "/home/user/workspace/php-spec-evidence-archive/comp337/source-ready.json",
+    "sha256": "0cb832d9e5e32c384d8f314493a0a78713e968a9994fd7a8481543202a25bc23"
+  },
+  "semantics": "A direct-nullsafe same-field predicate adds only one parentless compiler admission. Existing98/117 reference-return checking rejects at the real expression line; Zend synthesized RETURN nodes inherit that child line. No runtime/reference-declaration/implicit-return predicate changes. The class compiler restores its outer cursor; the diagnostic retains its body line.",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_property_hooks, zend_compile_return, zend_assert_not_short_circuited",
+    "vendor/php-src/Zend/zend_ast.c:zend_ast_create_1",
+    "spec/semantics/98-reference-return-compiler.watsup:$ppreturn_refcheck;117-arrow-compiler.watsup:$pparrow_body"
+  ],
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_observations_once": 4,
+    "native_replays": 0,
+    "native_case_bridge": "PHP-only commits freeze exact source bytes before native observation; later case/hash metadata uses only saved observed lines and leaves all PHP bytes/profile/argv unchanged."
+  },
+  "source_agreements": 4,
+  "validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/author-literal-this-multiline-array-compiler/report.json",
+      "sha256": "1a8c98ed426086874f023724c45642623c51dbf70a57dd5d6a622dc6f8ec77e0",
+      "revision": "c33cdacbe641cc196546f39dd4d13da381ad441d",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 34,
+      "scope": "compiler-static-error",
+      "source_agreement_credit": 0,
+      "cap_seconds": 120,
+      "elapsed_seconds": 15.580202341079712
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/author-raw-this-multiline-int-compiler-corrected/report.json",
+      "sha256": "7dc57ae9e73c85fc4acd6d8b46504fecdfd0b2aed4c016aa90269d4656bc46d5",
+      "revision": "c33cdacbe641cc196546f39dd4d13da381ad441d",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 34,
+      "scope": "compiler-static-error",
+      "source_agreement_credit": 0,
+      "cap_seconds": 120,
+      "elapsed_seconds": 15.563658952713013
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/review-body/report.json",
+      "sha256": "098f1c9d5476807c2bd1f2b7d4f5b2a1ebf741e537f344f3e8c7fc1cec729ff0",
+      "revision": "4847966995e36812c08dfd77dfaf99bd9fcb1d75",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 146,
+      "scope": "body-controls",
+      "source_agreement_credit": 0,
+      "cap_seconds": 60,
+      "elapsed_seconds": 15.363787412643433
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/review-strict-escaped-line-gap-compiler/report.json",
+      "sha256": "ead06ca8398470f7f97e6e45590f21a9bc7071bcedc0be16e7bf621bd0aa1d16",
+      "revision": "4847966995e36812c08dfd77dfaf99bd9fcb1d75",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 34,
+      "scope": "compiler-static-error",
+      "source_agreement_credit": 0,
+      "cap_seconds": 120,
+      "elapsed_seconds": 15.845282793045044
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/review-strict-inline-array-compiler/report.json",
+      "sha256": "af1ff6ca3c79d200ed103e3b0cd28378547e60f50e3ad712cf2d73de6a90db3c",
+      "revision": "4847966995e36812c08dfd77dfaf99bd9fcb1d75",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 34,
+      "scope": "compiler-static-error",
+      "source_agreement_credit": 0,
+      "cap_seconds": 120,
+      "elapsed_seconds": 15.570854187011719
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/strict-source-nullsafe-reference-error/report.json",
+      "sha256": "e30f08ba3f201d7663a59b18a9a28dc92a2180ff84094778803fc57c36a05cef",
+      "revision": "4847966995e36812c08dfd77dfaf99bd9fcb1d75",
+      "passed": true,
+      "original_source_agreements": 2,
+      "native_replayed": false,
+      "saved_native": "/home/user/workspace/php-spec-evidence-archive/comp337/strict-native-once",
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "strict-escaped-line-gap",
+        "strict-inline-array"
+      ],
+      "elapsed_seconds": [
+        15.813035249710083,
+        15.483948707580566
+      ]
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp337/weak-source-nullsafe-reference-error/report.json",
+      "sha256": "df4ab94ca18bee82a4f043fba99d18bc5a8499d33b5e49110d96bd57454e8191",
+      "revision": "d7bf69aa1c0dfea590e00cabd9cbc3730f7c53ef",
+      "passed": true,
+      "original_source_agreements": 2,
+      "native_replayed": false,
+      "saved_native": "/home/user/workspace/php-spec-evidence-archive/comp337/weak-native-once",
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "literal-this-multiline-array",
+        "raw-this-multiline-int"
+      ],
+      "elapsed_seconds": [
+        15.438732862472534,
+        15.412939071655273
+      ]
+    }
+  ],
+  "private_spec_manifest": {
+    "modules": 508,
+    "common_recorded_inputs": 509,
+    "canonical_json_sha256": "818f9641f19b00894640a1182802720039f9851e09c1d3cdacbc3f86cb7cc757",
+    "modules_json_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "all_seven_positive_maps_equal": true
+  },
+  "native_and_prelaw_records": [
+    {
+      "kind": "weak-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp337/weak-native-once/report.json",
+      "sha256": "cf40b796ca2a00db7ab7e1228c650e341880cb546189f64905c32f191c89f103",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp337/strict-native-once/report.json",
+      "sha256": "94fc570cf2dee2cf3220ad38c68f2680e498198d97480e04ee71bf229a6f4270",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "weak-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp337/weak-prelaw/report.json",
+      "sha256": "323eda973693ee74c6617f49dd4243355bae525f3711e8ab6e0556e368ea492e",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp337/strict-prelaw/report.json",
+      "sha256": "316d7a28f1e3fa6f796679f68b9d54818fab57295a61560487540bebf3e4b462",
+      "source_agreement_credit": 0
+    }
+  ],
+  "independent_whole_source_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp337/independent-whole-source-clearance.json",
+    "sha256": "bd46251b843c2da656eb66165c9b60f6a59b26346f87f464fc9f1c6bcbb26044",
+    "revision": "4847966995e36812c08dfd77dfaf99bd9fcb1d75",
+    "decision": "CLEAR"
+  },
+  "carry_forward": "All executable modules, runner, frontend, adapter and profile remain unchanged since source-only d7bf69. Later changes affect only new compiler tests, the justified cursor-fixture correction, and Make7/doc8. COMP335/336 evidence stays closed and unrenewed.",
+  "actual_acceptance": {
+    "decision": "CLEAR",
+    "provided_by": "/root/recover33_compiler_mixed_review",
+    "actual_revision": "9899f884cd830c179ccf0c7c11e61191461289a5",
+    "same_revision": "9899f884cd830c179ccf0c7c11e61191461289a5",
+    "actual_tree": "14c76b64ba57bb645e55ebba3217f0af762fd040",
+    "actual_parent": "af4048d25260d0b849f27d0221ce09a831be00b4",
+    "source_382_blob": "cf629c865473c77830b68175f1b1b79f538cd4d4",
+    "source_382_sha256": "310f9f797aa75912147bd9c6a3d152cd4a1becdc38a94ba6855c98229275c54a",
+    "actual_composition_checks": 1,
+    "own_paths": 16,
+    "Makefile_added_lines": 7,
+    "property_doc_added_lines": 8,
+    "canonical_executions": 1,
+    "canonical_report_sha256": "5bf5e4aeb1862af841dd20e0438cfe634370ce9ae95d641b26d26e971ee043d3",
+    "actual_map_sha256": "ce202ae5ea9f0f84587ff33f3cc7be8d7536096f97ee4e574305f6ba24afffd9",
+    "mode": "production-SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "input_vectors_count": 513,
+    "input_vectors_equal": true,
+    "tested_revision": "9899f884cd830c179ccf0c7c11e61191461289a5",
+    "revision_after": "9899f884cd830c179ccf0c7c11e61191461289a5",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed_seconds": 16.632116310065612,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "reviewer_original_report_physical_reads": 1,
+    "reviewer_original_map_physical_reads": 1,
+    "subsequent_reads_used_parsed_cache": true,
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/comp337/reviewer-main102-originals-cache.json",
+    "author_actual_map_report_cache_reads": 0,
+    "reader_preparation_failures": 0,
+    "literal_full_post_paths": 15,
+    "rebased_paths": [
+      "Makefile"
+    ],
+    "Makefile_exact_unique_commands": 7,
+    "Makefile_complete_author_and_current_parent_inverses": true,
+    "runtime_and_98_117_unchanged": true,
+    "accepted_source_native_fixture_canonical_replays": 0,
+    "affected_fixture_reexecutions_after_correction": 1
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "Expected prelawUnsupported4",
+      "reports": [
+        "/home/user/workspace/php-spec-evidence-archive/comp337/weak-prelaw/report.json",
+        "/home/user/workspace/php-spec-evidence-archive/comp337/strict-prelaw/report.json"
+      ]
+    },
+    {
+      "kind": "Original author36 fixture assumed outer cursor path/line equaled inner body; existing class result restores outer cursor. Corrected only new fixture to34; source/native/98/117 unchanged.",
+      "reports": [
+        "/home/user/workspace/php-spec-evidence-archive/comp337/author-raw-this-multiline-int-compiler/report.json"
+      ],
+      "correction": "c33cdacbe",
+      "source_agreement_credit": 0
+    }
+  ],
+  "failures": {
+    "source_or_native_semantic_failures": 0,
+    "author_fixture_nonpass": 1,
+    "reviewer_fixture_failures": 0,
+    "timeouts": 0,
+    "native_replays": 0
+  },
+  "holds": {
+    "paused": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned REQUEST-NUL source release",
+      "undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw comparison crash"
+    ],
+    "precision": "No blanket Stringable/callback/NUL hold.",
+    "reserve": "93807cdd6/255",
+    "inventory": "169 constructors/306 runtime obligations;closed0 constructors+1 runtime unchanged",
+    "withdrawn": "finite-PFLOAT a547 remains zero"
+  },
+  "remaining": "Wider nullsafe chains, other/computed receivers or names, parented/modifier/header contexts and runtime reference producers remain partial. Complete core remains unfinished.",
+  "engine_bug_or_intentional_divergence": null,
+  "fixture_correction": {
+    "original_report": "/home/user/workspace/php-spec-evidence-archive/comp337/author-raw-this-multiline-int-compiler/report.json",
+    "original_premises": 36,
+    "original_pass_credit": 0,
+    "corrected_commit": "c33cdacbe641cc196546f39dd4d13da381ad441d",
+    "corrected_premises": 34,
+    "change": "Remove two unjustified assumptions equating the outer restored compiler cursor to the inner body; keep real SOURCE/hook/body lines, STATICERROR payload, phase, absent body CODEARROW/function installation, no source effects and budget independence.",
+    "source_or_native_reexecution": false
+  }
+}
