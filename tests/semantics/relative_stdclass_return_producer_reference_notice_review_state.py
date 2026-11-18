@@ -75,7 +75,7 @@ def normal(initial, case, front):
     viewed = alias_parameter.replace('NName (BYTES "Qm94MTMw")', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")', 1)
     derived += ['$reference_notice_producer_scoped_parameter_view(' + alias_env + ', ' + alias_parameter + ') = (' + viewed + ')',
         proof(parameter=alias_parameter, context=alias_env), proof(parameter=viewed, context=alias_env),
-        '~' + proof(parameter=parameter.replace('NNameFullyQualified', 'NNameRelative', 1))]
+        proof(parameter=parameter.replace('NNameFullyQualified', 'NNameRelative', 1))]
     for name in ('Other', 'STDCLASS', 'sTdClAsS', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00', '', 'int', 'mixed', 'self', 'array', 'callable'):
         changed = 'NNameRelative (BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()) + ') metadata_return'
         derived.append('~' + proof(raw=changed))
