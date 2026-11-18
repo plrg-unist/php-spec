@@ -170,9 +170,11 @@ def frontier(name, fixture, path):
             state, expr, function, typed, _ = graph(outer)
             checks += [('source0 nested emitted shorthand conditions retain their raw result',
                         value(state, expr, function=function) + ' = (' + typed + ')')]
-            state, expr, function, _, _ = graph(shorthand(truth, integer(int(truth)), integer(2)))
-            checks += [('source0 a folded condition cannot borrow emitted-condition authority',
-                        value(state, expr, function=function) + ' = eps')]
+            state, expr, function, typed, _ = graph(shorthand(truth, integer(int(truth)), integer(2)))
+            wrong = function + '[.CODE.EXPRESSIONS = (CODEEXPR pcpath_value_cond z_value_cond false) :: ' + function + '.CODE.EXPRESSIONS]'
+            checks += [('source0 a folded condition needs its authentic compiler flag',
+                        value(state, expr, function=function) + ' = (' + typed + ')' + CONJ +
+                        value(state, expr, function=wrong) + ' = eps')]
         for bits in ['7ff8000000000001', '7ff0000000000001']:
             nan = samples.floating(bits)
             condition = cast('NExprCastDouble', nan, nan[1])

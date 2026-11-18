@@ -2040,3 +2040,15 @@ author original runtime-source/report/map/full-cache reads remain0. Earlier
 OUTPUT evidence and all held boundaries retain their own cuts.
 [Coalesce evidence](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-quiet-coalesce-cast-chain-return-modulo-error-review.json).
+
+Folded intrinsically quiet conditions also feed the same selected full and
+shorthand return ternaries. Their recursive VALUE proof authenticates each own
+SOURCE, CODE fold flag and pool before truth selection. The parent remains
+emitted and retains the FALSE terminal line, absent read/redirect and empty
+effects. Both full arms keep compiler authority; shorthand TRUE keeps absent
+SOURCE/CODE. Existing full branch/copy states retain raw selected tags without
+adding owners. Demanded NaNs still refuse even under diagnostic masks.
+Parent constexpr redirects, owning or warningful values and wider contexts
+remain partial; the outer-cast and two-cast gates and held limits remain.
+[Folded-condition evidence](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-review.json).

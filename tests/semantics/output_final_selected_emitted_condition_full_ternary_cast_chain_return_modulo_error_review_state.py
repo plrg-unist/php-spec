@@ -147,9 +147,11 @@ def frontier(name, fixture, path):
             checks += [('source0 FALSE supplies the parent line regardless of selected arm',
                         value(state, expr, function=function) + ' = (PBOOL ' + str(truth).lower() + ')' + CONJ +
                         value(state, expr, function=wrong) + ' = eps')]
-            state, expr, function, _, _ = ternary(truth, samples.keyword('true'), samples.keyword('false'), cond_kind=None)
-            checks += [('source0 a folded condition cannot borrow the emitted-condition contour',
-                        value(state, expr, function=function) + ' = eps')]
+            state, expr, function, typed, _ = ternary(truth, samples.keyword('true'), samples.keyword('false'), cond_kind=None)
+            wrong = function + '[.CODE.EXPRESSIONS = (CODEEXPR pcpath_value_cond z_value_cond false) :: ' + function + '.CODE.EXPRESSIONS]'
+            checks += [('source0 a folded condition needs its authentic compiler flag',
+                        value(state, expr, function=function) + ' = (' + typed + ')' + CONJ +
+                        value(state, expr, function=wrong) + ' = eps')]
             nested = {'truth': not truth, 'yes': samples.keyword('true'), 'no': samples.keyword('null')}
             state, expr, function, typed, _ = ternary(truth,
                 nested if truth else unknown('SKIPPED_OUTER_TRUE155'),
