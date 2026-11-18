@@ -1,0 +1,95 @@
+[
+  {
+    "id": "optional139-single-int-byval-supplied-default7",
+    "source": "<?php\nnamespace SingletonScalarFormal59 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(InT $saved=7):int{echo 'M:',(int)($saved===17),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('SingletonScalarFormal59\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "int",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "51c5ccfe74133a3bb2786b96191a391b29fab88c6afa17e3b444d1cad836c7cb",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "kind": "singleton",
+    "optional_index": 0,
+    "default": 7,
+    "derived_from": {
+      "catalogue": "tests/semantics/singleton_cv_typed_formal_producer_reference_notice_cases.json",
+      "id": "singleton-int-byval-preserves-request-caller-and-private-cell",
+      "source_sha256": "b704d3830513584f4cce8ef5bcb02d5183b2405a03a13ad9682c2d00f99569e0",
+      "edits": "Add only a literal INT default to the selected optional formal and the explicit listed observations. Preserve the supplied ordinary-CV actuals and existing ownership interactions."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional139-single-untyped-byref-array-return-default-survives",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace UntypedArrayReturnProducer35 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input=7):aRrAy{global $leaf;echo 'V:',$input,';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('UntypedArrayReturnProducer35\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "source_sha256": "eeb0d0c8b00b76f1fd229a94178b745b00c62b41a699aacc66b1c32e108f95f4",
+    "native_stdout": "U;V:3;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V:7;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "kind": "array",
+    "optional_index": 0,
+    "default": 7,
+    "derived_from": {
+      "catalogue": "tests/semantics/untyped_array_return_producer_cv_reference_notice_cases.json",
+      "id": "positional-untyped-scalar-producer-fresh-array-return-private-cell",
+      "source_sha256": "a7abc99babaefc19a2875cd9084545124229c8713edb2c3bafda17a2be60858a",
+      "edits": "Add only a literal INT default to the selected optional formal and the explicit listed observations. Preserve the supplied ordinary-CV actuals and existing ownership interactions."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional139-required-int-prefix-optional-int-byref-tail",
+    "source": "<?php\nnamespace MultiCvScalarFormal57 {\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT $saved,InT &$changed=7):int{echo 'M:',(int)($saved===17),':',(int)($changed===0),':',(int)($GLOBALS['x']==='17'),':',(int)($GLOBALS['y']===0),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===17),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=(string)17;$snapshot=$x;$y=(string)0;$ySnapshot=$y;$yAlias=&$y;set_error_handler('MultiCvScalarFormal57\\\\h',8);echo 'I;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';$r=43;echo 'P:',$r,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot==='17'),':',(int)($ySnapshot==='0'),';';\n}\n",
+    "source_sha256": "493343fca7d0514e0104c447bc5b429ccfad5b483e36f4ebdc6204df3ba0b93c",
+    "native_stdout_template": "I;M:1:1:1:1;H:{notice_line}:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Capture the native Notice line once before pinning numeric metadata; preserve original source bytes.",
+    "formal_kinds": [
+      "int",
+      "int"
+    ],
+    "caller_strict": false,
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1:1:1;H:8:0:body;F:29:17:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "kind": "multiple",
+    "optional_index": 1,
+    "default": 7,
+    "derived_from": {
+      "catalogue": "tests/semantics/multi_cv_scalar_formal_producer_reference_notice_cases.json",
+      "id": "mixed-int-byval-bool-byref-conversion-and-entry-only-constraints",
+      "source_sha256": "1fecc028c8f1827f192d5627697e27b25aef36db2d004c115f2b75a62f69b1f3",
+      "edits": "Add only a literal INT default to the selected optional formal and the explicit listed observations. Preserve the supplied ordinary-CV actuals and existing ownership interactions."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional139-omitted-int-default-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make(int $saved=7):int{echo 'M:',$saved,';';return $saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',$value,';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "source_sha256": "024d7fbce215a627eead9fd8937e94fb1ebddac8bb4f56083a4c997dd78eef7a",
+    "native_stdout": "O;M:7;H;F:7;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0
+  },
+  {
+    "id": "optional139-array-int-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(array $input=7):int{return 9;}\necho 'BAD-PRELUDE;';$input=[];echo make($input);\n",
+    "source_sha256": "fb0697ff75bd21e177065bbdab758bbfba6faa1a437f0d383ddb21027b70b14d",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use int as default value for parameter $input of type array in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0
+  }
+]
