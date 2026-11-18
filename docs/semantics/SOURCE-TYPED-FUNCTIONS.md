@@ -1406,6 +1406,26 @@ prewrite preparation failure has runtime0/source0. Repeated wrappers, names,
 STRING/NaN-warning continuations and wider contexts remain partial.
 [Flat finite phase-FALSE unary-tree review](../../coverage/semantics/deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
+Direct ADD/SUBTRACT/MULTIPLY/DIVIDE condition trees also select full-ternary
+FIELD1 when raw FLOAT/sign leaves, optionally mixed with signed64 INT/sign leaves,
+certify finite nonzero FLOAT bits despite a phase-sensitive descendant. Exact
+recursive SOURCE, typed pools, pure intermediate results and absent
+CODE/read/redirects retain the existing collector; no outer unary sign is required.
+The root's false CODE, absent own pool/read and unique proper FIELD1 redirect
+preserve selected scalar tags, skipped-name pruning, Shared caches and private
+integer reception through named handler reentry.
+
+Four originals distinguish strict +/-1.0 pure and +/-2.0 mixed results. Native4
+once/source4, prelaw1092, retained raw/private734 and corrected certificate802
+retain separate cuts. Original author1532 stays NONPASS: condition-root CODEtrue
+still permits ordinary condition VALUE but refuses the old finite redirect;
+genuine descendant reads retain that route. Only the affected certificate2 reran,
+with unchanged model/source/native inputs. Independent WHOLE8/1282 passes its
+first attempt, separating new1220 from fresh old316 refusals62 without renewing
+old campaigns. Names/STRING, computed unary children, NaN warning continuations,
+owning results and wider contexts remain partial.
+[Direct finite-tree review](../../coverage/semantics/deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
