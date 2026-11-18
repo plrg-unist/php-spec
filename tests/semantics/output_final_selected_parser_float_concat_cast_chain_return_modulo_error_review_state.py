@@ -87,9 +87,11 @@ def frontier(name, fixture, path):
             checks += [('source0 canonical finite FLOAT trees retain exact bytes and actual constant entry',
                         compiled(query(tree, answer)))]
         for bits, answer in [('8000000000000000', b'-0'), ('bff8000000000000', b'-1.5'),
-                             ('7ff0000000000000', b'INF'), ('fff0000000000000', b'-INF')]:
+                             ('fff0000000000000', b'-INF')]:
             checks += [('source0 signed or nonfinite raw FLOAT refuses even a matching byte pool',
                         previous.matched_refusal(query((floating(bits), b''), answer)))]
+        checks += [('source0 the affected raw positive-INF query is promoted through its original builder',
+                    compiled(query((floating('7ff0000000000000'), b''), b'INF')))]
         for bits in ['7ff8000000000000', '7ff0000000000001', 'fff8000000000000']:
             state, expr, function, _, _ = query((floating(bits), b''), b'1.5')
             checks += [('source0 NaN payload stays on the guarded value refusal route',
