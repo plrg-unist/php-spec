@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Typed COALESCE-operand selector originals, native-once/source comparisons, ten separate fixture cuts and preserved zero-credit failures remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-coalesce-operand-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-coalesce-operand-typed-ternary-left-coalesce-quiet-get-review.json) binds the ten-path source/evidence packets,17-expectation static maintenance bridge, fresh extraction, independent WHOLE and immutable actual/joined tuple. These archives are evidence rather than build/runtime inputs.
+
 COMP336 literal-this receiver originals, native-once observations and separate source/body/state cuts remain in `../php-spec-evidence-archive/comp336/`. `source-ready.json` and `independent-whole-source-clearance.json` bind the exact source bundle and prelaw Unsupported4 with zero agreement credit. The [review](../coverage/semantics/literal-this-receiver-parentless-short-reference-get-hook-review.json) records fixed actual411f89ac6 and its sole cached canonical acceptance; these archives are evidence, not build/runtime inputs.
 
 Deep postarray evidence remains in `../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-deep-array-post/`; the [review](../coverage/semantics/string-offset-nested-unset-bool-cv-deep-array-post-review.json) binds source6, native-once/source4, bilateral prelaw/post cuts, owner diagnostic/failure and immutable87d68484.
