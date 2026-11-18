@@ -1993,3 +1993,17 @@ actual/report/map tuple. Author raw reads remain0; earlier OUTPUT evidence and
 all held bounds retain their own cuts.
 [Full-ternary evidence](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-review.json).
+
+Quiet shorthand ternaries with an emitted condition also feed selected nested
+scalar return casts. The TRUE child has no SOURCE occurrence or CODE entry;
+the compiled fallback retains its own terminal line, which the emitted parent
+keeps with absent read/redirect and empty effects. Intrinsic quiet condition
+truth controls one indexed result proof. The truthy branch keeps the original
+nonowning condition VALUE and exact branch state with no added tasks. The false
+branch evaluates and copies one certified nonowning fallback VALUE. Bounded unselected
+fallback lines use the existing raw-name or certified-VALUE proof without lookup
+or truth demand. Raw tags, the two-cast gate and ownership limits remain required.
+Folded conditions, owning or warningful values and wider contexts remain partial;
+all held boundaries and OB31 remain unchanged.
+[Shorthand evidence](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-review.json).

@@ -1762,6 +1762,40 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprTernary expression_c
   -- if ptask_skipped_tail* = S.TODO
   -- if S_skipped = S[.ORIGIN = (porigin)][.TODO = S_skipped.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
   -- if $ob_object_cast_chain_skipped_line(S, pfunction, porigin_skipped, expression_skipped) = (z_skipped)
+;; A shorthand keeps the original condition VALUE on its truthy path.
+dec $ob_object_cast_chain_shorthand_result(pstate, pfunction, porigin, pvalue, bool, porigin, expression, int) : pvalue?
+def $ob_object_cast_chain_shorthand_result(S, pfunction, porigin, pvalue_cond, true, porigin_false, expression_false, z_false) = (pvalue_cond)
+  -- if $ob_object_cast_chain_skipped_line(S, pfunction, porigin_false, expression_false) = (z_false)
+  -- if $selected_branch(S[.ORIGIN = (porigin)][.RESULT = KNOWN (PBOOL true)], ABSENT, expression_false, pvalue_cond, 0, z_false) = S[.ORIGIN = (porigin)][.RESULT = KNOWN pvalue_cond][.BASE = BASE_VALUE (KNOWN PNULL)]
+def $ob_object_cast_chain_shorthand_result(S, pfunction, porigin, pvalue_cond, false, porigin_false, expression_false, z_false) = (pvalue)
+  -- if $selected_branch(S[.ORIGIN = (porigin)][.RESULT = KNOWN (PBOOL false)], ABSENT, expression_false, pvalue_cond, 0, z_false) = S[.ORIGIN = (porigin)][.TODO = [AT porigin_false (EVAL expression_false), VALUE_COPY z_false] ++ S.TODO][.RESULT = KNOWN PNULL][.BASE = BASE_VALUE (KNOWN PNULL)]
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_false, expression_false) = (pvalue)
+  -- if $value_nodes(pvalue) = eps
+  -- if $resolve_at(S[.RESULT = KNOWN pvalue], KNOWN pvalue, z_false) = S[.RESULT = KNOWN pvalue]
+def $ob_object_cast_chain_shorthand_result(S, pfunction, porigin, pvalue_cond, b, porigin_false, expression_false, z_false) = eps -- otherwise
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprTernary expression_cond ABSENT expression_false metadata) = (pvalue)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_cond)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_true)
+  -- if $origin_child((porigin), [PCFIELD 2]) = (porigin_false)
+  -- if porigin_cond = PORIGIN n_child pcpath_cond
+  -- if porigin_true = PORIGIN n_child pcpath_true
+  -- if porigin_false = PORIGIN n_child pcpath_false
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $origin_node(S.SOURCES, porigin_true) = eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_true) = eps
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_cond, expression_cond) = (pvalue_cond)
+  -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_cond)
+  -- if $value_nodes(pvalue_cond) = eps
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_cond) = ((z_cond, false))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_false) = ((z_false, b_false))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprTernary expression_cond ABSENT expression_false metadata, z_false, false)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $compiled_effects(S, porigin) = eps
+  -- if S_cond = $boolean_result(S[.RESULT = KNOWN pvalue_cond], false, z_cond)
+  -- if S_cond.RESULT = KNOWN (PBOOL b_cond)
+  -- if S_cond = S[.RESULT = KNOWN (PBOOL b_cond)]
+  -- if $ob_object_cast_chain_shorthand_result(S, pfunction, porigin, pvalue_cond, b_cond, porigin_false, expression_false, z_false) = (pvalue)
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)

@@ -883,6 +883,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_emitted_condition_full_ternary_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_emitted_condition_full_ternary_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_emitted_condition_full_ternary_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_emitted_condition_shorthand_ternary_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py
@@ -1322,6 +1326,12 @@ test-semantics: build
 		for request_fields_index in 0 1; do \
 			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_request_fields_post_protocol.py --index "$$request_fields_index" --source-report "$$nested_unset_cv_object_request_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_request_fields_post_out/state-$$request_fields_index" || exit; \
 			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_request_fields_post_review_state.py --index "$$request_fields_index" --source-report "$$nested_unset_cv_object_request_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_request_fields_post_out/peer-state-$$request_fields_index" || exit; \
+		done
+	@nested_unset_cv_object_primitive_alias_fields_post_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-object-primitive-alias-fields-post-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_primitive_alias_fields_post_sources.py --output "$$nested_unset_cv_object_primitive_alias_fields_post_out/source" && \
+		for primitive_alias_fields_index in 0 1; do \
+			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_primitive_alias_fields_post_protocol.py --index "$$primitive_alias_fields_index" --source-report "$$nested_unset_cv_object_primitive_alias_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_primitive_alias_fields_post_out/state-$$primitive_alias_fields_index" || exit; \
+			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_primitive_alias_fields_post_review_state.py --index "$$primitive_alias_fields_index" --source-report "$$nested_unset_cv_object_primitive_alias_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_primitive_alias_fields_post_out/peer-state-$$primitive_alias_fields_index" || exit; \
 		done
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \

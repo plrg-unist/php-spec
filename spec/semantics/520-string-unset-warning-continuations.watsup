@@ -177,6 +177,14 @@ def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_t
   -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
   -- if $string_unset_bool_cv_post_array_leaf(S, pvalue)
   -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot_tail*)
+def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
+  -- if $literal_reference_plain_cell(S, n)
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $node_children(S, HCELL n) = eps
+  -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot_tail*)
 def $string_unset_bool_cv_post_object_fields(S, ppropertyslot*) = false -- otherwise
 
 dec $string_unset_bool_cv_post_object(pstate, nat) : bool
@@ -189,7 +197,7 @@ def $string_unset_bool_cv_post_object(S, n) = true
   -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot*)
   -- if $property_unique_names(ppropertyslot*)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $node_children(S, HOBJECT n) = eps
+  -- if $node_children(S, HOBJECT n) = $property_release_nodes(ppropertyslot*)
 def $string_unset_bool_cv_post_object(S, n) = false -- otherwise
 
 dec $string_unset_bool_cv_post_object_cell(pstate, nat) : bool
