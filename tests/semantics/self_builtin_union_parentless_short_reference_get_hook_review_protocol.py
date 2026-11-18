@@ -97,7 +97,7 @@ def assertions():
         two_classes = prior.union([raw[1], second, names.raw(b'int', 'NIdentifier')])
         two_typed = prior.branches([[atom], ['PTCLASS ' + names.value(b'Other')], ['PTBUILTIN "int"']])
         check(kind + '-second-class-excluded', two_classes, two_typed, expected=False)
-        check(kind + '-mixed-fold-unchanged', two_classes, two_typed, expected=False,
+        check(kind + '-mixed-fold-unchanged', two_classes, two_typed, expected=True,
               helper='$hook_short_reference_mixed_nominal_union_header')
         inter = prior.intersection([raw[1], second])
         inter_typed = prior.branches([[atom, 'PTCLASS ' + names.value(b'Other')]])

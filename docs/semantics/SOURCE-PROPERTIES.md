@@ -3029,3 +3029,13 @@ Typed aliases, weak scalar rank, strict widening, array COW, actual Get reads an
 real source detachment retain the existing runtime and owner bounds.
 Mixed scoped-self nominal folds, intersections/DNF and wider contexts stay partial.
 [Review](../../coverage/semantics/self-builtin-union-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits finite flat mixed unions with
+at least two class arms, including `self` or `namespace\self`, and at least one
+compatible builtin alternative. The existing mixed member fold threads defining
+context into the scoped singleton proof; exact source order, class bytes, counts
+and whole quiet normalization remain required, without an added arity cap.
+Typed aliases, scalar conversions, object identity, array COW, actual Get reads
+and real source detachment retain the existing runtime and owner guards.
+Scoped-self intersections/DNF and wider contexts, owners and lifetimes stay partial.
+[Review](../../coverage/semantics/self-mixed-nominal-union-parentless-short-reference-get-hook-review.json).

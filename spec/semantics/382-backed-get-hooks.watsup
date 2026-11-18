@@ -283,18 +283,18 @@ def $hook_short_reference_mixed_nominal_dnf_header(NUnionType (SEQUENCE phpType6
 def $hook_short_reference_mixed_nominal_dnf_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 
 ;; Mixed finite lists retain every nominal and builtin alternative together.
-dec $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*) : (nat, nat)?
-def $hook_short_reference_mixed_nominal_union_members(eps, eps) = ((0, 0))
-def $hook_short_reference_mixed_nominal_union_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*) = ((n_class, $(n_builtin + 1)))
+dec $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*, ptcontext) : (nat, nat)?
+def $hook_short_reference_mixed_nominal_union_members(eps, eps, ptcontext) = ((0, 0))
+def $hook_short_reference_mixed_nominal_union_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*, ptcontext) = ((n_class, $(n_builtin + 1)))
   -- if text <- ["array","int","float","string","null","bool","false","true"] /\ $ptlc($base64(text_type)) = $ptascii(text)
-  -- if $hook_short_reference_mixed_nominal_union_members(phpType69_tail*, ptbranch_tail*) = ((n_class, n_builtin))
-def $hook_short_reference_mixed_nominal_union_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*) = (($(n_class + 1), n_builtin))
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes)
-  -- if $hook_short_reference_mixed_nominal_union_members(phpType69_tail*, ptbranch_tail*) = ((n_class, n_builtin))
-def $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*) = eps -- otherwise
+  -- if $hook_short_reference_mixed_nominal_union_members(phpType69_tail*, ptbranch_tail*, ptcontext) = ((n_class, n_builtin))
+def $hook_short_reference_mixed_nominal_union_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*, ptcontext) = (($(n_class + 1), n_builtin))
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes) \/ $hook_short_reference_scoped_header(phpType69_head, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $hook_short_reference_mixed_nominal_union_members(phpType69_tail*, ptbranch_tail*, ptcontext) = ((n_class, n_builtin))
+def $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*, ptcontext) = eps -- otherwise
 dec $hook_short_reference_mixed_nominal_union_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_mixed_nominal_union_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*, ptcontext) = true
-  -- if $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*) = ((n_class, n_builtin))
+  -- if $hook_short_reference_mixed_nominal_union_members(phpType69*, ptbranch*, ptcontext) = ((n_class, n_builtin))
   -- if $(n_class >= 2 /\ n_builtin >= 1)
   -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata, ptcontext) = PTOK ptbranch* eps
 def $hook_short_reference_mixed_nominal_union_header(phpType18, ptbranch*, ptcontext) = false -- otherwise

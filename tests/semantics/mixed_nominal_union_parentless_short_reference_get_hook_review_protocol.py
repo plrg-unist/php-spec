@@ -36,7 +36,7 @@ def assertions():
     def count(label, raw, normalized, expected):
         result = 'eps' if expected is None else '((' + ','.join(map(str, expected)) + '))'
         rows.append({'id': label, 'expected': expected, 'premise': MEMBERS +
-                     '([' + ','.join(raw) + '],' + normalized + ') = ' + result})
+                     '([' + ','.join(raw) + '],' + normalized + ',' + lexical + ') = ' + result})
 
     kinds = [('NName', 'NNameRelative'), ('NNameFullyQualified', 'NName'),
              ('NNameRelative', 'NNameFullyQualified')]

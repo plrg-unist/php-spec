@@ -21,6 +21,9 @@ def fields(fixture, source, case):
     builtins = case.get('builtins')
     if builtins:
         branches = ['(PTBRANCH ([PTBUILTIN "' + builtin + '"]))' for builtin in builtins]
+        if others:
+            classes = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
+            branches = branches + classes if case['builtin_first'] else classes + branches
         branches.insert(case['self_index'], nominal)
     elif others:
         branches = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
@@ -39,6 +42,10 @@ def fields(fixture, source, case):
     if builtins:
         raw_members = ['NIdentifier (BYTES text_builtin_' + str(i) + ') metadata_builtin_' + str(i)
                        for i in range(len(builtins))]
+        if others:
+            classes = [other['raw_kind'] + ' (BYTES text_other_' + str(i) + ') metadata_other_' + str(i)
+                       for i, other in enumerate(others)]
+            raw_members = raw_members + classes if case['builtin_first'] else classes + raw_members
         raw_members.insert(case['self_index'], raw_self)
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif others:
@@ -135,20 +142,27 @@ def fields(fixture, source, case):
     if builtins:
         checks += ['$ptlc($base64(text_builtin_' + str(i) + ')) = $ptascii("' + builtin + '")'
                    for i, builtin in enumerate(builtins)]
-        checks += ['$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
-                   '~$hook_short_reference_class_builtin_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)',
-                   '~$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
+        helper = '$hook_short_reference_mixed_nominal_union_header' if others else '$hook_short_reference_class_builtin_union_header'
+        checks += [helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                   '~' + helper + '(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)',
+                   '~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
     if case.get('other'):
         checks += ['$base64(text_other) = $base64(' + quoted(other['raw_name']) + ')',
                    '$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
     if others:
         checks += ['$base64(text_other_' + str(i) + ') = $base64(' + quoted(other['raw_name']) + ')'
                    for i, other in enumerate(others)]
-        checks += ['$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
-                   '~$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
-                   '~$hook_short_reference_nominal_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)']
+        if builtins:
+            checks += ['$hook_short_reference_mixed_nominal_union_members([' + ','.join(raw_members) + '],ppropertydesc.TYPE,ptcontext_property) = ((' + str(len(others) + 1) + ',' + str(len(builtins)) + '))',
+                       '~$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                       '~$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
+        else:
+            checks += ['$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                       '~$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                       '~$hook_short_reference_nominal_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)']
         if any(other['raw_kind'] != 'NNameFullyQualified' for other in others):
-            checks += ['~$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_consumer)']
+            helper = '$hook_short_reference_mixed_nominal_union_header' if builtins else '$hook_short_reference_nominal_union_header'
+            checks += ['~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_consumer)']
     checks += payload('S_front', 'n_first', 'first')
     checks += seek('S_return', 'S_front', -1)
     checks += ['$reference_return_source(S_return,' + str(body_line) + ')',

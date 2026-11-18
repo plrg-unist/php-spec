@@ -1,0 +1,114 @@
+{
+  "strict-float-self-other": {
+    "namespace": "D346A",
+    "consumer_namespace": "D346AX",
+    "class": "D346A\\Box346",
+    "header": "float|SeLf|Alt346",
+    "raw_kind": "NName",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "D346A\\Other346",
+        "raw_kind": "NName",
+        "raw_name": "Alt346"
+      }
+    ],
+    "builtins": [
+      "float"
+    ],
+    "self_index": 1,
+    "builtin_first": true,
+    "typename": "D346A\\Box346|D346A\\Other346|float",
+    "steps": [
+      {
+        "statement": "$r341 = 7;",
+        "check": "$r341 === 7.0 && $s341 === 7.0",
+        "value": "PFLOAT 4619567317775286272",
+        "marker": "A|"
+      },
+      {
+        "statement": "$s341 = new \\D346A\\Other346();",
+        "check": "$r341 === $s341 && $r341 instanceof \\D346A\\Other346",
+        "value": "POBJECT n_alternate1",
+        "object": "D346A\\Other346",
+        "marker": "D|"
+      },
+      {
+        "statement": "$r341 = 2.5;",
+        "check": "$r341 === 2.5 && $s341 === 2.5",
+        "value": "PFLOAT 4612811918334230528",
+        "marker": "E|"
+      }
+    ],
+    "id": "strict-float-self-other",
+    "source": "strict-float-self-other.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "detached_stdclass": true,
+    "stdout": "I|C|O|W|J|Q|S|T|A|R0|D|R1|E|R2|P|F|D|Z|"
+  },
+  "strict-array-null-other-relative-self": {
+    "namespace": "D346B",
+    "consumer_namespace": "D346BX",
+    "class": "D346B\\Box346",
+    "header": "array|null|namespace\\Other346|namespace\\SeLf",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "D346B\\Other346",
+        "raw_kind": "NNameRelative",
+        "raw_name": "Other346"
+      }
+    ],
+    "builtins": [
+      "array",
+      "null"
+    ],
+    "self_index": 3,
+    "builtin_first": true,
+    "typename": "D346B\\Other346|D346B\\Box346|array|null",
+    "steps": [
+      {
+        "statement": "$r341 = new \\D346B\\Other346();",
+        "check": "$r341 === $s341 && $r341 instanceof \\D346B\\Other346",
+        "value": "POBJECT n_alternate0",
+        "object": "D346B\\Other346",
+        "marker": "D|"
+      },
+      {
+        "statement": "$s341 = null;",
+        "check": "$r341 === null && $s341 === null",
+        "value": "PNULL",
+        "marker": "Q|"
+      },
+      {
+        "statement": "$r341 = [211];",
+        "check": "$r341[0] === 211 && $s341[0] === 211",
+        "value": "PARRAY n_array2",
+        "marker": "A|",
+        "array": {
+          "value": 211,
+          "copy_variable": "arraycopy346",
+          "copy_value": 223
+        }
+      }
+    ],
+    "id": "strict-array-null-other-relative-self",
+    "source": "strict-array-null-other-relative-self.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "detached_stdclass": true,
+    "stdout": "I|C|O|W|J|T|D|R0|Q|R1|A|K|R2|P|F|D|Z|"
+  }
+}

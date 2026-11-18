@@ -1,0 +1,102 @@
+{
+  "weak-self-other-null": {
+    "namespace": "W346A",
+    "consumer_namespace": "W346AX",
+    "class": "W346A\\Box346",
+    "header": "self|Other346|null",
+    "raw_kind": "NName",
+    "raw_name": "self",
+    "others": [
+      {
+        "class": "W346A\\Other346",
+        "raw_kind": "NName",
+        "raw_name": "Other346"
+      }
+    ],
+    "builtins": [
+      "null"
+    ],
+    "self_index": 0,
+    "builtin_first": false,
+    "typename": "W346A\\Box346|W346A\\Other346|null",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$r341 = new \\W346A\\Other346();",
+        "check": "$r341 === $s341 && $r341 instanceof \\W346A\\Other346",
+        "value": "POBJECT n_alternate0",
+        "object": "W346A\\Other346",
+        "marker": "D|"
+      },
+      {
+        "statement": "$s341 = null;",
+        "check": "$r341 === null && $s341 === null",
+        "value": "PNULL",
+        "marker": "Q|"
+      }
+    ],
+    "id": "weak-self-other-null",
+    "source": "weak-self-other-null.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|D|R|Q|R|P|F|D|Z|"
+  },
+  "weak-int-relative-self-other": {
+    "namespace": "W346B",
+    "consumer_namespace": "W346BX",
+    "class": "W346B\\Box346",
+    "header": "int|namespace\\SeLf|\\W346B\\Other346",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "W346B\\Other346",
+        "raw_kind": "NNameFullyQualified",
+        "raw_name": "W346B\\Other346"
+      }
+    ],
+    "builtins": [
+      "int"
+    ],
+    "self_index": 1,
+    "builtin_first": true,
+    "typename": "W346B\\Box346|W346B\\Other346|int",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$r341 = new \\W346B\\Other346();",
+        "check": "$r341 === $s341 && $r341 instanceof \\W346B\\Other346",
+        "value": "POBJECT n_alternate0",
+        "object": "W346B\\Other346",
+        "marker": "D|"
+      },
+      {
+        "statement": "$s341 = '127';",
+        "check": "$r341 === 127 && $s341 === 127",
+        "value": "PINT 127",
+        "marker": "N|"
+      },
+      {
+        "statement": "$r341 = true;",
+        "check": "$r341 === 1 && $s341 === 1",
+        "value": "PINT 1",
+        "marker": "B|"
+      }
+    ],
+    "id": "weak-int-relative-self-other",
+    "source": "weak-int-relative-self-other.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|Q|D|R|N|R|B|R|P|F|D|Z|"
+  }
+}

@@ -77,7 +77,7 @@ def fields(fixture, source, case):
         '$ptype_normalize(phpType18,ptcontext_property) = PTOK ppropertydesc.TYPE eps',
         HELPER + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
         MEMBERS + '([' + ','.join(kind + ' (BYTES text_type_' + str(i) + ') metadata_type_' + str(i)
-                                 for i, kind in enumerate(case['raw_kinds'])) + '],ppropertydesc.TYPE) = ((' + str(classes) + ',' + str(builtins) + '))',
+                                 for i, kind in enumerate(case['raw_kinds'])) + '],ppropertydesc.TYPE,ptcontext_property) = ((' + str(classes) + ',' + str(builtins) + '))',
         '~' + HELPER + '(phpType18,' + reversed_type + ',ptcontext_property)',
         '~$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
         '~$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
