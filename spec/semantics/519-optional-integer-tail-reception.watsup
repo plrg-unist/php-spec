@@ -982,7 +982,7 @@ def $lossy_optional_integer_unary_integer_tree_infinite_full_redirect(S, plenv, 
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_selected, false, z))
 def $lossy_optional_integer_unary_integer_tree_infinite_full_redirect(S, plenv, porigin) = eps -- otherwise
 
-;; One sign wrapper retains a proper numeric tree with a raw FLOAT leaf.
+;; One sign wrapper retains a numeric tree with a raw FLOAT leaf.
 dec $lossy_optional_integer_unary_float_number_tree_infinite_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
 def $lossy_optional_integer_unary_float_number_tree_infinite_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_selected expression_skipped metadata)
@@ -994,7 +994,6 @@ def $lossy_optional_integer_unary_float_number_tree_infinite_full_redirect(S, pl
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0])) = (expression_child)
   -- if $pfshape(expression_child) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
-  -- if $lossy_optional_integer_mixed_number_tree_binary(expression_left) \/ $lossy_optional_integer_mixed_number_tree_binary(expression_right)
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
   -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
