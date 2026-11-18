@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+      "source": "<?php\nnamespace {\nclass QuietLiteralSelectorOwnCoalesceTarget1 { public static function coun0ter121() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietLiteralSelectorOwnCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorOwnCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietLiteralSelectorOwnCoalesceDecoy { public static function coun0ter121() { echo \"BAD_ALIAS;\"; return 9001; } }\n}\nnamespace LiteralSelectorPick {\nuse \\QuietLiteralSelectorOwnCoalesceDecoy as QuietLiteralSelectorOwnCoalesceTarget1;\n$held = (('qUIETlITERALsELECTORoWNcOALESCEtARGET' . '') . ((((('00' + (-(+(true && (true ? ((true ? null : false) ?? true) : false))))) * true) ? (('00' + (-(-(+(((true ? false : null) ?? true) or true))))) * true) : (false ?? 'SKIP_CLASS')) ?? '1') . ((((((-(+((false ?: ((true ? false : null) ?? true)) and true))) - false) * '  +1 ') ? null : ((((-(+((true ? '10' : null) ?? true))) + '  +0 ') * '1') && false)) ?? 'BAD_FALSE') . (((((-(+(false || (true ? ((null ?? '') ?? true) : null)))) + null) * null) ? null : (('' ?? 'BAD_EMPTY') ?? 'BAD_CHAIN')) ?? 'BAD_EMPTY'))))::{('CoUn' . ((((('0' - (+((true ? ((null ?? '10') ?? false) : 0) xor false))) * '01') ? (0 ?? 'BAD_INT') : null) ?? 9) . ('TeR' . ((+0xC) . ((((('00' + (-(-(+(((true ? false : null) ?? true) or true))))) * true) ?: (null ?? 'BAD_SHORT')) ?? 9) . (!(!(((false ?? false) ?: ((((-(+((true ? '10' : null) ?? true))) + '  +0 ') * '1') && false)) ?? 'BAD_METHOD'))))))))}(...);\n}\nnamespace {\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorOwnCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietLiteralSelectorOwnCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n}\n",
+      "source_sha256": "2f2a01d7b05f1947324b982ee3fadaa3356e367e075cb24e3838f0a14c5cfcb1",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_add_subtract_operand_condition_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "source_sha256": "e09a44c9eaea5afb409d940394161936de8a311bf1f1cc51eae7220097890c0c",
+        "change": "Only the FCC selector line changes. Quiet integer Multiply supplies FULL and selected/Boolean operand positions over the prior exact Add/Subtract values and BOOL/NULL/full numeric STRING children, preserving final name bytes, callback bodies, profile, streams and cache/owner histories."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietLiteralSelectorInheritedAssignBase { public static function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } private function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } public static function counter1() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietLiteralSelectorInheritedAssignTarget0112 extends qUIETlITERALsELECTORiNHERITEDaSSIGNbASE { private function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } final public static function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietLiteralSelectorInheritedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorInheritedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = ((('\\qUIETlITERALsELECTORiNHERITEDaSSIGNtARGET' . '') ?? 'BAD_CLASS') . (((false ?: (null ?? null)) ?? '') . ((((false ?? false) ?: ((('00' + (-(+(true && (false ?: ((null ?? '0') ?? true)))))) * true) ? null : false)) ?? 'BAD_FALSE') . (((('0' ?? 'BAD_ZERO') ?: (null ?? ((((-(+((true ? ((null ?? 0) ?? true) : false) and true))) - false) * '  +1 ') ? 'BAD_ONE' : ('0' . '1')))) ?? 'BAD_CLASS') . (((('1' ?? ('1' . '0')) ?: (null ?? 'BAD_SHORT')) ?? 'BAD_CLASS') . (+2))))))::{('CoUnTeR' . ((!(!(((((((-(+(false || (true ? ((true ? false : null) ?? true) : '1')))) + null) * null) ? 'BAD_TEN' : '10') ?? 'BAD_TEN') ?: (null ?? 'BAD_SHORT')) ?? 'BAD_METHOD'))) . (!(!((false ?: (null ?? ((('0' - (+((false ?: ((null ?? null) ?? null)) xor false))) * '01') ? 'BAD_NULL' : 0))) ?? 9)))))}(...);\n$held = clone $seed;\nunset($seed);\necho QuietLiteralSelectorInheritedAssignBase::counter1() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorInheritedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietLiteralSelectorInheritedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorInheritedAssignTarget0112::counter1() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "958d2e9bc168b1d046c450f8571b566bd8f1e51104553a6a770298365e09c383",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7UkVTVUxUO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7Rzs=",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_add_subtract_operand_condition_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "09c1c752124e41dcac7ed205298d5a5882e5c786daacbfe08b01fdd641614aec",
+        "change": "Only the FCC selector line changes. Quiet integer Multiply supplies FULL and selected/Boolean operand positions over the prior exact Add/Subtract values and BOOL/NULL/full numeric STRING children, preserving final name bytes, callback bodies, profile, streams and cache/owner histories."
+      }
+    }
+  ]
+}
