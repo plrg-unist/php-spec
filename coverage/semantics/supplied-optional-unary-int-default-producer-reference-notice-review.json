@@ -1,0 +1,180 @@
+{
+  "family": "supplied-optional-unary-int-default-producer-reference-notice-146",
+  "status": "independently reviewed partial increment",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed ordinary-CV producers with fully supplied optional untyped or plain int formals admit exactly one unary plus/minus over a ScalarInt default. The whole AST, leaf and outer metadata and checked kind int must match. Both the literal leaf and effective result remain signed64; unary plus shares its leaf bound, while unary minus explicitly checks both bounds. Required-header proof views preserve the live signature, actual reception, default demand, return verification, frame retirement and private Notice-cell ownership. Weak supplied String \"17\" converts to integer 17 without changing the caller or snapshot, and a later omitted untyped call observes the live +7 default as an integer.",
+  "implementation": {
+    "author": {
+      "commit": "d02e91195c292305415e6a4d0816af95d2cec7b2",
+      "tree": "902db09d0d29a60288f86904df8c1acc134ff0c0"
+    },
+    "rule": {
+      "commit": "567de61fda8c4e5617a1f401f7bdcb8875ce3aa6",
+      "tree": "98d37da35eae650e8d49372c28916e1555f5fb1a",
+      "added_lines": 14,
+      "insertions": 1,
+      "sign_arms": 2,
+      "encoding_contract": "Exact one unary +/- over ScalarInt with whole AST/outer+leaf metadata and checked kind int; raw leaf and effective result signed64, untyped/plain INT only via existing139 helper."
+    },
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/author/code-packet-v1.json",
+      "sha256": "430209cf86d74bf4f91ba3448acaf81bdc36603beabc8cbd7a9bdaa222589082"
+    },
+    "source_posts": {
+      "spec/semantics/207-error-handler-runtime.watsup": "4d95377663b04e7549d96771bb79a7c7b6b394fb0798437253c379a0eb02cdae",
+      "tests/semantics/supplied_optional_unary_int_default_producer_reference_notice_cases.json": "fbf873b6f6d3bb62bb7bf1334ccc6904d84d972edf67e721ca9a97ddc2e80961",
+      "tests/semantics/supplied_optional_unary_int_default_producer_reference_notice_sources.py": "7fbaaaf0b141ce699050d9ac46f56f04e54546c92057c02dad1a685b7b9d8a1f",
+      "tests/semantics/supplied_optional_unary_int_default_producer_reference_notice_state.py": "78befc7ba892db018f5414c3c5d41f57609c01d51a17c3bde33371f391eb7f1d",
+      "tests/semantics/supplied_optional_unary_int_default_producer_reference_notice_review_state.py": "3fb82231971833b4dcaccdddaeecd52081f5b21ab180863f555b013b150fa444",
+      "tests/semantics/supplied_optional_unary_int_default_producer_reference_notice_run.py": "e8377b9d5f56d241eeaacdd6ba8e4414cef295c3dfaa3ca5bcb5cfb4b733a299"
+    },
+    "make": "One unary-INT controller row after String defaults; current-parent literal projection preserves foreign rows.",
+    "production_139_140_141_142_143_144_145_guards_unchanged": true,
+    "old_helper_edits": 0
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_try_ct_eval_unary_pm, zend_eval_const_expr, zend_compile_params, zend_is_valid_default_value",
+    "vendor/php-src/Zend/zend_ast.c: ZEND_AST_UNARY_PLUS adds zero; ZEND_AST_UNARY_MINUS multiplies by minus one",
+    "spec/semantics/17-signatures.watsup: psnumber, psnegate, psnumericdefault retain the AST and classify negated INT_MIN as float",
+    "spec/semantics/207-error-handler-runtime.watsup: existing139 supplied_int_type and unchanged required-header proof"
+  ],
+  "validation": {
+    "cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/author/validation-cuts-v1.json",
+      "sha256": "4346fd503e62e15e89994dd29152320afd1892771c038cbcf36084eee963a1bd"
+    },
+    "native_once": {
+      "invocations": 4,
+      "normal": 3,
+      "static_rejection": 1,
+      "report_sha256": "4bd12d9d6e1f45cf38c4370d73edce03defae264860bd1617f5e36e90e014e60"
+    },
+    "supplied_source": {
+      "agreements": 2,
+      "revision": "567de61fda8c4e5617a1f401f7bdcb8875ce3aa6",
+      "report_sha256": "404e767032db1651ec7992e3dae4e4227e55e8bcc7e57844aa21d0020e843b4e"
+    },
+    "existing_controls": {
+      "normal": 1,
+      "static_rejection": 1,
+      "new_support_credit": 0,
+      "revision": "69b6691191a71ffa7d8626133b0964ed5a6e2713",
+      "report_sha256": "3159e87ce15b0b9383c2f400af74160ba5094d065a42d2345e906d3dda5850c2"
+    },
+    "prelaw_front": {
+      "conditions": 191,
+      "reached": 191,
+      "derived": 0,
+      "modules": 507,
+      "source_agreements": 0,
+      "report_sha256": "a62755c473dacc6524d6e9d674d72557476fa0fbd81fa68bba525579624a4e23"
+    },
+    "independent_whole": {
+      "revision": "72f3a1eaf4b5a4732e9648a870b5b9406f0a3f48",
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 437,
+      "reached_conditions": 289,
+      "derived_conditions": 148,
+      "source_agreements": 0,
+      "tree": "10c8e8820373f1d7b827b00bc2cce477a58e641f",
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/review/whole-v1/report.json",
+      "sha256": "af30245a437a3435d6029c42c3c95420fb67d4bf25102fe3bda22773dc95e0eb",
+      "passed": true,
+      "process": {
+        "exit": 0,
+        "elapsed": 65.84136843681335,
+        "timeout": false,
+        "cap_seconds": 1200,
+        "group_after": []
+      },
+      "invocations": 1,
+      "author_derived_conditions": 47,
+      "independent_derived_conditions": 101
+    },
+    "author_full_state_invocations": 0,
+    "controller": {
+      "static_syntax_import_and_independent_diff_review": "PASS; prior family shape with family/doc/prefix substitutions only, 4case/4record/3normal assertions unchanged",
+      "invocations": 0
+    },
+    "patch_checks": {
+      "forward_git_apply_check_exit": 0,
+      "inverse_git_apply_check_exit": 0,
+      "full_tree_roundtrip": true,
+      "projected_source_tree": "610fd2ea1c820a08f3cc0d9b965d445dd11bab3a"
+    },
+    "accepted_replays": 0,
+    "historical_campaign_renewals": 0
+  },
+  "retained_failures": {
+    "baseline": "First supplied original Unsupported; other selected original UNRUN; source0.",
+    "fixture_or_semantic_corrections": 0
+  },
+  "remaining": [
+    "FLOAT promotion, negated INT_MIN overflow, unary FLOAT leaves, nested signs and general default expressions",
+    "Nullable/union INT formals, partial supply and wider payload/owner/lifetime contexts",
+    "Complete core, Rocq interaction-tree transfer and BOLA/CRIS verification"
+  ],
+  "intentional_engine_divergences": [],
+  "artifact_location": "../php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/",
+  "artifact_boundary": "Evidence only; not build/runtime inputs.",
+  "canonical_actual": {
+    "decision": "CLEAR",
+    "revision": "12de204558f67cfedad45cc295c6c0719fdc3e26",
+    "tree": "04b5fc480d55c5792c7612f95b980e8a3facd057",
+    "cut_parent": {
+      "commit": "cc0afd3b115c26ac797bf667f8c3471f58ef7095",
+      "tree": "06ea8c8fcdd15fe25c098046434de5edff1edcf6"
+    },
+    "reference_phase": {
+      "commit": "12de204558f67cfedad45cc295c6c0719fdc3e26",
+      "tree": "04b5fc480d55c5792c7612f95b980e8a3facd057",
+      "parent": "cc0afd3b115c26ac797bf667f8c3471f58ef7095"
+    },
+    "reviewer": "/root/recover48_reference_unary_defaults_review",
+    "actual_executions": 1,
+    "canonical_report_sha256": "f2b0f9504594bb8b74f0ed84eb066356914385ef2cfe07a18e7c7261ab2c5992",
+    "canonical_map_sha256": "cabae785b72aaad827b68b2f6783c1fd16046d26a30f4279640c205d307976d1",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "b59004570abc0e3cdb48b2e9550c6eb7501bf6948870468e5e61c7b325ed2461",
+    "full_cache_persisted_before_assertions": true,
+    "fixed_git_primitive_facts_cached": 22,
+    "fixed_git_command_facts_cached": 3,
+    "canonical_original_report_reads_reviewer": 1,
+    "canonical_original_map_reads_reviewer": 1,
+    "canonical_original_reads_author": 0,
+    "canonical_cache_reads_author": 0,
+    "source_agreements": 0,
+    "production_modules": 509,
+    "argv_paths": 512,
+    "watched_paths": 513,
+    "elapsed_seconds": 16.892975803930312,
+    "cap_seconds": 60,
+    "passed": true,
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "reference_paths": 7,
+    "reference_new_files": 5,
+    "six_nonmake_posts_exact": true,
+    "current_207_14line_literal_projection_foreign_preserved": true,
+    "current_make_1row_literal_projection_foreign_preserved": true,
+    "saved_main_diff_format": "Git full-index forward and -R inverse equal cached fixed Git diffs; actual7 modes/OIDs exact",
+    "native_reexecutions": 0,
+    "accepted_evidence_renewals": 0,
+    "private_final_artifacts": 0,
+    "head_refreshes": 0,
+    "stdout": "true\n",
+    "stderr": ""
+  },
+  "canonical_tiny": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-int-default-producer-reference-notice-146/author/actual-main-v1-tiny.json",
+    "sha256": "2bbfbe7823aaf008c3d3b564fee59847eb0065c331200e3674f6714d38e35edf"
+  }
+}

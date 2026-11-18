@@ -1801,3 +1801,14 @@ rejects even a numeric-looking String default before execution. Stored byte-only
 String returns beyond current Notice identity admission, wider default forms,
 types and ownership contexts remain partial.
 [Review](../../coverage/semantics/supplied-optional-string-default-producer-reference-notice-review.json).
+
+Fully supplied optional untyped or plain `int` formals retain exactly one unary
+`+` or `-` over an INT literal. The proof preserves the complete sign/leaf AST,
+both metadata layers and kind `int`, and requires signed64 bounds on the leaf
+and effective result. The required-header view preserves live signatures,
+reception, default demand, return checks and private Notice-cell ownership.
+Weak numeric text becomes an integer in the formal while caller copies remain
+strings; a later omitted `+7` remains integer `7`. An ARRAY formal rejects `-7`
+before execution. FLOAT promotion, negated INT_MIN overflow, nested signs,
+general defaults and wider type/ownership contexts remain partial.
+[Review](../../coverage/semantics/supplied-optional-unary-int-default-producer-reference-notice-review.json).

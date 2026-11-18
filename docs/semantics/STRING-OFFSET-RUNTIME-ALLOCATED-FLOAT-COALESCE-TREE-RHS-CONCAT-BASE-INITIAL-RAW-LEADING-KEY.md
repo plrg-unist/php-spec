@@ -27,13 +27,14 @@ jumps over the fallback; it does not test FLOAT truth.
 The two originals preserve negative zero directly and -12.5 through nested
 arithmetic, while skipping a FLOAT division by zero. Returning Warning callbacks
 still change or rebind the current key after its original offset is saved.
-The independent numeric-ternary control has the same quiet FLOAT VALUE and
-exact one-row replay but remains outside this grammar. This supersedes only
-the arithmetic cut's COALESCE exclusion; earlier failures and credits retain
-their original identities.
+At this coalesce cut, a numeric full-ternary control had the same quiet FLOAT
+VALUE and exact one-row replay but remained outside the grammar.
+[Full FLOAT ternary trees](STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-TERNARY-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md)
+now admit that form; the current negative control uses genuine FLOAT shorthand.
+Earlier failures and credits retain their original identities.
 
 The [review record](../../coverage/semantics/string-offset-runtime-allocated-float-coalesce-tree-rhs-concat-base-initial-raw-leading-key-review.json)
 separates native originals observed once, Unsupported/prelaw refusals, source
 comparisons, author/independent fixtures and static composition. General VALUE
-producers, numeric ternaries/POWER, non-FLOAT leaves and multirow RHS allocations
-remain outside this grammar; wider owners, release and lifetimes remain partial. Complete PHP core is unfinished.
+producers, POWER, non-FLOAT leaves and multirow RHS allocations remain outside
+this grammar; wider owners, release and lifetimes remain partial. Complete PHP core is unfinished.

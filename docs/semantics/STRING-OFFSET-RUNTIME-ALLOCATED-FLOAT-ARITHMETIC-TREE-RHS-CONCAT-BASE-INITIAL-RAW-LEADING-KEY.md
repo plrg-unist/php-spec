@@ -32,9 +32,10 @@ multirow RHS allocation and wider owners, release and lifetimes remain partial.
 At the arithmetic-only cut, a nonnull numeric COALESCE control had the same
 quiet FLOAT VALUE and exact one-row replay but failed the raw-tree grammar.
 [Nonnull FLOAT coalesce trees](STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-COALESCE-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md)
-now admit that form; the current independent negative control uses a numeric
-full ternary with genuine VALUE and full replay. The earlier POWER control's
-VALUE EPS and zero grammar-boundary credit remain unchanged.
+admitted that form. Their full-ternary control was later admitted by
+[full FLOAT ternary trees](STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-TERNARY-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md);
+the current negative uses shorthand with genuine VALUE and full replay.
+The earlier POWER control's VALUE EPS and zero grammar-boundary credit remain unchanged.
 
 The [review record](../../coverage/semantics/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-review.json)
 keeps new native originals observed once, Unsupported/prelaw refusals, source
