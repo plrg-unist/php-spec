@@ -2092,3 +2092,11 @@ zero, so a derived NUL is admitted; literal-source NUL and owned REQUEST-NUL
 holds remain. Empty and multibyte results allocate STRINGDATA and stay outside
 this rule even when they carry no heap owner. Folded STRING and numeric arms,
 the two-cast gate, broader contexts and existing held boundaries are unchanged.
+
+Eight source agreements reuse eight native observations once. Author19/13 and
+independent105/15 retain separate first-pass SL508 fixture cuts; four exact
+generated fixtures bridge the label-only correction without execution. WHOLE6
+and fixed `698b26b0b` are clear. The sole joint production SL509 load passes in
+16.791657433 seconds under cap60 with source0. Reviewer report/map originals1
+each were fully cached before assertions; author actual raw/full-cache reads0.
+[Evidence](../../coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-author.json) and [review](../../coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json).

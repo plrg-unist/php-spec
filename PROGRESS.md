@@ -12,24 +12,23 @@ The [inventory](coverage/semantics/features.json) contains **169 constructors**
 24 pending, 1 validated). Validated closure remains **0 constructors / 1 runtime
 obligation**. No bounded family result closes the remaining core work.
 
-The current reviewed cohort covers bounded direct quiet stdClass ARRAY fields,
-fully qualified Boolean defaults, nonnull FLOAT coalesce bases and certified
-zero/FIELD2 defaults. Each family retains its original source, state, failure
-and production-load cuts; complete PHP core remains unfinished:
+The current reviewed cohort covers scoped-self DNF reference Get hooks, literal
+String defaults, emitted one-byte output-handler complements and one-sign
+FLOAT-zero/FIELD2 defaults. Each retains its original source, state, failure and
+production-load cuts; complete PHP core remains unfinished:
 
-- [Direct quiet stdClass ARRAY fields](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json).
-- [Fully qualified Boolean defaults](coverage/semantics/supplied-optional-fqn-bool-default-producer-reference-notice-review.json).
-- [Nonnull FLOAT coalesce bases](coverage/semantics/string-offset-runtime-allocated-float-coalesce-tree-rhs-concat-base-initial-raw-leading-key-review.json).
-- [Certified zero/FIELD2 defaults](coverage/semantics/deferred-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
+- [Scoped-self DNF reference Get hooks](coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json).
+- [Literal String defaults](coverage/semantics/supplied-optional-string-default-producer-reference-notice-review.json).
+- [Emitted one-byte handler complements](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json).
+- [One-sign FLOAT-zero/FIELD2 defaults](coverage/semantics/deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
-Direct dynamic array fields across nested-unset Warnings preserve COW, shared
-references and staged retirement in the bounded quiet stdClass domain. Two native
-originals ran once; a public normal comparison and a pending direct-source budget
-bridge retain separate agreement cuts. All ten bounded checks passed and reaped;
-original timeouts and fixture failures keep zero credit. Actual `6a3096be1` and its
-sole SL509 load are independently clear from one saved cache. Wider fields and
-lifetimes remain partial. The [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json)
-and [artifact index](docs/ARTIFACTS.md) retain exact limits, failures and recovery.
+Singleton scoped `self` alternatives preserve nominal DNF guards; literal String
+defaults preserve checked bytes and private formal conversion. Emitted byte
+complements, including derived NUL, preserve string storage. One outer sign over
+certified FLOAT-zero conditions selects FIELD2 through existing default caches
+and private integer reception. Wider contexts, owners and lifetimes remain
+partial. Saved source and production-load evidence keeps its fixed revision;
+metadata placement renews no execution or native observation.
 
 ## Integrated behavior and entrypoints
 
@@ -64,13 +63,13 @@ current lanes below remain bounded parts of unfinished families:
 
 | Lane | Author / reviewer | Current work |
 | --- | --- | --- |
-| References | `recover46_reference_fqn_defaults_impl` / `recover47_reference_defaults_review` | FQN Boolean defaults (REF144): integrated and independently reviewed; supplied string defaults (REF145): native4 once and Unsupported baseline retained. |
-| Compiler | `recover39_compiler_mixed_impl` / `recover38_compiler_dnf_review` | Scoped-self DNF (COMP347): author checks passed; independent validation remains in progress. |
+| References | `recover46_reference_fqn_defaults_impl` / `recover48_reference_unary_defaults_review` | Literal String defaults (REF145): integrated and independently reviewed; unary INT defaults (REF146): native4 once and Unsupported baseline retained. |
+| Compiler | `recover39_compiler_mixed_impl` / `recover39_compiler_intersection_review` | Scoped-self DNF (COMP347) is integrated and independently reviewed; [family review](coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json). Scoped-self intersection conjuncts remain partial. |
 | Quiet reference Get | `recover35_get_multiply_impl` / `recover34_get_divmod_review` | Fitting integer multiplication integrated at `083e1d6e`; [review](coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) keeps source, control and resource cuts separate. Division/modulo source-first validation is in progress; wider operators and lifetimes remain partial. |
 | String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties: source-first scope assessment; new validation unrun. |
 | Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover53_dynamic_ternary_review` | Nonnull FLOAT coalesce bases integrated and reviewed; full-ternary source witnesses reserved. |
-| Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | Zero/FIELD2 defaults (319) are integrated and independently reviewed; wider defaults and lifetimes remain partial. |
-| Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Emitted single-byte bitwise NOT in handler returns (160): saved source evidence accepted; state fixtures and WHOLE remain. |
+| Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | One-sign zero/FIELD2 defaults (320) are integrated and independently reviewed; repeated signs and wider defaults/lifetimes remain partial. |
+| Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Emitted single-byte bitwise NOT in handler returns (160): integrated and independently reviewed; [evidence](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json). Empty/multibyte allocations and wider lifetimes remain partial. |
 
 Shared metadata belongs to the integrator: README, this checkpoint, the feature
 inventory and ARTIFACTS. Authors supply bounded family records and literal/keyed

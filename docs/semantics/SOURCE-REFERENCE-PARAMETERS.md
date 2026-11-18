@@ -1790,3 +1790,14 @@ Supplied calls preserve caller aliases and copied arrays, while later omitted
 `\false` remains Boolean false. Relative names, general constants and wider
 header/payload/lifetime contexts remain partial.
 [Review](../../coverage/semantics/supplied-optional-fqn-bool-default-producer-reference-notice-review.json).
+
+Fully supplied optional untyped or plain `string` formals retain literal String
+defaults with the exact checked payload, metadata and kind `string`. Default
+bytes remain case-sensitive; only builtin type names fold case. Required-header
+proof views preserve live signatures and default demand. Weak calls convert the supplied integer `17` to the string `"17"` in the private
+formal, while the caller and its copy remain integers.
+An omitted untyped call retains the live String default, and an INT formal still
+rejects even a numeric-looking String default before execution. Stored byte-only
+String returns beyond current Notice identity admission, wider default forms,
+types and ownership contexts remain partial.
+[Review](../../coverage/semantics/supplied-optional-string-default-producer-reference-notice-review.json).

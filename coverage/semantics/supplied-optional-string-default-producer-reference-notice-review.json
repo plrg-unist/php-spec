@@ -1,0 +1,206 @@
+{
+  "family": "supplied-optional-string-default-producer-reference-notice-145",
+  "status": "independently reviewed partial increment",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed ordinary-CV producers with fully supplied optional untyped or plain string formals admit literal String defaults. Exact whole NScalarString/BYTES payload, metadata and checked kind string must match; type names fold case while default bytes remain exact. Required-header proof views preserve live signatures, actual reception, default demand, returns, frame retirement and private Notice-cell ownership. A weak call converts the supplied integer 17 to a request String \"17\" in the private formal while the caller and snapshot remain integers. A later omitted untyped call observes the live String default.",
+  "implementation": {
+    "author": {
+      "commit": "1cd1470f8f3c5362a3b8d98897a1a45cd05d5c4b",
+      "tree": "89b7a57b674a88813283d81c2ce6f014275a2852"
+    },
+    "rule": {
+      "commit": "f0221894919bccc93d09181703cfbffafb7d932c",
+      "tree": "c0dbb6609d5db1c4a4564493de300c287a76db09",
+      "added_lines": 12,
+      "insertions": 2,
+      "encoding_contract": "Exact whole NScalarString/BYTES payload and metadata with checked kind string; raw ABSENT/empty type or Identifier string/sole STRING type only; case-sensitive default bytes."
+    },
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/author/code-packet-v1.json",
+      "sha256": "301a30fc09e0a5d1cf741c0aff2d769965e485ae67f1df76b2c70ab687e32383"
+    },
+    "source_posts": {
+      "spec/semantics/207-error-handler-runtime.watsup": "89cbeafbed590f7ed64ec163551e83d2d0ac144f08e9ef27d5c85d10d19d58dd",
+      "tests/semantics/supplied_optional_string_default_producer_reference_notice_cases.json": "92393836bf9b98c466506d2f3803691e5babb191dbb6c5ca6bdf07ba13e9384e",
+      "tests/semantics/supplied_optional_string_default_producer_reference_notice_sources.py": "21378787a5658176184f4a5108c64c922ba09c0efb648929bbc8cfe00c44ce95",
+      "tests/semantics/supplied_optional_string_default_producer_reference_notice_state.py": "5e8a961bc9a3643bca492532957cf3dd27ca986559f713f559acf3a812339b63",
+      "tests/semantics/supplied_optional_string_default_producer_reference_notice_review_state.py": "80f5f854fd366305194f6c9ee24f122b45ad92b0576e0d4df72ab5c5de0deff8",
+      "tests/semantics/supplied_optional_string_default_producer_reference_notice_run.py": "b7be597d794dab013ee16178727110a483ea5456d60672d7568f1a795abdc393"
+    },
+    "make": "One String-default controller row after FQN Boolean defaults; current-parent literal projection preserves foreign rows.",
+    "production_139_140_141_142_143_144_guards_unchanged": true,
+    "old_helper_edits": 0
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_is_valid_default_value (matching type, with only INT-to-FLOAT default promotion)",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_RECV_INIT supplied versus omitted branches",
+    "spec/semantics/17-signatures.watsup: psdefault, psacceptdefault; 91-default-parameters.watsup and 95-typed-calls.watsup: stored-default materialization",
+    "spec/semantics/35-scalar-operations.watsup: stringify; 30-string-carriers.watsup: immutable request String provenance without heap owners"
+  ],
+  "validation": {
+    "cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/author/validation-cuts-v1.json",
+      "sha256": "49ecd25db4ccbc3751e919a95eeb27050cb5a0985729e0c9a2d04c934bad53e2"
+    },
+    "native": {
+      "physical_unique_originals": 5,
+      "original_batch": 4,
+      "corrected_control": 1,
+      "physical_normal": 4,
+      "physical_static_rejection": 1,
+      "current_selection": 4,
+      "current_normal": 3,
+      "current_static_rejection": 1,
+      "obsolete_originals": 1,
+      "obsolete_control_source_agreements": 0,
+      "original_report_sha256": "bfd89d95bc67620abd8dfeaeb1e1fef0f57542605b3b6c7c6fa7edf2b4d66379",
+      "replacement_report_sha256": "c40aa38bca7b3811a60edc8a9f6182a151dc37a4aeb6e8fa353cd0556519c757",
+      "current_manifest_sha256": "0d293cbd9bf9153d0d2598508a722f202c73fbf35bc08299fc15e6016df6f7d6"
+    },
+    "supplied_source": {
+      "agreements": 2,
+      "revision": "f0221894919bccc93d09181703cfbffafb7d932c",
+      "report_sha256": "e6066f7652aee3d45ce079c5f0a85365aa7a247db5a038c72a4553f09c558b67"
+    },
+    "corrected_existing_controls": {
+      "normal": 1,
+      "static_rejection": 1,
+      "new_support_credit": 0,
+      "revision": "b942be2272cd8515cd476b487495c4cf64799db0",
+      "report_sha256": "0b00ab82d6b337d83c0c33ff75688e0fa8af8a1b54ee2781caa4f9a7a78f2cde"
+    },
+    "prelaw_front": {
+      "conditions": 194,
+      "reached": 194,
+      "derived": 0,
+      "modules": 507,
+      "source_agreements": 0,
+      "report_sha256": "f0d3079701a82e3f0b709866404e1a7be35e4beb12e4db0c1f8b18e603e52c78"
+    },
+    "independent_whole": {
+      "revision": "cad4ce9051f955d94e7bb346aebe6cef46f2d6b7",
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 418,
+      "reached_conditions": 291,
+      "derived_conditions": 127,
+      "source_agreements": 0,
+      "tree": "3e7cb14819b962bda741bc16cbb8517364a1496e",
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/review/whole-v1/report.json",
+      "sha256": "7947311b63c361a3001d064a073ae2cda79211cf58d4b65e5aa3c9888e179eb6",
+      "passed": true,
+      "process": {
+        "exit": 0,
+        "elapsed": 63.26949095726013,
+        "timeout": false,
+        "cap_seconds": 1200,
+        "group_after": []
+      },
+      "invocations": 1
+    },
+    "author_full_state_invocations": 0,
+    "controller": {
+      "static_syntax_import_and_independent_diff_review": "PASS; prior family shape with family/doc/prefix and 4case/4record/3normal assertions only",
+      "invocations": 0
+    },
+    "patch_checks": {
+      "forward_git_apply_check_exit": 0,
+      "inverse_git_apply_check_exit": 0,
+      "full_tree_roundtrip": true,
+      "projected_source_tree": "8b5932f83cc292bce556b371a0c2ad2dfc7fee89"
+    },
+    "accepted_replays": 0,
+    "historical_campaign_renewals": 0
+  },
+  "retained_failures": {
+    "baseline": "First supplied original Unsupported; other selected original UNRUN; source0.",
+    "original_omitted_string_return_control": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/author/source-prelaw-existing-controls-v1-75pz982u/report.json",
+      "sha256": "8a1afc0fd105b6d30184e5aab1a932f825977d065083fce0724667a276dac88c",
+      "classification": "Correct String default observers, then Unsupported at reference Notice because the returned stored String has byte-only identity. Static control remained UNRUN at this cut; source0."
+    },
+    "control_correction": "Only fresh omitted-control bytes were added: strict default String observers remain, but returning cast INT7 uses existing Notice payload admission. Original native4 and failure remain unchanged; replacement native1 ran once.",
+    "fixture_static_correction": {
+      "revision": "1cd1470f8f3c5362a3b8d98897a1a45cd05d5c4b",
+      "tree": "89b7a57b674a88813283d81c2ce6f014275a2852",
+      "classification": "Static preflight correction before any WHOLE invocation",
+      "changed": "Only inherited full caller String-carrier assertion removed; actual caller remains PINT17 and full snapshot checks remain.",
+      "pure_front_conditions": 194,
+      "pure_front_saved_fixture_sha256": "d719632639a2ad61cc69aa1f3f48095af1a710c7634214eb8d5500743d2ea934",
+      "pure_front_clauses_exact": true,
+      "removed_full_clauses": 1,
+      "production_changed": false,
+      "source_native_front_reruns": 0,
+      "whole_invocations_before_correction": 0,
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/author/fixture-static-correction-v1.json",
+      "sha256": "e920e583ab95061b1ac19ac4a2e9a12d4ae5b0cd2306404f00d9e3e800783052"
+    }
+  },
+  "remaining": [
+    "Stored byte-only String returns beyond current reference-Notice identity admission",
+    "Other literal/default expressions, nullable/union String formals, partial supply and wider payload/owner/lifetime contexts",
+    "Complete core, Rocq interaction-tree transfer and BOLA/CRIS verification"
+  ],
+  "intentional_engine_divergences": [],
+  "artifact_location": "../php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/",
+  "artifact_boundary": "Evidence only; not build/runtime inputs.",
+  "canonical_actual": {
+    "revision": "698b26b0b1ca514f1f082d9e0e380df2a8440900",
+    "tree": "7813d94592bf3741a8af0d56cf4269973fec27cf",
+    "cut_parent": {
+      "commit": "a0524bff982023cb8bdd0e71ce618d9ffeb6601f",
+      "tree": "1385f42eade1984e0c48ae03f679bad01f492b36"
+    },
+    "reference_phase": {
+      "commit": "58d57bcfb8f3de5614c86e76c3b7ccc19b319904",
+      "tree": "8c949a5a77afbbed38caed247a51da594a4c436d",
+      "parent": "a0524bff982023cb8bdd0e71ce618d9ffeb6601f"
+    },
+    "reviewer": "/root/recover47_reference_defaults_review",
+    "decision": "CLEAR",
+    "actual_executions": 1,
+    "shared_with": "OUTPUT160",
+    "canonical_report_sha256": "23fde57ac573538ded023a7abfbeb3883def7750ced612b4d7b6e537b50c34a9",
+    "canonical_map_sha256": "c89cfa1b609924b7e3d4a066fa33f61d9b86d259a766d5252fdee20a26658a2f",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "52a26264c6bfd3dfc8c8ff2c5b9e5bd9bfcfb1e58e453395c5fe996dd6cf3ede",
+    "full_cache_persisted_before_assertions": true,
+    "fixed_git_facts_cached": 51,
+    "canonical_original_report_reads_reviewer": 1,
+    "canonical_original_map_reads_reviewer": 1,
+    "canonical_original_reads_author": 0,
+    "canonical_cache_reads_author": 0,
+    "source_agreements": 0,
+    "production_modules": 509,
+    "argv_paths": 512,
+    "watched_paths": 513,
+    "elapsed_seconds": 16.79165743314661,
+    "cap_seconds": 60,
+    "passed": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "reference_paths": 7,
+    "reference_new_files": 5,
+    "six_nonmake_posts_exact": true,
+    "current_make_literal_projection_foreign_preserved": true,
+    "combined_paths": 12,
+    "combined_new_files": 8,
+    "combined_nonmake_posts_exact": 10,
+    "combined_make_doc_projections_preserved": true,
+    "saved_main_diff_format": "REF phase and joint Git full-index forward/inverse apply exactly",
+    "output_disjoint_from_207": true
+  },
+  "canonical_tiny": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/author/actual-main-v1-tiny.json",
+    "sha256": "787c0618dbc7961197f11caba7fcf1fa84c6ae605a78e194767e58aed3b38c61"
+  }
+}

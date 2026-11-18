@@ -8,6 +8,22 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+ENUM320 one-sign zero/FIELD2 defaults retain native4 once/source4, prelaw936,
+author1568 and independent1504 (new3201450/bounded31954) in
+`../php-spec-evidence-archive/enum-deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-320/`.
+The [review](../coverage/semantics/deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json) binds fixed actual
+`d864cee03` production SL509 to the once-read canonical report/map and full
+raw/parsed/fixed-Git cache in `peer-main118-canonical-cache-v1/`. Two preserved
+prewrite projection failures carry runtime0; DOC16 was already placed with source.
+Author original report/map/cache reads remain0. Archives are evidence, not build inputs.
+
+COMP347 scoped-self DNF reference Get evidence is in
+`../php-spec-evidence-archive/comp347/`: `source-packet39.json`,
+`peer-ready38.json` and `peer39-actual-clearance-v1.json` bind source4,
+full states270/290/318/336, header442 and the sole production load.
+The original source120/state360 timeouts retain zero credit; the tracked
+mixed-only source240/260 and identical-fixture600 cuts remain separate.
+
 Quiet integer Multiply selector originals, two accepted overflow controls, source comparisons and twelve fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) binds SOURCE7, the original CV timeout0 and separate early-class resource correction, zero legacy updates and independently checked fixed source/canonical/map tuple. Archives are evidence rather than build/runtime inputs.
 
 ENUM319 direct zero/FIELD2 defaults retain native4 once/source4, prelaw1108,
@@ -38,6 +54,14 @@ prewrite preparations0 separately from actual `97bafc471` productionSL509.
 `independent/canonical-independent-tiny-v1.json` binds the full raw+parsed cache
 saved before assertions after one original actual/report/map read each; author
 original raw reads stay0. No accepted source/native or old campaign is renewed.
+
+OUTPUT160 emitted byte-complement originals/native8 once, baselineUnsupported1,
+source8, author19/13, independent105/15 and WHOLE6 remain under
+`../php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/`.
+The [review](../coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json) binds fixed `698b26b0b` and sole joint SL509
+16.791657433s/source0 to once-read canonical23fde57a/mapc89cfa1b. Full raw+parsed
+cache preceded assertions; author actual raw/full-cache reads0. The label-only
+four-fixture byte bridge renews no execution. Archives are evidence, not build inputs.
 
 OUTPUT159 exact integral FLOAT bitwise-NOT originals/native8-once, baseline
 Unsupported1, source8, author19/13 plus affected1, original peer65NONPASS,
@@ -123,6 +147,8 @@ REF142 evidence remains in `../php-spec-evidence-archive/supplied-optional-bool-
 REF143 evidence remains in `../php-spec-evidence-archive/supplied-optional-literal-bool-default-producer-reference-notice-143/`. `author/code-packet-v1.json` retains eight exact source posts/full parents and diffs; `author/validation-cuts-v1.json` separates native6 once, source3, controls3, original/corrected front and corrected WHOLE767. Original WHOLE failure and diagnostic localizer remain in `review/{whole-v1,localizer-v1}/`. The peer full cache precedes tuple assertions; `author/actual-main-v1-tiny.json` binds integrated `397a0854`, Git full-index MAIN diffs and author raw0. [Review](../coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json). Archives are evidence only.
 
 REF144 evidence is in `../php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/`. `author/code-packet-v1.json` retains nine source posts, full parents and forward/inverse diffs; `author/validation-cuts-v1.json` separates native5 once, source3, controls2, front274 and independent WHOLE707. `author/actual-main-v1-tiny.json` binds integrated `32da7472f`, the peer full cache saved before assertions and author raw0. [Review](../coverage/semantics/supplied-optional-fqn-bool-default-producer-reference-notice-review.json). Archives are evidence only.
+
+REF145 evidence is in `../php-spec-evidence-archive/supplied-optional-string-default-producer-reference-notice-145/`. `author/validation-cuts-v1.json` separates five unique native originals (original4 plus corrected-control1; current selection4), source2, corrected controls2, front194 and first independent WHOLE418. The original omitted String-return Unsupported and the pre-WHOLE one-clause fixture correction remain distinct with zero source credit. `author/code-packet-v1.json` preserves seven exact source posts/full parents/diffs; `author/actual-main-v1-tiny.json` binds the saved integrated cut and reviewer cache with author raw0. [Review](../coverage/semantics/supplied-optional-string-default-producer-reference-notice-review.json). Archives are evidence only.
 
 REF138 evidence remains in `../php-spec-evidence-archive/scoped-case-stdclass-producer-reference-notice-138/`. `author/code-packet-v1.json` binds eleven complete source-parent records and twelve exact posts/inverses; original literal diffs are saved as `author/forward-source-v1.diff` and `author/inverse-source-v1.diff`. `peer/review-v1.json` separates author source6/1121 and independent WHOLE1305 from preserved fixture-only failures. `peer/canonical-read-cache-v1.json` retains the sole parsed canonical report/map read; `author/main110-actual-immutable-tuple-v1.json` records joined9081 acceptance with author raw reads0. The [review](../coverage/semantics/scoped-case-stdclass-producer-reference-notice-review.json) retains exact scopes and unchanged holds. These external archives supply evidence only.
 

@@ -57,6 +57,14 @@ and malformed runs never become agreement credit. Metadata changes do not renew
 accepted execution evidence. A final combined campaign and fresh copied-path,
 network-isolated rebuild remain required before a complete-core claim.
 
+Bounded reference Get hooks support singleton scoped `self` alternatives in
+nominal and mixed DNF types; see the [family review](coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json).
+Scoped-self intersection conjuncts and wider hook contexts remain partial.
+
+Selected output-handler return casts admit emitted one-byte string complements,
+including derived NUL, with unchanged string storage; [review](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json).
+Wider strings, owners and lifetimes remain partial.
+
 ## Project map
 
 | Resource | Purpose |

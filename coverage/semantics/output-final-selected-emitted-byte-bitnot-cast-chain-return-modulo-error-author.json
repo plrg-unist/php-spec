@@ -1,0 +1,283 @@
+{
+  "family": "OUTPUT160 emitted single-byte STRING bitwise NOT in selected nested return casts",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "bounded independently reviewed semantics with fixed integrated composition",
+  "scope": "Already certified nonowning byte-length1 STRING children with child/root CODEfalse feed bitwise NOT under the existing two canonical scalar return casts in selected Warning/Deprecated output-finalization handlers. Wider owners, producers and contexts remain partial.",
+  "engine_basis": [
+    "Zend/zend_operators.c::bitwise_not_function uses ZVAL_CHAR for length1; the permanent character table includes bytes0..255. zend_compile_unary_op emits when its ternary/coalesce child is a TMP.",
+    "57-bitnot::bitnot_value calls30-string-carriers::string_byte_result true for length1, updating only RESULT to INTERNED_STRING. Empty/multi false path appends STRINGDATA even though pointer identities have no heap owners and value_nodes may be eps.",
+    "New arm is disjoint emitted child/rootCODEfalse, requires byte length1, own SOURCE/CODE/terminal line, absent root read/redirect and subtree effects, exact bitnot_apply NORMAL whole-state equality and INTERNED result. Folded raw STRING/INT/FLOAT policy stays unchanged."
+  ],
+  "design": "The emitted-only arm preserves own SOURCE/CODE/terminal line, absent read/redirect and empty complete subtree effects. Exact NORMAL bitnot_apply state equality returns an INTERNED character and leaves STRINGDATA unchanged. The permanent character table admits derived byte0; literal-source NUL and owned REQUEST-NUL release fences remain. Empty/multiple-byte operations allocate STRINGDATA despite having no heap owner and are refused.",
+  "source_law_revision": "3093f7534523997beadb511c5d35aa823fa93945",
+  "final_private_source": "d6d679a5e6dd8b9bcf6db7a7da65e86f3f0c6fe7",
+  "source_package_parent": "c33733d5489fa7d8f3d857b32257666b29d4c658",
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/baseline-01/report.json",
+    "sha256": "952fd6f007cfec3d0bd89fa62a9d442be09faf09e02ed58d300bbf62486745b0",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/baseline-launch-01.json",
+    "launch_sha256": "3b0bcaf2deadd44d933a42d4a13960847f81dbb3330e4f9cd069959152037e69",
+    "revision": "0062fa198a8126bb3fae635d680ed425553fec72",
+    "seconds": 42.71806837501936,
+    "stable": true,
+    "records": 1,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "model_status": "unsupported",
+    "native_once": 1,
+    "remaining_unrun": 7
+  },
+  "native": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/native-01/report.json",
+    "sha256": "20d3048bef08ba5a268acf93738cae075f63887d513a18f3b52caa0e043240ad",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/native-launch-01.json",
+    "launch_sha256": "2cc4008a30f0f596739ff44de84e47498a2ca82eb216226999e5b1143766a74d",
+    "revision": "3093f7534523997beadb511c5d35aa823fa93945",
+    "seconds": 0.017456152010709047,
+    "stable": true,
+    "records": 8,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "passed": true,
+    "observations_once": 8,
+    "saved_original_reused": 1,
+    "new_observations": 7,
+    "native_replays": 0
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/after-01/report.json",
+    "sha256": "afa9eb081c0b39998403eb2f45fa9ad4d8fb49a95e3d481cfc6763caf0169d39",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/after-launch-01.json",
+    "launch_sha256": "3781f47f9467db9e62b87a0a7e134dde180c8f91714d26fef73ed5eae4f87fb5",
+    "revision": "3093f7534523997beadb511c5d35aa823fa93945",
+    "seconds": 370.08902745787054,
+    "stable": true,
+    "records": 8,
+    "passed": true,
+    "agreements": 8,
+    "native_replays": 0,
+    "source_credit": 8,
+    "reaped": true,
+    "group_empty": true
+  },
+  "author_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-frontier-01/report.json",
+    "sha256": "514ad5b3f9fa430dd604670a5e3f41a735f0196dfa639c43ec4c1505609c1224",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-frontier-launch-01.json",
+    "launch_sha256": "c0f7cdc6cb16cc120bd43d3e507a78e2230a2bb813dfa1f15b52b77145eaff12",
+    "revision": "32c89737d8d40e9227b4e56bffecb71db9338184",
+    "seconds": 201.17875638511032,
+    "launch_seconds": 201.55700885900296,
+    "conditions": 19,
+    "passed": true,
+    "stable": true,
+    "source_credit": 0,
+    "native_credit": 0,
+    "reaped": true,
+    "group_empty": true,
+    "cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-validation-cache-160.json",
+    "full_raw_parsed_cached_before_assertions": true,
+    "records": [
+      {
+        "id": "warning-left-constant-full-true",
+        "conditions": 8,
+        "seconds": 95.53513720910996
+      },
+      {
+        "id": "deprecated-both-cv-pair-full-false-digit",
+        "conditions": 11,
+        "seconds": 105.64361917600036
+      }
+    ]
+  },
+  "author_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-lifecycle-01/report.json",
+    "sha256": "db7095e7fbe2c35f6e6954ede2c2d34980ce12d5afc67e3de93eaa1c21c22eca",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-lifecycle-launch-01.json",
+    "launch_sha256": "b1cb512f28eeeef0bea6c8a6f3274a8080be0c9a01c9472699a4c9712db3bfa6",
+    "revision": "32c89737d8d40e9227b4e56bffecb71db9338184",
+    "seconds": 294.04475136310793,
+    "launch_seconds": 294.42576155415736,
+    "conditions": 13,
+    "passed": true,
+    "stable": true,
+    "source_credit": 0,
+    "native_credit": 0,
+    "reaped": true,
+    "group_empty": true,
+    "cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-validation-cache-160.json",
+    "full_raw_parsed_cached_before_assertions": true,
+    "records": [
+      {
+        "id": "warning-left-constant-full-true",
+        "conditions": 6,
+        "seconds": 139.83614503708668
+      },
+      {
+        "id": "deprecated-both-cv-pair-full-false-digit",
+        "conditions": 7,
+        "seconds": 154.20860632602125
+      }
+    ]
+  },
+  "independent_reviewer": "/root/recover40_output_folded_review",
+  "independent_frontier": {
+    "conditions": 105,
+    "per_heap": [
+      63,
+      42
+    ],
+    "seconds": 196.084033962,
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer-front-01/report.json",
+    "sha256": "b305525c57c7c50cf3604e5d03a50f64d132ae2a303faf64b020b51abbac9825",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer-front-01-launch.json",
+    "launch_sha256": "7b903fac52af02a9b892c473b3d28616562408ebb4e0ad8effd3e19fdf758e88",
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "native_credit": 0,
+    "full_raw_parsed_cache_before_assertions": true
+  },
+  "independent_lifecycle": {
+    "conditions": 15,
+    "per_heap": [
+      8,
+      7
+    ],
+    "seconds": 282.420158214,
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer-life-01/report.json",
+    "sha256": "44d29809f2e101e59556c5c3618867feb7efd3a542a7c9dd81b5e652af8d80d8",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer-life-01-launch.json",
+    "launch_sha256": "069749643a6ad916e2ca05d197fea1e442a8eba269f483636896eb03620f5143",
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "source_credit": 0,
+    "native_credit": 0,
+    "full_raw_parsed_cache_before_assertions": true
+  },
+  "label_only_correction": {
+    "commit": "270c9d86c9f95650f4f703733ed1fe1621e08d93",
+    "bridge": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-label-fixture-byte-bridge-160.json",
+    "sha256": "8882471fae51aa882d512b35ccae6b85a5d206d92734453bc1468a916792a8c7",
+    "exact_generated_fixtures": 4,
+    "semantic_replays": 0
+  },
+  "accepted_cut_bridge": "Source8 law/catalogue3093 remain unchanged through finald6; new state files/Make/DOC were outside their watched map. Author19/13 retain first32c cuts through the exact four-fixture byte bridge after label-only270. Independent105/15 are first passes atd6. The actual joint SL509 load is separate and supplies no source credit.",
+  "source_package": {
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/source-packet-160.json",
+    "sha256": "96593601a7a6ee0a696fc7fb12c085eb10c0b480fa2de5714c1cf6ce8e87974b",
+    "base": "c33733d5489fa7d8f3d857b32257666b29d4c658",
+    "private_head": "d6d679a5e6dd8b9bcf6db7a7da65e86f3f0c6fe7",
+    "private_tree": "73763663e38f9bfe8178d8fd2bfc192d4dedb640",
+    "commits": [
+      "0062fa198a8126bb3fae635d680ed425553fec72",
+      "3093f7534523997beadb511c5d35aa823fa93945",
+      "32c89737d8d40e9227b4e56bffecb71db9338184",
+      "270c9d86c9f95650f4f703733ed1fe1621e08d93",
+      "d6d679a5e6dd8b9bcf6db7a7da65e86f3f0c6fe7"
+    ],
+    "forward": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/source-forward-160.patch",
+      "sha256": "77a6f54f1be06ee4ae81d231021de6e63a9516425900d214c36d5ab5adcc2d56"
+    },
+    "inverse": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/source-inverse-160.patch",
+      "sha256": "b6dbfb0909be696fb08cebe4cd012af1d984d9f3111846508612e3ba2942ccbe"
+    }
+  },
+  "source_whole": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer40-whole-160.json",
+    "sha256": "1f69987998d4439223c337fb1b52f880bf624870c3544d08b3211e6d6efa4387",
+    "passed": true,
+    "conditions": 6,
+    "semantic_runs": 0,
+    "native_runs": 0,
+    "full_modified_parents": 3,
+    "absent_new_parents": 3,
+    "posts": 6,
+    "Make_recipes": 5,
+    "DOC_literal_lines": 10,
+    "foreign_bytes_preserved": true
+  },
+  "composition": {
+    "authority": "reviewer-only original canonical/map reads; full raw+parsed cache before assertions; author tiny-only",
+    "tiny": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/peer40-integrated-tiny-160.json",
+      "sha256": "b9ec3f99c7d40798770e88ea1da871764ca4a858ec79b116571cd71b78403218",
+      "author_cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/author-integrated-tiny-cache-160.json"
+    },
+    "fixed_actual": "698b26b0b1ca514f1f082d9e0e380df2a8440900",
+    "fixed_tree": "7813d94592bf3741a8af0d56cf4269973fec27cf",
+    "phase_parent": "58d57bcfb8f3de5614c86e76c3b7ccc19b319904",
+    "phase_parent_tree": "8c949a5a77afbbed38caed247a51da594a4c436d",
+    "combined_parent": "a0524bff982023cb8bdd0e71ce618d9ffeb6601f",
+    "combined_parent_tree": "1385f42eade1984e0c48ae03f679bad01f492b36",
+    "canonical_report_sha256": "23fde57ac573538ded023a7abfbeb3883def7750ced612b4d7b6e537b50c34a9",
+    "source_map_sha256": "c89cfa1b609924b7e3d4a066fa33f61d9b86d259a766d5252fdee20a26658a2f",
+    "canonical": {
+      "mode": "production_SL",
+      "module_count": 509,
+      "argv": 512,
+      "watched": 513,
+      "cap_seconds": 60,
+      "seconds": 16.79165743314661,
+      "stdout_hex": "747275650a",
+      "stderr_hex": "",
+      "passed": true,
+      "stable": true,
+      "reaped": true,
+      "group_empty": true,
+      "source_credit": 0
+    },
+    "source_phase": {
+      "passed": true,
+      "source_phase_paths": 6,
+      "new_paths": 3,
+      "exact_private_posts": 4,
+      "literal_projection_lines": [
+        5,
+        10
+      ],
+      "full_fixed_parents": true,
+      "forward_inverse": true,
+      "foreign_bytes_preserved": true,
+      "fixed_canonical_passed": true,
+      "source_credit": 0,
+      "worktree_head_refreshes": 0,
+      "own_jobs": 0
+    },
+    "reviewer_original_reads": {
+      "canonical": 1,
+      "map": 1
+    },
+    "author_original_report_reads": 0,
+    "author_original_map_reads": 0,
+    "author_original_runtime_source_reads": 0,
+    "author_full_cache_reads": 0,
+    "author_tiny_reads": 1,
+    "semantic_replays": 0,
+    "source_replays": 0
+  },
+  "limits": "Empty/multi-byte output allocation and wider owners/producers/contexts remain partial. Pointer nonownership alone is insufficient: exact STRINGDATA/full-state preservation is required. Fractional/subnormal, nonfinite, NaN and out-of-range FLOAT bitwise conversions remain outside this intrinsic quiet arm. Owning/warningful conditions or results, parent constexpr redirects and wider contexts remain partial. Existing NaN/outer-cast/two-cast/source/owner bounds remain. Source47/DEFINE-NaN, NaNBYTE, Owned-REQUEST-NUL release, COMP88, OP12, undefined by-reference LIST, reserve93807cdd6/255, inventory169/306/closed0+1 and OB31 remain held. Complete PHP core, Rocq/CRIS and BOLA remain unfinished.",
+  "preserved_failures": [
+    {
+      "kind": "prelaw Unsupported",
+      "records": 1,
+      "source_credit": 0,
+      "native_once": 1,
+      "remaining_authored_variants_unrun": 7,
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-160/baseline-01/report.json",
+      "sha256": "952fd6f007cfec3d0bd89fa62a9d442be09faf09e02ed58d300bbf62486745b0"
+    }
+  ],
+  "semantic_discrepancies": [],
+  "metadata_semantic_runs": 0,
+  "metadata_native_runs": 0,
+  "metadata_head_refreshes": 0
+}
