@@ -169,6 +169,28 @@ dec $string_unset_bool_cv_post_array_leaf(pstate, pvalue) : bool
 def $string_unset_bool_cv_post_array_leaf(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ $c_string(n_bytes*) = n_bytes*)
 def $string_unset_bool_cv_post_array_leaf(S, pvalue) = $string_unset_bool_cv_post_value(pvalue) -- otherwise
 
+dec $string_unset_bool_cv_post_object(pstate, nat) : bool
+def $string_unset_bool_cv_post_object(S, n) = true
+  -- if $(n < |S.OBJECTS|)
+  -- if S.OBJECTS[n] = STDINSTANCE
+  -- if (HOBJECT n) <- $heap_prune($heap_graph(S)).NODES
+  -- if ~$instance_storage_freeing(S, n)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps)
+  -- if $object_table_at(S.OBJECTTABLES, n) = eps
+  -- if $node_children(S, HOBJECT n) = eps
+def $string_unset_bool_cv_post_object(S, n) = false -- otherwise
+
+dec $string_unset_bool_cv_post_object_cell(pstate, nat) : bool
+def $string_unset_bool_cv_post_object_cell(S, n) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (POBJECT n_object)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_unset_bool_cv_post_object(S, n_object)
+def $string_unset_bool_cv_post_object_cell(S, n) = false -- otherwise
+
 dec $string_unset_bool_cv_post_array_entries(pstate, nat*, pentry*) : bool
 dec $string_unset_bool_cv_post_array_node(pstate, nat*, nat) : bool
 def $string_unset_bool_cv_post_array_node(S, n_seen*, n) = true
@@ -182,16 +204,13 @@ def $string_unset_bool_cv_post_array_node(S, n_seen*, n) = false -- otherwise
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, eps) = true
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = ($string_unset_bool_cv_post_array_node(S, n_seen*, n) /\ $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*))
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*) = true
-  -- if $(n < |S.OBJECTS|)
-  -- if S.OBJECTS[n] = STDINSTANCE
-  -- if (HOBJECT n) <- $heap_prune($heap_graph(S)).NODES
-  -- if ~$instance_storage_freeing(S, n)
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps)
-  -- if $object_table_at(S.OBJECTTABLES, n) = eps
-  -- if $node_children(S, HOBJECT n) = eps
+  -- if $string_unset_bool_cv_post_object(S, n)
   -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_unset_bool_cv_post_array_leaf(S, pvalue) /\ $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*))
   -- if $value_nodes(pvalue) = eps
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
+  -- if $string_unset_bool_cv_post_object_cell(S, n)
+  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
   -- if $call_reference_operand_valid(S, REFERENCE n)
   -- if S.STORE[n] = DEFINED (PARRAY n_child)
