@@ -2239,3 +2239,22 @@ report/map reads1 stay distinct; author raw reads0. Exactly two current ARRAY
 STRING query groups are promoted through fresh controls; earlier campaigns and
 all exact holds remain unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-string-alias-post-review.json).
+
+Live unconstrained ALIAS cells may hold fieldless stdClass objects after nested-unset
+Warnings. The local object proof shares all seven existing DIRECT guards; real
+cell validity, absent constraints and pruned liveness precede the new arm. Two
+source buckets share one cell and one object edge. No uniqueness or owner-count
+restriction is added. Normal return preserves the fixed Error; pending throw
+preserves the same Throwable and caller tail. Real source rebinding changes both
+buckets and retires the old weak target. Key/middle retirement leaves the global
+alias and new target alive; final alias retirement removes that cell/object.
+
+Native2 once/source2, separate prelaw153/163 and170/183, author195/207 and
+independent219/229 SL180 cuts pass first attempts, without failures or corrections.
+Fresh DIRECT/objectowners3 and key-only controls keep broader ownership admitted;
+kind/allocation/constraint/field/source refusals remain separate. WHOLE6 and fixed
+actual8c84a741/solef24e5fd2 productionSL509 pass16.792307597s/source0 through
+immutablea1075573. Canonical execution1 and physical report/map reads1 remain
+distinct; author raw reads0. Typed/backed cells, non-stdClass objects, object fields,
+cycles and wider histories remain partial; all exact holds and prior cuts stay
+unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-alias-post-review.json).

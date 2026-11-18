@@ -1,0 +1,164 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-alias-post",
+  "status": "Independent WHOLE6 and fixed actual/canonical review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Ordinary NULL/BOOL CV post-warning nonempty arrays may contain live unconstrained ALIAS cells holding fieldless stdClass objects. Two source buckets share a real cell and one cell-to-object edge. The admission adds no unique-owner requirement.",
+  "public_source_revision": "8c84a741b691455e5aef406fd5bf27b5e9467514",
+  "private_source_revision": "03a5e09482c1015d0280aca6a2a99642363d10f3",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "23615ec7257af04224e16dd428e893e9655ac30c7bc4f5b78e42b67f148f44ea",
+    "law_revision": "c3fac2f55e42f58bb243934d717064181cdc13f4",
+    "law": "A local object predicate shares all seven former DIRECT-object guards byte-for-byte. A new ALIAS arm requires an initialized marked allocated reference cell, exact POBJECT, absent property/coercion/parameter backing, live pruned cell and the same live fieldless STDINSTANCE proof. It adds no uniqueness or owner-count requirement. Existing array ancestry, root/source/quiet-read and continuation bodies remain literal; generic425 is unchanged."
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_operators.c: zval_get_long_func IS_ARRAY uses only zend_hash_num_elements",
+      "Zend/zend_execute.c: zend_check_string_offset, zend_fetch_dimension_address, zend_wrong_string_offset_error",
+      "Zend/zend_vm_def.h: ZEND_FETCH_DIM_UNSET; borrowed CV FREE_OP2",
+      "Zend/zend_weakrefs.c: WeakReference target lifetime observations"
+    ],
+    "reason": "Array count conversion does not read or release aliased object payloads. Normal return keeps the fixed nested Error; a pending Exception keeps its identity and caller tail. Weak observations distinguish real alias rebinding and object retirement."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-alias-post",
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-alias-post/author-source6-freeze43-v1/manifest.json",
+    "sha256": "b33f30db97b7dc5cd6701c83ee57d71566b69cb5a98822f72febd0542f0425b4",
+    "revision": "03a5e09482c1015d0280aca6a2a99642363d10f3",
+    "tree": "592a69235fa649464e2081c48ad1bd74f1286e50",
+    "base": "cbca83205003eff15a18c7e4f9821c7c848b7545",
+    "intended_main_parent": "23f3fa51acf5cba3e4ca25373726e37e607a17c5",
+    "paths": 6,
+    "contains": "Six fullposts, complete local and intended MAIN Make/520 parents, four new-file absences, four patch directions, unique Make6 and ten report bindings."
+  },
+  "native_baseline": {
+    "report": "author-baseline43-v1/report.json",
+    "native_originals_once": 2,
+    "model_unsupported": 2,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "author-source43-v1/report.json",
+    "sha256": "ec89bc60dd3e2453573b6314224fdb7049934cad0994fcee8d23e11c1a024b78",
+    "agreements": 2,
+    "native_reused": 2,
+    "new_native": 0,
+    "mode": "production_SL",
+    "cap_seconds": 120,
+    "cases": "NULL-entry normal return and BOOL-entry pending throw. Real cell rebinding changes both buckets and retires the old weak target; source checkpoint R follows key/middle retirement with the new target retained by the global alias; final alias retirement makes the new weak get NULL."
+  },
+  "prelaw": {
+    "author_conditions": [
+      153,
+      163
+    ],
+    "author_derived": [
+      49,
+      50
+    ],
+    "peer_conditions": [
+      170,
+      183
+    ],
+    "peer_derived": [
+      47,
+      48
+    ],
+    "peer_summary": "peer-prelaw47-v1.json",
+    "peer_summary_sha256": "520e8fa8d82ea785e9690bef32500ebf0bbca83d49f6f3f61b4e044a26141807",
+    "result": "Actual source/quiet-read/fullheap, two cell aliases, one cell-to-object edge and weak nonownership precede old Unsupported. Derived rebind/retainer/final retirement remains separate and has source0/native0.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "post_states": {
+    "author_conditions": [
+      195,
+      207
+    ],
+    "author_derived": [
+      33,
+      33
+    ],
+    "author_summary": "author-post43-v1.json",
+    "author_summary_sha256": "c92e5a20d78ace69f813e9f2642993c8664eb518fd03516e13f68178de3ffde2",
+    "peer_conditions": [
+      219,
+      229
+    ],
+    "peer_derived": [
+      31,
+      31
+    ],
+    "peer_summary": "peer-post47-v1.json",
+    "peer_summary_sha256": "4007466777a3e5be3566931e0cf6e5247812a3ee1ab6a371f04ff9139d339854",
+    "mode": "SL",
+    "cap_seconds": 180,
+    "all_first_semantic_executions_passed": true,
+    "result": "Exact Error or same pending Throwable/full tail and unchanged heap; source/public/whole-split states and separate rebind/key-retainer/final object retirement. Allocation/kind/constraint/field/source refusals and key-only ownership stay distinct.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "affected_scope": "The seven old DIRECT guard lines and complete old520 inverse reconstruct exactly. A fresh valid-heap DIRECT substitution/objectowners3 passes PRE and POST, including new object_cell admission after law. Related maintained nonempty/deep/ARRAY/STRING fixtures have no object-ALIAS denial to promote; all closed campaigns remain unrenewed.",
+  "compatibility_bridge": "Author prelaw stays at6249 with the prepared peer file outside its exact watched set. Peer-only commit6e20 does not renew Apre. Source2/APOST retain lawc3fac inputs; final Make03a5 changes no tested semantic/fixture input. Actual five non-Make fullposts match the freeze and the unique Make6 removes to its complete current parent.",
+  "outcomes": {
+    "semantic_failures": 0,
+    "fixture_failures": 0,
+    "source_timeouts": 0,
+    "state_timeouts": 0,
+    "corrections": 0,
+    "actual_reader_preparation_issues": 0,
+    "semantic_reruns": 0
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-alias-post/peer-whole47-v1.json",
+    "sha256": "8e8c3cef821e5fccd305224fae2ce3505a5b8d363cabbbad1ade4629e8128dfd",
+    "verdict": "CLEAR",
+    "scope": "All six fullposts, both complete parents/four absences and four patch directions; unique Make6, ten frozen bindings plus two peer reports; literal DIRECT7 preservation, semantics, ownership, counterexamples and lifetimes.",
+    "new_executions": 0
+  },
+  "actual_integration": {
+    "revision": "8c84a741b691455e5aef406fd5bf27b5e9467514",
+    "tree": "396fc29e85386a795b625c54e3256f9fd96d3202",
+    "parent": "b679e5c7e5d00ba6b895c9e87a7625bec4547658",
+    "parent_tree": "9fff182cf0f0a9949082eec2e3db257f1353ec12",
+    "source_map_sha256": "709e4954b764fe378030cb4c1452441257e9a3fd86a58c65480e049ebf573c33",
+    "five_nonmake_fullposts_exact": true,
+    "complete_current_parents_and_four_absences": true,
+    "make_lines": 6,
+    "make_block_sha256": "8888aec5292ef802b93292427d558a233db865bd67fdd222e4064de4ef7d77b2",
+    "all_six_inverses_verified": true,
+    "source_credit": 0
+  },
+  "canonical": {
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watched_count": 513,
+    "seconds": 16.79230759711936,
+    "cap_seconds": 60,
+    "exit": 0,
+    "quiet_true_lf": true,
+    "stable": true,
+    "reaped": true,
+    "pass": true,
+    "source_credit": 0,
+    "report_sha256": "f24e5fd2d635638596357463fdd47c5657077213aec05ff1d29297612dad19b3",
+    "tested_revision": "8c84a741b691455e5aef406fd5bf27b5e9467514",
+    "executions": 1,
+    "physical_saved_report_reads": 1,
+    "physical_source_map_reads": 1
+  },
+  "actual_canonical_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-alias-post/peer-actual47-immutable-v1.json",
+    "sha256": "a10755730d54971d790e57672479051e369e26186195e8d3e86f9313f1bbdd78",
+    "verdict": "CLEAR",
+    "parsed_cache_sha256": "78b0c1ce12bb9b29a711c5e55a9fdf8159cbc2f2d35d9adcb443af4d5c21c768",
+    "use": "Immutable tuple only; original report/map/cache recovery paths remain there. No author original actual/source/report/map/rawcache reads or later HEAD refresh."
+  },
+  "author_raw_actual_canonical_map_reads": 0,
+  "remaining": "Typed/backed cells, non-stdClass objects, object fields, cycles, released/rebound root cells and wider payload/callback/lifetime histories remain partial.",
+  "holds": "Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, undefined by-reference LIST, COMP88, OP12, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": []
+}
