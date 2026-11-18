@@ -1970,3 +1970,17 @@ preparation correction used the existing cache. Author raw reads remain0 and
 earlier OUTPUT151/152/153 evidence is unrenewed.
 [Emitted-left short-circuit evidence](../../coverage/semantics/output-final-selected-emitted-left-short-circuit-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-emitted-left-short-circuit-cast-chain-return-modulo-error-review.json).
+
+Quiet full ternaries with an emitted condition also feed selected nested scalar
+return casts. Both arms retain proper SOURCE and compiled lines; the emitted
+parent retains the FALSE arm's terminal line with absent read/redirect and empty
+effects. Intrinsic quiet condition truth selects the existing branch plan. Its
+selected origin and VALUE_COPY line authenticate one nonowning VALUE and exact
+full-state copy; the opposite plan authenticates the unselected bounded plain-name
+constant or certified VALUE line without execution or truth demand. Each selected
+subtree is checked once. Selected values retain their own tags and the existing
+outer-cast policy, including its NaN limits. Folded conditions, shorthand,
+owning or warningful values and wider contexts remain partial; the two-cast gate,
+all held boundaries and OB31 remain unchanged.
+[Full-ternary evidence](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-review.json).
