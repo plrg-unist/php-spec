@@ -998,6 +998,20 @@ def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, p
   -- if $long_range(z_default) /\ $long_range($(-z_default))
   -- if $reference_notice_producer_supplied_int_type(phpType18, psparam.TYPE)
   -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
+def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, psparam :: psparam_tail*, b_optional) = (((NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT phpType37 metadata_parameter) :: phpType17_view*, psparam[.REQUIRED = true][.DEFAULT = PSNONE] :: psparam_view*))
+  -- if phpType17 = NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 (NExprUnaryPlus (NScalarInt (INTEGER z_default) metadata_default_leaf) metadata_default) phpType37 metadata_parameter
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC /\ ~psparam.REQUIRED
+  -- if psparam.DEFAULT = PSDEFAULT (NExprUnaryPlus (NScalarInt (INTEGER z_default) metadata_default_leaf) metadata_default) "float"
+  -- if $long_range(z_default)
+  -- if phpType18 =/= ABSENT /\ $reference_notice_producer_supplied_float_type(phpType18, psparam.TYPE)
+  -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
+def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, psparam :: psparam_tail*, b_optional) = (((NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT phpType37 metadata_parameter) :: phpType17_view*, psparam[.REQUIRED = true][.DEFAULT = PSNONE] :: psparam_view*))
+  -- if phpType17 = NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 (NExprUnaryMinus (NScalarInt (INTEGER z_default) metadata_default_leaf) metadata_default) phpType37 metadata_parameter
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC /\ ~psparam.REQUIRED
+  -- if psparam.DEFAULT = PSDEFAULT (NExprUnaryMinus (NScalarInt (INTEGER z_default) metadata_default_leaf) metadata_default) "float"
+  -- if $long_range(z_default) /\ $long_range($(-z_default))
+  -- if phpType18 =/= ABSENT /\ $reference_notice_producer_supplied_float_type(phpType18, psparam.TYPE)
+  -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
 def $reference_notice_producer_supplied_defaults(phpType17*, psparam*, b_optional) = eps -- otherwise
 
 dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool
