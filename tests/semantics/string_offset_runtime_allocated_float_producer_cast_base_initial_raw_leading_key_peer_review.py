@@ -80,7 +80,7 @@ S_abrupt = S_capture[.COMPLETION = UNSUPPORTED "control"]
             f'$compiled_identity_value(S_{name},porigin_atom) = ' + ('eps' if name == "nan" else f'(PFLOAT n_{name})'),
             f'$string_carrier_valid(S_{name},pvalue_{name}_cast)',
             f'$string_carrier_valid(S_{name},pvalue_{name}_base)']
-        if name in ("promoted", "digit"):
+        if name in ("promoted", "digit", "infinity"):
             checks += [
                 f'$string_read_runtime_value(S_{name},porigin_atom) = (PFLOAT n_{name})',
                 f'$string_read_allocated_value(S_{name},porigin_cast,pvalue_{name}_cast)',

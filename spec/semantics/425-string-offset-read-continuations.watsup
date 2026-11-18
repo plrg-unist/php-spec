@@ -880,7 +880,7 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $c_string(n_bytes*) = n_bytes*
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $cast_apply(S_before, CASTSTRING, PINT i, z_line) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; Finite FLOAT casts allocate even digit bytes, under unchanged live precision.
+;; Quiet FLOAT casts allocate under unchanged live precision; NaN stays excluded.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprCastString expression_child metadata)
@@ -897,7 +897,6 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $compiled_precision(S, (porigin_child)) = (z_precision)
   -- if $precision_value(S) = z_precision
   -- if $string_read_runtime_value(S, porigin_child) = (PFLOAT n_bits)
-  -- if $float_decode(n_bits) = FINITE n_sign n_num n_den
   -- if (n_bytes*, false) = $number_text(NFLOAT n_bits, z_precision)
   -- if $string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)
   -- if $c_string(n_bytes*) = n_bytes*
