@@ -63,7 +63,8 @@ def controls(index, case):
     for wrapper in ('NNullableType (NNameRelative (BYTES text_formal) metadata_formal) metadata_formal',
             'NUnionType (SEQUENCE ([NNameRelative (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal'):
         changed = shape.replace('NNameRelative (BYTES text_formal) metadata_formal', wrapper)
-        lines += [converted(changed) + ' = (' + changed + ')', '~' + proof(changed)]
+        expected = changed.replace('NNameRelative (BYTES text_formal)', 'NNameFullyQualified (BYTES "c3RkQ2xhc3M=")')
+        lines += [converted(changed) + ' = (' + expected + ')', '~' + proof(changed)]
     for before, after in (('metadata_formal)', 'eps)'), (metadata, 'eps')):
         lines += [converted(shape.replace(before, after)) + ' = (' + view.replace(before, after) + ')', proof(shape.replace(before, after))]
     for update in ('.BYREF = ' + ('true' if index == 0 else 'false'), '.VARIADIC = true',

@@ -1,0 +1,109 @@
+[
+  {
+    "id": "relative136-nullable-byval-object",
+    "source": "<?php declare(strict_types=1);\n// Relative FORMAL in an empty declaration namespace.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(?namespace\\stdClass $saved):?\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "759e58c23425bbe164167a0c49862ae5619fb98af3ac3d86eaaa5937b1431ee8",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "strict-global-bare-nullable-stdclass-object-byval-formal-fqn-return",
+      "source_sha256": "281103e85ca3c37b290dd14d91e3aeb452931207e9ba63b25058c8e98d194ed1",
+      "edits": "Replace only class FORMAL atoms by canonical namespace\\stdClass and line2 by an empty-namespace comment or conflicting ordinary stdClass import; preserve body, FQN RETURN and physical lines."
+    },
+    "role_index": 0,
+    "formal_name": "stdClass",
+    "shape": "nullable",
+    "nullable_first": false,
+    "import_target": null
+  },
+  {
+    "id": "relative136-nullable-multiple-byref-object-nullable-first-null",
+    "source": "<?php\nuse \\Other as stdClass; // Relative FORMAL ignores ordinary imports.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make(?namespace\\stdClass $left,?namespace\\stdClass &$right):?\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "f567b2a5ad6dbfca5d7c3a233e51c6b2d32d2bc01797ca9900809a004a8f0731",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "class_formals": [
+      "stdClass",
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "weak-global-multiple-untyped-bare-nullable-stdclass-object-byref-formal-fqn-return",
+      "source_sha256": "3585e13f84c26a634d635d9b242604a5d2df0daaa2318f635665b831cae1b787",
+      "edits": "Replace only class FORMAL atoms by canonical namespace\\stdClass and line2 by an empty-namespace comment or conflicting ordinary stdClass import; preserve body, FQN RETURN and physical lines. Also annotate the already-NULL first actual $left as ?namespace\\stdClass to exercise real NULL reception before the object BYREF parameter."
+    },
+    "role_index": 1,
+    "formal_name": "stdClass",
+    "shape": "nullable",
+    "nullable_first": true,
+    "import_target": "Other"
+  },
+  {
+    "id": "relative136-union-byval-object",
+    "source": "<?php declare(strict_types=1);\nuse \\Other as stdClass; // Relative FORMAL ignores ordinary imports.\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bool|namespace\\stdClass|string $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "8d297391f7fa5e9505ecd696b78e681b2680951de0e6088d19007cbb4c500aa9",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "strict-global-ordered-bool-bare-stdclass-string-byval-formal-fqn-return",
+      "source_sha256": "07a3fda18f0c7bb4e73f1bfb77fff32f56af1ff6c6767a0fc55264da6bb49974",
+      "edits": "Replace only class FORMAL atoms by canonical namespace\\stdClass and line2 by an empty-namespace comment or conflicting ordinary stdClass import; preserve body, FQN RETURN and physical lines."
+    },
+    "role_index": 0,
+    "formal_members": [
+      "bool",
+      "class",
+      "string"
+    ],
+    "formal_name": "stdClass",
+    "shape": "union",
+    "nullable_first": false,
+    "import_target": "Other"
+  },
+  {
+    "id": "relative136-union-multiple-byref-object",
+    "source": "<?php\n// Relative FORMAL in an empty declaration namespace.\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make($left,namespace\\stdClass|null &$right):\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "00d319daba7e565adf42b869b29aa679156390a313831c00f3444813b83e23c7",
+    "native_stdout": "N;M:1:5;H:9:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 9,
+    "class_formals": [
+      null,
+      "stdClass"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_formal_producer_reference_notice_cases.json",
+      "id": "weak-global-multiple-untyped-ordered-bare-stdclass-null-byref-formal-fqn-return",
+      "source_sha256": "1f42f2eb1ca2a111fc8c4e22cd7447d4197a359452fba8656f42f9bae8d19877",
+      "edits": "Replace only class FORMAL atoms by canonical namespace\\stdClass and line2 by an empty-namespace comment or conflicting ordinary stdClass import; preserve body, FQN RETURN and physical lines."
+    },
+    "role_index": 1,
+    "formal_members": [
+      "class",
+      "null"
+    ],
+    "formal_name": "stdClass",
+    "shape": "union",
+    "nullable_first": false,
+    "import_target": null
+  }
+]
