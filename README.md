@@ -1,5 +1,11 @@
 # PHP syntax in P4-SpecTec
 
+Own public parentless short reference Get admits finite flat nominal unions of
+three or more quiet class arms containing `self` or `namespace\self`.
+Defining authority, exact arm order, typed aliases, atomic refusal, object
+identity and real source detachment remain required; wider forms stay partial.
+[Review](coverage/semantics/self-nominal-union-parentless-short-reference-get-hook-review.json).
+
 Own public parentless short reference Get admits `self` or `namespace\self`
 with one distinct quiet class in either order, retaining defining authority,
 typed aliases, atomic refusal, object identity and source detachment. Larger
