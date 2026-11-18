@@ -1,5 +1,11 @@
 # PHP syntax in P4-SpecTec
 
+Own public parentless short reference Get admits `self` or `namespace\self`
+with one distinct quiet class in either order, retaining defining authority,
+typed aliases, atomic refusal, object identity and source detachment. Larger
+self unions, intersections/DNF and wider contexts remain partial.
+[Review](coverage/semantics/self-nominal-pair-parentless-short-reference-get-hook-review.json).
+
 Compressed historical evidence is stored outside Git; see the
 [artifact locations and commit map](docs/ARTIFACTS.md) for lookup and recovery.
 
