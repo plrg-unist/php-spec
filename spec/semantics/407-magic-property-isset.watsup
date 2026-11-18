@@ -875,6 +875,51 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBi
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (ptbytes)
   -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = (PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) /\ (ptbytes_right =/= eps /\ ptbytes_right =/= [48])))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = eps
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpBooleanAnd expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
+  -- if ptbytes_left = $echo_value(pvalue_left)
+  -- if ptbytes_right = $echo_value(pvalue_right)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = (PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) /\ (ptbytes_right =/= eps /\ ptbytes_right =/= [48])))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = eps
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalAnd expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
+  -- if ptbytes_left = $echo_value(pvalue_left)
+  -- if ptbytes_right = $echo_value(pvalue_right)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = (PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) \/ (ptbytes_right =/= eps /\ ptbytes_right =/= [48])))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = eps
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpBooleanOr expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
+  -- if ptbytes_left = $echo_value(pvalue_left)
+  -- if ptbytes_right = $echo_value(pvalue_right)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = (PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) \/ (ptbytes_right =/= eps /\ ptbytes_right =/= [48])))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = eps
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalOr expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
+  -- if ptbytes_left = $echo_value(pvalue_left)
+  -- if ptbytes_right = $echo_value(pvalue_right)
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (PBOOL ((ptbytes_left =/= eps /\ ptbytes_left =/= [48]) =/= (ptbytes_right =/= eps /\ ptbytes_right =/= [48])))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = eps
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpLogicalXor expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
+  -- if ptbytes_left = $echo_value(pvalue_left)
+  -- if ptbytes_right = $echo_value(pvalue_right)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = ($property_magic_cv_raw_typed_ternary_value_select(pvalue_left =/= PNULL, pvalue_left, pvalue_right))
   -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
@@ -884,7 +929,7 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBi
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = eps -- otherwise
 
-;; FULL preserves old condition bytes and admits typed COALESCE, TERNARY and NOT fallbacks.
+;; FULL preserves old condition bytes and admits typed COALESCE, TERNARY, NOT and Boolean fallbacks.
 dec $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) : ptbytes?
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = (ptbytes)
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) = (ptbytes)
@@ -897,6 +942,21 @@ def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, 
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBooleanNot expression metadata) = ($echo_value(pvalue))
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBooleanNot expression metadata) = eps
   -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBooleanNot expression metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanAnd expression_left expression_right metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalAnd expression_left expression_right metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpBooleanOr expression_left expression_right metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalOr expression_left expression_right metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (pvalue)
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = eps -- otherwise
 
 ;; Typed ternary-left coalesce keeps NULL distinct from false and empty echo.

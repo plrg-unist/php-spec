@@ -188,7 +188,7 @@ def bounds():
         state = 'S_ternary_condition_parent_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'') + ')' if number == 2 else ' = eps')]
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'1' if number == 1 else b'') + ')' if number in (1, 2) else ' = eps')]
     for number, shape in enumerate((('?', TRUE, ('??', ('?', TRUE, string(b'OWNER'), NULL), FALSE), FALSE),
                                    ('?', TRUE, FALSE, ('??', ('?', TRUE, string(b'OWNER'), NULL), FALSE)))):
         expression, _, occurrences = source_tree(shape, 'ternary_condition_owner_' + str(number))

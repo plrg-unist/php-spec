@@ -119,7 +119,7 @@ def bounds():
     for number, shape in enumerate(shapes):
         expression, _, occurrences = source_tree(shape, 'coalesce_bound_' + str(number))
         state = 'S_coalesce_bound_' + str(number)
-        value = '(PBOOL false)' if number == 10 else 'eps'
+        value = '(PBOOL false)' if number in (10, 12) else 'eps'
         result += [f'{state} = ' + raw.source_state(occurrences),
                    operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = ' + value]
     shape = ('??', ('??', ('?', TRUE, NULL, FALSE), FALSE), string(b'R'))

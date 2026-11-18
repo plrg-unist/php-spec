@@ -174,7 +174,7 @@ def bounds():
         state = 'S_condition_parent_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'1') + ')' if number == 0 else ' = eps')]
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = (' + payload(b'1') + ')' if number in (0, 2) else ' = eps')]
         if number == 0:
             result += [operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = (PBOOL true)']
     for number, shape in enumerate((('??', TRUE, string(b'OWNER')), ('??', NULL, string(b'OWNER')),

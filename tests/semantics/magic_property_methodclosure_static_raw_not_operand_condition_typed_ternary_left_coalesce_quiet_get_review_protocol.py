@@ -203,7 +203,7 @@ def bounds():
         state = 'S_not_parent_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
                    old_bytes(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps',
-                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   condition(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = eps' if number == 0 else ' = (' + payload(b'1' if number == 3 else b'') + ')')]
     for number, shape in enumerate((('!', string(b'OWNER')),
                                    ('!', ('??', ('?', TRUE, NULL, string(b'OWNER')), FALSE)))):
         expression, _, occurrences = source_tree(shape, 'not_owner_' + str(number))
