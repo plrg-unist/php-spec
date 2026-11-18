@@ -32,6 +32,8 @@ Saved ordinary NULL/BOOL CVs retain bounded live nonempty arrays after nested-un
 
 Parser-literal CONCAT trees admit canonical nonnegative finite raw FLOAT leaves alongside STRING/INT leaves in selected handler return casts. Exact source, precision, pure formatting and ownership guards remain; wider forms stay partial. [Review](coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json).
 
+Quiet compiler-folded scalar CONCAT composes existing certified children in selected nested INT/BOOL/FLOAT handler returns. Source and compiler precision agree at the root and both children, with exact compiler entry and ownership guards; wider forms remain partial. [Review](coverage/semantics/output-final-selected-compiled-scalar-concat-cast-chain-return-modulo-error-review.json).
+
 One raw FLOAT/sign-left and signed64 INT/sign-right arithmetic predicate selects full-ternary scalar tags when pure and actual result bits are infinite. Every integer sign remains in range; broader operands and contexts stay partial. [Review](coverage/semantics/deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Ordinary singleton producer RETURN aliases resolve quietly to exact canonical global stdClass in retained namespace/import contexts. Param normalization runs first; return verification, retirement and private Notice cells remain. Scoped ordered unions are described above; relative RETURNs and wider lifetimes stay partial. [Review](coverage/semantics/scoped-stdclass-return-producer-reference-notice-review.json).

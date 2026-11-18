@@ -1854,3 +1854,23 @@ Unary signs, nonfinite or malformed leaves, NUL, emitted CONCAT and wider
 producers/handlers/lifetimes remain partial; every exact hold remains unchanged.
 [Parser FLOAT CONCAT evidence](../../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json).
+
+Quiet compiler-folded scalar CONCAT also feeds selected nested INT/BOOL/FLOAT
+handler return casts. Both children retain existing VALUE certificates and true
+compiler flags; the parent keeps the positive terminal RHS line. Authenticated
+source, root and both child compiler precision values agree. The existing pure
+compiled formatter, exact plain pool, INTERNED identity, whole NORMAL entry and
+child/result nonownership remain required.
+Eight default source comparisons reuse one saved and seven new native
+observations, each made once. A separate startup precision 1 original preserves
+STRING '-2' and FLOAT -2.0. Author frontier/lifecycle checks (38/26) and independent
+checks (166/31) retain separate private SL508 cuts at the original limits.
+The first Unsupported result and the assessment-only returncode assertion remain
+preserved with zero agreement credit; no old campaign is replayed.
+The sole production SL509 load at actual/joined `e31f8aa6a` passes in
+16.536328349 seconds under the original 60-second cap, with zero source credit.
+Independent review uses one saved report/map read each and a fixed cached tuple.
+Wider producers, precision histories, owners/lifetimes and all held boundaries
+remain partial; no shared precision API or parser rule changed.
+[Compiler-folded scalar CONCAT evidence](../../coverage/semantics/output-final-selected-compiled-scalar-concat-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-compiled-scalar-concat-cast-chain-return-modulo-error-review.json).
