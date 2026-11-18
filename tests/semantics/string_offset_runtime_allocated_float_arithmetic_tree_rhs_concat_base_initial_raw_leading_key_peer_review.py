@@ -329,9 +329,8 @@ $origin_node(S_capture.SOURCES,porigin_base) = (NExprBinaryOpConcat expression_l
 $origin_node(S_capture.SOURCES,porigin_left) = (expression_left)
 $origin_node(S_capture.SOURCES,porigin_right) = (expression_right)
 expression_right = NExprCastString expression_number metadata_right
-expression_number = NExprTernary expression_condition expression_selected expression_skipped metadata_number
+expression_number = NExprTernary expression_condition ABSENT expression_skipped metadata_number
 expression_condition = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_condition) metadata_negative_condition) metadata_condition
-expression_selected = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_selected) metadata_negative_selected) metadata_selected
 expression_skipped = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_skipped) metadata_negative_skipped) metadata_skipped
 $origin_child((porigin_right),[PCFIELD 0]) = (porigin_number)
 $origin_node(S_capture.SOURCES,porigin_number) = (expression_number)
@@ -344,23 +343,15 @@ S_capture.CODE = [pcode]
 porigin_right = PORIGIN n_unit pcpath_right
 porigin_number = PORIGIN n_unit pcpath_number
 $origin_child((porigin_number),[PCFIELD 0]) = (porigin_condition)
-$origin_child((porigin_number),[PCFIELD 1]) = (porigin_selected)
 $origin_child((porigin_number),[PCFIELD 2]) = (porigin_skipped)
 $origin_node(S_capture.SOURCES,porigin_condition) = (expression_condition)
 $string_read_runtime_value(S_capture,porigin_condition) = (PFLOAT 13846598529327300608)
 $truth_value(S_capture,PFLOAT 13846598529327300608,18) = S_capture[.RESULT = KNOWN (PBOOL true)]
-$origin_node(S_capture.SOURCES,porigin_selected) = (expression_selected)
 $origin_node(S_capture.SOURCES,porigin_skipped) = (expression_skipped)
-porigin_selected = PORIGIN n_unit pcpath_selected
 $code_expression(pcode.EXPRESSIONS,pcpath_number) = ((z_number,false))
 $(z_number > 0)
 $compiled_read(S_capture,porigin_number) = eps
 $compiled_precision(S_capture,(porigin_number)) = (14)
-$compiled_precision(S_capture,(porigin_selected)) = (14)
-$code_expression(pcode.EXPRESSIONS,pcpath_selected) = ((z_selected,false))
-$(z_selected > 0)
-$compiled_read(S_capture,porigin_selected) = eps
-$string_read_runtime_value(S_capture,porigin_selected) = (PFLOAT 13846598529327300608)
 $code_expression(pcode.EXPRESSIONS,pcpath_right) = ((z_right,false))
 S_prefix = S_capture[.STRINGDATA = S_capture.STRINGDATA[0:4]]
 S_cast = $cast_apply(S_prefix,CASTSTRING,PFLOAT 13846598529327300608,z_right)
