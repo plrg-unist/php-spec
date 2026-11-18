@@ -12,26 +12,24 @@ The [inventory](coverage/semantics/features.json) contains **169 constructors**
 24 pending, 1 validated). Validated closure remains **0 constructors / 1 runtime
 obligation**. No bounded family result closes the remaining core work.
 
-The latest reviewed metadata cohort integrates bounded scoped-self mixed
-short-reference Get unions, allocated FLOAT arithmetic CONCAT bases, integral
-FLOAT bit-not handler returns, supplied literal-Boolean defaults and repeated
-finite nonzero FLOAT-sign defaults. Its independent fixed finals are closed;
-each family keeps its original source, state, failure and production-load cuts:
+The current reviewed cohort covers bounded direct quiet stdClass ARRAY fields,
+fully qualified Boolean defaults, nonnull FLOAT coalesce bases and certified
+zero/FIELD2 defaults. Each family retains its original source, state, failure
+and production-load cuts; complete PHP core remains unfinished:
 
-- [Compiler mixed unions](coverage/semantics/self-mixed-nominal-union-parentless-short-reference-get-hook-review.json).
-- [Allocated FLOAT arithmetic](coverage/semantics/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-review.json).
-- [Output handler bit-not](coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json).
-- [Literal-Boolean producer defaults](coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json).
-- [Repeated finite sign defaults](coverage/semantics/deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+- [Direct quiet stdClass ARRAY fields](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json).
+- [Fully qualified Boolean defaults](coverage/semantics/supplied-optional-fqn-bool-default-producer-reference-notice-review.json).
+- [Nonnull FLOAT coalesce bases](coverage/semantics/string-offset-runtime-allocated-float-coalesce-tree-rhs-concat-base-initial-raw-leading-key-review.json).
+- [Certified zero/FIELD2 defaults](coverage/semantics/deferred-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
-Finite array fields across nested-unset Warnings are placed at `6a3096be1`.
-All ten planned author/reviewer SL180 checks passed and reaped; its sole current
-production SL509 load passed in 17.534799968 seconds with source credit 0.
-One completed public case and one pending direct-source budget bridge retain
-separate evidence; earlier public timeouts have zero credit, and no third CLI
-attempt is claimed. Independent actual review and the family metadata use the
-saved immutable tuple; this source placement does not establish wider field or
-lifetime support. [Artifacts](docs/ARTIFACTS.md) records external evidence recovery.
+Direct dynamic array fields across nested-unset Warnings preserve COW, shared
+references and staged retirement in the bounded quiet stdClass domain. Two native
+originals ran once; a public normal comparison and a pending direct-source budget
+bridge retain separate agreement cuts. All ten bounded checks passed and reaped;
+original timeouts and fixture failures keep zero credit. Actual `6a3096be1` and its
+sole SL509 load are independently clear from one saved cache. Wider fields and
+lifetimes remain partial. The [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json)
+and [artifact index](docs/ARTIFACTS.md) retain exact limits, failures and recovery.
 
 ## Integrated behavior and entrypoints
 
@@ -66,13 +64,13 @@ current lanes below remain bounded parts of unfinished families:
 
 | Lane | Author / reviewer | Current work |
 | --- | --- | --- |
-| References | `recover46_reference_fqn_defaults_impl` / `recover47_reference_defaults_review` | Fully qualified Boolean defaults (REF144): reviewed source packet ready for integration. |
+| References | `recover46_reference_fqn_defaults_impl` / `recover47_reference_defaults_review` | FQN Boolean defaults (REF144): integrated and independently reviewed; supplied string defaults (REF145): native4 once and Unsupported baseline retained. |
 | Compiler | `recover39_compiler_mixed_impl` / `recover38_compiler_dnf_review` | Scoped-self DNF (COMP347): author checks passed; independent validation remains in progress. |
-| Quiet reference Get | `recover34_get_not_impl` / `recover33_get_multiply_review` | Multiplication: source comparisons passed; the overflow Unsupported control timeout is unresolved and carries zero credit. |
-| String fields | `recover47_string_array_fields_impl` / `recover51_string_array_review` | ARRAY source placed; immutable actual review and concise family metadata remain. |
-| Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover52_dynamic_arith_review` | Numeric nonnull coalesce: author/reviewer validation remains in progress. |
-| Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | Zero/FIELD2 defaults (319): author checks passed; independent review remains. |
-| Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Handler-return BYTE casts (160): saved source evidence accepted; state fixtures and WHOLE remain. |
+| Quiet reference Get | `recover35_get_multiply_impl` / `recover33_get_multiply_review` | Multiplication: source comparisons passed; the overflow Unsupported control timeout is unresolved and carries zero credit. |
+| String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties: source-first scope assessment; new validation unrun. |
+| Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover52_dynamic_arith_review` | Nonnull FLOAT coalesce bases integrated and reviewed; full-ternary source witnesses reserved. |
+| Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | Zero/FIELD2 defaults (319) are integrated and independently reviewed; wider defaults and lifetimes remain partial. |
+| Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Emitted single-byte bitwise NOT in handler returns (160): saved source evidence accepted; state fixtures and WHOLE remain. |
 
 Shared metadata belongs to the integrator: README, this checkpoint, the feature
 inventory and ARTIFACTS. Authors supply bounded family records and literal/keyed

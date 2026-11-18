@@ -29,9 +29,12 @@ quiet result. Previously admitted infinities retain the existing rules.
 POWER, integer/string/CV leaves, other casts, general VALUE producers,
 multirow RHS allocation and wider owners, release and lifetimes remain partial.
 
-A nonnull numeric COALESCE control has the same quiet FLOAT VALUE and exact
-one-row replay, yet fails this raw-tree grammar. The earlier POWER control has
-VALUE EPS and retains zero grammar-boundary credit.
+At the arithmetic-only cut, a nonnull numeric COALESCE control had the same
+quiet FLOAT VALUE and exact one-row replay but failed the raw-tree grammar.
+[Nonnull FLOAT coalesce trees](STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-COALESCE-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md)
+now admit that form; the current independent negative control uses a numeric
+full ternary with genuine VALUE and full replay. The earlier POWER control's
+VALUE EPS and zero grammar-boundary credit remain unchanged.
 
 The [review record](../../coverage/semantics/string-offset-runtime-allocated-float-arithmetic-tree-rhs-concat-base-initial-raw-leading-key-review.json)
 keeps new native originals observed once, Unsupported/prelaw refusals, source

@@ -1,0 +1,198 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-array-fields-post",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure executable SpecTec",
+  "feature_base": "e892af49b5e6b3dd1fbac65af4b1d96d203a03cd",
+  "source_revision": "98d081501899d8adfd6e8950597c2f877fc463a0",
+  "source_immediate_parent": "107f4a5202d257442aafde15a88858b6fc7d7920",
+  "implementation": [
+    "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "engine_provenance": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_execute.c:zend_check_string_offset",
+      "Zend/zend_operators.c:zval_get_long_func",
+      "Zend/zend_vm_def.h:ZEND_UNSET_DIM",
+      "Zend/zend_object_handlers.c:zend_std_write_property",
+      "Zend/zend_objects_API.c:zend_objects_store_del"
+    ]
+  },
+  "contract": {
+    "admitted": "DIRECT dynamic array fields in the existing live, quiet STDINSTANCE postvalue domain; existing finite path-local array classifier retains scalar/string, alias, liveness and constraint guards.",
+    "recursion": "Before logical array recursion, one physical reachable-node filter rejects HOBJECT and every HCELL with any foreach, typed-CV-string or update release flag. Existing array seen-path rejection excludes cycles while shared siblings remain admissible.",
+    "ownership": "Exact property_release_nodes preserves duplicate DIRECT table edges. Both field writes separate containers while embedded primitive references remain shared. Old object and field tables retire before the outside table/reference and replacement object.",
+    "held": "Array/object-valued owning ALIAS fields, object-bearing/cyclic field arrays, declared/typed/backed fields, cached property tables, other object kinds and wider owners/lifetimes remain partial. Accepted scalar/REQUEST/primitive/STRING field clauses and other object/CV/source guards remain literal.",
+    "foreach_evidence": "The filter checks all three flags. Same-view foreach OLD requires non-REF while valid array ALIAS requires REF; no marked-foreach runtime coverage or blanket scanner-monotonicity theorem is claimed."
+  },
+  "evidence_root": "../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-array-fields-post/",
+  "source_agreement": {
+    "native_originals": 2,
+    "native_executions": 2,
+    "native_replays": 0,
+    "normal_public": {
+      "report": "author47-source-post-v2/report.json",
+      "row": "nested-unset-bool-cv-object-array-fields-post-null-return",
+      "seconds": 106.64982843399048,
+      "model_limit": 120,
+      "outer_limit": 150,
+      "retained_without_replay": true
+    },
+    "pending_direct_source_bridge": {
+      "report": "peer-post51-budget1-v1/report.json",
+      "conditions": 202,
+      "seconds": 140.297387,
+      "limit": 180,
+      "unique_credit": 1,
+      "statement": "Exact checked original SOURCE reaches S_P, takes the actual new step to full S_R and directly resumes to NORMAL with the same pending Throwable, complete native bytes and final retirement. Separate staged core checks cover B/R/O. No pending public-CLI pass or cross-fixture full-state equality is claimed."
+    },
+    "collector": {
+      "report": "author47-collector-v1/report.json",
+      "sha256": "d750939792e42d10a2e08cd994b2898bb691953851743222f72556083d7a1c00",
+      "scope": "Normal accepted cut reused against unchanged application inputs and exact argv; pending model/outcome are NULL and native-only agreement credit remains zero in this phase."
+    },
+    "make_obligation": "Both author core/guards and independent core/guards/budget must pass for each original; a native-only pending row cannot close the target."
+  },
+  "checks": {
+    "author_pre_law": {
+      "revision": "7218a35c1196f3b6dc38d4b59d3f7dcc0d8b646c",
+      "conditions": [
+        227,
+        237
+      ],
+      "derived": [
+        99,
+        100
+      ]
+    },
+    "independent_pre_law": {
+      "revision": "f9157200209dde4547251e6f44b95710c1d4ad78",
+      "conditions": [
+        275,
+        288
+      ],
+      "derived": [
+        117,
+        118
+      ]
+    },
+    "author": {
+      "packet": "author47-post-v2.json",
+      "sha256": "2ddd5a3ac3317d0b7187e756599312fd17474f8a800c1c16caa5d2a4673af7ff",
+      "core": [
+        236,
+        249
+      ],
+      "core_derived": [
+        91,
+        91
+      ],
+      "guards": [
+        204,
+        212
+      ],
+      "guards_derived": [
+        87,
+        87
+      ]
+    },
+    "independent": {
+      "packet": "peer-post51-v1.json",
+      "sha256": "21759f78fe28240dfe9e54b893e43ca7cdc74a53441bcbc9be9867c292a9f576",
+      "core": [
+        292,
+        302
+      ],
+      "budget": [
+        192,
+        202
+      ],
+      "guards": [
+        209,
+        225
+      ],
+      "guard_derived": [
+        63,
+        68
+      ]
+    },
+    "mode": "SL,180 seconds per part; all ten post parts PASS and reaped; native/source agreement counts are separate from derived checks.",
+    "controls": "Direct/ordinary alias parent backedges; pure array cycles; empty/deep/shared acyclic arrays; embedded array aliases versus refused ALIAS properties; invalid wrappers/bytes/liveness/constraints; genuine compiler-authenticated UPDATE_CELL and protected typed-COPY released cells with hidden parent STORE edges.",
+    "scope": "Fresh original bytes and all source/CODE/heap/owner/callback/line/budget facts remain checked. No old-family campaign was renewed."
+  },
+  "zero_credit_records": [
+    {
+      "path": "author47-prelaw-v1-0/report.json",
+      "cause": "Fixture expected the right table to retain outside identity; writing its REF bucket also performs container COW."
+    },
+    {
+      "path": "author47-source-post-v1/report.json",
+      "cause": "Both public90 cases timed out; aggregate acceptance0."
+    },
+    {
+      "path": "author47-source-post-v2/report.json",
+      "cause": "Pending public120 timeout and whole-campaign acceptance0; normal individual pass remains separately retained."
+    },
+    {
+      "path": "author47-post-v1-0/report.json",
+      "cause": "Combined 324-condition fixture exceeded180."
+    },
+    {
+      "path": "peer-post51-core1-v1/report.json",
+      "cause": "Combined staged and repeated complete tail exceeded180."
+    },
+    {
+      "path": "peer-post51-guards0-v1/report.json",
+      "cause": "Fixture path grammar rejection before runtime."
+    },
+    {
+      "path": "peer-post51-guards0-v2/report.json",
+      "cause": "Fixture path grammar rejection before runtime."
+    },
+    {
+      "path": "peer-post51-guards1-v1/report.json",
+      "cause": "Fixture assumed global CODE governed typed COPY; selected function CODE remains authoritative, so the negative now removes CURRENT."
+    },
+    {
+      "path": "author47-pending-source-v3.py",
+      "cause": "Prepared150-second public comparator remained UNRUN0; no third budget attempt."
+    }
+  ],
+  "compatibility": "Exact PRELAW constructor bridges retain earlier passes. Post-only literal corrections preserve accepted peer core/budget/guard0 cuts. Removed duplicate complete replays map to the required independent direct-budget cuts; no combined whole324/337/303 pass is claimed.",
+  "independent_review": {
+    "agent": "/root/recover51_string_array_review",
+    "status": "WHOLE and source6 literal projection PASS, all planned checks reaped",
+    "source_manifest": "source6-v1/manifest.json",
+    "source_manifest_sha256": "68da43d6d663548f226c50d1c224e9598d791cfaeb3ef677cce68f1478576b25",
+    "operations_sha256": "50327cc19a3fe68815890ed0d05e25aee187e4886cad2789fc99b81e93bc8651"
+  },
+  "actual_integration": {
+    "status": "independently clear from the sole saved actual",
+    "source_revision": "6a3096be11012505e3d8929433e4dfc9c4874f35",
+    "tree": "59b01987ac8a1258cd15a30abe20729c30679ac2",
+    "parent": "2ea6bd5720d2d1b644db78a4dfa43f9e88ca9d9a",
+    "mode": "production SL509,512 argv,513 watched",
+    "seconds": 17.5347999681253,
+    "limit": 60,
+    "exit": 0,
+    "inputs_stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "canonical_report_sha256": "91e5883c5bc6ebbaadcf1261abcd01d8640f14d43c1fdd74a790f85a120e53d3",
+    "source_map_sha256": "b972086bdacce7d9c4b542a5764b532ec3aa87456f839b82c705161756f0e0a1",
+    "tiny_result": "integrated51-actual-cache-v1/review-tiny.json",
+    "tiny_sha256": "500d29e4e2c5c329ab8619a4a9bacf142bd6a8712ac0244d15d62be376f5a3de",
+    "independent_original_report_reads": 1,
+    "independent_original_map_reads": 1,
+    "full_raw_and_parsed_cache_before_assertions": true,
+    "author_original_report_map_full_cache_reads": 0,
+    "new_runtime_source_native_state_runs": 0,
+    "projection": "Six paths, four absent additions, five exact private sources and eight unique literal operations; full forward/inverse roundtrip preserves foreign Make bytes."
+  },
+  "unchanged": {
+    "reserve": "93807cdd6/255",
+    "inventory": "169/306; closed0+1 and all exact holds unchanged",
+    "engine_bugs_or_intentional_divergence": "none identified in this slice"
+  }
+}

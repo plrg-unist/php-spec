@@ -1,0 +1,163 @@
+{
+  "family": "supplied-optional-fqn-bool-default-producer-reference-notice-144",
+  "status": "independently reviewed partial increment",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed ordinary-CV producers with fully supplied optional untyped, plain bool or matching literal true/false formals admit fully qualified builtin true/false defaults. Exact whole ConstFetch/FullyQualified Name AST, inner and outer metadata, decoded case-insensitive spelling and explicit true/false default kind must match. Only the required-header proof view erases defaults; live signatures, actual reception, default demand, return verification, frame retirement and private Notice-cell ownership remain unchanged. A later omitted FQN false default retains Boolean identity.",
+  "implementation": {
+    "author": {
+      "commit": "759746a861c81356644192c28449f99709766f70",
+      "tree": "e05061cf1d8b266588fff0a2aa0cd2f588799a8c"
+    },
+    "rule": {
+      "commit": "2c9c8250197103edd8979f270c30dffc16b3465e",
+      "tree": "224ce9fa41f83954dad67d333a88dc9e2b7e4978",
+      "added_lines": 8,
+      "insertions": 1,
+      "encoding_contract": "Exact whole FQN ConstFetch/Name AST, both metadata layers, decoded casefolded true/false spelling and same explicit kind; untyped/plain bool or matched literal formal only."
+    },
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/author/code-packet-v1.json",
+      "sha256": "439cd4ac148b7f8e260e03cca50bdd4d88d4eed7b5219fedc68fa3a52160f666"
+    },
+    "source_posts": {
+      "spec/semantics/207-error-handler-runtime.watsup": "ca55fc3eb10265000a67eae890ab5c7d7e4a50d4474764696aec58b49e0fc03e",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_review_state.py": "83dd6a1b5f1928abbf39a03f07f8909a171009a97d07b73f8efa3213a22bfb4d",
+      "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_review_state.py": "e69762ea28bbfe13f34a6903c848573b875946ba1f08c5df616b3af886201c3a",
+      "tests/semantics/supplied_optional_fqn_bool_default_producer_reference_notice_cases.json": "86b1f0647d716f60b803e321d29985439429fb09ef7d0fc777f3d47c76347425",
+      "tests/semantics/supplied_optional_fqn_bool_default_producer_reference_notice_sources.py": "f8fb8ae9823868243b3b7ae2d4e518a4f0d224dfaa1afc3f9ca65a3d8266e83d",
+      "tests/semantics/supplied_optional_fqn_bool_default_producer_reference_notice_state.py": "025ce3b61a9603de659d19908fb5f709859774d2a981daed64cb35283910b03f",
+      "tests/semantics/supplied_optional_fqn_bool_default_producer_reference_notice_review_state.py": "143d8673b812faf239edd4ab591c5c6360f1bd7f3653c86311182b67a04e1c75",
+      "tests/semantics/supplied_optional_fqn_bool_default_producer_reference_notice_run.py": "d6b9fa440d1af558f09c5b7820638c136511c1b4b63fbcae2a60de2e3cc64bfa"
+    },
+    "make": "One FQN-default controller row after the literal-Boolean-default row; current MAIN projection preserves every foreign row.",
+    "production_139_140_141_142_143_guards_unchanged": true,
+    "old_query_promotions": "Exactly the FQN tag-loop query in each old142/143 helper becomes positive. Relative and neighboring malformed-name queries remain negative; historical campaigns stay closed."
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_resolve_const_name, zend_try_ct_eval_const, zend_compile_const_expr_const, zend_compile_params, zend_is_valid_default_value",
+    "vendor/php-src/Zend/zend_constants.c: _zend_get_special_const",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_RECV_INIT supplied versus omitted argument branches",
+    "spec/semantics/17-signatures.watsup: psconstantkind, psacceptdefault; spec/semantics/95-type-values.watsup: typed_conversion_at"
+  ],
+  "validation": {
+    "cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/author/validation-cuts-v1.json",
+      "sha256": "edab6913ba4f341b1528b3313956837f0bdcd09464093666767bf707225db861"
+    },
+    "native_once": {
+      "invocations": 5,
+      "normal": 4,
+      "static_rejection": 1,
+      "report_sha256": "c83607553ad259fcbdef99d9678d2804f349f8ad3d6224ff847a8a049d74b039"
+    },
+    "supplied_source": {
+      "agreements": 3,
+      "revision": "2c9c8250197103edd8979f270c30dffc16b3465e",
+      "report_sha256": "1819cdabc4aff1d6048831b12da43f7a4bd1c3ed243f274d6b4b1475295400fc"
+    },
+    "existing_controls": {
+      "normal": 1,
+      "static_rejection": 1,
+      "new_support_credit": 0,
+      "revision": "d4466ae111f7d33090f332d85b9cba3c423cb39d",
+      "report_sha256": "509a4c3aa9ce08f0262519954930b99cd80518a0cdc03e9170f4c83e333f199d"
+    },
+    "prelaw_front": {
+      "conditions": 274,
+      "reached": 274,
+      "derived": 0,
+      "modules": 507,
+      "source_agreements": 0,
+      "report_sha256": "ff1f97384dd566b0a3590e47870e70c08cf42671f08f960ef56ab834a3a63757"
+    },
+    "independent_whole": {
+      "revision": "d81d25df0a7ba253b05f5ef815e346f3f0053ebc",
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 707,
+      "reached_conditions": 420,
+      "derived_conditions": 287,
+      "source_agreements": 0,
+      "tree": "a5b09e071e8a607dd9728119393d692e7b1cfa36",
+      "author_derived_conditions": 48,
+      "independent_derived_conditions": 239,
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/review/whole-v1/report.json",
+      "sha256": "642e54daf266d3375950083caa6f40728faa31a48d83d1a7627e51b219a109e5",
+      "passed": true,
+      "process": {
+        "exit": 0,
+        "elapsed": 96.77957677841187,
+        "timeout": false,
+        "cap_seconds": 1200,
+        "group_after": []
+      },
+      "invocations": 1
+    },
+    "author_full_state_invocations": 0,
+    "controller": {
+      "static_syntax_import_and_independent_diff_review": "PASS; previous family shape with family/doc/prefix and 5case/5record/4normal assertions only",
+      "invocations": 0
+    },
+    "patch_checks": {
+      "forward_git_apply_check_exit": 0,
+      "inverse_git_apply_check_exit": 0,
+      "full_tree_roundtrip": true
+    },
+    "accepted_replays": 0,
+    "historical_campaign_renewals": 0
+  },
+  "retained_failures": {
+    "baseline": "First supplied original Unsupported; other two UNRUN; source0.",
+    "new_fixture_or_semantic_failures": 0
+  },
+  "remaining": [
+    "Relative names, null/general constant defaults and other default expressions",
+    "Partial supply, nullable/union literal formals and wider header/payload/owner/lifetime contexts",
+    "Complete core, Rocq interaction-tree transfer and BOLA/CRIS verification"
+  ],
+  "intentional_engine_divergences": [],
+  "artifact_location": "../php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/",
+  "artifact_boundary": "Evidence only; not build/runtime inputs.",
+  "canonical_actual": {
+    "revision": "32da7472f2025d878f43debe008066a764ec6476",
+    "tree": "fcaef0eee672ef8a84399c7368de60cac3ed10d4",
+    "parent": "982d89981a283926ad9e255e7ede31f5970e5c04",
+    "reviewer": "/root/recover47_reference_defaults_review",
+    "decision": "CLEAR",
+    "actual_executions": 1,
+    "canonical_report_sha256": "c00568eddcdd13c638671b4fc6f2ea6ec24c33b8b0e825bf37b725c6b31f6279",
+    "canonical_map_sha256": "d93f2a04e47f1594526b7b1a124f9e4d10101bab97a11437889c436bb0a5445f",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "b167fa9886f886cd41c550bc8fb006e993889da8614af6ebc76867e1fb2c8527",
+    "full_cache_persisted_before_assertions": true,
+    "canonical_original_report_reads_reviewer": 1,
+    "canonical_original_map_reads_reviewer": 1,
+    "canonical_original_reads_author": 0,
+    "source_agreements": 0,
+    "production_modules": 509,
+    "argv_paths": 512,
+    "watched_paths": 513,
+    "elapsed_seconds": 16.99196288990788,
+    "cap_seconds": 60,
+    "passed": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "eight_nonmake_posts_exact": true,
+    "current_make_literal_projection_foreign_preserved": true,
+    "saved_main_diff_format": "Git full-index forward/inverse, exact apply",
+    "main_preparation_executions": 0
+  },
+  "canonical_tiny": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-fqn-bool-default-producer-reference-notice-144/author/actual-main-v1-tiny.json",
+    "sha256": "6e6ca4a034e4bf8bdd32082f566cad062982e4a224a78478162af0eef402d2b6"
+  }
+}

@@ -2359,3 +2359,34 @@ fields, cached tables, other object kinds, cycles and wider histories remain
 partial. All exact holds,
 reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-string-alias-fields-post-review.json).
+
+DIRECT dynamic array fields also survive these retained quiet stdClass postvalues.
+One physical reachable-node filter refuses objects and all three released-cell
+flags before the existing array classifier runs. This prevents hidden STORE
+backedges and recursive object admission while retaining existing leaf, string,
+alias, liveness and constraint guards. Path-local array checks reject cycles and
+permit shared siblings; the other object/CV/source guards remain literal.
+
+Two fresh originals separate left/right/outside containers through COW while
+sharing embedded primitive references. Key retirement frees the old object and
+its field tables; the outside table/reference survives until outside removal,
+then the replacement object retires. The two native originals ran once. Normal
+public execution retains its 106.65-second cut at the 120-second limit; pending
+agreement uses an exact checked-source
+SL180 direct-budget bridge plus separate staged B/R/O checks. It does not claim
+a pending public-CLI pass or equality of full states across separate fixtures.
+
+Author core checks 236/249 and guard checks 204/212, and independent core checks
+292/302, budget checks 192/202 and guard checks 209/225 pass separately within
+180 seconds. Public timeouts at 90/120 seconds, combined fixture timeouts at
+180 seconds and fixture failures retain zero credit.
+Genuine UPDATE_CELL and protected typed-COPY hidden-edge controls pass; no marked
+foreach runtime coverage is claimed. Independent WHOLE/source6 projection is
+clear. Actual `6a3096be1` and its sole production SL509 load pass in 17.53 seconds
+at the 60-second limit, with zero source credit; the saved actual/map review is
+independently clear through tiny `500d29e4`, with author raw/cache reads zero.
+Array/object-valued owning ALIAS fields, object-bearing/cyclic field arrays, and
+typed/declared/backed fields,
+cached tables, other objects and wider histories remain partial. Earlier cuts,
+exact holds, reserve 93807cdd6/255 and inventory 169/306 with closed 0+1 stay unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json).

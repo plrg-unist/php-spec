@@ -1779,3 +1779,14 @@ from its erased-return argument view. Literal masks reject integer `0`/`1` even
 in weak calls, and a later omitted call retains Boolean identity. Other names,
 nullable/union formals and wider defaults/lifetimes remain partial.
 [Review](../../coverage/semantics/supplied-optional-literal-bool-default-producer-reference-notice-review.json).
+
+Fully supplied optional untyped, plain `bool` or matched literal `true`/`false`
+formals also admit fully qualified builtin Boolean defaults. The proof keeps the
+exact checked ConstFetch/FullyQualified Name AST, both metadata layers, decoded
+case-insensitive spelling and the same explicit `true`/`false` kind. Only the
+required-header proof view erases defaults; actual reception, live signatures,
+return verification and private Notice-cell ownership retain their existing rules.
+Supplied calls preserve caller aliases and copied arrays, while later omitted
+`\false` remains Boolean false. Relative names, general constants and wider
+header/payload/lifetime contexts remain partial.
+[Review](../../coverage/semantics/supplied-optional-fqn-bool-default-producer-reference-notice-review.json).

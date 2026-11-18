@@ -1442,6 +1442,23 @@ without renewing accepted campaigns.
 Wider condition domains, NaN warnings, owning results and lifetimes remain partial.
 [Repeated finite-sign review](../../coverage/semantics/deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
+Direct ADD/SUBTRACT/MULTIPLY/DIVIDE condition trees with raw FLOAT presence also
+select full-ternary FIELD2 when their certified finite result is either FLOAT
+zero and phase-sensitive descendants prevent ordinary condition VALUE. The
+unchanged recursive collector authenticates every SOURCE occurrence, typed pool
+and pure intermediate result with absent CODE/read/redirects. Exact full,
+condition, skipped FIELD1 and selected FIELD2 sources, false root CODE, absent
+own pool/read and one proper FIELD2 redirect preserve selected scalar tags,
+declaration bindings, Shared caches and private integer reception.
+
+Four fresh originals combine strict FLOAT-zero checks with selected INT/NULL
+tags and named coercion-handler reentry. Native4 once/source4, prelaw4/1108 and
+author WHOLE6/1560 retain separate cuts. Genuine descendant reads retain the
+ordinary falsey route; a condition-root executable read still refuses the folded
+redirect. Outer signs over computed zero trees, computed unary children inside
+the binary base, nonfinite conditions, owning results and wider contexts remain
+partial. [Zero-tree review](../../coverage/semantics/deferred-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
