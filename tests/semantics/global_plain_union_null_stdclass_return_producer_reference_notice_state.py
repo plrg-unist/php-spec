@@ -68,7 +68,7 @@ def controls(case):
                 '~$reference_notice_producer_header(phpType6_producer, phpType16, ' + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])',
                 proof.replace(raw, raw_union(spelling, null_first, 'NNameFullyQualified'))]
             for tag in ('NIdentifier', 'NNameRelative'):
-                lines.append('~' + proof.replace(raw, raw_union(spelling, null_first, tag)))
+                lines.append(('' if tag == 'NNameRelative' and spelling == 'stdClass' else '~') + proof.replace(raw, raw_union(spelling, null_first, tag)))
             for wrong in (previous.objects.prior.class_type(spelling), normalized[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'):
                 lines.append('~' + proof.replace(normalized, wrong))
     for spelling in ('Other', 'Other\\stdClass', '\\stdClass', 'stdClass\x00'):

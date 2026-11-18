@@ -76,7 +76,7 @@ def controls(case):
     lines += ['~' + proof(raw.replace('NNameRelative ', 'NIdentifier ', 1)),
         proof(raw.replace('metadata_nullable', 'eps')), proof(raw.replace('metadata_return', 'eps')),
         proof(raw.replace('metadata_nullable', 'metadata_return')),
-        '~' + proof(inner), '~' + proof(union)]
+        '~' + proof(inner), proof(union)]
     for update in ('.BYREF = ' + str(case['kind'] != 'null').lower(), '.VARIADIC = true', '.REQUIRED = false', '.DEFAULT = PSDEFAULTUNSUPPORTED "forged nullable relative return formal default"'):
         parameters = '[psparam[' + update + ']]' if case['kind'] == 'object' else '[psparam_tag, psparam[' + update + ']]'
         lines.append('~' + scoped.replace(signature + ')', signature + '[.PARAMETERS = ' + parameters + '])'))

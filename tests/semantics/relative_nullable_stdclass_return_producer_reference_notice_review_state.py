@@ -63,7 +63,7 @@ def normal(initial, case, front):
         proof(formal=parameter.replace('metadata_parameter', 'eps')),
         '~' + proof(formal=parameter.replace('NName ', 'NNameRelative ', 1)),
         '~' + proof(raw=relative), proof(raw=relative, returns=singleton),
-        '~' + proof(raw='NUnionType (SEQUENCE ([' + relative + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return')]
+        proof(raw='NUnionType (SEQUENCE ([' + relative + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return')]
     for name in ('Other', 'STDCLASS', 'sTdClAsS', 'Namespace\\stdClass', '\\stdClass', 'stdClass\x00', '', 'int', 'mixed', 'self', 'array', 'callable'):
         raw = 'NNameRelative (BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()) + ') metadata_return'
         derived.append('~' + proof(raw=wrap(raw)))

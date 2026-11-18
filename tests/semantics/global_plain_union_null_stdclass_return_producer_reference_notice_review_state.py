@@ -56,7 +56,7 @@ def normal(initial, case, index, front):
         '~' + proof(members=case['return_members'][::-1]), '~' + proof(members=['class']),
         '~' + proof(name='Other',members=case['return_members'])]
     for tag in ('NIdentifier','NNameRelative'):
-        derived.append('~' + proof(raw=raw_union(case['return_members'],tag+' (BYTES text_return) metadata_return')))
+        derived.append(('' if tag == 'NNameRelative' and case['class_return'] == 'stdClass' else '~') + proof(raw=raw_union(case['return_members'],tag+' (BYTES text_return) metadata_return')))
     wrong = raw_union(case['return_members']).replace('NIdentifier (BYTES text_return_null)', 'NName (BYTES text_return_null)')
     derived += ['~' + proof(raw=wrong), '~' + proof(raw=raw_union(case['return_members']).replace('text_return_null','"aW50"')),
         '~' + proof(raw=raw_union(case['return_members'], 'NName (BYTES "T3RoZXI=") metadata_return'))]
