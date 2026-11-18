@@ -1,0 +1,170 @@
+{
+  "literal-this-fq-int": {
+    "id": "literal-this-fq-int",
+    "namespace": "W336A",
+    "payload_namespace": "W336A",
+    "consumer_namespace": "W336AX",
+    "names": [
+      "A",
+      "B"
+    ],
+    "header": "\\W336A\\A|int|\\W336A\\B",
+    "raw_names": [
+      "W336A\\A",
+      "int",
+      "W336A\\B"
+    ],
+    "raw_kinds": [
+      "NNameFullyQualified",
+      "NIdentifier",
+      "NNameFullyQualified"
+    ],
+    "resolved": [
+      {
+        "class": "W336A\\A"
+      },
+      {
+        "builtin": "int"
+      },
+      {
+        "class": "W336A\\B"
+      }
+    ],
+    "imports": "",
+    "typename": "W336A\\A|W336A\\B|int",
+    "free": "[]",
+    "free_check": "$r335 === []",
+    "steps": [
+      {
+        "statement": "$r335 = '127';",
+        "check": "$r335 === 127 && $s335 === 127",
+        "value": "PINT 127",
+        "marker": "N|"
+      },
+      {
+        "statement": "$s335 = true;",
+        "check": "$r335 === 1 && $s335 === 1",
+        "value": "PINT 1",
+        "marker": "B|"
+      }
+    ],
+    "bad": "[]",
+    "source": "literal-this-fq-int.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "arity": 3,
+    "class_names": [
+      "W336A\\A",
+      "W336A\\B"
+    ],
+    "first_object": "W336A\\A",
+    "last_object": "W336A\\B",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s335 = new \\W336A\\B();",
+        "object": "W336A\\B",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|N|B|P|D|F|Z|",
+    "receiver": "literal-string-this",
+    "provenance": {
+      "kind": "authored source derived from the COMP335 witness structure",
+      "original_case": "two-fq-int",
+      "changes": [
+        "fresh declaration namespace and root class",
+        "literal dynamic this receiver",
+        "literal field spelling in the array case"
+      ]
+    }
+  },
+  "literal-this-relative-array-null": {
+    "id": "literal-this-relative-array-null",
+    "namespace": "W336B",
+    "payload_namespace": "W336B",
+    "consumer_namespace": "W336BX",
+    "names": [
+      "A",
+      "B"
+    ],
+    "header": "array|namespace\\B|null|A",
+    "raw_names": [
+      "array",
+      "B",
+      "null",
+      "A"
+    ],
+    "raw_kinds": [
+      "NIdentifier",
+      "NNameRelative",
+      "NIdentifier",
+      "NName"
+    ],
+    "resolved": [
+      {
+        "builtin": "array"
+      },
+      {
+        "class": "W336B\\B"
+      },
+      {
+        "builtin": "null"
+      },
+      {
+        "class": "W336B\\A"
+      }
+    ],
+    "imports": "",
+    "typename": "W336B\\B|W336B\\A|array|null",
+    "free": "149",
+    "free_check": "$r335 === 149",
+    "steps": [
+      {
+        "statement": "$s335 = null;",
+        "check": "$r335 === null && $s335 === null",
+        "value": "PNULL",
+        "marker": "N|"
+      }
+    ],
+    "bad": "127",
+    "array": true,
+    "source": "literal-this-relative-array-null.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "literal",
+    "default": "ABSENT",
+    "arity": 4,
+    "class_names": [
+      "W336B\\B",
+      "W336B\\A"
+    ],
+    "first_object": "W336B\\A",
+    "last_object": "W336B\\B",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s335 = new \\W336B\\B();",
+        "object": "W336B\\B",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|A|N|P|D|F|Z|",
+    "receiver": "literal-string-this",
+    "provenance": {
+      "kind": "authored source derived from the COMP335 witness structure",
+      "original_case": "two-relative-array-null",
+      "changes": [
+        "fresh declaration namespace and root class",
+        "literal dynamic this receiver",
+        "literal field spelling in the array case"
+      ]
+    }
+  }
+}

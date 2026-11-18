@@ -2947,3 +2947,11 @@ retain exact source order, compatibility and resolved-name authority without an 
 Existing own-public parentless body, alias, scalar/array and real owner bounds remain.
 DNF, iterable and wider source/value/modifier/owner/lifetime contexts remain partial.
 [Review](../../coverage/semantics/mixed-nominal-union-parentless-short-reference-get-hook-review.json).
+
+Literal-string variable receivers such as `${'this'}->v` also return the
+same literal backing field in own public parentless short reference Get.
+Exact decoded `this` and identifier/string-literal member bytes remain required.
+The real expression child retains source, implicit reference signature and
+CODEARROW authority; its variable-name string stays a direct CV without executable leaf CODE.
+Existing header/value/alias/COW/owner bounds remain; computed receivers and wider contexts stay partial.
+[Review](../../coverage/semantics/literal-this-receiver-parentless-short-reference-get-hook-review.json).
