@@ -878,13 +878,16 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBi
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = eps -- otherwise
 
-;; FULL preserves old condition bytes and admits only typed COALESCE fallback.
+;; FULL preserves old condition bytes and admits typed COALESCE and TERNARY fallbacks.
 dec $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) : ptbytes?
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = (ptbytes)
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, expression) = (ptbytes)
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = ($echo_value(pvalue))
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = eps
   -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = (pvalue)
+def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = ($echo_value(pvalue))
+  -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = eps
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = (pvalue)
 def $property_magic_cv_raw_typed_ternary_full_condition_bytes(pcunit*, porigin, expression) = eps -- otherwise
 
 ;; Typed ternary-left coalesce keeps NULL distinct from false and empty echo.
