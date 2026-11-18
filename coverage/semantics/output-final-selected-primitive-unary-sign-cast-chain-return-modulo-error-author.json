@@ -1,0 +1,196 @@
+{
+  "family": "output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error",
+  "target": "PHP8.5.10 CLI NTS64/vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "Independently reviewed bounded extension; fixed actual and sole canonical clear; family partial",
+  "scope": "A separate20-line VALUE arm admits unary +/- over proper BOOL/NULL/FULLNUM STRING children only with COERCEDfalse, child/result nonownership, indexed SOURCE, own CODE UNIT/line/fold flag, exact folded read or emitted absence, full-state unary_apply equality and a bounded nonNaN numeric result.",
+  "numeric_policy": "The existing raw-numeric same-type rule is literal, including its raw INT_MIN negation refusal. The new primitive-input branch may quietly produce any bounded nonNaN numeric result, including STRING-derived overflow or promotion. No blanket integer-promotion exclusion is claimed.",
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_unary_pm and zend_try_ct_eval_unary_pm",
+    "Zend/zend_operators.c::_zendi_try_convert_scalar_to_number",
+    "35-scalar-operations.watsup::coerce_number,coerce_string and unary_apply",
+    "02-numeric-text.watsup::ntspace and ntclass"
+  ],
+  "quiet_boundary": "COERCEDfalse is required independently of full-state equality, so masked leading-number warnings cannot pass as quiet. BOOL/null conversions and FULLNUM string parsing retain pure authored rules; no native semantic answers are used.",
+  "source_package": {
+    "parent": "765782520fe85048436cd2ef704aaf605e3223b9",
+    "revision": "394a817e6096d69c8c043a5cbc44e7fc0dc2cb7a",
+    "tree": "e93013230437dc385e82bc28581e0d90be7f37b6",
+    "files": 7,
+    "complete_parents": 4,
+    "absent_parents": 3,
+    "forward_and_inverse_checks": 7,
+    "make_recipes": 4,
+    "make_inserted_sha256": "a3700d383f31ba94fa863aadb682835f8e615e18d0a177bad07f0e82c6ba8b42",
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/ready-source-152-corrected-manifest.json",
+    "manifest_sha256": "33e8558f096adadcd76f7e34e428e1f991df750ce81085739bf52bc2d9e08f9b",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/ready-source-152-corrected.patch",
+    "patch_sha256": "d9d52146a205c42eb4fe530f19099e2e2f083c1b5f3905beac50277218ebaf5e",
+    "whole_review": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer35-source-whole-01.json",
+      "sha256": "fc100cc946b59149318f6b24ac5164c6a7b57202657db39f6816577b1370ac97",
+      "passed": true
+    },
+    "affected_file_supplement": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer35-source-correction-01.json",
+      "sha256": "4ce791ca31a4d5c0844ea7194061d67d0873622d1fb06ade9dd286240bf75079",
+      "passed": true,
+      "unchanged_posts": 6,
+      "corrected_posts": 1,
+      "whole_review_reruns": 0
+    }
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-assessment-152/report.json",
+    "sha256": "d1d1a35b86e04ae24f6f0935583741854319573622244b62e2846da7f689af98",
+    "revision": "765782520fe85048436cd2ef704aaf605e3223b9",
+    "source_bytes": 475,
+    "source_sha256": "508f4318f6410229df820fadfd1800b0b95b42957b467c20e911e3147becbe59",
+    "native_exit": 255,
+    "model_exit": 1,
+    "model_status": "unsupported",
+    "remaining_authored_variants_unrun": 7,
+    "source_credit": 0
+  },
+  "native_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/native-01/report.json",
+    "sha256": "a90ae54782410e1e5b9c1454753b605870992d8f3c704068b8e3e8439d84d241",
+    "passed": true,
+    "saved_original_reused": 1,
+    "new_observations": 7,
+    "source_credit": 0,
+    "native_replays": 0
+  },
+  "source_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/after-01/report.json",
+    "sha256": "09f5b844ff0e75890e7324289c7ec2aed0fbf7033b9188fb9422af786e773f05",
+    "revision": "827c25dbe7ddd46fd2d4e75bbf1bbaf4fa2680d9",
+    "passed": true,
+    "agreements": 8,
+    "source_credit": 8,
+    "seconds": 430.1026285160333,
+    "stable_inputs": 565,
+    "native_replays": 0
+  },
+  "author_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/front-01/report.json",
+    "sha256": "3c750fc63c63045208d1eb4c87e425446873b16c1188a8e336e538e6d4c56db0",
+    "revision": "2d9401bd879c81023e22e32a8f3e181afaabc4ad",
+    "passed": true,
+    "assertions": 26,
+    "groups": [
+      18,
+      8
+    ],
+    "source_credit": 0,
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/front-launch-01.json",
+    "launch_sha256": "14ce3d7c2f89574d331d283f0366d3d360bfe3b8648597962f511314aac67132",
+    "seconds": 176.69188729999587
+  },
+  "author_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/life-01/report.json",
+    "sha256": "5b5236b1f3042b5a1e63d488fa5e5b7303357f221d3452e1781677d4ffb5636f",
+    "revision": "2d9401bd879c81023e22e32a8f3e181afaabc4ad",
+    "passed": true,
+    "assertions": 12,
+    "groups": [
+      6,
+      6
+    ],
+    "source_credit": 0,
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/life-launch-01.json",
+    "launch_sha256": "267fe41fd1b2a9949bc28a9faa97bc6270b7a93d2e90525962e82b1cfc011afb",
+    "seconds": 258.908497069031
+  },
+  "fixture_contract": "Separate SL508/cache=false/det=true cuts at300 seconds/fixture,660outer,C/UTC; fixtures carry0 source/native credit. Author runs exit0/empty stderr/reaped/groupempty/stable/no timeout.",
+  "affected_prior_queries": "Exactly10 original-builder instances are promoted in fresh author frontier: signed-numeric BOOL/STRING queries across3 original contexts (6) and recursive BOOL/NULL/STRING/NOT queries (4). Historical campaigns are not replayed.",
+  "fixture_correction": "The original peer-front01 generated DSL had a syntax error before observed JSON: all97 predicates unrun/source0. Only2 nat-list parenthesis spellings in the named peer file changed. Original raw artifacts and WHOLE7 remain preserved; affected-file1 supplement clears the correction. Corrected frontier97 passes at its separate cut; first lifecycle24 passes at its separate cut; no first-peer-front-pass claim.",
+  "accepted_cut_bridge": "The added/corrected peer file is absent from native/source/authorfront/authorlife input maps. Six source posts and all accepted inputs remain unchanged at their original revisions; no accepted execution was repeated.",
+  "limits": "This coercive-sign certificate refuses owning children and warning-producing or nonnumeric strings. Wider producer/callback/owner/lifetime contexts remain partial; earlier supported string and unary lanes stay unchanged. Source47/DEFINE-NaN, NaNBYTE, Owned-REQUEST-NUL release, COMP88, OP12, undefined by-reference LIST, reserve93807cdd6/255, inventory169/306/closed0+1 and OB31 are unchanged. Complete PHP core and later Rocq/CRIS/BOLA remain unfinished.",
+  "metadata_semantic_runs": 0,
+  "independent_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer-front-02/report.json",
+    "sha256": "f4d9a10004915d580f8600f51e9839a27943094898091cd2fdba7a0b1db7f124",
+    "passed": true,
+    "groups": [
+      40,
+      27,
+      30
+    ],
+    "assertions": 97,
+    "seconds": 276.22960438,
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer-front-launch-02.json",
+    "launch_sha256": "7adac7c248dc7cdd0bbbc8cd287806d747d30956d185972e03afca81da99ec7f",
+    "source_credit": 0,
+    "first_peer_front_pass_claim": false
+  },
+  "source_ready_clear": true,
+  "independent_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer-life-01/report.json",
+    "sha256": "203a84b7859f01a9658c59fbb6befd5cb6bc4cfb6e5e60113ae058305a193a3e",
+    "passed": true,
+    "groups": [
+      8,
+      7,
+      9
+    ],
+    "assertions": 24,
+    "seconds": 386.335826812,
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer-life-launch-01.json",
+    "launch_sha256": "2f6e8bc8b7cd28e7370e2770fb375e8bbae2487ccee66716f8bb52e36ef7d97a",
+    "source_credit": 0,
+    "first_pass": true
+  },
+  "independent_review": "coverage/semantics/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-review.json",
+  "composition": {
+    "immutable_projection": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-152/peer-final-clear-01.json",
+    "immutable_projection_sha256": "2a22a8a57826415006acca1a443303b7b3941b4e98b5e8bf380f11daec30a84d",
+    "actual_revision": "41fb862f4184f81daf3c46df0abf2f2a45519500",
+    "actual_tree": "2099f5d34f77aa28a488c1363e1c87dc1a90cf2c",
+    "actual_parent": "b8543a66bede7cb963d4069fedd7dfa667d2f2a5",
+    "source_map": {
+      "all_planned_affected_complete_before_placement": true,
+      "global_paths": 14,
+      "own_paths": 7,
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-output152-get-condition-source-placement-map-v1.json",
+      "physical_reads": 1,
+      "sha256": "ce4555d4b19cb6a0ba46bb1143693bba95d8e0fa223a5fafe9a3ba5748310d19"
+    },
+    "canonical": {
+      "argv_count": 512,
+      "cap_seconds": 60,
+      "complete_before_after_maps_equal": true,
+      "exit": 0,
+      "mode": "production_SL",
+      "modules": 509,
+      "ordered_modules_and_fixed_git_blobs_verified": true,
+      "passed": true,
+      "physical_reads": 1,
+      "production456_sha256": "6fe462500aa438b02f37aae874e951d5180ab0dbbe8a75ff816f95f02f24b470",
+      "reaped": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-output152-get-condition-load-v1/report.json",
+      "runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "seconds": 16.040209646103904,
+      "sha256": "c7311eeeae891f29678aebe96c3bd20f92bb6746deb4b8bdcda62e8ed93dbef3",
+      "source_credit": 0,
+      "stable": true,
+      "stderr_hex": "",
+      "stdout_hex": "747275650a",
+      "timeout": false,
+      "watched_count": 513
+    },
+    "reader_preparation_failures": 3,
+    "reader_preparation_note": "Three preparation assumptions corrected narrowly from cache: integer Make registration count; difflib hunk headers omit git Make-target labels; added files use verified absence/complete image rather than patch fields. No semantic discrepancy or original reread/HEAD refresh/canonical rerun.",
+    "failure_accounting": {
+      "baseline": "Unsupported1/source0, other7 initially unrun",
+      "correction": "two grouping strings only; original WHOLE7 plus affected-file1 supplement",
+      "first_peer_front_pass_claim": false,
+      "original_peer_frontier": "syntax before observed JSON, all97 unrun/source0"
+    },
+    "author_raw_actual_reads": 0,
+    "author_raw_canonical_report_reads": 0,
+    "author_raw_map_reads": 0,
+    "accepted_campaign_reruns": 0,
+    "later_head_refreshes": 0,
+    "metadata_semantic_runs": 0
+  }
+}

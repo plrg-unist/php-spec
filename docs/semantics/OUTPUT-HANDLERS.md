@@ -1900,3 +1900,28 @@ separate prior scope. Wider producers, precision histories, owners/lifetimes,
 every held boundary and OB31 remain partial and unchanged.
 [Parser positive-INF CONCAT evidence](../../coverage/semantics/output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error-review.json).
+
+Quiet unary +/- over proper BOOL/NULL/FULLNUM STRING children also feeds the
+selected nested scalar return casts. A separate VALUE arm requires explicit
+COERCEDfalse, child/result nonownership, indexed SOURCE, exact CODE UNIT/line/fold
+authority, a folded exact read or emitted absence, full unary state equality and
+a bounded nonNaN numeric result. The original raw-numeric same-type rule and its
+raw INT_MIN negation fence remain unchanged; numeric STRING inputs may quietly
+produce bounded numeric results through overflow or promotion.
+Eight source comparisons reuse one saved and seven new native observations once.
+Author frontier/lifecycle checks (26/12), including ten exact original-builder
+query promotions, and corrected independent frontier97/first lifecycle24 retain
+separate SL508 cuts at the original 300/660 limits. Old campaigns stay unrenewed.
+The first peer fixture stopped at DSL parsing before any observed predicates.
+Two grouping spellings were corrected; the original WHOLE7 plus an affected-file
+supplement preserves six unchanged posts, with no accepted execution repeated.
+Fixed actual `41fb862f4` and the sole production SL509 load (512 argv/513 watched
+inputs) pass in 16.040209646 seconds under cap60 with zero source credit. One
+physical saved report/map read each supplies the immutable cache. Three reader
+format assumptions were corrected from that cache without a semantic discrepancy,
+original reread, canonical rerun or later HEAD refresh; author raw reads remain0.
+This coercive-sign certificate refuses owning children and warning-producing or
+nonnumeric strings. Wider producers, callbacks, owners/lifetimes, every held
+boundary and OB31 remain partial; earlier supported unary/string lanes remain.
+[Primitive unary-sign evidence](../../coverage/semantics/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-review.json).
