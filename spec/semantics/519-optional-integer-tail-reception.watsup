@@ -873,6 +873,66 @@ def $lossy_optional_integer_float_tree_infinite_full_redirect(S, plenv, PORIGIN 
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_selected, false, z))
 def $lossy_optional_integer_float_tree_infinite_full_redirect(S, plenv, porigin) = eps -- otherwise
 
+;; Tagged trees preserve both raw leaf kinds through integer promotion.
+;; Pure FLOAT subtrees retain the preceding receipt without reinterpretation.
+dec $lossy_optional_integer_mixed_number_tree_value(pstate, porigin) : (pnumber, bool, bool)?
+dec $lossy_optional_integer_mixed_number_tree_inner(pstate, porigin, expression) : (pnumber, bool)?
+def $lossy_optional_integer_mixed_number_tree_value(S, porigin) = ((NFLOAT n_bits, false, true))
+  -- if $lossy_optional_integer_float_tree_value(S, porigin) = (n_bits)
+def $lossy_optional_integer_mixed_number_tree_value(S, PORIGIN n pcpath) = ((pnumber, true, b_float))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = eps
+  -- if $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 0
+  -- if $lossy_optional_integer_mixed_number_tree_inner(S, PORIGIN n pcpath, expression) = ((pnumber, b_float))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = ($number_value(pnumber))
+def $lossy_optional_integer_mixed_number_tree_value(S, porigin) = eps -- otherwise
+def $lossy_optional_integer_mixed_number_tree_inner(S, porigin, NScalarInt (INTEGER i) metadata) = ((NINT i, false))
+  -- if $long_range(i)
+def $lossy_optional_integer_mixed_number_tree_inner(S, PORIGIN n pcpath, expression) = ((NINT i, false))
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary <- [POSITIVE, NEGATIVE]
+  -- if $lossy_optional_integer_integer_literal(expression) = (i)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_child)
+  -- if $lossy_optional_integer_mixed_number_tree_value(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = ((NINT i_child, true, false))
+  -- if $lossy_optional_integer_integer_literal(expression_child) = (i_child)
+def $lossy_optional_integer_mixed_number_tree_inner(S, PORIGIN n pcpath, expression) = ((pnumber, (b_float_left \/ b_float_right)))
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_left)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_right)
+  -- if $lossy_optional_integer_mixed_number_tree_value(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = ((pnumber_left, b_int_left, b_float_left))
+  -- if $lossy_optional_integer_mixed_number_tree_value(S, PORIGIN n (pcpath ++ [PCFIELD 1])) = ((pnumber_right, b_int_right, b_float_right))
+  -- if b_int_left \/ b_int_right
+  -- if $number_binary(pbin, pnumber_left, pnumber_right) = NUM pnumber
+def $lossy_optional_integer_mixed_number_tree_inner(S, porigin, expression) = eps -- otherwise
+
+dec $lossy_optional_integer_mixed_number_tree_binary(expression) : bool
+def $lossy_optional_integer_mixed_number_tree_binary(expression) = true
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+def $lossy_optional_integer_mixed_number_tree_binary(expression) = false -- otherwise
+
+;; A proper nested root requires both raw kinds and certified infinite bits.
+dec $lossy_optional_integer_mixed_number_tree_infinite_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
+def $lossy_optional_integer_mixed_number_tree_infinite_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_selected expression_skipped metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_selected)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_skipped)
+  -- if $pfshape(expression_cond) = PFBINARY pbin expression_left expression_right
+  -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
+  -- if $lossy_optional_integer_mixed_number_tree_binary(expression_left) \/ $lossy_optional_integer_mixed_number_tree_binary(expression_right)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_mixed_number_tree_value(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = ((NFLOAT n_bits, true, true))
+  -- if $float_decode(n_bits) = INFINITE n_sign
+  -- if $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 1]), expression_selected, false, z))
+def $lossy_optional_integer_mixed_number_tree_infinite_full_redirect(S, plenv, porigin) = eps -- otherwise
+
 ;; Literal STRING truth authenticates borrowed compiler data, without numeric
 ;; coercion or a general string VALUE producer. Declaration bindings stay outside.
 dec $lossy_optional_integer_truthy_literal_string_full_redirect(pstate, porigin) : (porigin, porigin)?
@@ -909,6 +969,8 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, 
   -- if $lossy_optional_integer_integer_float_infinite_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_float_tree_infinite_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_mixed_number_tree_infinite_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_finite_nonzero_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
@@ -1987,6 +2049,11 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
   -- if $lossy_optional_integer_float_tree_infinite_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
+def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
+  -- if $lossy_optional_integer_mixed_number_tree_infinite_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
