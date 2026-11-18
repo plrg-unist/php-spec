@@ -2198,3 +2198,23 @@ fixture failure, successful diagnostic and prewrite Make-alignment refusal keep
 separate zero credit. Owning array aliases, object fields, cycles and wider
 payload/cell/lifetime histories remain partial; all exact holds stay unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-deep-array-post-review.json).
+
+Live unconstrained ARRAY-valued ALIAS entries reuse the finite array-node proof
+after nested-unset Warnings. Two source buckets share one real marked cell,
+which owns its runtime child once. Array-target identities extend the ancestor
+path; shared siblings remain admitted and alias-mediated cycles remain refused.
+Reference validity, absent property/coercion/parameter backing and live-cell
+checks precede descent. Existing leaves, root-cell, source, exact quiet read and
+continuation guards remain. Source key retirement leaves the global retainer and
+WeakReference target live; final alias retirement releases the child/object.
+A separate key-only ownership control confirms no global retainer is required.
+STRING-valued aliases remain outside this slice.
+
+Native4 once/source4 and all bilateral pre/post SL120/180 cuts pass first attempts.
+Independent WHOLE6 and fixed actual4f64d407c/sole00006ad0 productionSL509 pass
+16.088576824s/source0 through immutable463f72c0. Canonical execution1 and original
+report/map reads1 remain fixed; author raw reads0. One absent-parent reader
+KeyError was corrected from the parsed cache, with preparation0 and no raw or
+semantic renewal. Constrained/backed cells, STRING aliases, cycles, object fields
+and wider payload/cell/lifetime histories remain partial; all exact holds stay
+unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-array-alias-post-review.json).

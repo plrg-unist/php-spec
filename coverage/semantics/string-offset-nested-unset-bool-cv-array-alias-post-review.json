@@ -1,0 +1,174 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-array-alias-post",
+  "status": "Independent source6 WHOLE and fixed actual/canonical review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS signed64; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Live unconstrained ARRAY-valued ALIAS children in finite acyclic post-Warning arrays held by a saved ordinary initialized NULL/BOOL CV. STRING aliases, constrained/backed cells and cycles remain outside this slice.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "ab6c24f03fd98c16d4cc4d66238db373d8bd39bf9578cbf6b1f5bf5f27f86798",
+    "law_revision": "d1365b4c64fd974d3bc76bb728860c6465987b19",
+    "law": "A shared array-node predicate preserves the former DIRECT bound/allocation/pruned-node/ancestor checks and is reused for the actual ARRAY target of an ALIAS cell. The new arm requires valid marked allocated reference storage, an exact PARRAY target, no property/coercion/parameter backing and a live pruned HCELL before descent. Child paths use array IDs; sibling tails retain their parent path. Scalar/string/object leaves, root-cell, source, quiet-read and continuation guards stay literal; pure PARRAY value admission remains false."
+  },
+  "engine": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "routes": [
+      "Zend/zend_execute.c: zend_check_string_offset, zend_fetch_dimension_address, zend_wrong_string_offset_error",
+      "Zend/zend_operators.c: zval_get_long_func",
+      "Zend/zend_vm_def.h: ZEND_FETCH_DIM_UNSET; borrowed CV FREE_OP2"
+    ],
+    "reason": "Array-to-long conversion quietly tests the outer element count without reading or retiring its aliased children. The borrowed CV remains rooted; normal return raises the fixed nested Error, while a pending Exception retains its identity and complete caller tail."
+  },
+  "evidence_root": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-array-alias-post",
+  "source_freeze": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-array-alias-post/author-source6-freeze42-v1/manifest.json",
+    "sha256": "08a8648f5e65d0dc35826435894b557afa70c84281a50dfec815ba583987e3f1",
+    "revision": "59419c4f97c210d42db9302c8ad1b9e44487a0c4",
+    "tree": "f5084120f33eb3df104465da59a35c84f23c42f6",
+    "base": "69ac97dfffac7979dd94c6f9476421a85621675c",
+    "paths": 6,
+    "contains": "Six exact fullposts, two complete parents, four new-file absences, forward/inverse patches, authoritative Make6 blob and twenty relevant report bindings."
+  },
+  "native_baseline": {
+    "report": "author-baseline42-v1/report.json",
+    "native_originals_once": 4,
+    "model_unsupported": 4,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "author-source42-v1/report.json",
+    "sha256": "1a70104f00619294052dd4c6d930d7902a77f2c70a3e351a5e95ec9807575dc1",
+    "agreements": 4,
+    "native_reused": 4,
+    "new_native": 0,
+    "mode": "production_SL",
+    "cap_seconds": 120,
+    "cases": "Runtime scalar/mixed child producers under normal NULL-entry return and pending BOOL-entry throw. Two ALIAS buckets share one global marked cell and one child-array edge. Source mutation observes both aliases; exact output checkpoint R follows key retirement, and final global alias retirement releases the child/object."
+  },
+  "prelaw": {
+    "author_conditions": [
+      125,
+      135,
+      157,
+      167
+    ],
+    "author_derived": [
+      26,
+      27,
+      33,
+      34
+    ],
+    "peer_conditions": [
+      142,
+      155,
+      173,
+      186
+    ],
+    "peer_derived": [
+      30,
+      31,
+      38,
+      39
+    ],
+    "peer_summary": "peer-prelaw46-v1.json",
+    "peer_summary_sha256": "16142cbaf2a410309f3f8e1b949f28a85db35d78ba1a1870036e5294d1f7942b",
+    "result": "Actual raw source, exact quiet read, full heap, two incoming ALIAS edges, real marked cell and single runtime child owner/no pool root precede old Unsupported. Separately derived R checkpoints retain the rebound current child/global cell as key/middle retire; final alias retirement clears the mixed WeakReference. No whole-source agreement is credited to the bypass.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "post_states": {
+    "author_conditions": [
+      166,
+      178,
+      198,
+      210
+    ],
+    "author_derived": [
+      32,
+      32,
+      32,
+      32
+    ],
+    "peer_conditions": [
+      182,
+      192,
+      216,
+      226
+    ],
+    "peer_derived": [
+      23,
+      23,
+      26,
+      26
+    ],
+    "peer_summary": "peer-post46-v1.json",
+    "peer_summary_sha256": "402e7f5f1ee0b00cd30e577397e340dc799ac3ce86d2551886ff2b171e97650c",
+    "mode": "SL",
+    "cap_seconds": 180,
+    "all_first_pass": true,
+    "result": "Exact Error or same pending Throwable/full tail; full/source/public/whole-split states and separate key/retainer/child/object retirement. Valid-heap alias-mediated root/middle/child and scalar-alias ancestor cycles stay refused. Marked STRING aliases remain refused. A key-only ownership control remains admitted without a global retainer.",
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "affected_scope": "The closed deep S_alias_array counter targets ancestor n_middle and remains a real cycle under the new arm. Fresh current counterparts establish that refusal; closed definitions, campaigns and source/native/state cuts remain unrenewed.",
+  "compatibility_bridge": "Tiny peer POST-only string/ancestor additions preserve all prepared PRELAW lists and partitions byte-for-byte before first execution. Later Make and metadata changes do not renew accepted execution credit.",
+  "outcomes": {
+    "semantic_source_prelaw_post_failures": 0,
+    "semantic_corrections": 0,
+    "source_timeouts": 0,
+    "actual_reader_parse_failures": 0,
+    "actual_reader_preparation_issues": 1,
+    "actual_reader_preparation": "peer-actual-preparation46-v1.json preserves one KeyError caused by omitted source_parent_sha256 fields for new files. The same parsed cache established parent_absent and both Git absences. Preparation0/runtime0; no original report/map reread or semantic renewal."
+  },
+  "independent_whole": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-array-alias-post/peer-whole46-v1.json",
+    "sha256": "3a746c9b17cba6bfeec02e22a2d0968ca1de6acda7c3c8e20ed3de25edfcb6d9",
+    "verdict": "CLEAR",
+    "scope": "All six fullposts, two complete parents/new absences and inverses; authoritative Make6; twenty report/source/native bindings; semantic disjointness, array-ID descent, reference validity, lifetimes and counterexamples.",
+    "new_executions": 0
+  },
+  "actual_integration": {
+    "revision": "4f64d407c3b1d128b7d680c9ba3af970f94de08a",
+    "tree": "0cdbd2d1e5f217d7b622379cd89f33538f51e201",
+    "source_map_sha256": "7217de4fb58f2d7d71dee5348923bd7b32ebea20d01330e884dd7dc818acd929",
+    "five_nonmake_fullposts_exact": true,
+    "complete_current_parents_and_four_absences": true,
+    "make_lines": 6,
+    "make_block_sha256": "1d20f0dac40e8fa4d06cdeea928e5b23715d5556aeea2fc17c435dcdd8789b8b",
+    "make_inverse": "The unique exact six-line block reverses to both complete parents; no repeated-done diff inference.",
+    "source_credit": 0
+  },
+  "canonical": {
+    "report_sha256": "00006ad0995e1f8e87d99f619dd68e76b4c0765558a6f901a2a63bfe0f8977f9",
+    "tested_revision": "4f64d407c3b1d128b7d680c9ba3af970f94de08a",
+    "same_actual_revision": true,
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watch_count": 513,
+    "before_after_hashes_equal": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "seconds": 16.088576823938638,
+    "cap_seconds": 60,
+    "executions": 1,
+    "physical_saved_report_reads": 1,
+    "physical_source_map_reads": 1,
+    "source_credit": 0
+  },
+  "actual_canonical_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-array-alias-post/peer-actual46-v1.json",
+    "sha256": "463f72c035dd4fbbe3a7ce25f5021e1aee62056ac58f4b308598cf5bc52084c6",
+    "verdict": "CLEAR",
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-array-alias-post/peer-reader46-cache-v1.json",
+    "parsed_cache_sha256": "0187cfdd6383ad6ba48f43daa37427883fe350db3156aeef4c920e8107fc9a3b",
+    "use": "Immutable independent tuple/cache. Original report/map paths and commands recover from assessment/cache; no later original report/map or HEAD refresh."
+  },
+  "author_raw_actual_canonical_map_reads": 0,
+  "remaining": "STRING aliases, constrained or backed reference cells, cyclic graphs, object fields, released/rebound root cells and wider payload/callback/lifetime histories remain partial.",
+  "holds": "All exact holds, Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": []
+}
