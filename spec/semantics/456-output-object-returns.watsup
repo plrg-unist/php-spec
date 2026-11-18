@@ -1441,6 +1441,31 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBinaryOpConcat expre
   -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
   -- if $enter_compiled_task(S, porigin, EVAL (NExprBinaryOpConcat expression_left expression_right metadata), S.TODO) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n*)]
   -- if $value_nodes(PSTRING_CARRIER INTERNED_STRING n*) = eps
+;; Compiler-folded children retain one authenticated source/compiler precision.
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBinaryOpConcat expression_left expression_right metadata) = (PSTRING_CARRIER INTERNED_STRING n*)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue_right)
+  -- if porigin_left = PORIGIN n_left pcpath_left
+  -- if porigin_right = PORIGIN n_right pcpath_right
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, true))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z_right, true))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBinaryOpConcat expression_left expression_right metadata, z_right, true)
+  -- if $(z_right > 0)
+  -- if $source_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_precision(S, (porigin)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_left)) = (z_precision)
+  -- if $compiled_precision(S, (porigin_right)) = (z_precision)
+  -- if $parser_literal_at(NExprBinaryOpConcat expression_left expression_right metadata, z_precision) = eps
+  -- if $compiled_special_concat_bytes(S, porigin) = (n*)
+  -- if $compiled_read(S, porigin) = (PSTRING n*)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $compiled_string_value(S, porigin, PSTRING n*) = PSTRING_CARRIER INTERNED_STRING n*
+  -- if $enter_compiled_task(S, porigin, EVAL (NExprBinaryOpConcat expression_left expression_right metadata), S.TODO) = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n*)]
+  -- if $value_nodes(pvalue_left) = eps
+  -- if $value_nodes(pvalue_right) = eps
+  -- if $value_nodes(PSTRING_CARRIER INTERNED_STRING n*) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata) = (pvalue)
   -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprConstFetch (NName (BYTES text_constant) metadata_name) metadata, $source_line(metadata), true)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_name)
