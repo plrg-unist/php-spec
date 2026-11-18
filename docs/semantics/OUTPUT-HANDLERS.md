@@ -2005,5 +2005,16 @@ fallback lines use the existing raw-name or certified-VALUE proof without lookup
 or truth demand. Raw tags, the two-cast gate and ownership limits remain required.
 Folded conditions, owning or warningful values and wider contexts remain partial;
 all held boundaries and OB31 remain unchanged.
+Eight source agreements reuse one saved and seven new native observations once.
+Author frontier19 keeps its first accepted8 and runs only the affected11 after a
+negative-literal parser correction; first lifecycle13 and independent frontier141/
+first lifecycle15 retain separate SL508 cuts at300/660. The original parser failure
+observed0 of11, and the first frontier aggregate remains failed while its accepted8
+stay valid through the exact regenerated-byte bridge. No accepted execution repeats.
+WHOLE6 and fixed actual 848dfc2fe are clear. The sole production SL509 load
+(512 argv/513 watched inputs) passes in16.684001923 seconds under cap60 with source0.
+One cached actual/report/map tuple binds composition; author original runtime-source,
+report and map reads remain0. Earlier OUTPUT evidence and all held bounds retain
+their own cuts.
 [Shorthand evidence](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-emitted-condition-shorthand-ternary-cast-chain-return-modulo-error-review.json).

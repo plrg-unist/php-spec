@@ -1,0 +1,211 @@
+{
+  "family": "supplied-optional-int-default-producer-reference-notice",
+  "slice": 139,
+  "status": "partial; bounded source implemented, independently reviewed and joined-load accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup"
+  ],
+  "source_ready": {
+    "revision": "d600b43171edd0ddc7567473f93fa9811bb5b357",
+    "tree": "fc3de2498c21aa5e6621304e5dc6fd2abb99a3ce",
+    "packet": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/code-packet-v2.json",
+    "packet_sha256": "02922cc1bddbcfc1ffabe5c61bd4d0566cac6c4e7f53504a9e480f38873fb26a",
+    "commits": 13,
+    "paths": 6
+  },
+  "behavior": [
+    "Completed producers with exactly supplied ordinary-CV actuals admit an optional suffix of untyped or plain int formals with signed64 NScalarInt defaults. The raw default and identical checked PSDEFAULT AST/int kind, nonvariadic optional descriptor, actual/raw/checked counts and required-prefix ordering are authenticated.",
+    "A pure proof view erases the authenticated raw default and supplies REQUIRED/PSNONE only to the existing header proof. Raw type, attributes, flags, hooks, BYREF, variable and metadata remain unchanged; existing argument/return/owner guards still apply.",
+    "The actual function signature, default materialization, reception and retirement are untouched. A later omitted make() observes default7 after the supplied call. Typed array/INT default incompatibility still rejects at declaration before any echo. The existing zeroactual route remains literal."
+  ],
+  "source_symbols": [
+    "Zend/zend_compile.c:zend_compile_params/zend_is_valid_default_value",
+    "Zend/zend_vm_def.h:ZEND_RECV_INIT",
+    "17-signatures.watsup:$psdefault/$pspositionstage/$psconvertdefault",
+    "207-error-handler-runtime.watsup:$reference_notice_producer_supplied_int_type/$reference_notice_producer_supplied_defaults/$reference_notice_producer_arguments"
+  ],
+  "author": {
+    "validation_cuts": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/validation-cuts-v1.json",
+    "validation_cuts_sha256": "8c36f1191265257c4d1cbf276a61166d211f306685c9c132ce3499b682d90445",
+    "native_originals_once": 5,
+    "native_report": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/native-first-v1/report.json",
+      "sha256": "4e8607f397c6f39972b8b3cc91af8779512da36ee9654eb393664f73db4de100",
+      "revision": "5a5701bf644616f142a09a870b62a41def03fd4a",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "mode": "native-first",
+      "original_count": 5,
+      "native_executions": 5
+    },
+    "postlaw_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/source-postlaw-supplied-v1-26muy094/report.json",
+      "sha256": "067a04d4acd4ca372d3b8b3ebdab7297b1bd63207fbd35f4102f23f3f27cba62",
+      "revision": "baff33d41f011cf3c3acddb16e440c7afcb1ffb3",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "normal_agreements": 3
+    },
+    "prelaw_supplied": "Unsupported1 + UNRUN2; sourcecredit0",
+    "existing_controls": {
+      "original_report": {
+        "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/source-prelaw-existing-controls-v1-ychr1egx/report.json",
+        "sha256": "22caacde5662929a934da1dac2cedf587ded89d4c6b27d913366e924e7dcc3e1",
+        "revision": "5a5701bf644616f142a09a870b62a41def03fd4a",
+        "passed": false,
+        "inputs_stable": true,
+        "head_stable": true,
+        "normal_agreements": 1
+      },
+      "omitted_normal_agreements": 1,
+      "static_rejection_agreements": 1,
+      "cached_static_label_adjudication": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/cached-static-label-adjudication-v1.json",
+      "adjudication_sha256": "93817c63d6b6a033ad2d2c7791c233c2cda0b51157426bfa3ae1df88d20ce748",
+      "new_model_or_native_executions_for_correction": 0
+    },
+    "prelaw_front": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/front-prelaw-v4/report.json",
+      "sha256": "678fd004fa4829babf1b156fa108dce44de9e8129550e0f797a2adc92711b8ec",
+      "revision": "b5abd3cbd0b818b13ff7ea43b11e71e87d33fcf0",
+      "passed": true,
+      "inputs_stable": true,
+      "head_stable": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "front": true,
+      "conditions": 323,
+      "reached_conditions": 323,
+      "derived_conditions": 0,
+      "module_count": 507,
+      "source_agreements": 0,
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/references-multi-static-notice-15",
+        "pid": 3744656,
+        "pgid": 3744656,
+        "cap_seconds": 1200,
+        "started": 1794987551.0858161,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 42.51946711540222,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    "separate_postlaw_full_state_invocations": 0,
+    "full_state_plan": "One independent affected WHOLE executes all author reached/full/derived checks plus peer conditions; no redundant separate author full-state command.",
+    "current_input_bridge": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/accepted-current-input-bridge-v2.json",
+    "current_input_bridge_sha256": "2822145cc50d8b4d3d90127995753961242c2d535ce94c95c7e2fcc3044ad544",
+    "accepted_replays": 0
+  },
+  "independent": {
+    "reviewer": "reviewer47",
+    "static_review": "CLEAR; exact13 full source-parent/tree records,6 current posts and saved full-index forward/inverse match Git/tested REVIEW. Scope/type/default/flags/counts/zeroactual separation reviewed independently.",
+    "review_revision": "8cbecb3eaa034b960ad1ff2c1157987d6dbf1c92",
+    "review_tree": "8a258ed14d622dd09fb17501d396c30ad1cfc404",
+    "whole": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/review/whole-v5/report.json",
+      "sha256": "ff68d011410b4d3b6d523ccc4714c891de5803b5428058599d5af85516e8411c",
+      "revision": "8cbecb3eaa034b960ad1ff2c1157987d6dbf1c92",
+      "tree": "8a258ed14d622dd09fb17501d396c30ad1cfc404",
+      "conditions": 615,
+      "reached": 477,
+      "author_derived": 70,
+      "independent_derived": 68,
+      "elapsed": 95.8217527866,
+      "module_count": 507,
+      "source_credit": 0,
+      "passed": true,
+      "stable": true,
+      "reaped": true
+    },
+    "whole_mode": "fixture-SL/cache=false/det=true",
+    "whole_cap_seconds": 1200,
+    "counterexamples": "Signed64 extrema/range, raw/default AST+metadata+kind equality, type/byref/variadic/required flags, prefix/suffix ordering/counts, named/unpacked/reserved CV, unchanged live signatures and later omitted/default routes.",
+    "source_cli_replays": 0,
+    "native_replays": 0,
+    "historical_helper_campaign_replays": 0
+  },
+  "preserved_issues": {
+    "wrong_public_static_label": "Original existing-control report expected php_error; exact outcome was static_rejection with matching native bytes/exit255/CompileError line2/events[]. Only the label changed and cached result was adjudicated; original NONPASS retains0.",
+    "author_fixtures": {
+      "front-v1": "Compiler binding failure: default metadata initially appeared only inside a Boolean conjunction; runtime predicates UNRUN0.",
+      "front-v2": "Incorrectly expected FATAL instead of STATICBYTES for declaration rejection; preceding3 supplied cases and omitted route completed.",
+      "front-v3": "Incorrect fixture forced the static completion to NORMAL, causing invalid compiled function descriptor Unsupported; this is not a public semantic gap.",
+      "localizers": [
+        "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/front-failure-localizer-v1",
+        "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/static-state-localizer-v1"
+      ],
+      "accepted_source_native_replays": 0
+    },
+    "peer_compiler_only_whole_failures": {
+      "attempts": [
+        "whole-v1",
+        "whole-v2",
+        "whole-v3",
+        "whole-v4"
+      ],
+      "cause": "Record/list construction grouping and signed INTEGER syntax; all615 expectations and the language rule stayed unchanged.",
+      "runtime_predicate_credit": 0,
+      "source_credit": 0,
+      "raw_directory": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/review"
+    },
+    "production_rule_corrections": 0,
+    "semantic_mismatches": 0,
+    "timeouts": 0
+  },
+  "integration": {
+    "revision": "f5053098459913a469093aaaf44f25faf7710a2c",
+    "tree": "956d88d8b583de7df0031eefac727c79f62d9e9f",
+    "parent": "848dfc2fe26c7726c89b7203aa8e506aa8ad0e62",
+    "review": "CLEAR",
+    "source_paths": 6,
+    "make_lines": 1,
+    "sole_canonical": {
+      "mode": "production_SL",
+      "modules": 509,
+      "argv_count": 512,
+      "watch_count": 513,
+      "elapsed": 16.789879231946543,
+      "cap_seconds": 60,
+      "exit": 0,
+      "stable": true,
+      "reaped": true,
+      "executions": 1,
+      "source_credit": 0
+    },
+    "immutable_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-int-default-producer-reference-notice-139/author/main111-actual-immutable-tuple-v1.json",
+      "sha256": "b9e5bc072c4d3dc1567cd5c1388ccc6ea1dac986775ac4a9258f863e72dd09eb"
+    },
+    "original_physical_reads": {
+      "canonical_report": 1,
+      "source_placement_map": 1
+    },
+    "author_raw_reads": 0,
+    "reuse": "Full parsed cache persisted before assertions and the tiny tuple. Metadata renews no accepted source/native/state/canonical evidence."
+  },
+  "remaining": [
+    "Plain float formals whose INT default has checked float kind; other raw default forms including FLOAT/STRING/ARRAY, unary and deferred expressions.",
+    "Nullable/union optional types, partial supply and wider producer contexts/owners/lifetimes; omitted calls retain their existing separately bounded route."
+  ],
+  "unchanged": {
+    "reserve": "93807cdd6/255",
+    "constructors": 169,
+    "runtime_obligations": 306,
+    "closed_constructors": 0,
+    "closed_runtime_obligations": 1,
+    "donors": 13,
+    "operations": "57-62/90-93",
+    "paused_boundaries": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned-NUL source-release behavior",
+      "Undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw crash"
+    ]
+  },
+  "engine_bugs_or_intentional_divergences": []
+}

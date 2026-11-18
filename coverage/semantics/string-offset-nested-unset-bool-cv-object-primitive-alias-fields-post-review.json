@@ -1,0 +1,145 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post",
+  "status": "Independent source6, actual integration and canonical review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Post-Warning ordinary initialized NULL/BOOL CV arrays may retain quiet stdClass objects through DIRECT values or unconstrained ALIAS cells whose dynamic fields share ordinary primitive reference cells. NULL/BOOL, signed64 INT and valid binary64 payloads are admitted; strings in ALIAS fields remain outside this extension.",
+  "behavior": "Count and mirror share one real cell. Property writes update its CV; later CV writes update both fields after the object alias is rebound. Removing the CV leaves zero field-cell roots and exactly two old-object edges. Key retirement frees the old object and its field cell; final alias retirement frees the new empty object. The fixed Error or same pending Throwable and caller tail remain exact.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "6a628ee4c8325531b22184cfb99fbed4046845594817ddb9f0932bbf6c670af0",
+    "rule": "One eight-line ALIAS-field clause reuses literal_reference_plain_cell, requires the HCELL in the pruned live heap and empty scalar children, then walks the tail. The final object-child guard equals exact property_release_nodes, including duplicate edges. The DIRECT/REQUEST clause and every other guard remain literal. Complete field validation still precedes name uniqueness.",
+    "engine_contract": "Zend ZEND_ASSIGN_OBJ_REF / zend_assign_to_property_reference preserve a real shared reference; zend_object_std_dtor notifies weak references and releases each dynamic property."
+  },
+  "evidence_root": "../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post/",
+  "source6": {
+    "manifest": "author46-source6-v1/manifest.json",
+    "sha256": "6d0ac0db4692037036f6a0cf75b4fee65678299d3fd9085135c62980e675d9dd",
+    "private_revision": "68f30937bceadf1c1a0c4cbe6bf52eea5d715bf3",
+    "files": 6,
+    "complete_modified_parents": 2,
+    "new_file_absences": 4,
+    "forward_inverse_and_literal_parent_projections": true
+  },
+  "independent_whole": {
+    "path": "peer-whole49-v1.json",
+    "sha256": "105db153655bb9f743421ba3565119cf5e1df847a48b2bce90150beedf0ab2ed",
+    "result": "CLEAR; complete source posts/parents/absences/inverses, Make6, saved-native public source2, all planned state checks and semantic ownership/lifetime review."
+  },
+  "current_source": {
+    "report": "author46-source-v1/report.json",
+    "sha256": "6159f91fe48ebed6d33cd45d5f2d60a24a04a662f4c5812c77652df4a2cf894c",
+    "agreements": 2,
+    "native_originals_once": 2,
+    "native_reused": 2,
+    "new_native": 0,
+    "model_cap_seconds": 90,
+    "outer_cap_seconds": 120,
+    "independently_reviewed_public_results": true,
+    "reviewer_public_reexecutions": 0
+  },
+  "states": {
+    "prelaw_author": [
+      196,
+      206
+    ],
+    "prelaw_author_derived": [
+      74,
+      75
+    ],
+    "prelaw_independent": [
+      225,
+      238
+    ],
+    "prelaw_independent_derived": [
+      79,
+      80
+    ],
+    "prelaw_independent_summary": "peer-prelaw49-v1.json",
+    "prelaw_independent_sha256": "274b00f92722958dc5bc9a9a22d6803905896ce52c06279cdedac88e4d94d02d",
+    "post_author": [
+      301,
+      314
+    ],
+    "post_author_derived_each": 161,
+    "author_summary": "author46-planned-checks-v1.json",
+    "author_sha256": "adec6cc3c87de0c68b1f266885bfeafcceff5221377b63b31de1067a1c530fe7",
+    "post_independent": [
+      354,
+      364
+    ],
+    "post_independent_derived_each": 111,
+    "independent_summary": "peer-whole49-v1.json",
+    "cap_seconds": 180,
+    "first_semantic_attempts_passed": true,
+    "all_reaped": true,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "prelaw": {
+    "report": "author-prelaw45-v1/report.json",
+    "sha256": "eeec69620f01a36d0e0299f823b77ef6e4c769ea9bfd545ed6fb551b045e2956",
+    "public_Unsupported": 2,
+    "agreement_credit": 0,
+    "retained_without_rerun": true
+  },
+  "controls": "Missing cell marks/allocations, UNDEFINED, invalid integer/float domains, property type sources, coercion records and parameter backings refuse. Owning and string ALIAS cells, including a valid REQUEST string, refuse; DIRECT REQUEST and legacy scalar fields retain their exact behavior. Duplicate/NUL/declared field names refuse. Full-state/public/budget/split replay, exact duplicate owners and staged cell/object retirement remain separate from source credit.",
+  "prior_families": "The closed REQUEST, scalar and object-alias family cuts remain separate and unrenewed; no old source/native/state/metadata campaigns were repeated.",
+  "actual_integration_and_canonical": {
+    "status": "CLEAR at fixed848dfc2fe through immutable7f8ecfbf; no later HEAD or input renewal.",
+    "author_original_report_reads": 0,
+    "author_original_map_reads": 0,
+    "common4_physical_writes": 0,
+    "author_common4_physical_writes": 0
+  },
+  "outcomes": {
+    "semantic_failures": 0,
+    "fixture_failures": 0,
+    "timeouts": 0,
+    "accepted_semantic_reruns": 0
+  },
+  "remaining": "String values in ALIAS fields, owning/typed/backed/declared/NUL fields, other object kinds, cached tables, cycles and wider callback/lifetime histories remain partial; complete PHP core remains unfinished.",
+  "holds": "Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, undefined by-reference LIST, COMP88, OP12, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": [],
+  "actual_canonical": {
+    "revision": "848dfc2fe26c7726c89b7203aa8e506aa8ad0e62",
+    "tree": "fae7978063e01e5726aeb1fc74a46140692c59f6",
+    "parent": "bb419599f542c7ce3ed8196b45c16bf471f9c1d7",
+    "immutable": "peer-actual49-immutable-v1.json",
+    "sha256": "7f8ecfbfb99f1efd30787f5e36792eb801a9aca017e3e1309e7c2265ea3aebf5",
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watched_count": 513,
+    "seconds": 16.684001922840253,
+    "cap_seconds": 60,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "source_credit": 0,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "author_original_reads": 0,
+    "full_parsed_cache_persisted_before_assertions": true,
+    "parsed_cache_sha256": "eb852a174636e390daeb017a5b70c76d1bf3c8430c8e0dc02fb43314f7611c8b"
+  },
+  "reader_preparations": [
+    {
+      "count": 1,
+      "cause": "Reviewer first compared full-index serialization against archived abbreviated10 git diff --binary. Existing map already bound full40 blobs; corrected only comparison argv to exact recorded format, retaining all successful fixed-parent/post checks.",
+      "exit": 1,
+      "semantic_executions": 0,
+      "source_credit": 0,
+      "original_report_map_reads_added": 0,
+      "HEAD_input_worktree_unchanged": true
+    }
+  ],
+  "author_metadata_ops_preparation": {
+    "count": 1,
+    "cause": "A metadata-ops builder had a Python indentation parse failure before execution; corrected serialization only.",
+    "semantic_executions": 0,
+    "source_credit": 0,
+    "original_report_map_reads_added": 0,
+    "files_or_HEAD_changed": false
+  }
+}

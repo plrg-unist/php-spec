@@ -2304,3 +2304,30 @@ each and author raw0. REQUEST values in the saved CV itself, owning, referenced
 or typed fields, cycles and wider histories remain partial. All exact holds,
 reserve93807cdd6/255 and inventory169/306/closed0+1 are unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-request-fields-post-review.json).
+
+Ordinary primitive reference cells may also back dynamic fields of these retained
+stdClass objects. Each ALIAS field requires the existing marked, allocated,
+defined NULL/BOOL/signed64 INT/binary64 plain-cell proof, a live pruned HCELL and
+empty scalar children. Exact `property_release_nodes` preserves every field edge,
+including two names sharing one cell. The DIRECT/REQUEST field clause and all
+other guards remain literal; complete field validation still precedes uniqueness.
+
+The count/mirror originals distinguish property writes from later CV writes,
+object-alias rebinding and CV removal. Removing the CV leaves exactly two
+old-object edges and no field-cell roots. Key retirement then frees the old
+object and field cell; final alias retirement frees the new empty object. The
+fixed Error or same pending Throwable, caller tail and weak targets remain exact.
+
+The two native originals ran once. Both current source comparisons reuse those
+exact observations and pass at the 90-second model/120-second outer limits.
+Author suites check 301/314 conditions and independent suites check 354/364,
+including 161 and 111 derived conditions respectively, at the 180-second SL limit.
+Prelaw evidence remains separate. Independent review of all six source files and
+planned checks is clear. Actual revision `848dfc2fe` and its sole production SL
+load of 509 modules pass at 16.684001923 seconds, independently bound by
+immutable7f8ecfbf. The reviewer read each saved canonical report/map once; the
+author read neither. No prior campaign was renewed.
+Strings in ALIAS cells, owning/typed/backed/declared/NUL fields, cached tables,
+cycles and wider histories remain partial. All exact holds, reserve93807cdd6/255
+and inventory169/306/closed0+1 remain unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post-review.json).
