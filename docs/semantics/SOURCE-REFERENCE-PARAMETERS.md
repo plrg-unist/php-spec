@@ -1760,3 +1760,12 @@ keeps its value until the body writes it, while a later omitted call observes
 FLOAT `7.5`. An `int` formal still rejects even the exact FLOAT default `7.0`
 before execution. Other types/default expressions and wider contexts remain partial.
 [Review](../../coverage/semantics/supplied-optional-float-default-producer-reference-notice-review.json).
+
+Fully supplied optional untyped or plain `bool` formals also retain bare
+`true`/`false` defaults. The proof matches the entire `ConstFetch`/`Name` AST,
+both metadata layers and the exact checked literal kind, then case-folds the
+decoded name. Live signatures, reception, default demand and private Notice-cell
+ownership are preserved. A later omitted call still observes Boolean identity;
+an incompatible `int` formal/default pair rejects before execution. FQN/relative names,
+literal Boolean formals, other defaults and wider contexts remain partial.
+[Review](../../coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json).

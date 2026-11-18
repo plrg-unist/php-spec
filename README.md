@@ -130,9 +130,17 @@ Fully supplied optional plain `float` formals also retain literal INT defaults w
 
 Fully supplied optional untyped or plain `float` formals also retain literal FLOAT defaults with the identical checked AST and kind. The existing adapter validates the binary64 encoding. Supplied values, default demand and reference ownership stay unchanged; later omitted calls retain FLOAT identity. [Review](coverage/semantics/supplied-optional-float-default-producer-reference-notice-review.json).
 
+Fully supplied optional untyped or plain `bool` formals retain bare Boolean defaults with exact raw AST, both metadata layers and kind `true` or `false`. Supplied reception, default demand and reference ownership are preserved. Wider defaults, types and lifetimes remain partial. [Review](coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json).
+
 Quiet pooled nonzero signed64 integer conditions in full ternary defaults preserve the selected FIELD1 scalar tag while skipped names remain undemanded. Exact source, typed pool and redirect receipts retain declaration bindings, Shared-cache values and private recipients through named Warning reentry. Two original source comparisons and separate author/independent fixture cuts pass; wider truthy domains, owning values and lifetimes remain partial. [Review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Quiet full-ternary defaults preserve selected FIELD1 scalar tags for nonzero signed64 integers, finite nonzero FLOATs, literal infinite FLOATs and literal STRINGs other than empty or ASCII "0". Exact source, typed pools, absent executable condition leaves and unique proper redirects preserve declaration bindings, Shared-cache values and private integer reception during named coercion-handler reentry. Literal STRING conditions also require exact decoded bytes and INTERNED compiler data. Literal infinity also requires a raw FLOAT literal or unary sign chain. Computed or owning STRING forms, named/computed infinity predicates, NaN conditions and wider lifetimes remain partial. [Integer review](coverage/semantics/deferred-nonzero-integer-full-ternary-redirect-wrapper-default-reception-review.json), [FLOAT review](coverage/semantics/deferred-finite-nonzero-float-full-ternary-redirect-wrapper-default-reception-review.json), [Literal infinity review](coverage/semantics/deferred-infinite-float-full-ternary-redirect-wrapper-default-reception-review.json), [Literal STRING review](coverage/semantics/deferred-truthy-literal-string-full-ternary-redirect-wrapper-default-reception-review.json).
+
+Direct finite nonzero FLOAT condition trees also preserve full-ternary FIELD1
+scalar tags when a phase-sensitive descendant prevents ordinary deferred VALUE.
+Exact recursive source and typed fold receipts retain skipped-name pruning, Shared
+caches and private integer reception through named handler reentry. Wider forms
+and lifetimes remain partial. [Review](coverage/semantics/deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Computed-TRUE full-ternary defaults preserve the selected scalar tag through exact
 recursive Boolean/source/pool authority and a proper selected-child redirect.

@@ -1,0 +1,160 @@
+{
+  "family": "supplied-optional-bool-default-producer-reference-notice-142",
+  "status": "independently reviewed partial increment",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "source_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "spectec_commit": "da36ac3c434cd291940293a63da64544307730a3",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Completed ordinary-CV producers with fully supplied optional untyped/plain bool formals and bare NName true/false defaults. Exact whole ConstFetch/Name AST, inner/outer metadata and checked literal kind survive in the live signature; casefolded decoded spelling must match that kind. Only a pure required-header proof view erases defaults. Reception, default demand, return verification, frame retirement and private Notice-cell ownership remain unchanged.",
+  "implementation": {
+    "author": {
+      "commit": "cbbfb4e76c2fbc4a76c614f0412793327ed03eff",
+      "tree": "0c89a6768a596230236f6fa40af5ab1ae31b855a"
+    },
+    "rule": {
+      "commit": "a943b296bc6cbb6af1bb166f7a71fa4ccdf63f5b",
+      "tree": "21f632f2ad5ad0cb69a29d8456431131e30c56d0",
+      "added_lines": 14,
+      "insertions": 2,
+      "encoding_contract": "Existing checked canonical BYTES; exact whole raw ConstFetch, Name, inner/outer metadata and literal true/false kind, decoded casefolded name."
+    },
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/author/code-packet-v1.json",
+      "sha256": "5244bb1664401870754415163cc8c65f7aefaa08e2ebf3d0f392ebc39d782f5d"
+    },
+    "source_posts": {
+      "spec/semantics/207-error-handler-runtime.watsup": "86e8ef3df6fc3ba8a130bd56320515fb2c68cbd5bc4f715b1cacad16a9c95903",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json": "6a3902e49d28a2a1029faf425601b938e75f5b4911bae4d67f82ea69f3fba379",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_sources.py": "17f03077bedee3034e85469226d38457245986d4a9c2ff19ec029482dcc28fe5",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_state.py": "5b79d9be78dcef84ce02c64452fb7944d980054995bc8e989d8472677e71f9b4",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_review_state.py": "55ebc3ab779c785723d7dc43364c70222664b197651d085bd6cadef6280df47a",
+      "tests/semantics/supplied_optional_bool_default_producer_reference_notice_run.py": "03b6cfde39042c31a8158fc12e285bc61c992cc4fbc66c954cd2c16d5f5f8986"
+    },
+    "make": "One literal BOOL row after the FLOAT-default row; MAIN current projection retains all foreign rows.",
+    "production_139_140_141_guards_unchanged": true
+  },
+  "source_authority": [
+    "vendor/php-src/Zend/zend_compile.c: zend_compile_params, zend_is_valid_default_value",
+    "vendor/php-src/Zend/zend_execute.c: zend_verify_weak_scalar_type_hint",
+    "spec/semantics/17-signatures.watsup: psdefault, psconstantkind, psplainconstant, psacceptdefault",
+    "spec/semantics/91-default-parameters.watsup: typed_stored_default"
+  ],
+  "validation": {
+    "cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/author/validation-cuts-v1.json",
+      "sha256": "9de17d88b377a0226ee62e4d07e06aa5e932c10063bded9fbcbe825ba9a8f2b7"
+    },
+    "native_once": {
+      "invocations": 4,
+      "normal": 3,
+      "static_rejection": 1,
+      "report_sha256": "8e658877d6e9d93cdad039bfe950c7145d92340870bf50ba10b789d0dbbfc2bb"
+    },
+    "supplied_source": {
+      "agreements": 2,
+      "revision": "a943b296bc6cbb6af1bb166f7a71fa4ccdf63f5b",
+      "report_sha256": "6c9ad8bfc6682351eaebe2826afcacfe581e79d7f3a74fbf57b3e15c98d9185c"
+    },
+    "existing_controls": {
+      "normal": 1,
+      "static_rejection": 1,
+      "new_support_credit": 0,
+      "revision": "57d98583c03289d8950205e0ed99ddb42f18da33",
+      "report_sha256": "7d614c9460beb9f6096b4c278fc9fcf1c558ad6b269c760f8725ad5865c20b7f"
+    },
+    "prelaw_front": {
+      "conditions": 193,
+      "reached": 193,
+      "derived": 0,
+      "modules": 507,
+      "source_agreements": 0,
+      "report_sha256": "c9f70dca7cafbcb98c0afbe1fd604eea966015d8a52825fe08aad809b74236f8"
+    },
+    "independent_whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/review/whole-v1/report.json",
+      "sha256": "d1cda630e5b00f160b0fae557bc5114784e996959ef209487de61399f0b68d28",
+      "revision": "a3b8d0470ef4e6878e713ed9b1b4f2da532280e5",
+      "tree": "3fa73ddf5d426d733d9d67a9684d77386ee639e6",
+      "passed": true,
+      "mode": "fixture-SL/cache=false/det=true",
+      "module_count": 507,
+      "conditions": 390,
+      "reached_conditions": 291,
+      "author_derived_conditions": 36,
+      "independent_derived_conditions": 63,
+      "source_agreements": 0,
+      "process": {
+        "exit": 0,
+        "elapsed": 66.07154536247253,
+        "timeout": false,
+        "cap_seconds": 1200,
+        "group_after": []
+      },
+      "invocations": 1
+    },
+    "author_full_state_invocations": 0,
+    "controller": {
+      "static_syntax_import_and_independent_diff_review": "PASS; exact prior family shape, only identifiers/doc/prefix relabeled",
+      "invocations": 0
+    },
+    "patch_checks": {
+      "forward_git_apply_check_exit": 0,
+      "inverse_git_apply_check_exit": 0
+    },
+    "accepted_replays": 0,
+    "historical_campaign_renewals": 0
+  },
+  "retained_failures": {
+    "baseline": "First supplied original Unsupported; second UNRUN; source0.",
+    "initial_postlaw": "Initial 8b53a93e8 put kind membership before binding. SpecTec rejected the first source load before semantic execution; second source UNRUN. a943b296b only reorders that binding premise. Fixed affected source2 then pass; original report SHA856e7fd969e74f18419f8d200569e3c217a1069bf8e6b73dd159c50e4327708d retains runtime0.",
+    "packet_preparation": "One author Python parse error occurred before artifact/runtime execution; corrected field name; runtime0."
+  },
+  "canonical_actual": {
+    "revision": "e8caa48806f115a1c290b9f35454a05a0fe8bb25",
+    "tree": "c4e6b8e37ab7507fdb9706ed087fa07bda99ff23",
+    "parent": "e5306de03341becbe0a01c804592020e1422d45c",
+    "reviewer": "/root/recover47_reference_defaults_review",
+    "decision": "CLEAR",
+    "actual_executions": 1,
+    "canonical_report_sha256": "e86ed4fd5cac548ab212679e10a7fcc3521ec57c8968e3beccfb0b94b2483f0e",
+    "canonical_map_sha256": "0c6105dd30af49ad2d4f4b89a33f52681f260ffb285c742efb2c6ae5b9876809",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "fcebd82f6b794e6d98ee13e64456c4b6382900ea077a8a75a003101de6725a83",
+    "full_cache_persisted_before_assertions": true,
+    "canonical_original_report_reads_reviewer": 1,
+    "canonical_original_map_reads_reviewer": 1,
+    "canonical_original_reads_author": 0,
+    "source_agreements": 0,
+    "production_modules": 509,
+    "argv_paths": 512,
+    "watched_paths": 513,
+    "elapsed_seconds": 16.79262959002517,
+    "cap_seconds": 60,
+    "passed": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "six_nonmake_posts_exact": true,
+    "current_make_literal_projection_foreign_preserved": true,
+    "saved_main_diff_format": "complete plain unified; not full-index",
+    "main_static_preparation_failures": 0
+  },
+  "canonical_tiny": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/author/actual-main-v1-tiny.json",
+    "sha256": "09207a1b1163bcd388cc828e72615536960385d44ce00ff5a66bf9e5a213131d"
+  },
+  "remaining": [
+    "FQN/relative or general constant defaults",
+    "literal true/false, nullable and union formals",
+    "other default expressions, partial supply and wider payload/owner/lifetime contexts",
+    "complete core, Rocq interaction-tree transfer and BOLA/CRIS verification"
+  ],
+  "intentional_engine_divergences": [],
+  "artifact_location": "../php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/",
+  "artifact_boundary": "Evidence only; not build/runtime inputs."
+}

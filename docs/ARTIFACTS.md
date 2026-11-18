@@ -8,6 +8,16 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+ENUM317 direct finite numeric-tree originals, native-once/source4, prelaw1092,
+original author1532 NONPASS with retained734, corrected certificate802 and
+independent first-pass WHOLE1282 remain in
+`../php-spec-evidence-archive/enum-deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-317/`.
+The [review](../coverage/semantics/deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json)
+binds full source parents/posts/inverses and the sole actual `f93a7c38e`
+productionSL509 load separately. `integrated-fixed-cache-v1/author40-tiny.json`
+binds the reviewer cache saved before assertions; author original report/map/cache
+reads stay0. No source/native or accepted old campaign is renewed.
+
 OUTPUT158 folded-condition ternary originals/native8-once, baselineUnsupported1,
 source8, author19/13 plus affected4, independent125/14 and WHOLE8 remain under
 `../php-spec-evidence-archive/new/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-158/`.
@@ -51,6 +61,8 @@ REF139 evidence remains in `../php-spec-evidence-archive/supplied-optional-int-d
 REF140 originals and observations remain in `../php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/`. `author/code-packet-v1.json` retains the seven exact posts, full parents and forward/inverse source diffs; `author/validation-cuts-v1.json` separates native4 once, prelaw Unsupported/UNRUN, existing controls, source2 and front235. `review/whole-v1/report.json` records independent WHOLE413. The peer full cache preserves the single canonical report/map read; `author/actual-main-v1-tiny.json` records integrated `0d80fe0cf` with author raw reads0. [Review](../coverage/semantics/supplied-optional-float-int-default-producer-reference-notice-review.json). These archives are evidence only.
 
 REF141 evidence remains in `../php-spec-evidence-archive/supplied-optional-float-default-producer-reference-notice-141/`. `author/code-packet-v1.json` retains eight exact posts, full parents and forward/inverse source diffs; `author/validation-cuts-v1.json` separates native4 once, Unsupported/UNRUN, existing controls, source2, front193 and four adapter negatives. `review/whole-v1/report.json` records independent state checks422. The peer full cache preserves the single canonical report/map read; `author/actual-main-v1-tiny.json` records integrated `b97d65ba` with author raw reads0 and labels the saved MAIN diffs as complete plain-unified. Author duplicate-anchor and MAIN Make-projection preparation failures remain runtime0. [Review](../coverage/semantics/supplied-optional-float-default-producer-reference-notice-review.json). These archives are evidence only.
+
+REF142 evidence remains in `../php-spec-evidence-archive/supplied-optional-bool-default-producer-reference-notice-142/`. `author/code-packet-v1.json` retains seven source posts, complete parents and forward/inverse diffs; `author/validation-cuts-v1.json` separates native4 once, source2, existing controls, front193 and the preserved compiler failure. `review/whole-v1/report.json` records independent390; the full reviewer cache precedes tuple assertions. `author/actual-main-v1-tiny.json` binds integrated `e8caa488` and author raw0; saved MAIN diffs are complete plain unified. [Review](../coverage/semantics/supplied-optional-bool-default-producer-reference-notice-review.json). Archives are evidence only.
 
 REF138 evidence remains in `../php-spec-evidence-archive/scoped-case-stdclass-producer-reference-notice-138/`. `author/code-packet-v1.json` binds eleven complete source-parent records and twelve exact posts/inverses; original literal diffs are saved as `author/forward-source-v1.diff` and `author/inverse-source-v1.diff`. `peer/review-v1.json` separates author source6/1121 and independent WHOLE1305 from preserved fixture-only failures. `peer/canonical-read-cache-v1.json` retains the sole parsed canonical report/map read; `author/main110-actual-immutable-tuple-v1.json` records joined9081 acceptance with author raw reads0. The [review](../coverage/semantics/scoped-case-stdclass-producer-reference-notice-review.json) retains exact scopes and unchanged holds. These external archives supply evidence only.
 
