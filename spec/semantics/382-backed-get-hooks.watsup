@@ -54,6 +54,13 @@ def $hook_short_reference_literal_this_body(NExprPropertyFetch (NExprVariable (N
   -- if $hook_literal_name(phpType20) = (ptbytes)
 def $hook_short_reference_literal_this_body(expression, ptbytes) = false -- otherwise
 
+;; Nullsafe same-field reference returns reach the existing static check.
+dec $hook_short_reference_nullsafe_body(expression, ptbytes) : bool
+def $hook_short_reference_nullsafe_body(NExprNullsafePropertyFetch expression phpType20 metadata, ptbytes) = true
+  -- if $hook_literal_this(expression)
+  -- if $hook_literal_name(phpType20) = (ptbytes)
+def $hook_short_reference_nullsafe_body(expression, ptbytes) = false -- otherwise
+
 dec $hook_short_reference_builtin_union(phpType69*, ptbranch*) : bool
 def $hook_short_reference_builtin_union(eps, eps) = true
 def $hook_short_reference_builtin_union((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*) = (text <- ["array","object","int","float","bool","string","null","true","false"] /\ $ptlc($base64(text_type)) = $ptascii(text) /\ $ptoverlap($ptmask(PTBUILTIN text), $ptmasks(ptbranch_tail*)) = eps /\ ~((text = "false" /\ "true" <- $ptmasks(ptbranch_tail*)) \/ (text = "true" /\ "false" <- $ptmasks(ptbranch_tail*))) /\ $hook_short_reference_builtin_union(phpType69_tail*, ptbranch_tail*))
@@ -687,7 +694,7 @@ def $pphook_body_compile(P, pcpath, ppropertydesc, NPropertyHook (SEQUENCE eps) 
   -- if $occurrence_node(P.FOLD.SOURCE.OCCURRENCES, pcpath_group) = (NStmtProperty (SEQUENCE eps) (INTEGER flags) phpType18 (SEQUENCE ([NPropertyItem phpType40 phpType5 metadata_item])) (SEQUENCE ([NPropertyHook (SEQUENCE eps) (INTEGER 0) (BOOLEAN true) (NIdentifier (BYTES text_get) metadata_name) (SEQUENCE eps) expression metadata])) metadata_group)
   -- if flags <- [0,1]
   -- if $hook_short_reference_header(phpType18, ppropertydesc.TYPE) \/ $hook_short_reference_scoped_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_null_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_false_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_true_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_bool_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_int_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_float_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_string_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_array_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_class_builtin_union_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_nominal_pair_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_nominal_union_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group))) \/ $hook_short_reference_mixed_nominal_union_header(phpType18, ppropertydesc.TYPE, $ppproperty_context(P, pchheader, ppropertydesc.NAME, $source_line(metadata_group)))
-  -- if $hook_short_reference_body(expression, ppropertydesc.NAME) \/ $hook_short_reference_literal_this_body(expression, ppropertydesc.NAME)
+  -- if $hook_short_reference_body(expression, ppropertydesc.NAME) \/ $hook_short_reference_literal_this_body(expression, ppropertydesc.NAME) \/ $hook_short_reference_nullsafe_body(expression, ppropertydesc.NAME)
   -- if $hook_parameter_facts(metadata) = [false]
   -- if z = $source_line(metadata)
   -- if $(z > 0 /\ z <= $source_end_line(metadata))

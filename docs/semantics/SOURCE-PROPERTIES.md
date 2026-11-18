@@ -2955,3 +2955,11 @@ The real expression child retains source, implicit reference signature and
 CODEARROW authority; its variable-name string stays a direct CV without executable leaf CODE.
 Existing header/value/alias/COW/owner bounds remain; computed receivers and wider contexts stay partial.
 [Review](../../coverage/semantics/literal-this-receiver-parentless-short-reference-get-hook-review.json).
+
+Direct nullsafe same-field receivers in own public parentless short reference Get
+reach the existing reference-return static check rather than Unsupported.
+Raw and literal-string `this` receivers with identifier/quoted fields report
+`Cannot take reference of a nullsafe chain` at the actual expression line.
+Compilation stops before body CODEARROW/function installation or source execution.
+Existing runtime predicates and header/value/owner bounds remain literal; wider chains stay partial.
+[Review](../../coverage/semantics/nullsafe-chain-parentless-short-reference-get-hook-review.json).
