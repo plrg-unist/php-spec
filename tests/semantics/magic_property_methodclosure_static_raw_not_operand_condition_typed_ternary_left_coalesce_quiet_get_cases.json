@@ -1,0 +1,51 @@
+{
+  "native_profile": {
+    "opcache.enable_cli": "0",
+    "opcache.jit": "disable",
+    "precision": "14",
+    "serialize_precision": "-1",
+    "display_errors": "stderr",
+    "display_startup_errors": "1",
+    "html_errors": "0",
+    "log_errors": "0",
+    "error_reporting": "30719",
+    "date.timezone": "UTC",
+    "output_buffering": "0",
+    "implicit_flush": "1",
+    "zend.assertions": "1"
+  },
+  "cases": [
+    {
+      "id": "methodclosure-static-raw-not-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+      "source": "<?php\nnamespace {\nclass QuietLiteralSelectorOwnCoalesceTarget1 { public static function coun0ter121() { static $counter = 0; $counter = $counter + 1; return $counter; } }\nclass QuietLiteralSelectorOwnCoalesceGet {\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorOwnCoalesceRight(): int { echo \"BAD_RHS;\"; return 9; }\nclass QuietLiteralSelectorOwnCoalesceDecoy { public static function coun0ter121() { echo \"BAD_ALIAS;\"; return 9001; } }\n}\nnamespace LiteralSelectorPick {\nuse \\QuietLiteralSelectorOwnCoalesceDecoy as QuietLiteralSelectorOwnCoalesceTarget1;\n$held = (('qUIETlITERALsELECTORoWNcOALESCEtARGET' . '') . ((((!(!(true ? ((true ? null : false) ?? true) : false))) ? !((true ? false : null) ?? true) : (false ?? 'SKIP_CLASS')) ?? '1') . ((((!(!(false ?: ((true ? false : null) ?? true)))) ? null : !((true ? '10' : null) ?? true)) ?? 'BAD_FALSE') . (((!(!(true ? ((null ?? '') ?? true) : null))) ? null : (('' ?? 'BAD_EMPTY') ?? 'BAD_CHAIN')) ?? 'BAD_EMPTY'))))::{('CoUn' . ((((!(!(true ? ((null ?? '10') ?? false) : 0))) ? (0 ?? 'BAD_INT') : null) ?? 9) . ('TeR' . ((+0xC) . (((!((true ? false : null) ?? true) ?: (null ?? 'BAD_SHORT')) ?? 9) . (!(!(((false ?? false) ?: !((true ? '10' : null) ?? true)) ?? 'BAD_METHOD'))))))))}(...);\n}\nnamespace {\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorOwnCoalesceGet;\n$selector = \"value\";\n$answer = $reader->$selector ?? quietLiteralSelectorOwnCoalesceRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorOwnCoalesceTarget1::coun0ter121() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n}\n",
+      "source_sha256": "8a9394bf260612c647faff9bebecbdc17920c329c0962d5a0210ec9755304acc",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "V0FSTTtJO0c7UkVDRUlWRVI7U0FNRTtSRVNVTFQ7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "V0FSTTtJO0c7",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_ternary_condition_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-ternary-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "source_sha256": "2165006a98ff48367090a2e9034fcb796b35baf3b97001f67a14bab077c4de57",
+        "change": "Only the FCC selector line changes. NOT of old-None typed COALESCE/TERNARY children supplies FULL conditions and all four typed operand positions. Some selected tags deliberately become BOOL while final class/method bytes, bodies, profile, streams and cache/owner histories stay literal."
+      }
+    },
+    {
+      "id": "methodclosure-static-raw-not-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+      "source": "<?php\nclass QuietLiteralSelectorInheritedAssignBase { public static function untouchedBefore() { echo \"BAD_BEFORE;\"; return 71; } private function untouchedAfter() { echo \"BAD_AFTER;\"; return true; } public static function counter1() { static $counter = 0; $counter = $counter + 1; echo self::class; echo \">\"; echo static::class; echo \";\"; return $counter; } }\nclass QuietLiteralSelectorInheritedAssignTarget0112 extends qUIETlITERALsELECTORiNHERITEDaSSIGNbASE { private function childFirst() { echo \"BAD_CHILD_FIRST;\"; return 81; } final public static function childLast() { echo \"BAD_CHILD_LAST;\"; return false; } }\nclass QuietLiteralSelectorInheritedAssignGet {\n    private int $value = 41;\n    public function __isset(string $incoming): bool { echo \"I;\"; return true; }\n    public function __get(string $incoming): object { global $reader, $selector, $held; echo \"G;\"; $saved = $held; $held = null; $reader = null; $selector = \"changed\"; return $saved; }\n    public function __set(string $incoming, $value): void { echo \"BAD_SET;\"; }\n    public function __destruct() { echo \"RECEIVER;\"; }\n}\nfunction quietLiteralSelectorInheritedAssignRight(): int { echo \"BAD_RHS;\"; return 9; }\n$seed = ((('\\qUIETlITERALsELECTORiNHERITEDaSSIGNtARGET' . '') ?? 'BAD_CLASS') . (((false ?: (null ?? null)) ?? '') . ((((false ?? false) ?: ((!(!(false ?: ((null ?? '0') ?? true)))) ? null : false)) ?? 'BAD_FALSE') . (((('0' ?? 'BAD_ZERO') ?: (null ?? ((!(!(true ? ((null ?? 0) ?? true) : false))) ? 'BAD_ONE' : ('0' . '1')))) ?? 'BAD_CLASS') . (((('1' ?? ('1' . '0')) ?: (null ?? 'BAD_SHORT')) ?? 'BAD_CLASS') . (+2))))))::{('CoUnTeR' . ((!(!(((((!(!(true ? ((true ? false : null) ?? true) : '1'))) ? 'BAD_TEN' : '10') ?? 'BAD_TEN') ?: (null ?? 'BAD_SHORT')) ?? 'BAD_METHOD'))) . (!(!((false ?: (null ?? ((!(!(false ?: ((null ?? null) ?? null)))) ? 'BAD_NULL' : 0))) ?? 9)))))}(...);\n$held = clone $seed;\nunset($seed);\necho QuietLiteralSelectorInheritedAssignBase::counter1() === 1 ? \"WARM;\" : \"BAD_WARM;\";\n$watch = WeakReference::create($held);\n$reader = new QuietLiteralSelectorInheritedAssignGet;\n$selector = \"value\";\n$answer = $reader->$selector ??= quietLiteralSelectorInheritedAssignRight();\necho $answer === $watch->get() ? \"SAME;\" : \"BAD_CLOSURE;\";\necho $answer() === 2 ? \"RESULT;\" : \"BAD_RESULT;\";\necho QuietLiteralSelectorInheritedAssignTarget0112::counter1() === 3 ? \"STATIC;\" : \"BAD_STATIC;\";\necho $held === null && $reader === null && $selector === \"changed\" ? \"CAPTURE;\" : \"BAD_CAPTURE;\";\nunset($answer);\necho $watch->get() === null ? \"RETIRED;\" : \"BAD_OWNER;\";\n$watch = null;\necho \"DONE;\";\n",
+      "source_sha256": "014b64f0d44090fdecd4300c022e632e8f2c389cbc8943d4680d6f9a13598fbf",
+      "status": "normal",
+      "exit_status": 0,
+      "stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7RztSRUNFSVZFUjtTQU1FO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7UkVTVUxUO1F1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZT5RdWlldExpdGVyYWxTZWxlY3RvckluaGVyaXRlZEFzc2lnblRhcmdldDAxMTI7U1RBVElDO0NBUFRVUkU7UkVUSVJFRDtET05FOw==",
+      "stderr_template_base64": "",
+      "baseline_stdout_template_base64": "UXVpZXRMaXRlcmFsU2VsZWN0b3JJbmhlcml0ZWRBc3NpZ25CYXNlPlF1aWV0TGl0ZXJhbFNlbGVjdG9ySW5oZXJpdGVkQXNzaWduQmFzZTtXQVJNO0k7Rzs=",
+      "derived_from": {
+        "catalogue": "magic_property_methodclosure_static_raw_ternary_condition_typed_ternary_left_coalesce_quiet_get_cases.json",
+        "id": "methodclosure-static-raw-ternary-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "4f1579fb3eb56884ec1605f633b10cee4a64ee5fe3bc82540cbea3ccf89371fa",
+        "change": "Only the FCC selector line changes. NOT of old-None typed COALESCE/TERNARY children supplies FULL conditions and all four typed operand positions. Some selected tags deliberately become BOOL while final class/method bytes, bodies, profile, streams and cache/owner histories stay literal."
+      }
+    }
+  ]
+}
