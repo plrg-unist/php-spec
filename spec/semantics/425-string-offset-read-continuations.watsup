@@ -11,6 +11,7 @@ dec $string_read_in_range(pvalue, int) : bool
 dec $string_read_leading(pvalue, pvalue) : int?
 dec $string_read_raw_leading(pvalue, pvalue) : int?
 dec $string_read_raw_known_base(pstate, porigin, pvalue) : bool
+dec $string_read_raw_numeric_string(expression) : bool
 dec $string_read_raw_float_sign_tree(expression) : bool
 dec $string_read_allocated_value(pstate, porigin, pvalue) : bool
 dec $string_read_allocated_base(pstate, porigin, pvalue) : bool
@@ -954,11 +955,16 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
   -- if $c_string(n_bytes*) = n_bytes*
   -- if S_before = S[.STRINGDATA = S.STRINGDATA[0:n_identity]]
   -- if $string_concat(S_before, pvalue_left, pvalue_right, false, true) = S_before[.STRINGDATA = S_before.STRINGDATA ++ [n_bytes*]][.RESULT = KNOWN (PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*)]
-;; This syntax-only grammar adds no value, source, pool or allocation authority.
+;; These tree and literal guards add no value, source, pool or allocation authority.
+def $string_read_raw_numeric_string(NScalarString (BYTES text_bytes) metadata) = true
+  -- if n_bytes* = $base64(text_bytes)
+  -- if $c_string(n_bytes*) = n_bytes*
+  -- if $numeric_string(n_bytes*) = FULLNUM pnumber
+def $string_read_raw_numeric_string(expression) = false -- otherwise
 def $string_read_raw_float_sign_tree(NScalarFloat (FLOAT text_bits) metadata) = true
 def $string_read_raw_float_sign_tree(NExprUnaryPlus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
 def $string_read_raw_float_sign_tree(NExprUnaryMinus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
-def $string_read_raw_float_sign_tree(NExprCastDouble expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
+def $string_read_raw_float_sign_tree(NExprCastDouble expression_child metadata) = ($string_read_raw_float_sign_tree(expression_child) \/ $string_read_raw_numeric_string(expression_child))
 def $string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
 def $string_read_raw_float_sign_tree(NExprBinaryOpMinus expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
 def $string_read_raw_float_sign_tree(NExprBinaryOpMul expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))

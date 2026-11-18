@@ -3,6 +3,7 @@
 import json
 
 from string_offset_retained_carrier_protocol import PREFIX, lines, seek
+from string_offset_runtime_allocated_float_ternary_tree_rhs_concat_base_initial_raw_leading_key_peer_review import capture
 
 
 def render(program, filename_b64, control_program, control_filename_b64):
@@ -371,60 +372,48 @@ S_atom_precision = S_capture[.POOLS = [ppool[.CONSTANTS = (PCCPRECISION pcpath_a
 $string_read_allocated_value(S_atom_precision,porigin_base,pvalue_base)
 $string_read_plan(S_atom_precision) = (pstringread)
 ''')
-    control = ['S_initial = $php_run(' + control_program + ',0,' + json.dumps(control_filename_b64) + ')',
-               'S_initial.COMPLETION = BUDGET'] + seek('S_initial', 0, 'S_capture') + lines(r'''
-S_capture.TODO = (KEY_READ_DIM poperand 18 KEY_R) :: ptask_tail*
-poperand = VARIABLE ($ptascii("key")) 18
-pvalue_left = PSTRING_CARRIER (REQUEST_STRING 3) ($ptascii("-10.5bcde"))
-pvalue_right = PSTRING_CARRIER (REQUEST_STRING 4) ($ptascii("-12.5"))
-pvalue_base = PSTRING_CARRIER (REQUEST_STRING 5) ($ptascii("-10.5bcde-12.5"))
-S_capture.RESULT = KNOWN pvalue_base
-S_capture.STRINGDATA = [$ptascii("512"),$ptascii("-10.5"),$ptascii("-10.5bc"),$ptascii("-10.5bcde"),$ptascii("-12.5"),$ptascii("-10.5bcde-12.5")]
-S_capture.ORIGIN = (porigin_site)
-$origin_child((porigin_site),[PCFIELD 0]) = (porigin_base)
-$origin_child((porigin_base),[PCFIELD 0]) = (porigin_left)
-$origin_child((porigin_base),[PCFIELD 1]) = (porigin_right)
-$origin_node(S_capture.SOURCES,porigin_base) = (NExprBinaryOpConcat expression_left expression_right metadata_base)
-$origin_node(S_capture.SOURCES,porigin_left) = (expression_left)
-$origin_node(S_capture.SOURCES,porigin_right) = (expression_right)
-expression_right = NExprCastString expression_number metadata_right
-expression_number = NExprCastDouble expression_input metadata_number
-expression_input = NScalarString (BYTES "LTEyLjU=") metadata_input
-$origin_child((porigin_right),[PCFIELD 0]) = (porigin_number)
-$origin_node(S_capture.SOURCES,porigin_number) = (expression_number)
-$string_read_runtime_value(S_capture,porigin_number) = (PFLOAT 13846598529327300608)
-$string_read_allocated_base(S_capture,porigin_left,pvalue_left)
-$string_read_allocated_value(S_capture,porigin_right,pvalue_right)
-$concat_constant(S_capture,(porigin_left)) = false
-$concat_constant(S_capture,(porigin_right)) = false
-S_capture.CODE = [pcode]
-porigin_right = PORIGIN n_unit pcpath_right
+    control = capture(control_program, control_filename_b64) + lines(r'''
+expression_number = NExprBinaryOpDiv expression_cast expression_divisor metadata_number
+expression_cast = NExprCastDouble expression_int metadata_cast
+expression_int = NExprUnaryMinus expression_positive metadata_int
+expression_positive = NScalarInt (INTEGER 25) metadata_positive
+expression_divisor = NScalarFloat (FLOAT "4000000000000000") metadata_divisor
+$origin_child((porigin_number),[PCFIELD 0]) = (porigin_cast)
+$origin_child((porigin_number),[PCFIELD 1]) = (porigin_divisor)
+$origin_child((porigin_cast),[PCFIELD 0]) = (porigin_int)
+$origin_child((porigin_int),[PCFIELD 0]) = (porigin_positive)
+$origin_node(S_capture.SOURCES,porigin_cast) = (expression_cast)
+$origin_node(S_capture.SOURCES,porigin_divisor) = (expression_divisor)
+$origin_node(S_capture.SOURCES,porigin_int) = (expression_int)
+$origin_node(S_capture.SOURCES,porigin_positive) = (expression_positive)
 porigin_number = PORIGIN n_unit pcpath_number
-$origin_child((porigin_number),[PCFIELD 0]) = (porigin_input)
-$origin_node(S_capture.SOURCES,porigin_input) = (expression_input)
-porigin_input = PORIGIN n_unit pcpath_input
-$compiled_read(S_capture,porigin_input) = (PSTRING ($ptascii("-12.5")))
-$string_read_runtime_value(S_capture,porigin_input) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")))
-$cast_apply(S_capture,CASTFLOAT,PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")),18) = S_capture[.RESULT = KNOWN (PFLOAT 13846598529327300608)]
-$truth_value(S_capture,PFLOAT 13846598529327300608,18) = S_capture[.RESULT = KNOWN (PBOOL true)]
+porigin_cast = PORIGIN n_unit pcpath_cast
 $code_expression(pcode.EXPRESSIONS,pcpath_number) = ((z_number,false))
-$(z_number > 0)
+$code_expression(pcode.EXPRESSIONS,pcpath_cast) = ((z_cast,false))
+$(z_number > 0 /\ z_cast > 0)
 $compiled_read(S_capture,porigin_number) = eps
+$compiled_read(S_capture,porigin_cast) = eps
 $compiled_precision(S_capture,(porigin_number)) = (14)
-$code_expression(pcode.EXPRESSIONS,pcpath_right) = ((z_right,false))
-S_prefix = S_capture[.STRINGDATA = S_capture.STRINGDATA[0:4]]
-S_cast = $cast_apply(S_prefix,CASTSTRING,PFLOAT 13846598529327300608,z_right)
-S_cast = S_prefix[.STRINGDATA = S_prefix.STRINGDATA ++ [$ptascii("-12.5")]][.RESULT = KNOWN pvalue_right]
-$string_concat(S_cast,pvalue_left,pvalue_right,false,false) = S_cast[.STRINGDATA = S_cast.STRINGDATA ++ [$ptascii("-10.5bcde-12.5")]][.RESULT = KNOWN pvalue_base]
+$compiled_precision(S_capture,(porigin_cast)) = (14)
+$compiled_precision(S_capture,(porigin_divisor)) = (14)
+$compiled_read(S_capture,porigin_int) = (PINT (-25))
+$string_read_runtime_value(S_capture,porigin_int) = (PINT (-25))
+$cast_apply(S_capture,CASTFLOAT,PINT (-25),z_cast) = S_capture[.RESULT = KNOWN (PFLOAT 13851102128954671104)]
+$string_read_runtime_value(S_capture,porigin_cast) = (PFLOAT 13851102128954671104)
+$string_read_runtime_value(S_capture,porigin_divisor) = (PFLOAT 4611686018427387904)
+$binary_apply(S_capture,DIVIDE,PFLOAT 13851102128954671104,PFLOAT 4611686018427387904,z_number) = S_capture[.RESULT = KNOWN (PFLOAT 13846598529327300608)]
+$string_read_runtime_value(S_capture,porigin_number) = (PFLOAT 13846598529327300608)
+$truth_value(S_capture,PFLOAT 13846598529327300608,z_number) = S_capture[.RESULT = KNOWN (PBOOL true)]
+~$string_read_raw_float_sign_tree(expression_cast)
 ~$string_read_raw_float_sign_tree(expression_number)
 ~$string_read_allocated_value(S_capture,porigin_base,pvalue_base)
 ~$string_read_allocated_base(S_capture,porigin_base,pvalue_base)
 $string_read_raw_capture(S_capture,poperand,pvalue_base) = eps
 $string_read_plan(S_capture) = eps
 ''')
-    helper = '\ndec $peer_numeric_string_cast_leaf() : bool\ndef $peer_numeric_string_cast_leaf() = true\n' + ''.join(
+    helper = '\ndec $peer_int_float_div_leaf() : bool\ndef $peer_int_float_div_leaf() = true\n' + ''.join(
         '  -- if ' + check + '\n' for check in control)
     body = prefix + helper + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks)
-    body += '  -- if $peer_numeric_string_cast_leaf()\n'
+    body += '  -- if $peer_int_float_div_leaf()\n'
     return body, len(checks) + len(control) + 1, len(checks) - derived_start + len(control) + 1

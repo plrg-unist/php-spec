@@ -81,7 +81,7 @@ $string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT exp
 $string_read_raw_float_sign_tree(NExprTernary expression_right_number expression_right_number expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NExprTernary (NScalarInt (INTEGER 1) eps) ABSENT expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT (NScalarString (BYTES "MQ==") eps) eps)
-~$string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT (NExprCastDouble (NScalarString (BYTES "LTEyLjU=") eps) eps) eps)
+$string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT (NExprCastDouble (NScalarString (BYTES "LTEyLjU=") eps) eps) eps)
 ''')
     for node in ('shorthand', 'condition', *(() if reference else ('fallback',))):
         checks += [f'S_bad_{node} = S_capture[.POOLS = [ppool[.CONSTANTS = (PCCPRECISION pcpath_{node} 17) :: ppool.CONSTANTS]]]',
