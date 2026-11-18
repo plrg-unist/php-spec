@@ -96,9 +96,9 @@ def frontier(name, fixture, path):
                 ('NScalarFloat (FLOAT "3ff0000000000000") metadata_child_3', 'PFLOAT 4607182418800017408', 'PFLOAT 4607182418800017408', 'PINT $(-2)'),
                 ('NScalarString (BYTES "MA==") metadata_child_3', 'PSTRING ($ptascii("0"))', 'PSTRING_CARRIER INTERNED_STRING ($ptascii("0"))', 'PINT $(-1)')]:
             state, expr, function = raw_not(leaf, raw, complement)
-            checks += [('a certified FLOAT or full numeric STRING refuses even with a forged INT own fact',
+            checks += [('an exact integral FLOAT complements while a numeric STRING retains bytewise semantics',
                         value(state, leaf, 'porigin_child_3', function) + ' = (' + typed + r') /\ ' +
-                        value(state, expr, function=function) + ' = eps')]
+                        value(state, expr, function=function) + (' = (' + complement + ')' if raw.startswith('PFLOAT ') else ' = eps'))]
         leaf = 'NScalarInt (INTEGER 1) metadata_child_3'
         child = 'NExprBitwiseNot (' + leaf + ') metadata_child_3'
         expr = 'NExprBitwiseNot (' + child + ') metadata_sign'

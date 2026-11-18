@@ -2059,3 +2059,17 @@ cache; author original report/map/full-cache reads remain0. Earlier OUTPUT
 evidence and every held boundary retain their own cuts.
 [Folded-condition evidence](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-review.json).
+
+Quiet exact integral FLOAT values also feed integer bitwise NOT beneath the
+existing selected nested return casts. Their own recursive SOURCE/CODE/pool
+proof precedes intrinsic float_long(..., true) = (integer, eps) conversion.
+Empty compiled effects cover the complete certified bitwise-NOT subtree.
+Folded and emitted children retain their actual flag and terminal line; the
+result remains a nonowning signed64 PINT before either outer cast. Exact
+NORMAL-state equality retains diagnostics, effects and storage. Signed
+zeros, exact -2^63 and the float below +2^63 keep their own input bits; equal
+rounded outer FLOATs cannot replace exact raw PINT results. Fractional and
+subnormal, nonfinite and out-of-range inputs refuse even under diagnostic
+masks. Wider owners, contexts and every held boundary remain partial.
+[Integral-float complement evidence](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-integral-float-bitnot-cast-chain-return-modulo-error-review.json).

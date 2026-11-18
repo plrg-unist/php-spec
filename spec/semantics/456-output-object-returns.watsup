@@ -1626,6 +1626,23 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expressio
   -- if S_not = S[.RESULT = KNOWN (PINT i_result)]
   -- if (b_child /\ $compiled_read(S, porigin) = (PINT i_result)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(PINT i_result) = eps
+def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expression_child metadata) = (PINT i_result)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (PFLOAT n_child)
+  -- if $(n_child < 18446744073709551616)
+  -- if (i_child, eps) = $float_long(n_child, true)
+  -- if $long_range(i_child)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if porigin_child = PORIGIN n_unit pcpath_child
+  -- if pfunction.CODE.UNIT = n_unit
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, NExprBitwiseNot expression_child metadata, z, b_child)
+  -- if S_not = $bitnot_apply(S[.RESULT = KNOWN (PFLOAT n_child)], PFLOAT n_child, z)
+  -- if S_not.RESULT = KNOWN (PINT i_result)
+  -- if $long_range(i_result)
+  -- if S_not = S[.RESULT = KNOWN (PINT i_result)]
+  -- if (b_child /\ $compiled_read(S, porigin) = (PINT i_result)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
+  -- if $value_nodes(PINT i_result) = eps
 ;; Skipped runtime operands still compiled. A named unresolved constant has
 ;; its own raw line; certified values retain their recursive terminal line.
 dec $ob_object_cast_chain_skipped_line(pstate, pfunction, porigin, expression) : int?
