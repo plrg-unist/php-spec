@@ -1426,6 +1426,22 @@ old campaigns. Names/STRING, computed unary children, NaN warning continuations,
 owning results and wider contexts remain partial.
 [Direct finite-tree review](../../coverage/semantics/deferred-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
+Two or more outer PLUS/MINUS signs also preserve a finite nonzero FLOAT condition
+on an op4 numeric tree with raw FLOAT presence and phase-FALSE descendants.
+A recursive certificate counts only the outer signs, authenticating each sign's
+own and child SOURCE, typed PFLOAT pool, absent CODE/read/redirect and pure multiplication
+by long +1/-1. The binary base retains the existing collector. Count0/direct and
+count1/unary receipts stay disjoint; computed unary children inside the binary
+base remain refused. The full root's unique proper FIELD1 redirect, skipped
+bindings, Shared caches and private recipients retain their existing guards.
+
+Four new native originals once/source4, prelaw1004 and author WHOLE6/1730 keep
+separate cuts; author fixtures pass their first attempt. Independent WHOLE8/1708
+also passes its first attempt, separating new1524 from fresh direct317 controls184
+without renewing accepted campaigns.
+Wider condition domains, NaN warnings, owning results and lifetimes remain partial.
+[Repeated finite-sign review](../../coverage/semantics/deferred-repeated-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
