@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-literal-float-zero-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawLiteralFloatZeroRedirect321(\n    $p0 = (((+(-0.0))) ? SKIPPED_ZERO_TREE321_0 : ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))),\n    $p1 = (((-(+(-0.0)))) ? SKIPPED_ZERO_TREE321_1 : ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))\n) {\n    echo 'values:', (((+(-0.0)))) === 0.0, ':', (((-(+(-0.0))))) === 0.0, '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawLiteralFloatZeroRedirect321();\nrawLiteralFloatZeroRedirect321();\n",
+    "purpose": "Quiet folded literal FLOAT sign chains +(-0.0) and -(+(-0.0)) retain FIELD2 selected scalar tags, skipped-name pruning, Shared caches and private named integer reception. Source observers establish zero/type and branch behavior; exact sign bits belong to compiler-source and recursive pool/pure-operation certificates.",
+    "expected_normal_stdout": "values:1:1|raw:1:1|values:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "a3b8c9ec42b4085e7291cf9a7d41310ddf5a1d8aff7c346f653f9d402a37deb7",
+    "derived_from": {
+      "source_sha256": "935a76237fd1a9ba1213674b0128e6a61ffae0122f36d6a0002a5c82fa917177",
+      "transformation": "Rename320 to321 and replace computed signed-zero arithmetic predicates by literal-only +(-0.0) and -(+(-0.0)) chains; preserve selected arms, original bytes elsewhere, observers and reentry."
+    }
+  },
+  {
+    "id": "deferred-literal-float-zero-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace LiteralFloatZeroRedirect321;\nuse const E_WARNING as Base321;\nuse const E_ERROR as One321;\nuse const Unavailable321\\Payload as Skipped321;\nfunction coercion321($errno, $message, $file, $line) {\n    global $x321;\n    echo 'coercion:', $message, '|';\n    defaults321(2);\n    $x321 = 3.5;\n}\nfunction defaults321(\n    int $first,\n    int &$selectedBool = (int)(((-(+(-0.0)))) ? Skipped321 : (((bool)(+(-((float)(+(Base321 === One321)))))))),\n    int &$negativeZero = (int)(((+(-0.0))) ? Skipped321 : (-((float)((bool)(+(-((float)(+(Base321 === One321))))))))),\n    int $last = 7\n) {\n    echo 'values:', (((-(+(-0.0))))) === 0.0, ':', (((+(-0.0)))) === 0.0, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('LiteralFloatZeroRedirect321\\\\coercion321');\n$x321 = 1.5;\n$last321 = 8;\ndefaults321(last: $last321, first: $x321);\necho 'outer:x=', $x321, '|';\n",
+    "purpose": "Quiet folded literal FLOAT sign chains +(-0.0) and -(+(-0.0)) retain FIELD2 selected scalar tags, skipped-name pruning, Shared caches and private named integer reception. Source observers establish zero/type and branch behavior; exact sign bits belong to compiler-source and recursive pool/pure-operation certificates.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|values:1:1|body:2:0:0:7|values:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "7136877e90b2799db95a6ad781f5b8cedc4cfd667c378f2db5e7f2f19920b68b",
+    "model_timeout_seconds": 120,
+    "derived_from": {
+      "source_sha256": "2266ec767633cd648152fb5e913a3ee178fdb5c63c7dbbb73638da7fccbc1255",
+      "transformation": "Rename320 to321 and replace computed signed-zero arithmetic predicates by literal-only +(-0.0) and -(+(-0.0)) chains; preserve selected arms, original bytes elsewhere, observers and reentry."
+    }
+  }
+]

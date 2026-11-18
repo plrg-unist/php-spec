@@ -1475,6 +1475,22 @@ Repeated outer signs, computed unary children inside the binary base, owning
 results and wider contexts/lifetimes remain partial.
 [Unary zero-tree review](../../coverage/semantics/deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
+Folded FLOAT-literal PLUS/MINUS chains also select full-ternary FIELD2 when their
+certified result is zero and whole-condition phase safety is false. The existing
+literal helper fixes the literal-only shape; the unchanged FLOAT-tree helper
+authenticates every SOURCE, typed pool and absent CODE/read/redirect fact. Exact
+full-source and proper FIELD2 receipts retain skipped-name pruning, selected
+scalar tags, Shared caches and private reception. Ordinary VALUE and the existing
+binary-condition receipts remain unchanged.
+
+Two fresh originals cover raw tags and named reentry with `+(-0.0)` and
+`-(+(-0.0))`. Native2 once/source2, prelaw2/394 and author WHOLE3/670 keep separate
+cuts. Source observations establish zero/type and branch behavior; exact signs
+belong to the compiler-source and pool/pure-operation certificates. Bare and
+phase-SAFE zeros retain the ordinary falsey route. Computed predicates remain on
+their existing routes; wider owning contexts and lifetimes remain partial.
+[Literal zero review](../../coverage/semantics/deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

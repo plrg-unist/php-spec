@@ -1038,6 +1038,7 @@ dec $lossy_optional_integer_float_number_tree_finite_nonzero_full_redirect(pstat
 dec $lossy_optional_integer_repeated_unary_float_number_tree_finite_nonzero_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
 dec $lossy_optional_integer_float_number_tree_zero_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
 dec $lossy_optional_integer_unary_float_number_tree_zero_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
+dec $lossy_optional_integer_literal_float_zero_full_redirect(pstate, plenv, porigin) : (porigin, porigin)?
 
 dec $lossy_optional_integer_pruned_ternary(pstate, plenv, porigin) : (porigin, porigin)?
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
@@ -1070,6 +1071,8 @@ def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, 
   -- if $lossy_optional_integer_float_number_tree_zero_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_unary_float_number_tree_zero_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_literal_float_zero_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_finite_nonzero_float_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
 def $lossy_optional_integer_pruned_ternary(S, plenv, porigin) = ((porigin_cond, porigin_selected))
@@ -1337,6 +1340,24 @@ def $lossy_optional_integer_unary_float_number_tree_zero_full_redirect(S, plenv,
   -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
   -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_selected, false, z))
 def $lossy_optional_integer_unary_float_number_tree_zero_full_redirect(S, plenv, porigin) = eps -- otherwise
+
+;; Literal sign-chain zero bits prove false truth without widening ordinary VALUE.
+def $lossy_optional_integer_literal_float_zero_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 2])))
+  -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_skipped expression_selected metadata)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 1])) = (expression_skipped)
+  -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 2])) = (expression_selected)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $lossy_optional_integer_float_literal(expression_cond) = (n_bits)
+  -- if $code_at(S.CODE, n) = (pcode)
+  -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))
+  -- if $pool_value(S.POOLS, PORIGIN n pcpath) = eps /\ $compiled_read(S, PORIGIN n pcpath) = eps
+  -- if $lossy_optional_integer_float_tree_value(S, PORIGIN n (pcpath ++ [PCFIELD 0])) = (n_bits)
+  -- if $float_decode(n_bits) = FINITE n_sign 0 n_denominator
+  -- if $lossy_optional_integer_deferred_bindings(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0]))
+  -- if $lossy_optional_integer_redirect_count(pcode.REDIRECTS, pcpath) = 1
+  -- if $compiled_redirect(S, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 2]), expression_selected, false, z))
+def $lossy_optional_integer_literal_float_zero_full_redirect(S, plenv, porigin) = eps -- otherwise
 
 ;; Count only outer signs; the unchanged collector authenticates the binary base.
 dec $lossy_optional_integer_repeated_unary_finite_float_tree_value(pstate, porigin) : (nat, nat)?
@@ -2332,6 +2353,11 @@ def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
   -- if $lossy_optional_integer_unary_float_number_tree_zero_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
+  -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
+  -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
+def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
+  -- if ~$lossy_optional_integer_phase_safe(S, plenv, porigin)
+  -- if $lossy_optional_integer_literal_float_zero_full_redirect(S, plenv, porigin) = ((porigin_cond, porigin_selected))
   -- if $lossy_optional_integer_deferred_value_at(S, plenv, porigin_selected) = (pvalue)
   -- if pvalue <- [PNULL, PBOOL false, PBOOL true] \/ $power_warning_number(pvalue) =/= eps
 def $lossy_optional_integer_deferred_value_at(S, plenv, porigin) = (pvalue)
