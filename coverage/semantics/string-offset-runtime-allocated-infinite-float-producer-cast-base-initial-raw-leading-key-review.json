@@ -1,0 +1,303 @@
+{
+  "feature": "string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key",
+  "status": "implemented and independently reviewed; fixed source integration validated",
+  "scope": "Existing quiet certified PFLOAT values with INFINITE bits now authenticate allocated STRING-cast bases. Full family and core remain partial.",
+  "target": "PHP8.5.10 CLI NTS signed64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "source_parent": "9e13bbd0d118c410afe11e3201efddb88f896b9c",
+    "source_capture_revision": "e877f6e6af583275ef11c9256eede089dc987a7e",
+    "runtime_source_comparison_revision": "5bb6d00df1aedabebd7d8d2d9709b403016f886a",
+    "author_fixture_revision": "d495b4361469c40156bf566b39ac6e76c994deab",
+    "source_ready_revision": "9ae62be1e204e44fd059a8bacbf3d39da02be2f9",
+    "source_ready_tree": "6326b3e74baf5b9ba9432453eeee5fe90756bc92",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "change": "Delete only FINITE premise and update the FLOAT allocation comment. Existing typed quiet VALUE, formatter false flag and exact full-state cast replay preserve NaN refusal. All other runtime helpers remain literal.",
+    "affected_old_fixture": "One existing finite-peer name-set inclusion promotes only the four infinity VALUE/BASE/raw_capture/plan denials. Fresh B equivalents will validate the affected expectations; no old campaign renewal.",
+    "runtime_parent_inverse": true,
+    "recursion": "No new recursion, module, helper or native evaluation path."
+  },
+  "source_provenance": {
+    "symbols": [
+      "zend_compile_cast",
+      "ZEND_CAST",
+      "__zval_get_string_func",
+      "zend_double_to_str",
+      "zend_gcvt"
+    ],
+    "route": "FLOAT-to-STRING allocates through zend_string_init. zend_gcvt formats signed INF with the captured precision; only isnan produces the STRING conversion warning. Pure number_text has INFINITE/false and NOTNUMBER/true branches. Existing typed VALUE and full-state cast replay retain NaN refusal.",
+    "observations": "Direct +INF cast gives REQUEST1/two rows and saved0=I. Negative literal-sign CONCAT/nonnull COALESCE gives REQUEST3/four rows and saved3=F versus rebound4=b. Quiet emitted finite multiplication overflows to +INF under a ternary-backed child and returns I. Native3 once/source3, with exact original paths/bytes/argv/profile reused.",
+    "counterexample": "Fresh B builds coherent quiet INF*0 NaN arithmetic: raw binary evaluation succeeds, while typed VALUE/BYTE/allocated-cast certificates refuse and cast state is unequal. No held NaN boundary is broadened."
+  },
+  "validation": {
+    "native": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/native-baseline/report.json",
+      "sha256": "23cd6ae3c0030c6485a6a33b3e39a85d9be776ec59086c2a6144d02ff50dd172",
+      "revision": "e877f6e6af583275ef11c9256eede089dc987a7e",
+      "source_credit": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": null,
+          "native_reused": false
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": null,
+          "native_reused": false
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-emitted-arithmetic-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": null,
+          "native_reused": false
+        }
+      ],
+      "native_executions": 3
+    },
+    "prelaw": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/baseline-v1/report.json",
+      "sha256": "ca1e6d7e2e3fddf8b8511d0f312f98f8dce46e0ad8ee49afa87c1a5c170f177c",
+      "revision": "e877f6e6af583275ef11c9256eede089dc987a7e",
+      "source_credit": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": "unsupported",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": "unsupported",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-emitted-arithmetic-key",
+          "passed": true,
+          "source_credit": 0,
+          "status": "unsupported",
+          "native_reused": true
+        }
+      ],
+      "native_executions": 0
+    },
+    "actual_prelaw_facts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/prelaw-facts-v1/report.json",
+      "sha256": "e77df884fdb314ce1c572570b3fd85439f01f277bb21b204b88af8a92d031ddc",
+      "revision": "e877f6e6af583275ef11c9256eede089dc987a7e",
+      "source_credit": 0,
+      "conditions": 41,
+      "derived": 0,
+      "passed": true,
+      "compiler": {
+        "exit": 0,
+        "elapsed": 13.05780291557312,
+        "cap_seconds": 120,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "exit": 0,
+        "elapsed": 18.86603569984436,
+        "cap_seconds": 180,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "native_executions": 0
+    },
+    "source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/source-v1/report.json",
+      "sha256": "922884d38206c2ea48eeaa2a3a7d90642ab44d8d0532a48118d8942cb0602d2f",
+      "revision": "5bb6d00df1aedabebd7d8d2d9709b403016f886a",
+      "source_credit": 3,
+      "rows": [
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-current-key",
+          "passed": true,
+          "source_credit": 1,
+          "status": "normal",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "source_credit": 1,
+          "status": "normal",
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-emitted-arithmetic-key",
+          "passed": true,
+          "source_credit": 1,
+          "status": "normal",
+          "native_reused": true
+        }
+      ],
+      "native_executions": 0
+    },
+    "author": [
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/author-current-v2/report.json",
+        "sha256": "39c6731d470d3c8ec8084522cc981cd2646bbe9f659fc9f86ea974a4dc13e15d",
+        "revision": "d495b4361469c40156bf566b39ac6e76c994deab",
+        "source_credit": 0,
+        "conditions": 205,
+        "derived": 99,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.66652774810791,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 22.774327993392944,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      },
+      {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/author-reference-v1/report.json",
+        "sha256": "2d3de02eec699190f0fde889b62f79f5f41cd30ce27d6ef472c08067acbb11df",
+        "revision": "d495b4361469c40156bf566b39ac6e76c994deab",
+        "source_credit": 0,
+        "conditions": 305,
+        "derived": 125,
+        "passed": true,
+        "compiler": {
+          "exit": 0,
+          "elapsed": 13.59221887588501,
+          "cap_seconds": 120,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        },
+        "execution": {
+          "exit": 0,
+          "elapsed": 27.773967027664185,
+          "cap_seconds": 180,
+          "timeout": false,
+          "interruption": null,
+          "group_after": []
+        }
+      }
+    ],
+    "preserved_author_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/author-current-v1/report.json",
+      "sha256": "4105b457ef2d06f561119bf7665abdcf35d472ebac550c8bf385a20cead7ead6",
+      "revision": "5bb6d00df1aedabebd7d8d2d9709b403016f886a",
+      "source_credit": 0,
+      "conditions": 205,
+      "derived": 99,
+      "passed": false,
+      "compiler": {
+        "exit": 0,
+        "elapsed": 12.8067626953125,
+        "cap_seconds": 120,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "runtime": "UNRUN; zero credit"
+    },
+    "source_to_fixtures_bridge": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-author57-20261118/source-to-fixtures-bridge.json",
+      "sha256": "4e2fc78655c778d42dc789bdf26ff8e8895bff75869105e64b61417c564b32e4"
+    },
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-peer48-20261118/state-v1/report.json",
+      "sha256": "384c2b8a9e6fe04abad60e3e009be70318d2e977b31b9ed7cf604f3e53de30ca",
+      "conditions": 486,
+      "derived_conditions": 151,
+      "compiler": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 13.659180164337158,
+        "cap_seconds": 120,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 38.6386981010437,
+        "cap_seconds": 180,
+        "interruption": null,
+        "group_after": []
+      },
+      "stable": true,
+      "first_postlaw_attempt_passed": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "fronts": "Actual negative reference original and exact fresh emitted overflow original, both checked before fixture evaluation.",
+      "discriminators": "Saved3 F/current4 b; quiet emitted finite overflow retains typed INFINITE bits. Coherent quiet INF*0 NaN arithmetic succeeds raw but VALUE/BYTE/allocation refuse and cast state differs. Same INF bytes still require equal captured/live precision; matched17 and truncated1 casts pass. Header, prefix, ownership, SOURCE/CODE and 0/1 budgets remain bounded.",
+      "revision": "df5b970ad4121293de547ebe99a74a28060494e7"
+    },
+    "whole": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-peer48-20261118/whole7-review.json",
+      "sha256": "84d844317d4f0cc2c977695057a4a939056849cd6bd0dd5714f8f70e7f4240a0",
+      "source_files": 7,
+      "runtime_parent_inverse": true,
+      "finite_peer_parent_inverse": true,
+      "make_parent_inverse": true,
+      "foreign_parent_bytes_preserved": true
+    },
+    "actual": {
+      "review_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-peer48-20261118/main101-immutable-clear.json",
+      "review_sha256": "0dcdf8117a3f9e17803b76a3d4cf4d086d9ddd515e73094d73d5f752dab07109",
+      "fixed_actual": "61958431dd09b6e3b1951327e4d16d25fb18d178",
+      "fixed_tree": "e7fdbe65cf9a6be6df0cd3a9c2588609acb97fff",
+      "actual_map_sha256": "c807d93e8aeda5fd5233060794ff7241fab73425c1aeacad8655a3078b59a3be",
+      "canonical_report_sha256": "f277334cf818ccd4a17183cc0036f19ba7634d81f518e1025b30edbe27c97095",
+      "canonical": {
+        "argv_count": 512,
+        "before_after_watched": 513,
+        "cap_seconds": 60,
+        "elapsed": 16.788418531883508,
+        "executions": 1,
+        "fixture_count": 1,
+        "manifest_modules": 509,
+        "pass": true,
+        "source_credit": 0
+      },
+      "physical_original_reads": {
+        "map": 1,
+        "report": 1
+      },
+      "author_raw_actual_canonical_map_reads": 0,
+      "surgical_runtime_MAIN_parent_preserved": true
+    },
+    "failure_disposition": "Original direct205/99 fixture is rejected during elaboration: compiler process exits0 with a non-invertible origin binding diagnostic; runtime UNRUN and zero credit. Only added-fact insertion order changed before corrected direct205/99 and first reference305/125. Source3, law, native observations and other passing cuts were not replayed.",
+    "preparation_failures": [
+      {
+        "count": 1,
+        "scope": "MAIN prewrite425 composition check",
+        "source_credit": 0,
+        "semantic_executions": 0,
+        "reason": "MAIN425 contains accepted disjoint composition beyond the author parent. Applying the two unique reviewed hunks preserves complete MAIN-parent inverse and complete author-post reconstruction."
+      }
+    ],
+    "peer_preparation_failures": 0,
+    "protocol_compatibility": "Final peer-only exact emitted-source creation and labeling do not execute in author peer=false cuts. All accepted runtime/source/native bytes/profile/tools and both author renderer posts remain unchanged."
+  },
+  "invariants": "Source47 low-precision DEFINE-name NaN; NaNBYTE; Owned-NUL source release; OP12 inc/dec dimension Warnings; undefined byref LIST key; COMP88 Stringable supplied-throw; V110/GC35/I106/COMP123 and all paused lanes. reserve93807cdd6/255; inventory169/306closed0constructors+1runtime unchanged.",
+  "remaining": "NaN casts/quiet-NaN VALUE, uncertified/CV/nonquiet/owning children, changed precision histories, selected NUL and wider owners/lifetimes remain partial.",
+  "family_status": "partial; complete PHP core remains unfinished",
+  "metadata_projection": "One common README/PROGRESS/inventory projection; immutable fixed actual above, with no later HEAD refresh or semantic rerun."
+}

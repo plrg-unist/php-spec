@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Quiet infinite FLOAT casts preserve existing allocated REQUEST string headers and saved leading offsets through returning Warnings. Exact child SOURCE, captured/live precision, pure formatting and full-state replay retain NaN refusal and existing ownership bounds; wider forms remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-review.json).
+
 Scoped nullable ?Alias producer RETURNs resolve quietly to canonical global stdClass after Param normalization, preserving exact class-then-null order and both metadata nodes. Object and successful NULL returns retain existing verification, retirement and private Notice-cell rules; scoped union/relative returns and wider lifetimes remain partial. [Review](coverage/semantics/scoped-nullable-stdclass-return-producer-reference-notice-review.json).
 
 Quiet NULL-left coalesces preserve existing certified allocated string RHS headers and saved leading offsets through returning Warnings. Exact SOURCE, precision and unchanged full-state authority retain existing non-NUL REQUEST and ownership bounds; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json).

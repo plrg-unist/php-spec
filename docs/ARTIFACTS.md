@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet infinite FLOAT cast-base evidence remains under `../php-spec-evidence-archive/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-{author57,peer48}-20261118/`; the [review](../coverage/semantics/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-review.json) binds source7, native-once/source3, distinct corrected/first-pass fixture cuts, preserved compiler UNRUN0 and fixed61958431/solef277334c through immutable0dcdf811. Earlier finite/NULL campaigns are not renewed; these archives remain evidence rather than operational inputs.
+
 Scoped nullable-return evidence remains in `../php-spec-evidence-archive/scoped-nullable-stdclass-return-producer-reference-notice-128/`; the [review](../coverage/semantics/scoped-nullable-stdclass-return-producer-reference-notice-review.json) binds native-once/raw/prelaw/author summaries, the first WHOLE NONPASS and corrected peer192, exact source-packet-v2 and fixed28e2bb56/soled13e34e7 through immutablea80173d7. These archives remain evidence rather than operational inputs.
 
 COMP335 mixed nominal/builtin Get originals, native-once observations and separate source/header/state cuts remain in `../php-spec-evidence-archive/comp335/`. `source-ready.json` and `independent-whole-source-clearance.json` bind the source bundle and preserved incomplete/nonpass/preparation zeros. The [review](../coverage/semantics/mixed-nominal-union-parentless-short-reference-get-hook-review.json) records fixed actual1be5e546c and the sole cached canonical acceptance; these archives are evidence, not build/runtime inputs.
