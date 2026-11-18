@@ -1949,3 +1949,16 @@ through one cached actual/report/map tuple; author raw reads remain0. No accepte
 campaign or earlier OUTPUT151/152 evidence is renewed.
 [Quiet short-circuit evidence](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-review.json).
+
+Quiet emitted-left `&&`, `||`, `and` and `or` also feed the selected nested scalar
+return casts. Both runtime routes retain the compiled RHS terminal line and an
+emitted parent with no folded read or redirect. A skipped unresolved plain-name
+constant authenticates its fetch/name SOURCE, own emitted CODE and raw line
+without lookup; other skipped certified values retain their recursive terminal
+line without a truth demand. A selected RHS retains its proper quiet nonowning
+value and exact Boolean state. Empty parent effects, intrinsic quiet LEFT truth,
+the existing two-cast gate and ownership bounds remain required. Demanded NaN,
+owning or warningful operands and wider contexts remain partial; held boundaries
+and OB31 remain unchanged.
+[Emitted-left short-circuit evidence](../../coverage/semantics/output-final-selected-emitted-left-short-circuit-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-emitted-left-short-circuit-cast-chain-return-modulo-error-review.json).
