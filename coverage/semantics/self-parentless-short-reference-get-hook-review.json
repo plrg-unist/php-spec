@@ -1,0 +1,576 @@
+{
+  "version": 1,
+  "milestone": "COMP341",
+  "decision": "Independently reviewed defining-self source and fixed actual/canonical acceptance; family remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless short reference Get with raw case-insensitive NName self, nullable self, or an existing ordered two-member self/builtin union over null, false, true, bool, int, float, string and array. All defining-source, body, modifier, owner and value bounds remain.",
+  "implementation": {
+    "source_only_paths": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "header_helper": "$hook_short_reference_scoped_header",
+    "changed_guard_premises": 1,
+    "whole_previous_module_inverse": true,
+    "runtime_95_99_134_138_and_ownership_unchanged": true,
+    "nominal_shape_helpers_unchanged": true
+  },
+  "source": {
+    "commit": "8347a2fd9a00b93d6a7d3c9a845eafb3caebe850",
+    "parent": "53ae3bb7752d057245aba845922859ac0229117e",
+    "path": "spec/semantics/382-backed-get-hooks.watsup",
+    "blob": "9449ee696d180f63aeb6043fd7e8b666a1cbd168",
+    "sha256": "dbd45395ea26479f8e8de95f1e8fe736c5130c8e892a4e43eca22b131ab756a7",
+    "old_module_sha256": "2eacaf0da9b454af4faa7992703d3fb9caeff69a8c00fdeb526dbf18001fe2d8",
+    "change": "The scoped NName premise also accepts raw case-insensitive self. Exact PTCLASS shape, quiet whole normalization and every other guard remain literal."
+  },
+  "source_bundle": {
+    "ready_revision": "deeb5f6a131d059e1c2ca2f1fd3398e9321457f7",
+    "parent": "4f05fdaabb9a7aa34ea9045a1099d3d49c5ba9a6",
+    "paths": [
+      "Makefile",
+      "docs/semantics/SOURCE-PROPERTIES.md",
+      "spec/semantics/382-backed-get-hooks.watsup",
+      "tests/semantics/scoped_class_parentless_short_reference_get_hook_review_protocol.py",
+      "tests/semantics/self_parentless_short_reference_get_hook/cases.json",
+      "tests/semantics/self_parentless_short_reference_get_hook/hashes.json",
+      "tests/semantics/self_parentless_short_reference_get_hook/self-int-scoped.php",
+      "tests/semantics/self_parentless_short_reference_get_hook/self-plain-scoped.php",
+      "tests/semantics/self_parentless_short_reference_get_hook_protocol.py",
+      "tests/semantics/self_parentless_short_reference_get_hook_review/cases.json",
+      "tests/semantics/self_parentless_short_reference_get_hook_review/hashes.json",
+      "tests/semantics/self_parentless_short_reference_get_hook_review/strict-int-first-self-scoped.php",
+      "tests/semantics/self_parentless_short_reference_get_hook_review/strict-nullable-self-scoped.php",
+      "tests/semantics/self_parentless_short_reference_get_hook_review_protocol.py",
+      "tests/semantics/self_parentless_short_reference_get_hook_review_sources.py",
+      "tests/semantics/self_parentless_short_reference_get_hook_review_state.py",
+      "tests/semantics/self_parentless_short_reference_get_hook_sources.py"
+    ]
+  },
+  "semantics": [
+    "Raw self resolves through PTKNOWN to the exact defining class, before ordinary imports; changing the consumer namespace cannot rebind that class.",
+    "Existing nullable recursion and eight ordered two-member class/builtin laws reuse the same proof, retaining complete raw and normalized order and source metadata.",
+    "Distinct same-class seed and replacement objects retain their own uninitialized backing slots. Actual reference aliases, ordinary object copies, atomic refused writes and real per-object type-source detachment use existing runtime and ownership rules.",
+    "The free empty array literal retains its authenticated constant-pool owners after runtime aliases retire. The initial overstrong draft retirement expectation was corrected before any state interpreter run.",
+    "Four original-source agreements cover self, nullable self and the two self/int member orders under weak and strict callers. All eight builtin pair alternatives have separate header132 coverage; source4 does not independently validate all eight builtin runtime tags.",
+    "Known-scope self intersections are valid at the target. Unchanged nominal-shape helpers leave larger self unions/intersections/DNF outside this hook admission; no new PHP static-error claim is made."
+  ],
+  "engine_routes": [
+    "Zend/zend_compile.c:zend_compile_single_typename",
+    "Zend/zend_compile.c:zend_is_scope_known",
+    "Zend/zend_compile.c:zend_compile_property_hooks",
+    "Zend/tests/type_declarations/intersection_types/relative_types/relative_self_type_is_allow_when_compile_time_resolve.phpt"
+  ],
+  "oracle": {
+    "target": "project-local vendored PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_observations_total_once": 4,
+    "repeated_native_observations": 0,
+    "postlaw_source_native_observations": 0,
+    "same_original_bytes_argv_profile_reused": true
+  },
+  "source_agreements": 4,
+  "validation": [
+    {
+      "head": "8347a2fd9a00b93d6a7d3c9a845eafb3caebe850",
+      "agreements": 2,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/weak-source-self/report.json",
+      "sha256": "98362fb78c74bfe9e170c32f27ae369d9688d286bca40ecbe6081c0444af4873",
+      "mode": "production-SL",
+      "module_count": 508,
+      "source_agreement_credit": 2,
+      "profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1",
+        "include_path": ".:"
+      },
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "native_observations": 0,
+      "reused_native_observations": 2,
+      "launcher": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp341/saved-native-sources.py",
+        "sha256": "f7d6e589ef7d300d59f199e737e32c58ebc7a916ec11dcfc153d61ddeb475c35",
+        "stable": true,
+        "tracked_repository_wrapper": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev/tests/semantics/self_parentless_short_reference_get_hook_sources.py"
+      },
+      "records": [
+        {
+          "id": "self-plain-scoped",
+          "source_sha256": "fdab1c9213573af06db807368e15575712ca02916bf38ee7219b471a9ab92373",
+          "status": "normal",
+          "passed": true,
+          "native": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+            "pid": 3701038,
+            "pgid": 3701038,
+            "cap_seconds": 15,
+            "started": 1794977812.2690375,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 0.0032339096069335938,
+            "interruption": null,
+            "group_after": [],
+            "saved_native_reuse": true,
+            "saved_native_report": "/home/user/workspace/php-spec-evidence-archive/comp341/weak-native-once/report.json"
+          },
+          "model": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+            "pid": 3703909,
+            "pgid": 3703909,
+            "cap_seconds": 140,
+            "started": 1794978345.5298793,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 46.080257415771484,
+            "interruption": null,
+            "group_after": []
+          }
+        },
+        {
+          "id": "self-int-scoped",
+          "source_sha256": "4896b3b7a6a706dc3fd52c719d05745008e77728ee9816e57b3c2c5fcff80d4b",
+          "status": "normal",
+          "passed": true,
+          "native": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+            "pid": 3701039,
+            "pgid": 3701039,
+            "cap_seconds": 15,
+            "started": 1794977812.2726316,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 0.0028285980224609375,
+            "interruption": null,
+            "group_after": [],
+            "saved_native_reuse": true,
+            "saved_native_report": "/home/user/workspace/php-spec-evidence-archive/comp341/weak-native-once/report.json"
+          },
+          "model": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+            "pid": 3704009,
+            "pgid": 3704009,
+            "cap_seconds": 140,
+            "started": 1794978391.6107545,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 46.5269033908844,
+            "interruption": null,
+            "group_after": []
+          }
+        }
+      ]
+    },
+    {
+      "head": "36677c885d0a830cdcfeb2a79aa65597930323b7",
+      "agreements": 2,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/strict-source/report.json",
+      "sha256": "60121c73b19dd9d44542bb741941fca27be7a689f3c6c489e44d56495feef767",
+      "mode": "production-SL",
+      "module_count": 508,
+      "source_agreement_credit": 2,
+      "profile": {
+        "opcache.enable_cli": "0",
+        "opcache.jit": "disable",
+        "precision": "14",
+        "serialize_precision": "-1",
+        "display_errors": "stderr",
+        "display_startup_errors": "1",
+        "html_errors": "0",
+        "log_errors": "0",
+        "error_reporting": "30719",
+        "date.timezone": "UTC",
+        "output_buffering": "0",
+        "implicit_flush": "1",
+        "zend.assertions": "1",
+        "include_path": ".:"
+      },
+      "environment": {
+        "LC_ALL": "C",
+        "TZ": "UTC"
+      },
+      "native_observations": 0,
+      "reused_native_observations": 2,
+      "launcher": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/comp341/saved-native-sources.py",
+        "sha256": "f7d6e589ef7d300d59f199e737e32c58ebc7a916ec11dcfc153d61ddeb475c35",
+        "stable": true,
+        "tracked_repository_wrapper": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review/tests/semantics/self_parentless_short_reference_get_hook_review_sources.py"
+      },
+      "records": [
+        {
+          "id": "strict-nullable-self-scoped",
+          "source_sha256": "19e2a0324ffc24302e8ebed56a22cda3903786f08277cd79ea74c196c7998b3a",
+          "status": "normal",
+          "passed": true,
+          "native": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+            "pid": 3705855,
+            "pgid": 3705855,
+            "cap_seconds": 15,
+            "started": 1794978909.3542452,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 0.003329753875732422,
+            "interruption": null,
+            "group_after": [],
+            "saved_native_reuse": true,
+            "saved_native_report": "/home/user/workspace/php-spec-evidence-archive/comp341/strict-native-once/report.json"
+          },
+          "model": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+            "pid": 3706769,
+            "pgid": 3706769,
+            "cap_seconds": 140,
+            "started": 1794979233.5527465,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 43.337111473083496,
+            "interruption": null,
+            "group_after": []
+          }
+        },
+        {
+          "id": "strict-int-first-self-scoped",
+          "source_sha256": "2c9e7108f040cd79e4b7d24769e77d46b1cfee75e39f180513270898c0813a9c",
+          "status": "normal",
+          "passed": true,
+          "native": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+            "pid": 3705856,
+            "pgid": 3705856,
+            "cap_seconds": 15,
+            "started": 1794978909.3579612,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 0.002760648727416992,
+            "interruption": null,
+            "group_after": [],
+            "saved_native_reuse": true,
+            "saved_native_report": "/home/user/workspace/php-spec-evidence-archive/comp341/strict-native-once/report.json"
+          },
+          "model": {
+            "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+            "pid": 3707159,
+            "pgid": 3707159,
+            "cap_seconds": 140,
+            "started": 1794979276.8907256,
+            "exit": 0,
+            "timeout": false,
+            "elapsed": 55.94021725654602,
+            "interruption": null,
+            "group_after": []
+          }
+        }
+      ]
+    },
+    {
+      "head": "015e8ac0b115fac01b65360e0cafe3e8a4c9e98b",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "suite": "weak",
+      "form": "self-plain-scoped",
+      "scope": "lifecycle",
+      "premises": 242,
+      "source_agreement_credit": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/author-self-plain-state/report.json",
+      "sha256": "e868bd46acaaf569b763bbb3f9a65522b4c72ef67a95efe3913b08bbd2627f46",
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+        "pid": 3704511,
+        "pgid": 3704511,
+        "cap_seconds": 360,
+        "started": 1794978543.3103843,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 87.8352472782135,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    {
+      "head": "64f0a9c112e265976191eb706261c7b3701f1752",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "suite": "weak",
+      "form": "self-int-scoped",
+      "scope": "lifecycle",
+      "premises": 249,
+      "source_agreement_credit": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/author-self-int-state/report.json",
+      "sha256": "23a7255e8919d25e79be1c820611072576fd935cbcfe335c6cc0fd3ac68f021f",
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-dev",
+        "pid": 3706281,
+        "pgid": 3706281,
+        "cap_seconds": 360,
+        "started": 1794979006.571876,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 91.31318855285645,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    {
+      "head": "66d1120ca2d888159f1a0ce90aabe3c52e36e732",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "premises": 132,
+      "source_agreement_credit": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/peer34-header-protocol-corrected/report.json",
+      "sha256": "b7f1d8fb17a5349f98e41d4530de3f05d53c1ddac51295549fd3d75571225f5a",
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+        "pid": 3708129,
+        "pgid": 3708129,
+        "cap_seconds": 60,
+        "started": 1794979468.1986976,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 15.979251623153687,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    {
+      "head": "66d1120ca2d888159f1a0ce90aabe3c52e36e732",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "suite": "strict",
+      "form": "strict-nullable-self-scoped",
+      "scope": "lifecycle",
+      "premises": 239,
+      "source_agreement_credit": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/peer34-strict-nullable-state/report.json",
+      "sha256": "a7431ff26d61ebfff09920aa7cbd1cf53223f1b43a3e9592a9755e0ab00648e4",
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+        "pid": 3708202,
+        "pgid": 3708202,
+        "cap_seconds": 360,
+        "started": 1794979517.1473637,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 84.04392266273499,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    {
+      "head": "66d1120ca2d888159f1a0ce90aabe3c52e36e732",
+      "mode": "fixture-SL",
+      "module_count": 508,
+      "suite": "strict",
+      "form": "strict-int-first-self-scoped",
+      "scope": "lifecycle",
+      "premises": 273,
+      "source_agreement_credit": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "passed": true,
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp341/peer34-strict-int-state/report.json",
+      "sha256": "eba3e5bcf7cb37cb85cd7aa53d1bffa1077d04216af326f402551ea0ca4e7bd9",
+      "process": {
+        "cwd": "/home/user/workspace/php-spec/.tools/comp246-reference-object-float-review",
+        "pid": 3708335,
+        "pgid": 3708335,
+        "cap_seconds": 360,
+        "started": 1794979679.7433314,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 118.21767616271973,
+        "interruption": null,
+        "group_after": []
+      }
+    }
+  ],
+  "private_spec_manifest": {
+    "modules": 508,
+    "common_recorded_inputs": {
+      ".tools/php/bin/php": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+      ".tools/php-file.so": "d2b2837f706b562b9a7463fd78c8a48cf0d53f06454d9ad5bf365edd59c7eda7",
+      "_build/default/adapter/main.exe": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+      "tests/semantics/_build/default/numeric_runner.exe": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0",
+      "tests/semantics/profile.json": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94"
+    },
+    "canonical_json_sha256": "f03837733c3e456bda6db6d949d84329f4d3fe090ed9d8ecd22fbca9a341a5d6",
+    "modules_json_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "all_seven_accepted_maps_equal": true
+  },
+  "independent_whole_source_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp341/independent-whole-source-clearance34.json",
+    "sha256": "0556470ca98a89ac60bb2b68eed06ea20d3ccd758e6dd87317340af640752512",
+    "revision": "36677c885d0a830cdcfeb2a79aa65597930323b7",
+    "decision": "WHOLE SOURCE CLEAR"
+  },
+  "independent_header_postimage_bridge": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp341/independent-header-postimage-bridge34.json",
+    "sha256": "5cbbcd466c43d8736b31b4ee4c9f5fa4407ad95202a17801e42ea71595a6f5ff",
+    "revision": "66d1120ca2d888159f1a0ce90aabe3c52e36e732",
+    "decision": "WHOLE17 HEADER-ONLY POSTIMAGE BRIDGE CLEAR",
+    "all_other16_posts_unchanged": true,
+    "complete_parent_inverse": true,
+    "correction": "One pair of parentheses around an explicit PTOK constructor list argument; no premise removed or weakened."
+  },
+  "affected_old323_expectations": {
+    "path": "tests/semantics/scoped_class_parentless_short_reference_get_hook_review_protocol.py",
+    "changed_source_lines": 1,
+    "promoted_exact_queries": 2,
+    "relative_self_controls_unchanged": true,
+    "complete_parent_inverse": true,
+    "historical_campaign_renewed": false
+  },
+  "carry_forward": "All executable modules, frontend, adapter, runner and profile remain unchanged after source-only8347. Later commits add fixtures, Make7/doc8 and fixture-only corrections. The old323 script changes only the conditional expectation for exactly two NName self queries, freshly exercised in header132; relative controls and its quoted/value helpers remain literal. Accepted source/state cuts and all closed COMP335–340 evidence retain their original revisions without renewal.",
+  "preserved_zero_credit": [
+    "Weak and strict prelaw Unsupported2 each are explicit baseline refusals with source agreement credit0.",
+    "The original238/245-premise pool-retirement draft at53ae3bb77 was never run. Its pool-only ownership correction015e precedes the first passing state242; no runtime pass is claimed for the draft.",
+    "The first peer34-header-protocol attempt failed fixture syntax before any predicate executed; its planned132 predicates retain runtimeUNRUN/source0. Only the parenthesized constructor payload changed before the complete corrected132 pass; no premise was removed or weakened.",
+    "The promoted old323 queries are two actual fresh341 header predicates, not a renewal of the historical323 source/native/whole campaign. Constructed-state/header and whole-source checks have source agreement credit0."
+  ],
+  "failures": {
+    "semantic_failures": 0,
+    "fixture_syntax_failures_before_predicates": 1,
+    "fixture_preparation_corrections_before_state_runs": 1,
+    "timeouts": 0,
+    "accepted_replays": 0
+  },
+  "holds": "Exact Source47/NaNBYTE/OwnedREQUESTNUL/COMP88/OP12/refLIST and other held obligations, reserve93807cdd6/255 and inventory169/306 closed0+1 remain unchanged.",
+  "remaining": [
+    "Larger self unions/intersections/DNF and wider defining scopes, owners, modifiers, hook bodies, values and lifetimes remain partial; known-scope self intersections remain valid PHP.",
+    "Parent/static and relative or fully-qualified self spelling rules remain unchanged, outside the new hook header guard.",
+    "Complete PHP core, interaction-tree semantics and BOLA/CRIS verification remain unfinished."
+  ],
+  "engine_bug_or_intentional_divergence": "None observed.",
+  "private_documentation_bridge": {
+    "literal_addition": "\nOwn public parentless short reference Get admits case-insensitive raw `self`\nthrough exact defining-class normalization, independently of ordinary imports.\nExisting nullable and eight two-member class/builtin header laws reuse that proof;\nall raw/normalized order, metadata, source, owner and return guards remain required.\nDistinct same-class payloads retain their own uninitialized backing while the\nselected typed source detaches; nominal self intersections/DNF and wider contexts stay partial.\n[Review](../../coverage/semantics/self-parentless-short-reference-get-hook-review.json).\n",
+    "lines": 8,
+    "author_parent_sha256": "a537ecbe1317c3f5d8268a93e2257e436277373177c5bb5f54939103e46b1abe",
+    "private_parent_sha256": "20e52ff3873986498060dfd4fe8dd4a88f8937e6368699454537b6d585e160b2",
+    "complete_both_parent_inverses": true
+  },
+  "native_and_prelaw_records": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp341/weak-native-once/report.json",
+      "sha256": "753f0d82a31fa3bdcc9d0c1e0055ffbe770096a233d4a77c109e7e961ca94b1e",
+      "revision": "38dfdcce0386912a9b27a249af35d80820986b89",
+      "passed": true,
+      "native_observations": 2,
+      "head_stable": true,
+      "inputs_stable": true,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp341/strict-native-once/report.json",
+      "sha256": "9278c8b113d923eb5a319a5fe1874862d7120d880687ac1fe2f47855e1666720",
+      "revision": "27ad7cbb5857bb0d4a9e5ea18e9f5d3ccb4f2632",
+      "passed": true,
+      "native_observations": 2,
+      "head_stable": true,
+      "inputs_stable": true,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp341/weak-prelaw/report.json",
+      "sha256": "14fa01df9a07fe4c5d03f0cd3a3234a9d11cc50900bcb9da89ee54d10135b5aa",
+      "revision": "38dfdcce0386912a9b27a249af35d80820986b89",
+      "passed": true,
+      "native_observations": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "source_agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp341/strict-prelaw/report.json",
+      "sha256": "64b3ee6293f801607b89fd29cc54c970aca60bbe0ad629f57887530e686c3d85",
+      "revision": "27ad7cbb5857bb0d4a9e5ea18e9f5d3ccb4f2632",
+      "passed": true,
+      "native_observations": 0,
+      "head_stable": true,
+      "inputs_stable": true,
+      "source_agreement_credit": 0
+    }
+  ],
+  "actual_acceptance": {
+    "decision": "FIXED ACTUAL AND CANONICAL CLEAR",
+    "provided_by": "/root/recover34_compiler_dnf_builtin_review",
+    "immutable_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp341/immutable-actual-tuple34.json",
+      "sha256": "8795797e3a4532da6bc662355dc2982e56125ee5915143892aac78d3487e014c"
+    },
+    "Make_lines": 7,
+    "actual": "ffdc3820ad17742debe00c33eaa4782a3df730ec",
+    "actual_reads": 1,
+    "argv": 512,
+    "cache": "/home/user/workspace/php-spec-evidence-archive/comp341/fixed-actual-cache34.json",
+    "cache_sha256": "f857305f75473f00e307f147ce310a891171f1421ade3da3a92b4e1860d7699c",
+    "canonical_reads": 1,
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum312-comp341-output154-load-v1/report.json",
+    "canonical_sha256": "051afa6e112ad84f70504ef6157e84506f63130c7066a4fa904cbd0023573930",
+    "cap": 60,
+    "changed_premises": 1,
+    "clear": true,
+    "composition_map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum312-comp341-output154-source-map-v1.json",
+    "corrected_header_sha256": "aa79992a9db5a468a33516a253654c616f53d577a8dcb8ba14c765fbef1eb4e5",
+    "doc_lines": 8,
+    "elapsed": 15.98964074300602,
+    "map_reads": 1,
+    "map_sha256": "1d5efce6661b4af845d97966115a9002fa06d7d6317dab09ae64d73113796714",
+    "milestone": "COMP341",
+    "mode": "production_SL",
+    "modules": 509,
+    "old323_promoted_queries": 2,
+    "owned_files": 17,
+    "parent": "18c7f83516550a16e2d6add866fe8addc630c4df",
+    "placement": "9644ae2ca0caac0c707bdea27f0e63d05102e393",
+    "reaped": true,
+    "source_credit": 0,
+    "source_inverse_sha256": "2eacaf0da9b454af4faa7992703d3fb9caeff69a8c00fdeb526dbf18001fe2d8",
+    "source_sha256": "dbd45395ea26479f8e8de95f1e8fe736c5130c8e892a4e43eca22b131ab756a7",
+    "stable": true,
+    "tree": "9c59a522e9491c317d330e45f191de5f5c57ca74",
+    "watched": 513,
+    "source_382_literal": true,
+    "reviewed_owned_paths": 17,
+    "Make7_doc8_and_old323_current_parent_inverses": true,
+    "canonical_executions": 1,
+    "reviewer_original_report_physical_reads": 1,
+    "reviewer_original_map_physical_reads": 1,
+    "subsequent_reads_used_parsed_cache": true,
+    "author_raw_actual_source_map_report_cache_reads": 0,
+    "later_actual_HEAD_refreshes": 0,
+    "accepted_semantic_native_source_state_or_canonical_replays": 0,
+    "reader_preparation_note": "A cached map-key schema adjustment required no original reread or execution.",
+    "relevant_foreign_runtime_interaction": "The fixed joined cut retains COMP341's exact source382 and reviewed owned posts. The new path uses existing defining-class normalization and reference/ownership rules; the independent fixed-source composition review found no interaction requiring renewed source or fixture runs."
+  }
+}

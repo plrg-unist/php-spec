@@ -1352,23 +1352,28 @@ trees, names, STRING leaves, unary wrappers over computed trees, NaN warning
 continuations and wider declaration/reception/lifetime contexts remain partial.
 
 Proper mixed and all-INT ADD/SUBTRACT/MULTIPLY/DIVIDE trees preserve exact
-intermediate PINT/PFLOAT tags through infinite full-ternary predicates. Every
-source occurrence has its typed pool and absent CODE/read/redirects; raw leaf-kind
-flags persist across integer overflow and exact/inexact division. The new all-INT
-root reuses the unchanged collector with flags(true,false) and requires a proper
-binary child plus INFINITE result. Selected scalar tags, declaration bindings,
-Shared caches, private typed default holes and named Warning reentry retain the
-existing reception and cleanup guards.
+intermediate PINT/PFLOAT tags and raw leaf kinds through infinite full-ternary
+predicates. One unary PLUS or MINUS may now wrap a proper all-INT infinite child.
+Exact SOURCE, a PFLOAT pool and absent CODE/read/redirects authenticate the
+unary root; its bits match pure multiplication of the child by long +1/-1.
+Child and result must both
+be INFINITE; the shared collector and earlier roots remain unchanged. Selected
+scalar tags, declaration bindings, Shared caches, private typed default holes
+and named Warning reentry retain the existing reception and cleanup guards.
 
-For the all-INT increment, native2 once/source2, prelaw1552, author1731,
-independent706 and fresh old310 allINT30 pass first attempts at separate cuts.
-Fixed actual055f81c6e and the sole joined production_SL509 check pass in
-16.831902186s under cap60, with source0, through immutableb416a7d0; all processes
-are reaped. The old310 source/default mismatch remains refused without renewing
-its campaign. Names, STRING leaves, computed unary wrappers, NaN warning
-continuations and wider declaration/reception/owner/lifetime contexts remain
-partial; exact holds and inventory counts stay unchanged.
-[All-INT review](../../coverage/semantics/deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+Native2 once/source2 and prelaw1560 pass first attempts. Corrected RAW810 and
+retained author874/55 are separate passing cuts; the original RAW800 fixture
+failed algorithmic compilation before predicates, so its whole run remains a
+NONPASS. The missing cache bindings were fixed only in the fixture, and only
+RAW reran. Independent852 also passes its first run. The combined 509-module
+production check passes as a distinct compilation cut with source0; exact
+revisions, timings and the cached fixed review are recorded below.
+
+Unary signs around FLOAT or mixed trees, repeated wrappers, unary children inside
+older binary roots, names/STRING and wider contexts remain partial; exact holds
+and inventory counts stay unchanged.
+[Unary all-INT review](../../coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+[binary all-INT review](../../coverage/semantics/deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
 [mixed-tree review](../../coverage/semantics/deferred-mixed-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 ## Source metadata and resumed states
