@@ -85,7 +85,7 @@ def independent_controls(case):
             'NExprUnaryPlus (NScalarFloat (FLOAT "401c000000000000") eps) eps',
             'NExprUnaryPlus (NScalarString (BYTES "Nw==") eps) eps',
             'NExprUnaryMinus (NExprConstFetch (NName (BYTES "c2V2ZW4=") eps) eps) eps'):
-        lines.append('~' + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "float")')]))
+        lines.append(('' if default.startswith(('NExprUnaryMinus (NScalarFloat ', 'NExprUnaryPlus (NScalarFloat ')) else '~') + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "float")')]))
     for name in ('int', 'bool', 'string', 'mixed', 'array', 'callable', 'double'):
         lines.append('~' + proof([raw(raw_type=typename(name))], [parameter(checked_type=normalized(name))]))
     for tag in ('NName', 'NNameFullyQualified', 'NNameRelative'):

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "optional148-single-float-byval-supplied-unary-plus-float-default",
+    "source": "<?php\nnamespace UnaryFloatDefault148 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(FLoAt $saved=+7.5):float{echo 'M:',(int)($saved===17.0),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===17.0),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('UnaryFloatDefault148\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "float",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "b77a3959d246924855647f8d89a5026bf64cb7bd33fdabd9b71ec959d48426c2",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "kind": "singleton",
+    "optional_index": 0,
+    "default": "+7.5",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-single-float-byval-supplied-default7p5",
+      "source_sha256": "5e89499adbc48e2e38cfa996cc25659b56054c48a5662e45a66198365285942b",
+      "edits": "Fresh namespace where present and exactly one unary sign over the FLOAT default. Preserve supplied ordinary-CV reception, caller copies, reference aliases, Notice ownership and later omitted-default identity."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional148-untyped-byref-array-unary-minus-float-default-and-later-omitted",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace UnaryFloatArray148 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input=-7.5):aRrAy{global $leaf;echo 'V:',$input,':',(int)($input===-7.5),';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('UnaryFloatArray148\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "source_sha256": "712c76704e4b8c0da4ac02bad3619b7522fb2cca2e22a18bbab15b25e58cf2a1",
+    "native_stdout": "U;V:3:0;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V:-7.5:1;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "kind": "array",
+    "optional_index": 0,
+    "default": "-7.5",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-untyped-byref-array-default7p5-and-later-omitted",
+      "source_sha256": "5269e671fdf93fae885b3f0a8db45b66971996aad6e4d15e583dde22ccb3effe",
+      "edits": "Fresh namespace where present and exactly one unary sign over the FLOAT default. Preserve supplied ordinary-CV reception, caller copies, reference aliases, Notice ownership and later omitted-default identity."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional148-omitted-untyped-unary-minus-float-default-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make($saved=-7.5):float{echo 'M:',(int)($saved===-7.5),':',(int)($saved!==-7),';';return $saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',(int)($value===7.5),';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "native_stdout": "O;M:1:1;H;F:0;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0,
+    "source_sha256": "e228c22cb04a49bfc5f932d5512058616313d997049b7b081ceed8c96c4742c1",
+    "default": "-7.5",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-omitted-untyped-float-default-existing-route",
+      "source_sha256": "d5d3c4b4b4403d5b40928eb094a5c8ee89f8c759c8ccc85474fcdda19d2753aa",
+      "edits": "Fresh namespace where present and exactly one unary sign over the FLOAT default. Preserve supplied ordinary-CV reception, caller copies, reference aliases, Notice ownership and later omitted-default identity."
+    }
+  },
+  {
+    "id": "optional148-int-unary-plus-float-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(int $input=+7.0):float{return 9.0;}\necho 'BAD-PRELUDE;';$input=17;echo make($input);\n",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use float as default value for parameter $input of type int in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0,
+    "source_sha256": "92490fcac86aa8c327f616c28202ee7b2e5615cc1f6bb5d44f84761531b09e12",
+    "default": "+7.0",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-int-float7p0-default-static-rejection",
+      "source_sha256": "c5b1c8261252668e83468daf5b668e6bbd4b73c80c4253ab9f3ee46d0dd01371",
+      "edits": "Fresh namespace where present and exactly one unary sign over the FLOAT default. Preserve supplied ordinary-CV reception, caller copies, reference aliases, Notice ownership and later omitted-default identity."
+    }
+  }
+]

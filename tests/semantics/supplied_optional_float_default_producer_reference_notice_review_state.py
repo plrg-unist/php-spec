@@ -67,7 +67,7 @@ def independent_controls(case):
             'NUnionType (SEQUENCE ([' + typename('float') + ', ' + typename('null') + '])) eps'):
         lines.append('~' + proof([raw(raw_type=raw_type)], [parameter(normalized=nullable)]))
     unary = 'NExprUnaryMinus (' + literal() + ') eps'
-    lines.append('~' + proof([raw(unary)], [parameter('(PSDEFAULT (' + unary + ') "float")')]))
+    lines.append(proof([raw(unary)], [parameter('(PSDEFAULT (' + unary + ') "float")')]))
     required_raw = raw('ABSENT', typename('int'))
     required = parameter('PSNONE', integral, required='true')
     promoted_raw = raw('NScalarInt (INTEGER 7) eps')
