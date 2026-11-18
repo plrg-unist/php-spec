@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet integer Multiply selector originals, two accepted overflow controls, source comparisons and twelve fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) binds SOURCE7, the original CV timeout0 and separate early-class resource correction, zero legacy updates and independently checked fixed source/canonical/map tuple. Archives are evidence rather than build/runtime inputs.
+
 ENUM319 direct zero/FIELD2 defaults retain native4 once/source4, prelaw1108,
 author1560 and independent1356 (new3191286/affected31870) in
 `../php-spec-evidence-archive/enum-deferred-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-319/`.

@@ -66,9 +66,9 @@ current lanes below remain bounded parts of unfinished families:
 | --- | --- | --- |
 | References | `recover46_reference_fqn_defaults_impl` / `recover47_reference_defaults_review` | FQN Boolean defaults (REF144): integrated and independently reviewed; supplied string defaults (REF145): native4 once and Unsupported baseline retained. |
 | Compiler | `recover39_compiler_mixed_impl` / `recover38_compiler_dnf_review` | Scoped-self DNF (COMP347): author checks passed; independent validation remains in progress. |
-| Quiet reference Get | `recover35_get_multiply_impl` / `recover33_get_multiply_review` | Multiplication: source comparisons passed; the overflow Unsupported control timeout is unresolved and carries zero credit. |
+| Quiet reference Get | `recover35_get_multiply_impl` / `recover34_get_divmod_review` | Fitting integer multiplication integrated at `083e1d6e`; [review](coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) keeps source, control and resource cuts separate. Division/modulo source-first validation is in progress; wider operators and lifetimes remain partial. |
 | String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties: source-first scope assessment; new validation unrun. |
-| Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover52_dynamic_arith_review` | Nonnull FLOAT coalesce bases integrated and reviewed; full-ternary source witnesses reserved. |
+| Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover53_dynamic_ternary_review` | Nonnull FLOAT coalesce bases integrated and reviewed; full-ternary source witnesses reserved. |
 | Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | Zero/FIELD2 defaults (319) are integrated and independently reviewed; wider defaults and lifetimes remain partial. |
 | Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Emitted single-byte bitwise NOT in handler returns (160): saved source evidence accepted; state fixtures and WHOLE remain. |
 

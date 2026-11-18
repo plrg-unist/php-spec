@@ -1,0 +1,548 @@
+{
+  "feature": "Quiet integer Multiply operands and FULL conditions in static USER ternary-left coalesce selectors",
+  "status": "Independently reviewed bounded increment; family and full core remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned oracle and recorded profile.",
+  "behavior": "The quiet selector certificate admits Multiply over two source-authenticated closed values when both existing conversions yield warning-free signed64 integers and the product fits signed64. Results retain exact PINT tags; both child proofs/conversions remain mandatory with zero, preserving MIN*0/0*MIN and MIN*1/1*MIN. Only the dedicated FULL fallback requires old-byte=None, preserving every old Some byte result; bad/warning/owning other operands cannot be erased by a zero factor.",
+  "implementation": {
+    "source": "946fe761f93cd2ce2def74222443f63f00032784",
+    "parent": "0fa851a151121b95463570605a59934af8e858b7",
+    "tree": "d6503d3199d3561d4f4b5dddc78458cce5f13753",
+    "runtime407_sha256": "11429ffa76ceb958920549881b455598bd78838d896a3c8efa059010fd0c3fc6",
+    "complete_parent_inverse_sha256": "cb77d24e0976f90cfd180c09fb35d061610c828e2e4d0e81ac9037bd26aa2ee1",
+    "change": "One nine-line constructor-new quiet NINT Multiply operand with signed64 output-range guard and one three-line old-None FULL fallback; every other byte/comment literal.",
+    "compatibility": "Constructor-new Multiply authenticates root/both proper children, requires both quiet NINT conversions even with zero and long_range(i_left*i_right), and returns exact PINT. MIN*0/0*MIN and MIN*1/1*MIN stay fitting; unsupported other operands cannot be erased by zero. Dedicated FULL fallback only after old-byte=None preserves every old Some byte result. Complete inverse restores every old typed/byte/shared-tree/SHORT/non-NUL/truth/receipt46/cache/owner/lifetime body; wider raw NOT/CONCAT/witness grammar remains refused.",
+    "preserved": "All old operand and FULL helper branches, shared byte trees, SHORT/non-NUL/truth rules, receipt/46 guards, caches and owner/lifetime bodies remain literal; no runtime carrier or native evaluation fallback."
+  },
+  "authorities": [
+    "Pinned vendor/php-src34308 PHP8.5.10 Zend/zend_operators.c:mul_function_fast,scalar conversion slow route; Zend/zend_multiply.h:ZEND_SIGNED_MULTIPLY_LONG",
+    "spec/semantics/00-numeric.watsup:num_mul and35-scalar-operations.watsup:coerce_number,number_binary MULTIPLY"
+  ],
+  "validation": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "accepted_source_agreements": [
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment/report.json",
+        "sha256": "f6cde4d7faaa00ed0a0cfdf254d8af8478c3a8aa992496ad4c91806845199048",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+          "source_sha256": "958d2e9bc168b1d046c450f8571b566bd8f1e51104553a6a770298365e09c383",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 77.33471766393632
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce/report.json",
+        "sha256": "1b0553be8a85eac75a1fcac38c4eee3692589e8442e6275652076b8c262b67ca",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+          "source_sha256": "2f2a01d7b05f1947324b982ee3fadaa3356e367e075cb24e3838f0a14c5cfcb1",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 70.32251295098104
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources/report.json",
+        "sha256": "621e465be756c3f62f1340be308244691fea02c5ed3d4ecd6e2a5d7fabb6732a",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources",
+          "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 167.79141605598852
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-product-boundaries/report.json",
+        "sha256": "3e951c298d270f017933e4bf52a564791105c0a5e6e4f20509f627a198e0e17a",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-product-boundaries",
+          "source_sha256": "12ffb9a890776b1b2f2012d28274999e7b3be175574f05352196a1a509dc33da",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 115.70208776509389
+        },
+        "stable": true,
+        "source_credit": 1
+      }
+    ],
+    "author_fixture_cuts": [
+      190,
+      142
+    ],
+    "independent_fixture_cuts": [
+      194,
+      175,
+      87,
+      97,
+      43,
+      43,
+      79,
+      57,
+      25,
+      37
+    ],
+    "accepted_fixture_records": [
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-own-v1/launch.json",
+        "sha256": "e559ef83dd4accc3ace0b9a6002d935f79bb74dc4ccf968e1c95f6b154b351cc",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+            "source_sha256": "2f2a01d7b05f1947324b982ee3fadaa3356e367e075cb24e3838f0a14c5cfcb1",
+            "assertions": 190,
+            "pass": true
+          }
+        ],
+        "seconds": 63.46666992199607,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-inherited-v1/launch.json",
+        "sha256": "1736a95d2957ef1ff62cbfcf61128a0823b7dbb0e262f72e8bde5c79f813056a",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+            "source_sha256": "958d2e9bc168b1d046c450f8571b566bd8f1e51104553a6a770298365e09c383",
+            "assertions": 142,
+            "pass": true
+          }
+        ],
+        "seconds": 66.03596556093544,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-cv-sites-v1/launch.json",
+        "sha256": "00092996991b0ed5bfcb701befdea9ad0efea420c66ffea0d711fb974963801a",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-actual-sites",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 194,
+            "pass": true
+          }
+        ],
+        "seconds": 140.74446428194642,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-literal-sites-v1/launch.json",
+        "sha256": "b8e475a696a7fbd897d2471fc2a0160902d2e81eeecafae11e7910a815988a2b",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-product-boundaries-actual-sites",
+            "source_sha256": "12ffb9a890776b1b2f2012d28274999e7b3be175574f05352196a1a509dc33da",
+            "assertions": 175,
+            "pass": true
+          }
+        ],
+        "seconds": 96.07971111685038,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-scalar-values-v1/launch.json",
+        "sha256": "463c9d3a84b673f91f22f06d97eb5809b849877488f3dc2f031d6f3cc118a79a",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-scalar-values",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 87,
+            "pass": true
+          }
+        ],
+        "seconds": 135.04744816897437,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-numeric-values-v1/launch.json",
+        "sha256": "3a8d1c5ff9182e56d5472b9bf9ca42f5f7748c4ac98dbb5842c6d79c0bb197d4",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-numeric-values",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 97,
+            "pass": true
+          }
+        ],
+        "seconds": 137.44802429596893,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-selected-source-v1/launch.json",
+        "sha256": "db6f7a46f4970d73e0783f7ff56b3c84d97a06763b954b23e79851885fea6822",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-selected-source",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 43,
+            "pass": true
+          }
+        ],
+        "seconds": 137.96676382306032,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-skipped-source-v1/launch.json",
+        "sha256": "bd59b168d6a550fd00f1257904a1186a2ae7288bc29ca8b875ca3cf888c22e6e",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-skipped-source",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 43,
+            "pass": true
+          }
+        ],
+        "seconds": 135.54087632801384,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-fences-v1/launch.json",
+        "sha256": "6773230d3229b20431a50df5ec45c659f89cf395ef3a46c2ee194790e7127a06",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fences",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 79,
+            "pass": true
+          }
+        ],
+        "seconds": 135.62683154200204,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-overflow-v1/launch.json",
+        "sha256": "9c17f1c7ae982ad29c5a807c07e22a52f6c2e7ca90b9cc581eb5f8f10dfb7845",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-overflow",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 57,
+            "pass": true
+          }
+        ],
+        "seconds": 135.41463491204195,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-compatibility-v1/launch.json",
+        "sha256": "43b8c42e9c0e31afa17df8693304d8f0731764316cfde3df3ff50c6d93eaa50c",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-compatibility",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 25,
+            "pass": true
+          }
+        ],
+        "seconds": 134.92106362595223,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-root-authority-v1/launch.json",
+        "sha256": "d14674d3f44e343702105dca183c2a95300f0e0c95168e3b94d7024300058acb",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-root-authority",
+            "source_sha256": "195cf27c9fada98bf345e83ab82c351de3e5cfca40f28afb099809e1d9175733",
+            "assertions": 37,
+            "pass": true
+          }
+        ],
+        "seconds": 137.5781327059958,
+        "stable": true,
+        "source_credit": 0
+      }
+    ],
+    "fixture_source_credit": 0,
+    "source_first_semantic_attempt": true,
+    "new_campaign_failures_or_timeouts": 1,
+    "retained_control_inner280_timeouts": 1,
+    "semantic_assertion_failures": 0,
+    "native_application_originals_total": 7,
+    "intentional_overflow_originals": 3,
+    "accepted_overflow_Unsupported_controls": 2,
+    "intentional_overflow_Unsupported_control": [
+      {
+        "role": "independent",
+        "kind": "overflow-boundary-Unsupported",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-product-boundaries-magnitude-overflow-boundaries/report.json",
+        "sha256": "9c725ce2918210bb94ff74015a9b6acced7feee7c79c6d1f7bd376cf8b9ae07f",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-product-boundaries-magnitude-overflow-boundaries",
+          "source_sha256": "722b2b4ab3ed94416586cfbcb6a22856f21162f9395f7359129ce694f01833ba",
+          "native_reused": true,
+          "status": "unsupported",
+          "reason": "magic empty getter result type",
+          "pass": true,
+          "seconds": 109.78423650492914
+        },
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "overflow-boundary-Unsupported",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-early-class-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-min-sign-overflow-boundaries-early-class-rejection/report.json",
+        "sha256": "919bb648d816416c3ccd5db55bfba6676c0da1084b22f18d4b36955dee4f6407",
+        "record": {
+          "id": "methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-min-sign-overflow-boundaries-early-class-rejection",
+          "source_sha256": "b087795e0757c295cf628b10a617fe0e95b609f38ac48efef17a837917c02a03",
+          "native_reused": true,
+          "status": "unsupported",
+          "reason": "CV-name magic empty getter result",
+          "pass": true,
+          "seconds": 173.1437992088031
+        },
+        "stable": true,
+        "source_credit": 0
+      }
+    ],
+    "FLOAT_Unsupported_source_credit": 0,
+    "accepted_executed_fixture_assertions": 1169,
+    "prelaw": {
+      "expected_positive_Unsupported": 4,
+      "intentional_boundary_Unsupported": 2,
+      "timeouts": 0,
+      "source_credit": 0
+    },
+    "observations": {
+      "arithmetic_snapshots": 39,
+      "arithmetic_SOURCE_nodes": 41,
+      "product_snapshots": 27,
+      "product_SOURCE_nodes": 29,
+      "source_credit": 0,
+      "assertion_credit": 0
+    },
+    "observer_interpretation": "ARITH_KIND2 BINARY_RIGHT MULTIPLY snapshots resolve both operands, record independent quiet NINT conversions and completed exact fitting PINT products; KIND0/1 retained Add/Sub controls remain separate. Complete root/left/right SOURCE/compiler facts include folded/skipped nodes. Both proofs stay mandatory with zero; MIN*0/0*MIN and MIN*1/1*MIN stay fitting. Class/method CONCAT roots retain nonfolded CODE with no own read/pool/redirect/effect.",
+    "retained_controls": "Old typed/byte helpers, wider CONCAT/raw NOT grammar, witness, truth/SHORT, cache/owner/lifetime bodies remain literal. Four original product-overflow forms and eleven fitting controls retain their original evidence; the separate early-class CV resource correction preserves the original timeout0 and claims no historical prelaw.",
+    "resource_control": {
+      "original_failed_report": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-min-sign-overflow-boundaries/report.json",
+      "original_failed_report_sha256": "893a33bb83359bc039018c402f0b14aa1e45eeba4ffe53ac0f5042119af748c8",
+      "original_inner280_timeout_source_credit": 0,
+      "source_first_packet_stays_original": true,
+      "old_source_sha256": "f62bcf96644b5bacc5b523f9545a146c2e69bceb94c11ef3d7c169d20a2d04f2",
+      "new_source_sha256": "b087795e0757c295cf628b10a617fe0e95b609f38ac48efef17a837917c02a03",
+      "bridge": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/cv-overflow-early-class-derivation-v1.json",
+      "bridge_sha256": "4b1406faf164c800af9a7c03e06b4992661dd26eaa4af239c46266668994af7d",
+      "current_law_only": true,
+      "historical_prelaw_claim": false,
+      "native_once_fresh": 1,
+      "native_model_observer_accepted_replays": 0,
+      "caps_unchanged": true,
+      "reason": "Move first MIN*(-1) rejection to earliest class condition with swapped arms and restore former method point to fitting -1; preserve same two overflow domains and all body/profile/stream fields. Old class succeeded before late method rejection; fresh current-law evidence measures this cost hypothesis.",
+      "reports": [
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/native-overflow-early-class-v1/report.json",
+          "sha256": "bf215a1f0f7733109d4618ab20e5020aba811a0901103b03d20a4e741f07a4ea",
+          "source_credit": 0
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/compiler-multiply-early-class-current-law-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-min-sign-overflow-boundaries-early-class-rejection/report.json",
+          "sha256": "e065d2153f1aa59a6d23ccd6343f09bd2aa2261ab2ed779ea091bb59f2176dcf",
+          "source_credit": 0
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-early-class-v1/methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-min-sign-overflow-boundaries-early-class-rejection/report.json",
+          "sha256": "919bb648d816416c3ccd5db55bfba6676c0da1084b22f18d4b36955dee4f6407",
+          "source_credit": 0
+        }
+      ],
+      "current_law_FLOAT_snapshots": 2,
+      "current_law_retained_INT_snapshots": 6
+    },
+    "maintained_expectation": {
+      "changed_assertion_tails": 0,
+      "protocol_files": 0,
+      "compatibility_cut_assertions": 25,
+      "all_old_protocols_literal": true,
+      "historical_semantic_source_native_fixture_executions": 0,
+      "broad_make_test_semantics_claim": false
+    },
+    "closed_evidence_renewal": 0,
+    "caps": {
+      "model_inner_seconds": 280,
+      "model_outer_seconds": 290,
+      "fixture_outer_seconds": 297,
+      "address_space_bytes": 3221225472,
+      "private_sl_modules": 507
+    }
+  },
+  "review": {
+    "verdict": "ONE_WHOLE_CLEAR",
+    "reviewer": "/root/recover33_get_multiply_review",
+    "actual_reviewer": "/root/recover34_get_divmod_review",
+    "whole_review_sha256": "4d1cd73402baefc5b97ace2b6fbcfbfa0a8f91168373085d51ffed4b74bb10f6",
+    "whole": "Peer33 independently cleared SOURCE7/full parent/runtime+Make inverses and all18 accepted records/1169 executed assertions; two accepted output-overflow controls retain0 credit. The isolated early-class CV resource correction preserves the original timeout0, overflow domain and caps; zero legacy changes or semantic replay.",
+    "tuple_consumption": "Exact tiny peer34 tuple only; author actual-runtime/report/map reads0.",
+    "fixed_tuple": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/main117-fixed-tuple-v1.json",
+    "fixed_tuple_sha256": "63f33ebb9761788b5b11aeea9e584f64c6005090ed4f465f7de67744444bf046",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-packet-v1.json",
+    "source_packet_sha256": "6584d2ab0c414e44bc720beef3cef27425e36d6c818507642ae52b25d16aadf3",
+    "evidence_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/evidence-packet-v1.json",
+    "evidence_packet_sha256": "6db8e50d2996b51b26bbc5fbcc4683d434b09ac5a4f0edcc6afcac11a5e42759",
+    "source_first_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-first-facts-v1.json",
+    "source_first_packet_sha256": "46119ba9e6cde2b4488d552a3ed2cb04dc261e009da20b9761d8c579535889b1"
+  },
+  "integration": {
+    "actual": "083e1d6ef62479c21d45ae497a255a73f059a36a",
+    "tree": "c4dc0d7ec359348432d6873253ce0a3dc3e91a78",
+    "own_stage_parent": "a11dead679a3276f84c284a4d472467c460ec62c",
+    "own_paths": 7,
+    "own_Make_unique_added_lines": 4,
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main117-get-multiply-canonical-v1/report.json",
+    "canonical_report_sha256": "30f239d68fa936c8392a58e38de80c00d8f05a4cfde5b3a0de3165db9e87cceb",
+    "canonical_seconds": 17.494908917928115,
+    "canonical_SL_modules": 509,
+    "canonical_argv": 512,
+    "canonical_equal_watch": 513,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "canonical_executions_for_shared_source_cut": 1,
+    "composition_map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main117-get-multiply-source-map-v1.json",
+    "composition_map_sha256": "8657a2cab69f3eadf90cbab59ad04c813a00293cf1a2039e2d2973a5ce9acf5d",
+    "historical_map_canonical_pending_preserved": true,
+    "fixed_source_and_Make_projection": {
+      "verdict": "ONE_FIXED_ACTUAL_CLEAR",
+      "reviewer": "/root/recover34_get_divmod_review",
+      "actual": "083e1d6ef62479c21d45ae497a255a73f059a36a",
+      "tree": "c4dc0d7ec359348432d6873253ce0a3dc3e91a78",
+      "parent": "a11dead679a3276f84c284a4d472467c460ec62c",
+      "metadata_base": "a11dead679a3276f84c284a4d472467c460ec62c",
+      "metadata_base_tree": "7556412740b5c85b1a766a477b9b0e75073f2176",
+      "source": "946fe761f93cd2ce2def74222443f63f00032784",
+      "source_parent": "0fa851a151121b95463570605a59934af8e858b7",
+      "source_tree": "d6503d3199d3561d4f4b5dddc78458cce5f13753",
+      "source_packet_sha256": "6584d2ab0c414e44bc720beef3cef27425e36d6c818507642ae52b25d16aadf3",
+      "evidence_packet_sha256": "6db8e50d2996b51b26bbc5fbcc4683d434b09ac5a4f0edcc6afcac11a5e42759",
+      "whole_review_sha256": "4d1cd73402baefc5b97ace2b6fbcfbfa0a8f91168373085d51ffed4b74bb10f6",
+      "whole_reviewer": "/root/recover33_get_multiply_review",
+      "canonical": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main117-get-multiply-canonical-v1/report.json",
+        "sha256": "30f239d68fa936c8392a58e38de80c00d8f05a4cfde5b3a0de3165db9e87cceb",
+        "elapsed": 17.494908917928115,
+        "SL": 509,
+        "argv": 512,
+        "watch": 513,
+        "cap": 60,
+        "exit": 0,
+        "quiet": "trueLF",
+        "stable": true,
+        "reaped": true,
+        "pass": true,
+        "source_credit": 0
+      },
+      "source_map": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main117-get-multiply-source-map-v1.json",
+        "sha256": "8657a2cab69f3eadf90cbab59ad04c813a00293cf1a2039e2d2973a5ce9acf5d",
+        "source_paths": 7,
+        "new_paths": 5,
+        "private_exact_posts": 6,
+        "projection_paths": [
+          "Makefile"
+        ],
+        "full_parent_inverse_roundtrip": true,
+        "foreign_make_bytes_preserved": true
+      },
+      "runtime407_sha256": "11429ffa76ceb958920549881b455598bd78838d896a3c8efa059010fd0c3fc6",
+      "runtime407_parent_sha256": "cb77d24e0976f90cfd180c09fb35d061610c828e2e4d0e81ac9037bd26aa2ee1",
+      "runtime_constructor_added_lines": 12,
+      "Make_added_lines": 4,
+      "physical_reads": {
+        "canonical": 1,
+        "map": 1
+      },
+      "actual_source_batch_reads": 1,
+      "full_original_raw_parsed_cache_sha256": "6d677cc0fe20bfc2d4df6f395f2d9bd4c688a83e14994f15ec45a26b5f3c4d7e",
+      "cache_persisted_before_assertions": true,
+      "legacy_updates": 0,
+      "accepted_records": 18,
+      "source_agreements": 4,
+      "overflow_Unsupported_controls": 2,
+      "overflow_source_credit": 0,
+      "fixture_cuts": 12,
+      "fixture_assertions": 1169,
+      "native_unique_originals": 7,
+      "native_replays": 0,
+      "retained_original_inner280_timeout_credit": 0,
+      "fresh_resource_control_current_law_only": true,
+      "author_original_reads": 0,
+      "extra_runtime_native_source_fixture_canonical_executions": 0,
+      "owned_jobs": 0
+    },
+    "full_original_raw_parsed_cache_sha256": "6d677cc0fe20bfc2d4df6f395f2d9bd4c688a83e14994f15ec45a26b5f3c4d7e",
+    "cache_persisted_before_assertions": true,
+    "read_custody": {
+      "canonical": 1,
+      "map": 1
+    },
+    "canonical_stable_reaped": true,
+    "author_consumption": "Immutable reviewer tuple only; direct actual-runtime-source/canonical report/map reads0; added canonical/runtime executions0; no later HEAD refresh.",
+    "metadata_base": "a11dead679a3276f84c284a4d472467c460ec62c"
+  },
+  "remaining": [
+    "FLOAT/numeric-float, output overflow, warnings and nonnumeric/NUL/CV/owning values",
+    "Other arithmetic operators, wider raw parents, selectors and lifetimes"
+  ],
+  "holds": "Exact holds207/OP12/Source47/ownedNUL/undefined-refLIST/COMP88, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}
