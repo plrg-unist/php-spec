@@ -1222,8 +1222,26 @@ runtime UNRUN0; only its two negative-control metadata bindings were corrected a
 the affected peer suite rerun. There is no first-WHOLE-pass claim or source/native/
 author replay. Two older canonical relative helper expectations promote through
 fresh import-ignorance and Param-first proofs without renewing their campaigns.
-Nullable/union relative forms, nonempty namespaces, other normalized classes and
-wider payloads/owners/lifetimes remain partial; exact holds stay unchanged.
+Nullable relative RETURNs are extended below; union relative forms, nonempty
+namespaces, other normalized classes and wider payloads/owners/lifetimes remain
+partial; exact holds stay unchanged.
+
+Nullable `?namespace\stdClass` RETURNs use the same empty declaration namespace
+and quiet `PTRETURN`/`PTRELATIVE` authentication, ignoring ordinary class imports.
+Exact canonical `[class, null]` order and the unchanged Param view retain the
+existing normalization order and generic-helper disjointness. The FQN nullable
+proof preserves both metadata nodes; independent RETURN verification, producer
+frame retirement and private Notice-cell ownership keep their existing rules.
+The [nullable relative-return review](../../coverage/semantics/relative-nullable-stdclass-return-producer-reference-notice-review.json)
+separates object BYVAL and multiple-NULL BYREF formal isolators from an independent
+named-BYREF formal-alias interaction and the unchanged scalar-return TypeError
+control. Native4 ran once; author source2/state337 and the first independent
+WHOLE source4 with state337/184 pass in separate SL507 cuts. Genuine prelaw158/84
+and the first Unsupported observations retain zero source credit. Three older
+canonical nullable-relative helper expectations promote through fresh import,
+Param-first and metadata proofs without renewing their historical campaigns.
+Union relative forms, nonempty namespaces, other normalized classes and wider
+payloads/owners/lifetimes remain partial; all exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view

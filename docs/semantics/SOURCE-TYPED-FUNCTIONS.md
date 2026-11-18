@@ -1338,6 +1338,19 @@ integer reception through cold/warm calls and named handler reentry. Names,
 STRING or nested arithmetic operands, NaN predicates, owning results and wider
 contexts remain partial; earlier receipts and accepted cuts retain their identities.
 
+
+[Recursive FLOAT-tree infinite defaults](../../coverage/semantics/deferred-float-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json)
+admit properly nested ADD/SUBTRACT/MULTIPLY/DIVIDE trees over raw FLOAT/sign
+leaves. Every literal, unary sign and binary occurrence requires exact SOURCE,
+PFLOAT pool bits and absent CODE/read/redirects; each binary result matches the
+pure operation on its certified children. Proper nesting keeps older literal and
+mixed-operand receipts disjoint. The complete compiler-fold certificate selects
+FIELD1 for an INFINITE root even when a signed-zero leaf makes generic deferred
+condition VALUE unavailable. Selected scalar transport, declaration bindings,
+Shared caches, private reception and owner bounds remain unchanged. Mixed numeric
+trees, names, STRING leaves, unary wrappers over computed trees, NaN warning
+continuations and wider declaration/reception/lifetime contexts remain partial.
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
