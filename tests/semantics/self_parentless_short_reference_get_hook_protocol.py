@@ -15,12 +15,27 @@ def fields(fixture, source, case):
     line = lambda text: lines.index(text) + 1
     get_line = next(i + 1 for i, text in enumerate(lines) if '&get =>' in text)
     body_line = get_line + 1
-    nominal = '(PTBRANCH ([PTCLASS ' + names.value(case['class'].encode()) + ']))'
+    scoped_nominal = '(PTBRANCH ([PTCLASS ' + names.value(case['class'].encode()) + ']))'
+    nominal = scoped_nominal
+    raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
+    raw_nominal = raw_self
+    self_conjuncts = case.get('self_conjuncts')
+    conjunct_bindings = []
+    if self_conjuncts:
+        atoms = ['PTCLASS ' + names.value(member['class'].encode()) for member in self_conjuncts]
+        atoms.insert(case['self_atom_index'], 'PTCLASS ' + names.value(case['class'].encode()))
+        nominal = '(PTBRANCH ([' + ','.join(atoms) + ']))'
+        raw_atoms = [member['raw_kind'] + ' (BYTES text_conjunct_' + str(i) + ') metadata_conjunct_' + str(i)
+                     for i, member in enumerate(self_conjuncts)]
+        raw_atoms.insert(case['self_atom_index'], raw_self)
+        raw_nominal = 'NIntersectionType (SEQUENCE ([' + ','.join(raw_atoms) + '])) metadata_self_intersection'
+        conjunct_bindings = ['$base64(text_conjunct_' + str(i) + ') = $base64(' + quoted(member['raw_name']) + ')'
+                             for i, member in enumerate(self_conjuncts)]
     branches = [nominal]
     others = case.get('others')
     builtins = case.get('builtins')
     other_branches = []; raw_others = []; other_bindings = []
-    intersections = sum(bool(other.get('intersection')) for other in others or [])
+    intersections = bool(self_conjuncts) + sum(bool(other.get('intersection')) for other in others or [])
     for i, other in enumerate(others or []):
         members = other.get('intersection', [other])
         other_branches.append('(PTBRANCH ([' + ','.join('PTCLASS ' + names.value(member['class'].encode()) for member in members) + ']))')
@@ -51,28 +66,27 @@ def fields(fixture, source, case):
     elif case['builtin']:
         branches.insert(0 if case['builtin_first'] else 1, '(PTBRANCH ([PTBUILTIN "' + case['builtin'] + '"]))')
     typed = '[' + ','.join(branches) + ']'
-    raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
-    raw = raw_self
+    raw = raw_nominal
     if builtins:
         raw_members = ['NIdentifier (BYTES text_builtin_' + str(i) + ') metadata_builtin_' + str(i)
                        for i in range(len(builtins))]
         if others:
             classes = raw_others
             raw_members = raw_members + classes if case['builtin_first'] else classes + raw_members
-        raw_members.insert(case['self_index'], raw_self)
+        raw_members.insert(case['self_index'], raw_nominal)
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif others:
         raw_members = raw_others.copy()
-        raw_members.insert(case['self_index'], raw_self)
+        raw_members.insert(case['self_index'], raw_nominal)
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif case.get('other'):
-        raw_members = [raw_self]
+        raw_members = [raw_nominal]
         raw_members.insert(0 if other['first'] else 1, other['raw_kind'] + ' (BYTES text_other) metadata_other')
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif case['nullable']:
-        raw = 'NNullableType (' + raw_self + ') metadata_type'
+        raw = 'NNullableType (' + raw_nominal + ') metadata_type'
     elif case['builtin']:
-        raw_members = [raw_self]
+        raw_members = [raw_nominal]
         raw_members.insert(0 if case['builtin_first'] else 1, 'NIdentifier (BYTES text_builtin) metadata_builtin')
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     states = []; step_objects = []; step_arrays = []
@@ -87,7 +101,9 @@ def fields(fixture, source, case):
                 '$objectprops_at(' + state + '.OBJECTPROPS,' + obj + ') = ([ppropertyslot_' + label + '])',
                 'ppropertyslot_' + label + '.NAME = $ptascii("v")',
                 'ppropertyslot_' + label + '.STATE = PROP_INITIAL',
-                '$typed_object_exact(' + state + ',' + typed + ',POBJECT ' + obj + ')']
+                '$typed_object_exact(' + state + ',' + typed + ',POBJECT ' + obj + ')'] + [
+                '$class_origin_matches(' + state + ',porigin_root,' + names.value(member['class'].encode()) + ',|' + state + '.CLASSES|)'
+                for member in self_conjuncts or []]
 
     checks = ['U = ' + fixture, 'S_start = $php_run(U,0,' + quoted(str(source)) + ')']
     checks += seek('S_seed', 'S_start', line('$box341->v = $seed341;'))
@@ -119,11 +135,11 @@ def fields(fixture, source, case):
         'ptcontext_class.NAMESPACE = $base64(' + quoted(case['namespace']) + ')',
         'ptcontext_property = ptcontext_class[.SCOPE = PTKNOWN pclassdesc.NAME pclassdesc.PARENT][.POSITION = PTPROPERTY][.OWNER = pclassdesc.NAME][.MEMBER = ppropertydesc.NAME][.LINE = ppropertydesc.LINE]',
         '$ptype_normalize(phpType18,ptcontext_property) = PTOK ppropertydesc.TYPE eps',
-        '$hook_short_reference_scoped_header(' + raw_self + ',[' + nominal + '],ptcontext_property)',
-        '~$hook_short_reference_header(' + raw_self + ',[' + nominal + '])',
+        '$hook_short_reference_scoped_header(' + raw_self + ',[' + scoped_nominal + '],ptcontext_property)',
+        '~$hook_short_reference_header(' + raw_self + ',[' + scoped_nominal + '])',
         '~$hook_short_reference_scoped_header(' + raw_self + ',[(PTBRANCH ([PTCLASS ($ptascii("Wrong341"))]))],ptcontext_property)',
         'ptcontext_consumer = ptcontext_property[.NAMESPACE = $base64(' + quoted(case['consumer_namespace']) + ')][.IMPORTS = eps]',
-        '$hook_short_reference_scoped_header(' + raw_self + ',[' + nominal + '],ptcontext_consumer)',
+        '$hook_short_reference_scoped_header(' + raw_self + ',[' + scoped_nominal + '],ptcontext_consumer)',
         '$property_hook_short_reference_header(S_front,pclassdesc,ppropertydesc,phpType18)',
         '$property_hook_reference_decl(S_front,ppropertydesc)',
         '~$property_hook_reference_decl(S_front,ppropertydesc[.TYPE = eps])',
@@ -149,12 +165,27 @@ def fields(fixture, source, case):
         '$source_line(metadata_hook) = ' + str(get_line), '$source_line(metadata_expression) = ' + str(body_line),
         '$code_expression(pfunction.CODE.EXPRESSIONS,pfunction.BODY) = ((' + str(body_line) + ',false))',
         '$arrow_line(pfunction.CODE.EXPRESSIONS,pfunction.BODY) = (' + str(body_line) + ')']
+    if self_conjuncts:
+        helper = mixed_helper if builtins else nominal_helper if others else '$hook_short_reference_nominal_intersection_header'
+        altered = branches.copy()
+        altered[case['self_index']] = '(PTBRANCH ([' + ','.join(reversed(atoms)) + ']))'
+        checks += conjunct_bindings + [
+            'pclassdesc.INTERFACES =/= eps',
+            '$hook_short_reference_nominal_intersection_members([' + ','.join(raw_atoms) + '],[' + ','.join(atoms) + '],ptcontext_property)',
+            '~' + helper + '(phpType18,[' + ','.join(altered) + '],ptcontext_property)']
+        if not others and not builtins:
+            checks += [helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                       '~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
+        if not others and builtins:
+            checks += ['$hook_short_reference_mixed_nominal_dnf_members([' + ','.join(raw_members) + '],ppropertydesc.TYPE,ptcontext_property) = ((' + str(intersections) + ',' + str(len(builtins)) + '))']
+        if any(member['raw_kind'] != 'NNameFullyQualified' for member in self_conjuncts):
+            checks += ['~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_consumer)']
     if case['builtin']:
         checks += ['$base64(text_builtin) = $ptascii("' + case['builtin'] + '")']
     if builtins:
         checks += ['$ptlc($base64(text_builtin_' + str(i) + ')) = $ptascii("' + builtin + '")'
                    for i, builtin in enumerate(builtins)]
-        helper = mixed_helper if others else '$hook_short_reference_class_builtin_union_header'
+        helper = mixed_helper if others or self_conjuncts else '$hook_short_reference_class_builtin_union_header'
         checks += [helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
                    '~' + helper + '(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)',
                    '~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
@@ -223,7 +254,12 @@ def fields(fixture, source, case):
     for i, step in enumerate(case['steps']):
         state = 'S_value' + str(i)
         marker = case['steps'][i + 1]['statement'] if i + 1 < len(case['steps']) else '$r341 = $kept341;'
-        checks += seek(state, previous, line(marker))
+        checkpoint = line(marker)
+        if 'array' in step:
+            release = 'unset($' + step['array']['copy_variable'] + ');'
+            if release in lines and line(step['statement']) < line(release) < checkpoint:
+                checkpoint = -line(release)
+        checks += seek(state, previous, checkpoint)
         checks += [state + '.STORE[n_field] = DEFINED (' + step['value'] + ')',
                    state + '.STORE[n_keptcell] = DEFINED (POBJECT n_live)',
                    '$propref_at(' + state + '.PROPREFS,n_field) = (ppropref)']; previous = state
@@ -305,6 +341,11 @@ def main(stem='self_parentless_short_reference_get_hook'):
     runner.PREFIX = runner.PREFIX.replace('box320', 'box341').replace('a320', 'r341').replace('b320', 's341')
     runner.PREFIX = runner.PREFIX.replace('$property_hook_plan(S) =/= eps', '$property_hook_ref_plan(S) =/= eps')
     runner.PREFIX = runner.PREFIX.replace('(PROPERTY_HOOK_RESULT ppropertyhook)', '(PROPERTY_HOOK_REF_RESULT ppropertyhook "fetch")')
+    runner.PREFIX = runner.PREFIX.replace('def $lbr_phase(S,z) = false -- otherwise', '''def $lbr_phase(S,z) = true
+  -- if $(z < -4)
+  -- if S.TODO = (UNSET (NExprVariable (BYTES text_name) metadata)) :: ptask*
+  -- if $source_line(metadata) = $(0 - z)
+def $lbr_phase(S,z) = false -- otherwise''')
     runner.STEM = stem
     runner.fields = fields
     runner.main(extra_paths=[Path(__file__), Path(names.__file__)])

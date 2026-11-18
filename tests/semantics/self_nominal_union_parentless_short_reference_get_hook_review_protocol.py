@@ -83,7 +83,7 @@ def assertions():
         check(kind + '-only-two', union([self_raw, other_raw[0]]), mask([owner, b'First']), expected=False)
         intersection = prior.intersection([self_raw, other_raw[0]])
         inter_type = prior.branches([['PTCLASS ' + names.value(owner), 'PTCLASS ' + names.value(b'First')]])
-        check(kind + '-intersection-unchanged', intersection, inter_type, expected=False,
+        check(kind + '-intersection-admitted', intersection, inter_type, expected=True,
               helper='$hook_short_reference_nominal_intersection_header')
         grouped = prior.intersection(other_raw)
         dnf = prior.branches([['PTCLASS ' + names.value(b'First'), 'PTCLASS ' + names.value(b'Second')], ['PTCLASS ' + names.value(owner)]])

@@ -120,8 +120,8 @@ def assertions():
         count(kind + '-length-mismatch', raw, parts[:-1], None)
         check(kind + '-intersection-excluded', [prior.intersection([selfraw, other]), integer],
               [[atom, otheratom], ['PTBUILTIN "int"']], False)
-        rows.append({'id': kind + '-DNF-unchanged', 'kind': 'header', 'expected': False,
-                     'premise': '~$hook_short_reference_mixed_nominal_dnf_header(' +
+        rows.append({'id': kind + '-self-intersection-DNF-admitted', 'kind': 'header', 'expected': True,
+                     'premise': '$hook_short_reference_mixed_nominal_dnf_header(' +
                      prior.union([prior.intersection([selfraw, other]), integer]) + ',' +
                      prior.branches([[atom, otheratom], ['PTBUILTIN "int"']]) + ',' + lexical + ')'})
 

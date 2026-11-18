@@ -94,9 +94,9 @@ def assertions():
             check(prefix + '-duplicate-owner', selected_raw + [names.raw(owner, 'NNameFullyQualified')],
                   selected_parts + [[atom(owner)]], False, helper)
             check(prefix + '-subsumed-conjunction', selected_raw + [fq[0]], selected_parts + [[conjunction[0]]], False, helper)
-            check(prefix + '-self-inside-conjunction-unchanged',
+            check(prefix + '-self-inside-conjunction-admitted',
                   [prior.intersection([self_raw, fq[0]]), fq[1]] + extra_raw,
-                  [[atom(owner), conjunction[0]], [conjunction[1]]] + extra_parts, False, helper)
+                  [[atom(owner), conjunction[0]], [conjunction[1]]] + extra_parts, True, helper)
             check(prefix + '-no-intersection', [self_raw, fq[0]] + extra_raw,
                   [[atom(owner)], [conjunction[0]]] + extra_parts, False, helper)
             check(prefix + '-singleton-conjunction', [self_raw, prior.intersection(fq[:1])] + extra_raw,
@@ -118,9 +118,9 @@ def assertions():
                 rows.append({**original, 'id': 'current-' + label + '-' + original['id'],
                              'kind': 'affected-current-query'})
                 affected += 1
-    retained = [row for row in mixed.assertions() if row['id'].endswith('-DNF-unchanged')]
-    assert len(retained) == 2 and all(row['expected'] is False and row['premise'].startswith('~') for row in retained)
-    rows += [{**row, 'id': 'retained-intersection-' + row['id'], 'kind': 'retained-intersection-query'} for row in retained]
+    promoted = [row for row in mixed.assertions() if row['id'].endswith('-self-intersection-DNF-admitted')]
+    assert len(promoted) == 2 and all(row['expected'] is True and not row['premise'].startswith('~') for row in promoted)
+    rows += [{**row, 'id': 'promoted-intersection-' + row['id'], 'kind': 'promoted-intersection-query'} for row in promoted]
     assert affected == 10
     assert len({row['id'] for row in rows}) == len(rows)
     return rows
@@ -138,7 +138,7 @@ def main():
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     report = {'head': head, 'inputs': before, 'module_count': len(modules), 'mode': 'fixture-SL',
               'source_agreement_credit': 0, 'native_observations': 0, 'affected_current_queries': 10,
-              'retained_intersection_queries': 2, 'passed': False}
+              'promoted_intersection_queries': 2, 'passed': False}
     try:
         rows = assertions(); report['premises'] = len(rows)
         (out / 'assertions.json').write_text(json.dumps(rows, indent=2) + '\n')

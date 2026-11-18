@@ -1,0 +1,102 @@
+{
+  "strict-relative-self-intersection-dnf": {
+    "namespace": "D348A",
+    "consumer_namespace": "D348AX",
+    "class": "D348A\\Box348",
+    "header": "(I348&namespace\\SeLf)|Other348",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "self_conjuncts": [
+      {
+        "class": "D348A\\I348",
+        "raw_kind": "NName",
+        "raw_name": "I348"
+      }
+    ],
+    "self_atom_index": 1,
+    "others": [
+      {
+        "class": "D348A\\Other348",
+        "raw_kind": "NName",
+        "raw_name": "Other348"
+      }
+    ],
+    "builtins": [],
+    "self_index": 0,
+    "builtin_first": false,
+    "typename": "(D348A\\I348&D348A\\Box348)|D348A\\Other348",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$r341 = new \\D348A\\Other348();",
+        "check": "$r341 === $s341 && $r341 instanceof \\D348A\\Other348",
+        "value": "POBJECT n_alternate0",
+        "object": "D348A\\Other348",
+        "marker": "D|"
+      }
+    ],
+    "id": "strict-relative-self-intersection-dnf",
+    "source": "strict-relative-self-intersection-dnf.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|M|Q|D|R|P|F|D|Z|"
+  },
+  "strict-array-null-self-intersection": {
+    "namespace": "D348B",
+    "consumer_namespace": "D348BX",
+    "class": "D348B\\Box348",
+    "header": "array|null|(namespace\\I348&self)",
+    "raw_kind": "NName",
+    "raw_name": "self",
+    "self_conjuncts": [
+      {
+        "class": "D348B\\I348",
+        "raw_kind": "NNameRelative",
+        "raw_name": "I348"
+      }
+    ],
+    "self_atom_index": 1,
+    "builtins": [
+      "array",
+      "null"
+    ],
+    "self_index": 2,
+    "builtin_first": true,
+    "typename": "(D348B\\I348&D348B\\Box348)|array|null",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$s341 = null;",
+        "check": "$r341 === null && $s341 === null",
+        "value": "PNULL",
+        "marker": "Q|"
+      },
+      {
+        "statement": "$r341 = [251];",
+        "check": "$r341[0] === 251 && $s341[0] === 251",
+        "value": "PARRAY n_array2",
+        "marker": "A|",
+        "array": {
+          "value": 251,
+          "copy_variable": "arraycopy348",
+          "copy_value": 263
+        }
+      }
+    ],
+    "id": "strict-array-null-self-intersection",
+    "source": "strict-array-null-self-intersection.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|M|S|Q|R|A|K|R|P|F|D|Z|"
+  }
+}

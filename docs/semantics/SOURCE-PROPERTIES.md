@@ -3050,3 +3050,14 @@ array COW, actual Get reads and real source detachment retain existing bounds.
 Scoped-self conjuncts inside intersections and wider contexts, owners and
 lifetimes stay partial.
 [Review](../../coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits `self` or `namespace\self`
+as a nominal intersection conjunct in pure, bare-DNF and mixed-DNF headers.
+The existing member fold threads defining context into the scoped singleton
+proof; minimum counts, exact raw/normalized arm and conjunct order, class bytes
+and whole quiet normalization remain required. Named Box owners implementing an
+empty interface supply real self payloads, with actual aliases, Get reads and
+source detachment. Existing owner/source guards, normalizer and runtime rules
+retain their bounds. Unknown, trait and anonymous contexts, wider owners and
+lifetimes stay partial.
+[Review](../../coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json).
