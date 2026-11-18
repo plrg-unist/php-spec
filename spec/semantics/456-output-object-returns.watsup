@@ -1535,6 +1535,31 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PSTRING n_
   -- if $compiled_string_value(S, porigin, PSTRING n_result*) = PSTRING n_result*
   -- if $enter_compiled_task(S, porigin, EVAL expression, S.TODO) = S[.RESULT = KNOWN (PSTRING n_result*)]
   -- if $value_nodes(PSTRING n_result*) = eps
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PSTRING_CARRIER INTERNED_STRING n_result*)
+  -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
+  -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue_right)
+  -- if $string_bytes(pvalue_left) = (n_left*)
+  -- if $string_bytes(pvalue_right) = (n_right*)
+  -- if |n_left*| = 1 /\ |n_right*| = 1
+  -- if $value_nodes(pvalue_left) = eps /\ $value_nodes(pvalue_right) = eps
+  -- if porigin_left = PORIGIN n_child pcpath_left
+  -- if porigin_right = PORIGIN n_child pcpath_right
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, b_left))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z, b_right))
+  -- if ~(b_left /\ b_right)
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, false)
+  -- if $compiled_read(S, porigin) = eps
+  -- if $compiled_redirect(S, porigin) = eps
+  -- if $compiled_effects(S, porigin) = eps
+  -- if S_binary = $binary_apply(S[.RESULT = KNOWN pvalue_right], pbin, pvalue_left, pvalue_right, z)
+  -- if S_binary.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_result*)
+  -- if S_binary = S[.RESULT = KNOWN (PSTRING_CARRIER INTERNED_STRING n_result*)]
+  -- if $value_nodes(PSTRING_CARRIER INTERNED_STRING n_result*) = eps
 def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PINT i_result)
   -- if $pfshape(expression) = PFBINARY pbin expression_left expression_right
   -- if pbin = BITAND \/ pbin = BITOR \/ pbin = BITXOR \/ pbin = ADD \/ pbin = SUBTRACT \/ pbin = MULTIPLY \/ pbin = DIVIDE \/ pbin = MODULO \/ pbin = SHIFTLEFT \/ pbin = SHIFTRIGHT \/ pbin = POWER \/ pbin = SPACESHIP

@@ -2100,3 +2100,13 @@ and fixed `698b26b0b` are clear. The sole joint production SL509 load passes in
 16.791657433 seconds under cap60 with source0. Reviewer report/map originals1
 each were fully cached before assertions; author actual raw/full-cache reads0.
 [Evidence](../../coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-author.json) and [review](../../coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json).
+
+Emitted single-byte STRING AND/OR/XOR also feed selected nested return casts.
+Both input strings must have length one; at least one proper child is emitted.
+Each child retains its own SOURCE/CODE flag and terminal line, and the emitted
+parent retains the RIGHT terminal line with absent read/redirect and empty
+subtree effects. Exact NORMAL `binary_apply` state equality yields an INTERNED
+character, including derived NUL, without changing STRINGDATA. A one-byte
+result from unequal-length inputs still allocates REQUEST string data and is
+refused; both input lengths matter. Folded STRING/numeric arms, the two-cast
+gate and literal/owned-NUL holds remain; wider owners and contexts stay partial.
