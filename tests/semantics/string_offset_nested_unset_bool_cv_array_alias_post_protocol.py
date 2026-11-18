@@ -109,9 +109,11 @@ def conditions(program, path):
         'S_R[.REFCELLS = $literal_reference_delete(S_R.REFCELLS, n_owner)]',
         'S_R[.ALLOCATIONS = $destruction_node_delete(S_R.ALLOCATIONS, HCELL n_owner)]',
         'S_R[.STORE[n_owner] = UNDEFINED]',
-        'S_R[.STORE[n_owner] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("string-alias")))]',
     ):
         checks += ['~$string_unset_bool_cv_post_nonempty_array(' + changed + ', n_key)']
+    checks += ['S_string_alias = S_R[.STORE[n_owner] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("string-alias")))]',
+        '$string_read_array_string_cell(S_string_alias, n_owner)',
+        '$string_unset_bool_cv_post_nonempty_array(S_string_alias, n_key)']
     checks += ['S_no_retainer = S_R[.ENV = $unbind(S_R.ENV, $ptascii("arrayOwnerAlias"))][.GLOBALTABLE = eps]',
         '$heap_valid($heap_graph(S_no_retainer))',
         '~$heap_member(HCELL n_owner, $heap_graph(S_no_retainer).ROOTS)',

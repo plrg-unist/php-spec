@@ -202,7 +202,7 @@ def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) 
   -- if $string_unset_bool_cv_post_array_node(S, n_seen*, n_child)
   -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
-  -- if $literal_reference_plain_cell(S, n)
+  -- if $literal_reference_plain_cell(S, n) \/ $string_read_array_string_cell(S, n)
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
   -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry*) = false -- otherwise

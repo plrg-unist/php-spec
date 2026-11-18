@@ -215,8 +215,8 @@ def conditions(program, path):
     checks += ['S_string_alias = S_R[.STORE[n_owner] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("alias-text")))]',
         '$call_reference_operand_valid(S_string_alias, REFERENCE n_owner)',
         '$heap_valid($heap_graph(S_string_alias))',
-        '~$string_unset_bool_cv_post_nonempty_array(S_string_alias, n_key)',
-        '~$string_unset_bool_cv_post_cell(S_string_alias, n_key_name*, z_key, n_key)']
+        '$string_unset_bool_cv_post_nonempty_array(S_string_alias, n_key)',
+        '$string_unset_bool_cv_post_cell(S_string_alias, n_key_name*, z_key, n_key)']
     if mixed:
         checks += ['S_scalar_alias_cycle = S_R[.STORE[n_alias] = DEFINED (PARRAY n_middle)]',
             '$heap_valid($heap_graph(S_scalar_alias_cycle))',
