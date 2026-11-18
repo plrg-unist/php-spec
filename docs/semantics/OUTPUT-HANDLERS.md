@@ -1874,3 +1874,29 @@ Wider producers, precision histories, owners/lifetimes and all held boundaries
 remain partial; no shared precision API or parser rule changed.
 [Compiler-folded scalar CONCAT evidence](../../coverage/semantics/output-final-selected-compiled-scalar-concat-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-compiled-scalar-concat-cast-chain-return-modulo-error-review.json).
+
+Raw canonical positive infinity also enters parser-folded CONCAT in selected
+nested INT/BOOL/FLOAT handler return casts. Only the raw FLOAT leaf's upper bound
+becomes inclusive. Indexed SOURCE, canonical payload, captured source precision,
+quiet pure formatting, exact folded CODE/plain pool/INTERNED identity, whole
+NORMAL entry and existing nonownership guards remain required.
+Four default source comparisons reuse one saved and three new native observations,
+each made once. A separate startup precision 1 original preserves strict STRING
+'I' and FLOAT 0.0. Author frontier/lifecycle checks (19/13) and independent checks
+(77/15) retain separate first-pass SL508 cuts at the original limits.
+The original prelaw vector keeps eight true and two false checks with zero credit;
+only the two wrong low-precision expectations were corrected and rerun. The
+unchanged formatter matches pinned zend_gcvt's INF at precision 14 and I at 1.
+Root PCC1 against source14/pool INF downgrades to plain STRING and cannot replace
+the required INTERNED parser entry; later live precision 1 leaves source14 intact.
+Independent WHOLE7 and exact fixed actual `e4dce5bc2` are clear. The sole production
+SL509 load (512 argv/513 watched inputs) passes in 15.930629923 seconds under cap
+60 with zero source credit. One actual check and one physical saved report/map
+read each supply the cached immutable tuple; the author reads no raw artifacts.
+Only the exact old149 positive-INF pure query is promoted, without renewing old149
+or old150 campaigns. Negative raw bits, NaN, malformed payloads and NUL remain
+refused in this parser-leaf extension; signed compiler producers retain their
+separate prior scope. Wider producers, precision histories, owners/lifetimes,
+every held boundary and OB31 remain partial and unchanged.
+[Parser positive-INF CONCAT evidence](../../coverage/semantics/output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error-review.json).
