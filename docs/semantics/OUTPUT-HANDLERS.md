@@ -1982,5 +1982,14 @@ subtree is checked once. Selected values retain their own tags and the existing
 outer-cast policy, including its NaN limits. Folded conditions, shorthand,
 owning or warningful values and wider contexts remain partial; the two-cast gate,
 all held boundaries and OB31 remain unchanged.
+Eight source agreements reuse one saved and seven new native observations once.
+Corrected author frontier19/first lifecycle13 and corrected independent
+frontier157/first lifecycle15 retain separate SL508 cuts at300/660. Initial
+author EVAL grouping and peer numeric-escape preparation failures observed0;
+only those affected fixtures reran, with no accepted campaign renewed. Corrected
+WHOLE6 and fixed actual `0bdbf6b5c` are clear. The sole production SL509 load
+passes in16.733011227 seconds under cap60 with source0, through one cached
+actual/report/map tuple. Author raw reads remain0; earlier OUTPUT evidence and
+all held bounds retain their own cuts.
 [Full-ternary evidence](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-review.json).

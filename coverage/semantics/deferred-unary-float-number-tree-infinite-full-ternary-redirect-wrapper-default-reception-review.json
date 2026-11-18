@@ -1,0 +1,259 @@
+{
+  "milestone": "ENUM313 one unary sign over proper numeric trees containing raw FLOAT leaves",
+  "decision": "CLEAR on fixed29a7c303 through immutable6eca15a9; all planned semantic cuts complete/reaped, recorder preparation failure preserved at runtime0.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit, project-local oracle and baseline profile",
+  "grammar": "One POSITIVE/NEGATIVE wrapper over proper binary op4 child certified(NFLOAT,b_int,true), pureFLOAT or mixedINT/FLOAT; child/own INFINITE, exact own SOURCE/PFLOAT pool/absence and pure long+1/-1 multiplication. No shared collector recursion.",
+  "implementation": "One separate 28-line root plus separator and seven hooks admits a certified child with raw FLOAT presence. Its b_int flag distinguishes pure FLOAT from mixed trees without relaxing the shared collector or the preceding all-INT root. Child and own results must be infinite; exact own bits equal pure multiplication by long+1/-1. The full36-line inverse restores old31283dc.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_eval_const_expr folds the unary child before zend_try_ct_eval_unary_pm applies ordinary multiplication by long+1/-1 through zend_try_ct_eval_binary_op. zend_compile_conditional prunes the constant branch and zend_compile_params preserves declaration context.",
+    "vendor/php-src/Zend/zend_operators.c: mul_function_fast retains FLOAT type and infinite sign. Existing tagged add/sub/div operations provide the child values, including exact integer division."
+  ],
+  "observation_boundary": "Four original programs cover pure/mixed raw kinds and all child/unary signs. Duplicated body arithmetic strict-compares against raw +/-1e999, observing native signs without a dumper or new intrinsic. Fresh compiler/state fixtures separately authenticate the actual deferred condition pools, signed-zero nodes, mixed PINT2 division, phasefalse and unavailable ordinary condition VALUE.",
+  "source": {
+    "source_revision": "e3fbb065579d31b6bba7ead94e8661c2c2b4bad7",
+    "source_tree": "4c5e734c6058003ed12e8cf29e63dfbb4b9bb4e6",
+    "source_creation_base": "9bb19028419c9a292569cf09767885cc8061dda1",
+    "implementation_immediate_parent": "e2c4d66a5c0a6c7e514b306fafd392b74e614e28",
+    "model_sha256": "357cd9686ca6cb87031cd32aa97f5a7a2f08bfd2fc9218d6e27b5ad38c2e6d6c",
+    "old312_model_sha256": "83dc662a8441813f0e7f9b7682b1847960cdcb965de918c3d96df8aff7110cd9",
+    "model_inverse": "Remove28-line FLOAT-present root+separator+7hooks; full old312 file restored, all older roots/collector literal."
+  },
+  "runtime_identities": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "production_adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "native_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "TZ": "UTC",
+    "PHP_SPEC_SCRIPT_ENCODING": null
+  },
+  "validation_modes": "Source production_SL and fixture SL_mode use private508 modules. Actual combined canonical validation is a distinct compilation/source0 cut.",
+  "native_once": {
+    "tested_revision": "e2c4d66a5c0a6c7e514b306fafd392b74e614e28",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/native-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/native-v1/report.json",
+    "report_sha256": "2e1c701ad4ba003850c672b3b14a35656ac113a6bc126f4d981a1cfe5ed83736",
+    "exit": 0,
+    "elapsed_seconds": 0.11481185699813068,
+    "outer_cap": 120,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "baseline": {
+    "tested_revision": "e2c4d66a5c0a6c7e514b306fafd392b74e614e28",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/baseline-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/baseline-v1/report.json",
+    "report_sha256": "457caacdc6f9d19dfd90b4fc8cc2cd7d4178eaf59978470ae610199dc19b45e1",
+    "exit": 0,
+    "elapsed_seconds": 29.047013622010127,
+    "outer_cap": 660,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "prelaw": {
+    "tested_revision": "e2c4d66a5c0a6c7e514b306fafd392b74e614e28",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/prelaw-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/prelaw-v1/closure-call-protocol-w92oaqa_/report.json",
+    "report_sha256": "cdca23ccd7cd98ccbcd773d0f31dbaa5b468def3241cc4eb8532bc41e15adbba",
+    "exit": 0,
+    "elapsed_seconds": 129.21731865406036,
+    "outer_cap": 900,
+    "stable": true,
+    "reaped_group_absent": true,
+    "watched_inputs": 520,
+    "cuts": [
+      {
+        "id": "pure-float-unary-prelaw-raw",
+        "conditions": 309,
+        "pass": true
+      },
+      {
+        "id": "pure-float-unary-prelaw-named",
+        "conditions": 357,
+        "pass": true
+      },
+      {
+        "id": "mixed-float-unary-prelaw-raw",
+        "conditions": 337,
+        "pass": true
+      },
+      {
+        "id": "mixed-float-unary-prelaw-named",
+        "conditions": 375,
+        "pass": true
+      }
+    ]
+  },
+  "source_execution": {
+    "tested_revision": "e3fbb065579d31b6bba7ead94e8661c2c2b4bad7",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/source-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/source-v1/report.json",
+    "report_sha256": "5648d1acd117d9e0f18b31182438926ae0231d9e6ad79a782291a6439d7a7565",
+    "exit": 0,
+    "elapsed_seconds": 114.04308013990521,
+    "outer_cap": 1320,
+    "stable": true,
+    "reaped_group_absent": true
+  },
+  "author_fixtures": {
+    "tested_revision": "e3fbb065579d31b6bba7ead94e8661c2c2b4bad7",
+    "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/author-v1.process.json",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/author-v1/closure-call-protocol-3uhl5w5q/report.json",
+    "report_sha256": "37567254512dae71c99cc08285c8d6069952c4e47a3abd0efb3fc87fa36c280a",
+    "exit": 0,
+    "elapsed_seconds": 381.2142487990204,
+    "outer_cap": 900,
+    "stable": true,
+    "reaped_group_absent": true,
+    "watched_inputs": 522,
+    "cuts": [
+      {
+        "id": "pure-unary-float-tree-raw",
+        "conditions": 348,
+        "pass": true
+      },
+      {
+        "id": "pure-unary-float-tree-certificate",
+        "conditions": 447,
+        "pass": true
+      },
+      {
+        "id": "pure-unary-float-tree-private",
+        "conditions": 55,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-float-tree-raw",
+        "conditions": 376,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-float-tree-certificate",
+        "conditions": 465,
+        "pass": true
+      },
+      {
+        "id": "mixed-unary-float-tree-private",
+        "conditions": 55,
+        "pass": true
+      }
+    ]
+  },
+  "independent_fixtures": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/review-v1/closure-call-protocol-s6lai43w/report.json",
+    "report_sha256": "a8d614483810a49dc0c5b5c96c7c70cb15a991e3658ae0986d29b7c05c8c070c",
+    "elapsed_seconds": 258.6036319111008,
+    "outer_cap": 1200,
+    "per_fixture_cap": 300,
+    "conditions": 884,
+    "cuts": [
+      183,
+      155,
+      87,
+      207,
+      161,
+      91
+    ],
+    "watched_inputs": 520,
+    "stable": true,
+    "reaped": true,
+    "group_absent": true
+  },
+  "fresh_affected_old312": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/affected-fix-v1/closure-call-protocol-0khfc9ge/report.json",
+    "report_sha256": "d82cd0612dba13ddf93fb6ddff099d9ba369cc9b6f6e3bf1b696ac47e3d8a082",
+    "elapsed_seconds": 20.236468132818118,
+    "outer_cap": 600,
+    "per_fixture_cap": 300,
+    "conditions": 45,
+    "cuts": [
+      45
+    ],
+    "watched_inputs": 520,
+    "stable": true,
+    "reaped": true,
+    "group_absent": true
+  },
+  "recorder_preparation": {
+    "recorder_preparation_failures": 1,
+    "recorder_corrections": 1,
+    "recorder_original_runtime_credit": 0,
+    "recorder_correction": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/affected-recorder-correction-v1.json",
+    "recorder_correction_sha256": "56002d6f4d0d0e1ddcd32235f0cdc9515d8aaae396bc64680d27995034f82d76",
+    "affected_original_failure": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/affected-v1.process.json"
+  },
+  "source_packets": {
+    "author": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/author-source-packet-v1/manifest.json",
+    "author_sha256": "1319563d140c27f269337eb4890705e163a0ed3e17f68ea9cbb3ad8a02fc8d58",
+    "review_ready": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/review-source-ready-v1.json",
+    "review_ready_sha256": "4301cde763b7288fc5b22309cd1bceb5181afcad02a0dbc7cedfc83c54bdd70d",
+    "exact_unique_paths": 6,
+    "Make": "Unique author2+peer1, full parent inverses; current anchor preserves all old3123 and foreign bytes.",
+    "source_retained": {
+      "normal_agreements": 4,
+      "source_report_sha256": "5648d1acd117d9e0f18b31182438926ae0231d9e6ad79a782291a6439d7a7565",
+      "bridge": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/review-retained-source-input-bridge-v1.json",
+      "bridge_sha256": "f413c526ca3f2a2c10684a2663915ede85f091f7d62ce54baa603f9e197af148",
+      "literal_runtime_inputs": 533,
+      "new_source_credit": 0
+    }
+  },
+  "condition_accounting": "Native4 once/source4, prelaw1378(309+357+337+375), author1746(348+447+55+376+465+55) and independent884(183+155+87+207+161+91) pass first attempts at separate cuts. Corrected fresh affected45 passes its first semantic execution; the original recorder preparation failure ran0 predicates and remains preserved. Baseline Unsupported2/raw-unrun2 carry no source agreement credit. No unique-condition sum or accepted campaign renewal.",
+  "native_originals_once": 4,
+  "source_normal_agreements": 4,
+  "source_elapsed_seconds": [
+    19.88823525607586,
+    44.12449107482098,
+    4.53960569598712,
+    45.18176180101
+  ],
+  "source_watched_inputs": 533,
+  "native_source_prelaw_author_reexecutions": 0,
+  "fixture_semantic_failures": 0,
+  "fixture_predicate_corrections": 0,
+  "source_runtime_failures": 0,
+  "recorder_preparation_failures": 1,
+  "recorder_corrections": 1,
+  "timeouts": 0,
+  "old_campaign_renewals": 0,
+  "old312_files_changed": 0,
+  "author_canonical_raw_reads": 0,
+  "remaining": "Flat child, repeated/computed-unary-inside-oldbinary, names/STRING, NaN warning and wider contexts remain partial.",
+  "holds": "OP12; Source47 lowprecisionDEFINE-nameNaN; Owned-NUL source-release; undefined by-reference LIST keys; COMP88; V110/GC35/I106/COMP123/ATTR87/GC87/I140/GC84/held207 unchanged; reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "recovery": "../php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313 preserves exact originals/native once, source/prelaw/author/independent/affected cuts, original recorder failure and literal-case correction, process records and exact source packets. These are evidence, not build/runtime inputs.",
+  "actual_same": {
+    "metadata_base": "29a7c30308ce67e20aafe259902d42a1a53be983",
+    "tree": "2d8e5448c51da4137fb902681ae077f764c70627",
+    "enum_source_placement": "29a7c30308ce67e20aafe259902d42a1a53be983",
+    "enum_parent": "908127e50af6274657dbaec6edf6ae1ccf1b7e12",
+    "exact_source_paths": 6,
+    "full_model_inverse": true,
+    "Make": "unique2+1 after intact old3123; joint5 whole inverse; all foreign bytes incl REF138 preserved",
+    "canonical": {
+      "argv": 512,
+      "cap": 60,
+      "elapsed": 16.641259273979813,
+      "mode": "production_SL",
+      "modules": 509,
+      "reaped": true,
+      "source_credit": 0,
+      "stable": true,
+      "watched": 513
+    },
+    "canonical_report_sha256": "8807ecf93a4a1b18f545f948e6f06e6a987e8a3e19bdb3a19d6e5face2f0d0fa",
+    "source_map_sha256": "ff5215017b62e623357eb07dc47b4eada00d704b65dfcd8e927ab1da0497b111",
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/review-main110-immutable-tuple-v1.json",
+    "immutable_tuple_sha256": "6eca15a9facb7d15f88e26f7e86c6489b097bbe44946b24f6a4441d0f6a59241",
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-313/review-main110-canonical-parsed-cache-v1.json",
+    "parsed_cache_sha256": "0f33c436158f239bf44f2e28ac78ec2ddde52023375597086e90983b64b07e79",
+    "original_report_physical_reads": 1,
+    "original_map_physical_reads": 1,
+    "author_raw_reads": 0,
+    "execution_replays": 0,
+    "HEAD_refreshes": 0
+  },
+  "metadata_ownership": "One family SOURCE-TYPED-FUNCTIONS/review projection from immutable6eca15a9. MAIN110 alone applies common4 literal operations on fixed29a7c303. calls.defaults stays partial; constructor/status/closure/divergence counts and exact holds unchanged. Metadata renews no execution evidence."
+}

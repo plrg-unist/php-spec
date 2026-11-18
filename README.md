@@ -34,6 +34,8 @@ Quiet constant-left `&&`, `||`, `and` and `or` now feed selected nested handler 
 
 Quiet emitted left operands for `&&`, `||`, `and` and `or` now feed selected nested handler casts. Both operands retain compiler evidence, selected truth stays intrinsic and quiet, and the parent retains absent folded reads and redirects. Source8, author19/13 and independent171/15 pass; broader operands and lifetimes remain partial. [Review](coverage/semantics/output-final-selected-emitted-left-short-circuit-cast-chain-return-modulo-error-review.json).
 
+Quiet full ternaries with emitted conditions now feed selected nested handler casts. Both arms retain compiler evidence, the selected VALUE keeps its own type and copy, and the parent keeps the FALSE terminal line. Source8, author19/13 and independent157/15 pass; folded conditions, shorthand and wider values/lifetimes remain partial. [Review](coverage/semantics/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-review.json).
+
 Quiet falsey nonowning shorthand conditions select existing allocated fallback string headers and preserve frozen leading offsets through returning Warnings. Explicit ABSENT shape, complete SOURCE and exact false truth retain the existing precision/header/owner guards; truthy or owning conditions and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-falsey-shorthand-base-initial-raw-leading-key-review.json).
 
 Quiet full ternaries retain selected certified allocated string headers and frozen leading offsets through returning Warnings. Complete root SOURCE, exact quiet truth and selected-child BASE preserve existing precision and owner guards; shorthand, wider conditions/producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-full-ternary-base-initial-raw-leading-key-review.json).
@@ -44,15 +46,13 @@ Raw signed64 INT/sign-left and FLOAT/sign-right arithmetic predicates preserve s
 
 Properly nested FLOAT arithmetic conditions retain selected full-ternary scalar tags through exact source, pool and compiler checks at every node. Certified folded bits also cover signed-zero leaves whose generic condition value is unavailable. Mixed trees, names, STRING leaves, unary wrappers over computed trees and wider contexts remain partial. [Review](coverage/semantics/deferred-float-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
-Proper mixed and all-INT arithmetic trees preserve exact intermediate types and
-raw leaf kinds before selecting infinite full-ternary defaults. One unary sign
-also preserves a proper all-INT infinite child through exact source, typed pools
-and pure multiplication by +1/-1, retaining default caches and reception.
-Raw FLOAT/mixed sign children, repeated wrappers, names/STRING and wider contexts
-remain partial.
-[Unary review](coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
-[binary review](coverage/semantics/deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
-[mixed-tree review](coverage/semantics/deferred-mixed-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
+Proper arithmetic trees preserve exact intermediate types and raw leaf kinds
+before selecting infinite full-ternary defaults. One unary sign accepts a proper
+all-INT, pure FLOAT or mixed INT/FLOAT infinite child, retaining exact source,
+typed pools, pure sign multiplication, default caches and private reception.
+Flat children, repeated signs, names/STRING and wider contexts remain partial.
+[Raw-FLOAT sign review](coverage/semantics/deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+[integer sign review](coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Quiet infinite FLOAT casts preserve existing allocated REQUEST string headers and saved leading offsets through returning Warnings. Exact child SOURCE, captured/live precision, pure formatting and full-state replay retain NaN refusal and existing ownership bounds; wider forms remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-review.json).
 

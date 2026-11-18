@@ -1,0 +1,229 @@
+{
+  "family": "OUTPUT155 quiet emitted-condition full ternaries in selected nested return casts",
+  "target": "PHP8.5.10 CLI NTS64; vendor34308a6666b2d489c509541ea9befea9e2b42348",
+  "status": "bounded independently reviewed semantics with fixed integrated composition",
+  "scope": "Full ternaries beneath the existing selected named Warning/Deprecated handler two-cast gate. The condition is emitted and intrinsically quiet. Both arms retain compiler authority, the parent keeps the FALSE terminal line and absent read/redirect with empty effects, selected VALUE keeps its own tag/copy, and only the unselected bounded arm uses the skipped-line certificate.",
+  "engine_basis": [
+    "Zend/zend_compile.c::zend_compile_conditional compiles condition, TRUE and FALSE, with QM_ASSIGN copying the selected operand and the terminal line retained from FALSE.",
+    "Zend/zend_vm_def.h::ZEND_QM_ASSIGN preserves the selected VALUE; Zend/zend_operators.h::i_zend_is_true diagnoses demanded NaN truth.",
+    "spec46 full-ternary dispatch compiles all three children then clears VALUE. spec51 selected_branch/VALUE_COPY and spec30 resolve_at authenticate the current selected origin, copy line and full state."
+  ],
+  "numeric_policy": "Pure authored .watsup; no Zend evaluation fallback. Selected NaN VALUE follows existing outer-cast policy; no global result ban is added.",
+  "design": "Actual and opposite existing selector plans identify selected/unselected arms. Selected VALUE is checked once, avoiding duplicate recursion through nested selected ternaries.",
+  "source_package": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/ready-source-155-corrected-manifest.json",
+    "sha256": "1364dd933a6da4a6351185352444e3017da5dbdff8e2688aa40d717c36da579d",
+    "parent": "90c61d7e4e0ef6941c90e3928f90eaf9c9964408",
+    "revision": "c6c1b7c574285627656116d9c653412bc31ee07e",
+    "files": 6,
+    "complete_parents": 3,
+    "absent_parents": 3,
+    "forward_inverse_exit": [
+      0,
+      0
+    ],
+    "Make_unique_recipes": 4,
+    "unchanged_posts_reused": 5,
+    "corrected_reviewer_posts": 1,
+    "whole_review": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer37-source-whole-155.json",
+      "sha256": "38fbf6ffc04bbfe30b05a29c96f76a426ba7a2478562dafdf760fa16fd1777e4",
+      "passed": true
+    }
+  },
+  "baseline": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/baseline-01/report.json",
+    "sha256": "e43f9fd57bbbf9aab59691c1de479ce14d57b0c3d95bc7680f0a8c0b70b9b27f",
+    "revision": "90c61d7e4e0ef6941c90e3928f90eaf9c9964408",
+    "model_status": "unsupported",
+    "model_observe_exit": null,
+    "native_once": 1,
+    "native_exit": 255,
+    "source_credit": 0,
+    "remaining_authored_variants_initially_unrun": 7
+  },
+  "native": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/native-01/report.json",
+    "sha256": "fc3965d4d5491f8179a5b88d2173da6597043887a0489710d6c5a3b39c839d63",
+    "saved_original_reused": 1,
+    "new_observations": 7,
+    "native_replays": 0,
+    "source_credit": 0
+  },
+  "source": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/after-01/report.json",
+    "sha256": "10e9c0bbbecf46c99da22a72005e24e134bd0497320e97623708153a2a241840",
+    "revision": "f18a0c485361c0ddf1be2b66fb5dd267f1e91047",
+    "passed": true,
+    "agreements": 8,
+    "seconds": 365.38645483599976,
+    "stable": true,
+    "model_cap_seconds": 90,
+    "outer_cap_seconds": 660,
+    "native_replays": 0
+  },
+  "author_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/front-02/report.json",
+    "sha256": "8d1b32ffc18e329733775bfe9ae1b20d53adfe6970249e492b5fa128f3a4802f",
+    "revision": "140d87a16c78bbed306ad5a95659e98ade148a96",
+    "passed": true,
+    "assertions": 19,
+    "groups": [
+      8,
+      11
+    ],
+    "seconds": 184.13937300094403,
+    "stable": true,
+    "source_credit": 0,
+    "launch": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/front-launch-02.json",
+      "sha256": "47695254e65996a3628535fd5483713cf308781091ce6ff222710da82927b77f"
+    }
+  },
+  "author_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/life-01/report.json",
+    "sha256": "80ac8573364da1cd84c10f2a23444301d89cd607ce09a35533dcb557d2c6e95a",
+    "revision": "140d87a16c78bbed306ad5a95659e98ade148a96",
+    "passed": true,
+    "assertions": 13,
+    "groups": [
+      6,
+      7
+    ],
+    "seconds": 270.0968977371231,
+    "stable": true,
+    "source_credit": 0,
+    "launch": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/life-launch-01.json",
+      "sha256": "3d50467779656e2f0fd4838811d89b1efd71d59429ba6dabfd77212637d269c1"
+    }
+  },
+  "preserved_preparation_failures": {
+    "author_front01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/front-01/report.json",
+      "sha256": "b0a72a295a12faae821cf6acf66af683ff52deb9fae0bc2ac479eca7cbbce217",
+      "revision": "ea7ed8bd1772109e43b3b2c6c6662485ad8e8249",
+      "phase": "fixture elaboration, literal nested EVAL expression grouping",
+      "observed": 0,
+      "planned_frontier_unrun": 19,
+      "lifecycle_then_unrun": 13,
+      "source_credit": 0
+    },
+    "peer_front01": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer-front-01/report.json",
+      "sha256": "7621f7aba15c57cea4342b781199e2c9e4b0bd90563ddd53b23a3cd62bcd173f",
+      "revision": "0b4596477d69f19a2d8e77df227f953bb91293e9",
+      "phase": "fixture parser, nested numeric-escape grouping",
+      "observed": 0,
+      "planned_frontier_unrun": 157,
+      "lifecycle_then_unrun": 15,
+      "source_credit": 0
+    }
+  },
+  "accepted_cut_bridge": "Source456/catalogue remain exactf18a. The author grouping fix is in a file absent from source watched maps; the later reviewer addition and numeric-escape grouping are absent from source/author maps. Authorfront02/life01 retain140d; only affected never-executed frontier fixtures repeated. No accepted source/native/author campaign was repeated.",
+  "fixture_contract": "Separate SL508/cache=false/det=true cuts at300 seconds/fixture and660outer, C/UTC; fixture source/native agreement credit0. Accepted author runs exit0/quiet/reaped/groupempty/stable without timeout.",
+  "limits": "Folded conditions, shorthand, coalesce, owning or warningful values and wider producer/callback/owner/lifetime contexts remain partial. Existing short circuits, XOR, signed-INF and string lanes are unchanged. Source47/DEFINE-NaN, NaNBYTE, Owned-REQUEST-NUL release, COMP88, OP12, undefined by-reference LIST, reserve93807cdd6/255, inventory169/306/closed0+1 and OB31 stay held/unchanged. Complete PHP core, Rocq/CRIS and BOLA remain unfinished.",
+  "metadata_semantic_runs": 0,
+  "independent_frontier_corrected": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer-front-02/report.json",
+    "report_sha256": "c2ddc2f0c0f4ed67183a3e2ebb1ceca693b28708e73a44fbf2e14fa0adae0153",
+    "launch_sha256": "54beae497d006b33a8526497f7cf12a1468989dbb989f800ab644759b05b6766",
+    "revision": "c6c1b7c574285627656116d9c653412bc31ee07e",
+    "modules": 508,
+    "groups": [
+      94,
+      63
+    ],
+    "predicates": 157,
+    "seconds": 195.81634069420397,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660
+  },
+  "independent_lifecycle_first": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer-life-01/report.json",
+    "report_sha256": "e57e5f312d5a98f252eacc49d81593a1f52014ac3c9684328ee0949250420394",
+    "launch_sha256": "3a72387c272a5e5f32701615eac1d4aa1870f24a202839e2e2429758a973275c",
+    "revision": "c6c1b7c574285627656116d9c653412bc31ee07e",
+    "modules": 508,
+    "groups": [
+      7,
+      8
+    ],
+    "predicates": 15,
+    "seconds": 277.006384097971,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660
+  },
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer37-review-155.json",
+    "sha256": "31d18244d40c41cfc9f418f8d7949a349c25a8f2a8893238b68ce803795543e7",
+    "decision": "CLEAR_LIMITED_SCOPE"
+  },
+  "semantic_discrepancies": 0,
+  "composition": {
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer37-immutable-tuple-155.json",
+    "immutable_tuple_sha256": "08fb97e8ff7fdfc6099890a207a38113d21f5896968eab11ce85d37e5d146872",
+    "actual": "0bdbf6b5c1ba5edf44d2292956a224a8376da262",
+    "tree": "f2921f98ded2b1547d3a6bf9f69e061f75f4f09c",
+    "metadata_base": "0bdbf6b5c1ba5edf44d2292956a224a8376da262",
+    "map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main109-output155-source-map-v1.json",
+    "map_sha256": "ba4c33df9ccf55fef0c99da8b991ba2cb90182d29b180ee065cc192b581b056e",
+    "canonical": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main109-output155-load-v1/report.json",
+    "canonical_sha256": "d7c7cc67970040b2a235a18b84c8a8fc6e548a0e8547dfa2c1b7ebe3b74a694b",
+    "cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-emitted-condition-full-ternary-cast-chain-return-modulo-error-155/peer37-integration-cache-155.json",
+    "cache_sha256": "6d7eecad5fcebe872cf5bb5880943f1742ed29a2a0e11df4a056ef9e2110516d",
+    "placement_parent": "0339a914f78ca3b8f06eca48c83473489ca45e4d",
+    "passed": true,
+    "source_credit": 0,
+    "actual_review": {
+      "actual_paths": 6,
+      "runtime_and_new3_exact_private_posts": true,
+      "complete_current_parent_images": 3,
+      "verified_new_absences": 3,
+      "Make_unique_recipes": 4,
+      "Make_whole_inverse_exact": true,
+      "private_doc_literal_append_exact_on_current_parent": true,
+      "foreign_current_bytes_preserved": true,
+      "ordered_509_modules_and_complete_input_maps_verified": true,
+      "passed": true,
+      "source_credit": 0
+    },
+    "canonical_result": {
+      "mode": "production_SL",
+      "modules": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "seconds": 16.733011226868257,
+      "cap_seconds": 60,
+      "exit": 0,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "complete_maps_equal": true,
+      "ordered_modules_verified": true,
+      "stdout_hex": "747275650a",
+      "stderr_hex": ""
+    },
+    "original_actual_report_map_physical_reads": [
+      1,
+      1,
+      1
+    ],
+    "author_raw_actual_reads": 0,
+    "author_raw_canonical_report_reads": 0,
+    "author_raw_map_reads": 0,
+    "accepted_campaign_reruns": 0,
+    "later_head_refreshes": 0,
+    "metadata_semantic_runs": 0
+  }
+}
