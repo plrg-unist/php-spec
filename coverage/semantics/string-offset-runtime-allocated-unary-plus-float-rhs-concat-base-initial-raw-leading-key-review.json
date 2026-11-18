@@ -1,0 +1,294 @@
+{
+  "scope": "Exactly one UnaryPlus(raw NScalarFloat) CASTSTRING RHS allocating one CONCAT input row for frozen initial raw CV leading offsets",
+  "status": "independently clear at private production SL508 cuts; integrated canonical gate pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local pinned oracle; pure authored .watsup semantics",
+  "semantic_revision": "47aa49fb30a9482eb578f3cc1a22c8d060c746a1",
+  "tested_candidate": "2bc970a0b0a7aef403d41d5aeeb6c34da4e3c9d6",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup",
+  "engine_sources": [
+    "Zend/zend_compile.c:zend_compile_unary_pm,zend_try_ct_eval_unary_pm,zend_compile_cast",
+    "Zend/zend_operators.c:mul_function_fast,__zval_get_string_func,zend_double_to_str",
+    "Zend/zend_vm_def.h:ZEND_CAST,ZEND_CONCAT"
+  ],
+  "certificate": {
+    "source": "exactly one UnaryPlus around direct NScalarFloat under CASTSTRING; existing full right-child SOURCE walk",
+    "identity": "left=resultID-2, right=resultID-1, exactly one RHS REQUEST row",
+    "flags": [
+      false,
+      false
+    ],
+    "state": "full saved-prefix CASTSTRING-to-CONCAT equality; only registry append and RESULT updates",
+    "ownership": "existing KNOWN temporary ownership and saved referenced-key wrapper; registry rows are not roots"
+  },
+  "native_executions": 2,
+  "source_agreements": 2,
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "modules": {
+    "count": 508,
+    "list_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "exclusions": [],
+    "production_SL": true
+  },
+  "author_cuts": [
+    {
+      "id": "native-baseline",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/native-baseline/report.json",
+      "sha256": "55ae30c5f47b327352874c591eb158b9c538a7a5903d52e9f8022fad64db18ed",
+      "revision": "e20f64602e957e936ff86ba95d25c01ef2fe5990",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": null,
+          "source_sha256": "b7d1ee7c8404a39ebf8320c2f612265c6c752132536a6ade73cf09027d33db3f",
+          "native_reused": false,
+          "agreement_credit": 0
+        },
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": null,
+          "source_sha256": "0fed8773ae33a1624e23d94337a05d570c63c1dd10f136cb2bfe64db6a934b68",
+          "native_reused": false,
+          "agreement_credit": 0
+        }
+      ]
+    },
+    {
+      "id": "source-baseline",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/source-baseline/report.json",
+      "sha256": "adf9b6cdbf0bed569b96c2995eec53b56fe1be837e9df4305d35b8b741b575bd",
+      "revision": "e20f64602e957e936ff86ba95d25c01ef2fe5990",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": "unsupported",
+          "source_sha256": "b7d1ee7c8404a39ebf8320c2f612265c6c752132536a6ade73cf09027d33db3f",
+          "native_reused": true,
+          "agreement_credit": 0
+        },
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": "unsupported",
+          "source_sha256": "0fed8773ae33a1624e23d94337a05d570c63c1dd10f136cb2bfe64db6a934b68",
+          "native_reused": true,
+          "agreement_credit": 0
+        }
+      ]
+    },
+    {
+      "id": "prelaw-direct-v3",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-direct-v3/report.json",
+      "sha256": "48418f8cc557a3f5738ce185607119e1438eed816eaf9b98c61f6064a99c2980",
+      "revision": "87a0fc4094d49a5c1a7554776ba916eceecf4529",
+      "passed": true,
+      "premises": 80,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 19.12620258331299,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "prelaw-reference",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-reference/report.json",
+      "sha256": "c4b5c41f9776c5e3b44964909263b89aea7890229250e88724b8fdc0a2e7e170",
+      "revision": "87a0fc4094d49a5c1a7554776ba916eceecf4529",
+      "passed": true,
+      "premises": 91,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 19.835503101348877,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "source-postlaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/source-postlaw/report.json",
+      "sha256": "4a077417bbf640fbe53ba1d8a786674a05f53e0faa9e91fd734cd6a66300f32c",
+      "revision": "31b0e12aab1ebef82b46418933697e826fc9fb49",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": "normal",
+          "source_sha256": "b7d1ee7c8404a39ebf8320c2f612265c6c752132536a6ade73cf09027d33db3f",
+          "native_reused": true,
+          "agreement_credit": 1
+        },
+        {
+          "id": "runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": "normal",
+          "source_sha256": "0fed8773ae33a1624e23d94337a05d570c63c1dd10f136cb2bfe64db6a934b68",
+          "native_reused": true,
+          "agreement_credit": 1
+        }
+      ]
+    },
+    {
+      "id": "author-direct-v2",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/author-direct-v2/report.json",
+      "sha256": "390a94c5839a055c62d3b3db22eed16f948270cf2d3899b4e115f57cb1e68426",
+      "revision": "2bc970a0b0a7aef403d41d5aeeb6c34da4e3c9d6",
+      "passed": true,
+      "premises": 217,
+      "derived_conditions": 82,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 23.075726985931396,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "author-reference",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/author-reference/report.json",
+      "sha256": "0f7cd0a5b33fe4202e5c168b49589d57514de40eed9ddb08e112ec9eae4a63e5",
+      "revision": "2bc970a0b0a7aef403d41d5aeeb6c34da4e3c9d6",
+      "passed": true,
+      "premises": 234,
+      "derived_conditions": 82,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 33.23595070838928,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    }
+  ],
+  "independent": {
+    "packet": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/review-ready.json",
+    "sha256": "23625acef2679677191cc3d53dc7ec3b28fd551d7aa3776a915d870d6ed4737d",
+    "revision": "8cdd0bb3723421ac9b7c577a4f7d816c4d30f14e",
+    "tree": "b02f7cf208390165b11f914d24d90831c5696859",
+    "new_peer": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer/report.json",
+      "sha256": "a84f7b0b36e6c7de7d4b66944f759fa6007a36ca1e0668d16594739bbd78cd9b",
+      "revision": "8cdd0bb3723421ac9b7c577a4f7d816c4d30f14e",
+      "premises": 265,
+      "derived_conditions": 139,
+      "passed": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "head_stable": true,
+      "generated_stable": true,
+      "compiler": {
+        "pid": 3728661,
+        "pgid": 3728661,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "elapsed": 13.23851466178894,
+        "cap_seconds": 120
+      },
+      "execution": {
+        "pid": 3728845,
+        "pgid": 3728845,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "elapsed": 35.743913650512695,
+        "cap_seconds": 180
+      }
+    },
+    "affected_current_raw_peer": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/affected-raw-peer/report.json",
+      "sha256": "98af8409079ba7b259dc6ac9bc9d4b9a58893247166ce9e7e78e02b568e84acd",
+      "revision": "8cdd0bb3723421ac9b7c577a4f7d816c4d30f14e",
+      "premises": 252,
+      "derived_conditions": 134,
+      "passed": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "head_stable": true,
+      "generated_stable": true,
+      "compiler": {
+        "pid": 3729114,
+        "pgid": 3729114,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "elapsed": 13.545411109924316,
+        "cap_seconds": 120
+      },
+      "execution": {
+        "pid": 3729125,
+        "pgid": 3729125,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": [],
+        "elapsed": 35.03341794013977,
+        "cap_seconds": 180
+      }
+    },
+    "whole_review": {
+      "passed": true,
+      "judgments": 14,
+      "scope": "bounded semantic/source/state/ownership review, not executable fixture assertions"
+    }
+  },
+  "preserved_failures": [
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-direct/report.json",
+      "sha256": "2d261d595794fe55459c91ec703370593efe880e6f194d95dce58a989723ee40",
+      "premises": 80,
+      "reason": "CODE path used before binding; compiler rejection/runtime UNRUN",
+      "agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-direct-v2/report.json",
+      "sha256": "df0dd3cb329c45fd707f0d5b8fbed364069f3d5cf50226135aa41de2841f8de0",
+      "premises": 81,
+      "reason": "unnecessary raw atom compiled-read EPS expectation",
+      "agreement_credit": 0
+    },
+    {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-plus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/author-direct/report.json",
+      "sha256": "1d47ae2fd855f779391ea8363e18ed535f34094082765d17df4e3c4eeb775022",
+      "premises": 217,
+      "reason": "overstrong folded-to-emitted unary VALUE refusal",
+      "agreement_credit": 0
+    }
+  ],
+  "compatibility": [
+    "Source2 at31b bridges through only two A fixture expectations to2bc; semantic modules, source driver and CASES are unchanged.",
+    "Final family contract/review and two Make target additions do not change tested semantic/fixture inputs.",
+    "Only CURRENT raw B derived single-plus refusal becomes nested+(+12.5), with fresh affected252/134. Original70fd/252 and prior RAWFLOAT canonical evidence stay closed."
+  ],
+  "trust_boundary": "Existing folded unary equality refuses coherent SOURCE/wrong folded-value controls; no global installed-pool consistency theorem. Emitted unary with valid retained atom facts may supply the same FLOAT.",
+  "remaining_limits": [
+    "nested/mixed/unary-minus RHS",
+    "INT/general VALUE RHS",
+    "identity STRING cast RHS",
+    "multirow RHS",
+    "wider ownership/release/cleanup",
+    "precision histories and lifetimes"
+  ],
+  "jobs": {
+    "own_heavy": 0,
+    "all_planned_author_and_reviewer_jobs_reaped": true
+  },
+  "integration": {
+    "status": "pending MAIN actual placement and sole canonical load",
+    "metadata_policy": "one family/common4 batch, MAIN sole common writer, one integrated final"
+  }
+}

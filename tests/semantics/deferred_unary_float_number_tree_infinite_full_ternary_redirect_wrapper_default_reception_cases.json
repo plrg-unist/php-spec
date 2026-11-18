@@ -1,0 +1,34 @@
+[
+  {
+    "id": "deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-pure-raw-tagged-results",
+    "source": "<?php\nfunction rawUnaryFloatNumberPureTreeInfiniteRedirect313(\n    $p0 = ((+(((1e999 + (+(-0.0))) + 1.0))) ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_UNARY_INTEGER_TREE313_0),\n    $p1 = ((-(((1e999 + (+(-0.0))) + 1.0))) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_UNARY_INTEGER_TREE313_1)\n) {\n    echo 'signs:', ((+(((1e999 + (+(-0.0))) + 1.0)))) === 1e999, ':', ((-(((1e999 + (+(-0.0))) + 1.0)))) === (-1e999), '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawUnaryFloatNumberPureTreeInfiniteRedirect313();\nrawUnaryFloatNumberPureTreeInfiniteRedirect313();\n",
+    "purpose": "One unary sign over a proper pure tree containing raw FLOAT leaves, including +(-0.0); literal strict-identity body echoes observe both infinity signs while selected values, caches and reception remain separate.",
+    "expected_normal_stdout": "signs:1:1|raw:1:1|signs:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "6d8b980eea8e5e7e083c68bc66bad36f91423d4539d44302fceaaf263846623d"
+  },
+  {
+    "id": "deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-pure-alias-named-reentry",
+    "source": "<?php\nnamespace UnaryFloatNumberPureTreeInfiniteRedirect313;\nuse const E_WARNING as Base313;\nuse const E_ERROR as One313;\nuse const Unavailable313\\Payload as Skipped313;\nfunction coercion313($errno, $message, $file, $line) {\n    global $x313;\n    echo 'coercion:', $message, '|';\n    defaults313(2);\n    $x313 = 3.5;\n}\nfunction defaults313(\n    int $first,\n    int &$selectedBool = (int)((+((0.0 - ((1e999 + (+(-0.0))) + 1.0)))) ? (((bool)(+(-((float)(+(Base313 === One313))))))) : Skipped313),\n    int &$negativeZero = (int)((-((0.0 - ((1e999 + (+(-0.0))) + 1.0)))) ? (-((float)((bool)(+(-((float)(+(Base313 === One313)))))))) : Skipped313),\n    int $last = 7\n) {\n    echo 'signs:', ((+((0.0 - ((1e999 + (+(-0.0))) + 1.0))))) === (-1e999), ':', ((-((0.0 - ((1e999 + (+(-0.0))) + 1.0))))) === 1e999, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('UnaryFloatNumberPureTreeInfiniteRedirect313\\\\coercion313');\n$x313 = 1.5;\n$last313 = 8;\ndefaults313(last: $last313, first: $x313);\necho 'outer:x=', $x313, '|';\n",
+    "purpose": "One unary sign over a proper pure tree containing raw FLOAT leaves, including +(-0.0); literal strict-identity body echoes observe both infinity signs while selected values, caches and reception remain separate.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|signs:1:1|body:2:0:0:7|signs:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "566802c94b0305476a2b402461a0d3bd5724e1ff01168af87511e565b72547fb"
+  },
+  {
+    "id": "deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-mixed-raw-tagged-results",
+    "source": "<?php\nfunction rawUnaryFloatNumberMixedTreeInfiniteRedirect313(\n    $p0 = ((+(((2 / 1) + (1e999 + (+(-0.0)))))) ? ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) : SKIPPED_UNARY_INTEGER_TREE313_0),\n    $p1 = ((-(((2 / 1) + (1e999 + (+(-0.0)))))) ? ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false) : SKIPPED_UNARY_INTEGER_TREE313_1)\n) {\n    echo 'signs:', ((+(((2 / 1) + (1e999 + (+(-0.0))))))) === 1e999, ':', ((-(((2 / 1) + (1e999 + (+(-0.0))))))) === (-1e999), '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawUnaryFloatNumberMixedTreeInfiniteRedirect313();\nrawUnaryFloatNumberMixedTreeInfiniteRedirect313();\n",
+    "purpose": "One unary sign over a proper mixed tree containing raw FLOAT leaves, including +(-0.0); literal strict-identity body echoes observe both infinity signs while selected values, caches and reception remain separate.",
+    "expected_normal_stdout": "signs:1:1|raw:1:1|signs:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "21b650bff9dbc1fe71b08a6fdcff4a274548aff6fbec4008e928ee6c065b3330"
+  },
+  {
+    "id": "deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-mixed-alias-named-reentry",
+    "source": "<?php\nnamespace UnaryFloatNumberMixedTreeInfiniteRedirect313;\nuse const E_WARNING as Base313;\nuse const E_ERROR as One313;\nuse const Unavailable313\\Payload as Skipped313;\nfunction coercion313($errno, $message, $file, $line) {\n    global $x313;\n    echo 'coercion:', $message, '|';\n    defaults313(2);\n    $x313 = 3.5;\n}\nfunction defaults313(\n    int $first,\n    int &$selectedBool = (int)((+((0 - ((2 / 1) + (1e999 + (+(-0.0))))))) ? (((bool)(+(-((float)(+(Base313 === One313))))))) : Skipped313),\n    int &$negativeZero = (int)((-((0 - ((2 / 1) + (1e999 + (+(-0.0))))))) ? (-((float)((bool)(+(-((float)(+(Base313 === One313)))))))) : Skipped313),\n    int $last = 7\n) {\n    echo 'signs:', ((+((0 - ((2 / 1) + (1e999 + (+(-0.0)))))))) === (-1e999), ':', ((-((0 - ((2 / 1) + (1e999 + (+(-0.0)))))))) === 1e999, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('UnaryFloatNumberMixedTreeInfiniteRedirect313\\\\coercion313');\n$x313 = 1.5;\n$last313 = 8;\ndefaults313(last: $last313, first: $x313);\necho 'outer:x=', $x313, '|';\n",
+    "purpose": "One unary sign over a proper mixed tree containing raw FLOAT leaves, including +(-0.0); literal strict-identity body echoes observe both infinity signs while selected values, caches and reception remain separate.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|signs:1:1|body:2:0:0:7|signs:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "a198e59b92453454e3304596ba4e528d69cc79e80a310260deda73afbe29b563"
+  }
+]
