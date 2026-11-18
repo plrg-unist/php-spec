@@ -16,6 +16,8 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Nonnull COALESCE preserves certified composite-left allocated BASE headers, including falsey STRING0, and frozen raw offsets through returning Warnings. Native2 once/source2, first-pass author243/110+382/152 and corrected independent738/139 retain separate cuts; fixedactual23f3fa51/soleabb023fe productionSL509 passes via immutable5393481e, author raw0. NULL-RHS composition and wider producers/owners remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COMPOSITE-LEFT-COALESCE-BASE-INITIAL-RAW-LEADING-KEY.md).
+
 Quiet truthy shorthand conditions preserve certified allocated FIELD0 BASE headers and frozen raw offsets through returning Warnings. Native2 once/source2, first-pass author296/115+340/133 and corrected independent754/153 retain separate cuts; fixedactual2c1f0fd2/solec03e0736 productionSL509 passes through immutableadf1d059, with author raw0. Owning falsey cleanup and wider producers/owners remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-TRUTHY-SHORTHAND-BASE-INITIAL-RAW-LEADING-KEY.md).
 
 Raw canonical positive-INF parser CONCAT now survives selected nested handler casts with exact SOURCE/pool/precision and nonownership authority. Default source4, separate startup1 and first author19/13 plus independent77/15 pass; the parser-leaf extension remains bounded. [Review](coverage/semantics/output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error-review.json).

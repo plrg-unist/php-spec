@@ -1,0 +1,395 @@
+{
+  "feature": "string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key",
+  "status": "implemented and independently reviewed; fixed source integration validated",
+  "scope": "Nonnull COALESCE retains a certified proper FIELD0 composite BASE header by changing only allocated VALUE(left) to BASE(left) under identical completion normalization. All old root CODE/read/line, root=left precision and immediate RHS SOURCE/read-eps guards stay literal. Direct full-ternary owned falsey-but-nonnull STRING0 retains REQUEST1/two rows and reads0 instead of skipped OUT; reference truthy shorthand retains REQUEST3/four rows and saved3=. versus current4=5. No new allocation or STRING identity wrapper.",
+  "target": "PHP8.5.10 CLI NTS signed64",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": {
+    "source_parent": "14d2b29e4ee2b77f465b5db132f62c88dff70b78",
+    "source_capture_revision": "1282311229d9d571f53c26ea4ae6e8d32e87ebd9",
+    "runtime_source_comparison_revision": "ccf6548052c843183b4b5e4844bff19b793d53fb",
+    "author_fixture_revision": "ccf6548052c843183b4b5e4844bff19b793d53fb",
+    "source_ready_revision": "335ff9c739c44bd907a44e1a6390fc27dac1e2b0",
+    "source_ready_tree": "cd00856469ed758c993a024c51ffbc3d54bc11ee",
+    "file": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "change": "Replace only NN COALESCE final allocated_value premise with proper FIELD0 allocated_base, retaining identical COMPLETION=NORMAL probe and all surrounding guards. Every other425 byte including the NULL-RHS arm stays literal.",
+    "old_VALUE_positive_bridge": "BASE first arm calls allocated_value with identical COMPLETION=NORMAL; all old NN VALUE positives remain positive pointwise",
+    "recursion": "Proper selected FIELD0 BASE descent only; no new allocation, VALUE arm, NULL-RHS or owning-false cleanup expansion.",
+    "incoming_current425_supplement": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/source-ready-current-425-supplement-v2.json",
+      "sha256": "e66d58f75bb0badd2b98f1a332ddbb30b7699faf358ab5a323a0ca50db6392d9"
+    }
+  },
+  "source_provenance": {
+    "symbols": [
+      "zend_compile_coalesce",
+      "ZEND_COALESCE",
+      "ZEND_QM_ASSIGN"
+    ],
+    "route": "COALESCE tests type>NULL and ZVAL_COPY_VALUE transfers a selected TMP header without another row. Full-ternary/shorthand left expressions produce TMP operands.",
+    "observations": "Direct full ternary selects FLOAT0-to-STRING0: falsey but nonnull REQUEST1/two rows reads0 instead of skipped OUT. Reference truthy shorthand retains REQUEST3/four rows; saved3 reads. while callback-rebound current4 reads5. No STRING identity wrapper. Exact original bytes/paths/argv/profile are reused from native2 once.",
+    "independent_discriminator": "Both exact originals and a nested selected NN model-only derivative distinguish BASE from allocated/runtime VALUE. Immediate RHS SOURCE identity and readEPS remain demanded; unused RHS descendants, CODE/precision noise and positive BASE completion normalization retain their existing behavior."
+  },
+  "validation": {
+    "native-baseline": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/native-baseline/report.json",
+      "sha256": "d145681c584c33451c4db1de8dcc35fe8048c24280e9e57cb5e1ab94e15c26a6",
+      "revision": "1282311229d9d571f53c26ea4ae6e8d32e87ebd9",
+      "passed": true,
+      "source_credit": 0,
+      "native_executions": 2,
+      "rows": [
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-current-key",
+          "passed": true,
+          "agreement_credit": 0,
+          "native_reused": false
+        },
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "agreement_credit": 0,
+          "native_reused": false
+        }
+      ]
+    },
+    "baseline-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/baseline-v1/report.json",
+      "sha256": "498aca02f71d954a1d2d73eebf60e41eec6bf51621e28e69e56f5dd101d61194",
+      "revision": "1282311229d9d571f53c26ea4ae6e8d32e87ebd9",
+      "passed": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-current-key",
+          "passed": true,
+          "agreement_credit": 0,
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "agreement_credit": 0,
+          "native_reused": true
+        }
+      ]
+    },
+    "prelaw-facts-falsey-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/prelaw-facts-falsey-v1/report.json",
+      "sha256": "9f395929aa1d3dc72cc2542207573665ac070bce01927fcfddb940aa0f02491d",
+      "revision": "1282311229d9d571f53c26ea4ae6e8d32e87ebd9",
+      "passed": true,
+      "premises": 76,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "generated_stable": true,
+      "head_stable": true,
+      "compiler": {
+        "elapsed": 13.850648880004883,
+        "cap_seconds": 120,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "elapsed": 20.70056915283203,
+        "cap_seconds": 180,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    "prelaw-facts-reference-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/prelaw-facts-reference-v1/report.json",
+      "sha256": "3c9311f0eccf54b484449da472df87ea4018cd842e90529f76055d02dec0f1c1",
+      "revision": "1282311229d9d571f53c26ea4ae6e8d32e87ebd9",
+      "passed": true,
+      "premises": 69,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "generated_stable": true,
+      "head_stable": true,
+      "compiler": {
+        "elapsed": 13.739434480667114,
+        "cap_seconds": 120,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "elapsed": 21.35697603225708,
+        "cap_seconds": 180,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    "source-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/source-v1/report.json",
+      "sha256": "8d76670ad418896c80a1e5130f1fea3aef13f0e43ae65120053b2265e7acad11",
+      "revision": "ccf6548052c843183b4b5e4844bff19b793d53fb",
+      "passed": true,
+      "source_credit": 2,
+      "native_executions": 0,
+      "rows": [
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-current-key",
+          "passed": true,
+          "agreement_credit": 1,
+          "native_reused": true
+        },
+        {
+          "id": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "agreement_credit": 1,
+          "native_reused": true
+        }
+      ],
+      "model_elapsed": [
+        21.810621976852417,
+        25.339415550231934
+      ]
+    },
+    "author-falsey-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/author-falsey-v1/report.json",
+      "sha256": "67816420478beff9c06923afbfb41a1cc996caf9662791fd247c41128e03811f",
+      "revision": "ccf6548052c843183b4b5e4844bff19b793d53fb",
+      "passed": true,
+      "premises": 243,
+      "derived_conditions": 110,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "generated_stable": true,
+      "head_stable": true,
+      "compiler": {
+        "elapsed": 13.027780294418335,
+        "cap_seconds": 120,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "elapsed": 23.854628324508667,
+        "cap_seconds": 180,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    "author-reference-v1": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/author-reference-v1/report.json",
+      "sha256": "f663d8c622d29dae34ea6616686f1fd063a75dc395f6a8b8c6ee55c971942b27",
+      "revision": "ccf6548052c843183b4b5e4844bff19b793d53fb",
+      "passed": true,
+      "premises": 382,
+      "derived_conditions": 152,
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "generated_stable": true,
+      "head_stable": true,
+      "compiler": {
+        "elapsed": 13.141293048858643,
+        "cap_seconds": 120,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      },
+      "execution": {
+        "elapsed": 33.023574113845825,
+        "cap_seconds": 180,
+        "exit": 0,
+        "timeout": false,
+        "interruption": null,
+        "group_after": []
+      }
+    },
+    "independent": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/peer-v2/report.json",
+      "sha256": "a39be09bf3336d7c26a35daaf152af351fc19163e1a720ac40cb41fec0e1b2cf",
+      "revision": "a106083d9d2bc277ed9c4a18746adc09948d4db4",
+      "conditions": 738,
+      "derived_conditions": 139,
+      "module_count": 508,
+      "compiler_seconds": 13.34119701385498,
+      "runtime_seconds": 52.705718994140625,
+      "caps": [
+        120,
+        180
+      ],
+      "passed": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "first_pass": false
+    },
+    "original_independent_fixture_failure": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/peer-v1/report.json",
+      "sha256": "056384c3aec8c451b5d146089ef8e5ca9d8400b722ffbf828c8772089bc9bcee",
+      "revision": "489b7bbd03f5a06a358998af5373ad05d44e6b87",
+      "conditions": 738,
+      "derived_conditions": 139,
+      "runtime_exit": 1,
+      "cause": "synthetic matched17 state omitted both literal CONCAT RHS precision entries",
+      "auxiliary_direct_and_nested_fronts": "UNRUN0 in original failure",
+      "source_credit": 0
+    },
+    "whole6": {
+      "head": "a106083d9d2bc277ed9c4a18746adc09948d4db4",
+      "tree": "135ae6e81915a5609e8a92000e1d38a4809a5975",
+      "whole_path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/whole6-review.json",
+      "whole_sha256": "276ce7a391c1546ff4a794427bd471e7553884e437c8fd540450b7a73a703aba",
+      "source_file_count": 6
+    },
+    "actual": {
+      "immutable_ref": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/main106-immutable-clear.json",
+        "sha256": "5393481e17b370287d40c600923e15ae8dce3e16438cfbf922a3854886a68687"
+      },
+      "tuple": {
+        "verdict": "CLEAR",
+        "feature": "runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key",
+        "actual_revision": "23f3fa51acf5cba3e4ca25373726e37e607a17c5",
+        "actual_tree": "1918640fba660b44528e07c97ff56af82867ce27",
+        "private_source_revision": "335ff9c739c44bd907a44e1a6390fc27dac1e2b0",
+        "private_review_revision": "a106083d9d2bc277ed9c4a18746adc09948d4db4",
+        "whole6_sha256": "276ce7a391c1546ff4a794427bd471e7553884e437c8fd540450b7a73a703aba",
+        "canonical": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-dyn-composite-load-v1/report.json",
+          "sha256": "abb023fe12ec9a641d78e77e2e18197d0e5cad3b13372d0c54deb849653c390c",
+          "tested_revision": "23f3fa51acf5cba3e4ca25373726e37e607a17c5",
+          "module_count": 509,
+          "argv_count": 512,
+          "watched_count": 513,
+          "mode": "production_SL",
+          "cap_seconds": 60,
+          "elapsed": 16.391450465889648,
+          "pass": true,
+          "source_credit": 0,
+          "executions": 1,
+          "report_reads": 1
+        },
+        "placement": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-dyn-composite-source-placement-map-v1.json",
+          "sha256": "caab319ce42cc96936fc051777d38e7932d6328d41064354d9659eae4895aaff",
+          "map_reads": 1
+        },
+        "cache": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/main106-fixed-actual-canonical-cache.json",
+          "sha256": "524288118c285b2d6b3762884199bea2fc88cfc892a17f63c352afd1f46ed633"
+        },
+        "composition": {
+          "source_paths": 6,
+          "runtime_changed_lines": 1,
+          "full_main_parent_inverse": true,
+          "all_MAIN_extras_preserved": true,
+          "own_make_literals": 2,
+          "LF_in_literal_and_digest": true
+        },
+        "incoming_425_bridge": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/main106-incoming-425-immutable-bridge.json",
+          "sha256": "c51757f0cc201f52dabd49600e91c485ff0701557cc70cbecb72b32e9b3ee203",
+          "preplacement_current_425_reads": 1,
+          "author_raw_reads": 0,
+          "reserved_actual_check_was_separate": true
+        },
+        "preparation": {
+          "main_preplacement": [
+            {
+              "kind": "preplacement private/current425 parent equality assumption",
+              "count": 1,
+              "runtime": 0,
+              "writes": 0,
+              "source_credit": 0,
+              "correction": "Independent digest-bound compatibility bridge and exact current-parent projection"
+            }
+          ],
+          "author_incoming_supplement": [
+            {
+              "kind": "supplement reference-path collision",
+              "count": 1,
+              "runtime": 0,
+              "source_credit": 0,
+              "corrected_supplement": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/source-ready-current-425-supplement-v2.json"
+            }
+          ],
+          "reviewer_progress_query": 1,
+          "WHOLE_reader": 0,
+          "canonical_reader": 1,
+          "runtime_executions": 0,
+          "source_credit": 0
+        },
+        "original_peer_fixture_failure": {
+          "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/peer-v1/report.json",
+          "sha256": "056384c3aec8c451b5d146089ef8e5ca9d8400b722ffbf828c8772089bc9bcee",
+          "revision": "489b7bbd03f5a06a358998af5373ad05d44e6b87",
+          "conditions": 738,
+          "derived_conditions": 139,
+          "runtime_exit": 1,
+          "cause": "synthetic matched17 state omitted both literal CONCAT RHS precision entries",
+          "auxiliary_direct_and_nested_fronts": "UNRUN0 in original failure",
+          "source_credit": 0
+        },
+        "new_native_source_A_B_executions": 0,
+        "inventory": "169/306/closed0+1/holds/reserve unchanged",
+        "private_final_gate": false
+      }
+    }
+  },
+  "affected_old_peer_query_scan": {
+    "COALESCE_constructor_files": 18,
+    "explicit_composite_left_refusal_promotions": 0,
+    "old_campaign_runs": 0
+  },
+  "failures": {
+    "author_source_native_facts_fixtures": 0,
+    "author_validation_preparation": 0,
+    "peer_fixture_failures": 1,
+    "peer_fixture_corrections": 1,
+    "original_auxiliary_direct_and_nested": "UNRUN0 in failed peer fixture; first reached in corrected B",
+    "preparations": {
+      "main_preplacement": [
+        {
+          "kind": "preplacement private/current425 parent equality assumption",
+          "count": 1,
+          "runtime": 0,
+          "writes": 0,
+          "source_credit": 0,
+          "correction": "Independent digest-bound compatibility bridge and exact current-parent projection"
+        }
+      ],
+      "author_incoming_supplement": [
+        {
+          "kind": "supplement reference-path collision",
+          "count": 1,
+          "runtime": 0,
+          "source_credit": 0,
+          "corrected_supplement": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-author57-20261118/source-ready-current-425-supplement-v2.json"
+        }
+      ],
+      "reviewer_progress_query": 1,
+      "WHOLE_reader": 0,
+      "canonical_reader": 1,
+      "runtime_executions": 0,
+      "source_credit": 0
+    },
+    "law_corrections": 0,
+    "timeouts": 0,
+    "accepted_source_native_author_fixture_renewal": 0
+  },
+  "invariants": "Source47 low-precision DEFINE-name NaN; NaNBYTE; Owned-NUL source release; OP12 inc/dec dimension Warnings; undefined byref LIST key; COMP88 Stringable supplied-throw; V110/GC35/I106/COMP123 and all paused lanes. reserve93807cdd6/255; inventory169/306closed0constructors+1runtime unchanged.",
+  "remaining": "NULL-left COALESCE selecting composite RHS BASE, owning falsey-condition cleanup, unsupported selected producers, selected NUL and wider precision/owners/lifetimes remain partial.",
+  "family_status": "partial; complete PHP core remains unfinished",
+  "metadata_projection": {
+    "metadata_base": "23f3fa51acf5cba3e4ca25373726e37e607a17c5",
+    "policy": "Exact family2 plus README/PROGRESS/features/ARTIFACTS operations once; author common physical writes0/raw actual-source-report-map reads0. Fixed immutable actual, no later HEAD refresh or semantic renewal."
+  }
+}
