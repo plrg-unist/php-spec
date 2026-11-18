@@ -78,8 +78,8 @@ $string_read_raw_float_sign_tree(NExprUnaryPlus (NExprCastDouble (NScalarFloat (
 $compiled_read(S_number_pool,porigin_right_number) = eps
 $string_read_runtime_value(S_number_pool,porigin_right_number) = $string_read_runtime_value(S_capture,porigin_right_number)
 ~$string_read_raw_float_sign_tree(NExprCastDouble (NScalarInt (INTEGER 12) eps) eps)
-~$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_right_number expression_right_number eps)
-~$string_read_raw_float_sign_tree(NExprCastDouble (NExprBinaryOpPlus expression_right_number expression_right_number eps) eps)
+$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_right_number expression_right_number eps)
+$string_read_raw_float_sign_tree(NExprCastDouble (NExprBinaryOpPlus expression_right_number expression_right_number eps) eps)
 ''')
     body += ''.join('  -- if ' + check + '\n' for check in checks)
     return body, count + len(reached) + len(checks), derived + len(checks)

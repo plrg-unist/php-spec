@@ -959,8 +959,12 @@ def $string_read_raw_float_sign_tree(NScalarFloat (FLOAT text_bits) metadata) = 
 def $string_read_raw_float_sign_tree(NExprUnaryPlus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
 def $string_read_raw_float_sign_tree(NExprUnaryMinus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
 def $string_read_raw_float_sign_tree(NExprCastDouble expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
+def $string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
+def $string_read_raw_float_sign_tree(NExprBinaryOpMinus expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
+def $string_read_raw_float_sign_tree(NExprBinaryOpMul expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
+def $string_read_raw_float_sign_tree(NExprBinaryOpDiv expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
 def $string_read_raw_float_sign_tree(expression) = false -- otherwise
-;; A raw FLOAT sign-tree cast appends exactly one RHS row before CONCAT.
+;; A raw FLOAT arithmetic-tree cast appends exactly one RHS row before CONCAT.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true
   -- if S.COMPLETION = NORMAL /\ S.CONSTCONTEXT = eps
   -- if $(n_identity > 1)

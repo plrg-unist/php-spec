@@ -39,7 +39,7 @@ $string_read_raw_float_sign_tree(NExprUnaryMinus expression_right_number eps)
 $string_read_raw_float_sign_tree(NExprCastDouble expression_right_number eps)
 $string_read_raw_float_sign_tree(NExprUnaryPlus (NExprCastDouble expression_right_number eps) eps)
 ~$string_read_raw_float_sign_tree(NExprBitwiseNot expression_right_number eps)
-~$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_right_number expression_right_number eps)
+$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_right_number expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NScalarString (BYTES "MTIuNQ==") eps)
 ''')
     for index in range(1, 4 if reference else 3):

@@ -234,7 +234,7 @@ $string_read_raw_float_sign_tree(NExprUnaryMinus (NScalarFloat (FLOAT "7ff000000
 $string_read_raw_float_sign_tree(NExprCastDouble expression_atom eps)
 $string_read_raw_float_sign_tree(NExprUnaryPlus (NExprCastDouble expression_atom eps) eps)
 ~$string_read_raw_float_sign_tree(NExprBitwiseNot expression_atom eps)
-~$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_atom expression_atom eps)
+$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_atom expression_atom eps)
 S_atom_precision = S_capture[.POOLS = [ppool[.CONSTANTS = (PCCPRECISION pcpath_atom 17) :: ppool.CONSTANTS]]]
 $string_read_allocated_value(S_atom_precision,porigin_base,pvalue_base)
 $string_read_plan(S_atom_precision) = (pstringread)
