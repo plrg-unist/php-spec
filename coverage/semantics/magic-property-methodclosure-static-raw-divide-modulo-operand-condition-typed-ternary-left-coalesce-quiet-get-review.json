@@ -1,0 +1,528 @@
+{
+  "feature": "Quiet integer Divide/Modulo operands and FULL conditions in static USER ternary-left coalesce selectors",
+  "status": "Independently reviewed bounded increment; family and full core remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned oracle and recorded profile.",
+  "implementation": {
+    "source": "33f77ba87b2f16c10a965b9e47ed24d37c7674f8",
+    "parent": "946fe761f93cd2ce2def74222443f63f00032784",
+    "tree": "b9ebe2f0ebb59836c690d46ab24070bca90c21d3",
+    "runtime407_sha256": "861b08f475f884474e8daaf7dc59fd742a65b074119bcd76572ae134c88523b7",
+    "complete_parent_inverse_sha256": "11429ffa76ceb958920549881b455598bd78838d896a3c8efa059010fd0c3fc6",
+    "constructor_added_lines": 24,
+    "Make_added_lines": 4,
+    "compatibility": "Constructor-new Divide/Modulo authenticate the root and both proper SOURCE children and require two independent warning-free NINT conversions. Existing num_div accepts exact fitting integer quotients; long_mod accepts nonzero-divisor IRESULT remainders. Dedicated FULL fallbacks require old-byte=None, preserving every old Some result and every other helper/comment byte. Both operand proofs remain mandatory with zero numerators; wider raw NOT/CONCAT, FLOAT, warning and owning cases stay refused."
+  },
+  "authorities": [
+    "vendor/php-src/Zend/zend_operators.c:div_function_base,div_function,mod_function",
+    "spec/semantics/00-numeric.watsup:num_div; 01-integer.watsup:long_mod"
+  ],
+  "validation": {
+    "source_agreements": 4,
+    "expected_FLOAT_Unsupported_controls": 2,
+    "FLOAT_source_credit": 0,
+    "fixture_cuts": 15,
+    "executed_fixture_assertions": 1577,
+    "native_unique_originals": 7,
+    "native_replays": 0,
+    "accepted_records": [
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce/report.json",
+        "sha256": "fe45dc489af9fdedddef9725c9ef5f776cb7cf7e5a6837d83d9bb3d4ed66a416",
+        "source_credit": 1,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+        "source_sha256": "3175a2983ad9752920c9248898593f8b0a4ea5d07e99e487164fbdc2f78f3c90",
+        "status": "normal",
+        "pass": true
+      },
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment/report.json",
+        "sha256": "33e156e2e971e48df62693e0beea76c011883288f8369c7ecb9a143d0c398b27",
+        "source_credit": 1,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+        "source_sha256": "13c7bd9491d6dc4495ff9382b219b5284468120ffb18ba2ec9aa72a3f0b66732",
+        "status": "normal",
+        "pass": true
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources/report.json",
+        "sha256": "5496b6d26377f3796188e75a7bfc669ca122606adce26d30cc0c968f4fa10190",
+        "source_credit": 1,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources",
+        "source_sha256": "3cb13fb37843c7f413b04e4dc13618c048e1b4018c98d39e8d7ac88f8248621d",
+        "status": "normal",
+        "pass": true
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-quotient-remainder-boundaries/report.json",
+        "sha256": "cee6cd1f15fe8daceff402a0dcdbeea10edf447870c47b530a5d0ccd0df621dd",
+        "source_credit": 1,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-quotient-remainder-boundaries",
+        "source_sha256": "a4da837d3bb7183e496435fac89727d4a3efa81fb1754fdae323325f57385ad8",
+        "status": "normal",
+        "pass": true
+      },
+      {
+        "role": "independent",
+        "kind": "FLOAT-boundary-Unsupported",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-quotient-remainder-boundaries-divide-overflow-boundary/report.json",
+        "sha256": "20612308dbff5e525b3e5660695ceb012fe0550e9cc5a3270a2d792d748176cc",
+        "source_credit": 0,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-quotient-remainder-boundaries-divide-overflow-boundary",
+        "source_sha256": "d38fbf90e9076306784f238219818148ecc96d89b855acc7bb6e50c40cd9220d",
+        "status": "unsupported",
+        "pass": true
+      },
+      {
+        "role": "independent",
+        "kind": "FLOAT-boundary-Unsupported-current-law-only",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-early-class-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary-early-class-rejection/report.json",
+        "sha256": "b345c6d83feebe7140de14b39c25defd95f542627a2431d2244e40bffb8820c2",
+        "source_credit": 0,
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary-early-class-rejection",
+        "source_sha256": "ed6fbc8b852dd9d86847ed70bb791fee21b499f7f54cfd0a5727d44535eb67e4",
+        "status": "unsupported",
+        "pass": true
+      },
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-own-v1/launch.json",
+        "sha256": "5aaad8bf6b28fcc1abe9044352488ed4931fc8742191bfcf92975832c0efc482",
+        "source_credit": 0,
+        "assertions": 198
+      },
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-inherited-v1/launch.json",
+        "sha256": "073dd0b34b6c60410be24e2b36f17dabff11cb985896e88261646c3214984fd6",
+        "source_credit": 0,
+        "assertions": 146
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-cv-sites-v1/launch.json",
+        "sha256": "c75cee79f343c34a02fe1a38a62132ac640b28a50968bd248f79aab4707e1318",
+        "source_credit": 0,
+        "assertions": 203
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-literal-sites-v1/launch.json",
+        "sha256": "2e26567027d382bd8c891a6d8bb3349d3418b4a190b4bdabdf84e3efdbc81181",
+        "source_credit": 0,
+        "assertions": 183
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-divide-scalar-values-v1/launch.json",
+        "sha256": "4dd30868d90cbaee9b952c3fcc31bac761e4e6a3930b94e7391f8e5753fc20a6",
+        "source_credit": 0,
+        "assertions": 83
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-modulo-scalar-values-v1/launch.json",
+        "sha256": "4891ba03eb8a26a90662c671e45922e39c223a8d473169f5474d2c63ac1e00ef",
+        "source_credit": 0,
+        "assertions": 83
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-divide-numeric-values-v1/launch.json",
+        "sha256": "e61f1467bdc7f8430203a5e6269dc14eb47c45a15f427b7a6bc07904fb83a3bb",
+        "source_credit": 0,
+        "assertions": 94
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-modulo-numeric-values-v1/launch.json",
+        "sha256": "a776271a625a954d0608094714253419c2184f639b8a31fdad667c852aa8ac3a",
+        "source_credit": 0,
+        "assertions": 105
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-selected-source-v1/launch.json",
+        "sha256": "a1da453c74d1c8fa71d99f8806f27077013a5cf0b3b06052a329d7a9d27881c8",
+        "source_credit": 0,
+        "assertions": 69
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-skipped-source-v1/launch.json",
+        "sha256": "b8a62085fa9a19c03180a51fcdba47993bc31b8e514657d16a39d3f79e0eac5f",
+        "source_credit": 0,
+        "assertions": 69
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-divide-fences-v1/launch.json",
+        "sha256": "87116cac78ab51627afc2d7011128d2d2c086b725db699d45ea962bc871f8b94",
+        "source_credit": 0,
+        "assertions": 79
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-modulo-fences-v1/launch.json",
+        "sha256": "2a919d0886dd64d65902ace07ba73856412231956ae862817888312ad6378635",
+        "source_credit": 0,
+        "assertions": 79
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-unsupported-results-v1/launch.json",
+        "sha256": "a02c65db95a20630b9ef21b5052502083c5f1f2b005e496982c02976b85fd8ef",
+        "source_credit": 0,
+        "assertions": 116
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-compatibility-v1/launch.json",
+        "sha256": "21aa595e8a227b6c04a1309cc0b75cf81f735f2e81acb8da9b3dd5951f31ae2b",
+        "source_credit": 0,
+        "assertions": 33
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-root-authority-v1/launch.json",
+        "sha256": "43de551eae90d32dc187d0e1caef433205f3dd3118d6393dad0afa170f076519",
+        "source_credit": 0,
+        "assertions": 37
+      }
+    ],
+    "original_prelaw_expected_Unsupported": 6,
+    "prelaw_source_credit": 0,
+    "original_source_first_observations": {
+      "arithmetic_snapshots": 51,
+      "arithmetic_SOURCE_nodes": 55,
+      "divide_snapshots": 12,
+      "divide_SOURCE_nodes": 13,
+      "modulo_snapshots": 15,
+      "modulo_SOURCE_nodes": 16
+    },
+    "observer_interpretation": "ARITH_KIND3/4 BINARY_RIGHT snapshots resolve both operands, record independent quiet NINT conversions and a direct PhpStep NORMAL/exact-tail/result witness. One-step driver NORMAL/BUDGET completion remains separate, with matching KNOWN result and exact tail mandatory. KIND0/1/2 retain Add/Sub/Multiply controls. Complete SOURCE/compiler root/left/right facts include folded/skipped nodes. Both proofs remain mandatory even with zero numerator; the divisor is nonzero. Class/method CONCAT roots retain nonfolded CODE without own read/pool/redirect/effect.",
+    "retained_original_CV_timeout": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary/report.json",
+      "sha256": "eeb0714bfc76392d9587af6fe0b97265833648b5564234dad428da5089ddf695",
+      "record": {
+        "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary",
+        "source_sha256": "6f55b89c100785502d6dbc072fee5226cfcc0975602f5a68e63248cb4e40d05d",
+        "native_reused": true,
+        "status": "timeout",
+        "reason": null,
+        "pass": false,
+        "seconds": 285.2527399000246
+      },
+      "source_credit": 0,
+      "assertion_credit": 0,
+      "replayed": false,
+      "reaped": true,
+      "caps_unchanged": true
+    },
+    "invalid_original_observer_attempts": 4,
+    "invalid_original_observer_credit": 0,
+    "fresh_current_law_control": {
+      "source_sha256": "ed6fbc8b852dd9d86847ed70bb791fee21b499f7f54cfd0a5727d44535eb67e4",
+      "catalogue_sha256": "ec451446c91da2c1991c9bb1b51cdb697857a3dcd0307282d48369a3c7eda40b",
+      "derivation": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/.tools/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get-review-prep/fractional-early-class-derivation-v1.json",
+      "derivation_sha256": "4ceaa48603a804139428e5b08ef01af2ba83b08ae65992f096755ae82ed9558c",
+      "derivation_review": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/early-class-resource-derivation-review-v1.json",
+      "derivation_review_sha256": "4f88cb273075513eef3eff8538bb2f1d2b680f2b1b4cb23253b5367c72d96d17",
+      "native": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/native-float-early-class-v1/report.json",
+        "sha256": "ddc8c8fcbccf61a8c51a59508e32c2a797a955bb377075dc57019c809bd2c6a2",
+        "executions": 1,
+        "reaped": true
+      },
+      "observer": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/compiler-divide-fractional-early-class-current-law-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary-early-class-rejection/report.json",
+        "sha256": "dd616340f963199d58a3bdc74e9548ac18ccb2758c146abe177701c7363001ae",
+        "seconds": 181.13271741895005,
+        "arithmetic_snapshots": 8,
+        "arithmetic_SOURCE_nodes": 9,
+        "values": [
+          {
+            "kind": 3,
+            "input": "[ PSTRING_CARRIER INTERNED_STRING [ 53 ], PSTRING_CARRIER INTERNED_STRING [ 50 ] ]",
+            "coerced_INT": [
+              5,
+              2
+            ],
+            "result_kind": "PFLOAT",
+            "result": 4612811918334230528,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 3,
+            "input": "[ PNULL, PBOOL true ]",
+            "coerced_INT": [
+              0,
+              1
+            ],
+            "result_kind": "PINT",
+            "result": 0,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 4,
+            "input": "[ PBOOL false, PSTRING_CARRIER INTERNED_STRING [ 32, 45, 57, 50, 50, 51, 51, 55, 50, 48, 51, 54, 56, 53, 52, 55, 55, 53, 56, 48, 56 ] ]",
+            "coerced_INT": [
+              0,
+              -9223372036854775808
+            ],
+            "result_kind": "PINT",
+            "result": 0,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 4,
+            "input": "[ PSTRING_CARRIER INTERNED_STRING [ 48 ], PBOOL true ]",
+            "coerced_INT": [
+              0,
+              1
+            ],
+            "result_kind": "PINT",
+            "result": 0,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 3,
+            "input": "[ PINT +0, PSTRING_CARRIER INTERNED_STRING [ 32, 45, 50, 32 ] ]",
+            "coerced_INT": [
+              0,
+              -2
+            ],
+            "result_kind": "PINT",
+            "result": 0,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 4,
+            "input": "[ PSTRING_CARRIER INTERNED_STRING [ 32, 45, 55, 32 ], PSTRING_CARRIER INTERNED_STRING [ 32, 43, 51, 32 ] ]",
+            "coerced_INT": [
+              -7,
+              3
+            ],
+            "result_kind": "PINT",
+            "result": -1,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 3,
+            "input": "[ PBOOL true, PBOOL true ]",
+            "coerced_INT": [
+              1,
+              1
+            ],
+            "result_kind": "PINT",
+            "result": 1,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          },
+          {
+            "kind": 3,
+            "input": "[ PSTRING_CARRIER INTERNED_STRING [ 32, 45, 57, 50, 50, 51, 51, 55, 50, 48, 51, 54, 56, 53, 52, 55, 55, 53, 56, 48, 56 ], PBOOL true ]",
+            "coerced_INT": [
+              -9223372036854775808,
+              1
+            ],
+            "result_kind": "PINT",
+            "result": -9223372036854775808,
+            "step_completion": "NORMAL",
+            "driver_completion": "BUDGET",
+            "direct_step_and_tail": true
+          }
+        ],
+        "completion_provenance": {
+          "mode": "Direct PhpStep NORMAL/tail/result; driver completion remains separate.",
+          "snapshots": 8,
+          "pass": true
+        },
+        "reaped": true
+      },
+      "control": {
+        "role": "independent",
+        "kind": "FLOAT-boundary-Unsupported-current-law-only",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-early-class-v1/methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary-early-class-rejection/report.json",
+        "sha256": "b345c6d83feebe7140de14b39c25defd95f542627a2431d2244e40bffb8820c2",
+        "stable": true,
+        "source_credit": 0,
+        "record": {
+          "id": "methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-fractional-divide-boundary-early-class-rejection",
+          "source_sha256": "ed6fbc8b852dd9d86847ed70bb791fee21b499f7f54cfd0a5727d44535eb67e4",
+          "native_reused": true,
+          "status": "unsupported",
+          "reason": "CV-name magic empty getter result",
+          "pass": true,
+          "seconds": 176.93845496093854
+        },
+        "reaped": true
+      },
+      "current_law_only": true,
+      "historical_prelaw_claim": false,
+      "fresh_native_applications": 1,
+      "native_replays": 0,
+      "source_replays": 0,
+      "prelaw_replays": 0,
+      "source_credit": 0,
+      "assertion_credit": 0,
+      "caps_unchanged": true,
+      "owned_jobs_at_publish": 0
+    },
+    "zero_divisor_original_sources": 0,
+    "zero_boundary": "Direct /0 and %0 throw before METHODCLOSURE; zero-divisor refusal is tested separately through authenticated derived helper/state fixtures, never relabeled as Unsupported original-source agreement.",
+    "maintained_expectation": {
+      "changed_assertion_tails": 0,
+      "old_protocol_files_changed": 0,
+      "compatibility_cut_assertions": 33,
+      "all_old_protocols_literal": true,
+      "historical_semantic_source_native_fixture_executions": 0,
+      "broad_make_test_semantics_claim": false
+    },
+    "caps": {
+      "native": 30,
+      "model_inner": 280,
+      "model_outer": 290,
+      "observer": 297,
+      "address_space_bytes": 3221225472,
+      "private_SL_modules": 507
+    },
+    "closed_evidence_renewal": 0
+  },
+  "review": {
+    "verdict": "ONE_WHOLE_CLEAR",
+    "source_author": "/root/recover36_get_divmod_impl",
+    "reviewer": "/root/recover34_get_divmod_review",
+    "active_author": "/root/recover37_get_shift_impl",
+    "whole_review": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/whole-review-v1.json",
+    "whole_review_sha256": "663e5e293f36faf08d89e2999a61bec57ae6c9e123c89dad36197ea995d3ccb7",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-packet-v1.json",
+    "source_packet_sha256": "fb0d0a297004dc1391bdf4559a420ee02cbd9e6fc1d1e56f4c95bd502e902dd2",
+    "evidence_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/evidence-packet-v1.json",
+    "evidence_packet_sha256": "829867658535c4b88ef5ce482007fc3cd9b53964f7cffff22593e4e122d86a62",
+    "source_first_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-first-facts-v1.json",
+    "source_first_packet_sha256": "61fe6b48a09e94c1d442c4a928be627ea6513fda4d6dd86ccec350ac9af94ac3",
+    "source_first_review": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/source-first-review-v1.json",
+    "source_first_review_sha256": "e8cef7557a6ad037f08c20f2edd4b14eb4724eed2bc93321c959de173475dc0e"
+  },
+  "integration": {
+    "fixed_tuple": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/main120-fixed-tuple-v1.json",
+    "fixed_tuple_sha256": "98b773d55a0aee947a60a79cfe2e84a962b62e4ac0747390aa4a4b153ffb4819",
+    "fixed_source_and_Make_projection": {
+      "verdict": "ONE_FIXED_ACTUAL_CLEAR",
+      "reviewer": "/root/recover34_get_divmod_review",
+      "active_author": "/root/recover37_get_shift_impl",
+      "source_author": "/root/recover36_get_divmod_impl",
+      "actual": "6c21ac59f6c9e901715e1306f50c5cac22831385",
+      "tree": "8afbf10833fe203f53513ee127898b8473a3a002",
+      "parent": "8ebe5586e956c2077f079c3f149a5001468aa323",
+      "metadata_base": "6c21ac59f6c9e901715e1306f50c5cac22831385",
+      "metadata_base_tree": "8afbf10833fe203f53513ee127898b8473a3a002",
+      "source": "33f77ba87b2f16c10a965b9e47ed24d37c7674f8",
+      "source_parent": "946fe761f93cd2ce2def74222443f63f00032784",
+      "source_tree": "b9ebe2f0ebb59836c690d46ab24070bca90c21d3",
+      "source_packet_sha256": "fb0d0a297004dc1391bdf4559a420ee02cbd9e6fc1d1e56f4c95bd502e902dd2",
+      "evidence_packet_sha256": "829867658535c4b88ef5ce482007fc3cd9b53964f7cffff22593e4e122d86a62",
+      "whole_review_sha256": "663e5e293f36faf08d89e2999a61bec57ae6c9e123c89dad36197ea995d3ccb7",
+      "whole_reviewer": "/root/recover34_get_divmod_review",
+      "canonical": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main120-sh-ref147-divmod-canonical-v1/report.json",
+        "sha256": "b135d110a2a90261eada1d8bc58a41a8114edf473e0e72e123f8aa27d3cd95af",
+        "elapsed": 16.088665310991928,
+        "SL": 509,
+        "argv": 512,
+        "watch": 513,
+        "cap": 60,
+        "exit": 0,
+        "quiet": "trueLF",
+        "stable": true,
+        "reaped": true,
+        "pass": true,
+        "source_credit": 0,
+        "one_joint_canonical": true
+      },
+      "source_map": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main120-sh-ref147-divmod-source-map-v1.json",
+        "sha256": "8dc6c7f6a6c9ddd9be91b06499ab82300bfe50b81815151f12b9e0e352c3f798",
+        "family_key": "GET_DIVMOD",
+        "source_paths": 7,
+        "new_paths": 5,
+        "private_exact_posts": 6,
+        "projection_paths": [
+          "Makefile"
+        ],
+        "full_parent_inverse_roundtrip": true,
+        "foreign_make_bytes_preserved": true
+      },
+      "runtime407_sha256": "861b08f475f884474e8daaf7dc59fd742a65b074119bcd76572ae134c88523b7",
+      "runtime407_parent_sha256": "11429ffa76ceb958920549881b455598bd78838d896a3c8efa059010fd0c3fc6",
+      "runtime_constructor_added_lines": 24,
+      "Make_added_lines": 4,
+      "physical_reads": {
+        "canonical": 1,
+        "map": 1
+      },
+      "actual_source_batch_reads": 1,
+      "full_original_raw_parsed_cache_sha256": "089b714c2ae4f37163be247f6789e3fe4602bf6e6b3663fbdd43ab9e014f70b2",
+      "cache_persisted_before_assertions": true,
+      "accepted_records": 21,
+      "source_agreements": 4,
+      "FLOAT_Unsupported_controls": 2,
+      "FLOAT_source_credit": 0,
+      "fixture_cuts": 15,
+      "fixture_assertions": 1577,
+      "native_unique_originals": 7,
+      "native_replays": 0,
+      "retained_original_inner280_timeout_credit": 0,
+      "retained_invalid_observer_attempts": 4,
+      "fresh_resource_control_current_law_only": true,
+      "legacy_updates": 0,
+      "author_original_reads": 0,
+      "extra_runtime_native_source_fixture_canonical_executions": 0,
+      "owned_jobs": 0
+    },
+    "author_consumption": "Immutable reviewer tuple only; actual-source/report/map/cache reads0; added executions0; no moving HEAD refresh."
+  },
+  "remaining": [
+    "FLOAT, warnings, nonnumeric/NUL/CV/owning operands",
+    "Other operators, wider raw parents, selectors and lifetimes"
+  ],
+  "holds": "Exact holds207/OP12/Source47/ownedNUL/undefined-refLIST/COMP88, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}

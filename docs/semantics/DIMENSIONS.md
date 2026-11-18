@@ -39,6 +39,14 @@ on throw. A dropped borrowed carrier outside the closed `KEY_CV` release contour
 below retains Unsupported.
 Neither the base-cell nor key-cell locator becomes a heap root.
 
+Quiet raw-FLOAT full and shorthand trees also supply one RHS CASTSTRING row to
+allocated CONCAT bases. The shorthand's ABSENT true arm checks only its two actual
+expression children; typed VALUE, exact source/CODE, captured precision and full
+CASTSTRING/CONCAT registry proofs remain required. Its two source agreements reuse
+two native originals observed once, with state and affected-control cuts kept
+separate in the [shorthand review](../../coverage/semantics/string-offset-runtime-allocated-float-shorthand-tree-rhs-concat-base-initial-raw-leading-key-review.json).
+POWER, non-FLOAT inputs, multirow RHS allocations and wider lifetimes remain partial.
+
 A dedicated base capture admits an ordinary marked CV holding valid non-NUL
 interned bytes, with the same liveness and constraint fences. It saves the
 dereferenced immutable header before the Warning: writing `XYZ` through a base

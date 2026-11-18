@@ -12,27 +12,30 @@ The [inventory](coverage/semantics/features.json) contains **169 constructors**
 24 pending, 1 validated). Validated closure remains **0 constructors / 1 runtime
 obligation**. No bounded family result closes the remaining core work.
 
-The current reviewed cohort adds scoped-self intersection conjuncts, literal
-FLOAT sign-chain zero/FIELD2 defaults and array-valued dynamic ALIAS properties.
-Original-source, state, failure and production-load cuts remain separate;
-complete PHP core remains unfinished.
+The current reviewed cohort adds raw-FLOAT shorthand allocation bases, supplied
+unary INT defaults for FLOAT formals, exact integer Divide/Modulo certificates
+and emitted single-byte STRING bitwise return values. Complete core remains
+unfinished; each family retains its source, state and failure cuts.
 
-Scoped self conjuncts use the existing reference Get certificates in pure,
-bare and mixed DNF intersections. Normalizer, runtime and owner bounds retain
-their existing contracts; see the [review](coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json).
+Two-child raw-FLOAT shorthands extend the one-row RHS CASTSTRING/CONCAT guard while retaining exact typed values, source/CODE, captured precision and full-state registry proofs. The [shorthand review](coverage/semantics/string-offset-runtime-allocated-float-shorthand-tree-rhs-concat-base-initial-raw-leading-key-review.json) keeps native2 once/source2, state and affected-control cuts separate; wider producers and lifetimes remain partial.
 
-Folded literal FLOAT-zero sign chains preserve selected FIELD2 scalar tags through existing default caches and private integer reception. The [literal zero review](coverage/semantics/deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-review.json) separates zero/type source observations, exact sign certificates and state cuts; wider defaults remain partial.
+Supplied optional plain FLOAT formals preserve one signed INT default, its
+whole checked AST and both metadata layers, with signed64 bounds on leaf and
+effective value. Caller copies and private reference-cell ownership remain
+distinct; see the [review](coverage/semantics/supplied-optional-unary-float-int-default-producer-reference-notice-review.json).
 
-Ordinary dynamic ALIAS properties now retain finite object-free arrays through
-shared reference cells, outside COW and staged cleanup after nested-unset Warnings.
-Two native originals ran once; two complete checked-source/native bridges passed.
-Post public CLI execution remains unrun. The [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json)
-keeps state, source and the sole production-load cuts separate; wider fields and
-lifetimes remain partial.
+Quiet Divide requires an exact fitting integer quotient; Modulo preserves the
+dividend sign, including MIN%-1=0. Both operand certificates remain required.
+The [review](coverage/semantics/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) keeps FLOAT controls and original resource exclusions separate.
 
-Each fixed source cut passed its sole production SL509 load. Metadata placement
-renews no execution or native observation. Historical controls and failures
-retain their original cuts and credit; wider family behavior remains partial.
+Emitted STRING AND/OR/XOR handler returns require both input lengths to equal
+one and preserve exact string storage, including derived NUL. Unequal or wider
+allocations remain partial; see the [review](coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-review.json).
+
+Shorthand, FLOAT-formal defaults and Divide/Modulo share one fixed production
+SL509 load; output returns retain their separate fixed load. Metadata renews no
+execution or native observation. Wider producers, types, owners and lifetimes
+remain partial, and historical controls and failures retain their original credit.
 
 ## Integrated behavior and entrypoints
 
@@ -67,13 +70,13 @@ current lanes below remain bounded parts of unfinished families:
 
 | Lane | Author / reviewer | Current work |
 | --- | --- | --- |
-| References | `recover47_reference_float_defaults_impl` / `recover48_reference_unary_defaults_review` | Unary INT defaults (REF146) remain integrated; unary FLOAT defaults (REF147) are source-integrated at 8ebe5586e with current actual review pending. Wider defaults, types and lifetimes remain partial. |
+| References | `recover47_reference_float_defaults_impl` / `recover48_reference_unary_defaults_review` | Unary INT defaults for plain FLOAT formals (REF147): integrated and independently reviewed; unary FLOAT literal defaults (REF148) are under independent review. Wider defaults, types and lifetimes remain partial. |
 | Compiler | `recover40_compiler_intersection_impl` / `recover41_compiler_parent_review` | Scoped-self intersection conjuncts (COMP348) are integrated and independently reviewed; [family review](coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json). Named empty-parent self Get is in source-first validation; wider owners and lifetimes remain partial. |
-| Quiet reference Get | `recover37_get_shift_impl` / `recover34_get_divmod_review` | Fitting multiplication retains its [review](coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json); DivMod source is integrated at 6c21ac59f with current actual review pending. Wider operators and lifetimes remain partial. |
+| Quiet reference Get | `recover37_get_shift_impl` / `recover34_get_divmod_review` | Exact integer division and modulo integrated at `6c21ac59`; [review](coverage/semantics/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) keeps source, FLOAT controls and resource cuts separate. Integer shift selectors are in source-first preparation; wider operators and lifetimes remain partial. |
 | String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties integrated at `97fb19a42` and independently reviewed; [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json). Object-valued aliases, object-bearing/cyclic arrays and wider fields/lifetimes remain partial. |
-| Allocated string bases | `recover64_dynamic_shorthand_impl` / `recover54_dynamic_shorthand_review` | [Proper FLOAT full-ternary bases](coverage/semantics/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-review.json) remain integrated; raw-FLOAT shorthand source is integrated at de0eea67f with current actual review pending. Wider bases remain partial. |
+| Allocated string bases | `recover65_dynamic_castfloat_impl` / `recover55_dynamic_castfloat_review` | [Raw-FLOAT shorthand bases](coverage/semantics/string-offset-runtime-allocated-float-shorthand-tree-rhs-concat-base-initial-raw-leading-key-review.json) integrated and reviewed; numeric-STRING FLOAT-cast source-first facts retained. |
 | Enum/default reception | `recover42_enum_zero_impl` / `recover34_enum_zero_review` | Literal FLOAT sign-chain zero/FIELD2 defaults (321) are integrated and independently reviewed; wider defaults and lifetimes remain partial. |
-| Output | `recover46_output_bitwise_impl` / `recover41_output_bitwise_review` | Emitted one-byte bitwise NOT (160) retains its [review](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json); emitted byte bitwise operands (161) are source-ready for the next cut. Wider strings and lifetimes remain partial. |
+| Output | `recover46_output_bitwise_impl` / `recover41_output_bitwise_review` | Emitted single-byte STRING AND/OR/XOR in handler returns (161): integrated and independently reviewed; [evidence](coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-review.json). Both operands must have length one; wider allocation and lifetime cases remain partial. |
 
 Shared metadata belongs to the integrator: README, this checkpoint, the feature
 inventory and ARTIFACTS. Authors supply bounded family records and literal/keyed

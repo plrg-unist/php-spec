@@ -2110,3 +2110,10 @@ character, including derived NUL, without changing STRINGDATA. A one-byte
 result from unequal-length inputs still allocates REQUEST string data and is
 refused; both input lengths matter. Folded STRING/numeric arms, the two-cast
 gate and literal/owned-NUL holds remain; wider owners and contexts stay partial.
+
+Nine source agreements reuse nine native observations once. Author19/13 and
+independent163/15 retain separate first-pass SL508 fixture cuts; WHOLE6 and
+fixed `d8c3e8d4` composition are clear. The sole production SL509 load passes
+in 15.937751082 seconds under cap60/source0. Reviewer report/map originals1
+each were fully cached before assertions; author actual raw/full-cache reads0.
+[Evidence](../../coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-author.json) and [review](../../coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-review.json).

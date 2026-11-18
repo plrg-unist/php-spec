@@ -1,0 +1,123 @@
+{
+  "family": "REF147: supplied one-sign INT defaults on plain FLOAT producer formals",
+  "status": "partial; independently reviewed and integrated",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local baseline profile",
+  "behavior": {
+    "raw_default": "Exactly one unary + or - over ScalarInt; leaf and effective result are signed64.",
+    "checked_default": "Identical complete sign/leaf AST, both metadata layers, normalized PSDEFAULT kind float.",
+    "formal": "Nonvariadic optional plain FLOAT, with exact raw Identifier/normalized type and BYREF agreement.",
+    "proof_view": "Erase defaults and mark required only in the existing pure header proof; preserve live signature, reception, return verification, retirement and private Notice-cell ownership."
+  },
+  "source_symbols": [
+    "Zend/zend_compile.c:zend_compile_params",
+    "Zend/zend_compile.c:zend_eval_const_expr",
+    "Zend/zend_compile.c:zend_is_valid_default_value"
+  ],
+  "implementation": [
+    "spec/semantics/17-signatures.watsup",
+    "spec/semantics/95-typed-calls.watsup",
+    "spec/semantics/207-error-handler-runtime.watsup"
+  ],
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/code-packet-v1.json",
+    "sha256": "2b0c14c3c5cffdfbf810c02963403a9bd54524493ca589ce0bae881ad55192ca",
+    "author_commit": "7be36997f784ffc926acd318590b7638cf89c837",
+    "fixed_parent": "12de204558f67cfedad45cc295c6c0719fdc3e26",
+    "paths": 8,
+    "new_tests": 5,
+    "semantic_lines_added": 14,
+    "make_rows_added": 1,
+    "old140_queries_promoted": 1
+  },
+  "validation_cuts": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/validation-cuts-v1.json",
+    "sha256": "7d6c86ba19999a1ced9021312afb8df380a0e73d180dc91b3083a7a75edad9ec",
+    "reports": {
+      "native_first": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/native-first-v1/report.json",
+        "sha256": "8a955a8040a254b64ae8b884dd611b9a4b75897fc1fade416df96bb88676a15f"
+      },
+      "baseline_supplied": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/source-prelaw-supplied-v1-1x7kmj_9/report.json",
+        "sha256": "62ea08fc765a2fa72c657a1f984341977d940133766059966a13ee6461d4f7ab"
+      },
+      "existing_controls": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/source-prelaw-existing-controls-v1-uae4k195/report.json",
+        "sha256": "99c05febcdd2d82c4661e874b21aec38940bbf33740ac5901c11695bc1688659"
+      },
+      "prelaw_front": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/front-prelaw-v1/report.json",
+        "sha256": "349859a1de38b271004fd9740eb77cc37ad33f61264e4f7b422ad54425c2cdf0"
+      },
+      "postlaw_supplied": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/source-postlaw-supplied-v1-4ubnd0p_/report.json",
+        "sha256": "065822356318de47a5033f2da82992e9426857cc78842493cd6ffd5514646008"
+      },
+      "independent_whole": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/review/whole-v1/report.json",
+        "sha256": "d5d75ede1394b9d3a4906af3909bcfda59019d14a0aa185fe51cdcfebb7ef154"
+      },
+      "controller_static": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/controller-static-v1.json",
+        "sha256": "625610eff9088ff17ffe4243aec98b6fee5d8543db22ca7a162993dc180d6447"
+      }
+    }
+  },
+  "validation": {
+    "native_originals_once": 4,
+    "supplied_source_agreements": 2,
+    "existing_controls": {
+      "normal": 1,
+      "static_rejection": 1
+    },
+    "baseline": "First supplied original Unsupported; second selected original UNRUN; source0.",
+    "prelaw_front_conditions": 237,
+    "independent_whole": {
+      "conditions": 445,
+      "reached": 324,
+      "derived": 121,
+      "elapsed_seconds": 65.45800828933716,
+      "first_attempt_pass": true
+    },
+    "author_full_state_invocations": 0,
+    "controller_invocations": 0,
+    "fixture_or_semantic_corrections": 0,
+    "native_reexecutions": 0,
+    "accepted_replays": 0
+  },
+  "actual": {
+    "reference_phase": {
+      "commit": "8ebe5586e956c2077f079c3f149a5001468aa323",
+      "tree": "866f756f77abf6ebfcad785b015253d2e8197613",
+      "parent": "de0eea67fc105a8eb38bdb465735bb9e0a9f9db0",
+      "parent_tree": "190c698dba607fd367019eaf18d09e7e43ce2b0f"
+    },
+    "canonical_commit": "6c21ac59f6c9e901715e1306f50c5cac22831385",
+    "canonical_tree": "8afbf10833fe203f53513ee127898b8473a3a002",
+    "production_modules": 509,
+    "elapsed_seconds": 16.088665310991928,
+    "source_agreements": 0,
+    "actual_executions": 1,
+    "shared_with": [
+      "DYN_SH",
+      "GET_DIVMOD"
+    ],
+    "canonical_report_sha256": "b135d110a2a90261eada1d8bc58a41a8114edf473e0e72e123f8aa27d3cd95af",
+    "canonical_map_sha256": "8dc6c7f6a6c9ddd9be91b06499ab82300bfe50b81815151f12b9e0e352c3f798",
+    "reviewer_full_cache_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/review/actual-main-v1-full-raw-parsed-cache.json",
+    "reviewer_full_cache_sha256": "1b89a641e6d05d2b71eabf9882738e1dee61d5515343745363af57466042d0ac",
+    "full_cache_persisted_before_assertions": true,
+    "original_report_reads_reviewer": 1,
+    "original_map_reads_reviewer": 1,
+    "original_reads_author": 0,
+    "full_cache_reads_author": 0,
+    "tiny_path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/author/actual-main-independent-tiny-v1.json",
+    "tiny_sha256": "34600273deb56efa6ceb45ef1627da3c6c9d8ada5f9ff8b1786c78617743ad91",
+    "decision": "CLEAR"
+  },
+  "remaining": [
+    "Unary FLOAT literals, nested signs, overflow, other default expressions and nullable/union formals remain outside this increment.",
+    "Wider producers, owners and lifetimes remain partial; all held boundaries and inventory/closure counts remain unchanged."
+  ],
+  "evidence_policy": "Original failures and raw evidence remain external. The sole production load is distinct from private source/state cuts; metadata placement renews no execution or native observation."
+}

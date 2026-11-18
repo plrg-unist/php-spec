@@ -1812,3 +1812,14 @@ strings; a later omitted `+7` remains integer `7`. An ARRAY formal rejects `-7`
 before execution. FLOAT promotion, negated INT_MIN overflow, nested signs,
 general defaults and wider type/ownership contexts remain partial.
 [Review](../../coverage/semantics/supplied-optional-unary-int-default-producer-reference-notice-review.json).
+
+Fully supplied optional plain `float` formals retain exactly one unary `+` or
+`-` over an INT literal with normalized default kind `float`. The proof preserves
+the whole sign/leaf AST and both metadata layers, with signed64 bounds on the
+leaf and effective value. Required-header views leave actual reception, default
+demand, return verification and private Notice-cell ownership intact. Weak
+by-value conversion preserves caller copies; by-reference conversion occurs at
+entry without a continuing formal type constraint. Omitted defaults still
+materialize as FLOAT, and an incompatible INT/FLOAT default rejects before echo.
+Other leaves, nested signs, overflow and wider types/owners/lifetimes remain partial.
+[Review](../../coverage/semantics/supplied-optional-unary-float-int-default-producer-reference-notice-review.json).

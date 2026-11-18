@@ -8,6 +8,19 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet integer Divide/Modulo selector evidence remains in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-divide-modulo-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) binds SOURCE7, native7 once/source4, FLOAT controls2/0, fixtures15/1577, the original CV timeout0 and four invalid observers0, plus separate early-class current-law evidence. Fixed actual `6c21ac59`/soleSL509/map are independently clear through tiny tuple `98b773d5`; reviewer originals1 each, author raw/cache0. Archives are evidence rather than build/runtime inputs.
+
+Raw-FLOAT shorthand RHS allocation retains native2 once/source2, prelaw102/113,
+author258/123 and283/131, independent321/118 and bounded affected165 in
+`../php-spec-evidence-archive/string-offset-runtime-allocated-float-shorthand-tree-rhs-concat-base-initial-raw-leading-key-author63-20261118/`
+and the matching `reviewer54-20261118/` archive. The [review](../coverage/semantics/string-offset-runtime-allocated-float-shorthand-tree-rhs-concat-base-initial-raw-leading-key-review.json)
+binds actual source `de0eea67f` and joint canonical `6c21ac59f` to the sole
+production SL509 load and the reviewer full cache saved before assertions. Author
+original report/map/full-cache reads remain0; only the tiny projection was read.
+Archives are evidence, not build inputs.
+
+REF147 supplied unary INT-to-FLOAT defaults: `../php-spec-evidence-archive/supplied-optional-unary-float-int-default-producer-reference-notice-147/` retains the native-once/source/state cuts, code packet and actual tiny. The [review](../coverage/semantics/supplied-optional-unary-float-int-default-producer-reference-notice-review.json) binds REF `8ebe5586` and sole joint production `6c21ac59` to FULL cache `1b89a641`, persisted before assertions after original report/map reads1 each. Author original/full-cache reads0; metadata renews no execution. Archives are evidence, not build inputs.
+
 ENUM321 literal sign-zero/FIELD2 defaults retain native2 once/source2, baseline
 Unsupported1, prelaw394, author670 and independent591 (new321564/bounded32027) in
 `../php-spec-evidence-archive/enum-deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-321/`.
@@ -74,6 +87,11 @@ prewrite preparations0 separately from actual `97bafc471` productionSL509.
 `independent/canonical-independent-tiny-v1.json` binds the full raw+parsed cache
 saved before assertions after one original actual/report/map read each; author
 original raw reads stay0. No accepted source/native or old campaign is renewed.
+
+OUTPUT161 emitted single-byte STRING AND/OR/XOR originals/native9 once,
+source9, author19/13, independent163/15 and WHOLE6 remain under
+`../php-spec-evidence-archive/new/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-161/`.
+The [review](../coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-review.json) binds fixed `d8c3e8d4`, sole SL50915.937751082s/source0 and once-read reportfe6d0441/map710d1216. Full raw+parsed caching preceded assertions; author actual raw/full-cache reads0. Archives are evidence, not build inputs.
 
 OUTPUT160 emitted byte-complement originals/native8 once, baselineUnsupported1,
 source8, author19/13, independent105/15 and WHOLE6 remain under

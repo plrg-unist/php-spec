@@ -61,9 +61,15 @@ Bounded reference Get hooks admit scoped `self` conjuncts in nominal
 intersections and bare or mixed DNF types; see the [family review](coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json).
 Wider hook contexts, owners and lifetimes remain partial.
 
-Selected output-handler return casts admit emitted one-byte string complements,
-including derived NUL, with unchanged string storage; [review](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json).
+Selected output-handler return casts admit emitted one-byte string complements
+and single-byte STRING AND/OR/XOR, including derived NUL, with unchanged string
+storage; [review](coverage/semantics/output-final-selected-emitted-byte-bitwise-cast-chain-return-modulo-error-review.json). Both binary operands must have length one.
 Wider strings, owners and lifetimes remain partial.
+
+Supplied optional plain `float` producer formals retain one unary sign over an
+INT default while preserving caller copies and private reference-cell ownership;
+[review](coverage/semantics/supplied-optional-unary-float-int-default-producer-reference-notice-review.json).
+Wider defaults, types, owners and lifetimes remain partial.
 
 ## Project map
 
