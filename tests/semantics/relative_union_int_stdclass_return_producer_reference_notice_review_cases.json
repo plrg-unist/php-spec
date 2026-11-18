@@ -1,0 +1,57 @@
+[
+  {
+    "id": "relative-int-union-alias-formal-null-first-object-private-notice",
+    "source": "<?php\nuse stdClass as PeerBox;use PeerRelativeIntUnion133\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(pEeRbOx &$saved):int|namespace\\stdClass{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "56e3a4407f808ef1970cf16489ff6316d5e654bbd0a2305c44e069fa6d0007f1",
+    "role": "relative-int-union-object-notice-positive",
+    "new_support_credit": 1,
+    "namespace": "",
+    "formal_alias": "pEeRbOx",
+    "return_alias": "stdClass",
+    "import_alias": "stdClass",
+    "import_target": "PeerRelativeIntUnion133\\Other",
+    "native_expectation_status": "Prediction until the single native-first observation of these fresh bytes.",
+    "notice_line": 8,
+    "formal_import_alias": "PeerBox",
+    "formal_import_target": "stdClass",
+    "derived_from": {
+      "catalogue": "relative_union_null_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "relative-null-union-alias-formal-null-first-object-private-notice",
+      "source_sha256": "4d2131a159fcdea79624f5dca98ddfac6ce0292920ec8c9abeba99f6e41ca01f",
+      "edits": "Fresh133 conflicting import and ordered relative class/int RETURN. Retain combined ordinary formal alias and BYREF object observations; use an array wrong-return control instead of integer so it remains invalid for the new int arm."
+    },
+    "return_order": [
+      "int",
+      "class"
+    ]
+  },
+  {
+    "id": "relative-int-union-class-first-array-typeerror-before-outer-notice",
+    "source": "<?php\nuse PeerRelativeIntUnionControl133\\Other as stdClass;\n// An array rejects the relative class/int union RETURN before the outer Notice.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):namespace\\stdClass|int{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=[];$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "9a9802cbad62a5612bd697fb580c62697038feba0eb991800f71f873d9d55e2b",
+    "role": "unchanged-wrong-return-control",
+    "new_support_credit": 0,
+    "namespace": "",
+    "formal_alias": "stdClass",
+    "return_alias": "stdClass",
+    "import_alias": "stdClass",
+    "import_target": "PeerRelativeIntUnionControl133\\Other",
+    "native_expectation_status": "Prediction until the single native-first observation of these fresh bytes.",
+    "derived_from": {
+      "catalogue": "relative_union_null_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "relative-null-union-class-first-scalar-typeerror-before-outer-notice",
+      "source_sha256": "e7ca26ee2398d57081d7aafda8a3b37dd404ba49a2dc8bffb581b9777431a278",
+      "edits": "Fresh133 conflicting import and ordered relative class/int RETURN. Retain combined ordinary formal alias and BYREF object observations; use an array wrong-return control instead of integer so it remains invalid for the new int arm."
+    },
+    "return_order": [
+      "class",
+      "int"
+    ]
+  }
+]

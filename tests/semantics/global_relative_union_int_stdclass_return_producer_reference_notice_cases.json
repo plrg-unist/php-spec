@@ -1,0 +1,68 @@
+[
+  {
+    "id": "strict-global-relative-class-int-union-return-object-byval",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "stdClass",
+    "source": "<?php declare(strict_types=1);\nuse AuthorRelativeIntUnion133\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):namespace\\stdClass|int{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "78b90da8678b9b822abd24ddb02c6a1b53dcaffe17806d685142527625cbce0e",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-union-int-class-return-identity-and-private-cell",
+      "source_sha256": "94df4c37d7f5b66f736da7149133df2d48b94289562bfcf9c3a327ac97d327ec",
+      "edits": "Use canonical empty-namespace relative stdClass RETURN and a conflicting ordinary stdClass import. Preserve ordered int arm, FQN formals, executable statements, line positions, object identity or INT/private-array/caller observations."
+    },
+    "int_first": false,
+    "new_support_credit": 1,
+    "import_target": "AuthorRelativeIntUnion133\\Other"
+  },
+  {
+    "id": "strict-global-relative-int-class-union-return-private-array-and-caller-snapshots",
+    "source": "<?php declare(strict_types=1);\nuse AuthorRelativeIntUnion133\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $y;echo 'H:',$line,':',(int)isset($GLOBALS['x']),':',$y,';';$GLOBALS['x']=37;$y=29;return true;}\nfunction make(InT|\\sTdClAsS $saved,fLoAt|\\sTdClAsS &$changed):int|namespace\\stdClass{echo 'M:',(int)($saved===37),':',(int)($changed===17.0),':',(int)($GLOBALS['x']===37),':',(int)($GLOBALS['y']===17.0),';';$changed='body';unset($GLOBALS['x']);return (int)$saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value,':',(int)($value===37),';';$value=[$value];$value[0]=41;$prefix=31;return $value;}\n$x=37;$snapshot=$x;$y=17;$ySnapshot=$y;$yAlias=&$y;set_error_handler('h',8);echo 'S;';\n$r=&take($y,make( // outer call\n    $x, // first actual\n    $y // second actual\n));\necho 'R:',$r[0],':',$yAlias,':',$GLOBALS['x'],':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';$r=43;echo 'P:',$r,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';unset($y);$yAlias=47;echo 'Q:',$r,':',$GLOBALS['x'],':',$yAlias,':',(int)($snapshot===37),':',(int)($ySnapshot===17),';';\n// End relative RETURN declarations.\n",
+    "source_sha256": "0a38c3b09ad810c0f4ca45c9650cab3c3d4cc37ae5906a8f1d903ee216012070",
+    "native_stdout_template": "S;M:1:1:1:1;H:{notice_line}:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line_candidates": {
+      "outer call": 7,
+      "first actual": 8,
+      "second actual": 9
+    },
+    "line_observation": "Fresh global-declaration native observation selects the last CV physical line 9; all PHP bytes remain unchanged.",
+    "formal_kinds": [
+      "int",
+      "float"
+    ],
+    "caller_strict": true,
+    "native_stdout": "S;M:1:1:1:1;H:9:0:body;F:29:37:1;R:41:31:37:1:1;P:43:1:1;Q:43:37:47:1:1;",
+    "formal_class_first": [
+      false,
+      false
+    ],
+    "return_kind": "int",
+    "return_class_first": false,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-global-plain-int-class-return-private-array-and-caller-snapshots",
+      "source_sha256": "514648e8e9f330c4b4bc4735fa0530f1ad5a5e3be6598012875775f548e5aa7e",
+      "edits": "Use canonical empty-namespace relative stdClass RETURN and a conflicting ordinary stdClass import. Preserve ordered int arm, FQN formals, executable statements, line positions, object identity or INT/private-array/caller observations."
+    },
+    "kind": "int",
+    "int_first": true,
+    "class_return": "stdClass",
+    "role_index": 3,
+    "notice_line": 9,
+    "new_support_credit": 1,
+    "import_target": "AuthorRelativeIntUnion133\\Other"
+  }
+]

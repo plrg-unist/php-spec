@@ -70,7 +70,7 @@ def normal(initial, case, front):
     int_name = 'NIdentifier (BYTES "aW50") metadata_return_null'
     wider = null_first[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]'
     derived += ['~' + proof(raw=union('[' + null + ', ' + relative + ', ' + int_name + ']'), returns=wider),
-        '~' + proof(raw=union('[' + relative + ', ' + int_name + ']'), returns=singleton[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]')]
+        proof(raw=union('[' + relative + ', ' + int_name + ']'), returns=singleton[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]')]
     for returns in (singleton, class_type('Other')[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]',
             '[(PTBRANCH ([PTBUILTIN "null"])), ' + class_type('STDCLASS')[1:], wider):
         derived.append('~' + proof(returns=returns))

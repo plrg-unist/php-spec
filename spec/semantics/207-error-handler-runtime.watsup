@@ -1223,22 +1223,24 @@ def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE
   -- if $ptvalidname($base64(text_type), true)
   -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTRELATIVE, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
   -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNullableType (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) metadata_nullable, pssignature)
-def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NNameRelative (BYTES text_type) metadata_type, NIdentifier (BYTES text_null) metadata_null])) metadata_union, pssignature) = true
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NNameRelative (BYTES text_type) metadata_type, NIdentifier (BYTES text_builtin) metadata_builtin])) metadata_union, pssignature) = true
   -- if plenv.NAMESPACE = eps
   -- if $(|phpType7*| > 0)
   -- if phpType17* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN text_builtin_type]))]
+  -- if text_builtin_type <- ["null", "int"]
   -- if $ptvalidname($base64(text_type), true)
   -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTRELATIVE, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
-  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type, NIdentifier (BYTES text_null) metadata_null])) metadata_union, pssignature)
-def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NIdentifier (BYTES text_null) metadata_null, NNameRelative (BYTES text_type) metadata_type])) metadata_union, pssignature) = true
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type, NIdentifier (BYTES text_builtin) metadata_builtin])) metadata_union, pssignature)
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NIdentifier (BYTES text_builtin) metadata_builtin, NNameRelative (BYTES text_type) metadata_type])) metadata_union, pssignature) = true
   -- if plenv.NAMESPACE = eps
   -- if $(|phpType7*| > 0)
   -- if phpType17* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN "null"])), (PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTBUILTIN text_builtin_type])), (PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]
+  -- if text_builtin_type <- ["null", "int"]
   -- if $ptvalidname($base64(text_type), true)
   -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTRELATIVE, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
-  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NIdentifier (BYTES text_null) metadata_null, NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type])) metadata_union, pssignature)
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE ([NIdentifier (BYTES text_builtin) metadata_builtin, NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type])) metadata_union, pssignature)
 def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NName (BYTES text_type) metadata_type, pssignature) = true
   -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
   -- if $(|phpType7*| > 0)
