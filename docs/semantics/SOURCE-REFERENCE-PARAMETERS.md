@@ -1323,8 +1323,28 @@ Prelaw204 and Unsupported1 retain source0; one static-slicer preparation retains
 runtime0. Fixed actual36976c9a and the sole productionSL509 load pass
 16.137139399070293s/cap60/source0 through immutable498f8bc6, with original
 projection/report/map read once and author raw reads0. Nullable/union relative
-formals, other classes/namespaces and wider owners/lifetimes remain partial;
-all exact holds remain unchanged.
+formals are extended below; other classes/namespaces and wider owners/lifetimes
+remain partial, with all exact holds unchanged.
+
+Nullable and flat ordered canonical Relative FORMALs extend the bare case.
+Nullable mapping delegates the quiet bare `PTPARAMETER`/`PTRELATIVE` proof; a
+separate relative-only union view preserves exactly one nominal and all literal
+Identifier fields before the unchanged two-through-eight-member FQN Param folds.
+Both metadata levels, empty namespace, import ignorance and existing header
+composition/reception/RETURN/retirement/private-cell guards remain. The
+[nullable/ordered relative-FORMAL review](../../coverage/semantics/relative-nullable-ordered-stdclass-formal-producer-reference-notice-review.json)
+records native4 once, author source4/state968(546+422) and independent
+source4/first-post-WHOLE1009(546+422+41) at separate SL507 cuts. A source types the
+already-NULL first argument and links its real receive0 to object/BYREF receive1;
+other fresh controls cover scalar priorities, order, compatibility and view
+refusals. Original prelaw422 fixture failure0 and corrected422 pass are distinct;
+only the inherited generator spelling context was corrected. Unsupported1 retains
+source0. Four old135 view expectations promote while stale bare-TYPE header
+refusals stay literal, without135 renewal. Joined actual331d9f3f and the sole
+productionSL509 load pass16.792141664074734s/cap60/source0 through immutable4def1b5d,
+with original projection/report/map read once and author raw reads0. Other
+spellings/classes/namespaces, mixed nominals, DNF and wider owners/lifetimes remain
+partial; all exact holds remain unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view

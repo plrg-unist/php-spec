@@ -2258,3 +2258,24 @@ immutablea1075573. Canonical execution1 and physical report/map reads1 remain
 distinct; author raw reads0. Typed/backed cells, non-stdClass objects, object fields,
 cycles and wider histories remain partial; all exact holds and prior cuts stay
 unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-alias-post-review.json).
+
+Retained stdClass objects may carry direct scalar dynamic properties after a
+nested-unset Warning, through DIRECT entries or live unconstrained ALIAS cells.
+The field proof admits NULL/BOOL, signed64 INT, valid binary64 and non-NUL
+INTERNED STRING values with unique byte-valid non-NUL names, including empty
+and numeric names. It runs before generic uniqueness checking so an unsupported
+same-name INITIAL slot is refused safely. The other six object guards, reference
+cell constraints, no-table and no-heap-child requirements remain unchanged.
+
+Source field mutation preserves shared identity. Rebinding the cell changes both
+alias buckets while a direct bucket retains the old object. Key retirement then
+clears the old weak target; final alias retirement clears the new one. The fixed
+Error or the same pending Throwable and caller tail remain exact.
+
+Native2 ran once. Current source2 agree at the named model120/outer150 bound;
+author210/223 and independent294/304 state cuts pass at unchanged SL180.
+Prelaw170/180 and195/208 remain separate. The original90 pass1/timeout1 campaign
+has aggregate acceptance0; the fixture parser failure has semantic main UNRUN0.
+REQUEST strings, owning/referenced/typed fields, cycles and wider histories remain
+partial. Prior campaigns, all exact holds and inventory statuses are unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-scalar-fields-post-review.json).

@@ -1,0 +1,101 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-scalar-fields-post",
+  "status": "Independent source8, actual integration and canonical review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Post-Warning ordinary NULL/BOOL CV arrays may contain live stdClass objects through DIRECT values or unconstrained ALIAS cells, with unique byte-valid non-NUL dynamic names and DIRECT null, Boolean, signed64 integer, valid binary64 or non-NUL INTERNED string fields. Existing liveness, source, cell, no-table and no-child guards remain.",
+  "behavior": "The same object initially has DIRECT and ALIAS owners. Field mutation is shared; rebinding the alias preserves the old DIRECT target and creates a distinct retained target. Key retirement drops the old target; final alias retirement drops the new target. Returning handlers preserve the fixed Error, and throwing handlers preserve the same Throwable and caller tail.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "eff4e4b568a9c9cea3c1484b14b588bb8bf9228f30d9a943a62bb4c58ed0dcfe",
+    "rule": "The total scalar-field payload proof runs before generic name uniqueness. The other six object guards, existing cell constraints and complete continuation bodies remain literal; empty fields retain their former admission."
+  },
+  "evidence_root": "../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-scalar-fields-post/",
+  "source8": {
+    "manifest": "author-source8-freeze44-v3/manifest.json",
+    "sha256": "aa660f224f80e4a95869c220922ea71ceaf2ed18984fe960df614d112b0da52c",
+    "private_revision": "abc2ce1c75447b90a4d21eb5573c402d0f821f16",
+    "files": 8
+  },
+  "independent_whole": {
+    "path": "peer-whole48-v1.json",
+    "sha256": "328d975644088e1cbe93c11d21fa92e1f1f43de12ce36214fdebb463ae346bd1",
+    "result": "CLEAR; fullposts, complete parents, absences, inverses, source reasoning, ownership, lifetimes and affected controls."
+  },
+  "current_source": {
+    "report": "author-source44-v2/report.json",
+    "sha256": "ef617a1800b7ec59724840e5fd4afd957131c11d76e6c73eaedc9f0c0d741740",
+    "agreements": 2,
+    "native_originals_once": 2,
+    "native_reused": 2,
+    "new_native": 0,
+    "model_cap_seconds": 120,
+    "outer_cap_seconds": 150,
+    "ordinary90_claim": false
+  },
+  "states": {
+    "prelaw_author": [
+      170,
+      180
+    ],
+    "prelaw_independent": [
+      195,
+      208
+    ],
+    "prelaw_independent_summary": "peer-prelaw48-v1.json",
+    "prelaw_independent_sha256": "c26df96cb433b86aaebb32e95ef3bb03e86fef04959f1ca56df21aeee0dedfd4",
+    "post_author": [
+      210,
+      223
+    ],
+    "post_author_summary": "author-post44-v1.json",
+    "post_author_sha256": "903328c16757ec00712476cedfe6f62d214ce6fc48ab21223526b589fd0c9c3e",
+    "post_independent": [
+      294,
+      304
+    ],
+    "independent_summary": "peer-whole48-v1.json",
+    "cap_seconds": 180,
+    "first_semantic_attempts_passed": true,
+    "all_reaped": true,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "actual_canonical": {
+    "revision": "331d9f3ff53cd8e119ceb9e4f7d6314b3fb8d6ee",
+    "tree": "6c42d14993be1ddd95386e3c6465de4abd494f86",
+    "immutable": "peer-actual48-immutable-v1.json",
+    "sha256": "d7f9acd82fb457dd0582abc9771a512c8777142b6bad4a562e12c2de15aae03c",
+    "mode": "production_SL",
+    "module_count": 509,
+    "seconds": 16.792141664074734,
+    "pass": true,
+    "source_credit": 0,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "author_original_reads": 0
+  },
+  "preserved_nonpasses": {
+    "source_candidate": {
+      "report": "author-source44-v1/report.json",
+      "sha256": "6d5d7ecce4df0ede05f51285cf75ca617651b9789ac11696426ef0a047c02075",
+      "normal": 1,
+      "timeout90": 1,
+      "aggregate_acceptance": 0
+    },
+    "fixture_parser": {
+      "report": "author-post44-index0-v1/report.json",
+      "sha256": "1e8ba975a3503140e5ad80c8daacf0fc0b21b6cb316b24fbafc310b65a221dfa",
+      "semantic_main": "UNRUN0"
+    },
+    "integrator_make_preflight": {
+      "refusals": 2,
+      "source_credit": 0,
+      "runtime_executions": 0
+    }
+  },
+  "affected_prior_fixtures": "Only the four exact scalar-field denial assertions become positives; fresh marked extra=PINT1 and field=PNULL controls validate them. Historical source/native/state campaigns remain unrenewed.",
+  "remaining": "Referenced, owning, typed/backed or REQUEST field payloads, other object classes, NUL names/values, cycles and wider callback/lifetime histories remain partial.",
+  "holds": "Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, undefined by-reference LIST, COMP88, OP12, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": []
+}

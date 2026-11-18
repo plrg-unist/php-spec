@@ -25,8 +25,12 @@ The reference original retains an NN/shorthand negative-FLOAT chain and appends
 REQUEST4/five rows. Both originals agree with native observations taken once.
 Source2 reuses their exact original bytes/profile; prelaw100+129 and separate
 author250/95-derived+304/114-derived pass first attempts at original caps.
-Unsupported2 stays zero credit. Independent composition/owner checks and full
-parent/post/inverse review are recorded separately in the
+Unsupported2 stays zero credit. Corrected independent694/152-derived and WHOLE6
+pass; the earlier atom-precision and shared-frontier fixture failures/unrun cuts
+remain separate at zero credit. Only B reran. Fixed placement112b0f4a/joined331d9f3f
+passes the sole production-SL509 load in16.792142s/cap60/source0 through
+immutable56597b32; accepted source/native/A checks remain unrenewed. Full
+composition/owner checks and parent/post/inverse review are recorded in the
 [review](../../coverage/semantics/string-offset-runtime-allocated-composite-left-concat-base-initial-raw-leading-key-review.json).
 
 The pinned source route is ZEND_CONCAT and its string fast path, with
