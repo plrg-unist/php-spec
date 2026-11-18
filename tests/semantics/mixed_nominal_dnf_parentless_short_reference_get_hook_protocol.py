@@ -92,7 +92,7 @@ def fields(fixture, source, case):
         'ptcontext_property = ptcontext_class[.SCOPE = PTKNOWN pclassdesc.NAME pclassdesc.PARENT][.POSITION = PTPROPERTY][.OWNER = pclassdesc.NAME][.MEMBER = ppropertydesc.NAME][.LINE = ppropertydesc.LINE]',
         '$ptype_normalize(phpType18,ptcontext_property) = PTOK ppropertydesc.TYPE eps',
         HELPER + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
-        MEMBERS + '(' + raw_nodes + ',ppropertydesc.TYPE) = ((' + str(intersections) + ',' + str(builtins) + '))',
+        MEMBERS + '(' + raw_nodes + ',ppropertydesc.TYPE,ptcontext_property) = ((' + str(intersections) + ',' + str(builtins) + '))',
         '~' + HELPER + '(phpType18,' + reversed_type + ',ptcontext_property)',
         '~' + HELPER + '(phpType18,' + atom_reversed_type + ',ptcontext_property)',
         '~$hook_short_reference_nominal_dnf_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',

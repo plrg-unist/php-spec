@@ -3039,3 +3039,14 @@ Typed aliases, scalar conversions, object identity, array COW, actual Get reads
 and real source detachment retain the existing runtime and owner guards.
 Scoped-self intersections/DNF and wider contexts, owners and lifetimes stay partial.
 [Review](../../coverage/semantics/self-mixed-nominal-union-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits singleton `self` or
+`namespace\self` alternatives alongside ordinary nominal intersection branches in
+finite DNF, including mixed DNF with compatible builtin arms. Both existing folds
+thread defining context, retaining at least one intersection, exact source order,
+conjunct class bytes, whole quiet normalization and the mixed builtin requirement.
+Intersection-member certification, typed aliases, atomic refusals, scalar rank,
+array COW, actual Get reads and real source detachment retain existing bounds.
+Scoped-self conjuncts inside intersections and wider contexts, owners and
+lifetimes stay partial.
+[Review](../../coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json).

@@ -1,0 +1,122 @@
+{
+  "strict-relative-self-dnf": {
+    "namespace": "D347A",
+    "consumer_namespace": "D347AX",
+    "class": "D347A\\Box347",
+    "header": "namespace\\SeLf|(aLpHa&namespace\\B347)",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "D347A\\Payload347",
+        "intersection": [
+          {
+            "class": "D347A\\A347",
+            "raw_kind": "NName",
+            "raw_name": "aLpHa"
+          },
+          {
+            "class": "D347A\\B347",
+            "raw_kind": "NNameRelative",
+            "raw_name": "B347"
+          }
+        ]
+      }
+    ],
+    "builtins": [],
+    "self_index": 0,
+    "builtin_first": false,
+    "typename": "D347A\\Box347|(D347A\\A347&D347A\\B347)",
+    "steps": [
+      {
+        "statement": "$r341 = new \\D347A\\Payload347();",
+        "check": "$r341 === $s341 && $r341 instanceof \\D347A\\Payload347",
+        "value": "POBJECT n_alternate0",
+        "object": "D347A\\Payload347",
+        "marker": "D|"
+      }
+    ],
+    "id": "strict-relative-self-dnf",
+    "source": "strict-relative-self-dnf.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "detached_stdclass": true,
+    "stdout": "I|C|O|W|M0|M1|J|Q|S|T|D|R0|P|F|D|Z|"
+  },
+  "strict-array-null-dnf-relative-self": {
+    "namespace": "D347B",
+    "consumer_namespace": "D347BX",
+    "class": "D347B\\Box347",
+    "header": "array|null|(\\D347B\\B347&aLpHa)|namespace\\SeLf",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "D347B\\Payload347",
+        "intersection": [
+          {
+            "class": "D347B\\B347",
+            "raw_kind": "NNameFullyQualified",
+            "raw_name": "D347B\\B347"
+          },
+          {
+            "class": "D347B\\A347",
+            "raw_kind": "NName",
+            "raw_name": "aLpHa"
+          }
+        ]
+      }
+    ],
+    "builtins": [
+      "array",
+      "null"
+    ],
+    "self_index": 3,
+    "builtin_first": true,
+    "typename": "(D347B\\B347&D347B\\A347)|D347B\\Box347|array|null",
+    "steps": [
+      {
+        "statement": "$r341 = new \\D347B\\Payload347();",
+        "check": "$r341 === $s341 && $r341 instanceof \\D347B\\Payload347",
+        "value": "POBJECT n_alternate0",
+        "object": "D347B\\Payload347",
+        "marker": "D|"
+      },
+      {
+        "statement": "$s341 = null;",
+        "check": "$r341 === null && $s341 === null",
+        "value": "PNULL",
+        "marker": "Q|"
+      },
+      {
+        "statement": "$r341 = [251];",
+        "check": "$r341[0] === 251 && $s341[0] === 251",
+        "value": "PARRAY n_array2",
+        "marker": "A|",
+        "array": {
+          "value": 251,
+          "copy_variable": "arraycopy347",
+          "copy_value": 263
+        }
+      }
+    ],
+    "id": "strict-array-null-dnf-relative-self",
+    "source": "strict-array-null-dnf-relative-self.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "detached_stdclass": true,
+    "stdout": "I|C|O|W|M0|M1|J|T|S|D|R0|Q|R1|A|K|R2|P|F|D|Z|",
+    "model_timeout_seconds": 240,
+    "state_timeout_seconds": 600
+  }
+}

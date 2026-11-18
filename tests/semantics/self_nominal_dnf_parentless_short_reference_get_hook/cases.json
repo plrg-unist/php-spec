@@ -1,0 +1,114 @@
+{
+  "weak-self-dnf": {
+    "namespace": "W347A",
+    "consumer_namespace": "W347AX",
+    "class": "W347A\\Box347",
+    "header": "(A347&namespace\\B347)|self",
+    "raw_kind": "NName",
+    "raw_name": "self",
+    "others": [
+      {
+        "class": "W347A\\Payload347",
+        "intersection": [
+          {
+            "class": "W347A\\A347",
+            "raw_kind": "NName",
+            "raw_name": "A347"
+          },
+          {
+            "class": "W347A\\B347",
+            "raw_kind": "NNameRelative",
+            "raw_name": "B347"
+          }
+        ]
+      }
+    ],
+    "builtins": [],
+    "self_index": 1,
+    "builtin_first": false,
+    "typename": "(W347A\\A347&W347A\\B347)|W347A\\Box347",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$r341 = new \\W347A\\Payload347();",
+        "check": "$r341 === $s341 && $r341 instanceof \\W347A\\Payload347",
+        "value": "POBJECT n_alternate0",
+        "object": "W347A\\Payload347",
+        "marker": "D|"
+      }
+    ],
+    "id": "weak-self-dnf",
+    "source": "weak-self-dnf.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|D|R|P|F|D|Z|"
+  },
+  "weak-int-relative-self-dnf": {
+    "namespace": "W347B",
+    "consumer_namespace": "W347BX",
+    "class": "W347B\\Box347",
+    "header": "int|namespace\\SeLf|(\\W347B\\A347&B347)",
+    "raw_kind": "NNameRelative",
+    "raw_name": "SeLf",
+    "others": [
+      {
+        "class": "W347B\\Payload347",
+        "intersection": [
+          {
+            "class": "W347B\\A347",
+            "raw_kind": "NNameFullyQualified",
+            "raw_name": "W347B\\A347"
+          },
+          {
+            "class": "W347B\\B347",
+            "raw_kind": "NName",
+            "raw_name": "B347"
+          }
+        ]
+      }
+    ],
+    "builtins": [
+      "int"
+    ],
+    "self_index": 1,
+    "builtin_first": true,
+    "typename": "W347B\\Box347|(W347B\\A347&W347B\\B347)|int",
+    "detached_stdclass": true,
+    "steps": [
+      {
+        "statement": "$r341 = new \\W347B\\Payload347();",
+        "check": "$r341 === $s341 && $r341 instanceof \\W347B\\Payload347",
+        "value": "POBJECT n_alternate0",
+        "object": "W347B\\Payload347",
+        "marker": "D|"
+      },
+      {
+        "statement": "$s341 = '127';",
+        "check": "$r341 === 127 && $s341 === 127",
+        "value": "PINT 127",
+        "marker": "N|"
+      },
+      {
+        "statement": "$r341 = true;",
+        "check": "$r341 === 1 && $s341 === 1",
+        "value": "PINT 1",
+        "marker": "B|"
+      }
+    ],
+    "id": "weak-int-relative-self-dnf",
+    "source": "weak-int-relative-self-dnf.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|Q|D|R|N|R|B|R|P|F|D|Z|"
+  }
+}

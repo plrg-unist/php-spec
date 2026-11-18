@@ -105,12 +105,12 @@ def assertions():
               helper='$hook_short_reference_nominal_intersection_header')
         group = prior.intersection([second, names.raw(b'Third', 'NNameFullyQualified')])
         dnf_typed = prior.branches([['PTCLASS ' + names.value(b'Other'), 'PTCLASS ' + names.value(b'Third')], [atom]])
-        check(kind + '-DNF-unchanged', prior.union([group, raw[1]]), dnf_typed, expected=False,
+        check(kind + '-DNF-unchanged', prior.union([group, raw[1]]), dnf_typed, expected=True,
               helper='$hook_short_reference_nominal_dnf_header')
         mixed_dnf_typed = prior.branches([['PTCLASS ' + names.value(b'Other'), 'PTCLASS ' + names.value(b'Third')],
                                           [atom], ['PTBUILTIN "int"']])
         check(kind + '-mixed-DNF-unchanged', prior.union([group, raw[1], names.raw(b'int', 'NIdentifier')]), mixed_dnf_typed,
-              expected=False, helper='$hook_short_reference_mixed_nominal_dnf_header')
+              expected=True, helper='$hook_short_reference_mixed_nominal_dnf_header')
         nominal = prior.union([raw[1], second, names.raw(b'Third', 'NNameFullyQualified')])
         nominal_typed = prior.branches([[atom], ['PTCLASS ' + names.value(b'Other')], ['PTCLASS ' + names.value(b'Third')]])
         check(kind + '-accepted-nominal-fold-retained', nominal, nominal_typed,

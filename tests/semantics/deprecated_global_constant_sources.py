@@ -65,8 +65,9 @@ def main():
                      'opened': b64(bytes(child)), 'source': b64(child.read_bytes())}]}
                 (target / 'snapshot.json').write_text(json.dumps(snapshot) + '\n')
                 extra = ['--file-snapshot', str(target / 'snapshot.json')]
+            model_timeout = case.get('model_timeout_seconds', 120)
             model = recorded([str(ROOT / 'bin/php-semantics'), str(path), '--startup-ini',
-                str(target / 'startup.json'), *extra, '--steps', '100000', '--timeout', '120'], target / 'model', 140)
+                str(target / 'startup.json'), *extra, '--steps', '100000', '--timeout', str(model_timeout)], target / 'model', model_timeout + 20)
             row['model'] = model
             outcome = json.loads((target / 'model.stdout').read_bytes()); row['status'] = outcome.get('status')
             assert not model['timeout'] and not model['group_after'] and not (target / 'model.stderr').read_bytes()

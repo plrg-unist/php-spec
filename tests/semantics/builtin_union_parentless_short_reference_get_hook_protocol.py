@@ -228,7 +228,8 @@ def main(header_report=None, extra_paths=()):
             checks = fields(checked['fixture'], source, cases[args.form])
         report['premises'] = len(checks); (out / 'assertions.json').write_text(json.dumps(checks, indent=2) + '\n')
         (out / 'protocol.watsup').write_text(PREFIX + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- if ' + check + '\n' for check in checks))
-        report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', 360)
+        cap_seconds = 360 if args.headers_only else cases[args.form].get('state_timeout_seconds', 360)
+        report['process'] = recorded([str(ROOT / 'tests/semantics/_build/default/numeric_runner.exe'), '--sl', *map(str, modules), str(out / 'protocol.watsup')], out / 'check', cap_seconds)
         report['stdout'] = (out / 'check.stdout').read_text(); report['stderr'] = (out / 'check.stderr').read_text()
         report['head_stable'] = head == subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
         report['inputs_stable'] = before == {str(p.relative_to(ROOT)): prior.prior.peer.sha(p) for p in paths}

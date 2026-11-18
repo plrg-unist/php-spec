@@ -19,14 +19,28 @@ def fields(fixture, source, case):
     branches = [nominal]
     others = case.get('others')
     builtins = case.get('builtins')
+    other_branches = []; raw_others = []; other_bindings = []
+    intersections = sum(bool(other.get('intersection')) for other in others or [])
+    for i, other in enumerate(others or []):
+        members = other.get('intersection', [other])
+        other_branches.append('(PTBRANCH ([' + ','.join('PTCLASS ' + names.value(member['class'].encode()) for member in members) + ']))')
+        raw_members = []
+        for j, member in enumerate(members):
+            suffix = str(i) + ('_' + str(j) if other.get('intersection') else '')
+            raw_members.append(member['raw_kind'] + ' (BYTES text_other_' + suffix + ') metadata_other_' + suffix)
+            other_bindings.append('$base64(text_other_' + suffix + ') = $base64(' + quoted(member['raw_name']) + ')')
+        raw_others.append('NIntersectionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_other_' + str(i)
+                          if other.get('intersection') else raw_members[0])
+    nominal_helper = '$hook_short_reference_nominal_dnf_header' if intersections else '$hook_short_reference_nominal_union_header'
+    mixed_helper = '$hook_short_reference_mixed_nominal_dnf_header' if intersections else '$hook_short_reference_mixed_nominal_union_header'
     if builtins:
         branches = ['(PTBRANCH ([PTBUILTIN "' + builtin + '"]))' for builtin in builtins]
         if others:
-            classes = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
+            classes = other_branches
             branches = branches + classes if case['builtin_first'] else classes + branches
         branches.insert(case['self_index'], nominal)
     elif others:
-        branches = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
+        branches = other_branches.copy()
         branches.insert(case['self_index'], nominal)
     elif case.get('other'):
         other = case['other']
@@ -43,14 +57,12 @@ def fields(fixture, source, case):
         raw_members = ['NIdentifier (BYTES text_builtin_' + str(i) + ') metadata_builtin_' + str(i)
                        for i in range(len(builtins))]
         if others:
-            classes = [other['raw_kind'] + ' (BYTES text_other_' + str(i) + ') metadata_other_' + str(i)
-                       for i, other in enumerate(others)]
+            classes = raw_others
             raw_members = raw_members + classes if case['builtin_first'] else classes + raw_members
         raw_members.insert(case['self_index'], raw_self)
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif others:
-        raw_members = [other['raw_kind'] + ' (BYTES text_other_' + str(i) + ') metadata_other_' + str(i)
-                       for i, other in enumerate(others)]
+        raw_members = raw_others.copy()
         raw_members.insert(case['self_index'], raw_self)
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
     elif case.get('other'):
@@ -142,7 +154,7 @@ def fields(fixture, source, case):
     if builtins:
         checks += ['$ptlc($base64(text_builtin_' + str(i) + ')) = $ptascii("' + builtin + '")'
                    for i, builtin in enumerate(builtins)]
-        helper = '$hook_short_reference_mixed_nominal_union_header' if others else '$hook_short_reference_class_builtin_union_header'
+        helper = mixed_helper if others else '$hook_short_reference_class_builtin_union_header'
         checks += [helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
                    '~' + helper + '(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)',
                    '~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
@@ -150,18 +162,22 @@ def fields(fixture, source, case):
         checks += ['$base64(text_other) = $base64(' + quoted(other['raw_name']) + ')',
                    '$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
     if others:
-        checks += ['$base64(text_other_' + str(i) + ') = $base64(' + quoted(other['raw_name']) + ')'
-                   for i, other in enumerate(others)]
+        checks += other_bindings
         if builtins:
-            checks += ['$hook_short_reference_mixed_nominal_union_members([' + ','.join(raw_members) + '],ppropertydesc.TYPE,ptcontext_property) = ((' + str(len(others) + 1) + ',' + str(len(builtins)) + '))',
+            members_helper = '$hook_short_reference_mixed_nominal_dnf_members' if intersections else '$hook_short_reference_mixed_nominal_union_members'
+            count = intersections if intersections else len(others) + 1
+            checks += [members_helper + '([' + ','.join(raw_members) + '],ppropertydesc.TYPE,ptcontext_property) = ((' + str(count) + ',' + str(len(builtins)) + '))',
                        '~$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
                        '~$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
         else:
-            checks += ['$hook_short_reference_nominal_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+            checks += [nominal_helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property)',
                        '~$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
-                       '~$hook_short_reference_nominal_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)']
-        if any(other['raw_kind'] != 'NNameFullyQualified' for other in others):
-            helper = '$hook_short_reference_mixed_nominal_union_header' if builtins else '$hook_short_reference_nominal_union_header'
+                       '~' + nominal_helper + '(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)']
+            if intersections:
+                checks += ['$hook_short_reference_nominal_dnf_members([' + ','.join(raw_members) + '],ppropertydesc.TYPE,ptcontext_property) = (' + str(intersections) + ')',
+                           '~' + nominal_helper + '(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
+        if any(member['raw_kind'] != 'NNameFullyQualified' for other in others for member in other.get('intersection', [other])):
+            helper = mixed_helper if builtins else nominal_helper
             checks += ['~' + helper + '(phpType18,ppropertydesc.TYPE,ptcontext_consumer)']
     checks += payload('S_front', 'n_first', 'first')
     checks += seek('S_return', 'S_front', -1)
@@ -226,7 +242,8 @@ def fields(fixture, source, case):
             obj = step['value'].split()[1]; step_objects.append(obj)
             suffix = str(i) if others else ''
             origin, descriptor = 'porigin_alternate' + suffix, 'pclassdesc_alternate' + suffix
-            step_alternate = '(PTBRANCH ([PTCLASS ' + names.value(step['object'].encode()) + ']))' if others else alternate
+            other_index = next(i for i, other in enumerate(others) if other['class'] == step['object']) if others else None
+            step_alternate = other_branches[other_index] if others else alternate
             checks += [state + '.OBJECTS[' + obj + '] = INSTANCE ' + origin,
                        '$class_at(' + state + '.CLASSES,' + origin + ') = (' + descriptor + ')',
                        descriptor + '.NAME = $base64(' + quoted(step['object']) + ')',
@@ -235,6 +252,9 @@ def fields(fixture, source, case):
                        '$typed_object_exact(' + state + ',[' + step_alternate + '],POBJECT ' + obj + ')',
                        '~$typed_object_exact(' + state + ',[' + nominal + '],POBJECT ' + obj + ')',
                        '$heap_owners($heap_graph(' + state + '),HOBJECT ' + obj + ') = 1']
+            if others and others[other_index].get('intersection'):
+                checks += ['$class_origin_matches(' + state + ',' + origin + ',' + names.value(member['class'].encode()) + ',|' + state + '.CLASSES|)'
+                           for member in others[other_index]['intersection']]
     checks += seek('S_before', previous, -3)
     checks += ['S_before.STORE[n_field] = DEFINED (POBJECT n_live)',
                '$heap_owners($heap_graph(S_before),HCELL n_field) = 3',

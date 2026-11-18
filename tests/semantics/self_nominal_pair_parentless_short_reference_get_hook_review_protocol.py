@@ -102,7 +102,7 @@ def assertions():
         grouped = prior.intersection([other, names.raw(b'Third')])
         dnf_type = prior.branches([['PTCLASS ' + names.value(b'Other'), 'PTCLASS ' + names.value(b'Def343\\Third')],
                                    ['PTCLASS ' + names.value(owner)]])
-        check(kind + '-dnf-unchanged', pair(grouped, raw_self), dnf_type, expected=False,
+        check(kind + '-dnf-unchanged', pair(grouped, raw_self), dnf_type, expected=True,
               helper='$hook_short_reference_nominal_dnf_header')
 
     # These are the only two existing header assertions whose outcomes change.

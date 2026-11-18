@@ -87,7 +87,7 @@ def assertions():
               helper='$hook_short_reference_nominal_intersection_header')
         grouped = prior.intersection(other_raw)
         dnf = prior.branches([['PTCLASS ' + names.value(b'First'), 'PTCLASS ' + names.value(b'Second')], ['PTCLASS ' + names.value(owner)]])
-        check(kind + '-dnf-unchanged', union([grouped, self_raw]), dnf, expected=False,
+        check(kind + '-dnf-unchanged', union([grouped, self_raw]), dnf, expected=True,
               helper='$hook_short_reference_nominal_dnf_header')
         mixed = prior.branches([['PTCLASS ' + names.value(owner)], ['PTCLASS ' + names.value(b'First')], ['PTBUILTIN "int"']])
         check(kind + '-mixed-union-unchanged', union([self_raw, other_raw[0], names.raw(b'int', 'NIdentifier')]), mixed,
@@ -98,7 +98,7 @@ def assertions():
         mixed_dnf = prior.branches([['PTCLASS ' + names.value(b'First'), 'PTCLASS ' + names.value(b'Second')],
                                     ['PTCLASS ' + names.value(owner)], ['PTBUILTIN "int"']])
         check(kind + '-mixed-dnf-unchanged', union([grouped, self_raw, names.raw(b'int', 'NIdentifier')]), mixed_dnf,
-              expected=False, helper='$hook_short_reference_mixed_nominal_dnf_header')
+              expected=True, helper='$hook_short_reference_mixed_nominal_dnf_header')
 
     for kind in ('NName', 'NNameRelative'):
         original = next(row for row in pair.assertions() if row['id'] == kind + '-larger-fold-accepted')

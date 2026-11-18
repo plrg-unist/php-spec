@@ -247,37 +247,37 @@ def $hook_short_reference_nominal_intersection_header(NIntersectionType (SEQUENC
 def $hook_short_reference_nominal_intersection_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 
 ;; Quiet nominal DNF retains every alternative and conjunct in source order.
-dec $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*) : nat?
-def $hook_short_reference_nominal_dnf_members(eps, eps) = (0)
-def $hook_short_reference_nominal_dnf_members((NIntersectionType (SEQUENCE phpType35*) metadata_type) :: phpType69_tail*, (PTBRANCH ptatom*) :: ptbranch_tail*) = ($(n + 1))
+dec $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) : nat?
+def $hook_short_reference_nominal_dnf_members(eps, eps, ptcontext) = (0)
+def $hook_short_reference_nominal_dnf_members((NIntersectionType (SEQUENCE phpType35*) metadata_type) :: phpType69_tail*, (PTBRANCH ptatom*) :: ptbranch_tail*, ptcontext) = ($(n + 1))
   -- if $(|phpType35*| >= 2)
   -- if $hook_short_reference_nominal_intersection_members(phpType35*, ptatom*)
-  -- if $hook_short_reference_nominal_dnf_members(phpType69_tail*, ptbranch_tail*) = (n)
-def $hook_short_reference_nominal_dnf_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*) = (n)
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes)
-  -- if $hook_short_reference_nominal_dnf_members(phpType69_tail*, ptbranch_tail*) = (n)
-def $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*) = eps -- otherwise
+  -- if $hook_short_reference_nominal_dnf_members(phpType69_tail*, ptbranch_tail*, ptcontext) = (n)
+def $hook_short_reference_nominal_dnf_members(phpType69_head :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*, ptcontext) = (n)
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_head, ptbytes) \/ $hook_short_reference_scoped_header(phpType69_head, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $hook_short_reference_nominal_dnf_members(phpType69_tail*, ptbranch_tail*, ptcontext) = (n)
+def $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) = eps -- otherwise
 dec $hook_short_reference_nominal_dnf_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_nominal_dnf_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*, ptcontext) = true
   -- if $(|phpType69*| >= 2)
-  -- if $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*) = (n)
+  -- if $hook_short_reference_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) = (n)
   -- if $(n >= 1)
   -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata, ptcontext) = PTOK ptbranch* eps
 def $hook_short_reference_nominal_dnf_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 
 ;; Mixed DNF preserves nominal conjunctions and compatible builtin alternatives.
-dec $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*) : (nat, nat)?
-def $hook_short_reference_mixed_nominal_dnf_members(eps, eps) = ((0, 0))
-def $hook_short_reference_mixed_nominal_dnf_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*) = ((n_intersection, $(n_builtin + 1)))
+dec $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) : (nat, nat)?
+def $hook_short_reference_mixed_nominal_dnf_members(eps, eps, ptcontext) = ((0, 0))
+def $hook_short_reference_mixed_nominal_dnf_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*, ptcontext) = ((n_intersection, $(n_builtin + 1)))
   -- if text <- ["array","int","float","string","null","bool","false","true"] /\ $ptlc($base64(text_type)) = $ptascii(text)
-  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69_tail*, ptbranch_tail*) = ((n_intersection, n_builtin))
-def $hook_short_reference_mixed_nominal_dnf_members(phpType69_head :: phpType69_tail*, ptbranch_head :: ptbranch_tail*) = (($(n_intersection + n), n_builtin))
-  -- if $hook_short_reference_nominal_dnf_members([phpType69_head], [ptbranch_head]) = (n)
-  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69_tail*, ptbranch_tail*) = ((n_intersection, n_builtin))
-def $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*) = eps -- otherwise
+  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69_tail*, ptbranch_tail*, ptcontext) = ((n_intersection, n_builtin))
+def $hook_short_reference_mixed_nominal_dnf_members(phpType69_head :: phpType69_tail*, ptbranch_head :: ptbranch_tail*, ptcontext) = (($(n_intersection + n), n_builtin))
+  -- if $hook_short_reference_nominal_dnf_members([phpType69_head], [ptbranch_head], ptcontext) = (n)
+  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69_tail*, ptbranch_tail*, ptcontext) = ((n_intersection, n_builtin))
+def $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) = eps -- otherwise
 dec $hook_short_reference_mixed_nominal_dnf_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_mixed_nominal_dnf_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*, ptcontext) = true
-  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*) = ((n_intersection, n_builtin))
+  -- if $hook_short_reference_mixed_nominal_dnf_members(phpType69*, ptbranch*, ptcontext) = ((n_intersection, n_builtin))
   -- if $(n_intersection >= 1 /\ n_builtin >= 1)
   -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata, ptcontext) = PTOK ptbranch* eps
 def $hook_short_reference_mixed_nominal_dnf_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
