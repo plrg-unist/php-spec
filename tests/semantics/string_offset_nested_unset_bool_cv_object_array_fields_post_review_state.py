@@ -190,7 +190,7 @@ def conditions(program, path):
         '~$literal_reference_plain_cell(S_alias_array, n_field)',
         '$string_unset_bool_cv_post_object(S_alias_array, n_object)',
         'S_alias_field = S_alias_array[.OBJECTPROPS = $objectprops_set(S_alias_array.OBJECTPROPS, n_object, [' +
-        prior.slot('$ptascii("alias")', '', state='PROP_VALUE (ALIAS n_field)') + '])]',
+        prior.slot('$ptascii("alias")', '', state='PROP_VALUE (ALIAS n_alias)') + '])]',
         '~$string_unset_bool_cv_post_object(S_alias_field, n_object)']
     file = json.dumps(base64.b64encode(b'/derived-array-field-flag.php').decode())
     if INDEX:

@@ -1375,6 +1375,15 @@ test-semantics: build
 			done; \
 			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_array_fields_post_review_state.py --part budget --index "$$array_fields_index" --source-report "$$nested_unset_cv_object_array_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_array_fields_post_out/peer-state-$$array_fields_index-budget" || exit; \
 		done
+	@nested_unset_cv_object_array_alias_fields_post_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-object-array-alias-fields-post-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_array_alias_fields_post_sources.py --output "$$nested_unset_cv_object_array_alias_fields_post_out/source" && \
+		for array_alias_fields_index in 0 1; do \
+			for array_alias_fields_part in core guards; do \
+				python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_array_alias_fields_post_protocol.py --part "$$array_alias_fields_part" --index "$$array_alias_fields_index" --source-report "$$nested_unset_cv_object_array_alias_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_array_alias_fields_post_out/state-$$array_alias_fields_index-$$array_alias_fields_part" || exit; \
+				python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_array_alias_fields_post_review_state.py --part "$$array_alias_fields_part" --index "$$array_alias_fields_index" --source-report "$$nested_unset_cv_object_array_alias_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_array_alias_fields_post_out/peer-state-$$array_alias_fields_index-$$array_alias_fields_part" || exit; \
+			done; \
+			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_array_alias_fields_post_review_state.py --part budget --index "$$array_alias_fields_index" --source-report "$$nested_unset_cv_object_array_alias_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_array_alias_fields_post_out/peer-state-$$array_alias_fields_index-budget" || exit; \
+		done
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"

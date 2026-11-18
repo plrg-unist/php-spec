@@ -177,6 +177,7 @@ def $string_unset_bool_cv_post_field_nodes(S, (HARRAY n) :: pnode*) = $string_un
 def $string_unset_bool_cv_post_field_nodes(S, (HOBJECT n) :: pnode*) = false
 
 dec $string_unset_bool_cv_post_array_node(pstate, nat*, nat) : bool
+dec $string_unset_bool_cv_post_array_entries(pstate, nat*, pentry*) : bool
 dec $string_unset_bool_cv_post_object_fields(pstate, ppropertyslot*) : bool
 def $string_unset_bool_cv_post_object_fields(S, eps) = true
 def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_tail*) = true
@@ -191,6 +192,15 @@ def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_t
   -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
   -- if $string_unset_bool_cv_post_field_nodes(S, $heap_reach([HARRAY n], eps, $heap_graph(S).EDGES))
   -- if $string_unset_bool_cv_post_array_node(S, eps, n)
+  -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot_tail*)
+def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_child)
+  -- if $string_unset_bool_cv_post_field_nodes(S, $heap_reach([HCELL n], eps, $heap_graph(S).EDGES))
+  -- if $string_unset_bool_cv_post_array_entries(S, eps, [ENTRY (KINT 0) (ALIAS n)])
   -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot_tail*)
 def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_tail*) = true
   -- if ppropertyslot.DECL = eps
@@ -226,7 +236,6 @@ def $string_unset_bool_cv_post_object_cell(S, n) = true
   -- if $string_unset_bool_cv_post_object(S, n_object)
 def $string_unset_bool_cv_post_object_cell(S, n) = false -- otherwise
 
-dec $string_unset_bool_cv_post_array_entries(pstate, nat*, pentry*) : bool
 def $string_unset_bool_cv_post_array_node(S, n_seen*, n) = true
   -- if ~(n <- n_seen*)
   -- if $(n < |S.ARRAYS|)

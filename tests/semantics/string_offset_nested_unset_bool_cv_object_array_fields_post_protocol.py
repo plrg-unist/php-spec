@@ -154,7 +154,7 @@ def conditions(program, path):
         '$call_reference_operand_valid(S_array_alias, REFERENCE n_field)',
         '$node_children(S_array_alias, HCELL n_field) = [HARRAY n_array]',
         '$string_unset_bool_cv_post_object(S_array_alias, n_object)',
-        'S_alias_field = S_array_alias[.OBJECTPROPS = $objectprops_set(S_array_alias.OBJECTPROPS, n_object, [{DECL eps, NAME $ptascii("held"), STATE PROP_VALUE (ALIAS n_field)}])]',
+        'S_alias_field = S_array_alias[.OBJECTPROPS = $objectprops_set(S_array_alias.OBJECTPROPS, n_object, [{DECL eps, NAME $ptascii("held"), STATE PROP_VALUE (ALIAS n_owner)}])]',
         '$heap_valid($heap_graph(S_alias_field))',
         '~$string_unset_bool_cv_post_object(S_alias_field, n_object)']
     return checks, derived + len(checks) - reached
