@@ -1,0 +1,94 @@
+[
+  {
+    "id": "strict-scoped-ordered-stdclass-return-object-class-first",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "stdClass",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedOrderedReturn129;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):bOx|null{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedOrderedReturn129\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "4df2a3bafb8e627658e39dfb08b84b37cd6d57b1733ba5d65db450970ecec68d",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_null_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-union-null-class-return-identity-and-private-cell",
+      "source_sha256": "9e41f0000454cd884cf0557267608fb6f569a5b5df62f00613ff753314fd88c4",
+      "edits": "Fresh namespace/import and ordinary RETURN alias; scalar string isolator adds the existing compatible null arm. Preserve FQN/builtin/untyped formals, runtime statements, physical lines and observations; namespaced multiple-CV Notice line8 is predicted for one fresh native observation."
+    },
+    "null_first": false,
+    "namespace": "ScopedOrderedReturn129",
+    "return_name": "bOx",
+    "return_target": "stdClass",
+    "return_members": [
+      "class",
+      "null"
+    ],
+    "route": "null",
+    "new_support_credit": 1
+  },
+  {
+    "id": "weak-scoped-ordered-stdclass-return-null-null-first",
+    "kind": "null",
+    "role_index": 1,
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "source": "<?php\nnamespace ScopedOrderedReturn129;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x,$stamp;echo 'H:',$line,':',$x,':',$stamp,';';$x=17;$stamp=29;return true;}\nfunction make(int $tag,&$saved):null|BOX{$keep=$saved;$saved=11;echo 'M:',$tag,':',$saved,';';return $keep;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=19;return $value;}\n$stamp=2;$stampAlias=&$stamp;$x=null;$copy=$x;$alias=&$x;set_error_handler('ScopedOrderedReturn129\\h',8);echo 'N;';\n$r=&take(make(\n    $stamp,\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',$stampAlias,':',(int)($copy===null),';';unset($r,$x,$copy,$alias,$snapshot,$stamp,$stampAlias);\n",
+    "source_sha256": "b2f9396db8d0cc8d2f71a07ee2ac5103713927a59079c49bb7b04cda31f70801",
+    "native_stdout": "N;M:2:11;H:8:11:2;F:1;R:23:19:17:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "null_first": true,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_union_null_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-null-global-plain-union-null-class-return-private-cell",
+      "source_sha256": "958b2a4d98c40c8c13253ffd236ae06d51b4a039b436b84a9aa2d95a0f6de6dd",
+      "edits": "Fresh namespace/import and ordinary RETURN alias; scalar string isolator adds the existing compatible null arm. Preserve FQN/builtin/untyped formals, runtime statements, physical lines and observations; namespaced multiple-CV Notice line8 is predicted for one fresh native observation."
+    },
+    "namespace": "ScopedOrderedReturn129",
+    "return_name": "BOX",
+    "return_target": "stdClass",
+    "return_members": [
+      "null",
+      "class"
+    ],
+    "route": "null",
+    "new_support_credit": 1
+  },
+  {
+    "id": "weak-scoped-ordered-stdclass-return-string-multiarm",
+    "kind": "string",
+    "return_members": [
+      "null",
+      "string",
+      "class"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\nnamespace ScopedOrderedReturn129;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===37),';';$x=17;return true;}\nfunction make($saved):null|string|Box{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='37'),';';$value=[$value];$value[0]=41;return $value;}\n$x=37;$copy=$x;$alias=&$x;set_error_handler('ScopedOrderedReturn129\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "88d79f0a46e76ed8deb6b92d5ea974b33048c6a404fb992932f8add1366813f6",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:37:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "37",
+    "namespace": "ScopedOrderedReturn129",
+    "return_name": "Box",
+    "return_target": "stdClass",
+    "route": "ordered",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-global-string-class-return-private-cell",
+      "source_sha256": "f492b0cff0dfccc103bb6aa2f6b0407678ba263f339ba2d171ea74197614298f",
+      "edits": "Fresh namespace/import and ordinary RETURN alias; scalar string isolator adds the existing compatible null arm. Preserve FQN/builtin/untyped formals, runtime statements, physical lines and observations; namespaced multiple-CV Notice line8 is predicted for one fresh native observation."
+    }
+  }
+]

@@ -81,7 +81,7 @@ def controls(case):
             proof = header + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])'
             lines += [proof, proof.replace('"ZmxvYXQ="', '"RkxPQVQ="'),
                 '~' + proof.replace(env + ',', env + '[.NAMESPACE = $ptascii("Other")],', 1),
-                '~' + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+                ('' if spelling == 'stdClass' else '~') + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                 proof.replace(actuals + ',', 'SEQUENCE eps,', 1),
                 '~' + proof.replace(normalized, union_type(spelling.swapcase(), float_first)),
                 '~' + proof.replace(normalized, union_type(spelling, not float_first)),

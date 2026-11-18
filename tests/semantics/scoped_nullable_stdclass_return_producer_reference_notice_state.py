@@ -91,7 +91,7 @@ def controls(case):
         lines.append('~' + proof(returns=returns))
     inner = 'NName (BYTES text_return) metadata_return'
     union = 'NUnionType (SEQUENCE ([' + inner + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable'
-    lines += ['~' + proof(inner), '~' + proof(union),
+    lines += ['~' + proof(inner), proof(union),
         proof(raw.replace('metadata_nullable', 'eps')), proof(raw.replace('metadata_return', 'eps'))]
     imported = env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]]'
     global_raw = raw.replace('text_return', '"c3RkQ2xhc3M="')

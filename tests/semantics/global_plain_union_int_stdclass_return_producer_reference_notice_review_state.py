@@ -90,7 +90,7 @@ def normal(initial, case, index, front):
                 derived += [('' if kind in ('int', 'null', 'float', 'bool', 'string', 'array', 'false', 'true', 'iterable', 'callable') else '~') + proof]
                 if kind in ('int', 'null', 'float', 'bool', 'string', 'array', 'false', 'true', 'iterable', 'callable'):
                     derived += ['~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.NAMESPACE = $ptascii("Other")],', 1),
-                        '~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+                        ('' if name == 'stdClass' else '~') + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                         '~' + proof.replace(previous.ordered(kind, first, name), previous.ordered(kind, not first, name)),
                         proof.replace(actuals + ',', 'SEQUENCE eps,', 1)]
     raw_parameter = next(line.removeprefix('phpType17_first = ') for line in reached if line.startswith('phpType17_first = '))

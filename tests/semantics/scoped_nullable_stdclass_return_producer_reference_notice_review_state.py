@@ -72,7 +72,7 @@ def normal(initial, case, front):
             '[(PTBRANCH ([PTBUILTIN "null"])), ' + singleton[1:], canonical[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'):
         derived.append('~' + proof(returns=returns))
     derived += ['~' + proof(raw=raw_name),
-        '~' + proof(raw='NUnionType (SEQUENCE ([' + raw_name + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return'),
+        proof(raw='NUnionType (SEQUENCE ([' + raw_name + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return'),
         proof(raw='NNullableType (NName (BYTES text_return) eps) metadata_nullable_return'),
         proof(raw='NNullableType (' + raw_name + ') eps'),
         proof(parameter_view=parameter.replace('metadata_nullable_formal', 'eps'))]

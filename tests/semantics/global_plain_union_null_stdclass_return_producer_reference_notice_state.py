@@ -59,7 +59,7 @@ def controls(case):
             proof = header + raw + ', ' + signature + '[.RETURNS = ' + normalized + '])'
             lines += [proof, proof.replace('"bnVsbA=="', '"TnVMbA=="'),
                 '~' + proof.replace(env + ',', env + '[.NAMESPACE = $ptascii("Other")],', 1),
-                '~' + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+                ('' if spelling == 'stdClass' else '~') + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                 proof.replace('phpType6_producer', 'SEQUENCE eps'),
                 '~' + proof.replace(normalized, union_type(spelling.swapcase(), null_first)),
                 '~' + proof.replace(normalized, union_type(spelling, not null_first)),

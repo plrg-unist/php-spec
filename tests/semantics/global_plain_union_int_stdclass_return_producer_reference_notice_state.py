@@ -89,7 +89,7 @@ def controls(case):
             lines += [proof, proof.replace('"aW50"', '"SW5U"'),
                 proof.replace(raw, raw.replace('"aW50"', '"bnVsbA=="')).replace(normalized, normalized.replace('"int"', '"null"')),
                 '~' + proof.replace(env + ',', env + '[.NAMESPACE = $ptascii("Other")],', 1),
-                '~' + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+                ('' if spelling == 'stdClass' else '~') + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                 proof.replace(actuals + ',', 'SEQUENCE eps,', 1),
                 '~' + proof.replace(normalized, union_type(spelling.swapcase(), int_first)),
                 '~' + proof.replace(normalized, union_type(spelling, not int_first)),

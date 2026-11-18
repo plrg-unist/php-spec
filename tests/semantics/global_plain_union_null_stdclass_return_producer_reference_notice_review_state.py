@@ -46,7 +46,8 @@ def normal(initial, case, index, front):
         return '$reference_notice_producer_scoped_header(' + env + ', SEQUENCE ([phpType7]), SEQUENCE ([phpType17]), ' + raw + ', ' + signature + ')'
     imported = '[($ptascii("stdclass"), $ptascii("stdClass"))]'
     for env in ('pfunction_producer.ENV[.NAMESPACE = $ptascii("Other")]', 'pfunction_producer.ENV[.CLASSES = ' + imported + ']'):
-        derived += ['~' + proof(env=env), proof(env=env, raw=raw_union(case['return_members'], 'NNameFullyQualified (BYTES text_return) metadata_return'))]
+        prefix = '' if case['class_return'] == 'stdClass' and '.CLASSES = ' in env else '~'
+        derived += [prefix + proof(env=env), proof(env=env, raw=raw_union(case['return_members'], 'NNameFullyQualified (BYTES text_return) metadata_return'))]
     for members in (['class','null'], ['null','class']):
         for spelling in ('stdClass','sTdClAsS','STDCLASS'):
             name = 'NName (BYTES ' + json.dumps(base64.b64encode(spelling.encode()).decode()) + ') metadata_return'
@@ -127,7 +128,7 @@ def main():
                     '~$reference_notice_producer_header(SEQUENCE ([phpType7]), SEQUENCE ([' + argument + ']), ' + result + ', ' + function + '.SIGNATURE)']
                 if not args.front:
                     tail = ', SEQUENCE ([phpType7]), SEQUENCE ([' + argument + ']), ' + result + ', ' + function + '.SIGNATURE)'
-                    current_derived += ['~$reference_notice_producer_scoped_header(' + function + '.ENV' + tail,
+                    current_derived += ['$reference_notice_producer_scoped_header(' + function + '.ENV' + tail,
                         '$reference_notice_producer_scoped_header(' + function + '.ENV[.NAMESPACE = eps][.CLASSES = eps]' + tail]
                 paths.append(source_control)
             case_specs.append('dec $scfr_case' + str(index) + '() : bool\ndef $scfr_case' + str(index) + '() = true\n' + ''.join('  -- if ' + line + '\n' for line in conditions + current_derived))

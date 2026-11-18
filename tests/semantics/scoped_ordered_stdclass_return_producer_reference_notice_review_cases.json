@@ -1,0 +1,58 @@
+[
+  {
+    "id": "scoped-ordered-return-alias-opposite-formal-order-named-byref-private-notice",
+    "source": "<?php\nnamespace PeerScopedOrderedReturn129;use stdClass as PeerBox;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===11),':',$prefix,';';$x=17;$prefix=29;return true;}\nfunction make(pEeRbOx|null &$saved):null|PEERBOX{$keep=$saved;$saved=11;echo 'M:',(int)($saved===11),';';return $keep;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=23;$prefix=31;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('PeerScopedOrderedReturn129\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:17:1:31;D:41:23:17:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "ff723f1c1f10387e42e2684f84fb2575ba40e163365c2bd4061ed4dbc4600348",
+    "new_support_credit": 1,
+    "namespace": "PeerScopedOrderedReturn129",
+    "formal_alias": "pEeRbOx",
+    "import_alias": "PeerBox",
+    "import_target": "stdClass",
+    "role": "ordered-union-object-notice-positive",
+    "return_alias": "PEERBOX",
+    "derived_from": {
+      "catalogue": "scoped_nullable_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "scoped-nullable-combined-formal-return-alias-named-byref-private-notice",
+      "source_sha256": "511269934177d0a6ebab52deafaa232ac2b01608a6c13ed3e6966e5072822266",
+      "edits": "Fresh namespace129; ordinary FORMAL union class|null and opposite-order RETURN null|class. Preserve body, named/BYREF prefix, lines and private-cell/identity observers."
+    },
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes.",
+    "formal_order": [
+      "class",
+      "null"
+    ],
+    "return_order": [
+      "null",
+      "class"
+    ]
+  },
+  {
+    "id": "scoped-ordered-return-alias-scalar-typeerror-before-outer-notice",
+    "source": "<?php\nnamespace PeerScopedOrderedReturnControl129;use stdClass as ReturnBox;\n// A scalar rejects the class/null union RETURN before the outer Notice.\nfunction h($n,$m,$file,$line){echo 'BADH;';return true;}\nfunction make($saved):rEtUrNbOx|null{echo 'M;';return $saved;}\nfunction &take(&$prefix,&$value){echo 'BADF;';$prefix=31;return $value;}\n$x=7;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;$r=11;set_error_handler('PeerScopedOrderedReturnControl129\\h',8);echo 'P;';\ntry{$r=&take(prefix:$prefix,value:make(\n    $x\n));echo 'BAD;';}catch(\\TypeError $e){echo 'C:',$r,':',$prefixAlias,':',(int)($x===$copy),':',(int)($alias===$copy),';';}\nunset($e);$alias=23;$prefixAlias=31;echo 'D:',$r,':',$prefix,':',$x,':',(int)($copy!==$x),';';unset($r,$x,$copy,$alias,$prefix,$prefixAlias);\n",
+    "native_stdout": "P;M;C:11:2:1:1;D:11:31:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "47715d18e2254f406858ed5692e4e7178b57a0c5a28673fd80bf7cfd905da8af",
+    "namespace": "PeerScopedOrderedReturnControl129",
+    "return_alias": "rEtUrNbOx",
+    "import_alias": "ReturnBox",
+    "import_target": "stdClass",
+    "role": "unchanged-wrong-return-control",
+    "new_support_credit": 0,
+    "derived_from": {
+      "catalogue": "scoped_nullable_stdclass_return_producer_reference_notice_review_cases.json",
+      "id": "scoped-nullable-return-alias-scalar-typeerror-before-outer-notice",
+      "source_sha256": "5b3f4764ce3f0615427554d6940868214eea9b2bd584148494e547589757396b",
+      "edits": "Fresh namespace129 and explicit alias|null RETURN union; retain scalar7 TypeError-before-Notice control and catch/alias observers."
+    },
+    "native_expectation_status": "Prediction until the one native-first observation of these exact fresh bytes.",
+    "return_order": [
+      "class",
+      "null"
+    ]
+  }
+]

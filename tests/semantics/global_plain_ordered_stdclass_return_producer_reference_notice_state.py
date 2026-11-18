@@ -180,7 +180,7 @@ def controls(case):
     for members in accepted:
         proof = header + raw(members, name) + ', ' + signature + '[.RETURNS = ' + normalized(members, name) + '])'
         lines += [proof, '~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.NAMESPACE = $ptascii("Other")],', 1),
-            '~' + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+            ('' if name == 'stdClass' else '~') + proof.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
             '~' + proof.replace(normalized(members, name), normalized(members[::-1], name)),
             '~' + proof.replace(normalized(members, name), normalized(members, name.swapcase()))]
     for members in [['class'], ['class', 'class'], ['class', 'int', 'int'], ['class', 'bool', 'true'], ['class', 'false', 'true'], ['class', 'array', 'iterable'], ['class', 'object'], ['class', 'mixed'], ['class', 'void']]:

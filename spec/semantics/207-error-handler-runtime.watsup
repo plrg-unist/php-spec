@@ -1153,6 +1153,17 @@ def $reference_notice_producer_scoped_union_view(plenv, (NIdentifier (BYTES text
   -- if $reference_notice_producer_scoped_union_view(plenv, phpType69*, b_class) = (phpType69_view*)
 def $reference_notice_producer_scoped_union_view(plenv, phpType69*, b_class) = eps -- otherwise
 
+;; RETURN members use their own declaration-position authentication.
+dec $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, bool) : phpType69*?
+def $reference_notice_producer_scoped_return_union_view(plenv, eps, true) = (eps)
+def $reference_notice_producer_scoped_return_union_view(plenv, (NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_member) :: phpType69_view*)
+  -- if $ptvalidname($base64(text_type), true)
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
+  -- if $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, true) = (phpType69_view*)
+def $reference_notice_producer_scoped_return_union_view(plenv, (NIdentifier (BYTES text_type) metadata_member) :: phpType69*, b_class) = ((NIdentifier (BYTES text_type) metadata_member) :: phpType69_view*)
+  -- if $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, b_class) = (phpType69_view*)
+def $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, b_class) = eps -- otherwise
+
 ;; Declaration resolution authenticates a canonical nominal proof view.
 dec $reference_notice_producer_scoped_parameter_view(plenv, phpType17) : phpType17
 def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
@@ -1189,6 +1200,13 @@ def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE
   -- if $ptvalidname($base64(text_type), true)
   -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
   -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNullableType (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) metadata_nullable, pssignature)
+def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
+  -- if plenv.NAMESPACE =/= eps \/ plenv.CLASSES =/= eps
+  -- if $(|phpType7*| > 0)
+  -- if phpType17* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
+  -- if pssignature.RETURNS =/= eps
+  -- if $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, false) = (phpType69_view*)
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE phpType69_view*) metadata_union, pssignature)
 def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, phpType16, NName (BYTES text_type) metadata_type, pssignature) = true
   -- if plenv.NAMESPACE = eps /\ plenv.CLASSES = eps
   -- if $(|phpType7*| > 0)

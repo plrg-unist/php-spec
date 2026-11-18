@@ -98,7 +98,7 @@ def normal(initial, case, index, front):
                 '$reference_notice_producer_global_union_view(' + raw_members(kinds, name) + ', false) = (' + raw_members(kinds, name, 'NNameFullyQualified') + ')',
                 '$reference_notice_producer_global_union_view(' + raw_members(kinds, name, 'NNameFullyQualified') + ', false) = eps',
                 '~' + good.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.NAMESPACE = $ptascii("Other")],', 1),
-                '~' + good.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+                ('' if name == 'stdClass' else '~') + good.replace('pfunction_producer.ENV,', 'pfunction_producer.ENV[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
                 '~' + proof(kinds, name, normalized_kinds=kinds[::-1])]
     for kinds in [('class', 'object'), ('class', 'mixed'), ('class', 'void'), ('class', 'never'),
             ('class', 'bool', 'false'), ('class', 'false', 'true'), ('class', 'int', 'int'), ('class', 'iterable', 'array')]:
