@@ -1,0 +1,167 @@
+{
+  "family": "REF129",
+  "status": "bounded implementation independently reviewed and integrated; family remains partial",
+  "target": {
+    "php": "8.5.10",
+    "sapi": "CLI",
+    "zts": false,
+    "bits": 64,
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json"
+  },
+  "scope": "Flat ordered RETURN unions with exactly one ordinary class name resolving quietly to exact canonical global stdClass in its PTRETURN declaration context, plus the existing compatible builtin arms. The member view preserves raw order/all metadata and delegates to existing FQN folds. Nonempty ENV/actuals/normalized RETURN and unchanged Param view preserve Param-first normalization and generic-helper disjointness. Independent95 verification, retirement, private Notice cells and old payload/owner/lifetime bounds remain.",
+  "source_revision": "6d8bf2a522a1c23fe5fca2d22da67b9ef4aa5209",
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/author/source-packet-v1.json",
+    "sha256": "c1e176e6c6d7e256951b3b78cc9fba4595b5927f635f35285e6705d50e634d68",
+    "paths": 20,
+    "new_paths": 7,
+    "complete_parent_inverses": 13,
+    "literal_actual_posts": 19,
+    "shared_make": "Unique actual-TAB literal; joined Make retains all other commands and reconstructs the complete current parent.",
+    "source_207_parent_sha256": "55b750b641e1d17d832891ef26942b6f57fcc5f768303dbcb207402f8fb0ca5d",
+    "source_207_post_sha256": "3146f63e2be6e8eaa0180d2c94f1f3a8c44609556806fd4d392cbed7be60b073"
+  },
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_resolve_class_name, zend_compile_typename, zend_compile_params",
+    "vendor/php-src/Zend/zend_vm_def.h: ZEND_VERIFY_RETURN_TYPE, ZEND_SEND_VAR_NO_REF"
+  ],
+  "native": {
+    "author_originals_once": 3,
+    "peer_originals_once": 2,
+    "replays": 0,
+    "author_report": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/author/author-native.json",
+    "author_report_sha256": "e3527901cce8736987f9c15372b7800ff42cb456170965822243449cb3ae9989",
+    "peer_report": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/peer-native.json",
+    "peer_report_sha256": "2c202d126d7d73388fff5720fdd4cfeb3774c304f805ce86b7078b987ac685da"
+  },
+  "prelaw": {
+    "author_summary": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/author/prelaw-summary-v1.json",
+    "author_summary_sha256": "7ce0b72656fb337b54d0dab8a2cb5d4b72753f9fff5ed99508f6a468bc3e3dd1",
+    "author_front": [
+      223,
+      223,
+      0
+    ],
+    "author_public_sources": "First Unsupported; other2 unrun; all zero new credit",
+    "peer_summary": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/prelaw-summary-v2.json",
+    "peer_summary_sha256": "476e10ef2e2f7305d591e4314c417104ec176c0aaf5197de89954ab152133f40",
+    "peer_front": [
+      88,
+      88,
+      0
+    ],
+    "peer_public_sources": "Combined union positive Unsupported and unchanged scalar7 TypeError-before-Notice control normal; both zero new credit",
+    "module_count": 507
+  },
+  "author_validation": {
+    "revision": "6d8bf2a522a1c23fe5fca2d22da67b9ef4aa5209",
+    "summary": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/author/postlaw-summary-v1.json",
+    "summary_sha256": "00ecdff0d7fcc8ad024ecb8ab67fa9edc2f5c234fd63418ffa38fa1a9c18b101",
+    "source_agreements": 3,
+    "state_conditions": 729,
+    "reached_conditions": 312,
+    "derived_conditions": 417,
+    "module_count": 507,
+    "passed": true
+  },
+  "independent_whole": {
+    "revision": "9799eac3a77948153fecbe49530764e47a29dd81",
+    "summary": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/whole-summary-v1.json",
+    "summary_sha256": "425d6efe2e8ad585f3f5c947866221d13b5dabe76c9c9a948904d28f46a30920",
+    "first_attempt": true,
+    "source_agreements": 5,
+    "new_notice_positives": 4,
+    "unchanged_typeerror_control": 1,
+    "control_new_support_credit": 0,
+    "author_state": [
+      729,
+      312,
+      417
+    ],
+    "peer_state": [
+      200,
+      126,
+      74
+    ],
+    "module_count": 507,
+    "elapsed_seconds": 213.502190351,
+    "outer_cap_seconds": 1200,
+    "inputs_and_head_stable": true,
+    "exit": 0,
+    "timeout": false,
+    "groups_after": [],
+    "passed": true
+  },
+  "fixed_actual": {
+    "actual": "738df5290dac59da554308ace877560b2b50c456",
+    "tree": "49c4018e753dcf3946d7eff74ba870852adc3e3c",
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main102-ref129-canonical-v1/report.json",
+    "report_sha256": "e1e94294cd720b215401988ee99a9e051f09f90809c940080d8637ccbcde387b",
+    "map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main102-ref129-placement-map-v1.json",
+    "map_sha256": "32200b2cc517549764666dd3761c076dd7a6d62ab5bb97162fac3ca83787dd67",
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "reader_preparation_failures": 0,
+    "parent": "6d6fdce691bf36332f6a345e215e554efdc47a08",
+    "source": "6d8bf2a522a1c23fe5fca2d22da67b9ef4aa5209",
+    "source_packet_sha256": "c1e176e6c6d7e256951b3b78cc9fba4595b5927f635f35285e6705d50e634d68",
+    "source_paths": 20,
+    "exact_literal_posts": 19,
+    "complete_parent_inverses": 13,
+    "new_paths": 7,
+    "make_unique": true,
+    "exact_family_source20": true,
+    "both_hash_vectors_equal": true,
+    "module_count": 509,
+    "argv_count": 512,
+    "watch_count": 513,
+    "source_credit": 0,
+    "process_elapsed": 16.181397770997137,
+    "process_cap": 60,
+    "canonical_pass": true,
+    "first_whole_pass": true,
+    "source_comparisons": 5,
+    "new_support_credit": 4,
+    "author_state": [
+      729,
+      312,
+      417
+    ],
+    "peer_state": [
+      200,
+      126,
+      74
+    ],
+    "holds_reserve_inventory_unchanged": true,
+    "passed": true,
+    "family": "REF129",
+    "status": "CLEAR",
+    "cache": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/fixed-actual-cache-v1.json",
+    "semantic_reruns": 0,
+    "clear_tuple": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/fixed-actual-clear-v1.json",
+    "clear_tuple_sha256": "01729599cd9c311cfc7a77715d6e8186ceac85be99c1cd2fa2e48c8851bbda4a",
+    "executions": 1,
+    "author_raw_actual_report_map_reads": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "Peer prelaw summary-label correction only: v1 said reached86 while the original report and passing assertions were88; corrected metadata from raw bytes with no runtime/native/prelaw replay.",
+      "original_summary": "/home/user/workspace/php-spec-evidence-archive/scoped-ordered-stdclass-return-producer-reference-notice-129/review/prelaw-summary-v1.json",
+      "original_summary_sha256": "038bb81dec2cec62b4fec3881651a76bb357a8728a09f28549c973ca3bb0fc5d"
+    },
+    "Pure future-helper expectations in11 legacy117\u2013120/127/128 files promote through fresh129 alias/self-import/order/builtin proofs; no legacy source/native/fixture renewal."
+  ],
+  "tests": [
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_cases.json",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_review_cases.json",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_sources.py",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_review_sources.py",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_state.py",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_review_state.py",
+    "tests/semantics/scoped_ordered_stdclass_return_producer_reference_notice_run.py"
+  ],
+  "remaining": "Multiple nominal arms, relative/DNF forms, other resolved classes and wider payloads/owners/lifetimes remain partial.",
+  "holds": "Exact holds,13 inherited donors/symlinks, operations57\u201362/90\u201393, reserve93807cdd6/255 and inventory169/306/closed0constructors+1runtime unchanged.",
+  "engine_bugs_or_intentional_divergences": []
+}

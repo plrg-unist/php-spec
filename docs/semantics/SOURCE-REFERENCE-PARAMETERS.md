@@ -1165,8 +1165,8 @@ isolators from a combined FORMAL/RETURN alias original and the unchanged NULL
 TypeError-before-Notice control. Four native originals ran once; author source2
 and state340, independent whole4 with state340/191, and the fixed production
 load retain separate identities. One emitted-name compiler rejection and two
-reader preparation assertions keep zero credit. Scoped nullable RETURNs are
-extended below; union and relative RETURNs, other resolved classes and wider
+reader preparation assertions keep zero credit. Scoped nullable and ordered union
+RETURNs are extended below; relative RETURNs, other resolved classes and wider
 payloads/owners/lifetimes remain partial, with all exact holds unchanged.
 
 Nullable `?Alias` RETURNs use the same quiet declaration resolution to exact
@@ -1183,9 +1183,29 @@ remain accepted; the first independent WHOLE retains its peer fixture compiler
 rejection/runtime UNRUN0, followed only by corrected peer192. No first-WHOLE-pass
 claim or accepted-source/native/author replay is made. Older pure helper
 expectations in three files promote through fresh nullable/self-import proofs
-without renewing their historical executions. Scoped union/relative RETURNs,
-other resolved classes and wider payloads/owners/lifetimes remain partial;
-exact holds stay unchanged.
+without renewing their historical executions. Scoped ordered unions are extended
+below; relative RETURNs, other resolved classes and wider payloads/owners/lifetimes
+remain partial, with exact holds unchanged.
+
+Flat ordered RETURN unions authenticate exactly one ordinary class name in its
+declaration `PTRETURN` context, resolving quietly to canonical global `stdClass`.
+A dedicated member view preserves raw order, every Identifier and all member/union
+metadata before the existing FQN folds. Those folds retain their two-through-eight
+member bounds, distinct builtin kinds, one Boolean kind and separate array/iterable
+paths. Nonempty declaration context, actuals and normalized RETURN, together with
+an unchanged Param vector, preserve Param-first normalization and disjointness
+from the generic helper. Independent RETURN verification, retirement, private
+Notice-cell ownership and payload bounds retain their existing rules.
+The [scoped ordered-return review](../../coverage/semantics/scoped-ordered-stdclass-return-producer-reference-notice-review.json)
+keeps fresh object, NULL and scalar-to-STRING isolators separate from the combined
+opposite-order FORMAL/RETURN union original and unchanged TypeError control.
+Native5 ran once; author source3/state729 and first independent WHOLE5 with
+state729/200 retain separate SL507 cuts. The earlier peer prelaw summary corrected
+only its label from86 to the already-passing raw88, with zero new runtime credit.
+Pure future-helper expectations in eleven files promote through fresh alias and
+self-import proofs, without renewing historical executions. Multiple nominals,
+relative/DNF forms, other resolved classes and wider payloads/owners/lifetimes
+remain partial; exact holds stay unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
