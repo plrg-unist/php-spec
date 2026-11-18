@@ -189,7 +189,7 @@ def controls(case):
             norm[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]', norm[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]']
         lines += ['~' + proof.replace(norm, wrong) for wrong in wrong_types]
         for tag in ('NIdentifier', 'NNameRelative'):
-            lines.append('~' + proof.replace(raw, raw_nullable(spelling, tag)))
+            lines.append(('' if tag == 'NNameRelative' and spelling == 'stdClass' else '~') + proof.replace(raw, raw_nullable(spelling, tag)))
         bare = objects.prior.raw_class(spelling, 'NName').replace('metadata_function', 'metadata_return')
         union = 'NUnionType (SEQUENCE ([' + bare + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable'
         lines += ['~' + proof.replace(raw, bare), proof.replace(raw, union)]

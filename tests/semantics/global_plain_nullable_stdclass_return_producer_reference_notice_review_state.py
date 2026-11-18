@@ -100,7 +100,7 @@ S_return.STORE[n_prefix] = DEFINED (PINT 2)
             'NNullableType (NIdentifier (BYTES text_return) metadata_return) metadata_nullable_return',
             'NNullableType (NName (BYTES "T3RoZXI=") metadata_return) metadata_nullable_return',
             'NName (BYTES text_return) metadata_return'):
-        derived.append('~' + proof(raw=raw))
+        derived.append(('' if raw.startswith('NNullableType (NNameRelative ') and case['class_return'] == 'stdClass' else '~') + proof(raw=raw))
     derived.append(proof(raw='NUnionType (SEQUENCE ([NName (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_nullable_return'))
     derived.append(proof(raw='NName (BYTES text_return) metadata_return', returns=prior.class_type(case['class_return'])))
     for update in ('.REQUIRED = false', '.VARIADIC = true', '.DEFAULT = PSDEFAULTUNSUPPORTED "forged nullable class default"'):

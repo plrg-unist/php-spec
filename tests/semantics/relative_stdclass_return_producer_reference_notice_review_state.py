@@ -82,7 +82,7 @@ def normal(initial, case, front):
     nullable = canonical[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'
     for changed in ('NNullableType (' + raw + ') metadata_return',
             'NUnionType (SEQUENCE ([' + raw + ', NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return'):
-        derived.append('~' + proof(raw=changed, returns=nullable))
+        derived.append(('' if changed.startswith('NNullableType ') else '~') + proof(raw=changed, returns=nullable))
     for returns in (class_type('Other'), class_type('STDCLASS'), object_proofs.branches(['object']), nullable):
         derived.append('~' + proof(returns=returns))
     for update in ('.BYREF = false', '.VARIADIC = true', '.REQUIRED = false', '.DEFAULT = PSDEFAULTUNSUPPORTED "forged relative return formal default"'):
