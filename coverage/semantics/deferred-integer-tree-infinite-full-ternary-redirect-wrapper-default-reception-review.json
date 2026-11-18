@@ -1,0 +1,194 @@
+{
+  "milestone": "ENUM311 all-INT proper trees reaching infinite FLOAT full-ternary defaults",
+  "decision": "CLEAR on fixed joined actual055f81c6e through immutableb416a7d0; all planned cuts are complete/reaped.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local oracle and baseline profile",
+  "grammar": "T := raw signed64 INT/sign leaf | T op T, op ADD/SUBTRACT/MULTIPLY/DIVIDE. The condition root has a proper binary child, raw-kind flags(true,false), and exact NFLOAT INFINITE result. Each sign step on a raw INT remains signed64.",
+  "implementation": "A nineteen-line root plus separator and seven hook lines reuse the byte-literal310 typed numeric-tree collector. Each node authenticates exact SOURCE and number_value(pnumber) pool with absent CODE/read/redirects. Raw INT-only flags persist after overflow promotion and exact/inexact division; the proper-child and final-INFINITE guards constrain the new root. The complete inverse restores accepted310 module7a9c8c67.",
+  "observation_boundary": "Native/source output checks selected scalar tags, cold/warm cache behavior, named Warning reentry and private integer reception. Exact intermediate PINT/PFLOAT typing and infinite bits are separately asserted by compiler/state fixtures; truthy ternary output alone does not establish them.",
+  "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "engine_provenance": [
+    "vendor/php-src/Zend/zend_compile.c: zend_try_ct_eval_binary_op uses ordinary tagged operators after the no-error guard; zend_compile_conditional prunes constant branches; zend_compile_params retains default context.",
+    "vendor/php-src/Zend/zend_operators.c: add_function_fast, sub_function_fast, mul_function_fast and div_function_base preserve tagged arithmetic. Exact INT division retains IS_LONG; overflow and inexact division produce IS_DOUBLE.",
+    "vendor/php-src/Zend/zend_operators.h: fast_long_add_function/fast_long_sub_function retain signed64 results or promote to DOUBLE without re-integerization."
+  ],
+  "author_source": {
+    "source_revision": "f9d27694b5e86e1e3164f2adb834d20c75aa9e4a",
+    "source_tree": "e8912b5e991963aa5fd0f03637f12084748b24c2",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/author-source-packet-v1/manifest.json",
+    "source_packet_sha256": "dd413093ce6e1e012d20ff59c53144f04b25f21b13f854e36c77d1ec4b2fbc38",
+    "source_creation_base": "4962d1984c73428077c7305e66f359c147196338",
+    "immediate_parent": "5e42e477cbba0bc3e446c4631ce8b1ffdc70b360"
+  },
+  "runtime_identities": {
+    "profile_sha256": "9552f5435b397821fbb7fdd32f3045ba4f1c15934f8efffdf3564e5d799e8e94",
+    "production_adapter_sha256": "3f85c41f1bf6bc5729e6070ffcc5e246ab8cbea1f2e5f8999098b4fdd32ca24a",
+    "native_php_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "fixture_runner_sha256": "b57a2ed7daf86de23993a29d079083377cfef6da133739a164dbfdb9f11fd7a0"
+  },
+  "validation_modes": "Source production_SL and fixture_SL use private508 modules. Fixed actual canonical validation is separate and carries zero source credit.",
+  "records": {
+    "native": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/native-v1.process.json",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/native-v1/report.json",
+      "report_sha256": "596123e1b58356372e866d24fe07952c0e5e6612b3cf09ac0a706dab4b460776",
+      "elapsed_seconds": 0.11438995599746704,
+      "outer_cap": 120,
+      "stable": true,
+      "reaped_group_absent": true,
+      "first_execution": true
+    },
+    "baseline": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/baseline-v1.process.json",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/baseline-v1/report.json",
+      "report_sha256": "5f58fe301640aded6f220b7d8ae82cce61519c4d9b42b88c685626bd48d53d67",
+      "elapsed_seconds": 24.443480242975056,
+      "outer_cap": 660,
+      "stable": true,
+      "reaped_group_absent": true,
+      "first_execution": true
+    },
+    "prelaw": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/prelaw-v1.process.json",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/prelaw-v1/closure-call-protocol-saxs2s45/report.json",
+      "report_sha256": "ad918f62907b7e5d724cd5ffc8adb766446cd5f6858aa028e7be0cc140b1ed80",
+      "elapsed_seconds": 111.70877169189043,
+      "outer_cap": 720,
+      "stable": true,
+      "reaped_group_absent": true,
+      "conditions": 1552,
+      "cuts": [
+        790,
+        762
+      ],
+      "watched_inputs": 518,
+      "first_execution": true,
+      "source_credit": 0
+    },
+    "source": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/source-v1.process.json",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/source-v1/report.json",
+      "report_sha256": "04c683639ccf783a7d8920a7cdb46a419e87fa681083ca2d7933ff06685bbd36",
+      "elapsed_seconds": 135.39250063314103,
+      "outer_cap": 720,
+      "stable": true,
+      "reaped_group_absent": true,
+      "first_execution": true
+    },
+    "author": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/author-v1.process.json",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/author-v1/closure-call-protocol-69iq_9qp/report.json",
+      "report_sha256": "4a359384ce0e4e339f14682092e7a5817ce7eb1746780db783750f7fa8ec1abd",
+      "elapsed_seconds": 392.38155363081023,
+      "outer_cap": 900,
+      "stable": true,
+      "reaped_group_absent": true,
+      "conditions": 1731,
+      "cuts": [
+        839,
+        837,
+        55
+      ],
+      "watched_inputs": 520,
+      "first_execution": true,
+      "source_credit": 0
+    }
+  },
+  "native_originals_once": 2,
+  "native_reexecutions": 0,
+  "source_normal_agreements": 2,
+  "source_elapsed_seconds": [
+    21.370616225060076,
+    113.68232910800725
+  ],
+  "baseline_expected_unsupported": 1,
+  "baseline_raw_unrun": 1,
+  "prelaw_conditions": 1552,
+  "author_conditions": 1731,
+  "independent_status": "FIRSTPASS WHOLE706(421+151+134) and fresh old310 allINT30 PASS; stable520 each, reaped/groups absent, pair jobs0.",
+  "source_runtime_failures": 0,
+  "fixture_runtime_failures": 0,
+  "fixture_corrections": 0,
+  "timeouts": 0,
+  "remaining": "Names, STRING leaves, unary wrappers over computed trees, NaN warning continuations and wider declaration/reception/owner/lifetime contexts remain partial. Accepted303\u2013310 cuts retain their original identities.",
+  "holds": "OP12; Source47 lowprecisionDEFINE-nameNaN; Owned-NUL source-release; undefined by-reference LIST keys; COMP88; V110/GC35/I106/COMP123/ATTR87/GC87/I140/GC84/held207 unchanged; reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "recovery": "../php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311 retains exact originals, native-once, prelaw/source/author/peer/affected reports and process records plus packets. These are evidence, not build/runtime inputs.",
+  "independent_fixtures": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/review-v1/closure-call-protocol-odq78lat/report.json",
+    "report_sha256": "a2735925cf2274a143c6fe5a3b51f6aff11b441e0e21c645e5da5308e62917a9",
+    "elapsed_seconds": 273.64697161805816,
+    "outer_cap": 900,
+    "conditions": 706,
+    "cuts": [
+      421,
+      151,
+      134
+    ],
+    "watched_inputs": 520,
+    "stable": true,
+    "reaped": true,
+    "group_absent": true
+  },
+  "affected_older_fixtures": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/affected-v1/closure-call-protocol-1n7pnozt/report.json",
+    "report_sha256": "59c5ae3ab954f66f905fa0c7802c7771f7ac8e87499afa3330857503134f9e58",
+    "elapsed_seconds": 149.05374479782768,
+    "outer_cap": 600,
+    "conditions": 30,
+    "cuts": [
+      30
+    ],
+    "watched_inputs": 520,
+    "stable": true,
+    "reaped": true,
+    "group_absent": true,
+    "scope": "Fresh old310 allINT30 only; old source/default mismatch remains refused although the new allINT root is valid. Accepted old310 campaign is not renewed."
+  },
+  "source_packets": {
+    "review_source_ready": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/review-source-ready-v1.json",
+    "review_source_ready_sha256": "169c8818783a26f179f735bde97608be5f15cb93f3cdee0238ef4e65a4a5c4cd",
+    "static_source_map": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/review-source-map-v1.json",
+    "static_source_map_sha256": "a35d400422980ae844447aa5cf69bc6030651fdcff20789fb575603021dd7bc4",
+    "exact_unique_paths": 6,
+    "Make_additions": "Unique author2+peer1; full model and Make inverses at actual parents checked."
+  },
+  "jobs_sessions_watchers_writes": 0,
+  "old_campaign_renewals": 0,
+  "author_canonical_raw_reads": 0,
+  "actual_same": {
+    "metadata_base": "055f81c6e022191491963accebfe42833b9d02fb",
+    "tree": "6185ee352ad85ba62e793cb34f4ffa6927da489a",
+    "enum_source_placement": "d3121d900332848697c074f622c2cbafdd614d24",
+    "exact_source_paths": 6,
+    "full_model_inverse": true,
+    "Make": "unique2+1; joint16 whole inverse; only shared Make",
+    "canonical": {
+      "argv": 512,
+      "cap": 60,
+      "elapsed": 16.831902186153457,
+      "mode": "production_SL",
+      "modules": 509,
+      "reaped": true,
+      "source_credit": 0,
+      "stable": true,
+      "watched": 513
+    },
+    "canonical_report_sha256": "45e1cabc65f49e8f86fd3ec99a3e644fa0aac6a63cd9ddb38d20ffb2206d9408",
+    "source_map_sha256": "f7e41bcd39ec2c456ad2ca521811f3086977fb0c6eb6fab10ec0513a9a12ad6a",
+    "independent_immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/review-main108-immutable-tuple-v1.json",
+    "independent_immutable_tuple_sha256": "b416a7d0c2a73c6a760fdfa45188d369919f7299ae2184fd644cdd842dbb8988",
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-311/review-main108-canonical-parsed-cache-v1.json",
+    "parsed_cache_sha256": "dd297fe2446d3f322fb5be04add3b24f1d35fb84c2500559537b7c0d20310571",
+    "original_report_physical_reads": 1,
+    "original_map_physical_reads": 1,
+    "author_raw_reads": 0,
+    "execution_replays": 0,
+    "HEAD_refreshes": 0
+  },
+  "condition_accounting": "Native2 once/source2, prelaw1552(790+762), author1731(839+837+55), independent706(421+151+134) and fresh old310 allINT30 retain distinct first-execution passing cuts. Baseline Unsupported1/raw-unrun1 carry no source agreement credit. The one joined production_SL509 canonical carries source0; no unique-condition sum or historical campaign renewal.",
+  "metadata_ownership": "One family SOURCE-TYPED-FUNCTIONS/review projection from immutableb416a7d0. MAIN108 alone applies the literal common README/PROGRESS/ARTIFACTS/features operations on fixed055f81c6e. calls.defaults remains partial, with constructor/status counts and all exact holds unchanged. Metadata does not renew execution evidence."
+}

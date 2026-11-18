@@ -1937,5 +1937,15 @@ compiled effects must be empty. Undefined skipped constants remain unobserved.
 Emitted left operands, NaN truth, owning or warningful operands and wider return,
 handler and lifetime contexts remain partial. The existing two-cast gate, held
 boundaries and OB31 remain unchanged.
+Eight source agreements reuse one saved and seven new native observations once.
+Author frontier19/lifecycle13 and independent frontier158/lifecycle15 retain
+separate SL508 cuts at the original300/660 limits. The source DSL binding failure
+and first peer fixture elaboration failure observed no semantic predicates; the
+corrected actual frontier count is158, with no removed controls. The author
+lifecycle inner report passes13 with stable inputs; its outer launcher completion
+is unrecorded. WHOLE6 and fixed actual `055f81c6e` are independently clear. The sole
+production SL509 load passes in16.831902186 seconds under cap60 with source0,
+through one cached actual/report/map tuple; author raw reads remain0. No accepted
+campaign or earlier OUTPUT151/152 evidence is renewed.
 [Quiet short-circuit evidence](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-review.json).

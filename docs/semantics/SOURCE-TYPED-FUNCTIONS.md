@@ -1351,20 +1351,25 @@ Shared caches, private reception and owner bounds remain unchanged. Mixed numeri
 trees, names, STRING leaves, unary wrappers over computed trees, NaN warning
 continuations and wider declaration/reception/lifetime contexts remain partial.
 
-Proper mixed INT/FLOAT binary trees preserve exact intermediate PINT/PFLOAT
-tags and both raw leaf kinds through a folded infinite full-ternary predicate.
-Every node authenticates SOURCE, its typed pool and absent CODE/read/redirects;
-pure FLOAT subtrees retain the preceding certificate. The root has a proper
-binary child and both raw kinds, with compiler-fold authority covering the
-signed-zero phase case. Integer overflow stays FLOAT, and exact/inexact integer
-division keeps its tag; per-node assertions establish those facts separately
-from truthy source output. Native2 once/source2, prelaw1203, author1612, peer866
-and fresh old309 mixed30 retain separate passing cuts. Fixedactual4a28118e and
-the sole16.190656112s productionSL509 load are independently clear through
-immutable047f747f; preparation issues remain zero-credit. All-INT infinite
-trees, names/STRING/computed unary forms and wider reception/owner contexts
-remain partial; all exact holds and inventory counts stay unchanged.
-[Review](../../coverage/semantics/deferred-mixed-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
+Proper mixed and all-INT ADD/SUBTRACT/MULTIPLY/DIVIDE trees preserve exact
+intermediate PINT/PFLOAT tags through infinite full-ternary predicates. Every
+source occurrence has its typed pool and absent CODE/read/redirects; raw leaf-kind
+flags persist across integer overflow and exact/inexact division. The new all-INT
+root reuses the unchanged collector with flags(true,false) and requires a proper
+binary child plus INFINITE result. Selected scalar tags, declaration bindings,
+Shared caches, private typed default holes and named Warning reentry retain the
+existing reception and cleanup guards.
+
+For the all-INT increment, native2 once/source2, prelaw1552, author1731,
+independent706 and fresh old310 allINT30 pass first attempts at separate cuts.
+Fixed actual055f81c6e and the sole joined production_SL509 check pass in
+16.831902186s under cap60, with source0, through immutableb416a7d0; all processes
+are reaped. The old310 source/default mismatch remains refused without renewing
+its campaign. Names, STRING leaves, computed unary wrappers, NaN warning
+continuations and wider declaration/reception/owner/lifetime contexts remain
+partial; exact holds and inventory counts stay unchanged.
+[All-INT review](../../coverage/semantics/deferred-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
+[mixed-tree review](../../coverage/semantics/deferred-mixed-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
 ## Source metadata and resumed states
 

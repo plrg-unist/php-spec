@@ -1,0 +1,244 @@
+{
+  "family": "OUTPUT153 quiet constant-left short circuits in selected nested return casts",
+  "target": "PHP8.5.10 CLI NTS64; pinned project-local engine",
+  "status": "bounded independently reviewed semantics with fixed integrated composition",
+  "scope": "Constant-left &&/||/and/or under the existing selected Warning/Deprecated handler two-cast return contour; decisive LEFT skips RHS, nondecisive LEFT accepts an own quiet folded or emitted Boolean RHS. Wider producers and lifetimes remain partial.",
+  "numeric_policy": "Pure authored .watsup; no Zend evaluation fallback.",
+  "engine_basis": [
+    "vendor/php-src/Zend/zend_compile.c::zend_compile_short_circuiting compiles LEFT first; a decisive IS_CONST yields a bool without compiling RIGHT. A nondecisive constant compiles RIGHT then folds its truth or emits ZEND_BOOL.",
+    "vendor/php-src/Zend/zend_operators.h::i_zend_is_true warns on NaN before reading truth; intrinsic COERCEDfalse is required even when REPORTING masks that Warning.",
+    "vendor/php-src/Zend/zend_vm_def.h::ZEND_JMPZ_EX/ZEND_JMPNZ_EX and ZEND_BOOL retain selected truth and exception checks; emitted LEFT is outside this certificate."
+  ],
+  "source_package": {
+    "family": "output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error",
+    "parent": "05805fba30d04d2596824bfbd51883203b5a6c01",
+    "revision": "8d04ff861ddc5962e77dd9f2da0170f493587fb5",
+    "tree": "6150e87f3c85a9d16db0417341bb59f0a5b005f2",
+    "complete_parents": 3,
+    "absent_parents": 3,
+    "make_recipes": 4,
+    "make_inserted_sha256": "e79b4ec27f16174091807a4cf83c85a63594db4e33621784bfe9d86f4f9e7095",
+    "patch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/ready-source-153-corrected.patch",
+    "patch_sha256": "6f025bf0a93529ad03c48b2000644c4ef1710cdb0bfea05d596f0ac0fec68af4",
+    "source_package_only": true,
+    "supersedes_manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/ready-source-153-manifest.json",
+    "supersedes_manifest_sha256": "66cccb752003b7c526c7d8d5b5aa952100e6cc039f76fa348bd5b33770d720a4",
+    "correction": "One fixture-only REQUEST_STRING payload grouping; original source/native/author inputs unchanged; no semantic execution repeated.",
+    "unchanged_posts": 5,
+    "corrected_posts": 1,
+    "files": 6,
+    "manifest": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/ready-source-153-corrected-manifest.json",
+    "manifest_sha256": "cdccc23f71749f0b95e29f3535ef1e2554889c3b1ef3e94a1e5f691e0ae8c54c",
+    "whole_review": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer37-source-whole-01.json",
+      "sha256": "b1fc9e77be2608726c35d66fec27e88b92cf09e9ba5a9671c8c767f26503f883",
+      "passed": true
+    }
+  },
+  "baseline": {
+    "completion": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-assessment-153/completion.json",
+    "report": "/home/user/workspace/php-spec/.tools/output-final-quiet-zero-coercion-53/.tools/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-j9npl0dt/report.json",
+    "sha256": "cefce6fce8da14170df42797c42bb286d3081b9099acd3d5c04488db5a362681",
+    "revision": "05805fba30d04d2596824bfbd51883203b5a6c01",
+    "model_status": "unsupported",
+    "source_credit": 0,
+    "native_exit": 255,
+    "native_once": 1,
+    "remaining_authored_variants_initially_unrun": 7
+  },
+  "native_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/native-01/report.json",
+    "sha256": "a4cc70cd6fc8c62aadf512a18e6f43b10183298aca925d0dc92eddf712f3b8c3",
+    "passed": true,
+    "saved_original_reused": 1,
+    "new_observations": 7,
+    "native_replays": 0,
+    "source_credit": 0
+  },
+  "source_default": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/after-02/report.json",
+    "sha256": "576d3e4c124c21658c23fba047b33d2c4e9871ff9c45dfbc70c5db252dbda1cb",
+    "revision": "06c88f5705d52ffb3dfd873e4563d2c20c1d6ab3",
+    "passed": true,
+    "agreements": 8,
+    "seconds": 348.9892303699162,
+    "model_cap_seconds": 90,
+    "outer_cap_seconds": 660,
+    "native_replays": 0,
+    "stable_inputs": 563
+  },
+  "author_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/front-01/report.json",
+    "sha256": "af4b35d59b6f40deab4d03da275d8ba3782995ae9e29d50127df7dc2edc53e6d",
+    "revision": "cbd3d4d01523e86cfaea3f1b5bfc0388c20834fe",
+    "passed": true,
+    "assertions": 19,
+    "groups": [
+      8,
+      11
+    ],
+    "fixture_seconds": [
+      87.9315224988386,
+      94.67002190998755
+    ],
+    "source_credit": 0,
+    "stable_inputs": true,
+    "launch": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/front-launch-01.json",
+      "sha256": "e613b2ff424b36ba1c505a199964394a91743885f31c6ba4e96bf1e1fa818863"
+    }
+  },
+  "author_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/life-01/report.json",
+    "sha256": "aa9d66f4237ce5dbd086258a49ba62fccea756b3a81dac9f36fb09eed58d5225",
+    "revision": "cbd3d4d01523e86cfaea3f1b5bfc0388c20834fe",
+    "passed": true,
+    "assertions": 13,
+    "groups": [
+      6,
+      7
+    ],
+    "fixture_seconds": [
+      124.66449376102537,
+      127.21918666502461
+    ],
+    "source_credit": 0,
+    "stable_inputs": true,
+    "recovery": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/life-recovery-01.json",
+      "sha256": "8e28f41e24fe164eec08ff511300db31670fd7abf01ca201f77da487e9dee85e"
+    },
+    "launcher_completion_recorded": false
+  },
+  "preserved_failures": {
+    "first_source": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/after-01/report.json",
+      "sha256": "3d6e6dddb42e18a15f956075ad6209ed1619e1aaac786d1a8d4af8a8ae4e780f",
+      "revision": "3cac204d99f29fc37f3bd16633878c7726de8209",
+      "phase": "DSL non-invertible update binding, before semantic execution",
+      "source_credit": 0,
+      "all8_semantically_unrun": true
+    },
+    "first_peer_frontier": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer-front-01/report.json",
+      "sha256": "4a5fbdfe6ac793c1151ba39dfe2229d87e9e27e44b73b450674a9fea637d6d76",
+      "revision": "cbd3d4d01523e86cfaea3f1b5bfc0388c20834fe",
+      "phase": "Fixture REQUEST_STRING payload grouping elaboration, before observed predicates",
+      "source_credit": 0,
+      "all157_unrun": true,
+      "count_note": "Inherited planned157; corrected complete fixture contains158=113+45. The original failed before every observed predicate; no controls removed."
+    }
+  },
+  "accepted_cut_bridge": "The sole corrected reviewer payload grouping is absent from accepted native/source/author frontier/lifecycle watched maps; all accepted source/runtime inputs remain unchanged at their recorded revisions. Original packet and peer36 cache remain preserved; no accepted run was repeated.",
+  "fixture_contract": "Separate SL508/cache=false/det=true cuts; original300 seconds per fixture/660outer, C/UTC, source/native credit0. Author lifecycle inner report passes13 with stable maps; launcher completion is unrecorded and no missing exit/stream/total is invented.",
+  "limits": "NaN truth, owning or warningful operands, emitted LEFT, wider handlers/producers/owners/lifetimes remain partial. Existing XOR/signed INF and string lanes are unchanged. Source47/DEFINE-NaN, NaNBYTE, Owned-REQUEST-NUL release, COMP88, OP12, undefined by-reference LIST, reserve93807cdd6/255, inventory169/306/closed0+1 and OB31 are unchanged. Complete PHP core, Rocq/CRIS and BOLA remain unfinished.",
+  "metadata_semantic_runs": 0,
+  "independent_frontier": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer-front-02/report.json",
+    "report_sha256": "712a75872e4a5604bd94dbe1e259f18f0ffad5dd2147ed6af275a634603c71cc",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer-front-launch-02.json",
+    "launch_sha256": "06fb4daaf61215c4b1164373d919e8f7bd8aa1326224e8a3039b0d0ea353a955",
+    "revision": "8d04ff861ddc5962e77dd9f2da0170f493587fb5",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "modules": 508,
+    "groups": [
+      113,
+      45
+    ],
+    "predicates": 158,
+    "seconds": 195.52552393404767,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660
+  },
+  "independent_lifecycle": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer-life-01/report.json",
+    "report_sha256": "058dd431632127dfbdad3d8abd5ca4d63f385e9319784941106e6858366209db",
+    "launch": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer-life-launch-01.json",
+    "launch_sha256": "c42453148e6828f9b243f4a1ce24aa84dcde8419476279b37d6b619b2406c393",
+    "revision": "8d04ff861ddc5962e77dd9f2da0170f493587fb5",
+    "mode": "fixture SL_mode/cache=false/det=true",
+    "modules": 508,
+    "groups": [
+      7,
+      8
+    ],
+    "predicates": 15,
+    "seconds": 265.98688428709283,
+    "source_credit": 0,
+    "passed": true,
+    "stable": true,
+    "reaped": true,
+    "group_empty": true,
+    "fixture_cap_seconds": 300,
+    "outer_cap_seconds": 660
+  },
+  "independent_review": {
+    "report": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer37-review-153.json",
+    "sha256": "38b78545513739cf403f65b8ccf1e4987e09c4346302e89ab7bdb6b3d3348f92",
+    "decision": "CLEAR_LIMITED_SCOPE"
+  },
+  "composition": {
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer37-immutable-tuple-153.json",
+    "immutable_tuple_sha256": "b46240e8e856e273d511f64d27135d787420f2efb65a7b71e73fca5e754191c4",
+    "actual": "055f81c6e022191491963accebfe42833b9d02fb",
+    "tree": "6185ee352ad85ba62e793cb34f4ffa6927da489a",
+    "metadata_base": "055f81c6e022191491963accebfe42833b9d02fb",
+    "map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum311-comp340-output153-dynrhs-source-map-v1.json",
+    "map_sha256": "f7e41bcd39ec2c456ad2ca521811f3086977fb0c6eb6fab10ec0513a9a12ad6a",
+    "canonical": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum311-comp340-output153-dynrhs-load-v1/report.json",
+    "canonical_sha256": "45e1cabc65f49e8f86fd3ec99a3e644fa0aac6a63cd9ddb38d20ffb2206d9408",
+    "cache": "/home/user/workspace/php-spec-evidence-archive/new/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-153/peer37-integration-cache-153.json",
+    "cache_sha256": "5431fc0960e7f37fdb589934f2b1dc66d4058f8fdaeb68da9776a91a5cb940ea",
+    "placement_revision": "be48fe86286bebf0a3c2535698ba3567430f93c1",
+    "placement_parent": "aa4d2b1fe9d66cc87cfadd41f7d1812e0ef47faa",
+    "passed": true,
+    "source_credit": 0,
+    "actual_review": {
+      "actual_paths": 33,
+      "OUTPUT_paths": 6,
+      "foreign_changes_pointwise_disjoint_except_Make": true,
+      "full_current_parent_doc_append_exact": true,
+      "Make_unique_recipes": 16,
+      "Make_family_counts": {
+        "ENUM311": 3,
+        "COMP340": 7,
+        "OUTPUT153": 4,
+        "DYN-NULL-RHS": 2
+      },
+      "Make_whole_inverse_exact": true,
+      "canonical_ordered_modules_verified": true,
+      "canonical_complete_maps_equal": true,
+      "source_credit": 0,
+      "passed": true
+    },
+    "canonical_result": {
+      "mode": "production_SL",
+      "modules": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "seconds": 16.831902186153457,
+      "cap_seconds": 60,
+      "exit": 0,
+      "timeout": false,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "before_after_maps_equal": true,
+      "ordered_modules_verified": true,
+      "stdout_hex": "747275650a",
+      "stderr_hex": ""
+    },
+    "reader_preparation_note": "The one actual batch verified33 source/hash/parent/absence facts, Make16 literal/full inverse and OUTPUT current-parent append before an expected-argv assertion double-prefixed syntax/occurrences. One fixed module-index recovery confirms509 entries already include both generated domains; a second count assumption was also corrected from that cache. Actual source batch and original report/map were not reread; no execution or HEAD refresh.",
+    "author_raw_actual_reads": 0,
+    "author_raw_canonical_report_reads": 0,
+    "author_raw_map_reads": 0,
+    "accepted_campaign_reruns": 0,
+    "later_head_refreshes": 0,
+    "metadata_semantic_runs": 0
+  }
+}

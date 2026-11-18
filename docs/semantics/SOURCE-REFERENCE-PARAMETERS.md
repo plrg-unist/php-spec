@@ -1307,6 +1307,25 @@ with original actual/report/map read once and author raw reads0. Other classes,
 nonempty namespaces, multiple nominals, DNF and wider owners/lifetimes remain
 partial; all exact holds remain unchanged.
 
+Canonical bare `namespace\stdClass` FORMALs now use a quiet
+`PTPARAMETER`/`PTRELATIVE` raw Param view under an empty declaration namespace.
+Ordinary class imports are ignored, while all other fields and metadata remain.
+The existing empty-environment header composes the global Param view before the
+scoped view, preserving old plain class bytes and disjoint success. Reception,
+ordinary BYREF rebinding, FQN RETURN verification, retirement and private Notice
+cells keep their existing rules. The
+[relative-FORMAL review](../../coverage/semantics/relative-stdclass-formal-producer-reference-notice-review.json)
+records native2 once, author source2/state416(266+150) and the first independent
+source2/WHOLE442(266+150+26) at separate SL507 cuts. Fresh controls distinguish
+mixed plain/Relative exact class spellings, import authority and Relative RETURN
+composition; one old130 helper expectation promotes without historical renewal.
+Prelaw204 and Unsupported1 retain source0; one static-slicer preparation retains
+runtime0. Fixed actual36976c9a and the sole productionSL509 load pass
+16.137139399070293s/cap60/source0 through immutable498f8bc6, with original
+projection/report/map read once and author raw reads0. Nullable/union relative
+formals, other classes/namespaces and wider owners/lifetimes remain partial;
+all exact holds remain unchanged.
+
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
 changes only the authenticated type tag and preserves every other field and

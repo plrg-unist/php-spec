@@ -1,0 +1,220 @@
+{
+  "feature": "string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key",
+  "status": "implemented, independently reviewed, validated and integrated",
+  "target": {
+    "version": "PHP 8.5.10 CLI NTS 64-bit",
+    "vendor_tag_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "numeric_semantics": "pure watsup",
+    "native_executions": 2,
+    "native_replays": 0,
+    "production_source_credit": 2,
+    "fixture_source_credit": 0
+  },
+  "scope": "Quiet ordinary NULL COALESCE selects a proper FIELD1 composite allocated BASE without allocating a new header. Full SOURCE and captured root/operand precision, exact REQUEST identity, raw CV saved index and owner/resume bounds remain required.",
+  "runtime_delta": {
+    "path": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "private_parent_sha256": "248146de51a14fc4c7428b9720c848f0fc7e8931e1b0299031726fa5009b318f",
+    "private_post_sha256": "a808ebb3425c81c3f1a0ef6d6b314c7826d101be9da8c5d0cf2bd516ba90066b",
+    "old": "  -- if $string_read_allocated_value(S_probe, porigin_right, pvalue)\n",
+    "new": "  -- if $string_read_allocated_base(S_probe, porigin_right, pvalue)\n",
+    "all_other_private_bytes_literal": true,
+    "proper_child": "FIELD1 selected RHS",
+    "same_state": "S_probe = S[.COMPLETION = NORMAL]"
+  },
+  "original_observations": [
+    {
+      "id": "runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-current-key",
+      "source_sha256": "efe8dac2d8d28c54cef358dc3c462384bbe138f9eebd1d594a0dbc693b515c95",
+      "selected": "full ternary, falsey nonnull STRING 0, REQUEST1/two rows, saved0 returns 0"
+    },
+    {
+      "id": "runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-reference-key",
+      "source_sha256": "538ddd07a8a3b2aa360b816f639c6b5077c14e3e8654b6a379d9a610ec0e8be6",
+      "selected": "emitted NULL then NN/shorthand, REQUEST3/four rows, saved3 returns dot while rebound current4 selects 5"
+    }
+  ],
+  "evidence": {
+    "author_handoff": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/author-handoff-v1.json",
+      "sha256": "747e75894e6dfa47e9a0cb4d65bde37558a4349363ed4134ab6c7106d6a3065f"
+    },
+    "author_reports": {
+      "native-baseline": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/native-baseline/report.json",
+        "sha256": "5312f81a172f5eb1814e1597fae49276d5e1ac16582d751050e8f5b544eb4486",
+        "tested_revision": "fcd9e9b7c78fe46c01cc317b93878dded2a63295",
+        "passed": true,
+        "source_credit": 0,
+        "native_executions": 2
+      },
+      "baseline-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/baseline-v1/report.json",
+        "sha256": "8684a01f0df13b0106d324e8d90035ff0fa511a261d2547c0b9e00aad0d24359",
+        "tested_revision": "fcd9e9b7c78fe46c01cc317b93878dded2a63295",
+        "passed": true,
+        "source_credit": 0,
+        "native_executions": 0
+      },
+      "prelaw-facts-literal-null-v2": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/prelaw-facts-literal-null-v2/report.json",
+        "sha256": "8a88cf8b2e1c529a1adfd562f8322b8e15977a0cc19e87702526daa07c599e4f",
+        "tested_revision": "fcd9e9b7c78fe46c01cc317b93878dded2a63295",
+        "passed": true,
+        "premises": 71,
+        "derived_conditions": 0,
+        "source_credit": 0,
+        "native_executions": 0
+      },
+      "prelaw-facts-reference-null-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/prelaw-facts-reference-null-v1/report.json",
+        "sha256": "b505000abc57176d8045c933feb14fac03ba5999327657d3421808476885c4af",
+        "tested_revision": "fcd9e9b7c78fe46c01cc317b93878dded2a63295",
+        "passed": true,
+        "premises": 65,
+        "derived_conditions": 0,
+        "source_credit": 0,
+        "native_executions": 0
+      },
+      "source-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/source-v1/report.json",
+        "sha256": "9f869e2efeb0d662aea265bd7a75e2ae7e39156a64ca47babcced7d1ee0d271e",
+        "tested_revision": "9d81cd5d1e6e43e09d75f9c0f39af816cd9ee965",
+        "passed": true,
+        "source_credit": 2,
+        "native_executions": 0
+      },
+      "author-direct-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/author-direct-v1/report.json",
+        "sha256": "e791d0b06b93a77a43ccfed098749b982411904dd729b668f4bba42354809094",
+        "tested_revision": "9d81cd5d1e6e43e09d75f9c0f39af816cd9ee965",
+        "passed": true,
+        "premises": 293,
+        "derived_conditions": 143,
+        "source_credit": 0
+      },
+      "author-reference-v1": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-author57-20261118/author-reference-v1/report.json",
+        "sha256": "369d46fc5f3718cf6ffade6ed8701fa2fa3b81c4afa42fc0ac05b420fd6ceaee",
+        "tested_revision": "9d81cd5d1e6e43e09d75f9c0f39af816cd9ee965",
+        "passed": true,
+        "premises": 447,
+        "derived_conditions": 185,
+        "source_credit": 0
+      }
+    },
+    "independent_B": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/peer-v1/report.json",
+      "sha256": "2006ba8c1e4be9b37fa01ca4b2e817e5eea0c4ae1911a2a14a3868f81bd52078",
+      "tested_revision": "338349cdf91c39be2224e09940288ff6914a72bd",
+      "premises": 882,
+      "derived_conditions": 201,
+      "passed": true,
+      "mode": "production SL fixture",
+      "compiler_seconds": 13.980432271957397,
+      "compiler_cap_seconds": 120,
+      "state_seconds": 59.53859901428223,
+      "state_cap_seconds": 180,
+      "all_reaped": true,
+      "first_attempt": true,
+      "source_credit": 0,
+      "native_executions": 0,
+      "controls": "both originals and nested proper NULL\u2192NN\u2192NULL\u2192shorthand model derivative; full versus immediate SOURCE shadows; false/0/both FLOAT zeros/empty/0 STRING; forged emitted NULL; CODE/precision and matched RHS17/parent14; saved3/owner/clone/NUL/registry/resume state"
+    },
+    "independent_source": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/source-review.json",
+      "sha256": "aea5b54af7b4f86d4838ab6895e4264310e519f854e759de9e66e143bcad39ad",
+      "verdict": "CLEAR"
+    },
+    "WHOLE7": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/whole-family-packet.json",
+      "sha256": "be6e03821a4c3fdc17a976cb8f547aea4d09ec1e49fcbc4282d736ce2dab0b34",
+      "private_head": "3e1a6006d0aabed8373d11dbe52ced7e4ad44bf3",
+      "private_tree": "c15f81ce208c30fabd1b3824029a1e1bb81c2ef7",
+      "passed": true,
+      "source_credit": 0
+    },
+    "current_parent_and_Make2": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/main-parent-make-packet.json",
+      "sha256": "720f3656b8bcc803272b9e1e2874780e2cb71a84f27d78ea1d63f995b3f78f15",
+      "parent": "74cb32567ac3f549226daf7a40ab84ec2e5fc136",
+      "passed": true,
+      "literal_tab_lf": true,
+      "all_foreign_bytes_preserved": true,
+      "source_credit": 0
+    }
+  },
+  "compatibility": {
+    "cache": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-peer48-20261118/main106-fixed-actual-canonical-cache.json",
+    "cache_sha256": "524288118c285b2d6b3762884199bea2fc88cfc892a17f63c352afd1f46ed633",
+    "fixed_accepted_actual": "23f3fa51acf5cba3e4ca25373726e37e607a17c5",
+    "accepted_MAIN_actual_sha256": "f63beb1b00ad1d8b73bcd27870e8ed5405440b09d5fed5dbd1a7e02f0b586cbf",
+    "accepted_private_sha256": "248146de51a14fc4c7428b9720c848f0fc7e8931e1b0299031726fa5009b318f",
+    "current_parent_EQUALS_accepted_MAIN_snapshot": true,
+    "incoming_private_parent_EQUALS_accepted_private_snapshot": true,
+    "incoming_single_NULL_premise_replacement_commutes": true,
+    "foreign_MAIN_425_bytes_preserved_exactly": true,
+    "old_HEAD_reads": 0,
+    "old_original_report_reads": 0,
+    "old_original_map_reads": 0,
+    "semantic_renewal": 0,
+    "source_credit": 0
+  },
+  "zero_credit": {
+    "baseline_Unsupported": 2,
+    "interrupted_literal_prelaw_state_after_daemon_restart": 1,
+    "whole_preparation": 2,
+    "author_escaped_Make_proposal": 1,
+    "native_replays": 0,
+    "old_semantic_campaign_renewals": 0,
+    "cached_canonical_reader_preparation": 1,
+    "cached_canonical_reader_note": "Counted five insertion groups as sixteen commands; corrected using cache, no original reread or execution."
+  },
+  "integration": {
+    "metadata_base": "055f81c6e022191491963accebfe42833b9d02fb",
+    "fixed_actual": "055f81c6e022191491963accebfe42833b9d02fb",
+    "fixed_tree": "6185ee352ad85ba62e793cb34f4ffa6927da489a",
+    "placement_parent": "be48fe86286bebf0a3c2535698ba3567430f93c1",
+    "original_canonical_report": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum311-comp340-output153-dynrhs-load-v1/report.json",
+      "sha256": "45e1cabc65f49e8f86fd3ec99a3e644fa0aac6a63cd9ddb38d20ffb2206d9408",
+      "pass": true,
+      "mode": "production_SL",
+      "module_count": 509,
+      "command_argv": 512,
+      "watched_inputs": 513,
+      "elapsed_seconds": 16.831902186153457,
+      "cap_seconds": 60,
+      "source_credit": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "original_source_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main108-enum311-comp340-output153-dynrhs-source-map-v1.json",
+      "sha256": "f7e41bcd39ec2c456ad2ca521811f3086977fb0c6eb6fab10ec0513a9a12ad6a",
+      "joint_paths": 33,
+      "joint_Make_commands": 16,
+      "family_paths": 7,
+      "family_Make_commands": 2
+    },
+    "reviewer_cache": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/main108-fixed-actual-canonical-cache.json",
+      "sha256": "7f00327439a5c3c1e2b0b7b20f6db064e13542536c8bc96809bed41e98f9945b"
+    },
+    "immutable_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-peer50-20261118/main108-immutable-tuple.json",
+      "sha256": "d5ec26d29319d92382495e63c8807658ef7b8a410f02e1a57f4643a6fa6b6844"
+    },
+    "all_seven_actual_posts_match_current_parent_packet": true,
+    "bounded_425_projection_preserves_accepted_MAIN_extras": true,
+    "separate_actual_LF_Make2_and_full_phase_joint_inverses": true,
+    "canonical_executions": 1,
+    "fixed_actual_reads": 1,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "later_HEAD_reads": 0,
+    "author_raw_actual_report_map_reads": 0,
+    "native_source_A_B_reruns": 0,
+    "metadata_requires_semantic_renewal": false
+  },
+  "limitations": "Effectful/lvalue lefts, uncertified RHS, selected NUL, broader cleanup/release, precision histories, owners and lifetimes remain partial. Exact holds, reserve93807cdd6/255 and inventory169/306closed0+1 unchanged."
+}

@@ -24,8 +24,13 @@ BASE refusal before the extension. The first literal prelaw attempt lost its
 state process during a daemon restart after successful compilation and retains0;
 only that affected cut reran. Author293/143-derived and reference447/185-derived
 pass first attempts at original120/180 caps. Unsupported2 retains zero credit.
-Independent source/whole review and separately counted B evidence are recorded
-in the [review](../../coverage/semantics/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-review.json).
+Independent882/201-derived and WHOLE7 pass first attempts at the original caps.
+Fixedactual055f81c6 and the sole production-SL509 canonical pass16.831902s/cap60
+with source0 through immutabled5ec26d2. The reviewer cached one original report/map
+read each; author raw reads remain0. The interrupted prelaw attempt, the escaped
+Make proposal and cached-reader grouping preparation retain0. Full posts/parents,
+inverses, exact LF Make2 and separate cuts are recorded in the
+[review](../../coverage/semantics/string-offset-runtime-null-allocated-composite-rhs-coalesce-base-initial-raw-leading-key-review.json).
 
 Pinned Zend routes are zend_compile_coalesce, ZEND_COALESCE null fallthrough and
 ZEND_QM_ASSIGN: a selected TMP moves its zval/header into the result without an
