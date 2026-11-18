@@ -1346,6 +1346,8 @@ with original projection/report/map read once and author raw reads0. Other
 spellings/classes/namespaces, mixed nominals, DNF and wider owners/lifetimes remain
 partial; all exact holds remain unchanged.
 
+Relative `stdClass` case variants now preserve their exact resolved bytes in both FORMAL and RETURN positions for bare, nullable and flat ordered union forms. Empty declaration namespaces, valid names and quiet position-specific `PTRELATIVE` resolution authenticate those exact normalized `PTCLASS` bytes; ASCII folding only recognizes the admitted class. The proof view changes only the Relative tag to FullyQualified, preserving base64 payload, metadata, member order and Param fields before the existing FQN folds. Reception, return verification, retirement and private Notice-cell ownership keep their existing guards. The [case-preserving relative review](../../coverage/semantics/relative-case-stdclass-producer-reference-notice-review.json) records native6 once, author1067 and independent source6/WHOLE1214 at separate SL507 cuts; prelaw545, Unsupported1/UNRUN5 and the original compiler-binding/phase-fixture failures retain zero credit. Fifteen old helper expectations promote through fresh137 proofs without historical renewal. Joined4eded and its sole SL509 load pass through the cached immutable tuple with author raw reads0. Ordinary aliases with other resolved spellings, other classes, nonempty Relative namespaces, mixed nominals, DNF and wider owners/lifetimes remain partial; all exact holds stay unchanged.
+
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
 changes only the authenticated type tag and preserves every other field and
