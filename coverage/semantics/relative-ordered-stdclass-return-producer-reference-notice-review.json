@@ -1,0 +1,160 @@
+{
+  "family": "relative-ordered-stdclass-return-producer-reference-notice",
+  "slice": 134,
+  "status": "partial; bounded source implemented, independently reviewed and joined-load accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup"
+  ],
+  "source_ready": {
+    "revision": "952e49044efd080154295225076020553c5d6fa7",
+    "tree": "d68cae7be33187b67c16833880150b33a63511c6",
+    "packet": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/author/source-ready-v1/packet.json",
+    "packet_sha256": "ebc249b0ca75dc1f97b96afbbf804ec5c7e5c4b27064337838173d04f18a8a43"
+  },
+  "behavior": [
+    "Flat relative RETURN unions admit exactly one canonical namespace\\stdClass and compatible builtin Identifier arms under an empty declaration namespace.",
+    "The relative-only ordered view uses quiet PTRETURN/PTRELATIVE resolution, ignores ordinary class imports and preserves every member/union metadata node.",
+    "Nonempty actuals and RETURN, an unchanged normalized Param view and the existing FQN two-through-eight-member folds preserve exact normalized order, scalar priority, object identity, array COW, frame retirement and private Notice-cell ownership.",
+    "Two older narrow relative null/int header arms are replaced to retain disjoint success; plain and scoped views remain literal."
+  ],
+  "source_symbols": [
+    "zend_resolve_class_name",
+    "zend_compile_typename_ex",
+    "zend_compile_return",
+    "ZEND_VERIFY_RETURN_TYPE",
+    "zend_check_type_slow",
+    "zend_verify_scalar_type_hint",
+    "ZEND_SEND_VAR_NO_REF_EX"
+  ],
+  "author": {
+    "summary": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/author/post-summary-v1.json",
+    "sha256": "ddd80b645da83b2beafab24f06e96b3617f3cf4054fb8c53f5af1790d6790cf5",
+    "tested_revision": "975dd8d1142cc3ddbdb02b5420443e44ccc748af",
+    "native_originals_once": 5,
+    "source_agreements": 5,
+    "state_conditions": [
+      667,
+      465,
+      202
+    ],
+    "prelaw_conditions": 332,
+    "prelaw_source_observations": 1,
+    "prelaw_source_credit": 0,
+    "fixture_mode": "SL/cache=false/det=true",
+    "module_count": 507,
+    "source_caps_seconds": [
+      180,
+      195
+    ],
+    "state_cap_seconds": 1200,
+    "current_input_bridge": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/author/author-current-input-bridge-v2.json"
+  },
+  "independent": {
+    "review_revision": "b1c43bf4a76096d0e50774a0714be78b337bc5c0",
+    "review_tree": "2693a5def87a5b21af535217291144b85d0673f4",
+    "acceptance_map": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/peer/final-map-v1.json",
+    "acceptance_map_sha256": "1e1c87f9ecb084660412cfbdd7e33744602fc6a4c5e5b72af7779151f22b61ab",
+    "source_agreements": 5,
+    "original_whole": {
+      "conditions": [
+        704,
+        465,
+        239
+      ],
+      "passed": false,
+      "credit": 0,
+      "report": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/peer/whole-v1/state/report.json"
+    },
+    "corrected_affected": {
+      "conditions": 107,
+      "repeated_frozen_object_context": 69,
+      "fresh_conditions": 38,
+      "corrected_original_fresh": 37,
+      "original_stale_type_rejection": 1,
+      "elapsed": 20.777419567108154,
+      "report": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/peer/corrected-alias-controls-v1/report.json",
+      "report_sha256": "9f01a27d3f1345ec05bfa4e44716a66a7a793773bfac6ae7f9be058f0800c30a",
+      "passed": true
+    },
+    "whole_literal_bridge": "Each of the five author667 premise lists is exactly the corresponding peer704 list before its appended37 independent conditions.",
+    "correction": "Derived alias controls now use checked PTCLASS(stdClass) matching the canonical alias target; the original source retains PTCLASS(sTdClAsS), and a stale-TYPE rejection preserves the counterexample.",
+    "fixture_mode": "SL/cache=false/det=true",
+    "module_count": 507,
+    "accepted_source_native_author_replays": 0,
+    "whole_replay": false,
+    "first_whole_pass": false
+  },
+  "promoted_helper_expectations": {
+    "author_companions": 8,
+    "peer_queries": 9,
+    "files": [
+      "tests/semantics/global_relative_union_int_stdclass_return_producer_reference_notice_state.py",
+      "tests/semantics/relative_union_int_stdclass_return_producer_reference_notice_review_state.py"
+    ],
+    "bridges": [
+      "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/author/author-affected-static-bridge-v1.json",
+      "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/peer/peer-affected-static-bridge-v1.json"
+    ],
+    "fresh_proofs": "Fresh134 source-reached controls cover the promoted companions, wider order, alias Param normalization, imports, metadata and exact normalized identities.",
+    "historical_campaign_renewal": false
+  },
+  "preserved_issues": {
+    "fixture_failures": 1,
+    "fixture_corrections": 1,
+    "runtime_law_corrections": 0,
+    "semantic_mismatches": 0,
+    "timeouts": 0
+  },
+  "integration": {
+    "revision": "74cb32567ac3f549226daf7a40ab84ec2e5fc136",
+    "tree": "289ce0d38ad80e040d3cafd9415f811e248a40c0",
+    "review": "CLEAR",
+    "paths": 9,
+    "sole_canonical": {
+      "mode": "production_SL",
+      "modules": 509,
+      "argv_count": 512,
+      "watch_count": 513,
+      "cap_seconds": 60,
+      "elapsed": 16.943231401965022,
+      "executions": 1,
+      "source_credit": 0,
+      "stable": true,
+      "reaped": true
+    },
+    "immutable_tuple": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/relative-ordered-stdclass-return-producer-reference-notice-134/peer/main108-actual-immutable-tuple-v1.json",
+      "sha256": "8039655e0bf2a0a710340ba460f23ee7c6573e7109acdb86a6290dd6b9b2505c"
+    },
+    "original_physical_reads": {
+      "actual": 1,
+      "canonical_report": 1,
+      "source_placement_map": 1
+    },
+    "author_raw_reads": 0,
+    "reuse": "Peer persisted parsed cache; metadata does not renew source, native, state or canonical credit."
+  },
+  "remaining": [
+    "Nonempty declaration namespaces, other normalized classes, multiple nominal members and DNF.",
+    "Wider producer bodies, payloads, owners and lifetime histories."
+  ],
+  "unchanged": {
+    "reserve": "93807cdd6/255",
+    "constructors": 169,
+    "runtime_obligations": 306,
+    "closed_constructors": 0,
+    "closed_runtime_obligations": 1,
+    "donors": 13,
+    "operations": "57-62/90-93",
+    "paused_boundaries": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned-NUL source-release behavior",
+      "Undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw crash"
+    ]
+  },
+  "engine_bugs_or_intentional_divergences": []
+}

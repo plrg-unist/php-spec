@@ -1283,9 +1283,29 @@ Two older pure-helper files promote through fresh133 proofs without renewing
 117/132 campaigns. Syntax, cached Make-literal reader and documentation-parent preparation
 incidents retain runtime0; the PHP law needed no correction. Fixed actuala780c163
 and sole productionSL509 pass16.282008996931836s/cap60/source0 through one physical
-report/map read each/cache thereafter; author raw reads0. Other companions,
-wider unions/namespaces/classes/payloads/owners/lifetimes remain partial, with all
-exact holds unchanged.
+report/map read each/cache thereafter; author raw reads0. Further relative unions
+are extended below; wider namespaces/classes/payloads/owners/lifetimes remain
+partial, with all exact holds unchanged.
+
+Flat relative RETURN unions extend the earlier null/int cases to exactly one
+canonical `namespace\stdClass` plus compatible builtin Identifier members. A
+relative-only view resolves the class through quiet `PTRETURN`/`PTRELATIVE`,
+ignores ordinary imports and preserves ordered fields and metadata before the
+unchanged two-through-eight-member FQN folds. Empty namespace, nonempty actuals
+and RETURN, unchanged Param normalization, verification, retirement and private
+Notice-cell guards remain. The two older narrow arms are replaced to keep
+success disjoint; plain and scoped views stay literal.
+The [flat relative-union review](../../coverage/semantics/relative-ordered-stdclass-return-producer-reference-notice-review.json)
+records native5 once, author source5/state667(465+202), independent source5 and
+corrected affected107(69 frozen-context+38 fresh) at separate SL507 cuts. The
+original WHOLE704 failed a derived alias formal-TYPE expectation and retains
+zero credit; its exact class-byte mismatch is now an explicit rejection. Only
+the affected fixture reran. Promoted old helper expectations are checked at
+fresh134 cuts without historical renewal. Fixed actual74cb32567 and the sole
+productionSL509 load pass16.943231401965022s/cap60/source0 via immutable8039655e,
+with original actual/report/map read once and author raw reads0. Other classes,
+nonempty namespaces, multiple nominals, DNF and wider owners/lifetimes remain
+partial; all exact holds remain unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
