@@ -1,0 +1,358 @@
+{
+  "milestone": "ENUM316",
+  "decision": "accepted bounded extension",
+  "full_core_complete": false,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "profile": "tests/semantics/profile.json",
+  "scope": "One unary PLUS/MINUS over a flat ADD/SUBTRACT/MULTIPLY/DIVIDE numeric child containing raw FLOAT leaves, with phase-FALSE condition and exact finite nonzero child/own FLOAT bits, selects full-ternary FIELD1 through the existing deferred default/cache/private integer reception protocol.",
+  "implementation": {
+    "path": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "sha256": "2a458dce40071608af06c34c62a7eeb2f429d83540f4e6a1018e1ef81b2b41a4",
+    "delta": "Remove one proper-grandchild witness and change one comment word; all other model bytes literal.",
+    "author_revision": "4ca7a08f4e60f06fe4bf9aa398884e1c9aad205a",
+    "author_immediate_parent": "bde5c4df36526041668d91db238d8ca5a789bc68",
+    "author_tree": "b12e86afa9aaf21f3514b897d016e4ddeecb7fe8",
+    "review_revision": "9a4b39e3a95409deeb97ae1847ce8cf5f67a0a5d",
+    "review_immediate_parent": "38dc6716695516f8941c32dadf967084c02a2ba1",
+    "review_tree": "9ef886aa547c5a260234e19f033e3b8dd39362e1",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/main114-source-packet-v1/packet.json",
+    "source_packet_sha256": "aeaec2c99e85ab783cf7e59d6454f1ca6f37f4f5a118c87fce85cb823bf8a58a",
+    "source_placement": "e7f27fa96c1efb6271605f8680b31d7d67eb0801",
+    "source_placement_parent": "66410951d88cf69183f283ba23b790dfa5139f19",
+    "source_placement_tree": "5673c6eb637fd4110d75f8b3a84369c3600c9f48",
+    "six_nonmake_posts_exact_review": true,
+    "current_make_literal_parent_projection": true,
+    "full_parent_inverse_checks": true
+  },
+  "source_authority": [
+    {
+      "path": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": [
+        "zend_try_ct_eval_unary_pm",
+        "zend_eval_const_expr",
+        "zend_compile_conditional"
+      ],
+      "fact": "Folded signs multiply by long +1/-1 and folded truth selects the branch."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_ast.c",
+      "symbols": [
+        "zend_ast_evaluate_inner",
+        "zend_ast_evaluate_ex"
+      ],
+      "fact": "Deferred AST unary plus adds integer zero; the existing phase guard retains signed-zero differences."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_operators.c",
+      "symbols": [
+        "add_function",
+        "sub_function",
+        "mul_function",
+        "div_function"
+      ],
+      "fact": "Existing pure numeric rules and exact typed folded pools certify each arithmetic node."
+    }
+  ],
+  "guards": [
+    "One unary sign over an op4 binary child; exact full/condition/selected/skipped/child SOURCE occurrences",
+    "Condition phase safety is false; recursive certificate retains exact typed pools, absent CODE/read/redirect and raw FLOAT presence",
+    "Both child and own FLOAT decode as finite with nonzero numerator; pure long +1/-1 multiplication equals the own pool",
+    "Full root has emitted false CODE and absent own pool/read, with one unique proper FIELD1 redirect and exact terminal line",
+    "Existing declaration bindings, selected scalar tags, Shared-cache authority, actual private recipients and ownership checks remain"
+  ],
+  "validation": {
+    "native": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/native-v1.process.json",
+      "process_sha256": "9e98b3163c0cd1dce8b4622ef931b958f67d63018a2112c2296da14b1e2824d3",
+      "exit": 0,
+      "elapsed_seconds": 0.11488969111815095,
+      "tested_revision": "bde5c4df36526041668d91db238d8ca5a789bc68",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/native-v1/report.json",
+      "report_sha256": "bd733bededf3cf940626782738db1e0e871731401a84ca9f6a635c9c18ce0da9",
+      "stable": true,
+      "originals": 4,
+      "pass_all": true,
+      "runtime": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/native-v1/runtime.json",
+      "native_reexecutions": 0
+    },
+    "baseline": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/baseline-v1.process.json",
+      "process_sha256": "86d91709b1b5c9f418954b17b988f650f388c0e94559a66ccb71df94e37364e7",
+      "exit": 0,
+      "elapsed_seconds": 28.697336477926,
+      "tested_revision": "bde5c4df36526041668d91db238d8ca5a789bc68",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/baseline-v1/report.json",
+      "report_sha256": "7b020d05478a287578763968f54427cc1fee16688927303d13faea1f44d55d80",
+      "stable": true,
+      "exact_normal_agreements": 0,
+      "unsupported_controls": 2,
+      "native_reexecutions": 0,
+      "pass_all": true
+    },
+    "prelaw": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/prelaw-v1.process.json",
+      "process_sha256": "490d921333e620020f1dd50284aa88e30d8ea84a853fc17b2073a1178b965bf6",
+      "exit": 0,
+      "elapsed_seconds": 124.45609141001478,
+      "tested_revision": "bde5c4df36526041668d91db238d8ca5a789bc68",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/prelaw-v1/closure-call-protocol-vjtabu0d/report.json",
+      "report_sha256": "e697cd7af14201bcaa07a321e3e71bed4f2cc56171c1a33724c47fcbf7c0e166",
+      "stable": true,
+      "result": "pass",
+      "conditions": 1140,
+      "records": [
+        {
+          "id": "pure-float-unary-prelaw-raw",
+          "conditions": 279,
+          "passed": true
+        },
+        {
+          "id": "pure-float-unary-prelaw-named",
+          "conditions": 303,
+          "passed": true
+        },
+        {
+          "id": "mixed-float-unary-prelaw-raw",
+          "conditions": 269,
+          "passed": true
+        },
+        {
+          "id": "mixed-float-unary-prelaw-named",
+          "conditions": 289,
+          "passed": true
+        }
+      ],
+      "source_credit": 0
+    },
+    "source": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/source-v1.process.json",
+      "process_sha256": "3e2b2d43ec369b369006c026efb5ce929d9a4ce6ade9778c34565f3ad3d6bc1b",
+      "exit": 0,
+      "elapsed_seconds": 104.0340739111416,
+      "tested_revision": "4ca7a08f4e60f06fe4bf9aa398884e1c9aad205a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/source-v1/report.json",
+      "report_sha256": "5f865b20099e314d22e0401678bc5b823d68ea9bc5ba95de41a2addb03e88aff",
+      "stable": true,
+      "exact_normal_agreements": 4,
+      "unsupported_controls": 0,
+      "native_reexecutions": 0,
+      "pass_all": true
+    },
+    "author": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/author-v1.process.json",
+      "process_sha256": "3c345cbc32239ae09e4e076d34709f8f5c9e4856330856fe0336223d3b0bd661",
+      "exit": 0,
+      "elapsed_seconds": 359.87129733501934,
+      "tested_revision": "4ca7a08f4e60f06fe4bf9aa398884e1c9aad205a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/author-v1/closure-call-protocol-iv3rb5si/report.json",
+      "report_sha256": "cb0d5189f09a2cc08681fd22fa765b986363098bb3d334c417441ea9f9985dff",
+      "stable": true,
+      "result": "pass",
+      "conditions": 1602,
+      "records": [
+        {
+          "id": "pure-unary-flat-finite-float-tree-raw",
+          "conditions": 316,
+          "passed": true
+        },
+        {
+          "id": "pure-unary-flat-finite-float-tree-certificate",
+          "conditions": 442,
+          "passed": true
+        },
+        {
+          "id": "pure-unary-flat-finite-float-tree-private",
+          "conditions": 55,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-float-tree-raw",
+          "conditions": 306,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-float-tree-certificate",
+          "conditions": 428,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-float-tree-private",
+          "conditions": 55,
+          "passed": true
+        }
+      ],
+      "source_credit": 0
+    }
+  },
+  "independent_review": {
+    "reviewer": "/root/recover32_enum_flat_phase_review",
+    "packet": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-source-packet-v1/packet.json",
+    "packet_sha256": "32739570a75ff8b610d12f3c2cf72e7d2f96d481d4f97ef31d307f398fc68b68",
+    "verdict": {
+      "verdict": "accept bounded flat-child extension",
+      "reason": "The removed proper-grandchild witness adds no value authority: recursive source/pool/tag/absence checks, raw FLOAT presence, phaseFALSE, outer sign equality and both finite nonzero guards remain literal. Exact default/source and current-cache recipient checks remain independent gates.",
+      "engine_symbols": [
+        "Zend/zend_compile.c:zend_try_ct_eval_unary_pm",
+        "Zend/zend_compile.c:zend_eval_const_expr",
+        "Zend/zend_ast.c:zend_ast_evaluate_ex"
+      ],
+      "preserved_boundaries": "old roots/collector/tags/phase/overflow/cache/source/pool bounds and wider unsupported defaults; no owner or Zend fallback changes"
+    },
+    "whole": {
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-v1/closure-call-protocol-uut0w_z2/report.json",
+      "report_sha256": "cb4483d2235d9f61cf9fcd379e301bf8dad83d41f7d7944e45074c5f767b78f2",
+      "selection": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-v1/selection.json",
+      "conditions": 1138,
+      "groups": 8,
+      "records": [
+        {
+          "id": "pure-unary-flat-finite-independent-tags",
+          "source_sha256": "5b2248c21082ca98542ca771145b7eddc0a0db7bbca241a6c6f5516a0cd13546",
+          "assertions": 161,
+          "pass": true
+        },
+        {
+          "id": "pure-unary-flat-finite-independent-certificates",
+          "source_sha256": "5b2248c21082ca98542ca771145b7eddc0a0db7bbca241a6c6f5516a0cd13546",
+          "assertions": 208,
+          "pass": true
+        },
+        {
+          "id": "pure-unary-flat-finite-independent-private-lifecycle",
+          "source_sha256": "43f0d78ff4a30a0237d32a6590a0822be8266795fa2a5f2847429fecae3e9e4f",
+          "assertions": 170,
+          "pass": true
+        },
+        {
+          "id": "pure-accepted315-flat-unsafe-query",
+          "source_sha256": "ca625467aa63df6fc473cc8e2561c46be70c88d033d332f92a4bd63d9520d914",
+          "assertions": 32,
+          "pass": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-independent-tags",
+          "source_sha256": "7766d80a06ddcc682c7620e1defa1428311f2cb6c92d68643d719f30cb1d3e2a",
+          "assertions": 157,
+          "pass": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-independent-certificates",
+          "source_sha256": "7766d80a06ddcc682c7620e1defa1428311f2cb6c92d68643d719f30cb1d3e2a",
+          "assertions": 214,
+          "pass": true
+        },
+        {
+          "id": "mixed-unary-flat-finite-independent-private-lifecycle",
+          "source_sha256": "081b5534f009e7f38d12cba59ab0df6643b32865178464ce4ca2e1d008ecaf5a",
+          "assertions": 164,
+          "pass": true
+        },
+        {
+          "id": "mixed-accepted315-flat-unsafe-query",
+          "source_sha256": "b58f23de2050bf4bfd9df0cc44e8e3c287b7a41d02f875522dc86dbc6c48e29b",
+          "assertions": 32,
+          "pass": true
+        }
+      ],
+      "elapsed_seconds": 284.09676805813797,
+      "exit": 0,
+      "timeout": false,
+      "reaped": true,
+      "own_live_jobs": 0,
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-v1.process.json",
+      "bridge": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-v1/affected315-bridge.json",
+      "bridge_sha256": "a4b518645cdff49b013a0bbad9083554a894aca6bc1ada5e876fffb94b0c9e38",
+      "source_credit": 0,
+      "native_reexecutions": 0
+    },
+    "new316_conditions": 1074,
+    "fresh_affected315_conditions": 64,
+    "physical_conditions": 1138,
+    "unique_condition_claim": false,
+    "source_credit": 0,
+    "native_reexecutions": 0
+  },
+  "affected315": {
+    "promoted_root_queries": 2,
+    "location": "flat_unsafe ROOT queries only; pure index164 and mixed index170",
+    "bridge": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/peer-v1/affected315-bridge.json",
+    "bridge_sha256": "a4b518645cdff49b013a0bbad9083554a894aca6bc1ada5e876fffb94b0c9e38",
+    "all_other_generated_checks_source_stage_literal": true,
+    "accepted_source_native_whole_campaign_renewals": 0
+  },
+  "fixed_integration": {
+    "family": "ENUM316",
+    "actual_commit": "e7f27fa96c1efb6271605f8680b31d7d67eb0801",
+    "actual_tree": "5673c6eb637fd4110d75f8b3a84369c3600c9f48",
+    "parent_commit": "66410951d88cf69183f283ba23b790dfa5139f19",
+    "review_commit": "9a4b39e3a95409deeb97ae1847ce8cf5f67a0a5d",
+    "review_tree": "9ef886aa547c5a260234e19f033e3b8dd39362e1",
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watched_count": 513,
+    "elapsed_seconds": 16.892701454926282,
+    "cap_seconds": 60,
+    "exit": 0,
+    "timeout": false,
+    "pass": true,
+    "stable": true,
+    "reaped": true,
+    "stdout_hex": "747275650a",
+    "stderr_hex": "",
+    "source_credit": 0,
+    "report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-enum316-canonical-v1/report.json",
+    "report_sha256": "c94a483eea9c6037c0e7a58fbb8bfeb3db7819d3ba96b028a5312e57e743de25",
+    "map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-enum316-source-map-v1.json",
+    "map_sha256": "b82c24057f78d1c8cf9175cbf04503b478654bcffd57700aba7db7d05d850ce6",
+    "full_cached_before_assertions": true,
+    "cache_sha256": "d9444f667a01fe6c1849e5a74fe54e3542568b5d3b392da1f786f4d45e7c0b54",
+    "nonMake_review_posts_exact": 6,
+    "make_projected_rows": 3,
+    "all_literal_roundtrips": true,
+    "foreign_bytes_preserved": true,
+    "static_preparation": {
+      "record": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-enum316-preparation-v1.json",
+      "sha256": "98a2f90ff00876897c2e1dd450b1b2959ab135cd2864af05c901ff0a3cee8c6f",
+      "attempts_before_first_mutation": 1,
+      "runtime_credit": 0,
+      "source_credit": 0
+    },
+    "accepted_old315_renewals": 0,
+    "author_original_raw_reads": 0
+  },
+  "integration_tuple": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/integrated-fixed-cache-v1/author39-tiny.json",
+    "sha256": "9335095c42e4f4dcc3c58f3cfecf400ec05b5b33079cc6a2380270ed1128cdca",
+    "full_parsed_cache_sha256": "d9444f667a01fe6c1849e5a74fe54e3542568b5d3b392da1f786f4d45e7c0b54",
+    "full_cache_persisted_before_assertions": true,
+    "reviewer_original_report_reads": 1,
+    "reviewer_original_map_reads": 1,
+    "author_original_report_map_cache_raw_reads": 0,
+    "original_report_map_closed": true,
+    "semantic_reruns_for_metadata": 0
+  },
+  "failures_and_corrections": {
+    "author_semantic_failures": 0,
+    "fixture_corrections": 0,
+    "timeouts": 0,
+    "main_static_preparation_failures": 1,
+    "main_static_preparation_record": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-enum316-preparation-v1.json",
+    "main_static_preparation_sha256": "98a2f90ff00876897c2e1dd450b1b2959ab135cd2864af05c901ff0a3cee8c6f",
+    "main_static_preparation_runtime_credit": 0,
+    "main_static_preparation_source_credit": 0,
+    "native_reexecutions": 0,
+    "accepted_campaign_renewals": 0
+  },
+  "unchanged_by_this_increment": [
+    "Prior finite ordinary VALUE and INF roots, recursive collector and integer-only routes",
+    "Source, typed tags, pool, phase and integer overflow fences",
+    "Selected scalar, cache, private receive, budget and lifetime protocols",
+    "All exact holds/reserve and inventory169/306/closed0+1"
+  ],
+  "remaining": [
+    "Repeated unary wrappers over computed numeric trees; names/STRING/NaN-warning continuations; owning results and wider declaration/reception/lifetime contexts",
+    "Complete PHP core, portability closure, interaction trees and BOLA/CRIS verification remain unfinished"
+  ],
+  "deliberate_engine_divergences": []
+}

@@ -1,0 +1,202 @@
+{
+  "family": "string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key",
+  "status": "independently reviewed and integrated at the fixed source revision",
+  "target": {
+    "php": "8.5.10 CLI NTS 64-bit",
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "oracle": ".tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "reference": "pure executable .watsup; no Zend evaluation fallback"
+  },
+  "behavior": {
+    "grammar": "Raw NScalarFloat with finite recursive UnaryPlus, UnaryMinus and CastDouble wrappers",
+    "production_change": "One syntax-only CASTDOUBLE recursion; allocation/source/precision/pool/full-state/ownership bodies unchanged",
+    "replay": "CASTSTRING appends one RHS REQUEST row; CONCAT appends the final row; numeric FLOAT casts change only RESULT",
+    "saved_key": "Frozen raw CV offset survives returning Warning callbacks and reference rebinding",
+    "boundary_control": "Checked (-12.5)+0.0 has genuine FLOAT VALUE and one-row replay but remains outside the raw grammar",
+    "unchanged": "NaN quietness exclusion, prior infinity admission, installed compiler-pool boundary and left BASE authority"
+  },
+  "implementation": [
+    "spec/semantics/425-string-offset-read-continuations.watsup"
+  ],
+  "source": {
+    "author_commit": "6b5d3b0175dc1976b9cac5ac95e968f00de0868c",
+    "author_tree": "261981d7e19e3a5c735e3d3230fb784a90008f03",
+    "semantic_commit": "5e0a5a6356fb82e0714dd08b85362b643e8af353",
+    "fixed_parent": "b97d65ba217dfe0ad782ad9a747da6619afe8838",
+    "integrated_revision": "66410951d88cf69183f283ba23b790dfa5139f19",
+    "integrated_tree": "c501c98eae250275d369e56c0fbd37984773fb3b",
+    "source_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/source-ready62-v1/packet.json",
+      "sha256": "9bf72ed275c7ce870538b77645fd8abdc3a046807a5f5cea8807af8536829c08"
+    },
+    "projection_clear": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/source-projection-clear.json",
+      "sha256": "aa9afcccd83073b9122a21d0f5d779bfada3e58f1d493b6b2e042be45c61cdd7"
+    }
+  },
+  "validation": {
+    "native_originals_once": 2,
+    "native_reruns": 0,
+    "source_agreements": 2,
+    "baseline_unsupported": 2,
+    "prelaw_premises": [
+      80,
+      91
+    ],
+    "author_premises_and_derived": [
+      [
+        247,
+        92
+      ],
+      [
+        264,
+        92
+      ]
+    ],
+    "independent_premises_and_derived": [
+      387,
+      218
+    ],
+    "current_derived_control_only": {
+      "helper_conditions": 52,
+      "main_call": 1,
+      "total": 53,
+      "historical_main_written_and_executed_conditions": 0,
+      "source_native_credit": 0
+    },
+    "fresh_pure_equivalents": 8,
+    "private_modules": {
+      "production_SL": 508,
+      "all_manifest": true,
+      "exclusions": []
+    },
+    "whole_judgments": 14,
+    "source_mismatches": 0,
+    "timeouts": 0,
+    "historical_accepted_renewals": 0,
+    "all_planned_checks_complete_and_reaped": true,
+    "author_summary": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/author-summary-v1.json",
+      "sha256": "fca452bb67ac29ae1bacf7ef67e2943b7f3ec03bebd1505e1cace1e39174865a"
+    },
+    "independent_ready": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/review-ready.json",
+      "sha256": "3dbd4815256a214ac513bca4aab9fec730fe9f417beaebcdd56347cf565dcc9c"
+    },
+    "validation_cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/source-ready62-v1/validation-cuts.json",
+      "sha256": "0ae39fa5acfb44e7b82b6d6e379ad01a777d23b8d8765b66ffad0b670c9662ae"
+    }
+  },
+  "failures_zero_credit": {
+    "author_fixture_failures": 2,
+    "author_fixture_corrections": [
+      {
+        "stage": "author direct fixture compiler",
+        "original": "author-direct/report.json",
+        "failure": "AST constructor token CASTDOUBLE used as pcast; pcast is CASTFLOAT",
+        "original_premises": 245,
+        "original_derived": 90,
+        "compiler_elapsed_seconds": 11.888662338256836,
+        "semantic_execution": "UNRUN",
+        "source_credit": 0,
+        "native_executions": 0,
+        "correction": "Only new author reached-check token CASTDOUBLE -> CASTFLOAT; NExprCastDouble and all production rules/source bytes remain unchanged",
+        "affected_checks": "new author direct v2 and new reference author; original-source and prelaw captures retained without renewal"
+      },
+      {
+        "stage": "author direct v2 fixture state expectation",
+        "original": "author-direct-v2/report.json",
+        "failure": "Incorrectly expected an unused PNULL pool entry to block an emitted root; CODEfalse/readEPS correctly retains genuine child VALUE authority",
+        "original_premises": 245,
+        "original_derived": 90,
+        "execution_elapsed_seconds": 29.535624504089355,
+        "semantic_execution": "fixture expectation failed; original-source comparisons unchanged",
+        "source_credit": 0,
+        "native_executions": 0,
+        "correction": "Only new author fixture now admits the irrelevant pool entry and explicitly checks readEPS and identical genuine VALUE; no production change",
+        "affected_checks": "new author direct v3 and new reference author; source/prelaw/native cuts retained without renewal"
+      }
+    ],
+    "reviewer_noncanonical_preparations": [
+      {
+        "stage": "READY assembly",
+        "failure": "source runner lacks inputs_stable field; corrected to source-driver stability assertions and summary flags plus exact changed input hashes",
+        "credit": 0
+      },
+      {
+        "stage": "source projection validation",
+        "failure": "absent new-file parent omits sha256 rather than explicit null; validator corrected to that schema",
+        "credit": 0
+      }
+    ],
+    "canonical_reader_preparations": [
+      {
+        "stage": "canonical reader preparation",
+        "failure": "assumed producer unified diff artifact had Git full-index encoding; exact complete forward/inverse hunks verified against saved fixed full-parent/post bytes",
+        "credit": 0,
+        "source_native_fixture_canonical_executions": 0,
+        "original_report_or_map_reopens": 0
+      }
+    ],
+    "source_native_or_canonical_reruns": 0
+  },
+  "integration": {
+    "fixed_actual_revision": "66410951d88cf69183f283ba23b790dfa5139f19",
+    "fixed_actual_tree": "c501c98eae250275d369e56c0fbd37984773fb3b",
+    "canonical": {
+      "report_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-dyn-castdouble-canonical-v1/report.json",
+      "report_sha256": "dc362c95120ec9a4962fb38133ad99f4918a3c26012b28314a986f00163c3a46",
+      "map_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main114-dyn-castdouble-source-map-v1.json",
+      "map_sha256": "e19f54c262073395818f4117e73a153bd6cd4f19a05095e33429214fc44d7604",
+      "module_count": 509,
+      "argv_count": 512,
+      "watched_count": 513,
+      "mode": "production_SL",
+      "cap_seconds": 60,
+      "elapsed": 16.731935046846047,
+      "pass": true,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0,
+      "executions": 1
+    },
+    "independent_cache": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/actual-canonical-parsed-cache-v1.json",
+      "sha256": "3b4c5acc52999ae35798dbb7d8ebdb32a61b2c1875379ced6583afee3dbfd233",
+      "full_raw_and_parsed": true,
+      "persisted_before_assertions": true
+    },
+    "physical_original_reads": {
+      "report": 1,
+      "map": 1
+    },
+    "author_original_report_map_or_independent_cache_reads": 0,
+    "independent_clearance_tiny": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/actual-canonical-clear-v1.json",
+      "sha256": "db631dddcdda75d9284db76a9211b57b61e221c227c8599423bd52f60d35fa0a"
+    },
+    "metadata_does_not_renew_semantic_acceptance": true
+  },
+  "remaining_partial": [
+    "General VALUE and arithmetic/other leaves",
+    "Multirow RHS allocation",
+    "Wider owners, release and lifetimes",
+    "Complete PHP core, later interaction trees and BOLA/CRIS verification"
+  ],
+  "inherited_unchanged": {
+    "inventory": [
+      169,
+      306
+    ],
+    "closed_obligations": [
+      0,
+      1
+    ],
+    "reserve": "93807cdd6/255",
+    "all_existing_exact_holds": true
+  },
+  "artifacts": "Raw evidence remains outside Git and is not a build or runtime prerequisite."
+}

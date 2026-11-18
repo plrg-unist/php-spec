@@ -1385,9 +1385,26 @@ Four originals observe strict +/-2.0 and +/-3.0 results. Native4 once/source4,
 prelaw1400, retained raw/private866, corrected certificate1100 and independent
 WHOLE1270 keep separate cuts. Original author1948 remains NONPASS from two
 overbroad compiled-read refusals; those genuine reads now explicitly retain the
-old finite route. Flat phase-FALSE children, repeated computed wrappers,
-names/STRING, NaN warnings and wider contexts remain partial.
+old finite route. At that cut flat phase-FALSE children, repeated computed
+wrappers, names/STRING, NaN warnings and wider contexts remained partial.
 [Finite phase-FALSE unary-tree review](../../coverage/semantics/deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+
+Flat binary children containing raw FLOAT leaves now retain the same one-sign
+finite nonzero receipt. Only the proper-grandchild witness is removed; exact
+recursive SOURCE, typed pools, absent CODE/read/redirects, phase-FALSE, both
+finite nonzero results and pure long +1/-1 multiplication remain required.
+Selected tags, old finite/INF roots, the collector, Shared caches and private
+reception through named handler reentry retain their existing guards.
+
+Four originals distinguish pure +/-1.0 and mixed +/-2.0 and preserve private
+recipients across reentry. Native4 once/source4, prelaw1140 and author1602 pass
+first attempts. Independent WHOLE1138 consists of new3161074 and fresh exact
+affected31564; only two old flat-child ROOT queries promote through a static
+bridge. Other old checks/source/stages and accepted campaigns stay unchanged.
+The fixed 509-module production load passes separately with source0; one
+prewrite preparation failure has runtime0/source0. Repeated wrappers, names,
+STRING/NaN-warning continuations and wider contexts remain partial.
+[Flat finite phase-FALSE unary-tree review](../../coverage/semantics/deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 ## Source metadata and resumed states
 

@@ -2331,3 +2331,31 @@ Strings in ALIAS cells, owning/typed/backed/declared/NUL fields, cached tables,
 cycles and wider histories remain partial. All exact holds, reserve93807cdd6/255
 and inventory169/306/closed0+1 remain unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post-review.json).
+
+Ordinary dynamic ALIAS fields also admit authenticated non-NUL STRING carriers.
+The existing string-cell certificate validates INTERNED bytes or the exact
+REQUEST index and registry bytes, alongside the marked, allocated, defined cell,
+empty property/coercion/backing records and pruned liveness. The outer scalar-child
+check, duplicate property release edges, full field proof before uniqueness and
+DIRECT/REQUEST clause remain literal. String registry rows own no heap nodes.
+
+Fresh literal-normal and runtime-pending originals share one count/mirror cell.
+Property writes reach its CV; a later runtime string written through the CV reaches
+the old DIRECT object after object-alias rebinding. CV removal leaves two property
+edges and no cell roots. Key then final-alias retirement clear the old/new weak
+targets while both string headers and the complete registry remain valid.
+
+The two native originals ran once. Both current source comparisons reuse those
+bytes at the 90-second model/120-second outer limits. Author348/367 and independent
+443/458 state conditions pass separately at SL180, with derived checks counted
+separately. Four author and five reviewer helper forms change sign and are checked
+in both fresh states; all other old query counters remain literal and accepted
+campaigns stay unrenewed. Independent source8/WHOLE review is clear. Actual
+revision `9114779f` and its sole production SL load of 509 modules pass at
+17.235849248 seconds, bound by immutable `6b1f66c2`. The reviewer read each
+saved canonical report/map once; the author read neither.
+Forged/raw carriers and NUL payloads remain refused. Owning/typed/backed/declared
+fields, cached tables, other object kinds, cycles and wider histories remain
+partial. All exact holds,
+reserve93807cdd6/255 and inventory169/306/closed0+1 remain unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-string-alias-fields-post-review.json).

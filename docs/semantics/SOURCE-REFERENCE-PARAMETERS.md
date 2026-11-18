@@ -1750,3 +1750,13 @@ constraint. Omitted defaults still materialize as FLOAT; numeric-string defaults
 remain compile-invalid. Nullable/union formals, other default expressions and
 wider producers/lifetimes remain partial.
 [Review](../../coverage/semantics/supplied-optional-float-int-default-producer-reference-notice-review.json).
+
+Fully supplied optional untyped or plain `float` formals also retain literal
+FLOAT defaults. The proof preserves the whole checked FLOAT AST, including its
+payload and metadata, with exact `PSDEFAULT` kind `float`; the existing adapter
+already validates the binary64 encoding. Actual reception, default demand and
+private reference-cell ownership remain unchanged. A supplied untyped scalar
+keeps its value until the body writes it, while a later omitted call observes
+FLOAT `7.5`. An `int` formal still rejects even the exact FLOAT default `7.0`
+before execution. Other types/default expressions and wider contexts remain partial.
+[Review](../../coverage/semantics/supplied-optional-float-default-producer-reference-notice-review.json).

@@ -1,0 +1,155 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-string-alias-fields-post",
+  "status": "Independent source8, actual integration and canonical review clear; complete PHP core remains unfinished.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; project-local pinned oracle",
+  "profile": "tests/semantics/profile.json",
+  "scope": "Ordinary dynamic ALIAS fields in retained quiet stdClass objects may hold authenticated non-NUL INTERNED or REQUEST STRING carriers after a nested-unset Warning. The saved ordinary initialized NULL/BOOL CV still holds an array; REQUEST strings in that saved CV itself remain outside this field-only extension.",
+  "behavior": "Count and mirror share one real string cell. Field writes update the CV; a later REQUEST write through the CV updates both fields of the old DIRECT object after the object alias is rebound. CV removal leaves zero cell roots and two property edges. Key retirement frees the old object and field cell; final alias retirement frees the new empty object. Both string headers and the full immutable registry remain valid, with no string-owned heap node. The fixed Error or same pending Throwable and caller tail remain exact.",
+  "implementation": {
+    "path": "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "sha256": "24923c8d2b2042266ca67ef6ee51cec3c561470b28f8f597de2b8bd066f27a87",
+    "rule": "One ALIAS-field premise adds OR string_read_array_string_cell to literal_reference_plain_cell. The reused425 helper requires an in-range marked allocated defined reference cell, exact valid INTERNED bytes or REQUEST registry index/bytes, non-NUL and empty property/coercion/backing records with pruned liveness. The outer pruned-live and empty-child guards, complete field proof before uniqueness, exact duplicate property_release_nodes and DIRECT/REQUEST clause remain literal.",
+    "engine_contract": "Zend ZEND_ASSIGN_OBJ_REF / zend_assign_to_property_reference share the ordinary reference; zend_assign_to_variable_reference retains each real edge. zend_object_std_dtor notifies weak references before releasing dynamic properties."
+  },
+  "evidence_root": "../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-string-alias-fields-post/",
+  "source8": {
+    "manifest": "author46-source8-v1/manifest.json",
+    "sha256": "0764044249d395b75692f326e76c1eb749654dfbcc625c9e36c7de8601973e95",
+    "private_revision": "b2c68e5bb91e35853cfa0efc0b43ed360330b194",
+    "files": 8,
+    "complete_modified_parents": 4,
+    "new_file_absences": 4,
+    "forward_inverse_and_literal_parent_projections": true
+  },
+  "independent_whole": {
+    "path": "peer-post50-v1.json",
+    "sha256": "d9366806c42f83e204041d624734e829c183a1209f239ed8df8c48899bcec651",
+    "result": "PASS; complete source posts/parents/absences/inverses, Make6, exact old query promotions, raw saved-native public2, author2/peer2, semantic counterexamples and test reliability.",
+    "extra_standalone_jobs": 0,
+    "private_canonical_loads": 0
+  },
+  "current_source": {
+    "report": "author46-post-source-v1/report.json",
+    "sha256": "bcab20ed52ba45d5bcf2de5b4f5c9ce5f3474a6527500f488314d12d3a1c4c0e",
+    "agreements": 2,
+    "native_originals_once": 2,
+    "native_reused": 2,
+    "new_native": 0,
+    "model_cap_seconds": 90,
+    "outer_cap_seconds": 120,
+    "independently_reviewed_public_results": true,
+    "reviewer_public_reexecutions": 0
+  },
+  "states": {
+    "prelaw_author": [
+      210,
+      226
+    ],
+    "prelaw_author_derived": [
+      84,
+      89
+    ],
+    "prelaw_independent": [
+      249,
+      267
+    ],
+    "prelaw_independent_derived": [
+      99,
+      103
+    ],
+    "prelaw_independent_summary": "peer-prelaw49-v1.json",
+    "prelaw_independent_sha256": "474227b9bf01b77b3bbedbe57c95dad4a18fd6417fe957ccc1a5cdc57c780da2",
+    "post_author": [
+      348,
+      367
+    ],
+    "post_author_derived": [
+      204,
+      208
+    ],
+    "author_summary": "author46-planned-checks-v1.json",
+    "author_sha256": "75055f661f5a03da214f3568b97cefdfad7f003ad75fad7dba427014bc61d881",
+    "post_independent": [
+      443,
+      458
+    ],
+    "post_independent_derived_each": 176,
+    "independent_summary": "peer-post50-v1.json",
+    "cap_seconds": 180,
+    "first_semantic_attempts_passed": true,
+    "all_reaped": true,
+    "source_credit": 0,
+    "native_credit": 0
+  },
+  "prelaw": {
+    "report": "author46-prelaw-source-v1/report.json",
+    "sha256": "4b3f7896977bfe056190f9683ffc90251140d6c14dc0c7d277d9f50bdeb74eae",
+    "public_Unsupported": 2,
+    "agreement_credit": 0,
+    "retained_without_rerun": true
+  },
+  "affected_prior_fixtures": {
+    "promoted_forms": {
+      "author": 4,
+      "peer": 5,
+      "fresh_states_each": 2,
+      "other_query_counters_literal": true,
+      "old_campaign_replays": 0
+    },
+    "summary": "Four author and five reviewer query forms change from negative to positive, freshly asserted in both new states. Every other old query Counter and the old physical/derived totals stay literal. No old accepted native/source/state campaign was repeated."
+  },
+  "controls": "Empty/string0/binary non-NUL INTERNED and registered REQUEST headers admit with unchanged heap graph and primitive/plain-cell distinction. Raw, invalid-byte, NUL including authenticated REQUEST NUL, out-of-range or forged registry carriers refuse. Missing marks/allocation/definition, typed/coercion/backing records, duplicate/NUL/declared fields, owning values and invalid wrappers remain refused. Full-state/public/budget replay and exact object-only owners/retirement remain separate from source credit.",
+  "prior_families": "The closed primitive, REQUEST, scalar and object-alias cuts remain separate and unrenewed.",
+  "actual_integration_and_canonical": {
+    "status": "CLEAR at fixed9114779f through immutable6b1f66c2; no later HEAD/input or original renewal.",
+    "author_original_report_reads": 0,
+    "author_original_map_reads": 0,
+    "author_full_cache_reads": 0,
+    "author_common4_physical_writes": 0
+  },
+  "outcomes": {
+    "semantic_failures": 0,
+    "fixture_failures": 0,
+    "timeouts": 0,
+    "accepted_semantic_reruns": 0
+  },
+  "remaining": "NUL payloads, owning/typed/backed/declared fields, other object kinds, cached tables, cycles and wider callback/lifetime histories remain partial. The saved CV REQUEST-string root boundary is unchanged.",
+  "holds": "Source47 low-precision DEFINE-name NaN, NaN BYTE, Owned REQUEST-NUL, undefined by-reference LIST, COMP88, OP12, withdrawn blanket finite acceptance, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "divergences": [],
+  "actual_canonical": {
+    "revision": "9114779f87284237eba8a24e07b6b8eb06a1f223",
+    "tree": "83122a5c0157678f036db1f5f1dbfab24c68701c",
+    "immutable": "peer50-main113-canonical-tiny-v1.json",
+    "sha256": "6b1f66c2970fb32854c2eb1bbc8c5b9038b397384340ca533de297e5aa9e0e00",
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "watched_count": 513,
+    "seconds": 17.235849248012528,
+    "cap_seconds": 60,
+    "pass": true,
+    "stable": true,
+    "quiet_true_lf": true,
+    "reaped": true,
+    "source_credit": 0,
+    "canonical_executions": 1,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "report_sha256": "79fe7f038be2b54bde1877c026130a71d854839615d751791407f4649ce7a490",
+    "map_sha256": "76407ddc719311eacbb01d31e4c8e18597d51fb6ee556eb463854a83080dbf63",
+    "author_original_reads": 0,
+    "author_full_cache_reads": 0,
+    "full_raw_parsed_cache_before_assertions": true,
+    "parsed_cache_sha256": "55a0b598ccf7f31681a5a8bdfbede1e23b13cb97456dc9d84ccbfe85f35f3cd5"
+  },
+  "preparation": {
+    "main_static": {
+      "attempts": 2,
+      "first_nonpass": "changed after-guard bare line occurs twice; widened literal context",
+      "first_mutations": 0,
+      "first_runtime": 0,
+      "first_source_credit": 0
+    },
+    "reader_format": "Initial tag/format assumptions were corrected only from already persisted raw/parsed cache; no original reread, source/runtime discrepancy or renewal."
+  }
+}
