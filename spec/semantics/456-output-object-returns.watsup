@@ -1626,6 +1626,50 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBitwiseNot expressio
   -- if S_not = S[.RESULT = KNOWN (PINT i_result)]
   -- if (b_child /\ $compiled_read(S, porigin) = (PINT i_result)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(PINT i_result) = eps
+;; Constant-left short circuits authenticate only the selected operands.
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PBOOL b_or)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $origin_node(S.SOURCES, porigin_right) = (expression_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_left)
+  -- if $value_nodes(pvalue_left) = eps
+  -- if porigin_left = PORIGIN n_child pcpath_left
+  -- if porigin_right = PORIGIN n_child pcpath_right
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z, true))
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = eps
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, true)
+  -- if $boolean_result(S[.RESULT = KNOWN pvalue_left], false, z) = S[.RESULT = KNOWN (PBOOL b_or)]
+  -- if $compiled_read(S, porigin) = (PBOOL b_or)
+  -- if $compiled_effects(S, porigin) = eps
+  -- if $enter_compiled_task(S, porigin, EVAL expression, S.TODO) = S[.RESULT = KNOWN (PBOOL b_or)]
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (PBOOL b_result)
+  -- if $pfshape(expression) = PFSHORT b_or expression_left expression_right
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_left, expression_left) = (pvalue_left)
+  -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_left)
+  -- if $value_nodes(pvalue_left) = eps
+  -- if porigin_left = PORIGIN n_child pcpath_left
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_left) = ((z_left, true))
+  -- if S_left = $boolean_result(S[.RESULT = KNOWN pvalue_left], false, z_left)
+  -- if S_left.RESULT = KNOWN (PBOOL b_left)
+  -- if S_left = S[.RESULT = KNOWN (PBOOL b_left)]
+  -- if b_left =/= b_or
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_right, expression_right) = (pvalue_right)
+  -- if $ob_object_cast_chain_quiet(CASTBOOL, pvalue_right)
+  -- if $value_nodes(pvalue_right) = eps
+  -- if porigin_right = PORIGIN n_child pcpath_right
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_right) = ((z, b_right))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_right)
+  -- if S_right = $boolean_result(S[.RESULT = KNOWN pvalue_right], false, z)
+  -- if S_right.RESULT = KNOWN (PBOOL b_result)
+  -- if S_right = S[.RESULT = KNOWN (PBOOL b_result)]
+  -- if $compiled_effects(S, porigin) = eps
+  -- if (b_right /\ $compiled_read(S, porigin) = (PBOOL b_result)) \/ (~b_right /\ $compiled_read(S, porigin) = eps /\ $compiled_redirect(S, porigin) = ((porigin_right, expression_right, true, z)))
 def $ob_object_cast_chain_value(S, pfunction, porigin, NExprBooleanNot expression_child metadata) = (PBOOL b_result)
   -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
   -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)

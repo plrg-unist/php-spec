@@ -1925,3 +1925,17 @@ nonnumeric strings. Wider producers, callbacks, owners/lifetimes, every held
 boundary and OB31 remain partial; earlier supported unary/string lanes remain.
 [Primitive unary-sign evidence](../../coverage/semantics/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error-review.json).
+
+Quiet constant-left `&&`, `||`, `and` and `or` expressions also feed the selected
+nested scalar return casts. Exact indexed SOURCE and own CODE/pool facts retain
+the left truth and selected terminal line. A decisive folded left authenticates
+the skipped RHS occurrence with absent CODE, without evaluating that RHS. A
+nondecisive folded left authenticates the proper quiet right child and its exact
+folded result or emitted Boolean redirect. Both routes require intrinsic quiet
+truth, nonowning selected children and unchanged full Boolean states; parent
+compiled effects must be empty. Undefined skipped constants remain unobserved.
+Emitted left operands, NaN truth, owning or warningful operands and wider return,
+handler and lifetime contexts remain partial. The existing two-cast gate, held
+boundaries and OB31 remain unchanged.
+[Quiet short-circuit evidence](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-author.json)
+and [review](../../coverage/semantics/output-final-selected-quiet-short-circuit-cast-chain-return-modulo-error-review.json).
