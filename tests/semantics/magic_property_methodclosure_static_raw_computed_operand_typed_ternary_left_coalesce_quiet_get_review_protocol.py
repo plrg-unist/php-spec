@@ -141,8 +141,9 @@ def source_and_bounds():
     for number, shape in enumerate(rejected):
         expression, _, occurrences = source_tree(shape, 'domain_' + str(number))
         state = 'S_computed_domain_' + str(number)
+        value = {0: 'PNULL', 1: 'PBOOL false', 2: 'PBOOL false'}.get(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = eps' if value is None else f' = ({value})')]
     bad_operands = [
         ('?', TRUE, ('.', string(b'\0'), NULL), FALSE),
         ('?', TRUE, NULL, ('!', string(b'\0'))),
@@ -157,8 +158,9 @@ def source_and_bounds():
     for number, shape in enumerate(bad_operands):
         expression, _, occurrences = source_tree(shape, 'bad_operand_' + str(number))
         state = 'S_computed_bad_operand_' + str(number)
+        value = {4: 'PNULL', 5: pstring(b'R'), 6: 'PBOOL true', 7: 'PBOOL false', 8: 'PBOOL false'}.get(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
-                   typed(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   typed(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = eps' if value is None else f' = ({value})')]
     parents = [('&&', new, TRUE), ('?', TRUE, new, FALSE), ('??', new, string(b'R')),
                ('??', ('.', new, string(b'')), string(b'R'))]
     for number, shape in enumerate(parents):

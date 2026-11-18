@@ -161,8 +161,9 @@ def domain():
     for number, shape in enumerate(shapes):
         expression, _, occurrences = source_tree(shape, 'domain_' + str(number))
         state = 'S_typed_domain_' + str(number)
+        value = {0: 'PBOOL true', 1: pstring(b''), 2: 'PNULL', 10: 'PBOOL true', 11: pstring(b'10')}.get(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
-                   typed(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   typed(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = eps' if value is None else f' = ({value})')]
     parents = [('&&', new, TRUE), ('or', FALSE, new), ('?', TRUE, new, FALSE),
                ('??', full, new), ('??', ('.', new, string(b'')), string(b'R')),
                ('.', new, string(b'\0')), ('!', ('??', full, string(b'\0')))]

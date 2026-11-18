@@ -843,6 +843,7 @@ def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_v
 def $property_magic_cv_emitted_ternary_boolean_not_concat_left_coalesce_concat_value(S, porigin, expression) = eps -- otherwise
 
 dec $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, expression) : pvalue?
+dec $property_magic_cv_raw_typed_ternary_value_select(bool, pvalue, pvalue) : pvalue
 ;; Operands retain primitive tags, constructor results and nested selected values.
 dec $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) : pvalue?
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = (pvalue)
@@ -868,11 +869,16 @@ def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBi
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (PBOOL (ptbytes = [49]))
   -- if $property_magic_cv_raw_ternary_boolean_not_concat_left_coalesce_tree(pcunit*, porigin, NExprBinaryOpLogicalXor expression_left expression_right metadata) = (ptbytes)
   -- if ptbytes = eps \/ ptbytes = [49]
+def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprBinaryOpCoalesce expression_left expression_right metadata) = ($property_magic_cv_raw_typed_ternary_value_select(pvalue_left =/= PNULL, pvalue_left, pvalue_right))
+  -- if $origin_node(pcunit*, porigin) = (NExprBinaryOpCoalesce expression_left expression_right metadata)
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_left)
+  -- if $origin_child((porigin), [PCFIELD 1]) = (porigin_right)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_left, expression_left) = (pvalue_left)
+  -- if $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin_right, expression_right) = (pvalue_right)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata) = $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond phpType5 expression_false metadata)
 def $property_magic_cv_raw_typed_ternary_operand_value(pcunit*, porigin, expression) = eps -- otherwise
 
 ;; Typed ternary-left coalesce keeps NULL distinct from false and empty echo.
-dec $property_magic_cv_raw_typed_ternary_value_select(bool, pvalue, pvalue) : pvalue
 def $property_magic_cv_raw_typed_ternary_value_select(true, pvalue_true, pvalue_false) = pvalue_true
 def $property_magic_cv_raw_typed_ternary_value_select(false, pvalue_true, pvalue_false) = pvalue_false
 def $property_magic_cv_raw_typed_ternary_left_value(pcunit*, porigin, NExprTernary expression_cond expression_true expression_false metadata) = ($property_magic_cv_raw_typed_ternary_value_select(ptbytes_cond =/= eps /\ ptbytes_cond =/= [48], pvalue_true, pvalue_false))

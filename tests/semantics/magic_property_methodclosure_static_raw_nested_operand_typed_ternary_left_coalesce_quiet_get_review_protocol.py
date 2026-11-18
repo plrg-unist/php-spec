@@ -132,8 +132,9 @@ def recursion_blocks():
     for number, shape in enumerate(rejected):
         expression, _, occurrences = source_tree(shape, 'domain_' + str(number))
         state = 'S_nested_domain_' + str(number)
+        value = {3: 'PBOOL false', 6: 'PBOOL false', 7: 'PBOOL true'}.get(number)
         result += [f'{state} = ' + raw.source_state(occurrences),
-                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+                   operand(state + '.SOURCES', 'porigin_tree_root_class', expression) + (' = eps' if value is None else f' = ({value})')]
     new = ('??', ('?', TRUE, ('?', string(b'00'), NULL, FALSE), FALSE), string(b'R'))
     parents = [('??', NULL, FALSE), ('&&', new, TRUE), ('?', TRUE, new, FALSE),
                ('??', new, string(b'R')), ('??', ('.', new, string(b'')), string(b'R'))]
@@ -142,7 +143,8 @@ def recursion_blocks():
         state = 'S_nested_parent_' + str(number)
         result += [f'{state} = ' + raw.source_state(occurrences)]
         call = operand if number == 0 else certificate
-        result += [call(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = eps']
+        value = '(PBOOL false)' if number == 0 else 'eps'
+        result += [call(state + '.SOURCES', 'porigin_tree_root_class', expression) + ' = ' + value]
     expression, _, occurrences = source_tree(depth_four(NULL, string(b'REJECT')), 'owner')
     placeholder = 'NScalarString (BYTES "UkVKRUNU") metadata_class'
     child = 'NExprArray (SEQUENCE eps) metadata_class'
