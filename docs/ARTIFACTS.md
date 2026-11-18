@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+Quiet integer Add/Subtract selector originals, two intentional overflow controls, source comparisons and fourteen fixture cuts remain in `../php-spec-evidence-archive/magic-property-methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-quiet-get/{author,independent}/`. The [review](../coverage/semantics/magic-property-methodclosure-static-raw-add-subtract-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) binds SOURCE7, zero legacy updates and independently checked fixed source/canonical/map tuple. Collector-only accounting corrections retain zero semantic credit. Archives are evidence rather than build/runtime inputs.
+
 ENUM317 direct finite numeric-tree originals, native-once/source4, prelaw1092,
 original author1532 NONPASS with retained734, corrected certificate802 and
 independent first-pass WHOLE1282 remain in
