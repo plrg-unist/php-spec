@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "milestone": "COMP336",
+  "decision": "CLEAR",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless short reference Get accepts a literal-string variable naming this as receiver, with an identifier or string-literal same-field member, under existing header/value/owner bounds.",
+  "implementation": [
+    "spec/semantics/382-backed-get-hooks.watsup"
+  ],
+  "source": {
+    "commit": "ae3021f0c984fa604b13f73813de9510b335e615",
+    "parent": "709c18b1c3d56fd8a89fab920cc8a9a38d652c16",
+    "path": "spec/semantics/382-backed-get-hooks.watsup",
+    "blob": "e4592cecc0ade4537cd6fc7fb1b713fe29e47884",
+    "sha256": "ff256d7461367ffe9e84d5f55e9a5ef58fec8e375a9c546e5c21aedc77542b8a",
+    "change": "Exact7-line body predicate plus3 OR tails: parentless compiler, parentless declaration and authenticated implicit-reference-return source.",
+    "old_module_restored_byte_for_byte": true,
+    "old_module_sha256": "c951571479e38f498e9ad20558c60cfb525a96a3b8a51adcbe221bf7ed0d3f35",
+    "unchanged": "Old body predicate, three parented body gates, all header/value/owner/lifetime rules and95/138/runtime fields remain byte-literal."
+  },
+  "source_bundle": {
+    "revision": "dc8275b7485adcef92ffed2a6d5b29fde4c75779",
+    "parent": "4f65a8bdd8ddfc6133d230e36969686d78248e55",
+    "paths": 16,
+    "record": "/home/user/workspace/php-spec-evidence-archive/comp336/source-ready.json",
+    "sha256": "3e5455e88da22f6bb3cae26a6f288f1d007c08a06cf786bb561965cac9b2c8b7"
+  },
+  "semantics": "An exact literal NScalarString variable-name predicate admits decoded this and the literal backing-field name. The parentless compiler and declaration gates and the already-authenticated implicit reference return consume it. Real SOURCE, direct CV classification without executable variable-name leaf, signature and CODEARROW authority remain; the old predicate and all parented/header/value/owner rules are literal.",
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c:is_this_fetch, zend_property_hook_find_property_usage",
+    "spec/semantics/40-control.watsup:$cv_name_at"
+  ],
+  "oracle": {
+    "target": "PHP8.5.10 CLI NTS64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_observations_once": 4,
+    "replays": 0,
+    "source_originals": "Fresh W336/I336 namespaces and Box336 roots, including escaped decoded-this, strict modes and both literal member shapes;335 local variable names only reuse the immutable lifecycle builder."
+  },
+  "source_agreements": 4,
+  "validation": [
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/author-literal-this-fq-int-state/report.json",
+      "sha256": "818955551b513c339edf0d40d5854d964cd34e9d2ba7a0a9f9a1b820f2f13f7e",
+      "revision": "10058bd7ec01b496840796998f6391b525b7b979",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 282,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 151.5435402393341
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/author-literal-this-relative-array-null-state/report.json",
+      "sha256": "5135bd81f2eba6776d643c74f3cc0f5c915789bd5525785810ed0964bf99efd5",
+      "revision": "10058bd7ec01b496840796998f6391b525b7b979",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 299,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 201.3055489063263
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/review-body/report.json",
+      "sha256": "a8c3503b5f3d8a52da4a1d86ece64a4de7f04518c5c694246355096859878c70",
+      "revision": "1d6b96854aa94260bab482c224ca275defa0966f",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 104,
+      "source_agreement_credit": 0,
+      "cap_seconds": 60,
+      "elapsed_seconds": 15.901747226715088
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/review-literal-this-fq-bool-state/report.json",
+      "sha256": "9eabd3cdbe1b05dd1c69be65fac7a5650eafd3f358a5bf10d37168840a41b603",
+      "revision": "1d6b96854aa94260bab482c224ca275defa0966f",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 281,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 146.64115953445435
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/review-literal-this-imported-float-array-null-state/report.json",
+      "sha256": "dbaa48b3eb46b6940e4f661873314c1c64ecf62df0942361ad94c0173bf57f55",
+      "revision": "1d6b96854aa94260bab482c224ca275defa0966f",
+      "passed": true,
+      "mode": "fixture-SL",
+      "modules": 508,
+      "premises": 311,
+      "source_agreement_credit": 0,
+      "cap_seconds": 360,
+      "elapsed_seconds": 236.22992992401123
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/strict-source-literal-this-receiver/report.json",
+      "sha256": "15262eec611367a1fb2637a2b009e7ce236b6726ad0274449f4a93473adc4549",
+      "revision": "1d6b96854aa94260bab482c224ca275defa0966f",
+      "passed": true,
+      "original_source_agreements": 2,
+      "new_native_observations": 0,
+      "saved_native_reuse": 2,
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "literal-this-fq-bool",
+        "literal-this-imported-float-array-null"
+      ],
+      "elapsed_seconds": [
+        63.0934157371521,
+        91.94579076766968
+      ]
+    },
+    {
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp336/weak-source-literal-this-receiver/report.json",
+      "sha256": "40fb9e0565a2c1ad691d60ce59aed8906ea026b3fef8c83f6506fb60b6f28e95",
+      "revision": "ae3021f0c984fa604b13f73813de9510b335e615",
+      "passed": true,
+      "original_source_agreements": 2,
+      "new_native_observations": 0,
+      "saved_native_reuse": 2,
+      "model_cli_cap_seconds": 120,
+      "outer_cap_seconds": 140,
+      "case_ids": [
+        "literal-this-fq-int",
+        "literal-this-relative-array-null"
+      ],
+      "elapsed_seconds": [
+        61.5499050617218,
+        76.24751734733582
+      ]
+    }
+  ],
+  "private_spec_manifest": {
+    "modules": 508,
+    "common_recorded_inputs": 509,
+    "canonical_json_sha256": "589c1772a481d665eb7d2ace26d9339e96f9e94ae06fd13fa698235e5fc1f413",
+    "modules_json_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "all_seven_accepted_maps_equal": true
+  },
+  "native_and_prelaw_records": [
+    {
+      "kind": "weak-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp336/weak-native-once/report.json",
+      "sha256": "54aaa513a477f3cc4fc52ec120b1360418795465b8e53dea65a62f21f4f6cfe3",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-native-once",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp336/strict-native-once/report.json",
+      "sha256": "8297fd8df1c55c51c4617cfa1d41cd8bc6b028c635d7e77413c852bdeb3c796f",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "weak-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp336/weak-prelaw/report.json",
+      "sha256": "21df9e274e4172d7713f735f99957feb4669b99be5adf91e3f35962a6f5d808f",
+      "source_agreement_credit": 0
+    },
+    {
+      "kind": "strict-prelaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/comp336/strict-prelaw/report.json",
+      "sha256": "2a4b48f9f1de4a7e477f116bd41d25b7295dcab2a3fb998bc25ec354b2787704",
+      "source_agreement_credit": 0
+    }
+  ],
+  "independent_whole_source_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp336/independent-whole-source-clearance.json",
+    "sha256": "421734bd87b4bd27281186d35557b8efff7f7e7538f74d288d29b7d707acf67a",
+    "revision": "1d6b96854aa94260bab482c224ca275defa0966f",
+    "decision": "CLEAR"
+  },
+  "carry_forward": "All executable modules, runner, frontend, adapter and profile remain unchanged since source-only ae302; later commits add only new test helpers and Make7/doc8. COMP335 evidence is closed and unrenewed.",
+  "actual_acceptance": {
+    "decision": "CLEAR",
+    "provided_by": "/root/recover33_compiler_mixed_review",
+    "actual_revision": "411f89ac6a5e38133e1cadb15130398d08a01570",
+    "same_revision": "411f89ac6a5e38133e1cadb15130398d08a01570",
+    "actual_tree": "d91f6095b5ee9aa837bdb3774de520ef88ca7e37",
+    "actual_parent": "550c3a54c32b0f6f247867277db8341c242aace1",
+    "source_382_blob": "e4592cecc0ade4537cd6fc7fb1b713fe29e47884",
+    "source_382_sha256": "ff256d7461367ffe9e84d5f55e9a5ef58fec8e375a9c546e5c21aedc77542b8a",
+    "actual_composition_checks": 1,
+    "own_paths": 16,
+    "Makefile_added_lines": 7,
+    "property_doc_added_lines": 8,
+    "exact_full_posts_and_current_parent_inverses": true,
+    "canonical_executions": 1,
+    "canonical_report_sha256": "eb3aae72a3ddc3b801a3a10a964a5f437c8ebf153bbd1149b78a75f04b7fb684",
+    "actual_map_sha256": "91f0544df564cda8ca23148dd0cd9fe5fd4fd96de05287594c2f6b65323faaf8",
+    "mode": "production-SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "input_vectors_count": 513,
+    "input_vectors_equal": true,
+    "tested_revision": "411f89ac6a5e38133e1cadb15130398d08a01570",
+    "revision_after": "411f89ac6a5e38133e1cadb15130398d08a01570",
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed_seconds": 15.988403437891975,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "reviewer_original_report_physical_reads": 1,
+    "reviewer_original_map_physical_reads": 1,
+    "subsequent_reads_used_parsed_cache": true,
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/comp336/reviewer-main101-originals-cache.json",
+    "author_actual_map_report_cache_reads": 0,
+    "semantic_or_native_or_fixture_or_canonical_replays": 0,
+    "reader_preparation_failures": 0
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "Expected prelaw Unsupported4 at the original unsupported-hook boundary",
+      "reports": [
+        "/home/user/workspace/php-spec-evidence-archive/comp336/weak-prelaw/report.json",
+        "/home/user/workspace/php-spec-evidence-archive/comp336/strict-prelaw/report.json"
+      ]
+    }
+  ],
+  "failures": {
+    "source_or_native_semantic_failures": 0,
+    "fixture_failures": 0,
+    "corrections": 0,
+    "timeouts": 0,
+    "native_replays": 0
+  },
+  "holds": {
+    "paused": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned REQUEST-NUL source release",
+      "undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw comparison crash"
+    ],
+    "precision": "No blanket Stringable/callback/NUL hold.",
+    "reserve": "93807cdd6/255",
+    "inventory": "169 constructors/306 runtime obligations;closed0 constructors+1 runtime unchanged",
+    "withdrawn": "finite-PFLOAT a547 remains zero"
+  },
+  "remaining": "Computed/other/nullsafe receivers, dynamic member names, parented literal-this bodies and wider source/modifier/value/owner/lifetime contexts remain partial. Complete core remains unfinished.",
+  "engine_bug_or_intentional_divergence": null
+}

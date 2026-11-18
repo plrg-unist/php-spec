@@ -8,6 +8,8 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+COMP336 literal-this receiver originals, native-once observations and separate source/body/state cuts remain in `../php-spec-evidence-archive/comp336/`. `source-ready.json` and `independent-whole-source-clearance.json` bind the exact source bundle and prelaw Unsupported4 with zero agreement credit. The [review](../coverage/semantics/literal-this-receiver-parentless-short-reference-get-hook-review.json) records fixed actual411f89ac6 and its sole cached canonical acceptance; these archives are evidence, not build/runtime inputs.
+
 Deep postarray evidence remains in `../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-deep-array-post/`; the [review](../coverage/semantics/string-offset-nested-unset-bool-cv-deep-array-post-review.json) binds source6, native-once/source4, bilateral prelaw/post cuts, owner diagnostic/failure and immutable87d68484.
 
 INT-left/FLOAT-right deferred-default evidence remains in `../php-spec-evidence-archive/enum-deferred-integer-float-infinite-full-ternary-redirect-wrapper-default-reception-308/`; the [review](../coverage/semantics/deferred-integer-float-infinite-full-ternary-redirect-wrapper-default-reception-review.json) binds exact source packets, prelaw/author/WHOLE528/compatibility26 and immutableb53e5faa. Both retain fixed550c3a54/sole59b06834 source0; these archives remain evidence rather than operational inputs.
