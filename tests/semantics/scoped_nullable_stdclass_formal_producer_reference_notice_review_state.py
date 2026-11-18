@@ -72,7 +72,8 @@ def normal(initial, case, front):
         derived += [helper(fake, raw) + ' = (' + raw + ')', '~' + proof(raw).replace(env + ',', fake + ',', 1)]
     for target in ('Other', 'STDCLASS', 'StDcLaSs'):
         fake = env + '[.CLASSES = [($ptascii("stdclass"), $ptascii(' + json.dumps(target) + '))]]'
-        derived += [helper(fake, 'phpType17') + ' = phpType17', '~' + scoped.replace(env + ',', fake + ',', 1)]
+        expected = 'phpType17' if target == 'Other' else '(' + view.replace('"c3RkQ2xhc3M="', json.dumps(base64.b64encode(target.encode()).decode())) + ')'
+        derived += [helper(fake, 'phpType17') + ' = ' + expected, '~' + scoped.replace(env + ',', fake + ',', 1)]
     wrapper = 'NNullableType (NName (BYTES text_formal) metadata_formal) metadata_formalnullable'
     union = 'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formalnullable'
     raw = parameter.replace(wrapper, union, 1)

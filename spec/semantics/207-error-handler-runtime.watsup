@@ -1142,12 +1142,25 @@ def $reference_notice_producer_global_parameter_view(NParam phpType14 phpType24 
   -- if $reference_notice_producer_global_union_view(phpType69*, false) = (phpType69_view*)
 def $reference_notice_producer_global_parameter_view(phpType17) = phpType17 -- otherwise
 
+;; Pure transport witness for the resolved class bytes used by proof views.
+dec $reference_notice_producer_type_digit(nat) : text
+def $reference_notice_producer_type_digit(octet) = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"[octet:1]
+
+dec $reference_notice_producer_type_encoding(nat*) : text
+def $reference_notice_producer_type_encoding(eps) = ""
+def $reference_notice_producer_type_encoding([octet]) = $reference_notice_producer_type_digit($(octet / 4)) ++ $reference_notice_producer_type_digit($((octet \ 4) * 16)) ++ "=="
+def $reference_notice_producer_type_encoding([octet_1, octet_2]) = $reference_notice_producer_type_digit($(octet_1 / 4)) ++ $reference_notice_producer_type_digit($((octet_1 \ 4) * 16 + octet_2 / 16)) ++ $reference_notice_producer_type_digit($((octet_2 \ 16) * 4)) ++ "="
+def $reference_notice_producer_type_encoding(octet_1 :: octet_2 :: octet_3 :: octet*) = $reference_notice_producer_type_digit($(octet_1 / 4)) ++ $reference_notice_producer_type_digit($((octet_1 \ 4) * 16 + octet_2 / 16)) ++ $reference_notice_producer_type_digit($((octet_2 \ 16) * 4 + octet_3 / 64)) ++ $reference_notice_producer_type_digit($(octet_3 \ 64)) ++ $reference_notice_producer_type_encoding(octet*)
+
 ;; A scoped union view resolves one ordinary class name and preserves member order.
 dec $reference_notice_producer_scoped_union_view(plenv, phpType69*, bool) : phpType69*?
 def $reference_notice_producer_scoped_union_view(plenv, eps, true) = (eps)
-def $reference_notice_producer_scoped_union_view(plenv, (NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_member) :: phpType69_view*)
+def $reference_notice_producer_scoped_union_view(plenv, (NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES text_view) metadata_member) :: phpType69_view*)
   -- if $ptvalidname($base64(text_type), true)
-  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
+  -- if $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if text_view = $reference_notice_producer_type_encoding(preqbytes_type)
+  -- if $base64(text_view) = preqbytes_type
   -- if $reference_notice_producer_scoped_union_view(plenv, phpType69*, true) = (phpType69_view*)
 def $reference_notice_producer_scoped_union_view(plenv, (NIdentifier (BYTES text_type) metadata_member) :: phpType69*, b_class) = ((NIdentifier (BYTES text_type) metadata_member) :: phpType69_view*)
   -- if $reference_notice_producer_scoped_union_view(plenv, phpType69*, b_class) = (phpType69_view*)
@@ -1156,9 +1169,12 @@ def $reference_notice_producer_scoped_union_view(plenv, phpType69*, b_class) = e
 ;; RETURN members use their own declaration-position authentication.
 dec $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, bool) : phpType69*?
 def $reference_notice_producer_scoped_return_union_view(plenv, eps, true) = (eps)
-def $reference_notice_producer_scoped_return_union_view(plenv, (NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_member) :: phpType69_view*)
+def $reference_notice_producer_scoped_return_union_view(plenv, (NName (BYTES text_type) metadata_member) :: phpType69*, false) = ((NNameFullyQualified (BYTES text_view) metadata_member) :: phpType69_view*)
   -- if $ptvalidname($base64(text_type), true)
-  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
+  -- if $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if text_view = $reference_notice_producer_type_encoding(preqbytes_type)
+  -- if $base64(text_view) = preqbytes_type
   -- if $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, true) = (phpType69_view*)
 def $reference_notice_producer_scoped_return_union_view(plenv, (NIdentifier (BYTES text_type) metadata_member) :: phpType69*, b_class) = ((NIdentifier (BYTES text_type) metadata_member) :: phpType69_view*)
   -- if $reference_notice_producer_scoped_return_union_view(plenv, phpType69*, b_class) = (phpType69_view*)
@@ -1191,7 +1207,7 @@ def $reference_notice_producer_relative_parameter_union_view(plenv, (NIdentifier
   -- if $reference_notice_producer_relative_parameter_union_view(plenv, phpType69*, b_class) = (phpType69_view*)
 def $reference_notice_producer_relative_parameter_union_view(plenv, phpType69*, b_class) = eps -- otherwise
 
-;; Declaration resolution authenticates a canonical nominal proof view.
+;; Declaration resolution authenticates a case-preserving nominal proof view.
 dec $reference_notice_producer_scoped_parameter_view(plenv, phpType17) : phpType17
 def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NNameRelative (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if plenv.NAMESPACE = eps
@@ -1201,11 +1217,14 @@ def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 php
   -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTRELATIVE, preqbytes_type) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
 def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NNullableType (NNameRelative (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNullableType (NNameFullyQualified (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NNameRelative (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
-def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES text_view) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if $ptvalidname($base64(text_type), true)
-  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
-def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNullableType (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
-  -- if $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTPARAMETER, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
+  -- if $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if text_view = $reference_notice_producer_type_encoding(preqbytes_type)
+  -- if $base64(text_view) = preqbytes_type
+def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNullableType (NNameFullyQualified (BYTES text_view) metadata_type) metadata_nullable) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
+  -- if $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NName (BYTES text_type) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NNameFullyQualified (BYTES text_view) metadata_type) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
 def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69_view*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
   -- if $reference_notice_producer_scoped_union_view(plenv, phpType69*, false) = (phpType69_view*)
 def $reference_notice_producer_scoped_parameter_view(plenv, NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter) = NParam phpType14 phpType24 (NUnionType (SEQUENCE phpType69_view*) metadata_union) phpType4_ref phpType4_variadic phpType10 phpType5 phpType37 metadata_parameter
@@ -1225,18 +1244,24 @@ def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE
   -- if plenv.NAMESPACE =/= eps \/ plenv.CLASSES =/= eps
   -- if $(|phpType7*| > 0)
   -- if phpType17* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type]))]
   -- if $ptvalidname($base64(text_type), true)
-  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
-  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type, pssignature)
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
+  -- if $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if text_view = $reference_notice_producer_type_encoding(preqbytes_type)
+  -- if $base64(text_view) = preqbytes_type
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNameFullyQualified (BYTES text_view) metadata_type, pssignature)
 def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NNullableType (NName (BYTES text_type) metadata_type) metadata_nullable, pssignature) = true
   -- if plenv.NAMESPACE =/= eps \/ plenv.CLASSES =/= eps
   -- if $(|phpType7*| > 0)
   -- if phpType17* = ($reference_notice_producer_scoped_parameter_view(plenv, phpType17))*
-  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS ($ptascii("stdClass"))])), (PTBRANCH ([PTBUILTIN "null"]))]
+  -- if pssignature.RETURNS = [(PTBRANCH ([PTCLASS preqbytes_type])), (PTBRANCH ([PTBUILTIN "null"]))]
   -- if $ptvalidname($base64(text_type), true)
-  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS ($ptascii("stdClass"))]))]) eps
-  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNullableType (NNameFullyQualified (BYTES "c3RkQ2xhc3M=") metadata_type) metadata_nullable, pssignature)
+  -- if $ptsingle($pltypecontext(plenv, PTGLOBAL, PTRETURN, eps, eps, { UNIT 0, PATH eps, FILE eps, LINE 0 }), PTPLAIN, $base64(text_type)) = PTOK ([(PTBRANCH ([PTCLASS preqbytes_type]))]) eps
+  -- if $ptlc(preqbytes_type) = $ptascii("stdclass")
+  -- if text_view = $reference_notice_producer_type_encoding(preqbytes_type)
+  -- if $base64(text_view) = preqbytes_type
+  -- if $reference_notice_producer_header(SEQUENCE phpType7*, SEQUENCE phpType17*, NNullableType (NNameFullyQualified (BYTES text_view) metadata_type) metadata_nullable, pssignature)
 def $reference_notice_producer_scoped_header(plenv, SEQUENCE phpType7*, SEQUENCE phpType17*, NUnionType (SEQUENCE phpType69*) metadata_union, pssignature) = true
   -- if plenv.NAMESPACE =/= eps \/ plenv.CLASSES =/= eps
   -- if $(|phpType7*| > 0)

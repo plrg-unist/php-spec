@@ -1,0 +1,201 @@
+[
+  {
+    "id": "scoped138-formal-bare-sTdClAsS",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedCase138;use \\sTdClAsS as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bOx $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "849400c6736bd1538b321759b952fb0c1c64bbaa112b8eefa7513b1ed39a9caa",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-formal-bare-sTdClAsS",
+      "source_sha256": "f248423d78f919f6da3efd40baca24053b70fda5c8b43c64b90e28c9b8fcd141",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "role_index": 0,
+    "formal_name": "sTdClAsS",
+    "import_target": "sTdClAsS",
+    "side": "formal",
+    "shape": "bare",
+    "relative_class": "sTdClAsS",
+    "new_support_credit": 1,
+    "alias_name": "bOx",
+    "alias_target": "sTdClAsS",
+    "namespace": "ScopedCase138",
+    "import_alias": "box"
+  },
+  {
+    "id": "scoped138-formal-nullable-STDCLASS",
+    "source": "<?php\nnamespace ScopedCase138;use \\STDCLASS as Box;\nfunction h($n,$m,$file,$line){global $x,$y;echo 'H:',$line,':',(int)($x===null),':',$y,';';$x=17;$y=23;return true;}\nfunction make(?BOX $left,?BOX &$right):?\\StDcLaSs{echo 'M:',(int)($left===null),':',$right->v,';';$keep=$right;$right=19;return $keep;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=29;return $value;}\n$x=null;$y=new \\stdClass;$y->v=5;$copy=$y;$alias=&$y;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x,\n    $y\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$y,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$y,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$y,$copy,$alias,$snapshot);\n",
+    "source_sha256": "ed1657832a83df3a64886c64231ae3b95684a34784c8f62444c34413f9a9451b",
+    "native_stdout": "N;M:1:5;H:8:1:19;F:5;R:29:29:23:17:1;D:41:29:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "STDCLASS",
+      "STDCLASS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-formal-nullable-STDCLASS",
+      "source_sha256": "20409fedb34407575fb0d0a3ab7b535debbde98f738d1bb8b59559cc650e4878",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "role_index": 1,
+    "formal_name": "STDCLASS",
+    "shape": "nullable",
+    "nullable_first": true,
+    "import_target": "STDCLASS",
+    "side": "formal",
+    "relative_class": "STDCLASS",
+    "new_support_credit": 1,
+    "alias_name": "BOX",
+    "alias_target": "STDCLASS",
+    "namespace": "ScopedCase138",
+    "import_alias": "box"
+  },
+  {
+    "id": "scoped138-formal-union-STDCLASS",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedCase138;use \\STDCLASS as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(bool|bOx|string $saved):\\StDcLaSs{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "3cdfddbe3d21823014487363590a81c1296151064fd17c9bb769c79d0963654c",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "class_formals": [
+      "STDCLASS"
+    ],
+    "class_return": "StDcLaSs",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-formal-union-STDCLASS",
+      "source_sha256": "fc1be4215af3dcedf4ad799d690efa753630b1ecfe57c4abb1265f4eaebd1e04",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "role_index": 0,
+    "formal_members": [
+      "bool",
+      "class",
+      "string"
+    ],
+    "formal_name": "STDCLASS",
+    "shape": "union",
+    "nullable_first": false,
+    "import_target": "STDCLASS",
+    "side": "formal",
+    "relative_class": "STDCLASS",
+    "new_support_credit": 1,
+    "alias_name": "bOx",
+    "alias_target": "STDCLASS",
+    "namespace": "ScopedCase138",
+    "import_alias": "box"
+  },
+  {
+    "id": "scoped138-return-bare-STDCLASS",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "STDCLASS",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedCase138;use \\STDCLASS as Parcel;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):pArCeL{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "bec6c25a8a9c230d6089ef9c0bca178b1c67f6bf6afc92fde4564490f510d9ec",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-return-bare-STDCLASS",
+      "source_sha256": "837fb450ad7dd05a721e7db1efd70f8432c36f399978324d30bfd8372c775009",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "return_name": "stdClass",
+    "return_target": "stdClass",
+    "namespace": "ScopedCase138",
+    "import_alias": "parcel",
+    "import_target": "STDCLASS",
+    "new_support_credit": 1,
+    "side": "return",
+    "shape": "bare",
+    "relative_class": "STDCLASS",
+    "alias_name": "pArCeL",
+    "alias_target": "STDCLASS"
+  },
+  {
+    "id": "scoped138-return-nullable-sTdClAsS",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "sTdClAsS",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedCase138;use \\sTdClAsS as Parcel;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):?PARCEL{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "1add185c29d9a28de69b9d21ddd6a5a0ed13ae505f7d77a73ee93b54a2233077",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-return-nullable-sTdClAsS",
+      "source_sha256": "0743478883d95c5a4a46da0c6d7cfd3c8231f0fce42bc2aabe116033f2d83213",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "return_name": "stdClass",
+    "return_target": "stdClass",
+    "namespace": "ScopedCase138",
+    "import_alias": "parcel",
+    "import_target": "sTdClAsS",
+    "new_support_credit": 1,
+    "kind": "object",
+    "side": "return",
+    "shape": "nullable",
+    "relative_class": "sTdClAsS",
+    "alias_name": "PARCEL",
+    "alias_target": "sTdClAsS"
+  },
+  {
+    "id": "scoped138-return-union-StDcLaSs",
+    "kind": "bool",
+    "return_members": [
+      "class",
+      "bool"
+    ],
+    "class_return": "StDcLaSs",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\nnamespace ScopedCase138;use \\StDcLaSs as Parcel;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='0'),';';$x=17;return true;}\nfunction make($saved):PaRcEl|bool{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=[$value];$value[0]=41;return $value;}\n$x='0';$copy=$x;$alias=&$x;set_error_handler('ScopedCase138\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "737102d8476d819200a6f1f4f41d40d75e524c3dfd1d3d43c556337721c46f8f",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:0:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "0",
+    "import_target": "StDcLaSs",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_relative_case_stdclass_producer_reference_notice_cases.json",
+      "id": "relative137-return-union-StDcLaSs",
+      "source_sha256": "309afc81a3b6d1519103366100bc71b96ea88b2d043911b74421c22af955048e",
+      "edits": "Replace only declaration line2 with a namespace and an ordinary import preserving the target case; replace the selected Relative type by mixed-case ordinary aliases and qualify the handler string. Keep FQN opposite-position types and all runtime statements/physical lines. Namespaced multi-CV Notice uses the native send line."
+    },
+    "side": "return",
+    "shape": "union",
+    "relative_class": "StDcLaSs",
+    "alias_name": "PaRcEl",
+    "alias_target": "StDcLaSs",
+    "namespace": "ScopedCase138",
+    "import_alias": "parcel"
+  }
+]

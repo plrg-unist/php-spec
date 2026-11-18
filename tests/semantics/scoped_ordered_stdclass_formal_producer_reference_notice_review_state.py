@@ -80,7 +80,8 @@ def normal(initial, case, front):
         derived += [helper(raw, context) + ' = (' + raw + ')', '~' + proof(raw).replace(env + ',', context + ',', 1)]
     for target in ('Other', 'STDCLASS', 'StDcLaSs'):
         context = env + '[.CLASSES = [($ptascii("stdclass"), $ptascii(' + json.dumps(target) + '))]]'
-        derived += [helper('phpType17', context) + ' = phpType17', '~' + scoped.replace(env + ',', context + ',', 1)]
+        expected = 'phpType17' if target == 'Other' else '(' + view.replace('"c3RkQ2xhc3M="', json.dumps(base64.b64encode(target.encode()).decode())) + ')'
+        derived += [helper('phpType17', context) + ' = ' + expected, '~' + scoped.replace(env + ',', context + ',', 1)]
     for valid in (['CLASS', 'null'], ['null', 'CLASS'], ['int', 'CLASS', 'float'], ['CLASS', 'array', 'int', 'bool', 'string', 'callable', 'null'], ['iterable', 'int', 'float', 'bool', 'CLASS', 'string', 'callable', 'null'], ['false', 'CLASS', 'null'], ['CLASS', 'true', 'string']):
         raw = parameter.replace(raw_type, raw_union(valid), 1)
         derived += [helper(raw) + ' = (' + view_of(raw) + ')', typed(proof(raw), branches(valid))]

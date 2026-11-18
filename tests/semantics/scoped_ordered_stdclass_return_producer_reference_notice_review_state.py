@@ -78,7 +78,8 @@ def normal(initial, case, front):
         derived.append('~' + proof(raw=union('[' + null_name + ', ' + raw + ']'), parameter_view=viewed, context=fake))
     for target in ('Other', 'STDCLASS', 'StDcLaSs'):
         fake = env + '[.CLASSES = [($ptascii("peerbox"), $ptascii(' + json.dumps(target) + '))]]'
-        derived += [view(members, fake) + ' = eps', '~' + proof(parameter_view=viewed, context=fake)]
+        expected = 'eps' if target == 'Other' else '(' + viewed_members.replace('"c3RkQ2xhc3M="', json.dumps(base64.b64encode(target.encode()).decode())) + ')'
+        derived += [view(members, fake) + ' = ' + expected, '~' + proof(parameter_view=viewed, context=fake)]
     for returns in ('[(PTBRANCH ([PTBUILTIN "null"])), ' + class_proofs.class_type('Other')[1:],
             '[(PTBRANCH ([PTBUILTIN "null"])), ' + class_proofs.class_type('STDCLASS')[1:],
             null_first[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'):

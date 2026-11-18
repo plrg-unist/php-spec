@@ -59,7 +59,8 @@ def normal(initial, case, index, front):
         '~' + no_import if case['namespace'] else no_import]
     for target in ('Other', 'STDCLASS', 'StDcLaSs'):
         env = 'pfunction_producer.ENV[.CLASSES = [($ptascii(' + json.dumps(case['formal_alias'].lower()) + '), $ptascii(' + json.dumps(target) + '))]]'
-        derived += [helper(env, 'phpType17') + ' = phpType17',
+        expected = 'phpType17' if target == 'Other' else '(' + view.replace('"c3RkQ2xhc3M="', json.dumps(base64.b64encode(target.encode()).decode())) + ')'
+        derived += [helper(env, 'phpType17') + ' = ' + expected,
             '~' + scoped.replace('pfunction_producer.ENV,', env + ',', 1)]
     alternate = 'pfunction_producer.ENV[.CLASSES = [($ptascii(' + json.dumps(case['import_alias'].swapcase()) + '), $ptascii("stdClass"))]]'
     derived.append(scoped.replace('pfunction_producer.ENV,', alternate + ',', 1))

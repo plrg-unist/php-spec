@@ -78,7 +78,8 @@ def controls(index, case):
         lines += [converted(changed, fake_env) + ' = (' + changed + ')', '~' + proof(changed).replace(env + ',', fake_env + ',', 1)]
     for target in ('stdclass', 'StDcLaSs', 'Other'):
         context = env + '[.CLASSES = [($ptascii("box"), $ptascii(' + json.dumps(target) + '))]]'
-        lines += [converted(raw, context) + ' = ' + raw, '~' + scoped.replace(env + ',', context + ',', 1)]
+        expected = raw if target == 'Other' else '(' + view.replace('"c3RkQ2xhc3M="', json.dumps(base64.b64encode(target.encode()).decode())) + ')'
+        lines += [converted(raw, context) + ' = ' + expected, '~' + scoped.replace(env + ',', context + ',', 1)]
     for wrapper in ('NNullableType (NName (BYTES text_formal) metadata_formal) metadata_formal',
                     'NUnionType (SEQUENCE ([NName (BYTES text_formal) metadata_formal, NIdentifier (BYTES "bnVsbA==") metadata_formal])) metadata_formal'):
         changed = shape.replace('NName (BYTES text_formal) metadata_formal', wrapper, 1)
