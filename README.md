@@ -16,7 +16,9 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
-Direct raw FLOAT-to-STRING RHSs compose with allocated CONCAT left bases through one RHS REQUEST row, exact source/compiler facts and full prefix replay. Saved raw CV offsets survive returning Warnings and reference rebinding. General VALUE, unary FLOAT and multirow RHSs, wider release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-RAW-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
+Single UnaryPlus of a raw FLOAT also supplies one allocated STRING RHS row for CONCAT offset bases. Exact source/value authority and saved-prefix replay preserve temporary identity and frozen raw CV offsets across returning Warnings. Nested signs, other RHS producers and wider lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-UNARY-PLUS-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
+
+Direct raw FLOAT-to-STRING RHSs compose with allocated CONCAT left bases through one RHS REQUEST row, exact source/compiler facts and full prefix replay. Saved raw CV offsets survive returning Warnings and reference rebinding. General VALUE, wider unary FLOAT and multirow RHSs, wider release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-RAW-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
 Literal CONCAT suffixes accept certified allocated composite left bases. Full ternary and nested coalesce/shorthand lefts preserve their selected bytes and saved raw CV offset across returning Warnings. Source authority remains delegated to each producer; broader RHS producers, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COMPOSITE-LEFT-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
