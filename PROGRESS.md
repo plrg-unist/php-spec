@@ -12,21 +12,27 @@ The [inventory](coverage/semantics/features.json) contains **169 constructors**
 24 pending, 1 validated). Validated closure remains **0 constructors / 1 runtime
 obligation**. No bounded family result closes the remaining core work.
 
-The current reviewed cohort covers proper raw-FLOAT full-ternary string bases
-and supplied unary INT defaults. Original source, state, failure and
-production-load cuts remain separate; complete PHP core remains unfinished:
+The current reviewed cohort adds scoped-self intersection conjuncts, literal
+FLOAT sign-chain zero/FIELD2 defaults and array-valued dynamic ALIAS properties.
+Original-source, state, failure and production-load cuts remain separate;
+complete PHP core remains unfinished.
 
-- [Proper FLOAT full-ternary bases](coverage/semantics/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-review.json).
-- [Supplied unary INT defaults](coverage/semantics/supplied-optional-unary-int-default-producer-reference-notice-review.json).
+Scoped self conjuncts use the existing reference Get certificates in pure,
+bare and mixed DNF intersections. Normalizer, runtime and owner bounds retain
+their existing contracts; see the [review](coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json).
 
-Three-child full ternaries extend the quiet raw-FLOAT grammar while preserving
-the one-row RHS CONCAT certificate. Supplied one-sign INT defaults preserve the
-whole checked sign/leaf AST and signed64 bounds on both the leaf and effective
-result, with private formal conversion and caller copies kept distinct. Wider
-producers, defaults, types, owners and lifetimes remain partial. Both fixed
-source cuts passed their sole production SL509 load; metadata placement renews
-no execution or native observation. Historical control exclusions retain their
-original cuts and the current shorthand boundary stays explicit.
+Folded literal FLOAT-zero sign chains preserve selected FIELD2 scalar tags through existing default caches and private integer reception. The [literal zero review](coverage/semantics/deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-review.json) separates zero/type source observations, exact sign certificates and state cuts; wider defaults remain partial.
+
+Ordinary dynamic ALIAS properties now retain finite object-free arrays through
+shared reference cells, outside COW and staged cleanup after nested-unset Warnings.
+Two native originals ran once; two complete checked-source/native bridges passed.
+Post public CLI execution remains unrun. The [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json)
+keeps state, source and the sole production-load cuts separate; wider fields and
+lifetimes remain partial.
+
+Each fixed source cut passed its sole production SL509 load. Metadata placement
+renews no execution or native observation. Historical controls and failures
+retain their original cuts and credit; wider family behavior remains partial.
 
 ## Integrated behavior and entrypoints
 
@@ -61,13 +67,13 @@ current lanes below remain bounded parts of unfinished families:
 
 | Lane | Author / reviewer | Current work |
 | --- | --- | --- |
-| References | `recover46_reference_fqn_defaults_impl` / `recover48_reference_unary_defaults_review` | Unary INT defaults (REF146): integrated and independently reviewed; wider defaults, types and lifetimes remain partial. |
-| Compiler | `recover39_compiler_mixed_impl` / `recover40_compiler_intersection_review` | Scoped-self DNF (COMP347) is integrated and independently reviewed; [family review](coverage/semantics/self-nominal-dnf-parentless-short-reference-get-hook-review.json). Scoped-self intersection conjuncts remain partial. |
-| Quiet reference Get | `recover35_get_multiply_impl` / `recover34_get_divmod_review` | Fitting integer multiplication integrated at `083e1d6e`; [review](coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json) keeps source, control and resource cuts separate. Division/modulo source-first validation is in progress; wider operators and lifetimes remain partial. |
-| String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties: source-first scope assessment; new validation unrun. |
-| Allocated string bases | `recover63_dynamic_coalesce_impl` / `recover54_dynamic_shorthand_review` | [Proper FLOAT full-ternary bases](coverage/semantics/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-review.json) integrated and reviewed; raw-FLOAT shorthand source-first facts retained. |
-| Enum/default reception | `recover41_enum_zero_impl` / `recover34_enum_zero_review` | One-sign zero/FIELD2 defaults (320) are integrated and independently reviewed; repeated signs and wider defaults/lifetimes remain partial. |
-| Output | `recover45_output_byte_impl` / `recover40_output_folded_review` | Emitted single-byte bitwise NOT in handler returns (160): integrated and independently reviewed; [evidence](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json). Empty/multibyte allocations and wider lifetimes remain partial. |
+| References | `recover47_reference_float_defaults_impl` / `recover48_reference_unary_defaults_review` | Unary INT defaults (REF146) remain integrated; unary FLOAT defaults (REF147) are source-integrated at 8ebe5586e with current actual review pending. Wider defaults, types and lifetimes remain partial. |
+| Compiler | `recover40_compiler_intersection_impl` / `recover41_compiler_parent_review` | Scoped-self intersection conjuncts (COMP348) are integrated and independently reviewed; [family review](coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json). Named empty-parent self Get is in source-first validation; wider owners and lifetimes remain partial. |
+| Quiet reference Get | `recover37_get_shift_impl` / `recover34_get_divmod_review` | Fitting multiplication retains its [review](coverage/semantics/magic-property-methodclosure-static-raw-multiply-operand-condition-typed-ternary-left-coalesce-quiet-get-review.json); DivMod source is integrated at 6c21ac59f with current actual review pending. Wider operators and lifetimes remain partial. |
+| String fields | `recover48_string_alias_array_impl` / `recover51_string_array_review` | Array-valued ALIAS properties integrated at `97fb19a42` and independently reviewed; [family review](coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json). Object-valued aliases, object-bearing/cyclic arrays and wider fields/lifetimes remain partial. |
+| Allocated string bases | `recover64_dynamic_shorthand_impl` / `recover54_dynamic_shorthand_review` | [Proper FLOAT full-ternary bases](coverage/semantics/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-review.json) remain integrated; raw-FLOAT shorthand source is integrated at de0eea67f with current actual review pending. Wider bases remain partial. |
+| Enum/default reception | `recover42_enum_zero_impl` / `recover34_enum_zero_review` | Literal FLOAT sign-chain zero/FIELD2 defaults (321) are integrated and independently reviewed; wider defaults and lifetimes remain partial. |
+| Output | `recover46_output_bitwise_impl` / `recover41_output_bitwise_review` | Emitted one-byte bitwise NOT (160) retains its [review](coverage/semantics/output-final-selected-emitted-byte-bitnot-cast-chain-return-modulo-error-review.json); emitted byte bitwise operands (161) are source-ready for the next cut. Wider strings and lifetimes remain partial. |
 
 Shared metadata belongs to the integrator: README, this checkpoint, the feature
 inventory and ARTIFACTS. Authors supply bounded family records and literal/keyed

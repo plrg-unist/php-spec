@@ -1,0 +1,228 @@
+{
+  "feature": "string-offset-nested-unset-bool-cv-object-array-alias-fields-post",
+  "status": "partial",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; pure executable SpecTec",
+  "feature_base": "4fd8c1928af7d47fdd4ce75b58458774d353b4ba",
+  "source_revision": "ad1bc89bcb48f4757d22f4cc72a70472c18fa084",
+  "production_delta_revision": "aa8f3cff7887ce3c6b995b1c86c20f7cfd367855",
+  "implementation": [
+    "spec/semantics/520-string-unset-warning-continuations.watsup",
+    "spec/semantics/39-ownership.watsup"
+  ],
+  "engine_provenance": {
+    "pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "symbols": [
+      "Zend/zend_execute.c:zend_assign_to_variable_reference",
+      "Zend/zend_vm_def.h:ZEND_ASSIGN_OBJ_REF",
+      "Zend/zend_execute.c:zend_fetch_dimension_address",
+      "Zend/zend_object_handlers.c:zend_std_get_property_ptr_ptr",
+      "Zend/zend_hash.c:zend_array_dup",
+      "Zend/zend_objects_API.c:zend_objects_store_del"
+    ]
+  },
+  "contract": {
+    "admitted": "Initialized ordinary dynamic ALIAS fields containing finite object-free arrays in the existing quiet live STDINSTANCE postvalue domain. The cell is genuinely marked, allocated, pruned/live and free of property/coercion/parameter constraints.",
+    "recursion": "Authenticate HCELL before STORE access; run the unchanged object-free/unreleased reachable-node filter from that HCELL before reusing the existing singleton array-ALIAS validator. Path-local array ancestors reject cycles while shared siblings and duplicate property-to-cell edges remain valid.",
+    "ownership": "Two properties and a CV share one real array cell; an outside VALUE copy retains its independent COW table and embedded scalar reference. Property writes share the cell, CV rebinding changes both fields, CV unset leaves two physical object-to-cell edges, and key/outside/replacement retirement preserves the remaining real owners.",
+    "release_controls": "Compiler-authenticated UPDATE_CELL with an ARRAY restore value hides the root STORE edge while an outside owner keeps its child table live. Protected typed-COPY uses a hidden descendant carrying the parent object; no same-cell PARRAY typed-COPY witness is invented.",
+    "foreach_boundary": "The filter checks all three release flags. Same-view FOREACH_BIND_COMMIT OLD requires non-REF while ordinary ALIAS authentication requires REF; no marked-foreach runtime witness or general scanner-monotonicity theorem is claimed.",
+    "held": "Object-valued owning ALIAS properties, object-bearing/cyclic field arrays, declared/typed/backed fields, cached property tables, other object kinds and wider owners/lifetimes remain partial. Prior scalar/STRING/DIRECT clauses and other source/CV/object guards remain literal."
+  },
+  "evidence_root": "../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-array-alias-fields-post/",
+  "source_agreement": {
+    "native_originals": 2,
+    "native_executions": 2,
+    "native_replays": 0,
+    "native_baseline": {
+      "report": "author48-baseline-v1/report.json",
+      "sha256": "3196d80bd254f04f3a18504a57353b4b63daf4516779d61afe49a10907b2c065",
+      "public_models": "Unsupported2 before the new law; agreement0"
+    },
+    "native_collector": {
+      "report": "author48-native-collector-v1/report.json",
+      "sha256": "1cd0e85d772584a493dfc9710bd408f7fed8ea164773df6aba99e2b93b6787ec",
+      "model": null,
+      "outcome": null,
+      "awaiting_bridge": true,
+      "agreement_credit": 0,
+      "scope": "Native collection only; both complete independent bridges are mandatory."
+    },
+    "checked_original_bridges": [
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-array-alias-fields-post/peer51-budget0-v1/report.json",
+        "sha256": "4f078fe1a7dcd61cce47d8f2e382af0095b88250835b37d37b1f354a4bebf786",
+        "conditions": 210,
+        "seconds": 135.80461478233337,
+        "limit": 180,
+        "unique_credit": 1
+      },
+      {
+        "report": "/home/user/workspace/php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-array-alias-fields-post/peer51-budget1-v1/report.json",
+        "sha256": "55732eb23bed96231f54ca88bf3afc2aa73587e899cb3694856610e577500729",
+        "conditions": 217,
+        "seconds": 157.87327527999878,
+        "limit": 180,
+        "unique_credit": 1
+      }
+    ],
+    "post_public_cli": "UNRUN; credit0",
+    "make_obligation": "For each original, both author core/guards and independent core/guards/budget must pass; native-only rows cannot close the target.",
+    "scope": "Each bridge starts from the checked original SOURCE and same native file, reaches authentic S_P/full S_R and the exact new step, then completes one direct continuation to NORMAL, exact native bytes and final retirement. Pending Throwable identity is retained. No cross-fixture full-state equality is claimed."
+  },
+  "checks": {
+    "author_pre_law": {
+      "revision": "59b77eed72fd24ca2e8cf5a8fbd50086b95d44a9",
+      "conditions": [
+        256,
+        266
+      ],
+      "derived": [
+        134,
+        136
+      ]
+    },
+    "independent_pre_law": {
+      "revision": "500cc394876b15a7b5efbab55f1ae4c2c12ff837",
+      "conditions": [
+        180,
+        193
+      ],
+      "derived": [
+        0,
+        0
+      ],
+      "packet": "peer51-prelaw-v1.json",
+      "sha256": "0bbc338d02ee3e6de9e3dbf660357d58c377b2ecbf95fec23c45be2ccfa30680"
+    },
+    "author": {
+      "packet": "author48-v1.json",
+      "sha256": "28080940616f09ceaaf241562cbd7266865e0b05318e951bd6d68816aaa38e71",
+      "core": [
+        262,
+        275
+      ],
+      "core_derived": [
+        140,
+        145
+      ],
+      "guards": [
+        161,
+        169
+      ],
+      "guard_derived": [
+        39,
+        39
+      ]
+    },
+    "independent": {
+      "packet": "peer51-post-v1.json",
+      "sha256": "bd7ffdcdd9a023cb4d8dd00139edf51df5ab2e06daccd4f10bdd4f3fdbb5da32",
+      "core": [
+        320,
+        327
+      ],
+      "budget": [
+        210,
+        217
+      ],
+      "guards": [
+        211,
+        225
+      ],
+      "guard_derived": [
+        47,
+        50
+      ]
+    },
+    "mode": "SL180 per part; all ten planned post parts PASS/reaped. Source agreements, derived assertions, native executions and production loading retain separate counts."
+  },
+  "legacy_fixture_compatibility": {
+    "change": "Exactly two old DIRECT-array refusal slots change ALIAS n_field to the authenticated parent-object cell (n_owner/n_alias). The still-held object-valued ALIAS negatives remain; no old source/native/tail campaign is renewed.",
+    "static_map": "legacy-token-compat-v1.json",
+    "static_map_sha256": "7ecc3110bcf62aa0aefe0b81b292a9cb4ea0e56925045b2f2163ac46e3299b0b",
+    "unchanged": "All fourteen selected new PRELAW/core/budget/guard constructor lists and the imported typed AST remain byte-for-byte equal.",
+    "reached_prefix_checks": [
+      {
+        "report": "author48-legacy-compat-v1-0/report.json",
+        "sha256": "c8d0cd6a08e6e7fd89a268ffa628fa39532022f6e1386534afe7d7a6901bd653",
+        "conditions": 136,
+        "derived": 14,
+        "source_credit": 0,
+        "native_credit": 0
+      },
+      {
+        "report": "author48-legacy-compat-v1-1/report.json",
+        "sha256": "b5248bfcd3eb422aa5a12c4b51541bdca514adba0e43a442aa4b6fbd1379d947",
+        "conditions": 144,
+        "derived": 14,
+        "source_credit": 0,
+        "native_credit": 0
+      }
+    ]
+  },
+  "zero_credit_records": [
+    {
+      "report": "peer51-guards0-v1/report.json",
+      "sha256": "8280c0c5d7abfde947f56cdeea0d3be99c2869b3b3e38c22743fe67ff332f69f",
+      "cause": "Guard record metavariable spelling prevented elaboration; declared-domain prefix fix only; zero credit."
+    }
+  ],
+  "fixture_compatibility": {
+    "record_domain_fix": "peer51-record-type-compat-v1.json",
+    "sha256": "efc143784a6f950d3696d3df2a00996b3b982458c134745e10b1471191eaeb49",
+    "scope": "Only guard metavariable names gained declared-domain prefixes. Exact earlier PRELAW/core/budget constructors preserve accepted cuts; only affected guards ran."
+  },
+  "independent_review": {
+    "agent": "/root/recover51_string_array_review",
+    "status": "WHOLE8 and source projection CLEAR; all planned runtime and affected compatibility checks reaped",
+    "source_manifest": "source8-v1/manifest.json",
+    "source_manifest_sha256": "2bdc69ce2d39596bc7a638605d316c3ffa304dde0290e94f3dc7403b91aad374",
+    "operations_sha256": "5525a9608e8fa8202833f12bb83a24d028d36337bb187c781bd08408de5a5b3c"
+  },
+  "actual_integration": {
+    "status": "independently clear from the sole saved actual",
+    "source_revision": "97fb19a42b47e13034e3b06d26b62fddd906f5ef",
+    "tree": "c281419605d98edbf636c5a6f6f3d0105e1b74b5",
+    "parent": "9880b28639a24ee70d565131ad7e974f3d01abf9",
+    "canonical": {
+      "mode": "production_SL",
+      "modules": 509,
+      "fixtures": 1,
+      "argv": 512,
+      "watched": 513,
+      "cap_seconds": 60,
+      "elapsed_seconds": 16.588209143141285,
+      "exit": 0,
+      "timeout": false,
+      "quiet_true_LF": true,
+      "stable": true,
+      "reaped": true,
+      "source_credit": 0
+    },
+    "canonical_report_sha256": "fd5cd122aa90c6a57d380f6981e8865d44682048da36c7a070b7004c5ac05fd6",
+    "source_map_sha256": "d4ea0aab03bf02d68dccb4878b53c84ba865358cb74f5cfb343121208c533644",
+    "tiny_result": "integrated51-actual-cache-v1/review-tiny.json",
+    "tiny_sha256": "61649205c89f7bfaa10cc909c61d9bd1e28b32c6dc4300d0a3c3d35bd2b2a25b",
+    "source_projection": {
+      "paths": 8,
+      "new_files": 4,
+      "literal_operations": 10,
+      "unique_forward_and_inverse": true,
+      "nonMake_private_exact": 7,
+      "currentMake_foreign_preserved": true,
+      "exact_inverse": true
+    },
+    "reader_discipline": {
+      "original_report_reads": 1,
+      "original_map_reads": 1,
+      "full_raw_parsed_fixed_facts_cached_before_assertions": true,
+      "author_original_map_fullcache_reads": 0,
+      "new_runtime_source_native_state": 0
+    }
+  },
+  "unchanged": {
+    "reserve": "93807cdd6/255",
+    "inventory": "169/306; closed0+1 and all exact holds unchanged",
+    "engine_bugs_or_intentional_divergence": "none identified in this slice"
+  }
+}

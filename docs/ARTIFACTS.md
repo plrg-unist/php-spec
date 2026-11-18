@@ -8,6 +8,24 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+ENUM321 literal sign-zero/FIELD2 defaults retain native2 once/source2, baseline
+Unsupported1, prelaw394, author670 and independent591 (new321564/bounded32027) in
+`../php-spec-evidence-archive/enum-deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-321/`.
+The [review](../coverage/semantics/deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-review.json) binds fixed actual
+`9880b2863` production SL509 to the once-read report/map and full raw/parsed/fixed-Git
+cache in `peer-main119-canonical-cache-v1/`, persisted before assertions. DOC16 is
+already source-placed; author original report/map/cache reads remain0. Archives
+are evidence, not build inputs.
+
+Array-valued ALIAS-property nested-unset evidence is in
+`../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-array-alias-fields-post/`.
+The [family review](../coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json)
+binds `source8-v1/manifest.json`, split checks and both complete checked-source
+bridges. `integrated51-actual-cache-v1/review-tiny.json` binds fixed `97fb19a42`
+to its sole production load. Native2 ran once; post public CLI remains unrun.
+Raw streams and the one guard-elaboration failure remain external; metadata
+renews no execution or observation.
+
 - Raw-FLOAT full-ternary RHS CONCAT: [review](../coverage/semantics/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-review.json), [contract](semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-TERNARY-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md). Native2-once/source2, prelaw103+114, author277/142+294/142 and independent318/104/WHOLE14 retain separate cuts in `../php-spec-evidence-archive/string-offset-runtime-allocated-float-ternary-tree-rhs-concat-base-initial-raw-leading-key-author63-20261118/` and matching `-reviewer53-20261118/`. Fixedactual `cc0afd3b`/soleSL50916.732383788s/source0 is clear through small `actual-source-review-v1.json` SHA `31b5944831e2215f032e7a57f1ce93fa17169865ed22ee3704e747a1a7b9f1b6` and opaque FULL cache SHA `9583fb61639215c9da73dad3a31db8114db5bd4fd499bfdac35825bff4fb599e`; original report/map1 each and author raw/cache0. The production fixture is literal true/load only. Author elaboration/preparation, peer control-construction and cached validator corrections retain zero execution/source credit; archives are evidence only.
 
 ENUM320 one-sign zero/FIELD2 defaults retain native4 once/source4, prelaw936,
@@ -1979,3 +1997,13 @@ STRING ALIAS fields after nested-unset Warnings: ../php-spec-evidence-archive/st
 ## COMP345 scoped-self multi-builtin unions
 
 Raw originals, once-only native observations, prelaw controls, source/state cuts, retained CLI120 source and whole298/cap360 fixture timeouts, affected-only CLI300 pass, exact290+30 partition, independent WHOLE, exact source packet and immutable actual composition remain in `/home/user/workspace/php-spec-evidence-archive/comp345/`. [Family review](../coverage/semantics/self-builtin-union-parentless-short-reference-get-hook-review.json) binds the check index and hashes. Private fixtures and sole actual production/source0 retain separate identities; passing sources and prior accepted campaigns were not renewed.
+
+## COMP348 scoped-self intersection conjuncts
+
+Originals, once-only native observations, prelaw controls, source/header/state
+cuts, both retained fixture failures and their narrow corrections remain in
+`/home/user/workspace/php-spec-evidence-archive/comp348/`. The [family review](../coverage/semantics/self-intersection-parentless-short-reference-get-hook-review.json)
+binds source packet58c9b3dc, READY5dc182d1, WHOLE54cd2b66 and actual clearance67073496.
+Actual50fb23131 passed its sole production SL509 load; private508 cuts stay separate.
+The reviewer cached full raw and parsed originals before assertions; report/map
+reads1/1, author raw/cache0. These archives are evidence, not operational inputs.

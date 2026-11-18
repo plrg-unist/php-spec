@@ -2385,8 +2385,28 @@ foreach runtime coverage is claimed. Independent WHOLE/source6 projection is
 clear. Actual `6a3096be1` and its sole production SL509 load pass in 17.53 seconds
 at the 60-second limit, with zero source credit; the saved actual/map review is
 independently clear through tiny `500d29e4`, with author raw/cache reads zero.
-Array/object-valued owning ALIAS fields, object-bearing/cyclic field arrays, and
+Object-valued owning ALIAS fields, object-bearing/cyclic field arrays, and
 typed/declared/backed fields,
 cached tables, other objects and wider histories remain partial. Earlier cuts,
 exact holds, reserve 93807cdd6/255 and inventory 169/306 with closed 0+1 stay unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-array-fields-post-review.json).
+
+Ordinary initialized dynamic ALIAS fields also admit those finite object-free
+arrays through genuine unconstrained reference cells. Physical reach starts at
+the field's HCELL before logical array recursion, rejecting object nodes and all
+three released-cell flags even when a release hides the root STORE edge. Existing
+array liveness, constraint and path-local cycle checks retain shared siblings.
+Two fields and a CV share one cell while an outside value keeps independent COW;
+property writes, CV rebinding/unset and staged retirement preserve every real edge.
+
+Two native originals ran once, and two independent complete checked-source/native
+bridges preserve the fixed Error or the same pending Throwable. Post public-CLI
+execution is unrun; source, state and malformed controls keep separate credit.
+Compiler-authenticated UPDATE_CELL with an ARRAY value and protected typed-COPY
+descendants validate hidden-edge refusals. No marked-foreach runtime witness is
+claimed. Two legacy refusal fixtures now target the still-held object-valued
+ALIAS domain, with exact constructor compatibility and new-prefix checks.
+Object-valued ALIAS properties, object-bearing/cyclic arrays, typed/declared/backed
+fields, cached tables and wider owners/lifetimes remain partial. All exact holds
+and validated counts stay unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-array-alias-fields-post-review.json).
