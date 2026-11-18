@@ -111,7 +111,7 @@ def controls(case):
     for kind in ('float', 'string', 'bool', 'array', 'callable', 'false', 'true', 'iterable'):
         changed_raw = raw.replace('"aW50"', json.dumps(base64.b64encode(kind.encode()).decode()))
         changed_type = normalized.replace('"int"', json.dumps(kind))
-        lines.append('~' + proof(changed_raw, checked=changed_type))
+        lines.append(proof(changed_raw, checked=changed_type))
     lines.append(proof(raw.replace('"aW50"', '"bnVsbA=="'), checked=normalized.replace('"int"', '"null"')))
     for strict in ('true', 'false'):
         lines += ['$typed_conversion_at(S_return, ' + normalized + ', PINT 37, ' + strict + ') = TYPEVALUE (PINT 37)',

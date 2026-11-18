@@ -1,0 +1,127 @@
+[
+  {
+    "id": "weak-global-relative-ordered-class-bool-return-private-cell",
+    "kind": "bool",
+    "return_members": [
+      "class",
+      "bool"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\nuse AuthorRelativeOrdered134\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='0'),';';$x=17;return true;}\nfunction make($saved):namespace\\stdClass|bool{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=[$value];$value[0]=41;return $value;}\n$x='0';$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "627a3ed731a078e46adfb9ac0f8a15ba58a0e101dc2a3ec1d568892bbdd18d66",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:0:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "0",
+    "import_target": "AuthorRelativeOrdered134\\Other",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-global-class-bool-return-private-cell",
+      "source_sha256": "96584c240e517b8a3e4306746734d025149cb84332eb5f8d6bc607dd795f5ab7",
+      "edits": "Replace the global declaration comment by a conflicting ordinary stdClass import and the plain nominal RETURN member by canonical namespace\\stdClass. Preserve every executable statement, member order and line number."
+    }
+  },
+  {
+    "id": "weak-global-relative-ordered-string-class-return-private-cell",
+    "kind": "string",
+    "return_members": [
+      "string",
+      "class"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\nuse AuthorRelativeOrdered134\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x===37),';';$x=17;return true;}\nfunction make($saved):string|namespace\\stdClass{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value==='37'),';';$value=[$value];$value[0]=41;return $value;}\n$x=37;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "2b0d82780ac7f98a7600202fa46cb78fcb9fbfef377a3c001e63bdf56d564f88",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:37:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "37",
+    "import_target": "AuthorRelativeOrdered134\\Other",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-global-string-class-return-private-cell",
+      "source_sha256": "f492b0cff0dfccc103bb6aa2f6b0407678ba263f339ba2d171ea74197614298f",
+      "edits": "Replace the global declaration comment by a conflicting ordinary stdClass import and the plain nominal RETURN member by canonical namespace\\stdClass. Preserve every executable statement, member order and line number."
+    }
+  },
+  {
+    "id": "weak-global-relative-ordered-float-int-class-numeric-string-return-priority",
+    "kind": "int",
+    "return_members": [
+      "float",
+      "int",
+      "class"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "notice_line": 8,
+    "source": "<?php\nuse AuthorRelativeOrdered134\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='37'),';';$x=17;return true;}\nfunction make($saved):float|int|namespace\\stdClass{echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===37),';';$value=[$value];$value[0]=41;return $value;}\n$x='37';$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\necho 'R:',$r[0],':',$copy,':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$x,';';unset($r,$x,$copy,$alias);\n",
+    "source_sha256": "d3b5e7a622f79067f20148f99d1838fa966c2c526a2f0b92920ee6587ef53d12",
+    "native_stdout": "N;M;H:8:1;F:1;R:41:37:17:1;D:43:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "input_text": "37",
+    "import_target": "AuthorRelativeOrdered134\\Other",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-global-float-int-class-numeric-string-return-priority",
+      "source_sha256": "2cd72ae933d23dea86f8c5b0e919a59ce57261242443603bc959d6471bbbfea1",
+      "edits": "Replace the global declaration comment by a conflicting ordinary stdClass import and the plain nominal RETURN member by canonical namespace\\stdClass. Preserve every executable statement, member order and line number."
+    }
+  },
+  {
+    "id": "strict-global-relative-ordered-class-iterable-runtime-array-return-cow",
+    "kind": "array",
+    "return_members": [
+      "class",
+      "iterable"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": true,
+    "notice_line": 8,
+    "source": "<?php declare(strict_types=1);\nuse AuthorRelativeOrdered134\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x[0]===13),';';$x=17;return true;}\nfunction make($saved):namespace\\stdClass|iterable{$saved[1]=17;echo 'M;';return $saved;}\nfunction &take(&$value){echo 'F:',$value[0],':',$value[1],';';$value[0]=23;return $value;}\n$x=[];$x[0]=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r[0],':',$r[1],':',$copy[0],':',$x,':',(int)($alias===17),';';$r=43;echo 'D:',$r,':',$snapshot[0],':',$snapshot[1],':',$x,';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "30e12e25f442ef58ba8eb13aa3a232a976d853335cba2d4bb8d372c0fa1540a6",
+    "native_stdout": "N;M;H:8:1;F:13:17;R:23:17:13:17:1;D:43:23:17:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "import_target": "AuthorRelativeOrdered134\\Other",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-global-class-iterable-runtime-array-return-cow",
+      "source_sha256": "57d6f70b16b83966266fd40edfb7d28ba0e50ebfcb19ed6a600556b6ce7882b2",
+      "edits": "Replace the global declaration comment by a conflicting ordinary stdClass import and the plain nominal RETURN member by canonical namespace\\stdClass. Preserve every executable statement, member order and line number."
+    }
+  },
+  {
+    "id": "strict-global-relative-ordered-bool-class-string-object-return-identity",
+    "kind": "object",
+    "return_members": [
+      "bool",
+      "class",
+      "string"
+    ],
+    "class_return": "stdClass",
+    "callee_strict": true,
+    "notice_line": 8,
+    "source": "<?php declare(strict_types=1);\nuse AuthorRelativeOrdered134\\Other as stdClass;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):bool|namespace\\stdClass|string{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=43;echo 'D:',$r,':',$snapshot->v,':',$x,';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "799f0a0285f032d311c2562bbc85faf269ddb0c0e4a5743ea75aa44511efd5a6",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:43:23:17;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "import_target": "AuthorRelativeOrdered134\\Other",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_ordered_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-global-bool-class-string-object-return-identity",
+      "source_sha256": "db3769fcb2d42f9487044216c442e26a30833cd7fb6dedd4db5e7733adbae789",
+      "edits": "Replace the global declaration comment by a conflicting ordinary stdClass import and the plain nominal RETURN member by canonical namespace\\stdClass. Preserve every executable statement, member order and line number."
+    }
+  }
+]

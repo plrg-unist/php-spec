@@ -69,11 +69,11 @@ def normal(initial, case, front):
         derived.append('~' + proof(raw=union(raw)))
     null_name = 'NIdentifier (BYTES "bnVsbA==") metadata_return_int'
     wider = int_first[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'
-    derived += ['~' + proof(raw=union('[' + integer + ', ' + relative + ', ' + null_name + ']'), returns=wider),
+    derived += [proof(raw=union('[' + integer + ', ' + relative + ', ' + null_name + ']'), returns=wider),
         proof(raw=union('[' + relative + ', ' + null_name + ']'), returns=class_first.replace('"int"', '"null"'))]
     for name in ('float', 'bool', 'string', 'array', 'callable', 'false', 'true', 'iterable'):
         builtin = 'NIdentifier (BYTES ' + json.dumps(base64.b64encode(name.encode()).decode()) + ') metadata_return_int'
-        derived.append('~' + proof(raw=union('[' + relative + ', ' + builtin + ']'), returns=class_first.replace('"int"', json.dumps(name))))
+        derived.append(proof(raw=union('[' + relative + ', ' + builtin + ']'), returns=class_first.replace('"int"', json.dumps(name))))
     for returns in (singleton, class_type('Other')[:-1] + ', (PTBRANCH ([PTBUILTIN "int"]))]',
             '[(PTBRANCH ([PTBUILTIN "int"])), ' + class_type('STDCLASS')[1:], wider):
         derived.append('~' + proof(returns=returns))
