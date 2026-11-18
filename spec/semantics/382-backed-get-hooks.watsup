@@ -82,7 +82,7 @@ def $hook_short_reference_header(phpType18, ptbranch*) = false -- otherwise
 ;; Scoped names use the declaring namespace/imports and only quiet normalization.
 dec $hook_short_reference_scoped_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_scoped_header(NName (BYTES text_type) metadata_type, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext) = true
-  -- if $ptbuiltin($ptlc($base64(text_type))) = "" /\ $base64(text_type) =/= [95]
+  -- if ($ptbuiltin($ptlc($base64(text_type))) = "" \/ $ptlc($base64(text_type)) = $ptascii("self")) /\ $base64(text_type) =/= [95]
   -- if $ptvalidname(ptbytes, true) /\ ptbytes =/= [95]
   -- if $ptype_normalize(NName (BYTES text_type) metadata_type, ptcontext) = PTOK ([(PTBRANCH ([PTCLASS ptbytes]))]) eps
 def $hook_short_reference_scoped_header(NNameRelative (BYTES text_type) metadata_type, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext) = true

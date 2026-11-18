@@ -2987,3 +2987,11 @@ combinations refused and aligns all raw branches/conjuncts with defining imports
 Existing runtime guards preserve partial-interface refusal, weak/strict writes,
 typed aliases, array COW and real source detachment; iterable/wider contexts stay partial.
 [Review](../../coverage/semantics/mixed-nominal-dnf-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits case-insensitive raw `self`
+through exact defining-class normalization, independently of ordinary imports.
+Existing nullable and eight two-member class/builtin header laws reuse that proof;
+all raw/normalized order, metadata, source, owner and return guards remain required.
+Distinct same-class payloads retain their own uninitialized backing while the
+selected typed source detaches; nominal self intersections/DNF and wider contexts stay partial.
+[Review](../../coverage/semantics/self-parentless-short-reference-get-hook-review.json).
