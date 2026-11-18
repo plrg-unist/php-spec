@@ -1,0 +1,53 @@
+[
+  {
+    "id": "strict-scoped-nullable-stdclass-return-object-byval",
+    "role_index": 0,
+    "variant": "strict-class-byval",
+    "callee_strict": true,
+    "class_formals": [
+      "sTdClAsS"
+    ],
+    "first_builtin": null,
+    "class_return": "stdClass",
+    "source": "<?php declare(strict_types=1);\nnamespace ScopedNullableReturn128;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',$x->v,';';$x=17;return true;}\nfunction make(\\sTdClAsS $saved):?bOx{echo 'M:',$saved->v,';';$saved->v=11;return $saved;}\nfunction &take(&$value){echo 'F:',$value->v,';';$value->v=23;return $value;}\n$x=new \\stdClass;$x->v=13;$copy=$x;$alias=&$x;set_error_handler('ScopedNullableReturn128\\h',8);echo 'N;';\n$r=&take(make(\n    $x\n));\n$snapshot=$r;echo 'R:',$r->v,':',$copy->v,':',$x,':',(int)($snapshot===$copy),';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===$snapshot),';';unset($r,$x,$copy,$alias,$snapshot);\n",
+    "source_sha256": "14e10575729ea55e351a977f807e49be2de4f8877148d2ab89eb7f8507c7a063",
+    "native_stdout": "N;M:13;H:8:11;F:11;R:23:23:17:1;D:41:23:17:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "kind": "object",
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_return_producer_reference_notice_cases.json",
+      "id": "strict-single-global-plain-nullable-class-return-identity-and-private-cell",
+      "source_sha256": "75d1cfac0846d758b6ad2096ff44aba91c3199793a548fd2a1c52652e282f3d2",
+      "edits": "Fresh declaration namespace/import and nullable RETURN alias; preserve runtime statements, FQN/untyped/builtin formals, original physical lines and observers. Fresh namespaced multiple-CV Notice line8 is a prediction for the sole native observation."
+    },
+    "namespace": "ScopedNullableReturn128",
+    "return_name": "bOx",
+    "return_target": "stdClass",
+    "new_support_credit": 1
+  },
+  {
+    "id": "weak-scoped-nullable-stdclass-return-null-multiple-byref",
+    "kind": "null",
+    "role_index": 1,
+    "class_return": "stdClass",
+    "callee_strict": false,
+    "source": "<?php\nnamespace ScopedNullableReturn128;use stdClass as Box;\nfunction h($n,$m,$file,$line){global $x,$stamp;echo 'H:',$line,':',$x,':',$stamp,';';$x=17;$stamp=29;return true;}\nfunction make(int $tag,&$saved):?BOX{$keep=$saved;$saved=11;echo 'M:',$tag,':',$saved,';';return $keep;}\nfunction &take(&$value){echo 'F:',(int)($value===null),';';$value=19;return $value;}\n$stamp=2;$stampAlias=&$stamp;$x=null;$copy=$x;$alias=&$x;set_error_handler('ScopedNullableReturn128\\h',8);echo 'N;';\n$r=&take(make(\n    $stamp,\n    $x\n));\n$snapshot=$r;$r=23;echo 'R:',$r,':',$snapshot,':',$x,':',$stampAlias,':',(int)($copy===null),';';unset($r,$x,$copy,$alias,$snapshot,$stamp,$stampAlias);\n",
+    "source_sha256": "e23a26fff7f9ae42f5c3a0b757fb1b1967618e15a1c16c6d2963c8f4165f4bb3",
+    "native_stdout": "N;M:2:11;H:8:11:2;F:1;R:23:19:17:29:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "namespace": "ScopedNullableReturn128",
+    "return_name": "BOX",
+    "return_target": "stdClass",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/global_plain_nullable_stdclass_return_producer_reference_notice_cases.json",
+      "id": "weak-multiple-null-global-plain-nullable-class-return-private-cell",
+      "source_sha256": "74c8ceee97be7e30952e0e13d9cf8e2ea751cd3e2e043f6a2ae10026f3368756",
+      "edits": "Fresh declaration namespace/import and nullable RETURN alias; preserve runtime statements, FQN/untyped/builtin formals, original physical lines and observers. Fresh namespaced multiple-CV Notice line8 is a prediction for the sole native observation."
+    }
+  }
+]

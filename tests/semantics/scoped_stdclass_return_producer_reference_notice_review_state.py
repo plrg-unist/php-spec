@@ -74,7 +74,7 @@ def normal(initial, case, front):
     nullable = canonical[:-1] + ', (PTBRANCH ([PTBUILTIN "null"]))]'
     for raw in ('NNullableType (NName (BYTES text_return) metadata_return) metadata_return',
             'NUnionType (SEQUENCE ([NName (BYTES text_return) metadata_return, NIdentifier (BYTES "bnVsbA==") metadata_return])) metadata_return'):
-        derived.append('~' + proof(raw=raw, returns=nullable))
+        derived.append(('' if raw.startswith('NNullableType ') else '~') + proof(raw=raw, returns=nullable))
     derived += [proof(raw='NName (BYTES text_return) eps'),
         proof(parameter_view=parameter.replace('metadata_parameter', 'eps'))]
     for strict in ('true', 'false'):

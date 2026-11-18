@@ -181,7 +181,7 @@ def controls(case):
         norm, raw = nullable(spelling), raw_nullable(spelling)
         proof = header + raw + ', ' + signature + '[.RETURNS = ' + norm + '])'
         lines += [proof, '~' + proof.replace(env + ',', env + '[.NAMESPACE = $ptascii("Other")],', 1),
-            '~' + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
+            ('' if spelling == 'stdClass' else '~') + proof.replace(env + ',', env + '[.CLASSES = [($ptascii("stdclass"), $ptascii("stdClass"))]],', 1),
             '~$reference_notice_producer_header(phpType6_producer, phpType16, ' + raw + ', ' + signature + '[.RETURNS = ' + norm + '])',
             proof.replace(raw, raw_nullable(spelling, 'NNameFullyQualified'))]
         wrong_types = [objects.prior.class_type(spelling), nullable(spelling.swapcase()),
