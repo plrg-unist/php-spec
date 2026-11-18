@@ -1,0 +1,240 @@
+{
+  "scope": "Exactly one UnaryMinus(raw NScalarFloat) CASTSTRING RHS allocating one CONCAT input row for frozen initial raw CV leading offsets",
+  "status": "independently clear at private production SL508 cuts; integrated canonical gate pending",
+  "target": "PHP 8.5.10 CLI NTS 64-bit; sole project-local pinned oracle; pure authored .watsup semantics",
+  "semantic_revision": "a2c877a46",
+  "tested_candidate": "942e51ff6",
+  "implementation": "spec/semantics/425-string-offset-read-continuations.watsup",
+  "engine_sources": [
+    "Zend/zend_compile.c:zend_compile_unary_pm,zend_try_ct_eval_unary_pm,zend_compile_cast",
+    "Zend/zend_operators.c:mul_function_fast,__zval_get_string_func,zend_double_to_str",
+    "Zend/zend_vm_def.h:ZEND_CAST,ZEND_CONCAT"
+  ],
+  "certificate": {
+    "source": "exactly one UnaryMinus around direct NScalarFloat under CASTSTRING; existing full child SOURCE walk",
+    "bits": "raw nonnegative atom remains distinct from negated unary result, including negative FLOAT zero",
+    "identity": "left=resultID-2, right=resultID-1, exactly one RHS REQUEST row",
+    "flags": [
+      false,
+      false
+    ],
+    "state": "full saved-prefix CASTSTRING-to-CONCAT equality; only registry append and RESULT updates",
+    "ownership": "existing KNOWN temporary ownership and saved referenced-key wrapper; registry rows are not roots"
+  },
+  "native_executions": 2,
+  "source_agreements": 2,
+  "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+  "modules": {
+    "count": 508,
+    "list_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "exclusions": [],
+    "production_SL": true
+  },
+  "author_cuts": [
+    {
+      "id": "native-baseline",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/native-baseline/report.json",
+      "sha256": "a9d35d0465bf5140ceb14c29cf0f7a1f82e0b3d78f0238453b005885ac97a49b",
+      "revision": "af42d90ace082bb47d884417e5e63790d4c727d2",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": null,
+          "source_sha256": "77037038239d6a420bf53f7a1742a980b7c0f12b4554d5218222979e280cf088",
+          "native_reused": false,
+          "agreement_credit": 0
+        },
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": null,
+          "source_sha256": "2fb33bc97cc201043ae23f494e8a3b6164f54e0b8175c53f0131a5e8e9eadb4d",
+          "native_reused": false,
+          "agreement_credit": 0
+        }
+      ]
+    },
+    {
+      "id": "source-baseline",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/source-baseline/report.json",
+      "sha256": "10f3f231fd5b7227f98afddd30ef17b2425745ecf36698668a6fecffd87b908c",
+      "revision": "af42d90ace082bb47d884417e5e63790d4c727d2",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": "unsupported",
+          "source_sha256": "77037038239d6a420bf53f7a1742a980b7c0f12b4554d5218222979e280cf088",
+          "native_reused": true,
+          "agreement_credit": 0
+        },
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": "unsupported",
+          "source_sha256": "2fb33bc97cc201043ae23f494e8a3b6164f54e0b8175c53f0131a5e8e9eadb4d",
+          "native_reused": true,
+          "agreement_credit": 0
+        }
+      ]
+    },
+    {
+      "id": "prelaw-direct",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-direct/report.json",
+      "sha256": "ac2a4efc6b15f93a8d9ccce85447822de591a3b99160a85868292f4bf4a9f212",
+      "revision": "af42d90ace082bb47d884417e5e63790d4c727d2",
+      "passed": true,
+      "premises": 80,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 19.05347776412964,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "prelaw-reference",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/prelaw-reference/report.json",
+      "sha256": "f67a7cacc3ada990bb13a8c55a9ce7dda0c2a1d6ba89b3506c28654b041268fa",
+      "revision": "af42d90ace082bb47d884417e5e63790d4c727d2",
+      "passed": true,
+      "premises": 91,
+      "derived_conditions": 0,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 20.30450201034546,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "source-postlaw",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/source-postlaw/report.json",
+      "sha256": "69aa7e3f2c1355ffb6ed7f909dc49de79c863bbaf6962efe98ae5109b37488ca",
+      "revision": "a2c877a46520cbd35f2785803f410d29d4f153b8",
+      "rows": [
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-current-key",
+          "passed": true,
+          "outcome": "normal",
+          "source_sha256": "77037038239d6a420bf53f7a1742a980b7c0f12b4554d5218222979e280cf088",
+          "native_reused": true,
+          "agreement_credit": 1
+        },
+        {
+          "id": "runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-reference-key",
+          "passed": true,
+          "outcome": "normal",
+          "source_sha256": "2fb33bc97cc201043ae23f494e8a3b6164f54e0b8175c53f0131a5e8e9eadb4d",
+          "native_reused": true,
+          "agreement_credit": 1
+        }
+      ]
+    },
+    {
+      "id": "author-direct",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/author-direct/report.json",
+      "sha256": "aa115d31c64eb8a8af66cefa672f969577398d049bf2f9d7bc541f47d7442170",
+      "revision": "942e51ff64f4b1882cbaf8e0cd6bcff029ead0aa",
+      "passed": true,
+      "premises": 217,
+      "derived_conditions": 82,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 24.260987043380737,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    },
+    {
+      "id": "author-reference",
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-author60-20261118/author-reference/report.json",
+      "sha256": "e9bf9c956d0a8406d5753fc58d61e205326a1d80b4495a58f284b205400388ed",
+      "revision": "942e51ff64f4b1882cbaf8e0cd6bcff029ead0aa",
+      "passed": true,
+      "premises": 234,
+      "derived_conditions": 82,
+      "mode": "production SL fixture",
+      "execution": {
+        "elapsed": 33.26121664047241,
+        "exit": 0,
+        "cap_seconds": 180,
+        "group_after": []
+      }
+    }
+  ],
+  "independent": {
+    "packet": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/review-ready.json",
+    "sha256": "2390e31eeeb965a58b8a302f1e9b440f5520e9f55612cf7e025531abec3ef92c",
+    "revision": "e3174bdff5b2dc3f4c48726853147b220b61ef3b",
+    "tree": "da17d33f3a53855bba612af784958d0019608ac3",
+    "new_peer": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-unary-minus-float-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/peer/report.json",
+      "sha256": "c053b9aca20e0cb7fcf78e78b0ecfad3d40c60d0f16794f982d6919f74953904",
+      "revision": "e3174bdff5b2dc3f4c48726853147b220b61ef3b",
+      "passed": true,
+      "premises": 266,
+      "derived_conditions": 139,
+      "source_credit": 0,
+      "native_executions": 0,
+      "compiler": {
+        "pid": 3743616,
+        "pgid": 3743616,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 13.672277450561523,
+        "cap_seconds": 120,
+        "group_after": [],
+        "interruption": null
+      },
+      "execution": {
+        "pid": 3743678,
+        "pgid": 3743678,
+        "exit": 0,
+        "timeout": false,
+        "elapsed": 37.36498045921326,
+        "cap_seconds": 180,
+        "group_after": [],
+        "interruption": null
+      },
+      "mode": "production SL fixture",
+      "inputs_stable": true,
+      "generated_stable": true,
+      "head_stable": true
+    },
+    "whole_review": {
+      "passed": true,
+      "judgments": 14,
+      "scope": "bounded semantic/source/state/ownership review, not executable fixture assertions"
+    }
+  },
+  "preserved_failures": [],
+  "current_failures_corrections_timeouts": 0,
+  "compatibility": [
+    "Source2 at a2c bridges to942 through only the new independent peer file; semantic modules, source driver and CASES are unchanged.",
+    "Final family contract/review and two Make target additions do not change tested semantic/fixture inputs.",
+    "Deleting the new39 restores every687 source byte. Current raw-FLOAT and single-plus clauses/controls remain literal and source-shape disjoint; no accepted B/source/native/canonical renewal."
+  ],
+  "trust_boundary": "Existing folded unary identity checks literal-unary equality; no global installed-pool consistency theorem. Emitted unary with valid retained atom facts may supply the same FLOAT.",
+  "remaining_limits": [
+    "nested/mixed sign RHS",
+    "other VALUE producers",
+    "identity STRING casts",
+    "multirow RHS allocation",
+    "wider owners/release/cleanup",
+    "precision histories and lifetimes"
+  ],
+  "jobs": {
+    "own_heavy": 0,
+    "all_planned_author_and_reviewer_jobs_reaped": true
+  },
+  "integration": {
+    "status": "pending MAIN actual placement and sole canonical load",
+    "metadata_policy": "one family/common4 batch, MAIN sole common writer, one integrated final"
+  }
+}
