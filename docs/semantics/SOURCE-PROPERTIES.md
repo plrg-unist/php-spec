@@ -2979,3 +2979,11 @@ namespace/imports through whole quiet normalization; builtin arms stay partial.
 Existing runtime disjunction/conjunction matching accepts distinct branch payloads,
 retaining aliases, atomic refusal, object copies and real source detachment; wider contexts stay partial.
 [Review](../../coverage/semantics/nominal-dnf-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits finite quiet DNF unions with at least
+one nominal intersection and one compatible builtin alternative from array,
+int, float, string, null, bool, false and true; whole normalization keeps invalid
+combinations refused and aligns all raw branches/conjuncts with defining imports.
+Existing runtime guards preserve partial-interface refusal, weak/strict writes,
+typed aliases, array COW and real source detachment; iterable/wider contexts stay partial.
+[Review](../../coverage/semantics/mixed-nominal-dnf-parentless-short-reference-get-hook-review.json).

@@ -1,0 +1,182 @@
+{
+  "intersection-int-fq": {
+    "id": "intersection-int-fq",
+    "namespace": "W340A",
+    "payload_namespace": "W340A",
+    "consumer_namespace": "W340AX",
+    "header": "(\\W340A\\A&\\W340A\\B)|int",
+    "resolved": [
+      {
+        "classes": [
+          "W340A\\A",
+          "W340A\\B"
+        ]
+      },
+      {
+        "builtin": "int"
+      }
+    ],
+    "imports": "",
+    "typename": "(W340A\\A&W340A\\B)|int",
+    "free": "[]",
+    "free_check": "$r340 === []",
+    "steps": [
+      {
+        "statement": "$r340 = '127';",
+        "check": "$r340 === 127 && $s340 === 127",
+        "value": "PINT 127",
+        "marker": "N|"
+      },
+      {
+        "statement": "$s340 = true;",
+        "check": "$r340 === 1 && $s340 === 1",
+        "value": "PINT 1",
+        "marker": "B|"
+      }
+    ],
+    "bad": "[]",
+    "source": "intersection-int-fq.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "arity": 2,
+    "first_object": "W340A\\Payload340",
+    "last_object": "W340A\\Payload340",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s340 = new \\W340A\\Payload340();",
+        "object": "W340A\\Payload340",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|N|B|P|D|F|Z|",
+    "raw_branches": [
+      [
+        {
+          "kind": "NNameFullyQualified",
+          "name": "W340A\\A"
+        },
+        {
+          "kind": "NNameFullyQualified",
+          "name": "W340A\\B"
+        }
+      ],
+      [
+        {
+          "kind": "NIdentifier",
+          "name": "int"
+        }
+      ]
+    ],
+    "payload_interfaces": {
+      "W340A\\Payload340": [
+        "W340A\\A",
+        "W340A\\B"
+      ]
+    },
+    "missing": [
+      {
+        "class": "W340A\\Partial340",
+        "present": [
+          "W340A\\A"
+        ]
+      }
+    ]
+  },
+  "intersection-array-null-relative": {
+    "id": "intersection-array-null-relative",
+    "namespace": "W340B",
+    "payload_namespace": "W340B",
+    "consumer_namespace": "W340BX",
+    "header": "array|(namespace\\B&A)|null",
+    "resolved": [
+      {
+        "builtin": "array"
+      },
+      {
+        "classes": [
+          "W340B\\B",
+          "W340B\\A"
+        ]
+      },
+      {
+        "builtin": "null"
+      }
+    ],
+    "imports": "",
+    "typename": "(W340B\\B&W340B\\A)|array|null",
+    "free": "149",
+    "free_check": "$r340 === 149",
+    "steps": [
+      {
+        "statement": "$s340 = null;",
+        "check": "$r340 === null && $s340 === null",
+        "value": "PNULL",
+        "marker": "N|"
+      }
+    ],
+    "bad": "127",
+    "array": true,
+    "source": "intersection-array-null-relative.php",
+    "mode": "direct",
+    "status": "normal",
+    "strict": false,
+    "body": "identifier",
+    "default": "ABSENT",
+    "arity": 3,
+    "first_object": "W340B\\Payload340",
+    "last_object": "W340B\\Payload340",
+    "last_tag": 71,
+    "assignments": [
+      {
+        "statement": "$s340 = new \\W340B\\Payload340();",
+        "object": "W340B\\Payload340",
+        "tag": 71,
+        "marker": "O1|"
+      }
+    ],
+    "stdout": "I|C|O1|W|J|A|N|P|D|F|Z|",
+    "raw_branches": [
+      [
+        {
+          "kind": "NIdentifier",
+          "name": "array"
+        }
+      ],
+      [
+        {
+          "kind": "NNameRelative",
+          "name": "B"
+        },
+        {
+          "kind": "NName",
+          "name": "A"
+        }
+      ],
+      [
+        {
+          "kind": "NIdentifier",
+          "name": "null"
+        }
+      ]
+    ],
+    "payload_interfaces": {
+      "W340B\\Payload340": [
+        "W340B\\A",
+        "W340B\\B"
+      ]
+    },
+    "missing": [
+      {
+        "class": "W340B\\Partial340",
+        "present": [
+          "W340B\\A"
+        ]
+      }
+    ]
+  }
+}
