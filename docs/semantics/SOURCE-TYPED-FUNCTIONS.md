@@ -1351,6 +1351,21 @@ Shared caches, private reception and owner bounds remain unchanged. Mixed numeri
 trees, names, STRING leaves, unary wrappers over computed trees, NaN warning
 continuations and wider declaration/reception/lifetime contexts remain partial.
 
+Proper mixed INT/FLOAT binary trees preserve exact intermediate PINT/PFLOAT
+tags and both raw leaf kinds through a folded infinite full-ternary predicate.
+Every node authenticates SOURCE, its typed pool and absent CODE/read/redirects;
+pure FLOAT subtrees retain the preceding certificate. The root has a proper
+binary child and both raw kinds, with compiler-fold authority covering the
+signed-zero phase case. Integer overflow stays FLOAT, and exact/inexact integer
+division keeps its tag; per-node assertions establish those facts separately
+from truthy source output. Native2 once/source2, prelaw1203, author1612, peer866
+and fresh old309 mixed30 retain separate passing cuts. Fixedactual4a28118e and
+the sole16.190656112s productionSL509 load are independently clear through
+immutable047f747f; preparation issues remain zero-credit. All-INT infinite
+trees, names/STRING/computed unary forms and wider reception/owner contexts
+remain partial; all exact holds and inventory counts stay unchanged.
+[Review](../../coverage/semantics/deferred-mixed-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,
