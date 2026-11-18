@@ -964,6 +964,14 @@ def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, p
   -- if $reference_notice_producer_supplied_literal_bool_type(phpType18, psparam.TYPE, text_default_kind)
   -- if $ptlc($base64(text_default_name)) = $ptascii(text_default_kind)
   -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
+def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, psparam :: psparam_tail*, b_optional) = (((NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT phpType37 metadata_parameter) :: phpType17_view*, psparam[.REQUIRED = true][.DEFAULT = PSNONE] :: psparam_view*))
+  -- if phpType17 = NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 (NExprConstFetch (NNameFullyQualified (BYTES text_default_name) metadata_default_name) metadata_default) phpType37 metadata_parameter
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC /\ ~psparam.REQUIRED
+  -- if psparam.DEFAULT = PSDEFAULT (NExprConstFetch (NNameFullyQualified (BYTES text_default_name) metadata_default_name) metadata_default) text_default_kind
+  -- if text_default_kind <- ["true", "false"]
+  -- if $ptlc($base64(text_default_name)) = $ptascii(text_default_kind)
+  -- if $reference_notice_producer_supplied_bool_type(phpType18, psparam.TYPE) \/ $reference_notice_producer_supplied_literal_bool_type(phpType18, psparam.TYPE, text_default_kind)
+  -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
 def $reference_notice_producer_supplied_defaults(phpType17*, psparam*, b_optional) = eps -- otherwise
 
 dec $reference_notice_producer_arguments(phpType6, phpType16, pssignature) : bool

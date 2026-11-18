@@ -1,0 +1,101 @@
+[
+  {
+    "id": "optional144-plain-bool-byval-fqn-false-default",
+    "source": "<?php\nnamespace FqnBoolDefault144 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(bOoL $saved=\\FaLsE):bool{echo 'M:',(int)($saved===true),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===true),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('FqnBoolDefault144\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "bool",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "5ae0cd6c6187e027141711a61d0e9bc0576890e86421e916a2702d0305e01c17",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "kind": "singleton",
+    "optional_index": 0,
+    "default": "\\FaLsE",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-single-bool-byval-supplied-false-default",
+      "source_sha256": "e2fe83ddbf5ab6380865e6662449dc9d23a5bd54ba1f99d7cfecdb13226ca2f4",
+      "edits": "Fresh namespace and fully qualified builtin Boolean default. The array original uses FQNfalse and a strict false observer, including its later omitted call. Supplied actual tags, handlers, ownership and separate existing omitted/static controls remain."
+    },
+    "new_support_credit": 1,
+    "renderer": "bool"
+  },
+  {
+    "id": "optional144-literal-true-byval-fqn-true-default",
+    "source": "<?php declare(strict_types=1);\nnamespace FqnLiteralDefault144\\Strict;\nfunction h($n,$m,$file,$line){global $x,$prefix;echo 'H:',$line,':',(int)($x===true),':',$prefix,';';$x=23;$prefix=29;return true;}\nfunction make(tRuE $saved=\\TrUe):mIxEd{echo 'M:',(int)($saved===true),';';$saved=new \\stdClass;$saved->v=13;return $saved;}\nfunction &take(&$prefix,&$value){echo 'F:',$prefix,':',$value->v,';';$value->v=19;$prefix=31;return $value;}\n$x=true;$copy=$x;$alias=&$x;$prefix=2;$prefixAlias=&$prefix;set_error_handler('FqnLiteralDefault144\\\\Strict\\\\h',8);echo 'N;';\n$r=&take(prefix:$prefix,value:make(\n    $x\n));\n$snapshot=$r;$r->v=23;echo 'R:',$r->v,':',$snapshot->v,':',$x,':',(int)($copy===true),':',$prefixAlias,';';$r=41;echo 'D:',$r,':',$snapshot->v,':',$x,':',(int)($copy===true),':',$prefixAlias,';';unset($r,$x,$copy,$alias,$snapshot,$prefix,$prefixAlias);\n",
+    "native_stdout": "N;M:1;H:8:1:2;F:29:13;R:23:23:23:1:31;D:41:23:23:1:31;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "notice_line": 8,
+    "source_sha256": "724dd725f65a9ec3a2902037827ba28ae2de353410c59527eb20d115b30ef6e6",
+    "default": "\\TrUe",
+    "kind": "true_byval",
+    "new_support_credit": 1,
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_literal_bool_default_producer_reference_notice_cases.json",
+      "id": "optional143-true-byval-supplied",
+      "source_sha256": "4fcb5a6bb7d0d701fd1d25eb8d28da441c0e0245f438f75917b64d03a6dda305",
+      "edits": "Fresh namespace and fully qualified builtin Boolean default. The array original uses FQNfalse and a strict false observer, including its later omitted call. Supplied actual tags, handlers, ownership and separate existing omitted/static controls remain."
+    },
+    "renderer": "literal"
+  },
+  {
+    "id": "optional144-untyped-byref-array-fqn-false-default-and-later-omitted",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace FqnArrayDefault144 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input=\\FaLsE):aRrAy{global $leaf;echo 'V:',$input,':',(int)($input===false),';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('FqnArrayDefault144\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "source_sha256": "9db54a904107e052fe515cc581d874797769e031d7ffa3fb5bd6b8e12ff69201",
+    "native_stdout": "U;V:3:0;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V::1;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "kind": "array",
+    "optional_index": 0,
+    "default": "\\FaLsE",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-untyped-byref-array-true-default-and-later-omitted",
+      "source_sha256": "24e07ce7e883407629e0052d57a590787273ebeec0269d38cea37f94c38d0d5a",
+      "edits": "Fresh namespace and fully qualified builtin Boolean default. The array original uses FQNfalse and a strict false observer, including its later omitted call. Supplied actual tags, handlers, ownership and separate existing omitted/static controls remain."
+    },
+    "new_support_credit": 1,
+    "renderer": "bool"
+  },
+  {
+    "id": "optional144-omitted-untyped-fqn-false-default-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make($saved=\\FaLsE):bool{echo 'M:',(int)($saved===false),':',(int)($saved!==0),';';return $saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "native_stdout": "O;M:1:1;H;F:1;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0,
+    "source_sha256": "f15309ebb9b991bccd1e495cdce4ca5603dfd90a4d9be53715c380276f1fe27c",
+    "default": "\\FaLsE",
+    "renderer": "bool",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-omitted-untyped-false-default-existing-route",
+      "source_sha256": "eb2c2753768f4749428722dc2f1f288e199ecc957f9af70b56d83b1e95d64a75",
+      "edits": "Fresh namespace and fully qualified builtin Boolean default. The array original uses FQNfalse and a strict false observer, including its later omitted call. Supplied actual tags, handlers, ownership and separate existing omitted/static controls remain."
+    }
+  },
+  {
+    "id": "optional144-int-fqn-true-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(int $input=\\TrUe):int{return 9;}\necho 'BAD-PRELUDE;';$input=17;echo make($input);\n",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use bool as default value for parameter $input of type int in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0,
+    "source_sha256": "f258e9d23fa3616866a7da6f9e5fc9fbcfd3fe36965872ca547b6ae644af2ea2",
+    "default": "\\TrUe",
+    "renderer": "bool",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_bool_default_producer_reference_notice_cases.json",
+      "id": "optional142-int-true-default-static-rejection",
+      "source_sha256": "fc7bd169286c0d79fc25afcf2d298e44cfc63b786ae84e83c416d94f7e1c094a",
+      "edits": "Fresh namespace and fully qualified builtin Boolean default. The array original uses FQNfalse and a strict false observer, including its later omitted call. Supplied actual tags, handlers, ownership and separate existing omitted/static controls remain."
+    }
+  }
+]

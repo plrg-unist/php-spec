@@ -61,7 +61,7 @@ def independent_controls(case):
         lines.append('~' + proof(parameters=[parameter(default)]))
     for tag in ('NNameFullyQualified', 'NNameRelative'):
         default = literal(tag=tag)
-        lines.append('~' + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "true")')]))
+        lines.append(('' if tag == 'NNameFullyQualified' else '~') + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "true")')]))
     for name in ('null', 'Other', 'Other\\true', '\\true', 'true\x00', ''):
         default = literal(name)
         lines.append('~' + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "true")')]))
