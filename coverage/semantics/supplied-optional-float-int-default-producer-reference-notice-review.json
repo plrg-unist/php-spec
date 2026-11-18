@@ -1,0 +1,141 @@
+{
+  "family": "supplied-optional-float-int-default-producer-reference-notice",
+  "status": "implemented-reviewed-partial-family",
+  "scope": "Exactly supplied ordinary-CV producer calls with optional plain FLOAT formals retaining literal signed64 INT defaults.",
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup",
+    "spec/semantics/17-signatures.watsup",
+    "spec/semantics/95-typed-calls.watsup"
+  ],
+  "rule_contract": {
+    "raw_formal": "case-insensitive unqualified Identifier float",
+    "checked_type": "one PTBUILTIN float branch",
+    "raw_default": "NScalarInt in signed64 range",
+    "checked_default": "PSDEFAULT of the identical raw INT AST and metadata, kind float",
+    "proof_only": true,
+    "live_signature_unchanged": true,
+    "actual_reception_unchanged": true,
+    "omitted_default_materialization_unchanged": true,
+    "optional_suffix_order_and_exact_counts_preserved": true,
+    "existing_header_source_demand_private_cell_guards_preserved": true
+  },
+  "target": {
+    "php": "8.5.10",
+    "sapi": "CLI",
+    "nts": true,
+    "int_size": 8,
+    "engine_commit": "34308a6666b2d489c509541ea9befea9e2b42348",
+    "runtime_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": "tests/semantics/profile.json",
+    "reference": "pure authored .watsup; no Zend evaluation fallback"
+  },
+  "evidence": {
+    "archive": "../php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/",
+    "code_packet": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/author/code-packet-v1.json",
+      "sha256": "2a806cbbe7880ca69b009c78eba26bc5197b52e497fa2c891ba628761ee9e277",
+      "exact_paths": 7,
+      "new_semantic_lines": 10,
+      "make_rows": 1,
+      "new_test_files": 5,
+      "old_fixture_edits": 0
+    },
+    "validation_cuts": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/author/validation-cuts-v1.json",
+      "sha256": "aec40f6567478df8586d697dc6ef5002c047f578d02eaa61306669d953fb316b"
+    },
+    "native": {
+      "executions_once": 4,
+      "normal": 3,
+      "compile_rejections": 1
+    },
+    "prelaw_source": {
+      "unsupported": 1,
+      "unrun": 1,
+      "source_credit": 0,
+      "reason": "error-handler ingress requires a producer continuation"
+    },
+    "source": {
+      "newly_admitted_supplied": 2,
+      "existing_omitted": 1,
+      "existing_compile_rejection": 1,
+      "controls_executed_once": true,
+      "native_reused": true,
+      "unique_aggregate_claim": false
+    },
+    "author_prelaw_front": {
+      "conditions": 235,
+      "reached": 235,
+      "derived": 0,
+      "modules": 507,
+      "mode": "fixture-SL/cache=false/det=true",
+      "source_credit": 0
+    },
+    "independent_whole": {
+      "conditions": 413,
+      "reached": 322,
+      "author_derived": 36,
+      "independent_derived": 55,
+      "modules": 507,
+      "first_attempt_pass": true,
+      "elapsed_seconds": 65.299010992,
+      "report": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/review/whole-v1/report.json",
+      "sha256": "a60f8149a18745be62ee266dd707c698e0fbff6706bc4d5394dca2a5fc5a4301",
+      "source_credit": 0
+    },
+    "author_postlaw_full_state_invocations": 0,
+    "semantic_rule_corrections": 0,
+    "fixture_failures": 0
+  },
+  "canonical_composition": {
+    "revision": "0d80fe0cff67ed9bd7d8c3ca56c1ec6d5a9d6be1",
+    "tree": "162e15cf0dbaf90327d0c0cd30777976cf46282c",
+    "mode": "production-SL/cache=false/det=true",
+    "module_count": 509,
+    "argv_count": 512,
+    "watch_count": 513,
+    "elapsed_seconds": 16.690237147035077,
+    "cap_seconds": 60,
+    "exit": 0,
+    "stdout": "true\n",
+    "stderr": "",
+    "inputs_stable": true,
+    "head_stable": true,
+    "reaped": true,
+    "passed": true,
+    "source_credit": 0,
+    "tiny": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/author/actual-main-v1-tiny.json",
+      "sha256": "5736b814a7b025eb6ab544d03a67003f42159d7eb9aeb5fdf357fd1d66ed0e8e"
+    },
+    "reviewer_full_cache": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/supplied-optional-float-int-default-producer-reference-notice-140/review/actual-main-v1-full-raw-parsed-cache.json",
+      "sha256": "ef5833d3981777977d1c4f9f0295687ffef14ddb7e428583382dd6074741cc9f",
+      "original_report_reads": 1,
+      "original_map_reads": 1,
+      "persisted_before_assertions": true
+    },
+    "author_original_report_reads": 0,
+    "author_original_map_reads": 0
+  },
+  "compatibility_bridge": {
+    "unchanged_materialization_and_static_rules": [
+      "spec/semantics/17-signatures.watsup",
+      "spec/semantics/95-typed-calls.watsup"
+    ],
+    "basis": "The new disjoint raw Identifier FLOAT/checked sole FLOAT/default-kind FLOAT proof arm cannot match the zero-actual omitted route or compile-invalid string default. Existing INT/untyped wrong-kind refusals remain literal; the independent WHOLE exercises their retained refusal and mixed optional suffixes.",
+    "semantic_reruns_for_metadata": 0
+  },
+  "review": {
+    "semantic_and_test_review": "recover47",
+    "static_code_packet": "CLEAR: seven full parents/posts, literal 207/Make operations, inverses and preserved foreign bytes",
+    "metadata": "One family/SOURCE/common4 batch; one reserved integrated final from the existing cache, without semantic reruns."
+  },
+  "remaining": [
+    "Raw FLOAT defaults and other default expressions",
+    "Nullable/union optional formals",
+    "Wider producer syntax, payload and lifetime contexts"
+  ],
+  "engine_divergences": [],
+  "full_core_complete": false
+}

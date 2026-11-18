@@ -1740,3 +1740,13 @@ Completed one- or multiple-required ordinary-CV producers admit exact object|ite
 [Review](../../coverage/semantics/cv-builtin-union-iterable-return-producer-reference-notice-review.json).
 
 Completed required ordinary-CV producers admit exact ordered FQN stdClass/iterable RETURN unions of2–8 members, preserving decoded class bytes, raw/normalized order, distinct permitted builtins and oneBoolean kind. Actual return verification, frame retirement and finite private Notice-cell payload/owner bounds remain; FORMALS/wider class names, Traversable payloads and lifetimes stay partial. [Review](../../coverage/semantics/cv-fqn-stdclass-iterable-return-producer-reference-notice-review.json).
+
+Fully supplied optional plain `float` formals may retain a literal INT default.
+The proof checks the same raw default AST with normalized kind `float`, then
+reuses the required ordinary-CV header proof without changing the live signature.
+By-value string reception preserves the caller, while by-reference reception
+converts the actual cell before the producer body and leaves no persistent type
+constraint. Omitted defaults still materialize as FLOAT; numeric-string defaults
+remain compile-invalid. Nullable/union formals, other default expressions and
+wider producers/lifetimes remain partial.
+[Review](../../coverage/semantics/supplied-optional-float-int-default-producer-reference-notice-review.json).
