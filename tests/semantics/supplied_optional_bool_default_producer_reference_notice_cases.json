@@ -1,0 +1,64 @@
+[
+  {
+    "id": "optional142-single-bool-byval-supplied-false-default",
+    "source": "<?php\nnamespace SingletonScalarFormal59 {\nfunction h($n,$m,$file,$line){global $x;echo 'H:',$line,':',(int)($x==='17'),';';$x=23;return true;}\nfunction make(bOoL $saved=false):bool{echo 'M:',(int)($saved===true),':',(int)($GLOBALS['x']==='17'),';';return $saved;}\nfunction &take(&$value){echo 'F:',(int)($value===true),';';$value=['tag'=>41];return $value;}\n$x=(string)17;$snapshot=$x;set_error_handler('SingletonScalarFormal59\\\\h',8);echo 'I;';\n$r=&take(make( // producer call\n    $x // single actual\n));\necho 'R:',$r['tag'],':',$x,':',(int)($snapshot==='17'),';';$r=43;echo 'P:',$r,':',$x,':',(int)($snapshot==='17'),';';\n}\n",
+    "formal_kind": "bool",
+    "formal_byref": false,
+    "caller_strict": false,
+    "native_stdout_template": "I;M:1:1;H:{notice_line}:1;F:1;R:41:23:1;P:43:23:1;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "source_sha256": "e2fe83ddbf5ab6380865e6662449dc9d23a5bd54ba1f99d7cfecdb13226ca2f4",
+    "observed_notice_line": 8,
+    "native_stdout": "I;M:1:1;H:8:1;F:1;R:41:23:1;P:43:23:1;",
+    "kind": "singleton",
+    "optional_index": 0,
+    "default": "false",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-single-float-byval-supplied-default7p5",
+      "source_sha256": "5e89499adbc48e2e38cfa996cc25659b56054c48a5662e45a66198365285942b",
+      "edits": "Replace the selected FLOAT default with the listed bare builtin Boolean constant and strict Boolean observers. The singleton formal/return become bool while supplied ordinary-CV actuals and ownership interactions remain."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional142-untyped-byref-array-true-default-and-later-omitted",
+    "source": "<?php\nnamespace { function make(){echo 'BAD-G;';return [];} }\nnamespace UntypedArrayReturnProducer35 {\nfunction h($n,$m,$file,$line){global $leaf,$source;$leaf=7;$source=23;echo 'H;';return true;}\nfunction make(&$input=TrUe):aRrAy{global $leaf;echo 'V:',$input,':',(int)($input===true),';';$input=17;echo 'M:',$input,';';return ['leaf'=>&$leaf];}\nfunction &take(&$value){$value['tag']=9;echo 'F;';return $value;}\n$leaf=5;$source=3;$sourceAlias=&$source;set_error_handler('UntypedArrayReturnProducer35\\\\h',8);echo 'U;';\n$r=&take(make($source));$copy=$r;echo $r['leaf'],':',$copy['leaf'],':',$source,':',$sourceAlias,':',$r['tag'],';';\n$r['leaf']=11;echo $leaf,':',$copy['leaf'],';';unset($copy,$leaf);\n$snapshot=$r;$snapshot['tag']=13;$snapshot['leaf']=17;echo $r['leaf'],':',$snapshot['leaf'],':',$r['tag'],':',$snapshot['tag'],';';\nunset($snapshot);$r=29;echo 'R:',$r,':',$source,':',$sourceAlias,';';\n$leaf=19;echo 'D:';$again=make();echo $again['leaf'],';';unset($again,$leaf);\n}\n",
+    "source_sha256": "24e07ce7e883407629e0052d57a590787273ebeec0269d38cea37f94c38d0d5a",
+    "native_stdout": "U;V:3:0;M:17;H;F;7:7:23:23:9;11:11;11:17:9:13;R:29:23:23;D:V:1:1;M:17;19;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "kind": "array",
+    "optional_index": 0,
+    "default": "TrUe",
+    "derived_from": {
+      "catalogue": "tests/semantics/supplied_optional_float_default_producer_reference_notice_cases.json",
+      "id": "optional141-untyped-byref-array-default7p5-and-later-omitted",
+      "source_sha256": "5269e671fdf93fae885b3f0a8db45b66971996aad6e4d15e583dde22ccb3effe",
+      "edits": "Replace the selected FLOAT default with the listed bare builtin Boolean constant and strict Boolean observers. The singleton formal/return become bool while supplied ordinary-CV actuals and ownership interactions remain."
+    },
+    "new_support_credit": 1
+  },
+  {
+    "id": "optional142-omitted-untyped-false-default-existing-route",
+    "kind": "omitted",
+    "source": "<?php\nfunction make($saved=false):bool{echo 'M:',(int)($saved===false),':',(int)($saved!==0),';';return $saved;}\nfunction h($n,$m,$file,$line){echo 'H;';return true;}\nfunction &take(&$value){echo 'F:',(int)($value===false),';';$value=41;return $value;}\nset_error_handler('h',8);echo 'O;';$r=&take(make());echo 'R:',$r,';';\n",
+    "native_stdout": "O;M:1:1;H;F:1;R:41;",
+    "native_stderr": "",
+    "native_exit": 0,
+    "new_support_credit": 0,
+    "source_sha256": "eb2c2753768f4749428722dc2f1f288e199ecc957f9af70b56d83b1e95d64a75"
+  },
+  {
+    "id": "optional142-int-true-default-static-rejection",
+    "kind": "invalid",
+    "source": "<?php\nfunction make(int $input=true):int{return 9;}\necho 'BAD-PRELUDE;';$input=17;echo make($input);\n",
+    "native_stdout": "",
+    "native_stderr": "Fatal error: Cannot use bool as default value for parameter $input of type int in {source} on line 2\nStack trace:\n#0 {main}\n",
+    "native_exit": 255,
+    "expected_model": "static_rejection",
+    "new_support_credit": 0,
+    "source_sha256": "fc7bd169286c0d79fc25afcf2d298e44cfc63b786ae84e83c416d94f7e1c094a"
+  }
+]
