@@ -964,6 +964,7 @@ def $string_read_raw_float_sign_tree(NExprBinaryOpMinus expression_left expressi
 def $string_read_raw_float_sign_tree(NExprBinaryOpMul expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
 def $string_read_raw_float_sign_tree(NExprBinaryOpDiv expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
 def $string_read_raw_float_sign_tree(NExprBinaryOpCoalesce expression_left expression_right metadata) = ($string_read_raw_float_sign_tree(expression_left) /\ $string_read_raw_float_sign_tree(expression_right))
+def $string_read_raw_float_sign_tree(NExprTernary expression_cond ABSENT expression_false metadata) = ($string_read_raw_float_sign_tree(expression_cond) /\ $string_read_raw_float_sign_tree(expression_false))
 def $string_read_raw_float_sign_tree(NExprTernary expression_cond expression_true expression_false metadata) = ($string_read_raw_float_sign_tree(expression_cond) /\ $string_read_raw_float_sign_tree(expression_true) /\ $string_read_raw_float_sign_tree(expression_false))
 def $string_read_raw_float_sign_tree(expression) = false -- otherwise
 ;; A raw FLOAT tree cast appends exactly one RHS row before CONCAT.

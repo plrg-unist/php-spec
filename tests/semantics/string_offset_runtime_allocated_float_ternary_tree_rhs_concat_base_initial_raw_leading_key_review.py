@@ -78,7 +78,7 @@ def render(program, filename_b64, reference=False):
 $string_read_raw_float_sign_tree(expression_right_number)
 $string_read_raw_float_sign_tree(NExprTernary expression_right_number expression_right_number expression_right_number eps)
 $string_read_raw_float_sign_tree(NExprBinaryOpCoalesce expression_right_number expression_right_number eps)
-~$string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT expression_right_number eps)
+$string_read_raw_float_sign_tree(NExprTernary expression_right_number ABSENT expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NExprTernary (NScalarInt (INTEGER 1) eps) expression_right_number expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NExprTernary expression_right_number (NScalarInt (INTEGER 1) eps) expression_right_number eps)
 ~$string_read_raw_float_sign_tree(NExprTernary expression_right_number expression_right_number (NScalarString (BYTES "MQ==") eps) eps)

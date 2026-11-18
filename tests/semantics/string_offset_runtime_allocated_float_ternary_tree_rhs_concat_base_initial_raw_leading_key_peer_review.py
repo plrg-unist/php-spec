@@ -189,28 +189,33 @@ S_abrupt = S_capture[.COMPLETION = UNSUPPORTED "peer-control"]
 S_const = S_capture[.CONSTCONTEXT = ({ORIGIN porigin_base,LINE 18,FACTS eps})]
 ~$string_read_allocated_value(S_const,porigin_base,pvalue_base)
 $string_read_raw_float_sign_tree(NExprTernary expression_atom expression_atom expression_atom eps)
-~$string_read_raw_float_sign_tree(NExprTernary expression_atom ABSENT expression_atom eps)
+$string_read_raw_float_sign_tree(NExprTernary expression_atom ABSENT expression_atom eps)
 ~$string_read_raw_float_sign_tree(NExprTernary (NScalarInt (INTEGER 1) eps) expression_atom expression_atom eps)
 ~$string_read_raw_float_sign_tree(NExprTernary expression_atom (NScalarInt (INTEGER 1) eps) expression_atom eps)
 ~$string_read_raw_float_sign_tree(NExprTernary expression_atom expression_atom (NScalarString (BYTES "MQ==") eps) eps)
 ''')
     control = capture(control_program, control_filename_b64) + lines(r'''
-expression_number = NExprTernary expression_condition ABSENT expression_skipped metadata_number
-expression_condition = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_condition) metadata_negative_condition) metadata_condition
-expression_skipped = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_skipped) metadata_negative_skipped) metadata_skipped
-$origin_child((porigin_number),[PCFIELD 0]) = (porigin_condition)
-$origin_child((porigin_number),[PCFIELD 2]) = (porigin_skipped)
-$origin_node(S_capture.SOURCES,porigin_condition) = (expression_condition)
-$origin_node(S_capture.SOURCES,porigin_skipped) = (expression_skipped)
-$string_read_runtime_value(S_capture,porigin_condition) = (PFLOAT 13846598529327300608)
-$truth_value(S_capture,PFLOAT 13846598529327300608,18) = S_capture[.RESULT = KNOWN (PBOOL true)]
+expression_number = NExprCastDouble expression_input metadata_number
+expression_input = NScalarString (BYTES "LTEyLjU=") metadata_input
+$origin_child((porigin_number),[PCFIELD 0]) = (porigin_input)
+$origin_node(S_capture.SOURCES,porigin_input) = (expression_input)
+porigin_input = PORIGIN n_unit pcpath_input
+porigin_number = PORIGIN n_unit pcpath_number
+$code_expression(pcode.EXPRESSIONS,pcpath_number) = ((z_number,false))
+$(z_number > 0)
+$compiled_read(S_capture,porigin_number) = eps
+$compiled_precision(S_capture,(porigin_number)) = (14)
+$compiled_read(S_capture,porigin_input) = (PSTRING ($ptascii("-12.5")))
+$string_read_runtime_value(S_capture,porigin_input) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")))
+$cast_apply(S_capture,CASTFLOAT,PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")),18) = S_capture[.RESULT = KNOWN (PFLOAT 13846598529327300608)]
 $string_read_runtime_value(S_capture,porigin_number) = (PFLOAT 13846598529327300608)
+$truth_value(S_capture,PFLOAT 13846598529327300608,18) = S_capture[.RESULT = KNOWN (PBOOL true)]
 ~$string_read_raw_float_sign_tree(expression_number)
 ~$string_read_allocated_value(S_capture,porigin_base,pvalue_base)
 ~$string_read_allocated_base(S_capture,porigin_base,pvalue_base)
 $string_read_raw_capture(S_capture,poperand,pvalue_base) = eps
 $string_read_plan(S_capture) = eps
 ''')
-    helper = '\ndec $peer_float_shorthand_control() : bool\ndef $peer_float_shorthand_control() = true\n' + ''.join('  -- if ' + c + '\n' for c in control)
+    helper = '\ndec $peer_numeric_string_cast_control() : bool\ndef $peer_numeric_string_cast_control() = true\n' + ''.join('  -- if ' + c + '\n' for c in control)
     body = prefix + helper + '\ndec $main() : bool\ndef $main() = true\n' + ''.join('  -- ' + (c if c.startswith('PhpStep:') else 'if ' + c) + '\n' for c in checks)
-    return body + '  -- if $peer_float_shorthand_control()\n', len(checks) + len(control) + 1, len(checks) - derived_start + len(control) + 1
+    return body + '  -- if $peer_numeric_string_cast_control()\n', len(checks) + len(control) + 1, len(checks) - derived_start + len(control) + 1

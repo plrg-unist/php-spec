@@ -329,9 +329,8 @@ $origin_node(S_capture.SOURCES,porigin_base) = (NExprBinaryOpConcat expression_l
 $origin_node(S_capture.SOURCES,porigin_left) = (expression_left)
 $origin_node(S_capture.SOURCES,porigin_right) = (expression_right)
 expression_right = NExprCastString expression_number metadata_right
-expression_number = NExprTernary expression_condition ABSENT expression_skipped metadata_number
-expression_condition = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_condition) metadata_negative_condition) metadata_condition
-expression_skipped = NExprCastDouble (NExprUnaryMinus (NScalarFloat (FLOAT "4029000000000000") metadata_atom_skipped) metadata_negative_skipped) metadata_skipped
+expression_number = NExprCastDouble expression_input metadata_number
+expression_input = NScalarString (BYTES "LTEyLjU=") metadata_input
 $origin_child((porigin_right),[PCFIELD 0]) = (porigin_number)
 $origin_node(S_capture.SOURCES,porigin_number) = (expression_number)
 $string_read_runtime_value(S_capture,porigin_number) = (PFLOAT 13846598529327300608)
@@ -342,12 +341,13 @@ $concat_constant(S_capture,(porigin_right)) = false
 S_capture.CODE = [pcode]
 porigin_right = PORIGIN n_unit pcpath_right
 porigin_number = PORIGIN n_unit pcpath_number
-$origin_child((porigin_number),[PCFIELD 0]) = (porigin_condition)
-$origin_child((porigin_number),[PCFIELD 2]) = (porigin_skipped)
-$origin_node(S_capture.SOURCES,porigin_condition) = (expression_condition)
-$string_read_runtime_value(S_capture,porigin_condition) = (PFLOAT 13846598529327300608)
+$origin_child((porigin_number),[PCFIELD 0]) = (porigin_input)
+$origin_node(S_capture.SOURCES,porigin_input) = (expression_input)
+porigin_input = PORIGIN n_unit pcpath_input
+$compiled_read(S_capture,porigin_input) = (PSTRING ($ptascii("-12.5")))
+$string_read_runtime_value(S_capture,porigin_input) = (PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")))
+$cast_apply(S_capture,CASTFLOAT,PSTRING_CARRIER INTERNED_STRING ($ptascii("-12.5")),18) = S_capture[.RESULT = KNOWN (PFLOAT 13846598529327300608)]
 $truth_value(S_capture,PFLOAT 13846598529327300608,18) = S_capture[.RESULT = KNOWN (PBOOL true)]
-$origin_node(S_capture.SOURCES,porigin_skipped) = (expression_skipped)
 $code_expression(pcode.EXPRESSIONS,pcpath_number) = ((z_number,false))
 $(z_number > 0)
 $compiled_read(S_capture,porigin_number) = eps
@@ -363,9 +363,9 @@ $string_concat(S_cast,pvalue_left,pvalue_right,false,false) = S_cast[.STRINGDATA
 $string_read_raw_capture(S_capture,poperand,pvalue_base) = eps
 $string_read_plan(S_capture) = eps
 ''')
-    helper = '\ndec $peer_numeric_ternary_leaf() : bool\ndef $peer_numeric_ternary_leaf() = true\n' + ''.join(
+    helper = '\ndec $peer_numeric_string_cast_leaf() : bool\ndef $peer_numeric_string_cast_leaf() = true\n' + ''.join(
         '  -- if ' + check + '\n' for check in control)
     body = prefix + helper + '\ndec $main() : bool\ndef $main() = true\n' + ''.join(
         '  -- ' + (check if check.startswith('PhpStep:') else 'if ' + check) + '\n' for check in checks)
-    body += '  -- if $peer_numeric_ternary_leaf()\n'
+    body += '  -- if $peer_numeric_string_cast_leaf()\n'
     return body, len(checks) + len(control) + 1, len(checks) - derived_start + len(control) + 1
