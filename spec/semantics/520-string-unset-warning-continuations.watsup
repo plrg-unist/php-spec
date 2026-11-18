@@ -169,13 +169,25 @@ dec $string_unset_bool_cv_post_array_leaf(pstate, pvalue) : bool
 def $string_unset_bool_cv_post_array_leaf(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ $c_string(n_bytes*) = n_bytes*)
 def $string_unset_bool_cv_post_array_leaf(S, pvalue) = $string_unset_bool_cv_post_value(pvalue) -- otherwise
 
+dec $string_unset_bool_cv_post_object_fields(ppropertyslot*) : bool
+def $string_unset_bool_cv_post_object_fields(eps) = true
+def $string_unset_bool_cv_post_object_fields(ppropertyslot :: ppropertyslot_tail*) = true
+  -- if ppropertyslot.DECL = eps
+  -- if ppropertyslot.STATE = PROP_VALUE (DIRECT pvalue)
+  -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
+  -- if $string_unset_bool_cv_post_value(pvalue)
+  -- if $string_unset_bool_cv_post_object_fields(ppropertyslot_tail*)
+def $string_unset_bool_cv_post_object_fields(ppropertyslot*) = false -- otherwise
+
 dec $string_unset_bool_cv_post_object(pstate, nat) : bool
 def $string_unset_bool_cv_post_object(S, n) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if (HOBJECT n) <- $heap_prune($heap_graph(S)).NODES
   -- if ~$instance_storage_freeing(S, n)
-  -- if $objectprops_at(S.OBJECTPROPS, n) = (eps)
+  -- if $objectprops_at(S.OBJECTPROPS, n) = (ppropertyslot*)
+  -- if $string_unset_bool_cv_post_object_fields(ppropertyslot*)
+  -- if $property_unique_names(ppropertyslot*)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $node_children(S, HOBJECT n) = eps
 def $string_unset_bool_cv_post_object(S, n) = false -- otherwise

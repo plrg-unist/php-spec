@@ -202,8 +202,8 @@ def conditions(program, path):
             '~$string_unset_bool_cv_post_nonempty_array(' + changed + ', n_key)']
     checks += ['S_fields = S_R[.OBJECTPROPS = $objectprops_set(S_R.OBJECTPROPS, n_object, [{DECL eps, NAME $ptascii("field"), STATE PROP_VALUE (DIRECT PNULL)}])]',
         '$heap_graph(S_fields) = H_saved',
-        '~$string_unset_bool_cv_post_object_cell(S_fields, n_alias)',
-        '~$string_unset_bool_cv_post_nonempty_array(S_fields, n_key)',
+        '$string_unset_bool_cv_post_object_cell(S_fields, n_alias)',
+        '$string_unset_bool_cv_post_nonempty_array(S_fields, n_key)',
         'S_key_only = S_R[.ENV = $unbind(S_R.ENV, $ptascii("objectAlias"))][.GLOBALTABLE = eps]',
         '$heap_valid($heap_graph(S_key_only))',
         '~$heap_member(HCELL n_alias, $heap_graph(S_key_only).ROOTS)',

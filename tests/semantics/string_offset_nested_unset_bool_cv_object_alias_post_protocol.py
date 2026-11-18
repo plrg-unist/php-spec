@@ -142,8 +142,8 @@ def conditions(program, path):
             '~$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
     checks += ['S_props = $objectprops_mark(S_R[.OBJECTPROPS = $objectprops_set(S_R.OBJECTPROPS, n_object, [{DECL eps, NAME $ptascii("extra"), STATE PROP_VALUE (DIRECT (PINT 1))}])], n_object)',
         '$heap_valid($heap_graph(S_props))',
-        '~$string_unset_bool_cv_post_object_cell(S_props, n_owner)',
-        '~$string_unset_bool_cv_post_nonempty_array(S_props, n_key)',
+        '$string_unset_bool_cv_post_object_cell(S_props, n_owner)',
+        '$string_unset_bool_cv_post_nonempty_array(S_props, n_key)',
         'S_key_only = S_R[.ENV = $unbind(S_R.ENV, $ptascii("objectAlias"))][.GLOBALTABLE = eps]',
         '$heap_valid($heap_graph(S_key_only))',
         '~$heap_member(HCELL n_owner, $heap_graph(S_key_only).ROOTS)',
