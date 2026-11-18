@@ -2218,3 +2218,24 @@ KeyError was corrected from the parsed cache, with preparation0 and no raw or
 semantic renewal. Constrained/backed cells, STRING aliases, cycles, object fields
 and wider payload/cell/lifetime histories remain partial; all exact holds stay
 unchanged. [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-array-alias-post-review.json).
+
+Live unconstrained non-NUL STRING-valued ALIAS children now reuse the existing
+string-cell certificate after nested-unset Warnings. Two real buckets share one
+marked cell; INTERNED falsey0/empty and runtime REQUEST headers add no heap child.
+The outer array count still converts to1. Normal return preserves the fixed
+Error, and pending throw preserves the same Throwable and complete caller tail.
+Source reassignment updates both aliases. Key/middle retirement leaves the
+textAlias retainer alive; final alias retirement removes the cell while header
+registry validity persists. NUL, typed/coercion/backed cells, cycles, object
+aliases and wider payload/lifetime histories remain partial.
+
+Native4 once/source4, separate accepted prelaw cuts and author168/180/170/182
+plus independent175/185/183/193 SL180 cuts pass first semantic executions.
+The original A0 NUL-fixture elaboration failure keeps semantic main UNRUN/credit0;
+its syntax-only correction leaves law, source and accepted prelaw lists unchanged.
+Independent WHOLE8 and fixed actual98abd0e9/sole6580b2da productionSL509 pass
+16.590266423s/source0 through immutable256cdd7b. Canonical execution1 and physical
+report/map reads1 stay distinct; author raw reads0. Exactly two current ARRAY
+STRING query groups are promoted through fresh controls; earlier campaigns and
+all exact holds remain unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-string-alias-post-review.json).
