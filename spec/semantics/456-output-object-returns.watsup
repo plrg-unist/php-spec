@@ -1490,6 +1490,26 @@ def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
   -- if S_signed = S[.RESULT = KNOWN pvalue]
   -- if (b_child /\ $compiled_read(S, porigin) = (pvalue)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
   -- if $value_nodes(pvalue) = eps
+;; Quiet primitive coercion is separate from the same-type numeric sign rule.
+def $ob_object_cast_chain_value(S, pfunction, porigin, expression) = (pvalue)
+  -- if $ob_object_cast_chain_sign_kind(expression)
+  -- if $pfshape(expression) = PFUNARY punary expression_child
+  -- if punary = POSITIVE \/ punary = NEGATIVE
+  -- if $origin_child((porigin), [PCFIELD 0]) = (porigin_child)
+  -- if $ob_object_cast_chain_value(S, pfunction, porigin_child, expression_child) = (pvalue_child)
+  -- if $coerce_number(pvalue_child) = COERCED pnumber false
+  -- if pvalue_child = PNULL \/ $type_bytes(pvalue_child) = [98,111,111,108] \/ $type_bytes(pvalue_child) = [115,116,114,105,110,103]
+  -- if $value_nodes(pvalue_child) = eps
+  -- if porigin_child = PORIGIN n_child pcpath_child
+  -- if pfunction.CODE.UNIT = n_child
+  -- if $code_expression(pfunction.CODE.EXPRESSIONS, pcpath_child) = ((z, b_child))
+  -- if $ob_object_cast_chain_node(S, pfunction, porigin, expression, z, b_child)
+  -- if S_signed = $unary_apply(S[.RESULT = KNOWN pvalue_child], punary, pvalue_child, z)
+  -- if S_signed.RESULT = KNOWN pvalue
+  -- if $ob_object_cast_chain_sign_number(pvalue)
+  -- if S_signed = S[.RESULT = KNOWN pvalue]
+  -- if (b_child /\ $compiled_read(S, porigin) = (pvalue)) \/ (~b_child /\ $compiled_read(S, porigin) = eps)
+  -- if $value_nodes(pvalue) = eps
 ;; Both children authenticate their own lines; the parent retains the terminal
 ;; RHS compiler line, including through recursive multiline children.
 ;; Folded STRING bitwise results enter as plain pool values.

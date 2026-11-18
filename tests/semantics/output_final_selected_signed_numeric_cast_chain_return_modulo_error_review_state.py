@@ -131,10 +131,10 @@ def frontier(name, fixture, path):
             ('NScalarString (BYTES "Nw==") metadata_raw', 'PSTRING ($ptascii("7"))', 'PINT 7', [])]:
         state, statement, expr = variant(name, raw, typed, 'NExprUnaryPlus', result, extra)
         actual = 'PBOOL true' if typed == 'PBOOL true' else 'PSTRING_CARRIER INTERNED_STRING ($ptascii("7"))'
-        checks += [('quiet coercive signs remain outside the raw numeric literal boundary',
+        checks += [('quiet coercive signs retain separate primitive rather than raw-numeric authority',
                     '~$ob_object_cast_chain_sign_literal(' + raw + r') /\ '
                     '$unary_apply(' + state + '[.RESULT = KNOWN (' + actual + ')], POSITIVE, ' + actual + ', z_sign) = ' +
-                    state + '[.RESULT = KNOWN (' + result + r')] /\ ' + value(state, expr) + ' = eps')]
+                    state + '[.RESULT = KNOWN (' + result + r')] /\ ' + value(state, expr) + ' = (' + result + ')')]
     return bindings, checks
 
 

@@ -855,6 +855,10 @@ test-semantics: build
 	python3 tests/semantics/output_final_selected_parser_infinite_float_concat_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/state"
 	python3 tests/semantics/output_final_selected_parser_infinite_float_concat_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
 	python3 tests/semantics/output_final_selected_parser_infinite_float_concat_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-parser-infinite-float-concat-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
+	python3 tests/semantics/output_final_selected_primitive_unary_sign_cast_chain_return_modulo_error_sources.py
+	python3 tests/semantics/output_final_selected_primitive_unary_sign_cast_chain_return_modulo_error_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error.XXXXXXXX)/state"
+	python3 tests/semantics/output_final_selected_primitive_unary_sign_cast_chain_return_modulo_error_review_state.py --frontier --output "$$(mktemp -d /tmp/php-spec-output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error.XXXXXXXX)/peer-frontier"
+	python3 tests/semantics/output_final_selected_primitive_unary_sign_cast_chain_return_modulo_error_review_state.py --output "$$(mktemp -d /tmp/php-spec-output-final-selected-primitive-unary-sign-cast-chain-return-modulo-error.XXXXXXXX)/peer-lifecycle"
 	python3 tests/semantics/output_object_conversion_review_sources.py
 	python3 tests/semantics/output_object_conversion_review_state.py
 	python3 tests/semantics/output_array_conversion_review_sources.py

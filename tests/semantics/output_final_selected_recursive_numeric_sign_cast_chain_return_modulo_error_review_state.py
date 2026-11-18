@@ -120,14 +120,14 @@ def frontier(name, fixture, path):
             node = 'NName (BYTES "' + payload + '") metadata_child_4'
             leaf = 'NExprConstFetch (' + node + ') metadata_child_3'
             state, expr, function = raw_sign('NExprUnaryPlus', leaf, raw, 'PINT 0', name=node)
-            checks += [('a certified ' + keyword + ' child cannot enter a coercive sign',
+            checks += [('a certified ' + keyword + ' child enters a quiet primitive sign',
                         value(state, leaf, 'porigin_child_3', function) + ' = (' + raw + r') /\ ' +
-                        value(state, expr, function=function) + ' = eps')]
+                        value(state, expr, function=function) + ' = (PINT 0)')]
         leaf = 'NScalarString (BYTES "Nw==") metadata_child_3'
         state, expr, function = raw_sign('NExprUnaryPlus', leaf, 'PSTRING ($ptascii("7"))', 'PINT 7')
-        checks += [('a genuine numeric STRING carrier cannot enter a coercive sign',
+        checks += [('a genuine fully numeric STRING carrier enters a quiet primitive sign',
                     value(state, leaf, 'porigin_child_3', function) + r' = (PSTRING_CARRIER INTERNED_STRING ($ptascii("7"))) /\ ' +
-                    value(state, expr, function=function) + ' = eps')]
+                    value(state, expr, function=function) + ' = (PINT 7)')]
         raw = 'NScalarInt (INTEGER 1) metadata_child_4'
         child = 'NExprBooleanNot (' + raw + ') metadata_child_3'
         expr = 'NExprUnaryPlus (' + child + ') metadata_sign'
@@ -136,9 +136,9 @@ def frontier(name, fixture, path):
              ('pcpath_child_3', '$expression_line(' + raw + ')', 'true'),
              ('pcpath_child_4', '$source_line(metadata_child_4)', 'true')],
             [('pcpath_sign', 'PINT 0'), ('pcpath_child_3', 'PBOOL false'), ('pcpath_child_4', 'PINT 1')])
-        checks += [('a fully certified NOT remains Boolean instead of borrowing numeric sign authority',
+        checks += [('a fully certified NOT retains Boolean input to a quiet primitive sign',
                     value(state, child, 'porigin_child_3', function) + r' = (PBOOL false) /\ ' +
-                    value(state, expr, function=function) + ' = eps')]
+                    value(state, expr, function=function) + ' = (PINT 0)')]
     bare = 'NStmtReturn (' + expression + ') metadata_cast_return'
     single = current.nodes(name)[1][0] + ' (' + expression + ') metadata_cast_1'
     statement = 'NStmtReturn (' + single + ') metadata_cast_return'
