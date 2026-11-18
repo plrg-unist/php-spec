@@ -1,5 +1,16 @@
 # PHP syntax in P4-SpecTec
 
+Folded quiet conditions now compose with full and shorthand ternaries in
+bounded selected output-handler return casts. Own source/compiler facts, raw
+selected tags, quiet truth, exact branch copies and real retirement remain
+required; wider contexts stay partial. [Review](coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-review.json).
+
+Own public parentless short reference Get admits one `self` or `namespace\self`
+class arm with two to six compatible builtin alternatives under exact defining
+authority, arm order and whole quiet normalization. Typed aliases, scalar rank,
+strict widening, array COW and real source/copy retirement remain required;
+wider forms stay partial. [Review](coverage/semantics/self-builtin-union-parentless-short-reference-get-hook-review.json).
+
 One unary sign over a raw-FLOAT-present numeric tree now admits flat binary children when signed-zero descendants make ordinary condition VALUE unavailable. Exact recursive source, typed pools, absence and finite nonzero child/own bits preserve selected full-ternary tags, Shared caches and private integer reception through named handler reentry. Repeated wrappers and wider contexts remain partial. [Review](coverage/semantics/deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Own public parentless short reference Get admits finite flat nominal unions of

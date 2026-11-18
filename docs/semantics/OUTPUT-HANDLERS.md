@@ -2050,5 +2050,12 @@ SOURCE/CODE. Existing full branch/copy states retain raw selected tags without
 adding owners. Demanded NaNs still refuse even under diagnostic masks.
 Parent constexpr redirects, owning or warningful values and wider contexts
 remain partial; the outer-cast and two-cast gates and held limits remain.
+Eight originals agree exactly using eight native observations once. Author
+frontier19/lifecycle13, affected4 and independent125/14 retain separate SL508
+cuts. WHOLE8 binds exact full parents/posts and literal Make/DOC projection;
+fixed actual0880037d and the sole production SL509 load pass in16.994336888
+seconds under cap60 with source0. The reviewer saved one original report/map
+cache; author original report/map/full-cache reads remain0. Earlier OUTPUT
+evidence and every held boundary retain their own cuts.
 [Folded-condition evidence](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-author.json)
 and [review](../../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-review.json).

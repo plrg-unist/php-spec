@@ -8,6 +8,16 @@ Required JSON oracle inputs remain in their original locations.
 
 ## Artifact lookup
 
+OUTPUT158 folded-condition ternary originals/native8-once, baselineUnsupported1,
+source8, author19/13 plus affected4, independent125/14 and WHOLE8 remain under
+`../php-spec-evidence-archive/new/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-158/`.
+The [review](../coverage/semantics/output-final-selected-folded-condition-ternary-cast-chain-return-modulo-error-review.json)
+binds fixed actual0880037d/sole productionSL50916.994336888s/source0 to the
+original canonical f490b814 and map03ab35c0 cached once by the reviewer; author
+original report/map/full-cache reads0. Fixture-import and cache-only packet
+preparation corrections retain source0. Older accepted campaigns remain closed.
+Archives are evidence, not build/runtime inputs.
+
 ENUM316 flat phase-FALSE unary-tree originals/native4-once, baselineUnsupported2, prelaw1140, source4, author1602 and independent WHOLE1138 remain under `../php-spec-evidence-archive/enum-deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-316/`. The [review](../coverage/semantics/deferred-unary-flat-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json) binds fixed sourcee7f27fa96/sole productionSL50916.892701455s/source0 through immutable9335095c and cache d9444f66, persisted before assertions. Peer original canonical report/map reads1 each are closed; author original report/map/cache raw reads0. One prewrite preparation failure retains runtime0/source0. Only two old315 ROOT queries promote; accepted315 source/native/whole campaigns stay closed. Archives are evidence, not build/runtime inputs.
 
 - FLOAT cast/sign-tree RHS CONCAT: [review](../coverage/semantics/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-review.json), [contract](semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-CAST-SIGN-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md). Native2-once/source2, prelaw80+91, separate author247/92+264/92 and current-derived53 remain in `../php-spec-evidence-archive/string-offset-runtime-allocated-float-cast-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/`; independent387/218, WHOLE14 and `actual-canonical-clear-v1.json` SHA `db631dddcdda75d9284db76a9211b57b61e221c227c8599423bd52f60d35fa0a` remain in the matching `-reviewer51-20261118/` archive. Fixed `66410951`/sole productionSL50916.731935047s/source0 uses full parsed cache `3b4c5acc`, original report/map1 each and author raw/cache0. Both author fixture failures and separate reviewer preparations retain zero credit. Archives supply evidence only.
@@ -1863,3 +1873,7 @@ Primitive ALIAS fields after nested-unset Warnings: ../php-spec-evidence-archive
 Raw originals, once-only native observations, prelaw controls, source/state cuts, independent WHOLE, exact source packet and immutable actual composition remain in `/home/user/workspace/php-spec-evidence-archive/comp344/`. [Family review](../coverage/semantics/self-nominal-union-parentless-short-reference-get-hook-review.json) binds the check index and hashes. Private508 fixtures and sole actual production509/source0 retain separate identities; prior accepted campaigns were not renewed.
 
 STRING ALIAS fields after nested-unset Warnings: ../php-spec-evidence-archive/string-offset-nested-unset-bool-cv-object-string-alias-fields-post/. Private sourceb2c68e5b/source8 manifest07640442 and family2e892af49/manifestdddef2cb; WHOLEd9366806. Actual9114779f/sole productionSL50917.235849248s bound by tiny6b1f66c2; full raw+parsed cache55a0b598 was persisted before assertions, original report/map reads1 each and author raw/cache0. Native2 once/source2 saved reuse and author348/367 versus peer443/458 SL180 remain separate. MAIN inverse-line preparation2 attempts/firstmutations0 and reader tag/format preparations retain runtime/source0. Raw baselines and first-pass records remain external evidence, not runtime inputs.
+
+## COMP345 scoped-self multi-builtin unions
+
+Raw originals, once-only native observations, prelaw controls, source/state cuts, retained CLI120 source and whole298/cap360 fixture timeouts, affected-only CLI300 pass, exact290+30 partition, independent WHOLE, exact source packet and immutable actual composition remain in `/home/user/workspace/php-spec-evidence-archive/comp345/`. [Family review](../coverage/semantics/self-builtin-union-parentless-short-reference-get-hook-review.json) binds the check index and hashes. Private fixtures and sole actual production/source0 retain separate identities; passing sources and prior accepted campaigns were not renewed.
