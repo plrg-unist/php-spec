@@ -32,6 +32,7 @@ preparations each retain0; WHOLE reader0 and canonical executions1 stay distinct
 See [review](../../coverage/semantics/string-offset-runtime-allocated-composite-left-coalesce-base-initial-raw-leading-key-review.json).
 
 Pinned routes are zend_compile_coalesce, ZEND_COALESCE and ZEND_QM_ASSIGN. NULL-left
-selection of composite RHS BASE, owning falsey cleanup, uncertified producers,
-selected NUL and wider precision/owners/lifetimes remain partial. Exact holds,
+selection of composite RHS BASE has its [own milestone](STRING-OFFSET-RUNTIME-NULL-ALLOCATED-COMPOSITE-RHS-COALESCE-BASE-INITIAL-RAW-LEADING-KEY.md).
+Owning falsey cleanup, uncertified producers, selected NUL and wider
+precision/owners/lifetimes remain partial. Exact holds,
 reserve93807cdd6/255 and inventory169/306closed0constructors+1runtime are unchanged.

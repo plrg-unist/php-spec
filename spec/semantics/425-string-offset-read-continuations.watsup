@@ -993,7 +993,7 @@ def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
   -- if $compiled_precision(S, (porigin_right)) = (z_precision)
   -- if S_probe = S[.COMPLETION = NORMAL]
   -- if $string_read_runtime_value(S_probe, porigin_left) = (PNULL)
-  -- if $string_read_allocated_value(S_probe, porigin_right, pvalue)
+  -- if $string_read_allocated_base(S_probe, porigin_right, pvalue)
 ;; Full ternaries retain the selected allocated header after a quiet condition.
 def $string_read_allocated_base(S, PORIGIN n pcpath, pvalue) = true
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (expression)
