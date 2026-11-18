@@ -194,19 +194,19 @@ def $hook_short_reference_class_builtin_union_nominal_shape(NNameFullyQualified 
 def $hook_short_reference_class_builtin_union_nominal_shape(NName (BYTES text_type) metadata_type, ptbytes) = ($ptbuiltin($ptlc($base64(text_type))) = "" /\ $base64(text_type) =/= [95] /\ $ptvalidname(ptbytes, true) /\ ptbytes =/= [95])
 def $hook_short_reference_class_builtin_union_nominal_shape(NNameRelative (BYTES text_type) metadata_type, ptbytes) = ($ptbuiltin($ptlc($base64(text_type))) = "" /\ $base64(text_type) =/= [95] /\ $ptvalidname(ptbytes, true) /\ ptbytes =/= [95])
 def $hook_short_reference_class_builtin_union_nominal_shape(phpType69, ptbytes) = false -- otherwise
-dec $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, bool) : bool
-def $hook_short_reference_class_builtin_union_members(eps, eps, false) = true
-def $hook_short_reference_class_builtin_union_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*, b) = true
+dec $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, bool, ptcontext) : bool
+def $hook_short_reference_class_builtin_union_members(eps, eps, false, ptcontext) = true
+def $hook_short_reference_class_builtin_union_members((NIdentifier (BYTES text_type) metadata_type) :: phpType69_tail*, (PTBRANCH ([PTBUILTIN text])) :: ptbranch_tail*, b, ptcontext) = true
   -- if text <- ["array","int","float","string","null","bool","false","true"] /\ $ptlc($base64(text_type)) = $ptascii(text)
-  -- if $hook_short_reference_class_builtin_union_members(phpType69_tail*, ptbranch_tail*, b)
-def $hook_short_reference_class_builtin_union_members(phpType69_class :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*, true) = true
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_class, ptbytes)
-  -- if $hook_short_reference_class_builtin_union_members(phpType69_tail*, ptbranch_tail*, false)
-def $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, b) = false -- otherwise
+  -- if $hook_short_reference_class_builtin_union_members(phpType69_tail*, ptbranch_tail*, b, ptcontext)
+def $hook_short_reference_class_builtin_union_members(phpType69_class :: phpType69_tail*, (PTBRANCH ([PTCLASS ptbytes])) :: ptbranch_tail*, true, ptcontext) = true
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_class, ptbytes) \/ $hook_short_reference_scoped_header(phpType69_class, [(PTBRANCH ([PTCLASS ptbytes]))], ptcontext)
+  -- if $hook_short_reference_class_builtin_union_members(phpType69_tail*, ptbranch_tail*, false, ptcontext)
+def $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, b, ptcontext) = false -- otherwise
 dec $hook_short_reference_class_builtin_union_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_class_builtin_union_header(NUnionType (SEQUENCE phpType69*) metadata, ptbranch*, ptcontext) = true
   -- if $(|phpType69*| >= 3 /\ |phpType69*| <= 7)
-  -- if $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, true)
+  -- if $hook_short_reference_class_builtin_union_members(phpType69*, ptbranch*, true, ptcontext)
   -- if $ptype_normalize(NUnionType (SEQUENCE phpType69*) metadata, ptcontext) = PTOK ptbranch* eps
 def $hook_short_reference_class_builtin_union_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 

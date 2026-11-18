@@ -3020,3 +3020,12 @@ Distinct alternatives preserve typed aliases, atomic refusal, object identity,
 actual Get reads and real source detachment. Self intersections/DNF and wider
 contexts, owners and lifetimes remain partial.
 [Review](../../coverage/semantics/self-nominal-union-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits one `self` or `namespace\self`
+class arm with two to six compatible builtin alternatives, retaining arity3..7.
+The existing member fold threads defining context into its single scoped proof;
+whole quiet normalization preserves exact arm order, class bytes and compatibility.
+Typed aliases, weak scalar rank, strict widening, array COW, actual Get reads and
+real source detachment retain the existing runtime and owner bounds.
+Mixed scoped-self nominal folds, intersections/DNF and wider contexts stay partial.
+[Review](../../coverage/semantics/self-builtin-union-parentless-short-reference-get-hook-review.json).

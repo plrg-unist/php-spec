@@ -93,7 +93,7 @@ def assertions():
     check('known-self-intersection-hook-stays-partial', '$hook_short_reference_nominal_intersection_header(' + inter + ',' + inter_type + ',' + lexical + ')', False)
     three = union([raw, names.raw(b'int', 'NIdentifier'), names.raw(b'null', 'NIdentifier')])
     three_type = branches([[atom], ['PTBUILTIN "int"'], ['PTBUILTIN "null"']])
-    check('three-arm-builtin-self-stays-partial', '$hook_short_reference_class_builtin_union_header(' + three + ',' + three_type + ',' + lexical + ')', False)
+    check('three-arm-builtin-self-accepted', '$hook_short_reference_class_builtin_union_header(' + three + ',' + three_type + ',' + lexical + ')')
     grouped = intersection([names.raw(b'A341'), names.raw(b'B341')])
     group_type = ['PTCLASS ' + names.value(b'Def341\\A341'), 'PTCLASS ' + names.value(b'Def341\\B341')]
     check('dnf-self-stays-partial', '$hook_short_reference_nominal_dnf_header(' + union([grouped, raw]) + ',' + branches([group_type, [atom]]) + ',' + lexical + ')', False)

@@ -18,7 +18,11 @@ def fields(fixture, source, case):
     nominal = '(PTBRANCH ([PTCLASS ' + names.value(case['class'].encode()) + ']))'
     branches = [nominal]
     others = case.get('others')
-    if others:
+    builtins = case.get('builtins')
+    if builtins:
+        branches = ['(PTBRANCH ([PTBUILTIN "' + builtin + '"]))' for builtin in builtins]
+        branches.insert(case['self_index'], nominal)
+    elif others:
         branches = ['(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))' for other in others]
         branches.insert(case['self_index'], nominal)
     elif case.get('other'):
@@ -32,7 +36,12 @@ def fields(fixture, source, case):
     typed = '[' + ','.join(branches) + ']'
     raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
     raw = raw_self
-    if others:
+    if builtins:
+        raw_members = ['NIdentifier (BYTES text_builtin_' + str(i) + ') metadata_builtin_' + str(i)
+                       for i in range(len(builtins))]
+        raw_members.insert(case['self_index'], raw_self)
+        raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
+    elif others:
         raw_members = [other['raw_kind'] + ' (BYTES text_other_' + str(i) + ') metadata_other_' + str(i)
                        for i, other in enumerate(others)]
         raw_members.insert(case['self_index'], raw_self)
@@ -47,7 +56,7 @@ def fields(fixture, source, case):
         raw_members = [raw_self]
         raw_members.insert(0 if case['builtin_first'] else 1, 'NIdentifier (BYTES text_builtin) metadata_builtin')
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
-    states = []; step_objects = []
+    states = []; step_objects = []; step_arrays = []
 
     def seek(state, previous, target):
         states.append(state)
@@ -123,6 +132,12 @@ def fields(fixture, source, case):
         '$arrow_line(pfunction.CODE.EXPRESSIONS,pfunction.BODY) = (' + str(body_line) + ')']
     if case['builtin']:
         checks += ['$base64(text_builtin) = $ptascii("' + case['builtin'] + '")']
+    if builtins:
+        checks += ['$ptlc($base64(text_builtin_' + str(i) + ')) = $ptascii("' + builtin + '")'
+                   for i, builtin in enumerate(builtins)]
+        checks += ['$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property)',
+                   '~$hook_short_reference_class_builtin_union_header(phpType18,[' + ','.join(reversed(branches)) + '],ptcontext_property)',
+                   '~$hook_short_reference_class_builtin_union_header(phpType18,ppropertydesc.TYPE,ptcontext_property[.SCOPE = PTKNOWN (pclassdesc.NAME ++ [88]) eps])']
     if case.get('other'):
         checks += ['$base64(text_other) = $base64(' + quoted(other['raw_name']) + ')',
                    '$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
@@ -182,6 +197,17 @@ def fields(fixture, source, case):
         checks += [state + '.STORE[n_field] = DEFINED (' + step['value'] + ')',
                    state + '.STORE[n_keptcell] = DEFINED (POBJECT n_live)',
                    '$propref_at(' + state + '.PROPREFS,n_field) = (ppropref)']; previous = state
+        if 'array' in step:
+            array = step['array']; obj = step['value'].split()[1]
+            copycell, copyarray = 'n_arraycopycell' + str(i), 'n_copyarray' + str(i)
+            step_arrays.append((copycell, copyarray))
+            checks += [state + '.ARRAYS[' + obj + '].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT ' + str(array['value']) + '))]',
+                       '$lookup(' + state + '.ENV,$ptascii("' + array['copy_variable'] + '")) = (' + copycell + ')',
+                       state + '.STORE[' + copycell + '] = DEFINED (PARRAY ' + copyarray + ')',
+                       obj + ' =/= ' + copyarray,
+                       state + '.ARRAYS[' + copyarray + '].ITEMS = [ENTRY (KINT 0) (DIRECT (PINT ' + str(array['copy_value']) + '))]',
+                       '$heap_owners($heap_graph(' + state + '),HARRAY ' + copyarray + ') = 1',
+                       '$propref_at(' + state + '.PROPREFS,' + copycell + ') = eps']
         if 'object' in step:
             obj = step['value'].split()[1]; step_objects.append(obj)
             suffix = str(i) if others else ''
@@ -204,17 +230,30 @@ def fields(fixture, source, case):
                '$propref_at(S_detached.PROPREFS,n_field) = eps',
                'S_detached.STORE[n_field] = DEFINED (POBJECT n_live)',
                '$heap_owners($heap_graph(S_detached),HCELL n_field) = 2']
-    checks += seek('S_free', 'S_detached', line('$r341 = false;'))
-    checks += ['S_free.STORE[n_field] = DEFINED (PARRAY n_free)', 'S_free.ARRAYS[n_free].ITEMS = eps',
-               '(HARRAY n_free) <- $pools_nodes(S_free.POOLS)',
-               '$heap_owners($heap_graph(S_free),HARRAY n_free) = $(1 + $heap_count(HARRAY n_free,$pools_nodes(S_free.POOLS)))',
-               '$propref_at(S_free.PROPREFS,n_field) = eps',
-               'S_end = $drive_steps(S_free,30000)', 'S_end.COMPLETION = NORMAL', 'S_end.TODO = eps',
+    checks += seek('S_free', 'S_detached', len(lines) - lines[::-1].index('$r341 = false;'))
+    if case.get('detached_stdclass'):
+        checks += ['S_free.STORE[n_field] = DEFINED (POBJECT n_free)', 'S_free.OBJECTS[n_free] = STDINSTANCE',
+                   '(HOBJECT n_free) <- S_free.ALLOCATIONS',
+                   '$heap_owners($heap_graph(S_free),HOBJECT n_free) = 1',
+                   '$propref_at(S_free.PROPREFS,n_field) = eps']
+    else:
+        checks += ['S_free.STORE[n_field] = DEFINED (PARRAY n_free)', 'S_free.ARRAYS[n_free].ITEMS = eps',
+                   '(HARRAY n_free) <- $pools_nodes(S_free.POOLS)',
+                   '$heap_owners($heap_graph(S_free),HARRAY n_free) = $(1 + $heap_count(HARRAY n_free,$pools_nodes(S_free.POOLS)))',
+                   '$propref_at(S_free.PROPREFS,n_field) = eps']
+    checks += ['S_end = $drive_steps(S_free,30000)', 'S_end.COMPLETION = NORMAL', 'S_end.TODO = eps',
                '$lbr_output(S_end.EVENTS) = $base64(' + quoted(case['stdout']) + ')',
-               'S_end.POOLS = S_free.POOLS', '(HARRAY n_free) <- S_end.ALLOCATIONS',
-               '$heap_owners($heap_graph(S_end),HARRAY n_free) = $heap_count(HARRAY n_free,$pools_nodes(S_end.POOLS))']
+               'S_end.POOLS = S_free.POOLS']
+    if case.get('detached_stdclass'):
+        checks += ['~((HOBJECT n_free) <- S_end.ALLOCATIONS)']
+    else:
+        checks += ['(HARRAY n_free) <- S_end.ALLOCATIONS',
+                   '$heap_owners($heap_graph(S_end),HARRAY n_free) = $heap_count(HARRAY n_free,$pools_nodes(S_end.POOLS))']
     checks += ['~((HOBJECT ' + obj + ') <- S_end.ALLOCATIONS)' for obj in ('n_root', 'n_first', 'n_live')]
     checks += ['~((HOBJECT ' + obj + ') <- S_end.ALLOCATIONS)' for obj in step_objects]
+    for copycell, copyarray in step_arrays:
+        checks += ['~((HCELL ' + copycell + ') <- S_end.ALLOCATIONS)',
+                   '~((HARRAY ' + copyarray + ') <- S_end.ALLOCATIONS)']
     checks += ['~((HCELL ' + cell + ') <- S_end.ALLOCATIONS)' for cell in ('n_rootcell', 'n_field', 'n_copycell', 'n_keptcell')]
     for state in states + ['S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',
