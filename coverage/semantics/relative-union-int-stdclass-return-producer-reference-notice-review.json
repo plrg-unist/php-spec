@@ -1,0 +1,198 @@
+{
+  "family": "relative-union-int-stdclass-return-producer-reference-notice",
+  "slice": 133,
+  "status": "partial; implemented bounded source slice, independently reviewed and joined-load accepted",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "engine_pin": "34308a6666b2d489c509541ea9befea9e2b42348",
+  "implementation": [
+    "spec/semantics/207-error-handler-runtime.watsup"
+  ],
+  "source_ready": {
+    "revision": "d63a212497f9d55561083f3adb01885414dbc9e8",
+    "tree": "7d62e0c17a186aeabcf4685a625d8cd12f75c8fc",
+    "packet": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/author/source-ready-v1/packet.json",
+    "packet_sha256": "0110b79f9e70d820ed36850b39e1e3c3ce93a833be97fab4e847b1d0db1660e7"
+  },
+  "behavior": [
+    "Ordered namespace\\stdClass|int and int|namespace\\stdClass RETURN declarations under an empty namespace authenticate exact matching canonical normalized order.",
+    "Quiet PTRETURN/PTRELATIVE resolution ignores ordinary class imports. The existing two relative order cases restrict their normalized builtin arm to null or int.",
+    "An unchanged Param view, nonempty actuals, original member bytes/order/metadata and the existing FQN header retain RETURN verification, callee retirement, private Notice-cell and source/owner/lifetime guards."
+  ],
+  "source_symbols": [
+    "zend_resolve_class_name",
+    "zend_compile_typename_ex",
+    "zend_compile_return",
+    "ZEND_VERIFY_RETURN_TYPE",
+    "zend_check_type_slow",
+    "zend_verify_scalar_type_hint",
+    "ZEND_SEND_VAR_NO_REF_EX"
+  ],
+  "author": {
+    "summary": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/author/post-summary-v1.json",
+    "sha256": "52122be2434587ef0d3a9f4ada8dec8bac70661c3285d06828ce74557c1944c7",
+    "native_originals_once": 2,
+    "source_agreements": 2,
+    "state_conditions": [
+      408,
+      298,
+      110
+    ],
+    "fixture_mode": "SL/cache=false/det=true",
+    "module_count": 507,
+    "prelaw_conditions": 212,
+    "prelaw_unsupported_observations": 2,
+    "source_cap_seconds": [
+      180,
+      195
+    ],
+    "state_cap_seconds": 1200,
+    "first_post_attempts_passed": true
+  },
+  "independent": {
+    "summary": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/peer/review-summary-v1.json",
+    "sha256": "fcd516f93f177e07b8407a82de2fb79ff9903d948213130c98207ce7eb0e7fc9",
+    "revision": "4b694d0102a88e668dac91dc5174c657d7cb475d",
+    "tree": "12848e6f7851efd234dd9905b165f9238ca34e9c",
+    "native_originals_once": 2,
+    "source_agreements": 4,
+    "source_selection": {
+      "new_notice_positives": 3,
+      "unchanged_wrong_array_control": 1,
+      "control_new_support_credit": 0
+    },
+    "author_state_conditions": [
+      408,
+      298,
+      110
+    ],
+    "corrected_peer_state_conditions": [
+      202,
+      123,
+      79
+    ],
+    "prelaw_conditions": 85,
+    "prelaw_unsupported_observations": 1,
+    "prelaw_control_model_unrun_credit": 0,
+    "module_count": 507,
+    "source_cap_seconds": [
+      180,
+      195
+    ],
+    "state_cap_seconds": 1200,
+    "first_whole_pass": false,
+    "original_peer_fixture_attempted": true,
+    "original_peer_fixture_unrun": false,
+    "original_peer_fixture_credit": 0,
+    "correction": "The derived weak-int conversion assertion now expects TYPEINTEGER(original pvalue), preserving deferred typed_apply. Only the affected peer suite reran.",
+    "compatibility_bridges": {
+      "author": {
+        "all_shared_hashes_equal": true,
+        "changed_peer_fixture_not_in_accepted_inputs": true,
+        "shared_input_count": 522
+      },
+      "source": {
+        "all_shared_hashes_equal": true,
+        "changed_peer_fixture_not_in_accepted_inputs": true,
+        "shared_input_count": 515
+      }
+    },
+    "accepted_source_author_native_replays": 0
+  },
+  "preserved_issues": {
+    "fixture_corrections": 1,
+    "fixture_failures": 1,
+    "preparation_breakdown": {
+      "peer_cached_map_field_schema": 1,
+      "peer_python_generation_syntax": 1
+    },
+    "preparation_incidents": 2,
+    "preparation_runtime_executions": 0,
+    "preparation_semantic_credit": 0,
+    "semantic_mismatches": 0,
+    "timeouts": 0
+  },
+  "promoted_helper_expectations": {
+    "files": [
+      "tests/semantics/global_plain_union_int_stdclass_return_producer_reference_notice_state.py",
+      "tests/semantics/relative_union_null_stdclass_return_producer_reference_notice_review_state.py"
+    ],
+    "fresh_proofs": "Both canonical int orders, import ignorance, Param-first normalization, metadata preservation and unchanged null cases are checked at fresh 133 cuts.",
+    "historical_campaign_renewal": false
+  },
+  "integration": {
+    "immutable_tuple": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/peer/peer43-immutable-tuple-v1.json",
+    "immutable_tuple_sha256": "78efe5251a5a5ea63f94b1bb658e293e7c2631bc188f44cbaec0bf7a50e80b2e",
+    "fixed_actual": {
+      "Make_only_composed": true,
+      "assessments": 1,
+      "full_current_parents_and_inverses": 4,
+      "literal_posts": 10,
+      "new_absent_paths": 7,
+      "paths": 11,
+      "revision": "a780c163bbe121496054d623951873668264e62f",
+      "source_revision": "d63a212497f9d55561083f3adb01885414dbc9e8",
+      "source_tree": "7d62e0c17a186aeabcf4685a625d8cd12f75c8fc",
+      "tree": "ecf2ecb9924b738489ab708a9a79befcc357ec82"
+    },
+    "fixed_assessment": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/peer/peer43-fixed-actual-review-v2.json",
+      "sha256": "1766258da2f9f3cb7bccb27015536b2c2c25ac3783517d79e8ed3066e3f9de94"
+    },
+    "sole_canonical": {
+      "all511_tracked_inputs_bind_actual": true,
+      "argv_count": 512,
+      "cap_seconds": 60,
+      "elapsed": 16.282008996931836,
+      "executions": 1,
+      "mode": "production_SL",
+      "modules": 509,
+      "ordered_manifest_exact": true,
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-ref133-load-v1/report.json",
+      "physical_reads": 1,
+      "quiet_true_LF": true,
+      "reaped": true,
+      "sha256": "7591bd9a75dd4ff707d429975ee5e53b27db00260fac24fe37f468f1d61d9ea6",
+      "source_credit": 0,
+      "stable": true,
+      "watch_count": 513
+    },
+    "placement_map": {
+      "path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main106-ref133-source-placement-map-v1.json",
+      "physical_reads": 1,
+      "sha256": "ce13da5ddafd5fc764dba79f8ef51f5fb1751b14b9d5fc306248cbd555cc67d6"
+    },
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/peer/peer43-actual-intake-cache-v1.json",
+    "original_rereads": 0,
+    "author_raw_actual_report_map_reads": 0,
+    "canonical_executions_by_reader": 0
+  },
+  "remaining": [
+    "Other builtin companions and wider relative RETURN unions.",
+    "Nonempty namespaces, other normalized classes, DNF and wider producers, payloads, owners and lifetime histories."
+  ],
+  "unchanged": {
+    "paused_boundaries": [
+      "OP12 increment/decrement dimension warnings",
+      "Source47 low-precision DEFINE-name NaN conversion",
+      "Owned-NUL source-release behavior",
+      "Undefined by-reference LIST key handling",
+      "COMP88 Stringable supplied-throw crash"
+    ],
+    "reserve": "93807cdd6/255",
+    "constructors": 169,
+    "runtime_obligations": 306,
+    "closed_constructors": 0,
+    "closed_runtime_obligations": 1,
+    "donors": 13,
+    "operations": "57-62/90-93"
+  },
+  "engine_bugs_or_intentional_divergences": [],
+  "metadata_preparation": {
+    "incidents": 1,
+    "runtime_executions": 0,
+    "semantic_credit": 0,
+    "record": "/home/user/workspace/php-spec-evidence-archive/relative-union-int-stdclass-return-producer-reference-notice-133/author/metadata-parent-preparation-v1.json",
+    "sha256": "47e28e5c8f38cad3b854cf02d70a44379171cc5919f83ea4756f2c67906d26e1",
+    "resolution": "Compose only the owned 133 documentation hunks onto fixed a780c163, preserving already-accepted 125/126 formal paragraphs byte-for-byte. No source/native/state/canonical renewal."
+  }
+}

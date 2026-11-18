@@ -1261,9 +1261,31 @@ first Unsupported observations retain zero source credit. Five older helper
 expectations promote through fresh order/import/Param/metadata proofs without
 renewing117/130/131 campaigns. Two author preparation assertions and one cached
 reader schema correction retain runtime0; fixture and production code needed no
-correction. Other builtin companions, wider
-unions, nonempty namespaces, other normalized classes and wider payloads/owners/
-lifetimes remain partial; all exact holds stay unchanged.
+correction. Ordered class/int relative companions are extended below; other
+builtin companions, wider unions, nonempty namespaces, other normalized classes
+and wider payloads/owners/lifetimes remain partial; all exact holds stay unchanged.
+
+Ordered `namespace\stdClass|int` and `int|namespace\stdClass` RETURNs extend
+those two proof cases with the exact `null`/`int` builtin choice. Empty namespace,
+quiet `PTRETURN`/`PTRELATIVE` resolution, matching canonical order and unchanged
+Param normalization preserve import ignorance and all raw member/union metadata.
+The existing FQN verifier, callee retirement and private Notice-cell owners remain.
+The [ordered relative class/int review](../../coverage/semantics/relative-union-int-stdclass-return-producer-reference-notice-review.json)
+separates object BYVAL and strict INT/private-array originals from the independent
+named-BYREF formal alias and unchanged array-return TypeError-before-Notice
+control. Native4 ran once; author source2/state408(298+110), independent source4/
+author408 and corrected peer202(123+79) retain separate SL507 cuts. Prelaw212/85
+and three original Unsupported observations retain zero source credit. The
+original WHOLE peer202 attempted execution and failed a weak-conversion descriptor
+expectation; its zero-credit nonpass remains, and only the corrected peer suite
+reran. No first-WHOLE-pass claim or accepted source/author/native replay is made.
+Two older pure-helper files promote through fresh133 proofs without renewing
+117/132 campaigns. Syntax, cached Make-literal reader and documentation-parent preparation
+incidents retain runtime0; the PHP law needed no correction. Fixed actuala780c163
+and sole productionSL509 pass16.282008996931836s/cap60/source0 through one physical
+report/map read each/cache thereafter; author raw reads0. Other companions,
+wider unions/namespaces/classes/payloads/owners/lifetimes remain partial, with all
+exact holds unchanged.
 
 Required ordinary-CV producer formals now admit canonical bare `stdClass` types
 when the declaration has no namespace or class imports. A pure raw Param view
