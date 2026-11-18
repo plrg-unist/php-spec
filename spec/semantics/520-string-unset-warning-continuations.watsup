@@ -181,7 +181,7 @@ def $string_unset_bool_cv_post_object_fields(S, ppropertyslot :: ppropertyslot_t
   -- if ppropertyslot.DECL = eps
   -- if ppropertyslot.STATE = PROP_VALUE (ALIAS n)
   -- if $startup_bytes(ppropertyslot.NAME) /\ $c_string(ppropertyslot.NAME) = ppropertyslot.NAME
-  -- if $literal_reference_plain_cell(S, n)
+  -- if $literal_reference_plain_cell(S, n) \/ $string_read_array_string_cell(S, n)
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
   -- if $node_children(S, HCELL n) = eps
   -- if $string_unset_bool_cv_post_object_fields(S, ppropertyslot_tail*)

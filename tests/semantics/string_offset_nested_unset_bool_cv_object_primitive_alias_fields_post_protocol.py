@@ -90,7 +90,6 @@ def conditions(program, path):
         'S_R[.STORE[n_field] = UNDEFINED]',
         'S_R[.STORE[n_field] = DEFINED (PARRAY n_array)]',
         'S_R[.STORE[n_field] = DEFINED (POBJECT n_object)]',
-        'S_R[.STORE[n_field] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("held")))]',
         'S_R[.STORE[n_field] = DEFINED (PINT 9223372036854775808)]',
         'S_R[.STORE[n_field] = DEFINED (PFLOAT 18446744073709551616)]',
         'S_R[.PROPREFS = {CELL n_field, SOURCES eps} :: S_R.PROPREFS]',
@@ -99,6 +98,9 @@ def conditions(program, path):
     ):
         checks += ['~$string_unset_bool_cv_post_object(' + state + ', n_object)',
             '~$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
+    string_state = 'S_R[.STORE[n_field] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("held")))]'
+    checks += ['$string_unset_bool_cv_post_object(' + string_state + ', n_object)',
+        '$string_unset_bool_cv_post_nonempty_array(' + string_state + ', n_key)']
     request_fields = '[{DECL eps, NAME $ptascii("tag"), STATE PROP_VALUE (DIRECT pvalue_request)}]'
     checks += ['S_seed = $string_request(S_R, $ptascii("kept"))',
         'S_seed.RESULT = KNOWN pvalue_request', '$string_carrier_valid(S_seed, pvalue_request)',
@@ -106,8 +108,8 @@ def conditions(program, path):
         '$node_children(S_request, HOBJECT n_object) = eps',
         '$string_unset_bool_cv_post_object(S_request, n_object)',
         '$string_unset_bool_cv_post_nonempty_array(S_request, n_key)',
-        '~$string_unset_bool_cv_post_object(S_seed[.STORE[n_field] = DEFINED pvalue_request], n_object)',
-        '~$string_unset_bool_cv_post_nonempty_array(S_seed[.STORE[n_field] = DEFINED pvalue_request], n_key)']
+        '$string_unset_bool_cv_post_object(S_seed[.STORE[n_field] = DEFINED pvalue_request], n_object)',
+        '$string_unset_bool_cv_post_nonempty_array(S_seed[.STORE[n_field] = DEFINED pvalue_request], n_key)']
     return checks, derived + len(checks) - reached
 
 

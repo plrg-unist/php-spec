@@ -109,13 +109,16 @@ def conditions(program, path):
             '~$string_unset_bool_cv_post_object_cell(' + changed + ', n_alias)',
             '~$string_unset_bool_cv_post_nonempty_array(' + changed + ', n_key)']
     for value in ('PARRAY n_middle', 'POBJECT n_object',
-                  'PSTRING_CARRIER INTERNED_STRING ($ptascii("primitive-only"))',
                   'PSTRING_CARRIER INTERNED_STRING ([0, 65])',
                   'PINT 9223372036854775808', 'PFLOAT 18446744073709551616'):
         state = 'S_R[.STORE[n_field] = DEFINED (' + value + ')]'
         checks += ['~$string_unset_bool_cv_post_object(' + state + ', n_object)',
             '~$string_unset_bool_cv_post_object_cell(' + state + ', n_alias)',
             '~$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
+    state = 'S_R[.STORE[n_field] = DEFINED (PSTRING_CARRIER INTERNED_STRING ($ptascii("primitive-only")))]'
+    checks += ['$string_unset_bool_cv_post_object(' + state + ', n_object)',
+        '$string_unset_bool_cv_post_object_cell(' + state + ', n_alias)',
+        '$string_unset_bool_cv_post_nonempty_array(' + state + ', n_key)']
     checks += ['~$string_unset_bool_cv_post_object_fields(S_R, ' + fields('(|S_R.STORE|)') + ')',
         'S_request = $string_request(S_R, $ptascii("primitive-only"))',
         'S_request.RESULT = KNOWN pvalue_request',
@@ -123,8 +126,8 @@ def conditions(program, path):
         'S_alias_string = S_request[.STORE[n_field] = DEFINED pvalue_request]',
         '$heap_graph(S_alias_string) = H_saved',
         '~$literal_reference_plain_cell(S_alias_string, n_field)',
-        '~$string_unset_bool_cv_post_object(S_alias_string, n_object)',
-        '~$string_unset_bool_cv_post_nonempty_array(S_alias_string, n_key)',
+        '$string_unset_bool_cv_post_object(S_alias_string, n_object)',
+        '$string_unset_bool_cv_post_nonempty_array(S_alias_string, n_key)',
         'S_direct_string = S_request[.OBJECTPROPS = $objectprops_set(S_request.OBJECTPROPS, n_object, [' +
             prior.slot('$ptascii("direct")', 'pvalue_request') + '])]',
         '$heap_valid($heap_graph(S_direct_string))',
