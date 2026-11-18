@@ -1,0 +1,444 @@
+{
+  "feature": "Quiet integer UnaryPlus operands and FULL conditions in static USER ternary-left coalesce selectors",
+  "status": "Independently reviewed bounded increment; family and full core remain partial.",
+  "target": "PHP 8.5.10 CLI NTS64; project-local pinned oracle and recorded profile.",
+  "behavior": "The quiet selector certificate admits UnaryPlus over source-authenticated closed values when existing pure coercion yields a warning-free signed64 integer. It returns exact PINT for NULL/BOOL/INT/full numeric INT STRING, including old byte-positive PLUS leaves. Only the dedicated FULL fallback requires old-byte=None; all old Some byte proofs remain literal. INT0 stays nonnull in COALESCE and differs in truth from STRING00.",
+  "implementation": {
+    "source": "e0f0a5e210dfe40d34ce94f825d833fe176495de",
+    "parent": "df64191be8168391cb182ee3d1df734a0480f0c1",
+    "tree": "bfca038cf11796e2776893e43b742d2bf3c452ec",
+    "runtime407_sha256": "73ebbed3d481260eb6aa67fdbb90e66aec9134822d56444f60d6f560d724e4aa",
+    "complete_parent_inverse_sha256": "dd95016068d05ca09dc3c23741565e1b99e758048d127c021b946732f516d4f1",
+    "change": "One six-line constructor-new quiet NINT UnaryPlus operand, one three-line old-None FULL fallback and scope comment.",
+    "compatibility": "Constructor-new typed PLUS authenticates root/proper child and reuses quiet COERCED(NINT i)false +long_range to return PINT i; no old typed PLUS clause overlapped. Dedicated FULL fallback requires old-byte=None, preserving every old Some byte result. Every new cycle descends proper child; all other typed/byte/helper branches and shared trees/SHORT/non-NUL/truth/receipt46/cache/owner bodies/UnaryMinus remain literal.",
+    "preserved": "All old operand and FULL helper branches, shared byte trees, SHORT/non-NUL/truth rules, receipt/46 guards, caches and owner/lifetime bodies remain literal; no runtime carrier or native evaluation fallback."
+  },
+  "authorities": [
+    "Zend/zend_compile.c:zend_compile_unary_pm,zend_try_ct_eval_unary_pm; Zend/zend_operators.c:_is_numeric_string_ex",
+    "spec/semantics/35-scalar-operations.watsup:coerce_number,unary_apply POSITIVE; pinned existing positive INT/keyword/STRING byte clauses"
+  ],
+  "validation": {
+    "native_originals_once": 4,
+    "native_replays": 0,
+    "accepted_source_agreements": [
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment/report.json",
+        "sha256": "1b9791dac32727d26dc49a3ea60467dfbc6ba430f3cdc10b08b6487c710a98bb",
+        "record": {
+          "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+          "source_sha256": "297fe3f95c9c57050636353c6eb05b28a22543160dc2e8827c150e11fad6ed4a",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 67.55853883107193
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "author",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/law-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce/report.json",
+        "sha256": "4a9a545a5536e542d01b898d28ad8941e3279b17b25eee375dd99b9dbf924f90",
+        "record": {
+          "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+          "source_sha256": "afe117c18836f808577e2e87ce2d918cf55a74730a01597daaea1a4ab1392a4c",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 58.13401459297165
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources/report.json",
+        "sha256": "1fb36694acd3fcac7459582b667670dbdade393c3310db38a686216d02facd76",
+        "record": {
+          "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources",
+          "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 152.88124540704302
+        },
+        "stable": true,
+        "source_credit": 1
+      },
+      {
+        "role": "independent",
+        "kind": "source",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/law-intmin-v2/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-min-boundary/report.json",
+        "sha256": "729095d7c3cc768cc121055555c2575deffd0c079ad957281469e9ef1e47bc74",
+        "record": {
+          "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-min-boundary",
+          "source_sha256": "91be3224249faaabba95372cdb61c5e2ed2b5f6c51aca94b7b8e110eacfe2594",
+          "native_reused": true,
+          "status": "normal",
+          "reason": null,
+          "pass": true,
+          "seconds": 109.73511394206434
+        },
+        "stable": true,
+        "source_credit": 1
+      }
+    ],
+    "author_fixture_cuts": [
+      142,
+      114
+    ],
+    "independent_fixture_cuts": [
+      167,
+      151,
+      101,
+      101,
+      55,
+      59,
+      59,
+      82,
+      37
+    ],
+    "accepted_fixture_records": [
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-own-v1/launch.json",
+        "sha256": "e61965298b597ab921fc3dc83594868cb93ffb83562e9d840370e769fc114113",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-own-namespaced-cv-coalesce",
+            "source_sha256": "afe117c18836f808577e2e87ce2d918cf55a74730a01597daaea1a4ab1392a4c",
+            "assertions": 142,
+            "pass": true
+          }
+        ],
+        "seconds": 52.11095732101239,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "author",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/fixtures-inherited-v1/launch.json",
+        "sha256": "605d85a02ca88dbfa4ef14995fc793bccf510870eb15593d3a60be4771962650",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-inherited-clone-private-coalesce-assignment",
+            "source_sha256": "297fe3f95c9c57050636353c6eb05b28a22543160dc2e8827c150e11fad6ed4a",
+            "assertions": 114,
+            "pass": true
+          }
+        ],
+        "seconds": 57.206624415004626,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-cv-sites-v1/launch.json",
+        "sha256": "7ff2c71bd1004d876e1cfffcb16e0d09a3c621d0c7ccd9d9c1e916363487a99b",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-actual-sites",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 167,
+            "pass": true
+          }
+        ],
+        "seconds": 129.10574988694862,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-literal-sites-v1/launch.json",
+        "sha256": "087ac0cd47c8cf61a7bee838a9f0d57f9349722811ada5c134d76dc2114bdcbc",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-min-boundary-actual-sites",
+            "source_sha256": "91be3224249faaabba95372cdb61c5e2ed2b5f6c51aca94b7b8e110eacfe2594",
+            "assertions": 151,
+            "pass": true
+          }
+        ],
+        "seconds": 86.13805579999462,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-scalar-values-v1/launch.json",
+        "sha256": "6e6c12bf8549824c8604d378310e72c09e6c5aae4a3c6f1eea3237725f7372e7",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-scalar-values",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 101,
+            "pass": true
+          }
+        ],
+        "seconds": 129.09939228999428,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-numeric-values-v1/launch.json",
+        "sha256": "6d1525a6f41adf649d1ae35b31f101ebeab7330d6d577fbc888abdd55133e0e0",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-numeric-values",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 101,
+            "pass": true
+          }
+        ],
+        "seconds": 127.88436929881573,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-legacy-values-v1/launch.json",
+        "sha256": "16a17b20c4cc5f4a8d036a88370ab3965f9c1477aa0672b25f618de2fc858f7d",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-legacy-values",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 55,
+            "pass": true
+          }
+        ],
+        "seconds": 130.22912686900236,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-selected-source-v1/launch.json",
+        "sha256": "1c074c0b30d3a9fc76d22e79126f24050b6468adc6cff7dbf000c2fdf494405a",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-selected-source",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 59,
+            "pass": true
+          }
+        ],
+        "seconds": 131.71352185797878,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-skipped-source-v1/launch.json",
+        "sha256": "65bef81f7f08a24ee61dc799c6f58ad173c23a2fcc1d3aec70a003fab038648c",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-skipped-source",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 59,
+            "pass": true
+          }
+        ],
+        "seconds": 134.4124291811604,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-bounds-v1/launch.json",
+        "sha256": "da024324046064f5244017f40bdb161f5b6c8831d9ba634070673315a8f7334d",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-bounds",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 82,
+            "pass": true
+          }
+        ],
+        "seconds": 126.30198228592053,
+        "stable": true,
+        "source_credit": 0
+      },
+      {
+        "role": "independent",
+        "kind": "fixture",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/fixtures-root-authority-v1/launch.json",
+        "sha256": "a4a99a5c7a1e1d579f4bcfeba0e8ac85be2bd143f98752b88f9c84593776ef19",
+        "records": [
+          {
+            "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-cv-empty-own-child-retired-sources-root-authority",
+            "source_sha256": "29211887bdbe085090d834333b5ea623725541588c66eb8603f81fce3b329ced",
+            "assertions": 37,
+            "pass": true
+          }
+        ],
+        "seconds": 129.79052856587805,
+        "stable": true,
+        "source_credit": 0
+      }
+    ],
+    "fixture_source_credit": 0,
+    "source_first_semantic_attempt": true,
+    "new_source_fixture_failures_or_timeouts": 0,
+    "semantic_assertion_failures": 0,
+    "integer_domain_correction": {
+      "bridge": "/home/user/workspace/php-spec/.tools/anonymous-missing-coalesce-author/.tools/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get-review-prep/intmin-integer-domain-catalogue-bridge-v1.json",
+      "bridge_sha256": "6f2a76dcc28eb956b7a3ff34eda2eae8f9b1bf1d7d277b296d041101408fea31",
+      "old_literal": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw",
+      "corrected_literal": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw-integer-min-boundary",
+      "change": "Remove only INTMIN string trailing whitespace; leading space remains. Same selector line/body/profile/streams; new literal original native/model/observer only.",
+      "target_behavior": "Pinned _is_numeric_string_ex strcmp includes accepted trailing whitespace, making negative minimum FLOAT; bare/leading-only negative minimum is INT. Existing numeric classifier follows this documented target quirk.",
+      "retained_boundary_records": [
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/native-v1/report.json",
+          "sha256": "862d6c71ee21c4cc8b07437a3aee9f2c8953583f02271ab935241b4c60928f83",
+          "source_credit": 0
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/baseline-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw/report.json",
+          "sha256": "4a1259ea2b8269a98c500cc2fbc0107753d492816428272313e76e75cd6be345",
+          "source_credit": 0
+        },
+        {
+          "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/compiler-plus-operand-conditions-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw/report.json",
+          "sha256": "569231a6453eacb2fd4f2fbc0a4983270711c1f551845467733166a71191fb95",
+          "source_credit": 0
+        }
+      ],
+      "fresh_native_type_probe": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/boundary-intmin-type-v1/report.json",
+      "fresh_native_type_probe_sha256": "6bdefaf34d452589651e091c11ea07e38a9375badc1f551828f582f06238c620",
+      "fresh_native_type_probe_source_credit": 0,
+      "accepted_author_CV_replays": 0,
+      "first_recorder_assumption": "NINT-only collector stopped on preserved original FLOAT boundary before publication; no semantic failure or runtime/public edit. V1 collector retained as facts.py.",
+      "original_collector_sha256": "7736da5055a0e9168024db528d3c702caef57a8169c147adb534afc8dc00b95a",
+      "engine_bug": false,
+      "model_bug": false
+    },
+    "native_application_originals_total": 5,
+    "fresh_type_probe_originals": 1,
+    "preserved_FLOAT_Unsupported_control": [
+      {
+        "role": "independent",
+        "kind": "FLOAT-boundary-Unsupported",
+        "path": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/boundary-law-v1/methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw/report.json",
+        "sha256": "3a33b0fdba90ba5ba5e478d8d66d87de20dac9e91e359dac63af1a589924a5fe",
+        "record": {
+          "id": "methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-literal-empty-inherited-retired-sources-receiver-throw",
+          "source_sha256": "4268c2941e31ef15b7495336b72a2e8a9d23b8358253adabb3d1186a8d5e9e94",
+          "native_reused": true,
+          "status": "unsupported",
+          "reason": "magic empty getter result type",
+          "pass": true,
+          "seconds": 100.82954785902984
+        },
+        "stable": true,
+        "source_credit": 0
+      }
+    ],
+    "FLOAT_Unsupported_source_credit": 0,
+    "accepted_executed_fixture_assertions": 1068,
+    "prelaw": {
+      "expected_Unsupported": 4,
+      "timeouts": 0,
+      "source_credit": 0
+    },
+    "observations": {
+      "ternary_snapshots": 63,
+      "coalesce_snapshots": 73,
+      "not_snapshots": 6,
+      "boolean_snapshots": 16,
+      "ternary_SOURCE_nodes": 63,
+      "coalesce_SOURCE_nodes": 77,
+      "not_SOURCE_nodes": 6,
+      "boolean_SOURCE_nodes": 12,
+      "plus_snapshots": 28,
+      "plus_SOURCE_nodes": 32,
+      "source_credit": 0,
+      "assertion_credit": 0
+    },
+    "observer_interpretation": "Executed SELECT/COALESCE/NOT/Boolean/PLUS observations remain separate from complete selected/skipped SOURCE/compiler facts. Emitted UNARY POSITIVE snapshots resolve the child value, record COERCED(NINT i)false, and observe completed exact PINT i with unchanged task tail; folded/skipped PLUS nodes remain in SOURCE/CODE/pool facts. Resolved FULL/SHORT conditions and enclosing COALESCE LEFT supply completed values where a unary task is folded. Immediate AFTER PNULL at FULL/NULL-left COALESCE queues work. BOOLEAN skips/coercions/XOR retain their established distinctions. All class/method CONCAT roots retain positive nonfolded CODE and no own read/pool/redirect/effect.",
+    "retained_controls": "Old byte-positive UnaryPlus primitives retain every Some byte result and carry zero new byte-proof credit; their newly admitted typed INT result is separate from byte compatibility. UnaryMinus stays held; FLOAT/numeric-float/overflow/leading-warning/non-numeric/NUL/CV/owning inputs stay refused, and old cuts are not renewed.",
+    "maintained_expectation": {
+      "specification": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/legacy-plus-expectation-update-v1.json",
+      "specification_sha256": "fa87483b1f3fbd89582261b6d84d762cae3f175b2b5129cd772daea1297bea6b",
+      "changed_assertion_tails": 18,
+      "protocol_files": 4,
+      "fresh_equivalent": "All18 exact old AST/callee/argument expressions within fresh legacy55 (12 literal AST +6 explicit reached-site PLUS+1/+0 aliases).",
+      "all_other_CASE_fields_sources_stages_counts_checks_literal": true,
+      "historical_semantic_source_native_fixture_executions": 0,
+      "broad_make_test_semantics_claim": false
+    },
+    "closed_evidence_renewal": 0,
+    "caps": {
+      "model_inner_seconds": 280,
+      "model_outer_seconds": 290,
+      "fixture_outer_seconds": 297,
+      "address_space_bytes": 3221225472,
+      "private_sl_modules": 507
+    }
+  },
+  "review": {
+    "verdict": "ONE_WHOLE_CLEAR",
+    "reviewer": "/root/recover32_get_not_review",
+    "whole": "Peer32 independently cleared SOURCE11/full parent/runtime+legacy+Make inverses, all16 accepted records,18 exact fresh tails and current integer-domain correction/boundary distinction; no findings or accepted replay.",
+    "tuple_consumption": "Exact tiny peer32 tuple only; author actual-runtime/report/map reads0.",
+    "fixed_tuple": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/independent/main111-fixed-tuple-v1.json",
+    "fixed_tuple_sha256": "0c44fe6639119ab6850a9ef2a09f4acf1e4e92d3595d0a379eedfe466e491459",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-packet-v1.json",
+    "source_packet_sha256": "82dd5378b87d4b9da4985c697a50575f6c05568e51cb8af441096ce264ea09de",
+    "evidence_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/evidence-packet-v1.json",
+    "evidence_packet_sha256": "983da3e472f30a7ef21ce1ee5aa07b3e5ddfbde72324acc63e94925b4cce5897",
+    "source_first_packet": "/home/user/workspace/php-spec-evidence-archive/magic-property-methodclosure-static-raw-plus-operand-condition-typed-ternary-left-coalesce-quiet-get/author/source-first-facts-v1.json",
+    "source_first_packet_sha256": "604ebbaa7078d64b6cfa7d46dbb0738e424700b12c029f9b232d5f02676b410e"
+  },
+  "integration": {
+    "actual": "7f1fe88d0b2e0399fcc54b0cc553d322968e398e",
+    "tree": "9de3aea7ca3266bd1163399dc0bddcbe32827388",
+    "own_stage_parent": "fc7c69efedc7873939ce02c3cd2ea2a1bdc6d59d",
+    "own_paths": 11,
+    "own_Make_unique_added_lines": 4,
+    "canonical_report": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main111-getplus-load-v1/report.json",
+    "canonical_report_sha256": "3ad22bf5a8c131aa3e639c188e045814bffb77a11d5337df30da107787348ae7",
+    "canonical_seconds": 16.884154052007943,
+    "canonical_SL_modules": 509,
+    "canonical_argv": 512,
+    "canonical_equal_watch": 513,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "canonical_executions_for_shared_source_cut": 1,
+    "composition_map": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main111-getplus-source-map-v1.json",
+    "composition_map_sha256": "1a13f41b88c8ff79b1651d4d0a590346915abfb0cb1daefa23ee16382714d471",
+    "historical_map_canonical_pending_preserved": true,
+    "read_custody": {
+      "canonical": 1,
+      "map": 1
+    },
+    "canonical_stable_reaped": true,
+    "author_consumption": "Immutable reviewer tuple only; direct actual-runtime-source/canonical report/map reads0; added canonical/runtime executions0; no later HEAD refresh.",
+    "metadata_base": "7f1fe88d0b2e0399fcc54b0cc553d322968e398e"
+  },
+  "remaining": [
+    "UnaryMinus and other condition roots beyond the dedicated proofs",
+    "UnaryPlus/UnaryMinus typed operand roots, FLOAT/CV/nonquiet/NUL/owning values and wider parents/selectors/lifetimes"
+  ],
+  "holds": "Exact holds207/OP12/Source47/ownedNUL/undefined-refLIST/COMP88, reserve93807cdd6/255 and inventory169/306/closed0+1 unchanged.",
+  "engine_bugs": [],
+  "intentional_divergences": []
+}
