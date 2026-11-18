@@ -77,7 +77,7 @@ def independent_controls(case):
         lines.append('~' + proof([raw(raw_type=raw_type)], [parameter(normalized=nullable)]))
     for default in ('NScalarFloat (FLOAT "401c000000000000") eps',
             'NExprUnaryMinus (' + integer(7) + ') eps', 'NScalarString (BYTES "Nw==") eps'):
-        lines.append('~' + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "float")')]))
+        lines.append(('' if default.startswith('NScalarFloat ') else '~') + proof([raw(default)], [parameter('(PSDEFAULT (' + default + ') "float")')]))
     for actuals in ([argument(), argument()], [argument('http_response_header')],
             [argument(named='(NIdentifier (BYTES "cGVlcg==") eps)')], [argument(unpack='true')]):
         lines.append('~' + proof(actuals=actuals))

@@ -902,6 +902,12 @@ def $reference_notice_producer_supplied_int_type(ABSENT, eps) = true
 def $reference_notice_producer_supplied_int_type(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN "int"]))]) = ($ptlc($base64(text_type)) = $ptascii("int"))
 def $reference_notice_producer_supplied_int_type(phpType18, ptbranch*) = false -- otherwise
 
+;; FLOAT payloads retain the canonical binary64 encoding checked by the adapter.
+dec $reference_notice_producer_supplied_float_type(phpType18, ptbranch*) : bool
+def $reference_notice_producer_supplied_float_type(ABSENT, eps) = true
+def $reference_notice_producer_supplied_float_type(NIdentifier (BYTES text_type) metadata_type, [(PTBRANCH ([PTBUILTIN "float"]))]) = ($ptlc($base64(text_type)) = $ptascii("float"))
+def $reference_notice_producer_supplied_float_type(phpType18, ptbranch*) = false -- otherwise
+
 dec $reference_notice_producer_supplied_defaults(phpType17*, psparam*, bool) : (phpType17*, psparam*)?
 def $reference_notice_producer_supplied_defaults(eps, eps, b_optional) = ((eps, eps))
 def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, psparam :: psparam_tail*, false) = ((phpType17 :: phpType17_view*, psparam :: psparam_view*))
@@ -924,6 +930,12 @@ def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, p
   -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC /\ ~psparam.REQUIRED
   -- if psparam.DEFAULT = PSDEFAULT (NScalarInt (INTEGER z_default) metadata_default) "float"
   -- if $long_range(z_default)
+  -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
+def $reference_notice_producer_supplied_defaults(phpType17 :: phpType17_tail*, psparam :: psparam_tail*, b_optional) = (((NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 ABSENT phpType37 metadata_parameter) :: phpType17_view*, psparam[.REQUIRED = true][.DEFAULT = PSNONE] :: psparam_view*))
+  -- if phpType17 = NParam phpType14 phpType24 phpType18 (BOOLEAN b_ref) (BOOLEAN false) phpType10 (NScalarFloat phpType41 metadata_default) phpType37 metadata_parameter
+  -- if psparam.BYREF = b_ref /\ ~psparam.VARIADIC /\ ~psparam.REQUIRED
+  -- if psparam.DEFAULT = PSDEFAULT (NScalarFloat phpType41 metadata_default) "float"
+  -- if $reference_notice_producer_supplied_float_type(phpType18, psparam.TYPE)
   -- if $reference_notice_producer_supplied_defaults(phpType17_tail*, psparam_tail*, true) = ((phpType17_view*, psparam_view*))
 def $reference_notice_producer_supplied_defaults(phpType17*, psparam*, b_optional) = eps -- otherwise
 
