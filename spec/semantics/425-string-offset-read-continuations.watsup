@@ -958,6 +958,7 @@ def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_S
 def $string_read_raw_float_sign_tree(NScalarFloat (FLOAT text_bits) metadata) = true
 def $string_read_raw_float_sign_tree(NExprUnaryPlus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
 def $string_read_raw_float_sign_tree(NExprUnaryMinus expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
+def $string_read_raw_float_sign_tree(NExprCastDouble expression_child metadata) = $string_read_raw_float_sign_tree(expression_child)
 def $string_read_raw_float_sign_tree(expression) = false -- otherwise
 ;; A raw FLOAT sign-tree cast appends exactly one RHS row before CONCAT.
 def $string_read_allocated_value(S, PORIGIN n pcpath, PSTRING_CARRIER (REQUEST_STRING n_identity) n_bytes*) = true

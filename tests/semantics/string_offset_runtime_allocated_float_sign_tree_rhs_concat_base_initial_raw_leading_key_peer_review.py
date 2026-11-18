@@ -231,8 +231,8 @@ $string_read_raw_float_sign_tree(NExprUnaryMinus (NScalarFloat (FLOAT "7ff000000
 ~$string_read_raw_float_sign_tree(NScalarInt (INTEGER 12) eps)
 ~$string_read_raw_float_sign_tree(NScalarString (BYTES "MTIuNQ==") eps)
 ~$string_read_raw_float_sign_tree(NExprVariable (BYTES "a2V5") eps)
-~$string_read_raw_float_sign_tree(NExprCastDouble expression_atom eps)
-~$string_read_raw_float_sign_tree(NExprUnaryPlus (NExprCastDouble expression_atom eps) eps)
+$string_read_raw_float_sign_tree(NExprCastDouble expression_atom eps)
+$string_read_raw_float_sign_tree(NExprUnaryPlus (NExprCastDouble expression_atom eps) eps)
 ~$string_read_raw_float_sign_tree(NExprBitwiseNot expression_atom eps)
 ~$string_read_raw_float_sign_tree(NExprBinaryOpPlus expression_atom expression_atom eps)
 S_atom_precision = S_capture[.POOLS = [ppool[.CONSTANTS = (PCCPRECISION pcpath_atom 17) :: ppool.CONSTANTS]]]
@@ -283,11 +283,11 @@ S_prefix = S_capture[.STRINGDATA = S_capture.STRINGDATA[0:4]]
 S_cast = $cast_apply(S_prefix,CASTSTRING,PFLOAT 13846598529327300608,z_right)
 S_cast = S_prefix[.STRINGDATA = S_prefix.STRINGDATA ++ [$ptascii("-12.5")]][.RESULT = KNOWN pvalue_right]
 $string_concat(S_cast,pvalue_left,pvalue_right,false,false) = S_cast[.STRINGDATA = S_cast.STRINGDATA ++ [$ptascii("-10.5bcde-12.5")]][.RESULT = KNOWN pvalue_base]
-~$string_read_raw_float_sign_tree(expression_number)
-~$string_read_allocated_value(S_capture,porigin_base,pvalue_base)
-~$string_read_allocated_base(S_capture,porigin_base,pvalue_base)
-$string_read_raw_capture(S_capture,poperand,pvalue_base) = eps
-$string_read_plan(S_capture) = eps
+$string_read_raw_float_sign_tree(expression_number)
+$string_read_allocated_value(S_capture,porigin_base,pvalue_base)
+$string_read_allocated_base(S_capture,porigin_base,pvalue_base)
+$string_read_raw_capture(S_capture,poperand,pvalue_base) =/= eps
+$string_read_plan(S_capture) =/= eps
 ''')
     helper = '\ndec $peer_cast_float_leaf() : bool\ndef $peer_cast_float_leaf() = true\n' + ''.join(
         '  -- if ' + check + '\n' for check in control)
