@@ -1229,7 +1229,7 @@ def $lossy_optional_integer_phase_children(S, plenv, n, eps) = true
 def $lossy_optional_integer_phase_children(S, plenv, n, (PCOCCURRENCE pcpath pcnode) :: pcoccurrence*) = ($lossy_optional_integer_phase_safe(S, plenv, PORIGIN n pcpath) /\ $lossy_optional_integer_phase_children(S, plenv, n, pcoccurrence*))
 
 ;; Phase-sensitive descendants use certified finite bits through one outer sign.
-;; Proper trees with raw FLOAT leaves are disjoint from the ordinary VALUE arm.
+;; Numeric trees with raw FLOAT leaves are disjoint from the ordinary VALUE arm.
 def $lossy_optional_integer_unary_float_number_tree_finite_nonzero_full_redirect(S, plenv, PORIGIN n pcpath) = ((PORIGIN n (pcpath ++ [PCFIELD 0]), PORIGIN n (pcpath ++ [PCFIELD 1])))
   -- if $origin_node(S.SOURCES, PORIGIN n pcpath) = (NExprTernary expression_cond expression_selected expression_skipped metadata)
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0])) = (expression_cond)
@@ -1240,7 +1240,6 @@ def $lossy_optional_integer_unary_float_number_tree_finite_nonzero_full_redirect
   -- if $origin_node(S.SOURCES, PORIGIN n (pcpath ++ [PCFIELD 0, PCFIELD 0])) = (expression_child)
   -- if $pfshape(expression_child) = PFBINARY pbin expression_left expression_right
   -- if pbin <- [ADD, SUBTRACT, MULTIPLY, DIVIDE]
-  -- if $lossy_optional_integer_mixed_number_tree_binary(expression_left) \/ $lossy_optional_integer_mixed_number_tree_binary(expression_right)
   -- if ~$lossy_optional_integer_phase_safe(S, plenv, PORIGIN n (pcpath ++ [PCFIELD 0]))
   -- if $code_at(S.CODE, n) = (pcode)
   -- if $code_expression(pcode.EXPRESSIONS, pcpath) = ((z, false))

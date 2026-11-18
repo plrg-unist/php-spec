@@ -133,7 +133,7 @@ def forgeries(group):
             f'S_source_{label} = S[.SOURCES = [pcunit[.OCCURRENCES = ([(PCOCCURRENCE pcpath (NExprTernary expression_{label} expression_selected expression_skip metadata)),(PCOCCURRENCE (pcpath ++ [PCFIELD 0]) expression_{label})] ++ $pcwalk($pcchildren(expression_{label},pcpath ++ [PCFIELD 0])) ++ pcunit.OCCURRENCES)]]]',
             f'S_{label} = S_source_{label}[.POOLS = [ppool[.CONSTANTS = ([' + ','.join(constants) + '] ++ ppool.CONSTANTS)]]]',
             f'{NODE}(S_{label},{origin("pcpath",(0,)+query)}) = {expected}',
-            f'{ROOT}(S_{label},pfunction.ENV,pdefault.ORIGIN) = eps',
+            f'{ROOT}(S_{label},pfunction.ENV,pdefault.ORIGIN) = ' + ('((porigin_cond,porigin_selected))' if label == 'flat_unsafe' else 'eps'),
             f'{FINITE}(S_{label},pfunction.ENV,pdefault.ORIGIN) = ' + ('((porigin_cond,porigin_selected))' if label in ['finite_safe','literal'] else 'eps'),
             f'{INFINITE}(S_{label},pfunction.ENV,pdefault.ORIGIN) = ' + ('((porigin_cond,porigin_selected))' if label == 'infinite' else 'eps'),
             f'~$lossy_optional_integer_deferred(S_{label},pfunction,0)']
