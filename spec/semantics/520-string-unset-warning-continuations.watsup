@@ -170,14 +170,17 @@ def $string_unset_bool_cv_post_array_leaf(S, PSTRING_CARRIER (REQUEST_STRING n) 
 def $string_unset_bool_cv_post_array_leaf(S, pvalue) = $string_unset_bool_cv_post_value(pvalue) -- otherwise
 
 dec $string_unset_bool_cv_post_array_entries(pstate, nat*, pentry*) : bool
-def $string_unset_bool_cv_post_array_entries(S, n_seen*, eps) = true
-def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = true
+dec $string_unset_bool_cv_post_array_node(pstate, nat*, nat) : bool
+def $string_unset_bool_cv_post_array_node(S, n_seen*, n) = true
   -- if ~(n <- n_seen*)
   -- if $(n < |S.ARRAYS|)
   -- if (HARRAY n) <- S.ALLOCATIONS
   -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
   -- if $string_unset_bool_cv_post_array_entries(S, n :: n_seen*, S.ARRAYS[n].ITEMS)
-  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
+def $string_unset_bool_cv_post_array_node(S, n_seen*, n) = false -- otherwise
+
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, eps) = true
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = ($string_unset_bool_cv_post_array_node(S, n_seen*, n) /\ $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*))
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = STDINSTANCE
@@ -189,6 +192,15 @@ def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (PO
   -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_unset_bool_cv_post_array_leaf(S, pvalue) /\ $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*))
   -- if $value_nodes(pvalue) = eps
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
+  -- if $call_reference_operand_valid(S, REFERENCE n)
+  -- if S.STORE[n] = DEFINED (PARRAY n_child)
+  -- if $propref_at(S.PROPREFS, n) = eps
+  -- if $reference_coercion_at(S.REFCOERCIONS, n) = eps
+  -- if $parameter_backing_at(S.PARAMETERBACKINGS, n) = eps
+  -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_unset_bool_cv_post_array_node(S, n_seen*, n_child)
+  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
 def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
   -- if $literal_reference_plain_cell(S, n)
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
