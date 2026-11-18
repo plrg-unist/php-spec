@@ -3003,3 +3003,11 @@ lookup; exact raw qualification, source metadata and all owner guards remain.
 The shared lifecycle fixture preserves every prior plain-self premise literally,
 while fresh relative-self sources retain distinct payloads and real source detachment.
 [Review](../../coverage/semantics/relative-self-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get admits exact two-class unions combining
+`self` or `namespace\self` with one distinct quiet nominal class in either order.
+Each scoped arm reuses the defining-class proof; whole quiet normalization retains
+the raw/normalized order, namespace/import resolution and exact class bytes.
+Existing typed aliases, atomic refusal, object identity and real source detachment
+remain required. Larger self unions, intersections, DNF and wider contexts stay partial.
+[Review](../../coverage/semantics/self-nominal-pair-parentless-short-reference-get-hook-review.json).

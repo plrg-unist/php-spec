@@ -213,8 +213,8 @@ def $hook_short_reference_class_builtin_union_header(phpType18, ptbranch*, ptcon
 ;; Both quiet nominal arms retain their exact checked source order.
 dec $hook_short_reference_nominal_pair_header(phpType18, ptbranch*, ptcontext) : bool
 def $hook_short_reference_nominal_pair_header(NUnionType (SEQUENCE ([phpType69_left,phpType69_right])) metadata, [(PTBRANCH ([PTCLASS ptbytes_left])),(PTBRANCH ([PTCLASS ptbytes_right]))], ptcontext) = true
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_left, ptbytes_left)
-  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_right, ptbytes_right)
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_left, ptbytes_left) \/ $hook_short_reference_scoped_header(phpType69_left, [(PTBRANCH ([PTCLASS ptbytes_left]))], ptcontext)
+  -- if $hook_short_reference_class_builtin_union_nominal_shape(phpType69_right, ptbytes_right) \/ $hook_short_reference_scoped_header(phpType69_right, [(PTBRANCH ([PTCLASS ptbytes_right]))], ptcontext)
   -- if $ptype_normalize(NUnionType (SEQUENCE ([phpType69_left,phpType69_right])) metadata, ptcontext) = PTOK ([(PTBRANCH ([PTCLASS ptbytes_left])),(PTBRANCH ([PTCLASS ptbytes_right]))]) eps
 def $hook_short_reference_nominal_pair_header(phpType18, ptbranch*, ptcontext) = false -- otherwise
 

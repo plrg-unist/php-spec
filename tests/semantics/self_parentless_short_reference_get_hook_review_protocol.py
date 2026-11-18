@@ -87,7 +87,7 @@ def assertions():
 
     other = names.raw(b'Other341'); other_atom = 'PTCLASS ' + names.value(b'Def341\\Other341')
     pair = union([raw, other]); pair_type = branches([[atom], [other_atom]])
-    check('self-ordinary-pair-stays-partial', '$hook_short_reference_nominal_pair_header(' + pair + ',' + pair_type + ',' + lexical + ')', False)
+    check('self-ordinary-pair-accepted', '$hook_short_reference_nominal_pair_header(' + pair + ',' + pair_type + ',' + lexical + ')')
     inter = intersection([raw, other]); inter_type = branches([[atom, other_atom]])
     check('known-self-intersection-normalizes', '$ptype_normalize(' + inter + ',' + lexical + ') = PTOK (' + inter_type + ') eps')
     check('known-self-intersection-hook-stays-partial', '$hook_short_reference_nominal_intersection_header(' + inter + ',' + inter_type + ',' + lexical + ')', False)

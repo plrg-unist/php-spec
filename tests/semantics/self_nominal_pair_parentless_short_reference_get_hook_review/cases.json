@@ -1,0 +1,72 @@
+{
+  "strict-other-fq-self": {
+    "namespace": "D343A",
+    "consumer_namespace": "D343AX",
+    "class": "D343A\\Box343",
+    "header": "\\D343A\\Other343|SeLf",
+    "raw_kind": "NName",
+    "raw_name": "SeLf",
+    "other": {
+      "class": "D343A\\Other343",
+      "raw_kind": "NNameFullyQualified",
+      "raw_name": "D343A\\Other343",
+      "first": true
+    },
+    "typename": "D343A\\Other343|D343A\\Box343",
+    "id": "strict-other-fq-self",
+    "source": "strict-other-fq-self.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "builtin_first": false,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|A|R|P|F|Z|",
+    "steps": [
+      {
+        "statement": "$r341 = new \\D343A\\Other343();",
+        "check": "$r341 instanceof \\D343A\\Other343 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate",
+        "object": "D343A\\Other343",
+        "marker": "A|"
+      }
+    ]
+  },
+  "strict-relative-self-other-imported": {
+    "namespace": "D343B",
+    "consumer_namespace": "D343BX",
+    "class": "D343B\\Box343",
+    "header": "namespace\\self|Alias343",
+    "raw_kind": "NNameRelative",
+    "raw_name": "self",
+    "other": {
+      "class": "D343Other\\Other343",
+      "raw_kind": "NName",
+      "raw_name": "Alias343",
+      "first": false
+    },
+    "typename": "D343B\\Box343|D343Other\\Other343",
+    "id": "strict-relative-self-other-imported",
+    "source": "strict-relative-self-other-imported.php",
+    "mode": "direct",
+    "status": "normal",
+    "nullable": false,
+    "builtin": null,
+    "builtin_first": false,
+    "strict": true,
+    "body": "identifier",
+    "default": "ABSENT",
+    "stdout": "I|C|O|W|J|N|A|R|P|F|Z|",
+    "steps": [
+      {
+        "statement": "$s341 = new \\D343Other\\Other343();",
+        "check": "$r341 instanceof \\D343Other\\Other343 && $r341 === $s341 && $r341 !== $kept341",
+        "value": "POBJECT n_alternate",
+        "object": "D343Other\\Other343",
+        "marker": "A|"
+      }
+    ]
+  }
+}

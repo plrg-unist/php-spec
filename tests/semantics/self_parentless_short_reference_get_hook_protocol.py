@@ -17,20 +17,28 @@ def fields(fixture, source, case):
     body_line = get_line + 1
     nominal = '(PTBRANCH ([PTCLASS ' + names.value(case['class'].encode()) + ']))'
     branches = [nominal]
-    if case['nullable']:
+    if case.get('other'):
+        other = case['other']
+        alternate = '(PTBRANCH ([PTCLASS ' + names.value(other['class'].encode()) + ']))'
+        branches.insert(0 if other['first'] else 1, alternate)
+    elif case['nullable']:
         branches.append('(PTBRANCH ([PTBUILTIN "null"]))')
     elif case['builtin']:
         branches.insert(0 if case['builtin_first'] else 1, '(PTBRANCH ([PTBUILTIN "' + case['builtin'] + '"]))')
     typed = '[' + ','.join(branches) + ']'
     raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
     raw = raw_self
-    if case['nullable']:
+    if case.get('other'):
+        raw_members = [raw_self]
+        raw_members.insert(0 if other['first'] else 1, other['raw_kind'] + ' (BYTES text_other) metadata_other')
+        raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
+    elif case['nullable']:
         raw = 'NNullableType (' + raw_self + ') metadata_type'
     elif case['builtin']:
         raw_members = [raw_self]
         raw_members.insert(0 if case['builtin_first'] else 1, 'NIdentifier (BYTES text_builtin) metadata_builtin')
         raw = 'NUnionType (SEQUENCE ([' + ','.join(raw_members) + '])) metadata_type'
-    states = []
+    states = []; step_objects = []
 
     def seek(state, previous, target):
         states.append(state)
@@ -106,6 +114,9 @@ def fields(fixture, source, case):
         '$arrow_line(pfunction.CODE.EXPRESSIONS,pfunction.BODY) = (' + str(body_line) + ')']
     if case['builtin']:
         checks += ['$base64(text_builtin) = $ptascii("' + case['builtin'] + '")']
+    if case.get('other'):
+        checks += ['$base64(text_other) = $base64(' + quoted(other['raw_name']) + ')',
+                   '$hook_short_reference_nominal_pair_header(phpType18,ppropertydesc.TYPE,ptcontext_property)']
     checks += payload('S_front', 'n_first', 'first')
     checks += seek('S_return', 'S_front', -1)
     checks += ['$reference_return_source(S_return,' + str(body_line) + ')',
@@ -154,6 +165,16 @@ def fields(fixture, source, case):
         checks += [state + '.STORE[n_field] = DEFINED (' + step['value'] + ')',
                    state + '.STORE[n_keptcell] = DEFINED (POBJECT n_live)',
                    '$propref_at(' + state + '.PROPREFS,n_field) = (ppropref)']; previous = state
+        if 'object' in step:
+            obj = step['value'].split()[1]; step_objects.append(obj)
+            checks += [state + '.OBJECTS[' + obj + '] = INSTANCE porigin_alternate',
+                       '$class_at(' + state + '.CLASSES,porigin_alternate) = (pclassdesc_alternate)',
+                       'pclassdesc_alternate.NAME = $base64(' + quoted(step['object']) + ')',
+                       'pclassdesc_alternate.PROPERTIES = eps', 'pclassdesc_alternate.METHODS = eps',
+                       'pclassdesc_alternate.PARENT = eps',
+                       '$typed_object_exact(' + state + ',[' + alternate + '],POBJECT ' + obj + ')',
+                       '~$typed_object_exact(' + state + ',[' + nominal + '],POBJECT ' + obj + ')',
+                       '$heap_owners($heap_graph(' + state + '),HOBJECT ' + obj + ') = 1']
     checks += seek('S_before', previous, -3)
     checks += ['S_before.STORE[n_field] = DEFINED (POBJECT n_live)',
                '$heap_owners($heap_graph(S_before),HCELL n_field) = 3',
@@ -173,6 +194,7 @@ def fields(fixture, source, case):
                'S_end.POOLS = S_free.POOLS', '(HARRAY n_free) <- S_end.ALLOCATIONS',
                '$heap_owners($heap_graph(S_end),HARRAY n_free) = $heap_count(HARRAY n_free,$pools_nodes(S_end.POOLS))']
     checks += ['~((HOBJECT ' + obj + ') <- S_end.ALLOCATIONS)' for obj in ('n_root', 'n_first', 'n_live')]
+    checks += ['~((HOBJECT ' + obj + ') <- S_end.ALLOCATIONS)' for obj in step_objects]
     checks += ['~((HCELL ' + cell + ') <- S_end.ALLOCATIONS)' for cell in ('n_rootcell', 'n_field', 'n_copycell', 'n_keptcell')]
     for state in states + ['S_end']:
         checks += ['$property_state_valid(' + state + ')', '$call_descriptors_valid(' + state + ')',
