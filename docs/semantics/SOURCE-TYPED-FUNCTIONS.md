@@ -1471,8 +1471,8 @@ Four fresh originals observe FLOAT-zero/type and branch behavior; exact signed
 bits are established separately by compiler-source and pool/pure-operation
 certificates. Native4 once/source4, prelaw4/936 and author WHOLE6/1568 retain
 separate cuts. Phase-SAFE ordinary zeros keep their existing falsey route.
-Repeated outer signs, computed unary children inside the binary base, owning
-results and wider contexts/lifetimes remain partial.
+Computed unary children inside the binary base, owning results and wider
+contexts/lifetimes remain partial.
 [Unary zero-tree review](../../coverage/semantics/deferred-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 Folded FLOAT-literal PLUS/MINUS chains also select full-ternary FIELD2 when their
@@ -1490,6 +1490,22 @@ belong to the compiler-source and pool/pure-operation certificates. Bare and
 phase-SAFE zeros retain the ordinary falsey route. Computed predicates remain on
 their existing routes; wider owning contexts and lifetimes remain partial.
 [Literal zero review](../../coverage/semantics/deferred-literal-float-zero-full-ternary-redirect-wrapper-default-reception-review.json).
+
+At least two outer PLUS/MINUS signs over a certified FLOAT-zero op4 base with
+raw FLOAT presence also select full-ternary FIELD2 when whole-condition phase
+safety is false. A zero-only counter authenticates every outer SOURCE, PFLOAT
+pool and pure multiplication by long +1/-1 with absent CODE/read/redirects;
+the unchanged mixed collector authenticates the binary base. Counts zero/one,
+literal sign chains and ordinary VALUE retain their existing routes. Exact
+root receipts, selected scalar tags, Shared caches and private cells keep their
+existing bounds.
+
+Two fresh originals cover FLOAT-only raw defaults and mixed INT/FLOAT named
+reentry, counts two/three and both zero signs. Source observers establish zero,
+type and branch behavior; compiler-source and recursive pool/pure-operation
+certificates establish exact signs. Computed unary children inside the binary
+base, nonfinite conditions, owning results and wider lifetimes remain partial.
+[Repeated zero review](../../coverage/semantics/deferred-repeated-unary-float-number-tree-zero-full-ternary-redirect-wrapper-default-reception-review.json).
 
 ## Source metadata and resumed states
 

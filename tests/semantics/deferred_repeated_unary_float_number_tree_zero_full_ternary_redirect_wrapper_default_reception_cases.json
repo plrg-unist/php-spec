@@ -1,0 +1,27 @@
+[
+  {
+    "id": "deferred-repeated-unary-float-number-tree-zero-full-ternary-redirect-wrapper-raw-tagged-results",
+    "source": "<?php\nfunction rawRepeatedFloatZeroRedirect322(\n    $p0 = (((+(-(1.0 * (+(-0.0)))))) ? SKIPPED_ZERO_TREE322_0 : ((int)((bool)(+(-((float)(+(E_WARNING === E_ERROR)))))))),\n    $p1 = (((-(+(-(1.0 * (+(-0.0))))))) ? SKIPPED_ZERO_TREE322_1 : ((!((bool)(+(-((float)(+(E_WARNING === E_ERROR))))))) ? NULL : false))\n) {\n    echo 'values:', (((+(-(1.0 * (+(-0.0))))))) === 0.0, ':', (((-(+(-(1.0 * (+(-0.0)))))))) === 0.0, '|';\n    echo 'raw:', $p0 === 0, ':', $p1 === NULL, '|';\n    $p0 = 19;\n    $p1 = 20;\n}\nrawRepeatedFloatZeroRedirect322();\nrawRepeatedFloatZeroRedirect322();\n",
+    "purpose": "At least two outer PLUS/MINUS signs around a quiet computed FLOAT-zero op4 base preserve false full-ternary FIELD2, exact selected scalar tags and skipped names. The raw original uses FLOAT-only leaves and the named coercion-handler reentry uses mixed INT/FLOAT leaves. Source observers establish zero/type and branch behavior; compiler-source and recursive pool/pure-operation certificates establish sign bits.",
+    "expected_normal_stdout": "values:1:1|raw:1:1|values:1:1|raw:1:1|",
+    "expected_model": "normal",
+    "source_sha256": "6cf3ef7a5c87bfc6847f79afbacb94bcfdaef8ac0f4f5ada701c961302f1c5de",
+    "derived_from": {
+      "source_sha256": "935a76237fd1a9ba1213674b0128e6a61ffae0122f36d6a0002a5c82fa917177",
+      "transformation": "Rename320 to322; replace outer +(base) by +(-(base)) and -(base) by -(+(-(base))) while preserving the binary base, selected arms, observers and reentry."
+    }
+  },
+  {
+    "id": "deferred-repeated-unary-float-number-tree-zero-full-ternary-redirect-wrapper-alias-named-reentry",
+    "source": "<?php\nnamespace RepeatedFloatZeroRedirect322;\nuse const E_WARNING as Base322;\nuse const E_ERROR as One322;\nuse const Unavailable322\\Payload as Skipped322;\nfunction coercion322($errno, $message, $file, $line) {\n    global $x322;\n    echo 'coercion:', $message, '|';\n    defaults322(2);\n    $x322 = 3.5;\n}\nfunction defaults322(\n    int $first,\n    int &$selectedBool = (int)(((-(+(-(1 * (+(-0.0))))))) ? Skipped322 : (((bool)(+(-((float)(+(Base322 === One322)))))))),\n    int &$negativeZero = (int)(((+(-(1 * (+(-0.0)))))) ? Skipped322 : (-((float)((bool)(+(-((float)(+(Base322 === One322))))))))),\n    int $last = 7\n) {\n    echo 'values:', (((-(+(-(1 * (+(-0.0)))))))) === 0.0, ':', (((+(-(1 * (+(-0.0))))))) === 0.0, '|';\n    echo 'body:', $first, ':', $selectedBool, ':', $negativeZero, ':', $last, '|';\n    $selectedBool = 19;\n    $negativeZero = 21;\n}\n\\set_error_handler('RepeatedFloatZeroRedirect322\\\\coercion322');\n$x322 = 1.5;\n$last322 = 8;\ndefaults322(last: $last322, first: $x322);\necho 'outer:x=', $x322, '|';\n",
+    "purpose": "At least two outer PLUS/MINUS signs around a quiet computed FLOAT-zero op4 base preserve false full-ternary FIELD2, exact selected scalar tags and skipped names. The raw original uses FLOAT-only leaves and the named coercion-handler reentry uses mixed INT/FLOAT leaves. Source observers establish zero/type and branch behavior; compiler-source and recursive pool/pure-operation certificates establish sign bits.",
+    "expected_normal_stdout": "coercion:Implicit conversion from float 1.5 to int loses precision|values:1:1|body:2:0:0:7|values:1:1|body:1:0:0:8|outer:x=3.5|",
+    "expected_model": "normal",
+    "source_sha256": "f26c58c10e22f9ebdcf90a90077630ecbd55405934edfed56d598f362b5e8094",
+    "derived_from": {
+      "source_sha256": "cbbe949424ed538874c8391848919c5bceb61b004509fac383ad942ee79530b9",
+      "transformation": "Rename320 to322; replace outer +(base) by +(-(base)) and -(base) by -(+(-(base))) while preserving the binary base, selected arms, observers and reentry."
+    },
+    "model_timeout_seconds": 120
+  }
+]
