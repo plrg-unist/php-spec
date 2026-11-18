@@ -164,23 +164,21 @@ def $string_unset_bool_cv_post_empty_array(S, n_cell) = true
   -- if $($heap_owners(H, HARRAY n_array) > 0)
 def $string_unset_bool_cv_post_empty_array(S, n_cell) = false -- otherwise
 
-;; Count-only reception also leaves a bounded nonempty payload untouched.
+;; Count-only reception leaves a finite acyclic nonempty payload untouched.
 dec $string_unset_bool_cv_post_array_leaf(pstate, pvalue) : bool
 def $string_unset_bool_cv_post_array_leaf(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) = ($string_carrier_valid(S, PSTRING_CARRIER (REQUEST_STRING n) n_bytes*) /\ $c_string(n_bytes*) = n_bytes*)
 def $string_unset_bool_cv_post_array_leaf(S, pvalue) = $string_unset_bool_cv_post_value(pvalue) -- otherwise
 
-dec $string_unset_bool_cv_post_array_flat(pstate, pentry*) : bool
-def $string_unset_bool_cv_post_array_flat(S, eps) = true
-def $string_unset_bool_cv_post_array_flat(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_unset_bool_cv_post_array_leaf(S, pvalue) /\ $string_unset_bool_cv_post_array_flat(S, pentry_tail*))
-def $string_unset_bool_cv_post_array_flat(S, pentry*) = false -- otherwise
-
-dec $string_unset_bool_cv_post_array_entries(pstate, pentry*) : bool
-def $string_unset_bool_cv_post_array_entries(S, eps) = true
-def $string_unset_bool_cv_post_array_entries(S, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = true
-  -- if $string_read_array_child(S, PARRAY n)
-  -- if $string_unset_bool_cv_post_array_flat(S, S.ARRAYS[n].ITEMS)
-  -- if $string_unset_bool_cv_post_array_entries(S, pentry_tail*)
-def $string_unset_bool_cv_post_array_entries(S, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*) = true
+dec $string_unset_bool_cv_post_array_entries(pstate, nat*, pentry*) : bool
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, eps) = true
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (PARRAY n))) :: pentry_tail*) = true
+  -- if ~(n <- n_seen*)
+  -- if $(n < |S.ARRAYS|)
+  -- if (HARRAY n) <- S.ALLOCATIONS
+  -- if (HARRAY n) <- $heap_prune($heap_graph(S)).NODES
+  -- if $string_unset_bool_cv_post_array_entries(S, n :: n_seen*, S.ARRAYS[n].ITEMS)
+  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT (POBJECT n))) :: pentry_tail*) = true
   -- if $(n < |S.OBJECTS|)
   -- if S.OBJECTS[n] = STDINSTANCE
   -- if (HOBJECT n) <- $heap_prune($heap_graph(S)).NODES
@@ -188,14 +186,14 @@ def $string_unset_bool_cv_post_array_entries(S, (ENTRY pkey (DIRECT (POBJECT n))
   -- if $objectprops_at(S.OBJECTPROPS, n) = (eps)
   -- if $object_table_at(S.OBJECTTABLES, n) = eps
   -- if $node_children(S, HOBJECT n) = eps
-  -- if $string_unset_bool_cv_post_array_entries(S, pentry_tail*)
-def $string_unset_bool_cv_post_array_entries(S, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_unset_bool_cv_post_array_leaf(S, pvalue) /\ $string_unset_bool_cv_post_array_entries(S, pentry_tail*))
+  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (DIRECT pvalue)) :: pentry_tail*) = ($string_unset_bool_cv_post_array_leaf(S, pvalue) /\ $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*))
   -- if $value_nodes(pvalue) = eps
-def $string_unset_bool_cv_post_array_entries(S, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, (ENTRY pkey (ALIAS n)) :: pentry_tail*) = true
   -- if $literal_reference_plain_cell(S, n)
   -- if (HCELL n) <- $heap_prune($heap_graph(S)).NODES
-  -- if $string_unset_bool_cv_post_array_entries(S, pentry_tail*)
-def $string_unset_bool_cv_post_array_entries(S, pentry*) = false -- otherwise
+  -- if $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry_tail*)
+def $string_unset_bool_cv_post_array_entries(S, n_seen*, pentry*) = false -- otherwise
 
 dec $string_unset_bool_cv_post_nonempty_array(pstate, nat) : bool
 def $string_unset_bool_cv_post_nonempty_array(S, n_cell) = true
@@ -211,7 +209,7 @@ def $string_unset_bool_cv_post_nonempty_array(S, n_cell) = true
   -- if $node_children(S, HCELL n_cell) = [HARRAY n_array]
   -- if $heap_edge_owners(HARRAY n_array, H.EDGES, [HCELL n_cell]) = 1
   -- if $($heap_owners(H, HARRAY n_array) > 0)
-  -- if $string_unset_bool_cv_post_array_entries(S, S.ARRAYS[n_array].ITEMS)
+  -- if $string_unset_bool_cv_post_array_entries(S, [n_array], S.ARRAYS[n_array].ITEMS)
 def $string_unset_bool_cv_post_nonempty_array(S, n_cell) = false -- otherwise
 
 dec $string_unset_bool_cv_post_cell(pstate, ptbytes, int, nat) : bool
