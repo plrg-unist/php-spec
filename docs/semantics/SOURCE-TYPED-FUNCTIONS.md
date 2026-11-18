@@ -1373,6 +1373,22 @@ inventory counts stay unchanged.
 [earlier FLOAT-tree review](../../coverage/semantics/deferred-unary-float-number-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json),
 [integer-only sign review](../../coverage/semantics/deferred-unary-integer-tree-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
 
+One unary PLUS or MINUS also admits a proper numeric tree containing raw
+FLOAT leaves when a signed-zero descendant makes condition phase safety false.
+Exact recursive SOURCE, typed pools and absent CODE/read/redirects certify both
+finite nonzero child and own FLOAT bits; pure long +1/-1 multiplication and the
+unique proper FIELD1 redirect preserve selected scalar tags, Shared caches and
+private integer reception through named handler reentry. Existing ordinary
+finite VALUE, infinite roots and the collector remain unchanged.
+
+Four originals observe strict +/-2.0 and +/-3.0 results. Native4 once/source4,
+prelaw1400, retained raw/private866, corrected certificate1100 and independent
+WHOLE1270 keep separate cuts. Original author1948 remains NONPASS from two
+overbroad compiled-read refusals; those genuine reads now explicitly retain the
+old finite route. Flat phase-FALSE children, repeated computed wrappers,
+names/STRING, NaN warnings and wider contexts remain partial.
+[Finite phase-FALSE unary-tree review](../../coverage/semantics/deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json).
+
 ## Source metadata and resumed states
 
 Compiler 94 restores the surrounding return context after nested declarations,

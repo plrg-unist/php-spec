@@ -1,0 +1,325 @@
+{
+  "milestone": "ENUM315",
+  "decision": "accepted bounded extension",
+  "full_core_complete": false,
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "profile": "tests/semantics/profile.json",
+  "scope": "One unary PLUS/MINUS over a proper ADD/SUBTRACT/MULTIPLY/DIVIDE numeric tree containing raw FLOAT leaves, with a phase-FALSE condition and certified finite nonzero child and own FLOAT bits, selects full-ternary FIELD1 through the existing deferred default/cache/private integer reception protocol.",
+  "implementation": {
+    "path": "spec/semantics/519-optional-integer-tail-reception.watsup",
+    "sha256": "c116f0d6e0a83f8dca19cd79674a89f920851deb6b634557a03079c11641942d",
+    "added_lines": 41,
+    "source_observed_revision": "676231306fd88e28213d9ee584642c97dba4bbf2",
+    "author_final_revision": "3aead052c2feeb344ea8477e834f8b29f8387c2a",
+    "author_final_immediate_parent": "2890aa3f98e588b7a72953fb6578e27f4757d0ad",
+    "aggregate_source_patch_base": "73e2c2b381fd0ac11bc10079ad1b21ed7eec30ea",
+    "complete_phase_parents": [
+      {
+        "commit": "676231306fd88e28213d9ee584642c97dba4bbf2",
+        "parent": "73e2c2b381fd0ac11bc10079ad1b21ed7eec30ea",
+        "change": "model, source cases, driver, protocol and Make"
+      },
+      {
+        "commit": "2890aa3f98e588b7a72953fb6578e27f4757d0ad",
+        "parent": "676231306fd88e28213d9ee584642c97dba4bbf2",
+        "change": "two named-case timeout metadata fields only"
+      },
+      {
+        "commit": "3aead052c2feeb344ea8477e834f8b29f8387c2a",
+        "parent": "2890aa3f98e588b7a72953fb6578e27f4757d0ad",
+        "change": "six genuine compiled-read assertion classifications only"
+      }
+    ],
+    "review_revision": "38dc6716695516f8941c32dadf967084c02a2ba1",
+    "review_parent": "a5e86c7a45f8ac4a9496a4ebc03562cb1a3f86db",
+    "review_tree": "bbd76f23cce718adec9650e4c2c426ebe6c8d1cb",
+    "source_packet": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/author-source-packet-v1/packet.json",
+    "source_patch_sha256": "1063f75bbd88b5de29db5667eba7b0f2ca800a26fdb18a086565274b1a8797a7"
+  },
+  "source_authority": [
+    {
+      "path": "vendor/php-src/Zend/zend_compile.c",
+      "symbols": [
+        "zend_try_ct_eval_unary_pm",
+        "zend_compile_unary_pm",
+        "zend_eval_const_expr",
+        "zend_compile_conditional"
+      ],
+      "fact": "Compile-folded unary signs multiply by long +1/-1; folded condition truth determines the selected branch."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_ast.c",
+      "symbols": [
+        "zend_ast_evaluate_inner"
+      ],
+      "fact": "Deferred AST unary plus adds integer zero. The existing phase guard retains the signed-zero distinction."
+    },
+    {
+      "path": "vendor/php-src/Zend/zend_operators.c",
+      "symbols": [
+        "add_function",
+        "sub_function",
+        "mul_function",
+        "div_function"
+      ],
+      "fact": "Existing pure numeric operations and exact typed folded pools certify each recursive arithmetic result."
+    }
+  ],
+  "guards": [
+    "Exact full, condition, selected, skipped and unary-child SOURCE occurrences",
+    "Exactly one unary sign over a binary op4 child with a proper binary grandchild",
+    "Condition phase safety is false",
+    "Existing recursive certificate authenticates every typed node pool and absent CODE/read/redirect, with raw FLOAT present",
+    "Both child and own decoded FLOAT are finite and have nonzero numerator",
+    "Pure multiplication by long +1/-1 equals the own typed pool",
+    "Full root has emitted false CODE and absent own pool/read; one unique proper FIELD1 redirect preserves terminal line",
+    "Existing declaration bindings, selected scalar tags, Shared-cache authority, recipient and ownership checks remain"
+  ],
+  "validation": {
+    "native": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/native-v1.process.json",
+      "process_sha256": "6c19bead4b03c8cf6bfd6899137e19725aa750e51cf524fb2511a2b2817dd3c2",
+      "exit": 0,
+      "elapsed_seconds": 0.11484275106340647,
+      "tested_revision": "73e2c2b381fd0ac11bc10079ad1b21ed7eec30ea",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/native-v1/report.json",
+      "report_sha256": "f3ab772058a97b4f57b1ef1e0af7144f32278a1045ba5bef142166f22a10ce6b",
+      "stable": true,
+      "originals": 4,
+      "pass_all": true,
+      "runtime": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/native-v1/runtime.json",
+      "native_reexecutions": 0
+    },
+    "baseline": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/baseline-v1.process.json",
+      "process_sha256": "b84436252dd5fd34046e20163256508b8c36b56eb2cefc08776cff7ea513f2dd",
+      "exit": 0,
+      "elapsed_seconds": 29.64806799404323,
+      "tested_revision": "73e2c2b381fd0ac11bc10079ad1b21ed7eec30ea",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/baseline-v1/report.json",
+      "report_sha256": "e1e0780bb8c926e3c8660dbf37fbbba360a106f564c1ec5d1b6f4562025e628f",
+      "stable": true,
+      "exact_normal_agreements": 0,
+      "unsupported_controls": 2,
+      "pass_all": true,
+      "native_reexecutions": 0
+    },
+    "prelaw": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/prelaw-v1.process.json",
+      "process_sha256": "068baff23c1b9bc19564a4f5f693e23894ff0b3eac3108be04f1cb9d05813020",
+      "exit": 0,
+      "elapsed_seconds": 132.23972348193638,
+      "tested_revision": "73e2c2b381fd0ac11bc10079ad1b21ed7eec30ea",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/prelaw-v1/closure-call-protocol-qqrc32em/report.json",
+      "report_sha256": "bb9f710c2c4ebbff797bbcb0353dddf28c20221cde57af00bf79b84013265010",
+      "stable": true,
+      "result": "pass",
+      "conditions": 1400,
+      "passed_conditions": 1400,
+      "records": [
+        {
+          "id": "pure-float-unary-prelaw-raw",
+          "conditions": 325,
+          "passed": true
+        },
+        {
+          "id": "pure-float-unary-prelaw-named",
+          "conditions": 349,
+          "passed": true
+        },
+        {
+          "id": "mixed-float-unary-prelaw-raw",
+          "conditions": 353,
+          "passed": true
+        },
+        {
+          "id": "mixed-float-unary-prelaw-named",
+          "conditions": 373,
+          "passed": true
+        }
+      ],
+      "source_credit": 0
+    },
+    "source": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/source-v1.process.json",
+      "process_sha256": "8a73a740c966236d7420bd78e1adcc549a3f46308d127b880d3f9dd17c14dac8",
+      "exit": 0,
+      "elapsed_seconds": 118.94144538394175,
+      "tested_revision": "676231306fd88e28213d9ee584642c97dba4bbf2",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/source-v1/report.json",
+      "report_sha256": "77b95df657e6ecba304326d467cd9dd71e0bebf9f5b2e9be9288b7891e25c799",
+      "stable": true,
+      "exact_normal_agreements": 4,
+      "unsupported_controls": 0,
+      "pass_all": true,
+      "native_reexecutions": 0
+    },
+    "author": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/author-v1.process.json",
+      "process_sha256": "de24fec886ada4c375a8d0552ff67fe0232ab5a7e610c60aa9c8ee230998a538",
+      "exit": 1,
+      "elapsed_seconds": 399.2552977721207,
+      "tested_revision": "2890aa3f98e588b7a72953fb6578e27f4757d0ad",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/author-v1/closure-call-protocol-t6acg97o/report.json",
+      "report_sha256": "8eea14444afec2ae73a3fd494e3167e050722f100db4dd9a07d77fc41958ba61",
+      "stable": true,
+      "result": "fail",
+      "conditions": 1948,
+      "passed_conditions": 866,
+      "records": [
+        {
+          "id": "pure-unary-finite-float-tree-raw",
+          "conditions": 364,
+          "passed": true
+        },
+        {
+          "id": "pure-unary-finite-float-tree-certificate",
+          "conditions": 514,
+          "passed": false
+        },
+        {
+          "id": "pure-unary-finite-float-tree-private",
+          "conditions": 55,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-finite-float-tree-raw",
+          "conditions": 392,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-finite-float-tree-certificate",
+          "conditions": 568,
+          "passed": false
+        },
+        {
+          "id": "mixed-unary-finite-float-tree-private",
+          "conditions": 55,
+          "passed": true
+        }
+      ],
+      "source_credit": 0
+    },
+    "affected": {
+      "process": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/affected-v1.process.json",
+      "process_sha256": "20a954ac13ebdc06e3234e4daaae0d4ad426856acd86da66321bc8d327dd9949",
+      "exit": 0,
+      "elapsed_seconds": 133.76616313611157,
+      "tested_revision": "3aead052c2feeb344ea8477e834f8b29f8387c2a",
+      "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/affected-v1/closure-call-protocol-5p8w6acy/report.json",
+      "report_sha256": "1408fd717f8a6e7b93e3fd38f5e7f71361d055c877cb702c211b9ad37fb2fe46",
+      "stable": true,
+      "result": "pass",
+      "conditions": 1100,
+      "passed_conditions": 1100,
+      "records": [
+        {
+          "id": "pure-unary-finite-float-tree-certificate",
+          "conditions": 523,
+          "passed": true
+        },
+        {
+          "id": "mixed-unary-finite-float-tree-certificate",
+          "conditions": 577,
+          "passed": true
+        }
+      ],
+      "source_credit": 0
+    }
+  },
+  "independent_review": {
+    "reviewer": "/root/recover31_enum_inttree_review",
+    "source_ready": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/review-source-ready-v1.json",
+    "source_ready_sha256": "9ff104167d35784ee7cc718e0ad4273c2ab65d537775f5f86f98e4d1de9d6161",
+    "report": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/review-v1/closure-call-protocol-2_wo6t8z/report.json",
+    "report_sha256": "fa6a642614e4b97209e11032597f59b01619614c670155eb66b4f94f9f668238",
+    "conditions": 1270,
+    "cuts": [
+      187,
+      220,
+      202,
+      211,
+      226,
+      224
+    ],
+    "firstpass": true,
+    "elapsed_seconds": 290.48825359297916,
+    "stable_inputs": 524,
+    "per_fixture_cap": 300,
+    "outer_cap": 1500,
+    "reaped": true,
+    "group_absent": true,
+    "native_source_prelaw_reexecutions": 0,
+    "covered": [
+      "Exact typed pure/mixed pools and signed zero; mixed integer division retains PINT2/-2",
+      "Wrong own finite sign/tag with a valid child, deep SOURCE/pool/code/read/redirect and target/cache/source mismatches",
+      "Six genuine compiled-read ancestors use the unchanged phaseSAFE finite route while the new root refuses",
+      "Fresh flat phaseFALSE, proper phaseSAFE, INF, zero, NaN, division-zero and repeated-wrapper boundaries",
+      "Actual private recipients, budget resumption, cached values and retirement"
+    ]
+  },
+  "fixed_integration": {
+    "actual_tree": "6ab024d778e4a0abd30b9164dc9b0628ba7f60e1",
+    "author_cuts": "original1948 NONPASS; unchanged866 retained; corrected1100 PASS; no aggregate1948/1966 claim; independent1270 FIRSTPASS",
+    "author_raw_reads": 0,
+    "canonical": {
+      "argv": 512,
+      "cap": 60,
+      "elapsed": 16.591578260995448,
+      "mode": "production_SL",
+      "modules": 509,
+      "reaped": true,
+      "source_credit": 0,
+      "stable": true,
+      "watched": 513
+    },
+    "canonical_report_sha256": "82bc62853373b15ddd701c2f6781086f32f58909dba6c5b16e8d8cffd6095531",
+    "decision": "CLEAR",
+    "enum_exact6": true,
+    "enum_parent": "0d80fe0cff67ed9bd7d8c3ca56c1ec6d5a9d6be1",
+    "enum_placement": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+    "jobs": 0,
+    "make": "Unique2+1 after intact old3143; jointMake5 whole parent inverse; COMP7/REF1/allforeign bytes preserved",
+    "metadata_base": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+    "model": "c116\u2192733 exact41 insertions; split dec/body order correct; oldroots/collector literal",
+    "model_inverse": true,
+    "old_campaign_renewals": 0,
+    "original_raw_reads": {
+      "map": 1,
+      "report": 1
+    },
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/review-main112-canonical-parsed-cache-v1.json",
+    "parsed_cache_sha256": "3921c129b9a5d1734b4f4337f410c4b81ae606b57441bf11b79737879bb74135",
+    "source_map_sha256": "2c9bbe1d3e4f797e962cd48095657372c359608c86eea78ac420d4a8b3fe72c1",
+    "source_native_state_canonical_renewals": 0
+  },
+  "integration_tuple": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/enum-deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-315/review-main112-immutable-tuple-v1.json",
+    "sha256": "2a396d85d2def5e827c64365d06d3122020046348dbcc6ef885aeef57d49bc93",
+    "original_report_and_map_closed": true,
+    "full_cache_persisted_before_assertions": true,
+    "author_original_report_map_reads": 0,
+    "semantic_reruns_for_metadata": 0
+  },
+  "original_failures_and_corrections": {
+    "original_author1948": "Stable NONPASS: two certificate fixtures stopped at their first noderead1 blanket whole-deferred refusal; four unchanged raw/private fixtures pass866 separately. No whole1948/1966 pass claim.",
+    "correction": "Exactly three genuine compiled-read ancestor assertions per group now prove phaseSAFE, ordinary finite condition VALUE, old finite ROOT and deferred acceptance while retaining new ROOT refusal. Only affected certificate2 reran and pass1100 at unchanged per300/outer900.",
+    "native_source_and_model": "No native or accepted-source reexecution for fixture/metadata corrections; the model is unchanged after source676. Retained source4 keeps its observed command/caps. The two named model_timeout_seconds120 fields and corrected fixtures have an explicit source/retained866 compatibility bridge.",
+    "parent_labels": "The original source packet parent and author-ready candidate_parent name the aggregate patch base73e. The immediate final parent is2890; complete phase parents above disambiguate those preparation labels.",
+    "semantic_failures": 0,
+    "timeouts": 0,
+    "old_campaign_renewals": 0
+  },
+  "unchanged_by_this_increment": [
+    "Existing finite ordinary VALUE and INF roots; recursive collector and all-INT routes",
+    "Source, typed tags, pool, phase and integer overflow fences",
+    "Selected scalar, cache, private receive, budget and lifetime protocols",
+    "All exact holds/reserve and inventory counts/status/closures"
+  ],
+  "remaining": [
+    "Flat phase-FALSE binary children and repeated unary wrappers over computed trees remain outside this new receipt",
+    "Names, STRING, NaN/warning continuations, owning results and wider declaration/reception/lifetime contexts remain partial",
+    "Complete PHP core, portability closure, interaction trees and BOLA/CRIS verification remain unfinished"
+  ],
+  "deliberate_engine_divergences": []
+}

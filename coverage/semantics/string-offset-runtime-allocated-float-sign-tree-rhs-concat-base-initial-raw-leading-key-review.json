@@ -1,0 +1,500 @@
+{
+  "scope": "Finite raw NScalarFloat trees with UnaryPlus/UnaryMinus as one-row allocated CASTSTRING RHS CONCAT bases; general VALUE excluded",
+  "status": "partial",
+  "target": {
+    "version": "PHP 8.5.10",
+    "sapi": "CLI",
+    "thread_safety": "NTS",
+    "integer_bits": 64,
+    "oracle": "project-local .tools/php/bin/php",
+    "oracle_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "profile": {
+      "opcache.enable_cli": "0",
+      "opcache.jit": "disable",
+      "precision": "14",
+      "serialize_precision": "-1",
+      "display_errors": "stderr",
+      "display_startup_errors": "1",
+      "html_errors": "0",
+      "log_errors": "0",
+      "error_reporting": "30719",
+      "date.timezone": "UTC",
+      "output_buffering": "0",
+      "implicit_flush": "1",
+      "zend.assertions": "1"
+    },
+    "environment": {
+      "LC_ALL": "C",
+      "TZ": "UTC",
+      "PHP_SPEC_SCRIPT_ENCODING": null
+    },
+    "reference": "pure executable .watsup; no Zend evaluation fallback"
+  },
+  "implementation": {
+    "path": "spec/semantics/425-string-offset-read-continuations.watsup",
+    "grammar": "raw NScalarFloat | UnaryPlus(child) | UnaryMinus(child)",
+    "predicate": "$string_read_raw_float_sign_tree",
+    "grammar_authority": "syntax only; installed compiled-pool trust boundary unchanged",
+    "guard_bridge": "Three identical 39-line clauses replaced by one 45-line grammar/shared body plus one declaration; all other current425 bytes preserved",
+    "preserved": [
+      "NORMAL/empty CONSTCONTEXT",
+      "proper immediate left/right SOURCE and full right CASTSTRING subtree; existing left BASE contract retained",
+      "typed compiler/value/precision authority",
+      "positive emitted lines and both false CONCAT flags",
+      "left/result identities differ by2; right/result by1",
+      "exactly one RHS row; full saved-prefix CASTSTRING and CONCAT equalities",
+      "non-NUL REQUEST identity and genuine KNOWN ownership"
+    ],
+    "source_symbols": [
+      "zend_compile_unary_pm",
+      "zend_try_ct_eval_unary_pm",
+      "mul_function_fast"
+    ],
+    "php_source_pin": "34308a6666b2d489c509541ea9befea9e2b42348"
+  },
+  "revisions": {
+    "author": "ff55ee9966439eb491f3ae24deab54b148ef169c",
+    "author_base": "f763d57b042be272c51317890f056badb7ab9128",
+    "peer_original": "f082eb32e55e14357d81974084f001b7d59b12b2",
+    "dev_final": "64af0decd9586b6e9d8893389bf956a783b06616",
+    "dev_tree": "2da7cbefea84435462a8da1c3b1fdafecf02691b",
+    "actual": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+    "actual_tree": "6ab024d778e4a0abd30b9164dc9b0628ba7f60e1"
+  },
+  "validation": {
+    "native_originals_once": 2,
+    "native_reruns": 0,
+    "original_sources": [
+      {
+        "id": "runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-current-key",
+        "source_sha256": "3771a6e1c776330654df2dea0bcc81dc629bbb677b9c22d7758530e903d69cc9"
+      },
+      {
+        "id": "runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-reference-key",
+        "source_sha256": "ac130021456f4149482074f4739fcfaafed787dabd46f24e89aaa4dee7cfa00b"
+      }
+    ],
+    "baseline_Unsupported": 2,
+    "prelaw": [
+      80,
+      91
+    ],
+    "source_agreements": 2,
+    "author": [
+      [
+        237,
+        102
+      ],
+      [
+        259,
+        107
+      ]
+    ],
+    "independent": [
+      322,
+      177
+    ],
+    "current_derived_controls": [
+      {
+        "family": "raw FLOAT",
+        "helper_conditions": 39,
+        "main_helper_call": 1,
+        "accepted_main_written_or_executed_conditions": 0,
+        "source_credit": 0,
+        "native_executions": 0
+      },
+      {
+        "family": "single plus",
+        "helper_conditions": 39,
+        "main_helper_call": 1,
+        "accepted_main_written_or_executed_conditions": 0,
+        "source_credit": 0,
+        "native_executions": 0
+      },
+      {
+        "family": "single minus",
+        "helper_conditions": 39,
+        "main_helper_call": 1,
+        "accepted_main_written_or_executed_conditions": 0,
+        "source_credit": 0,
+        "native_executions": 0
+      }
+    ],
+    "whole_judgments": 14,
+    "current_semantic_fixture_failures_corrections_timeouts": 0,
+    "all_planned_jobs_reaped": true,
+    "historical_accepted_renewals": 0,
+    "cuts": [
+      {
+        "id": "native-baseline",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/native-baseline/report.json",
+        "sha256": "d742076466eda0445f259a0783c85b62dd1f1bc5e0728e3a94edbc8c5b6a7887",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": null,
+        "derived_conditions": null,
+        "native_executions": 2,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "id": "model-baseline",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/model-baseline/report.json",
+        "sha256": "527860b67299585ded9f529da5fc79c0caf370f2fef8771a4a2dbc14d3f67c14",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": null,
+        "derived_conditions": null,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "id": "prelaw-direct",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/prelaw-direct/report.json",
+        "sha256": "2d3d37d882819b469b59bbb12d5f78ca8a6ddf7ffacc2bbd7ed37e655203def6",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 80,
+        "derived_conditions": 0,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 19.78245258331299,
+          "group_after": []
+        }
+      },
+      {
+        "id": "prelaw-reference",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/prelaw-reference/report.json",
+        "sha256": "8f0cc386a141f9404412e4a42e56e6bc1108a815de8562b89ece05aa73779c0b",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 91,
+        "derived_conditions": 0,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 20.500130891799927,
+          "group_after": []
+        }
+      },
+      {
+        "id": "source-postlaw",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/source-postlaw/report.json",
+        "sha256": "816a21e8f13fa285a7e8cc1f477b8ab136f16bf1b4bd477bfdc1b2f447875128",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": null,
+        "derived_conditions": null,
+        "native_executions": 0,
+        "source_credit": 2,
+        "inputs_stable": true,
+        "head_stable": true
+      },
+      {
+        "id": "author-direct",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/author-direct/report.json",
+        "sha256": "39b2152a7ff3401c72952e86f1e05caf3e7a550198f4a39f405c393293fe2b4c",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 237,
+        "derived_conditions": 102,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 26.60149908065796,
+          "group_after": []
+        }
+      },
+      {
+        "id": "author-reference",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/author-reference/report.json",
+        "sha256": "24e4efff05c0b8d856f018e76eb774740ddfbf3f40c37209bfeab6057aeb2c73",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 259,
+        "derived_conditions": 107,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 40.10520815849304,
+          "group_after": []
+        }
+      },
+      {
+        "id": "current-raw-derived-control",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/current-raw-derived-control/report.json",
+        "sha256": "731a9837035efbc99d839a87f5071eb2c1c3a7f9f49340770f8205c907686931",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 40,
+        "derived_conditions": 40,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 21.973710536956787,
+          "group_after": []
+        },
+        "executed_derived_helper_conditions": 39,
+        "executed_main_helper_call": 1,
+        "accepted_main_written_conditions": 0,
+        "accepted_main_executed_conditions": 0
+      },
+      {
+        "id": "current-plus-derived-control",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/current-plus-derived-control/report.json",
+        "sha256": "f1fd4be378bfe71bf5e599ce10da272eebe12cd54d8bc894dc6d024f8f214788",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 40,
+        "derived_conditions": 40,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 22.436678409576416,
+          "group_after": []
+        },
+        "executed_derived_helper_conditions": 39,
+        "executed_main_helper_call": 1,
+        "accepted_main_written_conditions": 0,
+        "accepted_main_executed_conditions": 0
+      },
+      {
+        "id": "current-minus-derived-control",
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/current-minus-derived-control/report.json",
+        "sha256": "8ec318a32d38f50b8847e00d9d44a1e0cd3e5c2a1a668fd350ca5be233bb0264",
+        "passed": true,
+        "head": "f763d57b042be272c51317890f056badb7ab9128",
+        "premises": 40,
+        "derived_conditions": 40,
+        "native_executions": 0,
+        "source_credit": 0,
+        "inputs_stable": true,
+        "head_stable": true,
+        "execution": {
+          "exit": 0,
+          "timeout": false,
+          "interruption": null,
+          "elapsed": 22.30367374420166,
+          "group_after": []
+        },
+        "executed_derived_helper_conditions": 39,
+        "executed_main_helper_call": 1,
+        "accepted_main_written_conditions": 0,
+        "accepted_main_executed_conditions": 0
+      }
+    ],
+    "committed_input_bridge": [
+      {
+        "id": "source-postlaw",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_runtime_allocated_float_sign_tree_rhs_concat_base_initial_raw_leading_key_cases.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      },
+      {
+        "id": "author-direct",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_current_marked_cv_protocol.py",
+          "tests/semantics/string_offset_runtime_allocated_float_sign_tree_rhs_concat_base_initial_raw_leading_key_cases.py",
+          "tests/semantics/string_offset_runtime_allocated_float_sign_tree_rhs_concat_base_initial_raw_leading_key_review.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      },
+      {
+        "id": "author-reference",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_current_marked_cv_protocol.py",
+          "tests/semantics/string_offset_runtime_allocated_float_sign_tree_rhs_concat_base_initial_raw_leading_key_cases.py",
+          "tests/semantics/string_offset_runtime_allocated_float_sign_tree_rhs_concat_base_initial_raw_leading_key_review.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      },
+      {
+        "id": "current-raw-derived-control",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_current_marked_cv_protocol.py",
+          "tests/semantics/string_offset_runtime_allocated_raw_float_rhs_concat_base_initial_raw_leading_key_peer_review.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      },
+      {
+        "id": "current-plus-derived-control",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_current_marked_cv_protocol.py",
+          "tests/semantics/string_offset_runtime_allocated_unary_plus_float_rhs_concat_base_initial_raw_leading_key_peer_review.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      },
+      {
+        "id": "current-minus-derived-control",
+        "matched_committed_paths": [
+          "spec/semantics/425-string-offset-read-continuations.watsup",
+          "tests/semantics/string_offset_current_marked_cv_protocol.py",
+          "tests/semantics/string_offset_runtime_allocated_unary_minus_float_rhs_concat_base_initial_raw_leading_key_peer_review.py"
+        ],
+        "all_original_inputs_stable": true,
+        "no_rerun": true
+      }
+    ],
+    "peer_ready": {
+      "ready_packet": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/review-ready.json",
+      "sha256": "f35340d5d86b8f723811e7f91c6c589148afc6f26524ab7e1bfdd97a3a3ecb07",
+      "premises": 322,
+      "derived_conditions": 177,
+      "whole_judgments": 14,
+      "first_pass": true,
+      "all_planned_jobs_reaped": true
+    }
+  },
+  "canonical_immutable": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/actual-canonical-clear-v1.json",
+    "sha256": "3fa1a413e584143ba78da3d318799ab3a5994bc158bebfe388fa8be371c2d024",
+    "record": {
+      "clear": true,
+      "scope": "DYN finite raw FLOAT sign-tree RHS",
+      "actual_revision": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+      "actual_tree": "6ab024d778e4a0abd30b9164dc9b0628ba7f60e1",
+      "actual_parent": "0d80fe0cff67ed9bd7d8c3ca56c1ec6d5a9d6be1",
+      "metadata_base": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+      "source_packet_sha256": "d84169e84cb80735672b5c68344a8590d2913f58f2f7f2dae24be0f97c5517b4",
+      "canonical": {
+        "report_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main112-dyn-enum315-canonical-v1/report.json",
+        "report_sha256": "82bc62853373b15ddd701c2f6781086f32f58909dba6c5b16e8d8cffd6095531",
+        "map_path": "/home/user/workspace/php-spec-evidence-archive/resumed-main-20261112/main112-dyn-enum315-source-map-v1.json",
+        "map_sha256": "2c9bbe1d3e4f797e962cd48095657372c359608c86eea78ac420d4a8b3fe72c1",
+        "module_count": 509,
+        "argv_count": 512,
+        "watched_count": 513,
+        "mode": "production_SL",
+        "cap_seconds": 60,
+        "elapsed": 16.591578260995448,
+        "pass": true,
+        "stable": true,
+        "reaped": true,
+        "process_group_absent": true,
+        "source_credit": 0,
+        "executions": 1
+      },
+      "independent_cache": {
+        "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-reviewer51-20261118/actual-canonical-parsed-cache-v1.json",
+        "sha256": "06f2b1edb72f100cf0fa7dc58f5d0c9e2e2e4d149d17a3bc78f583b041028544",
+        "full_raw_and_parsed": true,
+        "persisted_before_assertions": true
+      },
+      "physical_original_reads": {
+        "report": 1,
+        "map": 1
+      },
+      "reader_preparation_failures": 0,
+      "independent_actual_composition": "CLEAR: DYN10/current425/Make2 preserve foreign ENUM315/COMP7/REF140 bytes via complete parent inverses",
+      "author_original_report_map_cache_reads": 0,
+      "historical_accepted_renewals": 0,
+      "future": "MAIN113 one family/common4 batch then one cached integrated final"
+    }
+  },
+  "canonical_summary": {
+    "fixed_actual": "d9a95bdc886754c9268d5867b3961c9e36476bef",
+    "production_SL_modules": 509,
+    "argv": 512,
+    "watched": 513,
+    "elapsed_seconds": 16.591578260995448,
+    "cap_seconds": 60,
+    "source_credit": 0,
+    "executions": 1,
+    "original_report_reads": 1,
+    "original_map_reads": 1,
+    "full_raw_and_parsed_cache_persisted_before_assertions": true,
+    "independent_cache_sha256": "06f2b1edb72f100cf0fa7dc58f5d0c9e2e2e4d149d17a3bc78f583b041028544",
+    "independent_reader_preparation_failures": 0,
+    "stable_reaped": true,
+    "author_original_report_map_independent_cache_reads": 0,
+    "author_tiny_physical_reads": 2,
+    "author_metadata_preparation_failures": 1,
+    "semantic_or_canonical_reruns": 0
+  },
+  "preparation_zero_credit": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/preparation-failures.json",
+    "failures": [
+      {
+        "stage": "protocol-edit preparation",
+        "failure": "AssertionError: a four-space elif substring also matched the eight-space peer branch",
+        "mutation_before_failure": false,
+        "correction": "anchored line boundaries; expected count1 then passed",
+        "native_executions": 0,
+        "source_credit": 0,
+        "fixture_executions": 0
+      },
+      {
+        "stage": "family metadata preparation",
+        "failure": "AssertionError: assumed tiny actual/verdict field names; exact immutable hash had passed",
+        "mutation_before_failure": false,
+        "correction": "Persist complete tiny raw and parsed author copy before reading its schema; canonical report/map/cache remain unread by author",
+        "author_tiny_physical_reads": 2,
+        "canonical_executions": 0,
+        "source_credit": 0,
+        "fixture_executions": 0
+      }
+    ],
+    "protocol_edit": 1,
+    "metadata_tiny_schema": 1,
+    "source_fixture_canonical_executions": 0
+  },
+  "source_packet": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/string-offset-runtime-allocated-float-sign-tree-rhs-concat-base-initial-raw-leading-key-author61-20261118/main-ready.json",
+    "sha256": "d84169e84cb80735672b5c68344a8590d2913f58f2f7f2dae24be0f97c5517b4"
+  },
+  "remaining": [
+    "Other RHS leaves including CASTDOUBLE and arithmetic",
+    "General VALUE",
+    "multirow RHS allocations",
+    "wider owners/release/lifetimes",
+    "complete PHP core"
+  ],
+  "unchanged": "Feature status partial; reserve93807cdd6/255, exact holds, inventory169/306 and closed0+1 unchanged",
+  "raw_artifacts": "External author61 and reviewer51 family archives; evidence only, never runtime/build inputs",
+  "metadata_policy": "MAIN sole family/common4 writer; new family record and common4 in ONE batch, then ONE peer integrated fixed final from cached authority; no private final, author ACK gate, HEAD refresh or semantic metadata rerun"
+}

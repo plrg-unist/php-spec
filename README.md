@@ -1,5 +1,7 @@
 # PHP syntax in P4-SpecTec
 
+Proper numeric trees containing raw FLOAT leaves retain phase-sensitive signed-zero descendants through one unary sign into finite nonzero full-ternary defaults. Exact source, typed folded pools and redirect checks preserve selected tags, Shared caches and private integer reception through named handler reentry; flat phase-FALSE children and wider contexts remain partial. [Review](coverage/semantics/deferred-unary-float-number-tree-finite-nonzero-full-ternary-redirect-wrapper-default-reception-review.json)
+
 Own public parentless short reference Get admits finite flat nominal unions of
 three or more quiet class arms containing `self` or `namespace\self`.
 Defining authority, exact arm order, typed aliases, atomic refusal, object
@@ -30,11 +32,7 @@ remains later research.
 
 Ordinary primitive reference cells can back dynamic fields of retained stdClass objects after a nested-unset Warning. Shared field/CV writes, object-alias rebinding and object-only cell retention preserve duplicate field edges through staged retirement. Two source agreements and independent state review bind actual848dfc2fe and its sole production SL load. Strings in ALIAS fields and wider field/lifetime forms remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-object-primitive-alias-fields-post-review.json).
 
-Single UnaryMinus of a raw FLOAT supplies one allocated STRING RHS row for CONCAT offset bases while preserving negative zero and the selected minus byte. Exact source/value authority and saved-prefix replay retain temporary identity and frozen raw CV offsets through returning Warnings and reference rebinding. Nested signs, wider RHS producers and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-UNARY-MINUS-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
-
-Single UnaryPlus of a raw FLOAT also supplies one allocated STRING RHS row for CONCAT offset bases. Exact source/value authority and saved-prefix replay preserve temporary identity and frozen raw CV offsets across returning Warnings. Nested signs, other RHS producers and wider lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-UNARY-PLUS-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
-
-Direct raw FLOAT-to-STRING RHSs compose with allocated CONCAT left bases through one RHS REQUEST row, exact source/compiler facts and full prefix replay. Saved raw CV offsets survive returning Warnings and reference rebinding. General VALUE, wider unary FLOAT and multirow RHSs, wider release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-RAW-FLOAT-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
+Finite unary-sign trees over raw FLOATs supply one allocated STRING RHS row for CONCAT offset bases, including signed zero. A shared rule retains exact source/value authority, contiguous REQUEST identities, both nonconstant flags and full state replay through returning Warnings and reference rebinding. Other RHS producers, owners, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-FLOAT-SIGN-TREE-RHS-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
 Literal CONCAT suffixes accept certified allocated composite left bases. Full ternary and nested coalesce/shorthand lefts preserve their selected bytes and saved raw CV offset across returning Warnings. Source authority remains delegated to each producer; broader RHS producers, release and lifetimes remain partial. [Details](docs/semantics/STRING-OFFSET-RUNTIME-ALLOCATED-COMPOSITE-LEFT-CONCAT-BASE-INITIAL-RAW-LEADING-KEY.md).
 
