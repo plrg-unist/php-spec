@@ -1311,8 +1311,8 @@ shares the existing unique proper FIELD1 redirect with binding pruning and
 scalar VALUE transport; literal-infinity and finite-FLOAT helpers are unchanged.
 Skipped names, raw selected tags, Shared caches and private integer reception
 retain their existing bounds through cold/warm calls and named handler reentry.
-INT-left, named or wider computed operands, NaN predicates, owning results and
-wider contexts remain partial; prior accepted cuts retain their original identities.
+Named or wider computed operands, NaN predicates, owning results and wider
+contexts remain partial; prior accepted cuts retain their original identities.
 
 [FLOAT-left/INT-right infinite defaults](../../coverage/semantics/deferred-float-integer-infinite-full-ternary-redirect-wrapper-default-reception-review.json)
 admit one ADD/SUBTRACT/MULTIPLY/DIVIDE with a raw FLOAT/sign left operand and
@@ -1322,9 +1322,21 @@ pure and actual INFINITE result bits, full SOURCE/bindings and operand/condition
 root CODE/read/redirect absence share the unchanged proper FIELD1 redirect proof.
 Selected NULL/BOOL/INT/FLOAT tags, Shared caches and private integer reception
 retain their existing bounds through cold/warm calls and named handler reentry.
-INT-left, names, STRING or computed operands, NaN predicates, owning results and
-wider contexts remain partial. Earlier FLOAT-only receipts and accepted cuts
-retain their original identities.
+Names, STRING or computed operands, NaN predicates, owning results and wider
+contexts remain partial. Earlier FLOAT-only receipts and accepted cuts retain
+their original identities.
+
+
+[INT-left/FLOAT-right infinite defaults](../../coverage/semantics/deferred-integer-float-infinite-full-ternary-redirect-wrapper-default-reception-review.json)
+admit the reciprocal raw operand order for ADD/SUBTRACT/MULTIPLY/DIVIDE.
+The unchanged integer recognizer validates the leaf and every sign step; exact
+PINT-left/PFLOAT-right pools match both pure arithmetic and the actual INFINITE
+condition bits. Division includes overflow from a nonzero finite FLOAT divisor.
+Full SOURCE/bindings, absent operand/condition CODE/read/redirects and the unique
+proper FIELD1 redirect preserve selected scalar tags, Shared caches and private
+integer reception through cold/warm calls and named handler reentry. Names,
+STRING or nested arithmetic operands, NaN predicates, owning results and wider
+contexts remain partial; earlier receipts and accepted cuts retain their identities.
 
 ## Source metadata and resumed states
 

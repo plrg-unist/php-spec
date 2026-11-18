@@ -2177,3 +2177,24 @@ reads after a wrapper cache failure and ROOT-authorized retry; author raw reads
 remain0. Deeper/cyclic arrays, object fields, wider payloads/cells/lifetimes and
 all exact holds remain partial/unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).
+
+Saved ordinary NULL/BOOL CVs admit finite acyclic DIRECT-array descendants after
+nested-unset Warnings. A path-local ancestor list rejects cycles while retaining
+shared siblings; bounds, allocation and live-node checks precede child access.
+Existing quiet leaves, scalar aliases, fieldless stdClass and authenticated
+non-NUL REQUEST text retain their guards. Actual source grandchildren have two
+physical incoming edges. Scalar literals also retain one compiled-pool root;
+runtime mixed grandchildren have no such root. Normal return preserves the fixed
+Error, and pending throw preserves the same Throwable and complete caller tail.
+Whole/split execution, deep alias mutation and WeakReference NULL cleanup agree.
+Fresh Throwable-bound trace counterparts still refuse raw FUNCTION strings;
+three old fake-PARRAY0 definitions remain unchanged without campaign renewal.
+
+Native4 once/source4 and separate bilateral SL120/180 cuts pass. Independent
+WHOLE6 and fixed actual/joined550c3a54c with the sole productionSL509 load pass
+16.389567548s/source0 through immutable87d68484. Canonical execution1 and physical
+report/map reads1 remain distinct; author raw reads0. The initial owner-count
+fixture failure, successful diagnostic and prewrite Make-alignment refusal keep
+separate zero credit. Owning array aliases, object fields, cycles and wider
+payload/cell/lifetime histories remain partial; all exact holds stay unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-deep-array-post-review.json).

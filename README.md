@@ -16,13 +16,17 @@ Executable core semantics are now being implemented; see the
 The syntax reports above do not establish semantic coverage. BOLA verification
 remains later research.
 
+Finite acyclic DIRECT-array descendants preserve saved ordinary NULL/BOOL CVs, shared siblings and actual leaf ownership through nested-unset Warnings. Cycles, owning array aliases, object fields and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-deep-array-post-review.json).
+
+Raw signed64 INT/sign-left and FLOAT/sign-right arithmetic predicates preserve selected full-ternary scalar tags when pure and actual result bits are infinite. Exact source, typed pools and redirect guards remain; broader forms and contexts stay partial. [Review](coverage/semantics/deferred-integer-float-infinite-full-ternary-redirect-wrapper-default-reception-review.json).
+
 Quiet infinite FLOAT casts preserve existing allocated REQUEST string headers and saved leading offsets through returning Warnings. Exact child SOURCE, captured/live precision, pure formatting and full-state replay retain NaN refusal and existing ownership bounds; wider forms remain partial. [Review](coverage/semantics/string-offset-runtime-allocated-infinite-float-producer-cast-base-initial-raw-leading-key-review.json).
 
 Scoped nullable ?Alias producer RETURNs resolve quietly to canonical global stdClass after Param normalization, preserving exact class-then-null order and both metadata nodes. Object and successful NULL returns retain existing verification, retirement and private Notice-cell rules; scoped union/relative returns and wider lifetimes remain partial. [Review](coverage/semantics/scoped-nullable-stdclass-return-producer-reference-notice-review.json).
 
 Quiet NULL-left coalesces preserve existing certified allocated string RHS headers and saved leading offsets through returning Warnings. Exact SOURCE, precision and unchanged full-state authority retain existing non-NUL REQUEST and ownership bounds; wider producers and lifetimes remain partial. [Review](coverage/semantics/string-offset-runtime-null-allocated-coalesce-base-initial-raw-leading-key-review.json).
 
-Saved ordinary NULL/BOOL CVs retain bounded live nonempty arrays after nested-unset Warnings, preserving actual descendants, aliases and cleanup. Deeper/cyclic arrays, object fields and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).
+Saved ordinary NULL/BOOL CVs retain bounded live nonempty arrays after nested-unset Warnings, preserving actual descendants, aliases and cleanup. Cyclic arrays, object fields and wider lifetimes remain partial. [Review](coverage/semantics/string-offset-nested-unset-bool-cv-nonempty-array-post-review.json).
 
 Parser-literal CONCAT trees admit canonical nonnegative finite raw FLOAT leaves alongside STRING/INT leaves in selected handler return casts. Exact source, precision, pure formatting and ownership guards remain; wider forms stay partial. [Review](coverage/semantics/output-final-selected-parser-float-concat-cast-chain-return-modulo-error-review.json).
 
