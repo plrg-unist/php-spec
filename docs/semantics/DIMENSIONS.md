@@ -2279,3 +2279,28 @@ has aggregate acceptance0; the fixture parser failure has semantic main UNRUN0.
 REQUEST strings, owning/referenced/typed fields, cycles and wider histories remain
 partial. Prior campaigns, all exact holds and inventory statuses are unchanged.
 [Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-scalar-fields-post-review.json).
+
+Authenticated non-NUL REQUEST strings may also populate direct scalar dynamic
+properties of the admitted quiet stdClass objects. The field walker now receives
+the current state and reuses the existing array leaf classifier: each REQUEST
+index must identify the exact registry entry with valid bytes, and NUL is refused.
+The scalar fallback remains literal. Complete field validation still precedes
+uniqueness checking; all object, cell, source and owner guards remain unchanged.
+String identities stay immutable metadata with no heap nodes.
+
+Two fresh tag/count originals use nonempty CONST/CV CONCAT values and simultaneous
+DIRECT/ALIAS owners. Mutation, rebinding, key retirement and final alias retirement
+preserve exact properties and old/new weak targets through the fixed Error or
+the same pending Throwable. Native2 ran once; source2 pass at public90/outer120.
+Author259/272 and independent362/372 state cuts pass at unchanged SL180.
+The reviewer inspected the current public source results without repeating them.
+Registry/index/byte/NUL controls and exact legacy scalar payloads remain separate
+derived checks. The previous five-scalar90 pass1/timeout1 aggregate0 and fixture
+ELAB/mainUNRUN0 retain their original closed cuts.
+
+Integrated source0339a914f and its sole production-SL509 load pass16.181551772s
+at60/source0, independently bound by immutable2ef819b6 with report/map reads1
+each and author raw0. REQUEST values in the saved CV itself, owning, referenced
+or typed fields, cycles and wider histories remain partial. All exact holds,
+reserve93807cdd6/255 and inventory169/306/closed0+1 are unchanged.
+[Review](../../coverage/semantics/string-offset-nested-unset-bool-cv-object-request-fields-post-review.json).
