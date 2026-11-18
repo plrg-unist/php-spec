@@ -76,7 +76,7 @@ def assertions():
         check('confusable-warning-' + name.decode(), raw(name), mask(b'Def323\\' + name), plain, False)
     for kind in ('NName', 'NNameRelative'):
         for nullable in (False, True):
-            check('self-cannot-reuse-scope-' + kind + str(nullable), raw(b'SeLf', kind, nullable), mask(b'Def323\\Box323', nullable), plain, kind == 'NName')
+            check('self-cannot-reuse-scope-' + kind + str(nullable), raw(b'SeLf', kind, nullable), mask(b'Def323\\Box323', nullable), plain, True)
     check('imported-global-underscore-warning', raw(b'Target323'), mask(b'_'), context(imports=((b'Target323', b'_'),)), False)
     check('other-raw-kind-NIdentifier', raw(b'Leaf', 'NIdentifier'), mask(b'Def323\\Leaf'), plain, False)
     check('other-raw-kind-NNameFullyQualified', raw(b'Leaf', 'NNameFullyQualified'), mask(b'Leaf'), plain, False)

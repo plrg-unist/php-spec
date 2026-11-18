@@ -65,7 +65,7 @@ def assertions():
     for label, ctx in (('missing-file', context(file=b'')), ('missing-line', context(line=0))):
         scoped(label, raw, ctx=ctx, expected=False)
     for kind in ('NIdentifier', 'NNameFullyQualified', 'NNameRelative'):
-        scoped('other-raw-kind-' + kind, names.raw(b'self', kind), expected=False)
+        scoped('other-raw-kind-' + kind, names.raw(b'self', kind), expected=kind == 'NNameRelative')
     parent_scope = 'PTKNOWN ' + names.value(owner) + ' (' + names.value(b'Def341\\Parent341') + ')'
     for excluded in (b'parent', b'static', b'int', b'array', b'iterable', b'callable'):
         scoped('other-keyword-' + excluded.decode(), names.raw(excluded), ctx=context(scope=parent_scope), expected=False)

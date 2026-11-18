@@ -2995,3 +2995,11 @@ all raw/normalized order, metadata, source, owner and return guards remain requi
 Distinct same-class payloads retain their own uninitialized backing while the
 selected typed source detaches; nominal self intersections/DNF and wider contexts stay partial.
 [Review](../../coverage/semantics/self-parentless-short-reference-get-hook-review.json).
+
+Own public parentless short reference Get also admits `namespace\self`, its
+nullable form and existing ordered two-member relative-self/builtin headers.
+Known-class resolution still selects the defining class before namespace/import
+lookup; exact raw qualification, source metadata and all owner guards remain.
+The shared lifecycle fixture preserves every prior plain-self premise literally,
+while fresh relative-self sources retain distinct payloads and real source detachment.
+[Review](../../coverage/semantics/relative-self-parentless-short-reference-get-hook-review.json).

@@ -82,7 +82,7 @@ def conditions(program, path):
     if not PRELAW:
         checks += ['S_next.OBJECTPROPS = S_R.OBJECTPROPS',
                    'S_next.OBJECTTABLES = S_R.OBJECTTABLES',
-                   '$string_unset_bool_cv_post_object_fields(ppropertyslot_before*)',
+                   '$string_unset_bool_cv_post_object_fields(S_R, ppropertyslot_before*)',
                    '$string_unset_bool_cv_post_object(S_R, n_object)']
     reached = len(checks)
     rebound = base.prior.seek.term(cases.REBOUND_OUTPUTS[name])
@@ -180,7 +180,7 @@ def conditions(program, path):
     ]
     for state in ('PROP_UNSET', 'PROP_INITIAL', 'PROP_VALUE (ALIAS n_alias)'):
         bad_slots += ['[' + slot('$ptascii("state")', '', state=state) + ']']
-    checks += ['~$string_unset_bool_cv_post_object_fields([' +
+    checks += ['~$string_unset_bool_cv_post_object_fields(S_R, [' +
                slot('$ptascii("deferred")', '', state='PROP_DEFERRED porigin_site') + '])']
     initial_duplicate = ('[' + slot('$ptascii("same")', 'PNULL') + ', ' +
                          slot('$ptascii("same")', '', state='PROP_INITIAL') + ']')

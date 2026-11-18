@@ -22,7 +22,7 @@ def fields(fixture, source, case):
     elif case['builtin']:
         branches.insert(0 if case['builtin_first'] else 1, '(PTBRANCH ([PTBUILTIN "' + case['builtin'] + '"]))')
     typed = '[' + ','.join(branches) + ']'
-    raw_self = 'NName (BYTES text_self) metadata_self'
+    raw_self = case['raw_kind'] + ' (BYTES text_self) metadata_self'
     raw = raw_self
     if case['nullable']:
         raw = 'NNullableType (' + raw_self + ') metadata_type'
@@ -186,11 +186,11 @@ def fields(fixture, source, case):
     return checks
 
 
-def main():
+def main(stem='self_parentless_short_reference_get_hook'):
     runner.PREFIX = runner.PREFIX.replace('box320', 'box341').replace('a320', 'r341').replace('b320', 's341')
     runner.PREFIX = runner.PREFIX.replace('$property_hook_plan(S) =/= eps', '$property_hook_ref_plan(S) =/= eps')
     runner.PREFIX = runner.PREFIX.replace('(PROPERTY_HOOK_RESULT ppropertyhook)', '(PROPERTY_HOOK_REF_RESULT ppropertyhook "fetch")')
-    runner.STEM = 'self_parentless_short_reference_get_hook'
+    runner.STEM = stem
     runner.fields = fields
     runner.main(extra_paths=[Path(__file__), Path(names.__file__)])
 

@@ -1309,6 +1309,12 @@ test-semantics: build
 			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_scalar_fields_post_protocol.py --index "$$fields_index" --source-report "$$nested_unset_cv_object_scalar_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_scalar_fields_post_out/state-$$fields_index" || exit; \
 			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_scalar_fields_post_review_state.py --index "$$fields_index" --source-report "$$nested_unset_cv_object_scalar_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_scalar_fields_post_out/peer-state-$$fields_index" || exit; \
 		done
+	@nested_unset_cv_object_request_fields_post_out="$$(mktemp -d "$(CURDIR)/.tools/string-offset-nested-unset-cv-object-request-fields-post-test-XXXXXX")" && \
+		python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_request_fields_post_sources.py --output "$$nested_unset_cv_object_request_fields_post_out/source" && \
+		for request_fields_index in 0 1; do \
+			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_request_fields_post_protocol.py --index "$$request_fields_index" --source-report "$$nested_unset_cv_object_request_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_request_fields_post_out/state-$$request_fields_index" || exit; \
+			python3 -B tests/semantics/string_offset_nested_unset_bool_cv_object_request_fields_post_review_state.py --index "$$request_fields_index" --source-report "$$nested_unset_cv_object_request_fields_post_out/source/report.json" --output "$$nested_unset_cv_object_request_fields_post_out/peer-state-$$request_fields_index" || exit; \
+		done
 	@aa_exists_out="$$(mktemp -d "$(CURDIR)/.tools/aa-exists-test-XXXXXX")" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_run.py --output "$$aa_exists_out/source" && \
 		python3 -B tests/semantics/arrayaccess_reference_exists_protocol.py --output "$$aa_exists_out/state"
@@ -4759,6 +4765,13 @@ test-semantics: build
 	python3 tests/semantics/self_parentless_short_reference_get_hook_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-self-short-reference-get-review-headers.XXXXXXXX)/protocol"
 	python3 tests/semantics/self_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-nullable-self-scoped --output "$$(mktemp -d /tmp/php-spec-self-short-reference-get-strict-nullable.XXXXXXXX)/protocol"
 	python3 tests/semantics/self_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-int-first-self-scoped --output "$$(mktemp -d /tmp/php-spec-self-short-reference-get-strict-int-first.XXXXXXXX)/protocol"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_sources.py --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-sources.XXXXXXXX)/sources"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_protocol.py --form relative-self-plain-scoped --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-plain.XXXXXXXX)/protocol"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_protocol.py --form relative-self-int-scoped --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-int.XXXXXXXX)/protocol"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_review_sources.py --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-review-sources.XXXXXXXX)/sources"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_review_protocol.py --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-review-headers.XXXXXXXX)/protocol"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-nullable-relative-self-global --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-strict-nullable.XXXXXXXX)/protocol"
+	python3 tests/semantics/relative_self_parentless_short_reference_get_hook_review_state.py --suite strict --form strict-int-first-relative-self-scoped --output "$$(mktemp -d /tmp/php-spec-relative-self-short-reference-get-strict-int-first.XXXXXXXX)/protocol"
 	python3 tests/semantics/deprecated_reference_object_float_sources.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float.XXXXXXXX)/sources"
 	python3 tests/semantics/deprecated_reference_object_float_review_sources.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float-review.XXXXXXXX)/sources"
 	python3 tests/semantics/deprecated_reference_object_float_protocol.py --output "$$(mktemp -d /tmp/php-spec-deprecated-reference-object-float.XXXXXXXX)/protocol"
