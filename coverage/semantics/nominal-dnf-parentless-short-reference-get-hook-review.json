@@ -1,0 +1,512 @@
+{
+  "version": 1,
+  "milestone": "COMP339",
+  "decision": "Independently reviewed nominal DNF source and fixed actual/canonical acceptance; family remains partial.",
+  "target": "PHP 8.5.10 CLI NTS 64-bit",
+  "scope": "Own public parentless short reference Get with a finite quiet nominal union of at least two branches and at least one intersection of two or more atoms; existing body, modifier, owner and value bounds retained.",
+  "implementation": {
+    "source_only_paths": [
+      "spec/semantics/382-backed-get-hooks.watsup"
+    ],
+    "header_helper": "$hook_short_reference_nominal_dnf_header",
+    "new_block_lines": 19,
+    "existing_header_OR_tails": 2,
+    "private_runtime_95_134_138_unchanged": true,
+    "existing_body_and_owner_rules_unchanged": true,
+    "whole_previous_module_inverse": "dea95f0a7ae463df2e1848ed6b38c1c6d0903917eeef057d8f942a711a7e69b2"
+  },
+  "source": {
+    "commit": "16f6ed84eddae6b0ce72d4b0c978bdbdafe6c378",
+    "parent": "736302a0e4ea2164d7744ea2a800057dca82bc98",
+    "path": "spec/semantics/382-backed-get-hooks.watsup",
+    "blob": "0fe85ca62530c83e952a2b0b61f5999bbcd7dff9",
+    "sha256": "90e085617a6859fe5e9e89fa34c57d54be60e8725c90c1d3da5b018bfe5d7fc6",
+    "old_module_sha256": "dea95f0a7ae463df2e1848ed6b38c1c6d0903917eeef057d8f942a711a7e69b2",
+    "change": "19-line new DNF block and two existing header OR tails only; every old rule retained"
+  },
+  "source_bundle": {
+    "ready_revision": "0861fcface1087a8d952bb82eb4246f15e2cbd65",
+    "parent": "0dd8e2343c11e19e6235a3ff4aa323dbd95e3f02",
+    "paths": [
+      {
+        "path": "Makefile",
+        "mode": "100644",
+        "full_post_blob": "2a94eee745f0e8d0cba2bc879176be0c6a5aaf32",
+        "full_post_sha256": "71308ff9c400901d074d3fe39fae67713d13606ee670c947b27700d95bc62be2",
+        "full_parent_blob": "6cf7110e9d60c77a7ed4e60fb6a8e6be0ce15d37",
+        "full_parent_sha256": "d8b7801521f2e99764b1b94b0e3a0614aad027577a405b6b5193c36c957b1210",
+        "inverse": "restore full parent bytes"
+      },
+      {
+        "path": "docs/semantics/SOURCE-PROPERTIES.md",
+        "mode": "100644",
+        "full_post_blob": "3e454bca6ea6056c67fe6ff396305f4da4beed63",
+        "full_post_sha256": "28a5f214e030d31023fb4a2f0c71112fa9b6d72f738ad71d54709707ca473029",
+        "full_parent_blob": "932f96b68d0c7c54ad19c8f236d4b7f636d4db1c",
+        "full_parent_sha256": "49b1860251d3e8aa568c3046e3b22e1fe7e3e5e2d6659cc53fd22c51f3af5285",
+        "inverse": "restore full parent bytes"
+      },
+      {
+        "path": "spec/semantics/382-backed-get-hooks.watsup",
+        "mode": "100644",
+        "full_post_blob": "0fe85ca62530c83e952a2b0b61f5999bbcd7dff9",
+        "full_post_sha256": "90e085617a6859fe5e9e89fa34c57d54be60e8725c90c1d3da5b018bfe5d7fc6",
+        "full_parent_blob": "9f5f17ccf687f68c9830309c01d44f175ca724ed",
+        "full_parent_sha256": "dea95f0a7ae463df2e1848ed6b38c1c6d0903917eeef057d8f942a711a7e69b2",
+        "inverse": "restore full parent bytes"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook/cases.json",
+        "mode": "100644",
+        "full_post_blob": "323ead2a7b953fc108b31f99b9350fbc24ad2cad",
+        "full_post_sha256": "81d3d6be35d8ebd89aa7c8926d922ed6de5d504e61eae827e2b7774ae8105ea2",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook/hashes.json",
+        "mode": "100644",
+        "full_post_blob": "648a14bed7ded298561d3ced18ec95c938aa1a2b",
+        "full_post_sha256": "d600c09aa4bdd0c2cb541b5a98f841b29b00c0d362a2f86a9103896c9e9e7c91",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook/intersection-or-single-fq.php",
+        "mode": "100644",
+        "full_post_blob": "f643011c4fa119d0a255edb24af1bf69b75d357e",
+        "full_post_sha256": "30fd2cc319652b2d02019ed5ee1a2b69a8946eea31f7b60512eb6787b128077b",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook/two-intersections-scoped.php",
+        "mode": "100644",
+        "full_post_blob": "22820786cfd636ccf3432a8c3cd17606054c130f",
+        "full_post_sha256": "40077b830e39eea87c8e79cab6b8b5b2e72905235e7fe49a380f074f4142d96f",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_protocol.py",
+        "mode": "100644",
+        "full_post_blob": "600fb45eb9cdfdb743f0c7044b69d64cd45c626a",
+        "full_post_sha256": "852b1369eb90f36a42ffea9129f4bf6337d52de07549f8e02f0396481c5a1ea2",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review/cases.json",
+        "mode": "100644",
+        "full_post_blob": "315070b74ac05a1c6defe13dd165f8f047faca2a",
+        "full_post_sha256": "d2a8850e13fabef87691e13d182fe7fca78448a03e8ebf72d91bd22919ed522b",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review/hashes.json",
+        "mode": "100644",
+        "full_post_blob": "603aa4e812a9b7bd543f7e8163a0951ffe6f1d67",
+        "full_post_sha256": "45a0769a59962752992476bc30fde2e7e1136ebdd5c5d38dbc9a8f7905e0d24a",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review/strict-single-first-imported.php",
+        "mode": "100644",
+        "full_post_blob": "bb854c8afff970df43a4bfed8876fad51f8f5d44",
+        "full_post_sha256": "31cb8623d5d47b1cc6d9f56a4a8faf8523a157b169a35e65ad1f20db333e817d",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review/strict-two-intersections-reordered.php",
+        "mode": "100644",
+        "full_post_blob": "680336f5909887a30f13449ab79eebd70fc0254d",
+        "full_post_sha256": "954a8898c278df4e513d06505fd7eb183ce4152a4a15d2a9fe89e58960ae810b",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review_protocol.py",
+        "mode": "100644",
+        "full_post_blob": "0a72b130b2606e1ee834d5251bfa605791dbce24",
+        "full_post_sha256": "e150d139af6da8f043d2736581f4bfd275c1f352581b2e3d0f2f06446bdcbc55",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review_sources.py",
+        "mode": "100644",
+        "full_post_blob": "50ae8ffefb9528bf23f3b3f75a394095a81f2b26",
+        "full_post_sha256": "8e4c117472ce5a0a77fce64aa87f833185cce8c07d9fba0f43fc76a577f7cbac",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_review_state.py",
+        "mode": "100644",
+        "full_post_blob": "8a215cd136688d2e3b133df13324858c7b72fb40",
+        "full_post_sha256": "20ef5a140bc116918199fe5346743607637fc7cd743bec9a571966c277c044ef",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      },
+      {
+        "path": "tests/semantics/nominal_dnf_parentless_short_reference_get_hook_sources.py",
+        "mode": "100644",
+        "full_post_blob": "af90e9934bea7eae7f0ea59a6e20d293e2af3387",
+        "full_post_sha256": "1c1fb4eb1819f702351cf3ea4665b4cd47865efce561600fe6aceebe5f81b202",
+        "full_parent_blob": null,
+        "full_parent_sha256": null,
+        "inverse": "remove new path"
+      }
+    ]
+  },
+  "semantics": [
+    "Complete ordered raw/normalized alternatives and nominal conjuncts, whole quiet defining-context authority",
+    "Actual objects accepted by distinct branches; partial objects fail every branch; runtime permutations versus exact source/signature order",
+    "Typed aliases/object copies and atomic store/source retention on rejection",
+    "Actual owner destruction removes the type source before formerly invalid array writes",
+    "Complete quiet normalization rejects duplicate/subsumed branches, invalid or nonquiet names, builtin arms and forged branch/conjunct shapes; namespace/import context remains authoritative."
+  ],
+  "engine_routes": [
+    "vendor/php-src/Zend/zend_compile.c:zend_compile_typename_ex, zend_compile_property_hooks",
+    "spec/semantics/16-static-types.watsup:ordered union/intersection normalization and duplicate/subsumption checks",
+    "spec/semantics/134-inheritance-runtime.watsup:typed_class_chain disjunction and typed_class_atoms conjunction;95 and138 delegate unchanged"
+  ],
+  "oracle": {
+    "target": "PHP 8.5.10 CLI NTS 64-bit",
+    "binary_sha256": "b9adb7babbb8d7619a8e049cfb73369b40d8a72be6918d5b0de4c77509e05398",
+    "native_observations_total_once": 4,
+    "postlaw_native_observations": 0,
+    "same_original_bytes_argv_profile_reused": true
+  },
+  "source_agreements": 4,
+  "validation": [
+    {
+      "check": "weak-source-nominal-dnf",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/weak-source-nominal-dnf/report.json",
+      "sha256": "84b53cbef9b8bfa6daaa50b97ce846147a85a7571e2794ddb0261c434842ea64",
+      "tested_revision": "16f6ed84eddae6b0ce72d4b0c978bdbdafe6c378",
+      "passed": true,
+      "rows": [
+        {
+          "id": "intersection-or-single-fq",
+          "elapsed": 88.4692485332489,
+          "cap_seconds": 140,
+          "exit": 0,
+          "passed": true
+        },
+        {
+          "id": "two-intersections-scoped",
+          "elapsed": 93.71633291244507,
+          "cap_seconds": 140,
+          "exit": 0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "strict-source-nominal-dnf",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-source-nominal-dnf/report.json",
+      "sha256": "a1d132cb7e1e7b14c05cc94e6a532aefcf27a6ae58168cf9d8c6e8ff88da642f",
+      "tested_revision": "364d071c41b2fddd067ee5ec35840e821fb08f1d",
+      "passed": true,
+      "rows": [
+        {
+          "id": "strict-single-first-imported",
+          "elapsed": 74.2634539604187,
+          "cap_seconds": 140,
+          "exit": 0,
+          "passed": true
+        },
+        {
+          "id": "strict-two-intersections-reordered",
+          "elapsed": 74.70774269104004,
+          "cap_seconds": 140,
+          "exit": 0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "author-intersection-or-single-fq-state",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/author-intersection-or-single-fq-state/report.json",
+      "sha256": "14899bf620c32b1bceb689278e78168af806cd847e72416b0e3cd1e755c85246",
+      "tested_revision": "bb063f74aba89c9d4df9300edcfae878c91c3035",
+      "passed": true,
+      "premises": 274,
+      "elapsed": 225.819970369339,
+      "cap_seconds": 360,
+      "source_agreement_credit": 0
+    },
+    {
+      "check": "author-two-intersections-scoped-state",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/author-two-intersections-scoped-state/report.json",
+      "sha256": "d05c9a789323ec3c3f9a451cc9f105f2944afc1bf07a8748263b7029c111b5c4",
+      "tested_revision": "bb063f74aba89c9d4df9300edcfae878c91c3035",
+      "passed": true,
+      "premises": 282,
+      "elapsed": 265.42886877059937,
+      "cap_seconds": 360,
+      "source_agreement_credit": 0
+    },
+    {
+      "check": "strict-header-grouping",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-header-grouping/report.json",
+      "sha256": "6111849ec6f8fb7c54e9430192776d8f71c48db992cc37659035d6c2b951f37a",
+      "tested_revision": "364d071c41b2fddd067ee5ec35840e821fb08f1d",
+      "passed": true,
+      "premises": 395,
+      "elapsed": 17.4746253490448,
+      "cap_seconds": 60,
+      "source_agreement_credit": 0
+    },
+    {
+      "check": "strict-single-first-imported-state",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-single-first-imported-state/report.json",
+      "sha256": "e3b3c7bd30ecbc2dd89bb8edcef71dd88bee7cd02db626adf79f4c94b9bdcc5b",
+      "tested_revision": "364d071c41b2fddd067ee5ec35840e821fb08f1d",
+      "passed": true,
+      "premises": 257,
+      "elapsed": 187.91176223754883,
+      "cap_seconds": 360,
+      "source_agreement_credit": 0
+    },
+    {
+      "check": "strict-two-intersections-reordered-state",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-two-intersections-reordered-state/report.json",
+      "sha256": "d6e401b1d1cb1dace97be983fe0fc825eff299e8061c8884e377270a3da2c7cf",
+      "tested_revision": "364d071c41b2fddd067ee5ec35840e821fb08f1d",
+      "passed": true,
+      "premises": 263,
+      "elapsed": 195.93842720985413,
+      "cap_seconds": 360,
+      "source_agreement_credit": 0
+    }
+  ],
+  "private_spec_manifest": {
+    "modules": 508,
+    "common_recorded_inputs": 509,
+    "canonical_json_sha256": "031a96e0c49f01681c4059e0a6b0f1b1f4193c704a398a64786a8751d0febd35",
+    "modules_json_sha256": "584ead13ee47989373fb5e72950a6c969914923bcfb7b5bc82a9ad9ff709c89c",
+    "all_seven_accepted_maps_equal": true
+  },
+  "native_and_prelaw_records": [
+    {
+      "check": "weak-native-once",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/weak-native-once/report.json",
+      "sha256": "d18c6386607e450a5a3b88327065445581b24b11dc5c82a40f0ebd9d5a250e4a",
+      "tested_revision": "2be62019b640304bfa8647199971bce7062c2503",
+      "passed": true,
+      "rows": [
+        {
+          "id": "intersection-or-single-fq",
+          "elapsed": 0.0038917064666748047,
+          "cap_seconds": 15,
+          "exit": 0,
+          "passed": true
+        },
+        {
+          "id": "two-intersections-scoped",
+          "elapsed": 0.0030226707458496094,
+          "cap_seconds": 15,
+          "exit": 0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "strict-native-once",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-native-once/report.json",
+      "sha256": "b3ecc90bed57a1589ae26dd6094440d461e67d3e5aef61905430795905ff57b8",
+      "tested_revision": "9251e0125d41d9ac312ac977a2846452db85afd6",
+      "passed": true,
+      "rows": [
+        {
+          "id": "strict-single-first-imported",
+          "elapsed": 0.003329038619995117,
+          "cap_seconds": 15,
+          "exit": 0,
+          "passed": true
+        },
+        {
+          "id": "strict-two-intersections-reordered",
+          "elapsed": 0.002969026565551758,
+          "cap_seconds": 15,
+          "exit": 0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "weak-prelaw",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/weak-prelaw/report.json",
+      "sha256": "9c803410733bb8bb40ece3f18eb2c9ac118f9c2c7c72d55ed0df73f0d97a4166",
+      "tested_revision": "2be62019b640304bfa8647199971bce7062c2503",
+      "passed": true,
+      "rows": [
+        {
+          "id": "intersection-or-single-fq",
+          "elapsed": 29.93898057937622,
+          "cap_seconds": 140,
+          "exit": 1,
+          "passed": true
+        },
+        {
+          "id": "two-intersections-scoped",
+          "elapsed": 33.028568267822266,
+          "cap_seconds": 140,
+          "exit": 1,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "check": "strict-prelaw",
+      "report": "/home/user/workspace/php-spec-evidence-archive/comp339/strict-prelaw/report.json",
+      "sha256": "105f61bf9abab5ae4df4463125b7a4b50a0762c87b49fa6fdd4a589d4b4ad7f0",
+      "tested_revision": "9251e0125d41d9ac312ac977a2846452db85afd6",
+      "passed": true,
+      "rows": [
+        {
+          "id": "strict-single-first-imported",
+          "elapsed": 26.00285053253174,
+          "cap_seconds": 140,
+          "exit": 1,
+          "passed": true
+        },
+        {
+          "id": "strict-two-intersections-reordered",
+          "elapsed": 28.46670174598694,
+          "cap_seconds": 140,
+          "exit": 1,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "independent_whole_source_review": {
+    "path": "/home/user/workspace/php-spec-evidence-archive/comp339/independent-whole-source-clearance.json",
+    "sha256": "25f2366d3239c9ccfac7306d5875dddbe09cc98a12af2938f31a003f3437df0a",
+    "revision": "364d071c41b2fddd067ee5ec35840e821fb08f1d",
+    "decision": "WHOLE SOURCE CLEAR"
+  },
+  "carry_forward": "All executable modules, runner, frontend, adapter and profile remain unchanged since source-only16f6; later commits add only new lifecycle/header tests and Make7/doc8. Closed335/336/337/338 cuts stay unrenewed. Exact new8-line suffix preserves each documentation parent in full.",
+  "actual_acceptance": {
+    "decision": "CLEAR",
+    "provided_by": "/root/recover33_compiler_mixed_review",
+    "actual_revision": "b8543a66bede7cb963d4069fedd7dfa667d2f2a5",
+    "same_revision": "b8543a66bede7cb963d4069fedd7dfa667d2f2a5",
+    "actual_tree": "9367d8c716c7629ebad2419f3c9bbe7824e189ff",
+    "tested_revision": "b8543a66bede7cb963d4069fedd7dfa667d2f2a5",
+    "revision_after": "b8543a66bede7cb963d4069fedd7dfa667d2f2a5",
+    "canonical_report_sha256": "62c967916a68888c946ec50409c48ab39dd2ee7998b2a62593bc70a27f9a6c50",
+    "actual_map_sha256": "cc8aaabcec8b7b7df0f4437825edca2ac3b5bbdf6cee1d25acc2523c9d9723e3",
+    "mode": "production_SL",
+    "module_count": 509,
+    "argv_count": 512,
+    "input_vectors_count": 513,
+    "input_vectors_equal": true,
+    "exit": 0,
+    "timeout": false,
+    "reaped": true,
+    "stable": true,
+    "stdout": "true\n",
+    "stderr": "",
+    "elapsed_seconds": 15.938883808907121,
+    "cap_seconds": 60,
+    "source_agreement_credit": 0,
+    "source_382_blob": "0fe85ca62530c83e952a2b0b61f5999bbcd7dff9",
+    "source_382_sha256": "90e085617a6859fe5e9e89fa34c57d54be60e8725c90c1d3da5b018bfe5d7fc6",
+    "source_382_literal": true,
+    "whole_382_inverse_sha256": "dea95f0a7ae463df2e1848ed6b38c1c6d0903917eeef057d8f942a711a7e69b2",
+    "own_paths": 16,
+    "literal_full_posts": 15,
+    "Makefile_only_rebased": true,
+    "exact_fixed_posts_modes_and_parents": true,
+    "Makefile_added_lines": 7,
+    "property_doc_added_lines": 8,
+    "Make7_and_doc8_complete_both_parent_inverses": true,
+    "actual_composition_checks": 1,
+    "canonical_executions": 1,
+    "reviewer_original_report_physical_reads": 1,
+    "reviewer_original_map_physical_reads": 1,
+    "original_raw_rereads": 0,
+    "subsequent_reads_used_parsed_cache": true,
+    "parsed_cache": "/home/user/workspace/php-spec-evidence-archive/comp339/reviewer-main106-originals-cache.json",
+    "author_raw_actual_source_map_report_cache_reads": 0,
+    "later_HEAD_refreshes": 0,
+    "semantic_or_native_or_fixture_or_canonical_replays": 0,
+    "reader_preparation_failures": 2,
+    "reader_preparation_note": "Map source_revision role and overstrict protected-file equality/count assumptions corrected only from cache/bounded static composition; executions0/raw rereads0.",
+    "relevant_foreign_runtime_interaction": {
+      "95-type-values_and134-inheritance-runtime": "Only ptclassview additions; identity on every admitted PTCLASS branch. All other bytes restore the private cut exactly.",
+      "95-typed-calls": "Default candidate and two guards lie outside parameterless Get.",
+      "138": "Byte-equal to private cut.",
+      "saved_watch_binding": "Four fixed source hashes match the saved watch."
+    }
+  },
+  "preserved_zero_credit": [
+    {
+      "kind": "Expected prelaw Unsupported4",
+      "reports": [
+        "/home/user/workspace/php-spec-evidence-archive/comp339/weak-prelaw/report.json",
+        "/home/user/workspace/php-spec-evidence-archive/comp339/strict-prelaw/report.json"
+      ]
+    },
+    {
+      "kind": "baseline_summary_preparation",
+      "initial_assumption": "prelaw input keys relative",
+      "correction": "matched absolute source key",
+      "model_native_source_fixture_executions": 0,
+      "credit": 0
+    },
+    {
+      "kind": "Actual-reader source_revision role preparation",
+      "executions": 0,
+      "raw_rereads": 0,
+      "credit": 0
+    },
+    {
+      "kind": "Actual-reader protected-file equality/count preparation",
+      "correction": "Bounded static review of relevant accepted foreign deltas",
+      "executions": 0,
+      "raw_rereads": 0,
+      "credit": 0
+    }
+  ],
+  "failures": {
+    "semantic_failures": 0,
+    "fixture_corrections": 0,
+    "timeouts": 0,
+    "accepted_replays": 0
+  },
+  "holds": "all five holds, reserve93807cdd6/255 and169/306 closed0+1 preserved",
+  "remaining": [
+    "DNF with builtin arms and iterable object dispatch",
+    "Wider source, value, modifier, owner and lifetime contexts",
+    "Full core PHP remains unfinished"
+  ],
+  "engine_bug_or_intentional_divergence": "None observed.",
+  "private_documentation_bridge": {
+    "path": "docs/semantics/SOURCE-PROPERTIES.md",
+    "lines": 8,
+    "literal_addition": "\nOwn public parentless short reference Get admits finite quiet nominal DNF unions\nwith at least two branches and at least one intersection of two or more atoms.\nAligned raw branches and conjuncts preserve source order and canonical defining\nnamespace/imports through whole quiet normalization; builtin arms stay partial.\nExisting runtime disjunction/conjunction matching accepts distinct branch payloads,\nretaining aliases, atomic refusal, object copies and real source detachment; wider contexts stay partial.\n[Review](../../coverage/semantics/nominal-dnf-parentless-short-reference-get-hook-review.json).\n",
+    "author_parent_sha256": "49b1860251d3e8aa568c3046e3b22e1fe7e3e5e2d6659cc53fd22c51f3af5285",
+    "private_parent_sha256": "13bee44757bbad9bfea9eaf9f695cfa9ad1aecf8f8b79316a4d67b5a9ec4448b",
+    "complete_both_parent_inverses": true
+  }
+}
